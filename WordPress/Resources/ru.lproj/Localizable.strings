@@ -117,9 +117,6 @@
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ трлн.";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "Подключение %@ восстановлено.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d записей.";
 
@@ -549,9 +546,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Разрешить push-уведомления";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Разрешить всем администраторам и посетителям вашего сайта использовать это подключение.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "Разрешённые IP-адреса";
 
@@ -718,9 +712,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "Искусство";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "C 01.08.2018 Facebook более не разрешает напрямую делиться записями в профили Facebook. Связи со страницами FB останутся неизмененными.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Добавить файл как ссылку";
 
@@ -786,9 +777,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Автообновления";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Доступно всем пользователям.";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "В среднем комментариев к записи";
@@ -1025,9 +1013,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Отменить";
 
@@ -1076,9 +1062,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "Переместить блок";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Не удалось внести изменение.";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Измените тип устройства для предварительного просмотра";
@@ -1339,51 +1322,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Подтвердить удаление сайта";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Подтвердите, что хотите использовать указанную учетную запись. Обратите внимание, что ваши записи автоматически станут доступны выбранной учетной записи.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Подтвердите имя пользователя";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Поздравляем с приобретением!";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Подключиться";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Подключить еще одну учётную запись";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Подключитесь, чтобы ваши записи автоматически становились доступны учетной записи %@.";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Подключите свои любимые службы социальных сетей, чтобы автоматически делиться новыми записями с друзьями.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Подключено";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Подключенные учетные записи";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Подключение к %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "При подключении %1$@ будет выполнено отключение %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Подключение...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Подключение отменено.";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Не удалось подключиться.";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1748,19 +1691,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Удалить изменения и выбрать меню";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Отключить";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Не удалось отключиться.";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Отключение от WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Если отключить учетную запись, то ваши материалы не будут автоматически становиться доступными учетной записи %@.";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2059,8 +1994,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Пустой URL-адрес";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Включить";
 
 /* Title of button that enables push notifications when tapped */
@@ -2068,9 +2002,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "Включить уведомления?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Включить Publicize";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Включить статистику сайта";
@@ -2638,9 +2569,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Объясните в нескольких словах, о чём этот сайт.";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "Для того, чтобы делиться опубликованными записями в социальных сетях, требуется включить модуль Publicize.";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "Уведомления в приложении отключены";
 
@@ -2858,15 +2786,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan обновится до последней версии.";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Подключения Jetpack Social";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Сбой синхронизации подключения Jetpack Social";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Сбой синхронизации службы Jetpack Social";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack сейчас не может быть установлен.";
@@ -2938,11 +2859,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Сводка по последней записи";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Подробнее";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Подробнее";
 
@@ -3157,7 +3074,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Управление";
 
@@ -3479,9 +3395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "%@ пока отсутствуют";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Учетных записей не найдено";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Нет соединения";
 
@@ -3509,7 +3422,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "По вашим критериям доступных адресов не найдено";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "Нет доступных сайтов";
 
 /* No comment provided by engineer. */
@@ -3525,9 +3438,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Нет подключения";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Не найдено подключений к %@";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "Пользовательский заполнитель не назначен";
@@ -3647,9 +3557,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "Без ответа";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Нет подключения";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4310,12 +4217,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Получатель";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Подключить снова";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Подключение установлено.";
-
 /* Action button to redo last change */
 "Redo" = "Повторить";
 
@@ -4685,9 +4586,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Выбрать стиль абзацев";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Выберите учетную запись для авторизации. Обратите внимание, что ваши записи автоматически станут доступны выбранной учетной записи.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "Выберите дни, в которые вы хотите писать в блог";
 
@@ -4777,7 +4675,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "Настройка темы";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Настройки";
@@ -4815,9 +4712,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Поделиться ссылкой";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "Поделиться записью в %@";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Поделитесь с друзьями";
 
@@ -4825,12 +4719,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Расскажите свою историю...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Поделиться";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Кнопки «Поделиться»";
 
 /* Share extension error dialog title. */
@@ -5019,9 +4911,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Извините, не удалось загрузить содержимое.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Извините. Социальная сеть не сообщила нам с какой учетной записи нужно делиться.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Извините, ваши результаты поиска не могут быть загружены.";
@@ -5331,9 +5220,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Это имя пользователя недопустимо.";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Подключение к Facebook не может обнаружить страниц, Publicize не может использовать профили Facebook, только страницы.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Похоже, что нет связи с Интернетом.";
 
@@ -5390,9 +5276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Невозможно добавить медиафайл в «Библиотеку медиафайлов».";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "Модуль не может быть активирован.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Число показываемых записей на страницу.";
@@ -5463,9 +5346,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Ожидается подтверждение смены вашего адреса эл. почты на %@. Пожалуйста, проверьте вашу почту для получения ссылки подтверждения.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Не удалось подключиться к %@. Чтобы публиковать записи, установите подключение.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -6190,9 +6070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "Мы пока не можем оценить как долго займет восстановление сайта.";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "При загрузке подключений %@ произошла ошибка";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Не удалось загрузить данные.";
 
@@ -6544,8 +6421,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "Вы сегодня получили *50 отметок \"нравится\"* на сайте";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Вы ответили на этот комментарий.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -7667,15 +7543,6 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "Настроить главный экран";
 
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "Скрыть это";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "Поделиться в ваших социальных сетях";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "У вас закончились возможности поделиться!";
-
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "Скрыть";
 
@@ -8322,23 +8189,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Сохранить как черновик";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "Есть опции (${count}), соответствующие \"${site}\".";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Сайт";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "Сайт";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Выбрать сайт";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "Вы действительно хотели \"${site}\"?";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Выберите назначение сайта";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@ переедут через %2$@";
@@ -11053,15 +10908,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Мои записи";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "Подпишитесь, чтобы делиться больше";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " в следующие 30 дней";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "Осталось %1$d возможностей поделиться";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Рубрики";
 
@@ -11073,9 +10919,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "Отменить изменения?";
-
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "Не удалось загрузить элементы (%@)";
@@ -11104,65 +10947,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Расписание";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "Делимся с %1$d учётными записями";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "Не делимся в соцсетях";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "Делимся с %1$d из %2$d учётных записей";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "Делимся с %1$@";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "Осталось %1$d возможностей поделиться";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "Предупреждение";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "Настроить сообщение";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "Подпишитесь, чтобы делиться больше";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "В следующие 30 дней вы можете поделиться в соцсетях %1$d раз";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Предупреждение";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "Сообщение";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "Напишите короткий анонс записи для публикации в соцсетях";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "Социальные сети";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "Услуги";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Теги";
@@ -12406,42 +12192,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Напоминания";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Увеличьте посещаемость сайта, автоматически публикуя свои записи в социальных сетях.";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "Подключить учётные записи";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Значки социальных сетей";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "Не сейчас";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "Вы не будете делиться вашими записями с %1$d учётными записями в социальных сетях.";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "Вы не будете делиться вашими записями в социальных сетях.";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "Значки социальных сетей";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "Подпишитесь, чтобы делиться больше";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Автоматическая публикация в Twitter больше не доступна";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "Подробнее";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Автоматическая публикация в Twitter больше не доступна из-за изменения условий использования и цен Twitter.";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "Учётные записи: %d";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "Реклама";
 
@@ -13136,6 +12886,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Статус";
+
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Записи за все время, максимум просмотров";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Просмотры за всё время";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Просмотры за всё время и посетители";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Максимальное число просмотров за всё время";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Наиболее просматриваемые";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Не удалось загрузить статистику сайта.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Создайте или добавьте сайт, чтобы увидеть статистику за все время.";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Записи";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Будьте в курсе всех действий на вашем сайте WordPress.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "За всё время";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Войдите в WordPress для просмотра статистики за всё время.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Войдите в Jetpack для просмотра статистики за всё время.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Войдите в Jetpack для просмотра статистики за неделю.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Войдите в Jetpack для просмотра статистики за сегодняшний день.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Просмотры за всё время";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Просмотров сегодня";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Не удалось загрузить статистику за неделю.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Создайте или добавьте сайт, чтобы увидеть статистику за неделю.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Будьте в курсе всех действий на вашем сайте WordPress за эту неделю.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "На этой неделе";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Войдите в WordPress для просмотра статистики за неделю.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Комментарии";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Статистика переместилась в приложение Jetpack. Переключение бесплатно и займет всего минуту.";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "\"Нравится\"";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Не удалось загрузить статистику сайта.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Не удалось загрузить статистику за сегодня.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Создайте или добавьте сайт, чтобы увидеть сегодняшнюю статистику.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Будьте в курсе всех действий за сегодня на вашем сайте WordPress.";
+
+/* Title of today widget */
+"widget.today.title" = "Cегодня";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Войдите в WordPress для просмотра статистики за сегодняшний день.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "Просмотр недоступен";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Просмотры";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Посетители";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Отметки \"нравится\" за сегодня и комментарии";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Просмотры за сегодня";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Просмотры за сегодня и посетители";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "в будущем будет недоступен.";

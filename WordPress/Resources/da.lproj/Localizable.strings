@@ -116,9 +116,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Annuller";
 
@@ -167,9 +165,6 @@
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekræft";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Forbinder...";
 
 /* Button label for contacting support */
 "Contact support" = "Kontakt support";
@@ -228,9 +223,7 @@
 /* Menus alert button title to discard changes. */
 "Discard Changes" = "Annuller ændringer";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Afbryd";
 
 /* Disconnect from WordPress.com button */
@@ -394,8 +387,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Stor";
 
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Lær mere";
 
@@ -447,7 +439,6 @@
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Administrer";
 
@@ -516,9 +507,6 @@
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Ingen kommentarer endnu";
 
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Ingen forbindelser fundet for %@";
-
 /* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Ingen internet forbindelse";
 
@@ -533,9 +521,6 @@
    No comment will be autoapproved
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Ingen";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Ikke forbundet";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -771,7 +756,6 @@
 "Service" = "Service";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Indstillinger";
@@ -1074,9 +1058,6 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
-
 /* Later today */
 "later today" = "senere i dag";
 
@@ -1100,6 +1081,24 @@
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Tilføj %1$@";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Indlæg";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Kommentarer";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Title of today widget */
+"widget.today.title" = "I dag";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Visninger";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Besøgende";
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Grænse nået. Du kan prøve igen om et minut. Hvis du prøver igen før dette vil du kun øge ventetiden før blokaden er løftet. Hvis du mener, dette er en fejl, så kontakt supporten.";

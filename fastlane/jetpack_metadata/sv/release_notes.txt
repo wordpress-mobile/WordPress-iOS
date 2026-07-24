@@ -1,3 +1,0 @@
-Vi tog bort det kostnadsfria GIF-biblioteket som mediakälla eftersom Tenor-tjänsten som det körs på kommer att stängas av den 30 juni. Vi är också ledsna över det.
-
-Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.

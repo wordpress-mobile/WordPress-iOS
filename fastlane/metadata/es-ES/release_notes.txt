@@ -1,1 +1,0 @@
-Si tienes un sitio web autoalojado, a partir de ahora iniciarás sesión en la app con una contraseña de aplicación. Si no tienes ninguna, te crearemos una automáticamente para que la tengas lista cuando la necesites.

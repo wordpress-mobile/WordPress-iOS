@@ -114,9 +114,6 @@
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ triliun";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ dihubungkan.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d pos.";
 
@@ -546,9 +543,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Izinkan pemberitahuan push";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Izinkan koneksi ini untuk digunakan oleh semua admin dan pengguna situs Anda.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "Alamat IP yang Diizinkan";
 
@@ -715,9 +709,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "Seni";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Per 1 Agustus 2018, Facebook tak lagi mengizinkan berbagi pos langsung ke Profil Facebook. Sambungan ke Halaman Facebook tidak berubah.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Melampirkan File sebagai Tautan";
 
@@ -783,9 +774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Pembaruan otomatis";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Tersedia untuk semua pengguna";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "Rata-rata Komentar\/Pos";
@@ -1022,9 +1010,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Batal";
 
@@ -1073,9 +1059,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "Ubah posisi blok";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Perubahan gagal";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Ganti jenis perangkat yang digunakan untuk meninjau";
@@ -1336,51 +1319,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Konfirmasi Penghapusan Situs";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Konfirmasikan ini adalah akun yang ingin diotorisasi. Penting untuk diperhatikan bahwa pos Anda akan dibagikan secara otomatis ke akun ini.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Konfirmasikan nama pengguna";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Selamat atas pembelian Anda!";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Hubungkan";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Sambungkan Akun Lainnya";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Hubungkan untuk otomatis bagikan pos blog Anda ke %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Sambungkan layanan media sosial favorit Anda untuk berbagi pos Anda secara otomatis dengan teman Anda.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Tersambung";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Akun yang Terhubung";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Menghubungkan %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Menghubungkan %1$@ akan mengganti koneksi yang ada menjadi %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Menghubungkan...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Koneksi dibatalkan";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Koneksi gagal";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1745,19 +1688,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Buang dan Pilih Menu";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Putuskan";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Diskoneksi gagal";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Putuskan dari WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Memutuskan akun berikut artinya pos yang dipublikasikan tidak akan secara otomatis dibagikan ke %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2056,8 +1991,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL Kosong";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktifkan";
 
 /* Title of button that enables push notifications when tapped */
@@ -2065,9 +1999,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "Aktifkan Pemberitahuan?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Aktifkan Publikasikan";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Aktifkan Statistik Situs";
@@ -2635,9 +2566,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Dalam beberapa kata, jelaskan tentang apa situs ini.";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "Untuk membagikan pos yang telah diposkan ke media sosial, Anda perlu mengaktifkan modul Publikasikan.";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "Pemberitahuan dalam aplikasi dinonaktifkan";
 
@@ -2855,15 +2783,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan akan memperbarui ke versi yang lebih baru.";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Koneksi Jetpack Social";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Sinkronisasi koneksi Jetpack Sosial gagal";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Sinkronisasi layanan Jetpack Sosial gagal";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack tidak dapat diinstal untuk saat ini.";
@@ -2935,11 +2856,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Ringkasan Pos Terbaru";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Pelajari Lebih Lanjut";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Pelajari lebih lanjut";
 
@@ -3154,7 +3071,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Kelola";
 
@@ -3476,9 +3392,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Masih belum ada %@";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Tidak Ada Akun yang Ditemukan";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Tidak ada Koneksi";
 
@@ -3506,7 +3419,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Tidak ada alamat yang cocok dengan pencarian Anda";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "Tidak ada situs yang tersedia";
 
 /* No comment provided by engineer. */
@@ -3522,9 +3435,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Tak ada koneksi";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Tidak dapat menemukan sambungan untuk %@";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "Placeholder kustom belum diatur";
@@ -3644,9 +3554,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "Tidak Terjawab";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Tidak Tersambung";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4307,12 +4214,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Penerima";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Hubungkan kembali";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Dihubungkan kembali";
-
 /* Action button to redo last change */
 "Redo" = "Ulangi";
 
@@ -4682,9 +4583,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Pilih gaya paragraf";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Pilih akun yang ingin Anda otorisasikan. Perhatikan bahwa pos Anda akan otomatis dibagikan ke akun yang dipilih itu.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "Pilih tanggal Anda ingin membuat blog";
 
@@ -4774,7 +4672,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "Menyiapkan tema";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Pengaturan";
@@ -4812,9 +4709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Bagikan tautan";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "Bagikan pos ke %@";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Bagikan dengan Teman";
 
@@ -4822,12 +4716,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Bagikan kisah Anda di sini...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Berbagi";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Tombol Berbagi";
 
 /* Share extension error dialog title. */
@@ -5016,9 +4908,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Maaf. Konten tidak dapat dimuat.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Maaf. Layanan sosial tersebut tidak memberi tahu kami mengenai akun mana yang dapat digunakan untuk berbagi.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Maaf. Hasil pencarian Anda tidak dapat dimuat.";
@@ -5328,9 +5217,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Nama pengguna itu tidak diijinkan.";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Koneksi Facebook tidak dapat menemukan Halaman apa pun. Publikasikan tidak dapat terhubung ke Profil Facebook, hanya Halaman yang dipublikasikan.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Sepertinya koneksi Internet-nya terputus.";
 
@@ -5387,9 +5273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Media tidak bisa ditambahkan ke Pustaka Media.";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "Modul tidak dapat diaktifkan.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Jumlah pos yang akan ditampilkan per halaman.";
@@ -5460,9 +5343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Ada perubahan tertunda di email Anda ke %@. Harap periksa kotak masuk Anda untuk tautan konfirmasi.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Ada masalah menghubungkan dengan %@. Hubungkan kembali untuk terus menerbitkan.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -6187,9 +6067,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "Kami tidak dapat menemukan status untuk memberitahukan kapan pemulihan ini selesai.";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Kami mengalami masalah saat memuat sambungan untuk %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Kami kesulitan memuat data";
 
@@ -6541,8 +6418,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "Anda menerima *50 likes* on your site today";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Anda membalas komentar ini.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -7655,15 +7531,6 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "Personalisasikan layar beranda Anda";
 
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "Sembunyikan ini";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "Bagikan pos di jejaring sosial Anda";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "Anda tidak bisa lagi membagikan pos.";
-
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "Tutup";
 
@@ -8310,23 +8177,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Simpan sebagai Konsep";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "Ada pilihan ${count} yang cocok dengan ‘${site}’.";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Situs";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "Situs";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Pilih Situs";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "Hanya untuk mengonfirmasi, Anda menginginkan '${site}'?";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Pilih Kegunaan Situs";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@ akan berpindah dalam %2$@";
@@ -10990,15 +10845,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Pos oleh saya";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "Langganan sekarang untuk kesempatan berbagi lebih banyak";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " dalam 30 hari ke depan";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "Tersisa %1$d kesempatan berbagi di media sosial";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategori";
 
@@ -11010,9 +10856,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "Buang Perubahan?";
-
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ item gagal diunggah";
@@ -11041,65 +10884,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Jadwal";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "Berbagi ke %1$d akun";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "Tidak berbagi ke media sosial";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "Berbagi ke %1$d dari %2$d akun";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "Berbagi ke %1$@";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "Tersisa %1$d kesempatan berbagi pos ke media sosial";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "Peringatan";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "Sesuaikan pesan";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "Berlangganan agar bisa membagikan lebih banyak pos";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "Tersisa %1$d kesempatan berbagi pos ke media sosial untuk 30 hari ke depan";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Peringatan";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "Pesan";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "Tulis pesan singkat untuk dibagikan di media sosial bersama pos";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "Media Sosial";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "Layanan";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tag";
@@ -12340,42 +12126,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Pengingat";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Tingkatkan lalu lintas Anda dengan membagikan pos Anda secara otomatis kepada teman-teman Anda di media sosial.";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "Hubungkan akun";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Ikon sosial media";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "Jangan sekarang";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "Pos Anda tidak akan dibagikan ke %1$d akun media sosial Anda.";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "Pos Anda tidak akan dibagikan ke akun sosial media Anda.";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "Ikon media sosial";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "Berlangganan agar bisa membagikan lebih banyak pos";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "Baca selengkapnya";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Fitur berbagi otomatis ke Twitter tidak lagi tersedia karena adanya perubahan ketentuan dan harga dari Twitter.";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d akun";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "Iklan";
 
@@ -13070,6 +12820,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Status";
+
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Pos Sepanjang Waktu & Penayangan Terbanyak";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Penayangan Sepanjang Waktu";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Penayangan & Pengunjung Sepanjang Waktu";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Terbanyak dilihat";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Penayangan Terbanyak";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Tidak dapat memuat statistik sepanjang waktu.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Buat atau tambahkan situs untuk melihat statistik sepanjang waktu.";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Tulisan-tulisan";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Dapatkan kabar terbaru tentang seluruh aktivitas hingga hari ini di situs WordPress Anda.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "Semua Waktu";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik hingga hari ini.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Login ke Jetpack untuk melihat semua statistik.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Login ke Jetpack untuk melihat statistik hari ini.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Login ke Jetpack untuk melihat statistik hari ini.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Penayangan Sepanjang Waktu";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Penayangan Hari Ini";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Tidak dapat memuat statistik minggu ini.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Buat atau tambahkan situs untuk melihat statistik minggu ini.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Dapatkan kabar terbaru tentang aktivitas minggu ini di situs WordPress Anda.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Minggu Ini";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik minggu ini.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Komentar-komentar";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistik telah beralih ke aplikasi Jetpack. Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Suka";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Tidak dapat memuat statistik situs.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Tidak dapat memuat statistik hari ini.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Buat atau tambahkan situs untuk melihat statistik hari ini.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Dapatkan kabar terbaru tentang aktivitas hari ini di situs WordPress Anda.";
+
+/* Title of today widget */
+"widget.today.title" = "Hari ini";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik hari ini.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "Pratinjau tidak tersedia";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Kunjungan";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Pengunjung";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Suka & Komentar Hari Ini";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Penayangan Hari Ini";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Penayangan & Pengunjung Hari Ini";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "akan tidak tersedia di waktu mendatang.";

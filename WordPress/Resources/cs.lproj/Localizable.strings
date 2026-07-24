@@ -117,9 +117,6 @@
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ trilión";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ byl opět spojen.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d příspěvky.";
 
@@ -549,9 +546,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Povolit push oznámení";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Dovolit propojení pro všechny administrátory a uživatele vašeho webu.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "IP adresy na seznamu povolených";
 
@@ -718,9 +712,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "Umění";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Od 1. srpna 2018 již Facebook neumožňuje přímé sdílení příspěvků na profily Facebooku. Připojení k Facebook stránkám zůstávají nezměněna.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Připojit soubor jako odkaz";
 
@@ -786,9 +777,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatické aktualizace";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Dostupný všem uživatelům";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "Prům. Komentáře \/ příspěvek";
@@ -1025,9 +1013,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušit";
 
@@ -1076,9 +1062,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "Změňte pozici bloku";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Změna zrušena";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Změňte typ zařízení použitého pro náhled";
@@ -1339,51 +1322,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Potvrďte smazání webu";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Potvrdit na který účet byste chtěli povolit. Všimněte si, že vaše příspěvky budou automaticky sdíleny na tento účet.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Potvrďte uživatelské jméno";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Gratulujeme k nákupu!";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Připojeno";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Připojit k jinému účtu";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Automaticky připojit ke sdílení příspěvků na blogu %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Připojte své oblíbené sociální služby, aby automaticky sdílet nová příspěvky s přáteli.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Připojeno";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Propojen účet";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Připojování %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Připojování k %1$@ nahradí stávající spojení k %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Připojování...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Připojování zrušeno";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Připojování selhalo";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1748,19 +1691,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Zahodit a vybrat menu";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Odpojit";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Odpojování selhalo";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Odpojit od WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Odpojení tohoto účtu již nebudou publikované příspěvky automaticky sdíleny %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2059,8 +1994,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Prázdná URL";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktivovat";
 
 /* Title of button that enables push notifications when tapped */
@@ -2068,9 +2002,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "Povolit oznámení?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Povolit publikovat";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Povolit statistiky webu";
@@ -2638,9 +2569,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Několika slovy popište, čím se budete na webu zabývat.";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "Abyste mohli své publikované příspěvky sdílet na svých sociálních médiích, musíte povolit modul publikace.";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "Oznámení v aplikaci jsou zakázána";
 
@@ -2858,15 +2786,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan se aktualizuje na novější verzi.";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Jetpack sociální připojení";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Synchronizace sociální služby Jetpack se nezdařila";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Synchronizace sociální služby Jetpack se nezdařila";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack v tuto chvíli nelze nainstalovat.";
@@ -2938,11 +2859,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Přehled posledních příspěvků";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Dozvědět se více";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Více informací";
 
@@ -3157,7 +3074,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Spravovat";
 
@@ -3479,9 +3395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Ještě ne %@";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Nenalezeny žádné účty.";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Bez připojení";
 
@@ -3509,7 +3422,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Žádné adresy, které odpovídají vašemu vyhledávání, nejsou k dispozici";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "Žádné dostupné stránky";
 
 /* No comment provided by engineer. */
@@ -3525,9 +3438,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Žádné spojení ";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Nebyla nalezena žádná spojení pro %@";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "Není nastaven žádný vlastní zástupný symbol";
@@ -3647,9 +3557,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "Nezodpovězeno";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Nepřipojen";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4310,12 +4217,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Příjemce";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Znovu připojit";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Znovu připojeno";
-
 /* Action button to redo last change */
 "Redo" = "Opakovat";
 
@@ -4685,9 +4586,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte styl odstavce";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Vyberte účet, který chcete povolit. Všimněte si, že vaše příspěvky budou automaticky sdíleny na vybraný účet.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "Vyberte dny, ve kterých chcete blogovat";
 
@@ -4777,7 +4675,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "Nastavení šablony";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Nastavení";
@@ -4815,9 +4712,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Sdílet odkaz";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "Sdílet příspěvek na %@";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Sdílet s přáteli";
 
@@ -4825,12 +4719,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Podělte se o svůj příběh...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Sdílení";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Tlačítka pro sdílení";
 
 /* Share extension error dialog title. */
@@ -5019,9 +4911,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Obsah nelze načíst.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Promiňte. Sociální služba nám neřekla, který účet lze použít ke sdílení.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Omouváme se. Výsledky vyhledávání nemohli být načteny.";
@@ -5331,9 +5220,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Toto uživatelské jméno není povoleno.";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Připojení k Facebooku nemůže najít žádné stránky. Publicita se nemůže připojit k profilům Facebooku, pouze k publikovaným stránkám.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Vypadá to, že jste offline.";
 
@@ -5390,9 +5276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Média nemohly být přidány do knihovny médií.";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "Modul nelze aktivovat.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Počet příspěvků, které se mají zobrazit na stránce.";
@@ -5463,9 +5346,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Čeká se na aktualizaci vaší e-mailové schránky na adrese %@. Zkontrolujte doručenou poštu a potvrďte potvrzovací odkaz.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Je problém připojením k %@. Obnovení připojení k pokračování zveřejnění.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -6190,9 +6070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "Nepodařilo se nám najít stav, který by říkal, jak dlouho bude obnovení trvat.";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Při načítání připojení jsme měli potíže %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Měli jsme potíže s načtením dat";
 
@@ -6544,8 +6421,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "Dnes jste na svém webu obdrželi *50 lajků*";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Odpověděli jste na tento komentář.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -7667,15 +7543,6 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "Přizpůsobit svou domovskou obrazovku";
 
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "Skrýt toto";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "Sdílet napříč svými sociálními sítěmi";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "Vyčerpali jste všechna sdílení!";
-
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "Zavřít";
 
@@ -8322,23 +8189,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Uložit jako koncept";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "„${site}“ odpovídá ${count} možností.";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Web";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "Web";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Vybrat web";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "Jen pro potvrzení, chtěli jste „${site}“?";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Vyberte záměr webu";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@ se přesunou za %2$@";
@@ -11053,15 +10908,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Moje příspěvky";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "Přihlaste se k odběru nyní pro více sdílení";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " v příštích 30 dnech";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "%1$d sdílení na sociálních sítích zbývá";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategorie";
 
@@ -11073,9 +10919,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "Zahodit změny?";
-
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ položek se nepodařilo nahrát";
@@ -11104,65 +10947,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Plánovat";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "Sdílení na %1$d účtech";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "Nesdílet na sociálních sítích";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "Sdílení na %1$d z %2$d účtů";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "Sdílení na %1$@";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "%1$d sdílení na sociálních sítích zbývá";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "Upozornění";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "Přizpůsobit zprávu";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "Přihlaste se k odběru pro více sdílení";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "%1$d sdílení na sociálních sítích zbývá v příštích 30 dnech";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Upozornění";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "Zpráva";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "Napište krátkou zprávu ke sdílení na sociálních sítích spolu s příspěvkem";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "Sociální sítě";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "Služby";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Štítky";
@@ -12406,42 +12192,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Připomínky";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Zvyšte svůj provoz automatickým sdílením příspěvků s přáteli na sociálních sítích.";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "Připojit účty";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Ikony sociálních médií";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "Teď ne";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "Vaše příspěvky nebudou sdíleny na vaše %1$d sociální účty.";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "Vaše příspěvky nebudou sdíleny na váš sociální účet.";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "Ikony sociálních médií";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "Přihlaste se k odběru pro více sdílení";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Automatické sdílení na Twitteru již není dostupné";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "Zjistěte více";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Automatické sdílení na Twitteru již není dostupné kvůli změnám podmínek a cen Twitteru.";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d účtů";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "Reklamy";
 
@@ -13136,6 +12886,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Stav";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Nejlepší pohledy ze všech";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Příspěvky";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Zůstaňte v obraze o všech aktivitách na vašem WordPress webu.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "Za celou dobu";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Přihlaste se do WordPressu, abyste viděli všechny časové statistiky.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Pro zobrazení všech statistik se přihlaste do Jetpacku.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Pro zobrazení statistik z tohoto týdne se přihlaste do Jetpacku.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Pro zobrazení dnešních statistik se přihlaste do Jetpacku.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Zůstaňte v obraze o aktivitě tohoto týdne na vašem WordPress webu.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Tento týden";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Přihlaste se do WordPressu a podívejte se na statistiky tohoto týdne.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Komentáře";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "To se mi líbí";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Nelze načíst statistiky webu.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Nelze načíst statistiky webu.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Zůstaňte v obraze o dnešních aktivitách na vašem WordPress webu.";
+
+/* Title of today widget */
+"widget.today.title" = "Dnes";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Chcete-li zobrazit dnešní statistiky, přihlaste se do WordPressu.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "Zobrazení není k dispozici";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Zobrazení";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Návštěvníci";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "nebude v budoucnu k dispozici.";

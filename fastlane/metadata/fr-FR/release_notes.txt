@@ -1,1 +1,0 @@
-Si vous avez un site auto-hébergé, vous allez maintenant vous connecter à l’application en utilisant un mot de passe d’application. Si vous n’en avez pas, nous en créerons automatiquement un pour vous afin qu’il soit prêt quand vous en aurez besoin.

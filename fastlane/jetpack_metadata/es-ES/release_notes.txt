@@ -1,3 +1,0 @@
-Hemos eliminado la biblioteca GIF gratuita como fuente de medios, ya que el servicio Tenor en el que se ejecuta se retirará el 30 de junio. También estamos tristes por eso.
-
-Si tienes un sitio autoalojado, ahora iniciarás sesión en la aplicación con una contraseña de aplicación. Si no tienes, crearemos una automáticamente para cuando la necesites.

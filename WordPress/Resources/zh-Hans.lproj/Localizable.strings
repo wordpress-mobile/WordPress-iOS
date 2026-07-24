@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-25 11:57:58+0000 */
+/* Translation-Revision-Date: 2026-07-13 02:49:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_CN */
@@ -113,9 +113,6 @@
 
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ 万亿";
-
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "已重新连接 %@。";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d篇文章。";
@@ -546,9 +543,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "允许推送通知";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "允许您站点上的所有管理员和用户使用此链接。";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "已加入允许列表的 IP 地址";
 
@@ -715,9 +709,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "艺术";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "自 2018 年 8 月 1 日起，Facebook 不再允许直接将文章共享到 Facebook 个人资料。与 Facebook 页面的关联保持不变。";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "以链接形式附加文件";
 
@@ -783,9 +774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
-
-/* No comment provided by engineer. */
-"Available to all users" = "所有用户均可用";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "平均评论数\/文章";
@@ -1022,9 +1010,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "取消";
 
@@ -1073,9 +1059,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "更改区块位置";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "更改失败";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "更改用于预览的设备类型";
@@ -1336,51 +1319,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "确认删除站点";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "请确认此账户是否为您想要授权的账户。请注意，您的文章将会自动分享至该账户。";
-
 /* Alert text field placeholder. */
 "Confirm username" = "确认用户名";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "恭喜您购买成功！";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "连接";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "连接其他账户";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "连接以自动将您的博客文章分享至 %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "关联您最喜爱的社交媒体服务，自动与朋友共享新文章。";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "已连接";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "已连接账户";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "正在连接 %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "连接 %1$@ 将取代 %2$@ 的现有连接。";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "正在连接...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "连接已取消";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "连接失败";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1745,19 +1688,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "放弃并选择菜单";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "断开连接";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "断开连接失败";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "从 WordPress.com 断开连接";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "断开与此账户的连接意味着已发布的文章将无法自动分享至 %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2056,8 +1991,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空 URL";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "启用";
 
 /* Title of button that enables push notifications when tapped */
@@ -2065,9 +1999,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "启用通知？";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "启用 Publicize";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "启用站点统计";
@@ -2635,9 +2566,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "简要描述该站点。";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "要将您发布的文章分享到您的社交媒体，需要启用 Publicize 模块。";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "已禁用应用内通知";
 
@@ -2855,15 +2783,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan将更新至较新的版本。";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Jetpack Social 连接";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Jetpack Social 连接同步失败";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Jetpack Social 服务同步失败";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "当前无法安装Jetpack";
@@ -2935,11 +2856,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新的文章摘要";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "了解更多";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "了解更多";
 
@@ -3154,7 +3071,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "管理";
 
@@ -3476,9 +3392,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "尚无%@";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "未找到任何账户";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "无连接";
 
@@ -3506,7 +3419,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "没有与您的搜索内容相匹配的地址";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "无可用站点";
 
 /* No comment provided by engineer. */
@@ -3522,9 +3435,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "没有连接";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "未找到 %@ 的连接";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "未设置自定义占位符";
@@ -3644,9 +3554,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "未回应";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "未连接";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4307,12 +4214,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "收件人";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "重新连接";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "已重新连接";
-
 /* Action button to redo last change */
 "Redo" = "重做";
 
@@ -4682,9 +4583,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "选择段落样式";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "选择您要授权的账户。请注意，您的文章将会自动分享至已选账户。";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "选择您想写博客的日子";
 
@@ -4774,7 +4672,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "正在设置主题";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "设置";
@@ -4812,9 +4709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "分享链接";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "将文章共享至 %@";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "分享给朋友";
 
@@ -4822,12 +4716,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "在此处分享您的故事...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "共享";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "共享按钮";
 
 /* Share extension error dialog title. */
@@ -5016,9 +4908,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "抱歉，无法加载内容。";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "很抱歉，社交服务未指定可用于共享内容的账户。";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "抱歉，无法加载您的搜索结果。";
@@ -5328,9 +5217,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "不允许使用这个用户名。";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook 连接无法找到任何页面。Publicize 无法连接到 Facebook 个人资料，只能连接到已发布的页面。";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "未连接网络。";
 
@@ -5387,9 +5273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "无法将媒体添加到媒体库。";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "无法激活模块。";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "每页显示的文章数。";
@@ -5460,9 +5343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "发送至 %@ 的电子邮件中存在待审核更改。请查看收件箱，检查是否有确认链接。";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "连接至 %@ 时出问题。重新连接以继续宣传。";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -6187,9 +6067,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "我们找不到可说明您的恢复所需时长的状态。";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "我们无法加载 %@ 的连接";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "加载数据时出现问题";
 
@@ -6541,8 +6418,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "您的站点今天收到了*50个喜欢*";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "您回复了此评论。";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -7658,15 +7534,6 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "个性化你的主屏幕";
 
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "隐藏此内容";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "在您的社交网络上分享";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "您的分享机会已用完！";
-
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "忽略";
 
@@ -8313,23 +8180,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "保存为草稿";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "有 ${count} 个选项与“${site}”匹配。";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "站点";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "站点";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "选择站点";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "再确认一下，您是想要“${site}”吗？";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "选择“站点意图”";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@ 将在 %2$@后移动";
@@ -9907,6 +9762,9 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "备份";
 
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "评论";
 
@@ -9924,6 +9782,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Noun. Links to a blog's dashboard screen. */
 "mySite.menu.home" = "主页";
+
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.jetpackSettings" = "Jetpack 设置";
@@ -9981,6 +9842,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Action title. Opens the user's site in an in-app browser */
 "mySite.menu.viewSite" = "查看站点";
+
+/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
+"mySite.menu.wpAdmin" = "WP Admin";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "账户和设置";
@@ -11014,15 +10878,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "我的文章";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "立即订阅以共享更多";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " 在未来 30 天";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "还剩 %1$d 个社交共享";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "分类";
 
@@ -11034,9 +10889,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "放弃更改？";
-
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ 个项目上传失败";
@@ -11065,65 +10917,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "安排";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "正在共享到 %1$d 个账户";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "不共享到社交网络";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "正在共享到 %1$d 个账户（共 %2$d 个）";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "正在共享到 %1$@";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "还剩 %1$d 次社交分享机会";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "警告";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "定制消息";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "订阅以分享更多";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "在接下来的 30 天内还剩 %1$d 次社交分享机会";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "消息";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "撰写简短消息，在社交媒体上随文章一同分享";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "社交";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "服务";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "标签";
@@ -12367,42 +12162,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "提醒";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "过在社交媒体上自动与好友分享文章来增加流量。";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "连接账户";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "社交媒体图标";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "现在不行";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "您的文章不会分享至您的 %1$d 个社交账户。";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "您的文章不会分享至您的社交账户。";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "社交媒体图标";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "订阅以分享更多";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "了解更多";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "由于 Twitter 更改了条款和定价，Twitter 自动共享功能已无法使用。";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d 个账户";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "广告";
 
@@ -13097,6 +12856,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "状态";
+
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "历年文章数和浏览次数之最";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "历年浏览次数";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "历年浏览次数和访客人数";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "最受欢迎的文章";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "浏览次数之最";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "无法加载所有时间的统计信息。";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "创建或添加站点以查看所有时间的统计信息。";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "文章";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "在您的WordPress网站上了解全部时间活动更新。";
+
+/* Title of all time widget */
+"widget.alltime.title" = "全部时间";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "登录WordPress以查看全部时间统计数据。";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "登录 Jetpack，查看所有时间的统计信息。";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "登录 Jetpack，查看本周的统计信息。";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "登录 Jetpack，查看今天的统计信息。";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "历年浏览次数";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "今日浏览次数";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "无法加载本周的统计信息。";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "创建或添加站点以查看本周的统计信息。";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "在您的WordPress网站上了解本周活动更新。";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "本周";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "登录WordPress以查看本周统计数据。";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "评论";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "统计信息功能已转移至 Jetpack 应用。您可以免费切换，并且只需 1 分钟即可完成。";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "赞";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "无法加载站点统计信息。";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "无法加载今天的统计信息。";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "创建或添加站点以查看今天的统计信息。";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "在您的WordPress网站上了解今日活动。";
+
+/* Title of today widget */
+"widget.today.title" = "今日";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "登录WordPress以查看今日统计数据。";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "视图是不可用的";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "查看数";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "访客数";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "今日点赞数和评论数";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "今日浏览次数";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "今日浏览次数和访客人数";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "今后将无法再访问。";

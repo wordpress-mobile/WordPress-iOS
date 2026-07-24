@@ -134,12 +134,20 @@ extension BlogDetailsViewController {
             source: "custom_post_types",
             presentingViewController: self
         ) { [blog, weak self] client in
-            PinnedPostTypeView(
+            PinnedPostTypeView<CustomPostTabView>(
                 blog: blog,
                 service: CustomPostTypeService(client: client, blog: blog),
                 postType: postType,
                 presentingViewController: self
-            )
+            ) { resolved in
+                CustomPostTabView(
+                    client: client,
+                    service: resolved.wpService,
+                    details: resolved.details,
+                    blog: blog,
+                    presentingViewController: self
+                )
+            }
         }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -483,11 +491,4 @@ public class ApplicationPasswordAuthenticationInfo: NSObject {
         self.siteDetails = siteDetails
         self.siteUsername = siteUsername
     }
-}
-
-private extension PinnedPostType {
-    // TODO: Ideally use the post type details directly instead of PinnedPostType,
-    // once the CPT infrastructure is more mature.
-    static let posts = PinnedPostType(slug: "post", name: "Posts", icon: nil)
-    static let pages = PinnedPostType(slug: "page", name: "Pages", icon: nil)
 }

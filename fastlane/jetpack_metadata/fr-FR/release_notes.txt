@@ -1,3 +1,0 @@
-Nous avons supprimé la bibliothèque d’images GIF gratuite en tant que source média, car le service Tenor sur lequel elle s’exécute fermera le 30 juin. Nous en sommes attristés aussi.
-
-Si vous avez un site auto-hébergé, vous allez maintenant vous connecter à l’application en utilisant un mot de passe d’application. Si vous n’en avez pas, nous en créerons automatiquement un pour vous afin qu’il soit prêt quand vous en aurez besoin.

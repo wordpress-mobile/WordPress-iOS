@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-25 09:58:27+0000 */
+/* Translation-Revision-Date: 2026-07-13 02:49:24+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
@@ -113,9 +113,6 @@
 
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ (単位 : 兆)";
-
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ を再連携しました。";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d件の投稿。";
@@ -546,9 +543,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "プッシュ通知を許可する";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "この連携に対するサイトの全管理者およびユーザーの利用を許可する。";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "許可リストに登録された IP アドレス";
 
@@ -715,9 +709,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "アート";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "2018年8月1日以降、Facebook では Facebook プロフィールへの投稿の直接共有ができなくなります。Facebook ページとの連携については変更ありません。";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "リンクとしてファイルを添付";
 
@@ -783,9 +774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
-
-/* No comment provided by engineer. */
-"Available to all users" = "すべてのユーザーが利用可能";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "投稿の平均コメント数";
@@ -1022,9 +1010,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "キャンセル";
 
@@ -1073,9 +1059,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "ブロックの位置を変更";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "変更に失敗しました";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "プレビューに使用するデバイスのタイプを変更";
@@ -1336,51 +1319,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "サイト削除を確認";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "これが認証したいアカウントであることを確認して下さい。投稿はこのアカウントに自動的に共有されますのでご注意ください。";
-
 /* Alert text field placeholder. */
 "Confirm username" = "ユーザー名を確認";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "ご購入いただきありがとうございます。";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "連携";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "別のアカウントを連携";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "連携して自動的にブログ投稿を %@ で共有";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "お気に入りの SNS に連携し、新しい投稿を友人と自動的に共有しましょう。";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "連携済み";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "連携済みアカウント";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "%@ に連携中";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "%1$@ に接続すると、それにより %2$@ への既存の接続は置き換えられます。";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "連携中…";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "連携をキャンセルしました";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "連携に失敗しました";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1745,19 +1688,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "メニューの破棄・選択";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "連携を解除";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "連携に失敗しました";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "WordPress.com 連携を解除";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "このアカウント連携を切断すると、公開された投稿は今後 %@ に自動共有されなくなります";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2056,8 +1991,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空の URL";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "有効化する";
 
 /* Title of button that enables push notifications when tapped */
@@ -2065,9 +1999,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "通知を有効化しますか ?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "パブリサイズを有効化";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "サイト統計情報を有効化";
@@ -2635,9 +2566,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "このサイトを短い文章で説明してください。";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "公開済みの投稿をソーシャルメディアに共有するには、パブリサイズモジュールを有効にする必要があります。";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "アプリ内通知が無効";
 
@@ -2855,15 +2783,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan は新しいバージョンに更新されます。";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Jetpack ソーシャル連携";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Jetpack ソーシャルの連携の同期に失敗しました";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Jetpack ソーシャルのサービスの同期に失敗しました";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack は現在インストールできません。";
@@ -2935,11 +2856,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新の投稿概要";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "さらに詳しく";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "さらに詳しく";
 
@@ -3154,7 +3071,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "管理";
 
@@ -3476,9 +3392,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "まだ%@がいません";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "アカウントが見つかりません";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "接続できません";
 
@@ -3506,7 +3419,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "検索条件に適合するアドレスはありません";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "利用できるサイトがありません";
 
 /* No comment provided by engineer. */
@@ -3522,9 +3435,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "接続できません";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "%@ の接続が見つかりませんでした";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "カスタムプレースホルダーが設定されていません";
@@ -3644,9 +3554,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "未回答";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "接続されていません";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4304,12 +4211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "受信者";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "再連携";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "再連携完了";
-
 /* Action button to redo last change */
 "Redo" = "やり直す";
 
@@ -4679,9 +4580,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "段落スタイルを選択";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "認証したいアカウントを選択してください。投稿は選択されたアカウントに自動的に共有されますのでご注意ください。";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "ブログを書きたい日を選択";
 
@@ -4771,7 +4669,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "テーマを設定する";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "設定";
@@ -4809,9 +4706,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "リンクを共有";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "投稿を %@ にシェア";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "友達と共有";
 
@@ -4819,12 +4713,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "ここに文章を入力…";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "共有";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "共有ボタン";
 
 /* Share extension error dialog title. */
@@ -5013,9 +4905,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "コンテンツを読み込めませんでした。";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "ソーシャルサービスで、共有に使用可能なアカウントを確認できませんでした。";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "検索結果を読み込めませんでした。";
@@ -5325,9 +5214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "ご指定のユーザー名はご利用いただけません。";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook との連携でページが見つかりません。パブリサイズで Facebook のプロフィールに連携できません。連携できるのは公開されているページのみです。";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "インターネットに接続していないようです。";
 
@@ -5384,9 +5270,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "メディアをメディアライブラリに追加できませんでした。";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "モジュールを有効化できませんでした。";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "1ページに表示する投稿の数。";
@@ -5457,9 +5340,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "%@ へのメールアドレス変更が保留中です。メール受信ボックスに認証用リンクが届いているか確認してください。";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "%@ 連携に問題が発生しました。パブリサイズを続行するには再連携してください。";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -6181,9 +6061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "復元にかかる時間を示すステータスが見つかりませんでした。";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "%@ の接続の読み込みに問題が発生しました";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "データの読み込みの際に問題がありました";
 
@@ -6532,8 +6409,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "今日サイトで50回「いいね」されました";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "このコメントに返信しました。";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -7643,15 +7519,6 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "ホーム画面をパーソナライズ";
 
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "非表示";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "ソーシャルネットワーク全体で共有する";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "シェアできなくなりました。";
-
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "閉じる";
 
@@ -8295,23 +8162,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "下書きとして保存";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "「${site}」に一致するオプションが${count}件あります";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "サイト";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "サイト";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "サイトを選択";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "「${site}」でよろしいですか？";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "サイトの目的を選択";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@が%2$@で移動します";
@@ -10960,15 +10815,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "自分の投稿";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " 30日以内";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "残りのソーシャルシェア数は%1$d件です";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "カテゴリー";
 
@@ -10980,9 +10826,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "変更を破棄しますか ?";
-
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack ソーシャル";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@件のアイテムのアップロードに失敗しました";
@@ -11008,65 +10851,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "予約";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "%1$d件のアカウントにシェアしています";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "ソーシャルにシェアしていません";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "%2$d件中%1$d件のアカウントにシェアしています";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "%1$@ にシェアしています";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "残りのソーシャルシェア数は%1$d件です";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "警告";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "メッセージをカスタマイズする";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "購読してさらにシェア";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "今後30日間の残りのソーシャルシェア数は%1$d件です";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "メッセージ";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "投稿に添える短いメッセージを書いてソーシャルメディアで共有します";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "ソーシャル";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "サービス";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "タグ";
@@ -11260,6 +11046,9 @@ but tapping on this button will remove their like from the post. */
 
 /* Header view channel (filter) */
 "reader.discover.channel.forYou" = "あなた向け";
+
+/* Header view channel (filter) */
+"reader.discover.channel.freshlyPresed" = "Freshly Pressed";
 
 /* Header view channel (filter) */
 "reader.discover.channel.latest" = "最新";
@@ -12295,42 +12084,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "リマインダー";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "ソーシャルメディアで自分の投稿を友人に自動共有してトラフィックを増やします。";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "アカウントを接続する";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "ソーシャルメディアアイコン";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "後で";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "投稿は%1$d個のソーシャルアカウントに共有されません。";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "投稿はソーシャルアカウントに共有されません。";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "ソーシャルメディアアイコン";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "購読してさらにシェア";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "さらに詳しく";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d件のアカウント";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "広告";
 
@@ -13019,6 +12772,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "ステータス";
+
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "全期間の投稿数と最多の表示数";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "全期間の表示数";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "全期間の表示数と訪問者";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "過去最高の表示数";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "最多の表示数";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "全期間の統計情報を読み込めません。";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "サイトを作成または追加して、全期間の統計情報を表示します。";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "投稿";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "全期間のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
+
+/* Title of all time widget */
+"widget.alltime.title" = "すべての期間";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "WordPress にログインして全期間の統計情報を確認しましょう。";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Jetpack にログインして全期間の統計情報を確認しましょう。";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Jetpack にログインして今週の統計情報を確認しましょう。";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Jetpack にログインして今日の統計情報を確認しましょう。";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "全期間の表示数";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "今日の閲覧数";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "今週の統計情報を読み込めません。";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "サイトを作成または追加して、今週の統計情報を表示します。";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "今週のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "今週";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "WordPress にログインして今週の統計情報を確認しましょう。";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "コメント";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "統計情報は Jetpack アプリに移動しました。わずかな時間で無料で移行できます。";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "いいね";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "サイト統計情報を読み込めません。";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "今日の統計情報を読み込めません。";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "サイトを作成または追加して、今日の統計情報を表示します。";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "今日のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
+
+/* Title of today widget */
+"widget.today.title" = "今日";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "WordPress にログインして今日の統計情報を確認しましょう。";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "プレビューは利用できません";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "表示数";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "訪問者";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "今日のいいねとコメント";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "今日の表示数";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "今日の表示数と訪問者数";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "は、いずれ利用できなくなります。";

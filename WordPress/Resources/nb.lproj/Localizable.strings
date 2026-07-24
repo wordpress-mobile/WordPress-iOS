@@ -72,9 +72,6 @@
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ billion";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ ble koblet til på nytt.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d innlegg.";
 
@@ -375,9 +372,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Tillat push-varslinger";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Tillat at denne tilkoblingen brukes av alle administratorer og brukere på siden din.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "Alltid tillatte IP-adresser";
 
@@ -486,9 +480,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "Kunst";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Fra 1. august 2018 tillater ikke Facebook lenger direkte deling av innlegg til Facebook-profiler. Tilkoblinger til Facebook-sider forblir derimot uendret.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Legg ved fil som lenke";
 
@@ -533,9 +524,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatiske oppdateringer";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Tilgjengelig for alle brukere";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "Gj.snittlig kommentarer per innlegg";
@@ -706,9 +694,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Avbryt";
 
@@ -748,9 +734,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Endre passord";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Endring feilet";
 
 /* Instructions for editing the sharing label. */
 "Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button." = "Endre teksten på deleknappenes merkelapp. Denne teksten vil ikke dukke opp med mindre du legger til minst en deleknapp.";
@@ -908,48 +891,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Bekreft sletting av side";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Bekreft at dette er kontoen du ønsker å autorisere. Merk at innleggene dine automatisk vil deles med denne kontoen.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Bekreft brukernavn";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Koble til";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Koble til en annen konto";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Koble til for å automatisk dele dine bloginnlegg på %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Koble til dine foretrukne sosiale medier for å automatisk dele nye innlegg med venner.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Tilkoblet";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Tilkoblede kontoer";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Kobler til %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Å koble til %1$@ vil erstatte den eksisterende tilkoblingen til %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Kobler til...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Tilkobling avbrutt";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Tilkobling feilet";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1182,19 +1125,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Forkast og velg meny";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Koble fra";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Frakobling feilet";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Koble fra WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Å koble fra denne kontoen vil si at publiserte innlegg ikke lenger vil deles automatisk til %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -1373,8 +1308,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Tom URL";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktiver";
 
 /* Title for the button that will enable the site stats module. */
@@ -1861,11 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Nyeste innleggssammendrag";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Lær mer";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Lær mer";
 
@@ -2019,7 +1949,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Håndter";
 
@@ -2251,9 +2180,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Ingen %@ ennå";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Ingen brukerkonti funnet";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Ingen forbindelse";
 
@@ -2278,7 +2204,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Ingen tilgjengelige adresser tilsvarer ditt søk";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "Ingen tilgjengelige sider";
 
 /* No comment provided by engineer. */
@@ -2294,9 +2220,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Ingen tilkobling";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Ingen tilkoblinger funner for %@";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Ingen data for denne perioden";
@@ -2380,9 +2303,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Ingen bestemt";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Ikke tilkoblet";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -2903,12 +2823,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Mottaker";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Koble til på nytt";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Koblet til på nytt";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Henviser";
 
@@ -3152,9 +3066,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Velg avsnittsstil";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Velg kontoen du ønsker å autorisere. Merk at innleggene dine vil deles automatisk med den valgte kontoen.";
-
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "Velg for å legge denne statistikken til innsikter.";
 
@@ -3222,7 +3133,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Setting up theme" = "Setter opp tema";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Innstillinger";
@@ -3249,12 +3159,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Del din historie her...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Deling";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Deleknapper";
 
 /* Share extension error dialog title. */
@@ -3416,9 +3324,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Beklager. Innholdet kunne ikke lastes inn.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Beklager. Det sosiale mediet sa ikke fra om hvilken konto som kan brukes til deling.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Beklager. Dine søkeresultater kunne ikke lastes inn.";
@@ -3641,9 +3546,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Det brukernavnet er ikke tillatt.";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook-tilkoblingen kan ikke finne noen sider. Publisering kan ikke koble til Facebook-profiler, kun publiserte sider.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Internettilkoblingen ser ikke ut til å virke.";
 
@@ -3731,9 +3633,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Det er en ventende endring av din e-post til %@. Vennligst sjekk din innboks for en bekreftelseslenke.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Der oppstod en feil under tilkobling til %@. Koble til igjen for å fortsette å dele.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -4203,9 +4102,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Vi har problemer med å laste inn data";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Vi hadde problemer med å laste inn tilkoblinger for %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Vi hadde problemer med å laste inn data";
 
@@ -4399,8 +4295,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "You must be signed in to a WordPress.com account to perform this action." = "Du må være logget inn i en WordPress.com-konto for å gjøre dette.";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Du svarte på denne kommentaren.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -4472,9 +4367,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
-
 /* Later today */
 "later today" = "senere i dag";
 
@@ -4486,6 +4378,27 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "ukjent url";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Beste visninger noensinne";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Innlegg";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Kommentarer";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Liker";
+
+/* Title of today widget */
+"widget.today.title" = "I dag";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Visninger";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Besøkere";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "vil være utilgjengelig i fremtiden.";
