@@ -1,3 +1,0 @@
-We hebben de gratis GIF-bibliotheek verwijderd als mediabron, omdat de Tenor-service waarop deze wordt uitgevoerd op 30 juni wordt afgesloten. Wij zijn er ook verdrietig over.
-
-Als je een zelf-gehoste site hebt, meld je je nu aan bij de app met een applicatiewachtwoord. Als je er geen hebt, maken we er automatisch een voor je, zodat deze klaar staat wanneer je hem nodig hebt.

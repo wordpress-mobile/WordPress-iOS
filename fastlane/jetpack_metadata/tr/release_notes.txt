@@ -1,3 +1,0 @@
-Üzerinde çalıştığı Tenor hizmeti 30 Haziran'da kapanacağı için bir ortam kaynağı olarak Ücretsiz GIF Kitaplığını kaldırdık. Biz de bunun hakkında üzgünüz.
-
-Kendi barındırdığınız bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.

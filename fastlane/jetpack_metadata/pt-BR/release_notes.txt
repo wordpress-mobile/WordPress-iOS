@@ -1,3 +1,0 @@
-A biblioteca gratuita de GIF não é mais a fonte de mídia, pois o serviço Tenor em que ela é executada será encerrado em 30 de junho. Também estamos tristes por isso.
-
-Se você tiver um site auto-hospedado, passará a usar uma senha de aplicativo ao fazer login no app. Se você não tiver uma, criaremos automaticamente para estar disponível quando você precisar.
