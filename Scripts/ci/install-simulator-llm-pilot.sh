@@ -4,8 +4,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DEFAULT_LOCAL_GEM_PATH="$(cd "$REPO_ROOT/.." && pwd)/simulator-llm-pilot"
+DEFAULT_SIMULATOR_LLM_PILOT_REF="68e1e9e5e0d11a9b68ad1ed28b7d456a3da775a2"
 
 SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
+SIMULATOR_LLM_PILOT_REF="${SIMULATOR_LLM_PILOT_REF:-$DEFAULT_SIMULATOR_LLM_PILOT_REF}"
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
 
 build_dir="$(mktemp -d)"
@@ -26,8 +28,11 @@ if [[ -n "$source_path" ]]; then
     tar -cf - -C "${source_path}" . | tar -xf - -C "$build_dir"
   fi
 else
-  echo "Cloning simulator-llm-pilot from ${SIMULATOR_LLM_PILOT_REPO_URL}"
-  git clone --depth 1 "${SIMULATOR_LLM_PILOT_REPO_URL}" "$build_dir"
+  echo "Fetching simulator-llm-pilot ${SIMULATOR_LLM_PILOT_REF} from ${SIMULATOR_LLM_PILOT_REPO_URL}"
+  git -C "$build_dir" init --quiet
+  git -C "$build_dir" remote add origin "$SIMULATOR_LLM_PILOT_REPO_URL"
+  git -C "$build_dir" fetch --depth 1 origin "$SIMULATOR_LLM_PILOT_REF"
+  git -C "$build_dir" checkout --quiet --detach FETCH_HEAD
   source_revision="$(git -C "$build_dir" rev-parse HEAD)"
 fi
 

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - Logged in to the app with the test account.
-- XML-RPC is disabled on the test site. The app should use the Core REST editor.
+- The XML-RPC endpoint is blocked on the test site. The app should use the Core REST editor.
 
 ## Steps
 1. Navigate to the "My Site" tab.

@@ -13,9 +13,9 @@ steps:
     plugins: [$CI_TOOLKIT_PLUGIN]
 
   - label: "🤖 AI E2E Tests"
-    # The test host blocks XML-RPC at the edge before WordPress responds.
+    # The test host's XML-RPC endpoint returns 429 from the edge.
     command: |
-      SIMULATOR_LLM_PILOT_EXPECT_XMLRPC_UNAVAILABLE_HTTP_STATUS=429 \
+      SIMULATOR_LLM_PILOT_EXPECT_XMLRPC_ENDPOINT_HTTP_STATUS=429 \
         .buildkite/commands/run-ai-e2e-tests.sh
     depends_on: "build_jetpack"
     timeout_in_minutes: 60
