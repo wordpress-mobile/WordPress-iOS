@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-26 22:15:23+0000 */
+/* Translation-Revision-Date: 2026-07-23 20:32:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -116,9 +116,6 @@
 
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ Billionen";
-
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ wurde erneut verbunden.";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d Beiträge.";
@@ -549,9 +546,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Push-Benachrichtigungen erlauben";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Zulassen, dass alle Administratoren und Benutzer deiner Website diese Verbindung nutzen.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "IP-Adressen als zulässig gespeichert";
 
@@ -718,9 +712,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "Kunst";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Ab 1. August 2018 lässt Facebook das direkte Teilen von Beiträgen auf Facebook-Profilen nicht mehr zu. Die Verknüpfungen zu Facebook-Seiten bleiben unverändert.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Datei als Link anhängen";
 
@@ -786,9 +777,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische Updates";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Für alle Benutzer verfügbar.";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "⌀ Kommentare pro Beitrag";
@@ -950,7 +938,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Bullet List" = "Liste mit Aufzählungszeichen";
 
 /* Business site intent topic */
-"Business" = "Business";
+"Business" = "Unternehmen";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Beschäftigt";
@@ -1025,9 +1013,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Abbrechen";
 
@@ -1076,9 +1062,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "Block-Position ändern";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Änderung fehlgeschlagen";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Ändere den Geräte-Typ, der für die Vorschau verwendet wird";
@@ -1339,51 +1322,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Löschen der Website bestätigen";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Bitte bestätige, dass du dieses Konto autorisieren möchtest. Bitte beachte, dass deine Beiträge automatisch mit diesem Konto geteilt werden.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Benutzernamen bestätigen";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Glückwunsch zu deinem Kauf!";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Verbinden";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Mit einem weiteren Konto verbinden";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Verbinden, um Blogbeiträge automatisch mit %@ zu teilen.";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Verbinde deine bevorzugten Social-Media-Dienste, wenn du neue Beiträge automatisch mit deinen Freunden teilen möchtest.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Verbunden";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Verbundene Konten";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Mit %@ verbinden";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Durch die Verbindung mit %1$@ wird die vorhandene Verbindung mit %2$@ ersetzt.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Verbindung wird hergestellt …";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Verbindung beendet.";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Verbindung fehlgeschlagen";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1511,6 +1454,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Die Daten konnten nicht geladen werden. Bitte versuche es später noch einmal.";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "Die Websites konnten nicht geladen werden. Zum erneuten Versuchen tippen.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Schlagwörter konnten nicht geladen werden. Tippe, um es erneut zu versuchen.";
@@ -1748,19 +1694,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Verwerfen und Menü auswählen";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Trennen";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Trennen der Verbindung fehlgeschlagen.";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Verbindung mit WordPress.com trennen";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Wenn du die Verbindung zu diesem Konto trennst, werden veröffentlichte Beiträge nicht mehr automatisch mit %@ geteilt.";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2059,8 +1997,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Leere URL";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktivieren";
 
 /* Title of button that enables push notifications when tapped */
@@ -2068,9 +2005,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "Benachrichtigungen aktivieren?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Publicize aktivieren";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Website-Statistiken aktivieren";
@@ -2121,7 +2055,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Error approving comment." = "Fehler beim Genehmigen eines Kommentars.";
 
 /* This secondary message is displayed if a user encounters a general error. */
-"Error communicating with the server, please try again" = "Fehler bei der Kommunikation mit dem Server. Bitte versuche es noch einmal.";
+"Error communicating with the server, please try again" = "Fehler bei der Kommunikation mit dem Server. Bitte versuche es erneut";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
 "Error deactivating %@." = "Fehler beim Deaktivieren von %@.";
@@ -2638,9 +2572,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Erkläre in ein paar Worten, worum es auf der Website geht. ";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "Um deine veröffentlichten Beiträge in deinen sozialen Medien zu teilen, musst du das Publicize-Modul aktivieren.";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "Benachrichtigungen in der App deaktiviert";
 
@@ -2858,15 +2789,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan wird auf eine neuere Version aktualisiert.";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Jetpack-Social-Verbindungen";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Die Synchronisierung der Jetpack-Social-Verbindung ist fehlgeschlagen";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Die Synchronisierung des Jetpack-Social-Dienstes ist fehlgeschlagen";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack konnte zu diesem Zeitpunkt noch nicht installiert werden.";
@@ -2938,23 +2862,19 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Zusammenfassung der neuesten Beiträge";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Mehr erfahren";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Mehr erfahren";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
-"Learn more about date and time formatting." = "Weitere Informationen über die Formatierung von Datum und Zeit.";
+"Learn more about date and time formatting." = "Mehr über die Formatierung von Datum und Uhrzeit erfahren.";
 
 /* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.
    Accessibility label for the blogging prompts info button on the prompts header view. */
 "Learn more about prompts" = "Mehr über Schreibanregungen erfahren";
 
 /* Footer text for Invite People role field. */
-"Learn more about roles" = "Weitere Informationen zu den Rollen";
+"Learn more about roles" = "Mehr über Rollen erfahren";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Mehr erfahren …";
@@ -3157,7 +3077,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Verwalten";
 
@@ -3479,9 +3398,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Noch keine %@";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Keine Konten gefunden";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Keine Verbindung";
 
@@ -3509,7 +3425,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Keine Adressen verfügbar, die deiner Suche entsprechen";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "Keine verfügbaren Websites";
 
 /* No comment provided by engineer. */
@@ -3525,9 +3441,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Keine Verbindung";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Keine Verbindungen gefunden für %@";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "Kein individueller Platzhalter eingestellt";
@@ -3647,9 +3560,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "Unbeantwortet";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Nicht verbunden";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4310,12 +4220,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Empfänger";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Erneut verbinden";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Erneut verbunden";
-
 /* Action button to redo last change */
 "Redo" = "Wiederherstellen";
 
@@ -4525,7 +4429,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Rich Content" = "Formatierter Inhalt";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich Text bearbeiten";
+"Rich text editing" = "Rich-Text-Bearbeitung";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rechts";
@@ -4685,9 +4589,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Absatz-Stil auswählen";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Wähle das Konto, das du autorisieren möchtest. Bitte beachte, dass deine Beiträge automatisch mit diesem Konto geteilt werden.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "Lege fest, an welchen Tagen du bloggen willst";
 
@@ -4777,7 +4678,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "Das Theme wird eingerichtet";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Einstellungen";
@@ -4815,9 +4715,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Link teilen";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "Beitrag teilen auf %@";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Mit Freunden teilen";
 
@@ -4825,12 +4722,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Teile hier deine Geschichte …";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Teilen";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Teilen-Buttons";
 
 /* Share extension error dialog title. */
@@ -5020,9 +4915,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Tut uns leid. Der Inhalt konnte nicht geladen werden.";
 
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Tut uns leid. Der Social Media-Dienst hat uns nicht mitgeteilt, welches Konto zum Teilen verwendet werden kann.";
-
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Entschuldigung. Deine Suchergebnisse konnten nicht geladen werden.";
 
@@ -5083,7 +4975,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sticky" = "Oben gehalten";
 
 /* User action to stop upload. */
-"Stop upload" = "Hochladen beenden";
+"Stop upload" = "Upload anhalten";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Durchgestrichen";
@@ -5331,9 +5223,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Dieser Benutzername ist nicht erlaubt!";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Die Facebook-Verbindung findet keine Seiten. Publicize kann keine Verbindung zu Facebook-Profilen herstellen, sondern nur zu öffentlichen Seiten.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Die Internetverbindung scheint offline zu sein.";
 
@@ -5390,9 +5279,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Die Mediendatei konnte nicht zur Mediathek hinzugefügt werden.";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "Das Modul konnte nicht aktiviert werden.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Die Anzahl der Beiträge, die pro Seite angezeigt werden.";
@@ -5463,9 +5349,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Es steht eine Änderung deiner E-Mail an %@ an. Bitte prüfe deinen Posteingang auf einen Bestätigungslink.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Problem beim Herstellen einer Verbindung mit %@. Stelle die Verbindung erneut her, um mit dem Veröffentlichen fortzufahren.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -5973,7 +5856,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Upgrade your plan to use video covers" = "Führe ein Tarif-Upgrade durch, um Video-Cover zu verwenden";
 
 /* Title for button displayed when the user has an empty media library */
-"Upload Media" = "Medieninhalt hochladen";
+"Upload Media" = "Medien hochladen";
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Upload fehlgeschlagen";
@@ -5991,10 +5874,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploaded 1 post, 1 file" = "1 Beitrag, 1 Datei wurde hochgeladen";
 
 /* Title for the user uploaded themes section, should be the same as in Calypso */
-"Uploaded themes" = "Themes hochladen";
+"Uploaded themes" = "Hochgeladene Themes";
 
 /* \"Uploading\" Status text */
-"Uploading" = "Lade hoch";
+"Uploading" = "Wird hochgeladen";
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Medien werden hochgeladen…";
@@ -6190,9 +6073,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "Wir konnten den Status nicht finden, um anzugeben, wie lange deine Wiederherstellung dauert.";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Probleme beim Laden von Verbindungen für %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Wir konnten die Daten nicht laden";
 
@@ -6281,10 +6161,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We’ll still attempt to restore your site." = "Wir versuchen trotzdem, deine Website wiederherzustellen.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Wir arbeiten daran, Unterstützung für %s-Vorschauen hinzuzufügen. In der Zwischenzeit kannst du den eingebetteten Inhalt auf deiner Seite als Vorschau sehen.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Wir arbeiten mit Hochdruck daran, die Unterstützung für %s-Vorschauen hinzuzufügen. In der Zwischenzeit kannst du dir eine Vorschau der eingebetteten Inhalte auf der Seite anzeigen lassen.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Wir arbeiten daran, Unterstützung für %s-Vorschauen hinzuzufügen. In der Zwischenzeit kannst du den eingebetteten Inhalt auf deinem Beitrag als Vorschau sehen.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Wir arbeiten mit Hochdruck daran, die Unterstützung für %s-Vorschauen hinzuzufügen. In der Zwischenzeit kannst du dir eine Vorschau des eingebetteten Inhalts im Beitrag anzeigen lassen.";
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Was möchtest du mit dieser Datei machen? Möchtest du sie hochladen und deinem Beitrag einen Link zu der Datei hinzufügen oder möchtest du die Dateiinhalte direkt in den Beitrag einfügen?";
@@ -6475,7 +6355,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can edit this block using the web version of the editor." = "Du kannst diesen Block über die Webversion des Editors bearbeiten.";
 
 /* Discussion Settings: Footer Text */
-"You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
+"You can override these settings for individual posts." = "Du kannst diese Einstellungen für einzelne Beiträge überschreiben.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "You can update this any time" = "Du kannst dies jederzeit aktualisieren";
@@ -6544,8 +6424,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "Du hast heute *50 Likes* für deine Website erhalten";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Du hast auf diesen Kommentar geantwortet.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -6990,7 +6869,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.buttonTitle" = "Beitrag jetzt mit Blaze bewerben";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionOne" = "Bewirb innerhalb von Minuten und für lediglich ein paar Dollar pro Tag jeden beliebigen Beitrag und jede Seite.";
+"blaze.overlay.descriptionOne" = "Bewirb jeden Beitrag oder jede Seite in nur wenigen Minuten für nur ein paar Dollar pro Tag.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionThree" = "Verfolge die Performance deiner Kampagnen und kündige wann immer du magst.";
@@ -7072,6 +6951,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Staging";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "%1$d-mal pro Woche";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "%1$d-mal pro Woche";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "%1$d-mal pro Woche";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "%1$d-mal pro Woche";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "%1$d-mal pro Woche";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "%1$d-mal pro Woche";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Verwerfen";
@@ -7505,6 +7402,15 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Beitrag aus Audio erstellen";
 
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "Entwurf gespeichert";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "Beitrag veröffentlicht";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "Beitrag aktualisiert";
+
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Der Beitrag, den du speichern möchtest, wurde in der Zwischenzeit geändert.";
 
@@ -7666,15 +7572,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "Deine Startansicht personalisieren";
-
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "Ausblenden";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "In deinen sozialen Netzwerken teilen";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "Du kannst nicht mehr teilen!";
 
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "Verwerfen";
@@ -8031,6 +7928,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Editor wird geladen";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "Verwerfen";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "Du kannst diese App in den Einstellungen vom Blockierungsmodus ausschließen und den Editor anschließend erneut öffnen, um den vollen Funktionsumfang wiederherzustellen.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Mehr erfahren";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Blockierungsmodus erkannt";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "Der Blockierungsmodus ist aktiviert. Der Editor funktioniert möglicherweise nicht ordnungsgemäß.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Medien konnten nicht eingefügt werden";
 
@@ -8048,6 +7960,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "Unkategorisiert";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld Wörter";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld Wörter";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld Wort";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld Wörter";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld Wörter";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld Wörter";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "z. B. 1122334455";
@@ -8185,7 +8115,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.readerDiscover.completed.tip" = "Du bist mit anderen Blogs verknüpft";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Trete mit anderen Bloggern in Kontakt, indem du ihre Beiträge abonnierst, mit einem „Like“ markierst oder sie kommentierst.";
+"growAudienceCell.readerDiscover.details" = "Tritt mit anderen Bloggern in Kontakt, indem du ihre Beiträge abonnierst, mit einem „Like“ markierst oder sie kommentierst.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Teilen von Beiträgen aktivieren";
@@ -8322,23 +8252,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Als Entwurf speichern";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "Es gibt ${count} Optionen, die zu „${site}“ passen.";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Website";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "Website";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Website auswählen";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "Nur um sicherzugehen, du willst „${site}“?";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Website-Intent auswählen";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@ werden in %2$@ verschoben";
@@ -8410,7 +8328,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.late.switch.title" = "Zur Jetpack-App wechseln";
 
 /* Title of a button that displays a blog post in a web view. */
-"jetpack.fullscreen.overlay.learnMore" = "Weitere Informationen auf jetpack.com";
+"jetpack.fullscreen.overlay.learnMore" = "Mehr erfahren auf jetpack.com";
 
 /* Description of the Notifications feature. */
 "jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Erhalte Benachrichtigungen über neue Kommentare, Likes, Aufrufe und vieles mehr.";
@@ -9574,6 +9492,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Hinzufügen";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Datei auswählen";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Foto-Bibliothek";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "Foto aufnehmen";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "Video aufnehmen";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "Hinzufügen";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Seitenverhältnis-Raster";
 
@@ -9619,6 +9552,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Erneut versuchen";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "Externe Medien";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "Alle";
 
@@ -9654,6 +9590,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Quadratisches Raster";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Die ausgewählten Medien konnten nicht heruntergeladen werden: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Löschen";
@@ -9744,6 +9683,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Elemente auswählen";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d Uploads fehlgeschlagen";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d Upload fehlgeschlagen";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "%1$d wird hochgeladen · %2$d fehlgeschlagen";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "%1$d Elemente werden hochgeladen";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "%1$d Element wird hochgeladen";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "Dieser Dateityp ist für den Upload auf deiner Website nicht erlaubt.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "Dieses Video ist länger, als deine Website erlaubt.";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "Die ausgewählte Datei konnte nicht gefunden werden.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Das Foto konnte für den Upload nicht konvertiert werden.";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "Auf die ausgewählte Datei konnte nicht zugegriffen werden.";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "Der Dateityp konnte nicht ermittelt werden.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Das Video konnte nicht für den Upload vorbereitet werden: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "Für die ausgewählte Videoqualität ist kein Exporter verfügbar.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Kamera-Foto";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Kamera-Video";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "Foto";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Uploads fortsetzen";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "Alles hochgeladen";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Alle Uploads abbrechen";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Uploads abbrechen";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "Alle laufenden Uploads werden abgebrochen. Dies kann nicht rückgängig gemacht werden.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Alle fehlgeschlagenen verwerfen";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Alle fehlgeschlagenen erneut versuchen";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "Schließen";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "Verwerfen";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "Erneut versuchen";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Uploads";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Playground für Bilder";
@@ -9872,7 +9892,7 @@ Example: Reply to Pamela Nguyen */
 "movedToJetpack.jetpackButtonTitle" = "Zur Jetpack-App wechseln";
 
 /* Title for a button that displays a blog post in a web view. */
-"movedToJetpack.learnMoreButtonTitle" = "Weitere Informationen auf jetpack.com";
+"movedToJetpack.learnMoreButtonTitle" = "Mehr erfahren auf jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.notifications.title" = "Verwende WordPress mit Benachrichtigungen in der Jetpack-App.";
@@ -10022,7 +10042,7 @@ Example: Reply to Pamela Nguyen */
 "mySite.noSites.button.accountAndSettings" = "Konto und Einstellungen";
 
 /* Message description for when a user has no sites. */
-"mySite.noSites.description" = "Erstelle eine neue Website für dein Geschäft, dein Magazin oder deinen persönlichen Blog oder verbinde eine vorhandene WordPress-Installation.";
+"mySite.noSites.description" = "Erstelle eine neue Website für dein Unternehmen, dein Magazin oder deinen persönlichen Blog oder verbinde eine vorhandene WordPress-Installation.";
 
 /* Title description for when a user has no sites. */
 "mySite.noSites.stateViewTitle" = "Deine erste Website erstellen";
@@ -10621,7 +10641,7 @@ Example: Reply to Pamela Nguyen */
 "postMediaUploadStatusView.retryUpload" = "Upload erneut starten";
 
 /* Retry upload button in postMediaUploadStatusView */
-"postMediaUploadStatusView.retryUploads" = "Hochladen erneut starten";
+"postMediaUploadStatusView.retryUploads" = "Uploads erneut starten";
 
 /* Title for post media upload status view */
 "postMediaUploadStatusView.title" = "Medien-Uploads";
@@ -11053,15 +11073,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Beiträge von mir";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "Jetzt abonnieren, um mehr zu teilen";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " in den nächsten 30 Tagen";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "Noch %1$d-mal teilen in sozialen Medien möglich";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategorien";
 
@@ -11074,14 +11085,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "Änderungen verwerfen?";
 
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
-
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ Elemente konnten nicht hochgeladen werden";
 
 /* Title for a publish button state in the pre-publishing sheet */
-"prepublishing.mediaUploadFailedTitle" = "Das Hochladen von Medien ist fehlgeschlagen";
+"prepublishing.mediaUploadFailedTitle" = "Der Upload von Medien ist fehlgeschlagen";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Veröffentlichen";
@@ -11104,65 +11112,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Planen";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "Wird auf %1$d Konten geteilt";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "Wird auf keinen Social-Media-Konten geteilt";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "Wird auf %1$d von %2$d Konten geteilt";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "Wird auf %1$@ geteilt";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "Noch %1$d-mal teilen in sozialen Medien möglich";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "Warnung";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "Nachricht anpassen";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "Abonnieren, um noch mehr teilen zu können";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "Noch %1$d-mal teilen in sozialen Medien in den nächsten 30 Tagen möglich";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Warnung";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "Nachricht";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "Schreibe eine kurze Nachricht, die du in den sozialen Medien zusammen mit dem Beitrag teilen kannst";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "Soziale Netzwerke";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "Dienste";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Schlagwörter";
@@ -12406,42 +12357,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Erinnerungen";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Erhöhe deine Besucherzahlen, indem du deine Beiträge automatisch mit deinen Freunden auf sozialen Medien teilst.";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "Konten verbinden";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Icons für soziale Medien";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "Jetzt nicht";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "Deine Beiträge werden nicht in deinen %1$d Social-Media-Konten geteilt.";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "Deine Beiträge werden nicht in deinem Social-Media-Konto geteilt.";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "Social-Media-Icons";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "Abonnieren, um noch mehr teilen zu können";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Automatisches Teilen auf Twitter nicht mehr verfügbar";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "Weitere Informationen";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Automatisches Teilen auf Twitter ist aufgrund von Änderungen an den Nutzungsbedingungen und Preisen von Twitter nicht mehr verfügbar.";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d Konten";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "Werbung";
 
@@ -13137,6 +13052,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Status";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Beiträge im gesamten Zeitraum und häufigste Aufrufe";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Aufrufe im gesamten Zeitraum";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Aufrufe und Besucher im gesamten Zeitraum";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Bisher bestes Aufrufergebnis";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Häufigste Aufrufe";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Die Gesamtstatistiken konnten nicht geladen werden.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Erstelle oder füge eine Website hinzu, um die Gesamtstatistiken anzuzeigen.";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Beiträge";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Bleibe auf dem Laufenden über die Aktivitäten des Gesamtzeitraums auf deiner WordPress-Website.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "Gesamtzeitraum";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Melde dich in WordPress an, um dir alle Statistiken des Gesamtzeitraums anzusehen.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Melde dich bei Jetpack an, um dir die Statistiken des Gesamtzeitraums anzusehen.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Melde dich bei Jetpack an, um dir die Statistiken dieser Woche anzusehen.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Melde dich bei Jetpack an, um dir die Statistiken von heute anzusehen.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Aufrufe im gesamten Zeitraum";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Aufrufe heute";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Die Statistiken dieser Woche konnten nicht geladen werden.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Erstelle oder füge eine Website hinzu, um die Statistiken dieser Woche anzuzeigen.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Bleibe auf dem Laufenden über die Aktivitäten dieser Woche auf deiner WordPress-Website.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Diese Woche";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Melde dich in WordPress an, um dir die Statistiken dieser Woche anzusehen.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Kommentare";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Die Statistiken wurden in die Jetpack-App verschoben. Der Wechsel ist kostenlos und dauert nur eine Minute.";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Website-Statistiken konnten nicht geladen werden.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Die heutigen Statistiken konnten nicht geladen werden.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Erstelle oder füge eine Website hinzu, um die heutigen Statistiken anzuzeigen.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Bleibe auf dem Laufenden über die heutigen Aktivitäten auf deiner WordPress-Website.";
+
+/* Title of today widget */
+"widget.today.title" = "Heute";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Melde dich in WordPress an, um dir die heutigen Statistiken anzusehen.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "Ansicht ist nicht verfügbar";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Aufrufe";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Besucher";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Heutige Likes und Kommentare";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Heutige Aufrufe";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Heutige Aufrufe und Besucher";
+
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "wird zukünftig deaktiviert sein";
 
@@ -13243,7 +13266,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "• Domains" = "• Domains";
 
 /* Item 5 of delete screen section listing things that will be deleted. */
-"• Media" = "• Medieninhalte";
+"• Media" = "• Medien";
 
 /* Item 3 of delete screen section listing things that will be deleted. */
 "• Pages" = "• Seiten";

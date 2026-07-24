@@ -189,9 +189,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "ยกเลิก";
 
@@ -329,9 +327,7 @@
 /* Menus alert button title to discard changes. */
 "Discard Changes" = "ยกเลิกการเปลี่ยนแปลง";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "ตัดการเชื่อมต่อ";
 
 /* Disconnect from WordPress.com button */
@@ -518,8 +514,7 @@
 /* Insights latest post summary header */
 "Latest Post Summary" = "สรุปเรื่องล่าสุด";
 
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "เรียนรู้เพิ่มเติม";
 
@@ -585,7 +580,6 @@
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "จัดการ";
 
@@ -976,7 +970,6 @@
 "Service" = "บริการ";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "ตั้งค่า";
@@ -1420,9 +1413,24 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
-
 /* Later today */
 "later today" = "ภายหลังในวันนี้";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "เรื่อง";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "ความเห็น";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "ชื่นชอบ";
+
+/* Title of today widget */
+"widget.today.title" = "วันนี้";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "การดู";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "ผู้เยี่ยมชม";
 

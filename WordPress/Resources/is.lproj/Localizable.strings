@@ -25,9 +25,6 @@
 /* Number of Links */
 "%@ links" = "%@ tenglar";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ var tengt aftur.";
-
 /* Age between dates over one day.
    Number of days */
 "%d days" = "%d dagar";
@@ -135,9 +132,6 @@
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Leyfa þér og notendum þínum að líka við allar athugasemdir";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Leyfa öllum stjórnendum og notendum þessa vefs að nota þessa tengingu.";
-
 /* Image alt attribute option title. */
 "Alt Text" = "Skýringartexti";
 
@@ -225,9 +219,6 @@
 /* Discussion Settings: Comments Auto-close */
 "Automatically close comments on content after a certain number of days." = "Loka sjálfvirkt fyrir athugasemdir eftir ákveðinn fjölda daga.";
 
-/* No comment provided by engineer. */
-"Available to all users" = "Í boði fyrir alla notendur";
-
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
@@ -293,9 +284,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Hætta við";
 
@@ -322,9 +311,6 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Skírteinisvilla";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Breyting mistókst";
 
 /* Instructions for editing the sharing label. */
 "Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button." = "Breyttu merkingum á deilihnöppum. Þessi texti mun ekki birtast fyrr en þú bætir a.m.k einum deilihnappi við.";
@@ -401,42 +387,6 @@
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Staðfesta eyðingu á vef";
-
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Staðfestu að þetta er aðgangurinn sem þú vilt auðkenna. Athugaðu að færslunum þínum verður sjálfkrafa deilt á þennan aðgang.";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Tengjast";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Tengja við annan aðgang";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Tengdu til þess að deila bloggfærslunum þínum sjálfkrafa á %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Tengdu við uppáhalds samfélagsmiðilinn þinn til þess að deila sjálfkrafa nýjum færslum með vinum.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Tengd";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Tengdir aðgangar";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Tengi %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Tenging við %1$@ mun koma í staðinn fyrir tengingu við %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Tengist…";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Tenging mistókst";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -557,19 +507,11 @@
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Henda og velja valmynd";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Aftengja";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Aftenging mistókst";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Aftengjast WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Það að aftengja þennan aðgang þýðir að birtar færslur verða ekki lengur sjálfkrafa deilt á %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -875,8 +817,7 @@
 /* Insights latest post summary header */
 "Latest Post Summary" = "Samantekt um síðustu færslu";
 
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Lesa meira";
 
@@ -958,7 +899,6 @@
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Umsjón";
 
@@ -1079,9 +1019,6 @@
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Ekkert samband";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Engar tengingar fundust fyrir %@";
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Engum líkar við enn";
@@ -1367,12 +1304,6 @@
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Viðtakandi";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Endurtengja";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Endurtengt";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referrer";
 
@@ -1490,9 +1421,6 @@
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Veldu stíl efnisgreinar";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Veldu aðganginn sem þú vilt leyfa. Athugaðu að færslunum þínum verður sjálfkrafa deilt á valdan aðgang.";
-
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "Valin skrá er ekki myndband.";
 
@@ -1512,7 +1440,6 @@
 "Service" = "Þjónusta";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Stillingar";
@@ -1533,12 +1460,10 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Deildu sögunni þinn hér...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Deiling";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Deilihnappar";
 
 /* Title for the `show like button` setting */
@@ -1785,9 +1710,6 @@
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Það kom upp óvænt villa við að uppfæra tilkynninga-stillingarnar þínar";
 
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Það er vandamál við að tengjast %@. Tengdu aftur til þess að halda birtingu áfram.";
-
 /* Error message informing the user that there was a problem blocking posts from a site from their reader. */
 "There was a problem blocking posts from the specified site." = "Það kom upp vandamál við að loka fyrir færslur frá þessum vef.";
 
@@ -2007,9 +1929,6 @@
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Við eigum í vandræðum með að hlaða inn gögnum";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Við lentum í vandræðum með að hlaða tengingar fyrir %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Við áttum í vandræðum með að hlaða gögnum";
 
@@ -2120,14 +2039,29 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
-
 /* Later today */
 "later today" = "síðar í dag";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "eftirfarandi atriðum verður eytt:";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Færslur";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Athugasemdir";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Líkar við";
+
+/* Title of today widget */
+"widget.today.title" = "Í dag";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Flettingar";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Gestir";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "verður ekki í boði í framtíðinni.";
