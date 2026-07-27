@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-23 20:32:34+0000 */
+/* Translation-Revision-Date: 2026-07-27 21:30:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -2425,22 +2425,22 @@ translators: %s: Block name e.g. \"Image block\" */
 "Header 6" = "Überschrift 6";
 
 /* H1 Aztec Style */
-"Heading 1" = "Überschrift 1";
+"Heading 1" = "Überschrift 1";
 
 /* H2 Aztec Style */
-"Heading 2" = "Überschrift 2";
+"Heading 2" = "Überschrift 2";
 
 /* H3 Aztec Style */
-"Heading 3" = "Überschrift 3";
+"Heading 3" = "Überschrift 3";
 
 /* H4 Aztec Style */
-"Heading 4" = "Überschrift 4";
+"Heading 4" = "Überschrift 4";
 
 /* H5 Aztec Style */
-"Heading 5" = "Überschrift 5";
+"Heading 5" = "Überschrift 5";
 
 /* H6 Aztec Style */
-"Heading 6" = "Überschrift 6";
+"Heading 6" = "Überschrift 6";
 
 /* Health site intent topic */
 "Health" = "Gesundheit";
@@ -10912,7 +10912,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.statusPicker.passwordProtected" = "Passwortgeschützt";
 
 /* Subtitle for password protected toggle */
-"postSettings.statusPicker.passwordProtectedSubtitle" = "Nur sichtbar für diejenigen, die das Passwort kennen";
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Nur für diejenigen sichtbar, die das Passwort kennen";
 
 /* Label for schedule date row */
 "postSettings.statusPicker.scheduleDate" = "Datum";
