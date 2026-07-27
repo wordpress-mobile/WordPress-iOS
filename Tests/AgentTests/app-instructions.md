@@ -16,9 +16,9 @@ passed via launch arguments — NEVER type a password manually.
 
 - REST phases are ordered: setup, verification, then cleanup. Never return to
   an earlier phase after a later phase has started.
-- During setup, use REST mutations only to prepare fixtures required before the
-  app UI action under test. Never use setup to perform, repair, or finish that
-  UI action.
+- During setup, use REST mutations only to prepare fixtures before the UI
+  depends on them. Never use setup to perform, repair, or finish the app UI
+  action under test.
 - Verification is read-only and may use only GET requests. Cleanup may use GET
   and DELETE to remove resources created by the test. Batch requests follow the
   same phase restrictions.
