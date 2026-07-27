@@ -1,0 +1,5 @@
+Wir haben einige Bugs zerquetscht.
+
+- Kategorien und Schlagwörter funktionieren auf selbst gehosteten Websites jetzt richtig.
+- Der Text in der Ansicht „Blog-Erinnerungen“ ist im Dark Mode sichtbar. Schluss mit dem Versteckspielen.
+- Es wird nun kein Fehler mehr angezeigt, wenn du eine Website über eine Teilen-Aktion auswählst, während deine Websites noch geladen werden. Außerdem haben wir das Design der Website-Auswahl an andere Bereiche der App angepasst – weil es uns einfach keine Ruhe gelassen hat.
