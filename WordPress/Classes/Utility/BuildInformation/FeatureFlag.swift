@@ -26,7 +26,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case newSupport
     case nativeBlockInserter
     case statsAds
-    case customPostTypes
     case mediaLibraryV2
 
     /// Returns a boolean indicating if the feature is enabled.
@@ -85,8 +84,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return true
         case .statsAds:
             return BuildConfiguration.current == .debug
-        case .customPostTypes:
-            return BuildConfiguration.current == .debug
         case .mediaLibraryV2:
             return BuildConfiguration.current == .debug
         }
@@ -131,7 +128,6 @@ extension FeatureFlag {
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
-        case .customPostTypes: "Custom Post Types"
         case .mediaLibraryV2: "Media Library v2"
         }
     }
