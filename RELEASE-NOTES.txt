@@ -1,5 +1,6 @@
 27.2
 -----
+* [*] Custom Post Types: Make custom post types with REST API and editor support available in My Site [#25849]
 
 
 27.1
