@@ -27,6 +27,7 @@
 #                                  simulator-llm-pilot (abbreviated commit
 #                                  SHAs are not supported)
 #   SIMULATOR_LLM_PILOT_SOURCE_PATH Local source checkout override for simulator-llm-pilot
+#   SIMULATOR_LLM_PILOT_TRANSCRIPT_POLICY Transcript output: none | failures | all (default: failures)
 
 set -euo pipefail
 
@@ -186,6 +187,7 @@ export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 17}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
+export SIMULATOR_LLM_PILOT_TRANSCRIPT_POLICY="${SIMULATOR_LLM_PILOT_TRANSCRIPT_POLICY:-failures}"
 
 case "$APP" in
   wordpress) APP_BUNDLE_ID="org.wordpress"; APP_DISPLAY_NAME="WordPress" ;;
