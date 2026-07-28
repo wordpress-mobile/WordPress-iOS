@@ -540,17 +540,18 @@ platform :ios do
     # richer notes generated from the PRs merged since the previous public build.
     changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown branch')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown commit')[0...7]})."
 
-    Dir.mktmpdir do |dir|
-      whats_new_path = File.join(dir, 'testflight_whats_new.txt')
-      File.write(whats_new_path, changelog)
-
-      upload_build_to_testflight(
-        ipa_path: ipa_path,
-        whats_new_path: whats_new_path,
-        distribution_groups: [],
-        beta_app_description_path: beta_app_description_path
-      )
-    end
+    upload_to_testflight(
+      api_key: app_store_connect_api_key,
+      ipa: ipa_path,
+      beta_app_description: File.read(beta_app_description_path),
+      changelog: changelog,
+      distribute_external: false,
+      notify_external_testers: false,
+      # Internal builds don't participate in beta review and must not disturb an
+      # existing external review submission.
+      submit_beta_review: false,
+      reject_build_waiting_for_review: false
+    )
   end
 
   # Send a Slack message to the specified channel

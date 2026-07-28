@@ -220,7 +220,8 @@ def promote_existing_build_to_groups(app:, app_version:, build_code:, changelog:
     changelog: changelog,
     # Fail (rather than hang forever) if the build never resolves — see PROMOTION_PROCESSING_TIMEOUT_SECONDS.
     wait_processing_timeout_duration: PROMOTION_PROCESSING_TIMEOUT_SECONDS,
-    # Don't disrupt a submission already in review.
+    # If another build for this version is already in review, let this unattended
+    # promotion fail instead of expiring the existing submission.
     reject_build_waiting_for_review: false
   )
 end
