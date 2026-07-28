@@ -91,6 +91,24 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "All",
             comment: "Category name for section showing all patterns"
         )
+    case .patternsCount(let count):
+        if count == 1 {
+            NSLocalizedString(
+                "editor.patterns.count.singular",
+                value: "1 pattern",
+                comment: "Singular label displaying the number of patterns in a category"
+            )
+        } else {
+            String(
+                format: NSLocalizedString(
+                    "editor.patterns.count.plural",
+                    value: "%1$d patterns",
+                    comment:
+                        "Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns."
+                ),
+                count
+            )
+        }
     case .loadingEditor:
         NSLocalizedString(
             "editor.loading.title",
@@ -134,6 +152,8 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Dismiss",
             comment: "Button title to dismiss the Lockdown Mode warning"
         )
+    default:
+        EditorLocalization.defaultLocalize(value)
     }
 }
 
