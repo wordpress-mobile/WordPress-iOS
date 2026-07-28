@@ -595,6 +595,7 @@ private extension BlogDetailsTableViewModel {
 
         if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
+                .filter { !$0.isBuiltInPostOrPage }
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
@@ -679,6 +680,7 @@ private extension BlogDetailsTableViewModel {
 
         if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
+                .filter { !$0.isBuiltInPostOrPage }
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
