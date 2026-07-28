@@ -152,7 +152,10 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Dismiss",
             comment: "Button title to dismiss the Lockdown Mode warning"
         )
-    default:
+    // Renders strings added by a newer GutenbergKit in English rather than
+    // breaking this build. `@unknown` because a plain `default` warns that it
+    // will never execute while this switch happens to cover every case.
+    @unknown default:
         EditorLocalization.defaultLocalize(value)
     }
 }
