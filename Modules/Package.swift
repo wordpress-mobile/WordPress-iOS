@@ -63,7 +63,8 @@ let package = Package(
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // TODO: Restore a version pin once GutenbergKit#569 ships a release.
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", branch: "pr-build/569"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit",
+        revision: "40f35ecb2c8a88ba8759f911f28cf79571e969a5"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
             exact: "0.6.0"
