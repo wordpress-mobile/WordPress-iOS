@@ -23,6 +23,9 @@
 #   SIMULATOR_NAME                 Simulator to boot if none running (default: iPhone 16)
 #   TEST_DIR                       Test directory (default: Tests/AgentTests/ui-tests)
 #   SIMULATOR_LLM_PILOT_REPO_URL   Remote repo URL for simulator-llm-pilot
+#   SIMULATOR_LLM_PILOT_REF        Full commit SHA, branch, or tag for
+#                                  simulator-llm-pilot (abbreviated commit
+#                                  SHAs are not supported)
 #   SIMULATOR_LLM_PILOT_SOURCE_PATH Local source checkout override for simulator-llm-pilot
 
 set -euo pipefail
@@ -250,6 +253,7 @@ simulator-llm-pilot run "$TEST_DIR" \
   --app-bundle-id "$APP_BUNDLE_ID" \
   --app-name "$APP_DISPLAY_NAME" \
   --app-instructions-file "$APP_INSTRUCTIONS_FILE" \
+  --rest-api-policy verification-readonly \
   --simulator-udid "$UDID" \
   --results-dir "$RESULTS_DIR" \
   || EXIT_CODE=$?
