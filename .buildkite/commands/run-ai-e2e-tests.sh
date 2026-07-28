@@ -209,16 +209,6 @@ fi
 echo "--- Installing simulator-llm-pilot"
 bash Scripts/ci/install-simulator-llm-pilot.sh
 echo "simulator-llm-pilot $(simulator-llm-pilot version)"
-simulator_help_output=""
-if ! simulator_help_output="$(simulator-llm-pilot run --help 2>&1)"; then
-  echo "Error: unable to inspect the installed simulator-llm-pilot options." >&2
-  exit 1
-fi
-if ! grep -q -- 'verification-readonly' <<< "$simulator_help_output"; then
-  echo "Error: installed simulator-llm-pilot does not support the verification-readonly REST policy." >&2
-  echo "Update SIMULATOR_LLM_PILOT_SOURCE_PATH or use the configured revision." >&2
-  exit 1
-fi
 
 # ── Resolve simulator and install app (Buildkite only) ───────────────
 echo "--- Setting up Simulator"
