@@ -33,7 +33,7 @@ extension GutenbergKit.EditorViewControllerDelegate {
     }
 }
 
-private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString) -> String {
+private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString) -> String? {
     switch value {
     case .showMore:
         NSLocalizedString(
@@ -152,16 +152,17 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Dismiss",
             comment: "Button title to dismiss the Lockdown Mode warning"
         )
-    // Renders strings added by a newer GutenbergKit in English rather than
-    // breaking this build. `@unknown` because a plain `default` warns that it
-    // will never execute while this switch happens to cover every case.
+    // Declining a key lets the editor render its own string, so strings added
+    // by a newer GutenbergKit appear in English rather than breaking this build.
+    // `@unknown` because a plain `default` warns that it will never execute
+    // while this switch happens to cover every case.
     @unknown default:
-        EditorLocalization.defaultLocalize(value)
+        nil
     }
 }
 
 extension EditorLocalizableString {
-    var localized: String {
+    var localized: String? {
         getLocalizedString(for: self)
     }
 }
