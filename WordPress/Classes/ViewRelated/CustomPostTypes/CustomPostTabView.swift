@@ -152,6 +152,7 @@ struct CustomPostTabView: View {
                         .padding(.vertical, 2)
                         .background(AppColor.primary)
                         .clipShape(Capsule())
+                        .fixedSize(horizontal: true, vertical: false)
                 }
                 .accessibilityElement(children: .combine)
             }
