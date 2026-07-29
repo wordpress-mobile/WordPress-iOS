@@ -5,6 +5,20 @@ import WordPressApiCache
 import WordPressShared
 
 extension WordPressApiCache {
+    public static func openExistingOnDiskCache() throws -> WordPressApiCache? {
+        let cacheURL = URL.libraryDirectory.appending(path: "app.sqlite")
+        return try openExistingOnDiskCache(file: cacheURL)
+    }
+
+    static func openExistingOnDiskCache(file: URL) throws -> WordPressApiCache? {
+        guard FileManager.default.fileExists(atPath: file.path) else {
+            return nil
+        }
+        let cache = try WordPressApiCache(url: file)
+        _ = try cache.performMigrations()
+        return cache
+    }
+
     static func bootstrap() -> WordPressApiCache {
         let instance: WordPressApiCache = .onDiskCache() ?? .memoryCache()
         instance.startListeningForUpdates()
