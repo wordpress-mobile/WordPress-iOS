@@ -54,6 +54,8 @@ extension AccountService {
                 WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID($0))
             }
 
+        WordPressApiCacheCleanup.removeCachedData(for: account.blogs ?? [])
+
         let objectID = TaggedManagedObjectID(account)
         coreDataStack.performAndSave { context in
             do {

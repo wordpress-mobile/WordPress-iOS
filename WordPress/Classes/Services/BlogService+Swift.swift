@@ -11,6 +11,11 @@ extension BlogService {
         WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID(blog))
     }
 
+    @objc(removeWordPressApiCachedDataForBlog:)
+    public func removeWordPressApiCachedData(for blog: Blog) {
+        WordPressApiCacheCleanup.removeCachedData(for: blog)
+    }
+
     @objc public func unscheduleBloggingReminders(for blog: Blog) {
         do {
             let scheduler = try ReminderScheduleCoordinator()
