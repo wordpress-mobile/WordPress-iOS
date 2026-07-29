@@ -49,6 +49,11 @@ extension AccountService {
             return
         }
 
+        account.blogs?
+            .forEach {
+                WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID($0))
+            }
+
         let objectID = TaggedManagedObjectID(account)
         coreDataStack.performAndSave { context in
             do {

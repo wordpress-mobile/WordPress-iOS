@@ -6,6 +6,11 @@ import WordPressCore
 import WordPressAPI
 
 extension BlogService {
+    @objc(evictWordPressClientForBlog:)
+    public func evictWordPressClient(for blog: Blog) {
+        WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID(blog))
+    }
+
     @objc public func unscheduleBloggingReminders(for blog: Blog) {
         do {
             let scheduler = try ReminderScheduleCoordinator()
