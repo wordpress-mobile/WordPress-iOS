@@ -235,7 +235,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
                     caption: item.caption,
                     title: item.filename,
                     alt: item.alt,
-                    metadata: [:]
+                    metadata: metadata
                 )
             }
             if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
@@ -314,8 +314,6 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
                 mediaType = mediaType | GutenbergMediaType.other.rawValue
             case .any:
                 mediaType = mediaType | GutenbergMediaType.all.rawValue
-            @unknown default:
-                fatalError()
             }
         }
 
