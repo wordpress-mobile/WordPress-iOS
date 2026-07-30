@@ -31,10 +31,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     let navigationBarManager: PostEditorNavigationBarManager
 
-    lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
-        GutenbergMediaPickerHelper(context: self, post: post)
-    }()
-
     lazy var featuredImageHelper = NewGutenbergFeaturedImageHelper(post: post)
 
     // MARK: - PostEditor
@@ -285,95 +281,12 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
     }
 
-    // MARK: - Media Picker Helpers
-
-    override func editor(
-        _ viewController: GutenbergKit.EditorViewController,
-        didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction
-    ) {
-        let flags = mediaFilterFlags(using: config.allowedTypes ?? [])
-
-        let initialSelectionArray: [Int]
-        switch config.value {
-        case .single(let id):
-            initialSelectionArray = [id]
-        case .multiple(let ids):
-            initialSelectionArray = ids
-        case .none:
-            initialSelectionArray = []
-        }
-
-        mediaPickerHelper.presentSiteMediaPicker(
-            filter: flags,
-            allowMultipleSelection: config.multiple,
-            initialSelection: initialSelectionArray
-        ) { [weak self] assets in
-            guard let self, let media = assets as? [Media], !media.isEmpty else {
-                return
-            }
-            let mediaInfos = media.map { item in
-                var metadata: [String: String] = [:]
-                if let videopressGUID = item.videopressGUID {
-                    metadata["videopressGUID"] = videopressGUID
-                }
-                return MediaInfo(
-                    id: item.mediaID?.int32Value,
-                    url: item.remoteURL,
-                    type: item.mediaTypeString,
-                    caption: item.caption,
-                    title: item.filename,
-                    alt: item.alt,
-                    metadata: [:]
-                )
-            }
-            if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
-                // Escape the string for JavaScript
-                let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
-                editorViewController.setMediaUploadAttachment(escapedJsonString)
-            }
-        }
-    }
-
     override func editorDidRequestLatestContent(
         _ controller: GutenbergKit.EditorViewController
     ) -> (title: String, content: String)? {
         // Return the current post title and content from Core Data.
         // This is the authoritative source, updated via autosave.
         (post.postTitle ?? "", post.content ?? "")
-    }
-
-    private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
-        do {
-            let jsonData = try JSONEncoder().encode(mediaInfoArray)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                return jsonString
-            }
-        } catch {
-            DDLogError("Error encoding MediaInfo array: \(error)")
-        }
-        return nil
-    }
-
-    private func mediaFilterFlags(using filterArray: [OpenMediaLibraryAction.MediaType]) -> GutenbergMediaType {
-        var mediaType: Int = 0
-        for filter in filterArray {
-            switch filter {
-            case .image:
-                mediaType = mediaType | GutenbergMediaType.image.rawValue
-            case .video:
-                mediaType = mediaType | GutenbergMediaType.video.rawValue
-            case .audio:
-                mediaType = mediaType | GutenbergMediaType.audio.rawValue
-            case .other:
-                mediaType = mediaType | GutenbergMediaType.other.rawValue
-            case .any:
-                mediaType = mediaType | GutenbergMediaType.all.rawValue
-            @unknown default:
-                fatalError()
-            }
-        }
-
-        return GutenbergMediaType(rawValue: mediaType)
     }
 }
 
