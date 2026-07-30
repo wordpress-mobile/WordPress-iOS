@@ -7,7 +7,7 @@ extension GutenbergKit.EditorViewControllerDelegate {
         _ viewController: GutenbergKit.EditorViewController,
         didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest
     ) {
-        guard let url = URL(string: request.url) else {
+        guard ExtensiveLogging.enabled, let url = URL(string: request.url) else {
             return
         }
 
