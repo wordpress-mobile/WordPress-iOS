@@ -1,5 +1,6 @@
 27.2
 -----
+* [*] Stats: Fix the screen getting stuck on a loading indicator for self-hosted sites that are not connected to Jetpack [#25858]
 
 
 27.1
