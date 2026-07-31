@@ -16,5 +16,6 @@ git fetch origin "$BRANCH_NAME"
 git checkout "$BRANCH_NAME"
 # Buildkite can reuse a working copy where "$BRANCH_NAME" was left at an older commit by a previous job,
 # so force the local branch to the fetched commit. `reset --hard` rather than
-# `git pull`, to avoid merging if the two diverged.
-git reset --hard "origin/$BRANCH_NAME"
+# `git pull`, to avoid merging if the two diverged; `FETCH_HEAD` rather than
+# `origin/$BRANCH_NAME`, which `git fetch <branch>` only updates opportunistically.
+git reset --hard FETCH_HEAD
