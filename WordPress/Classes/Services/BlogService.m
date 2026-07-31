@@ -56,18 +56,21 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
          success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure
 {
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
-        BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
-        [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
-                                                                    completionHandler:success]
-                                         failure:failure];
-    } else if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
-        BlogServiceRemoteREST *restRemote = remote;
-        [restRemote syncBlogWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
-                                                               completionHandler:success]
-                                failure:failure];
+    if ([blog supports:BlogFeatureWpComRESTAPI]) {
+        id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+        if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
+            BlogServiceRemoteREST *restRemote = remote;
+            [restRemote syncBlogWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
+                                                                   completionHandler:success]
+                                    failure:failure];
+            return;
+        }
     }
+
+    [self syncXMLRPCOptionsIfApplicableFor:blog
+                            optionsHandler:[self optionsHandlerWithBlogObjectID:blog.objectID
+                                                                        completionHandler:success]
+                                    failure:failure];
 }
 
 - (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)(void))completionHandler
@@ -108,7 +111,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                                     completionHandler:^{ dispatch_group_leave(syncGroup); }];
         [self syncXMLRPCOptionsIfApplicableFor:blog
                                 optionsHandler:handler
-                                        failure:^{ dispatch_group_leave(syncGroup); }];
+                                        failure:^(NSError * __unused error) { dispatch_group_leave(syncGroup); }];
     }
 
     dispatch_group_enter(syncGroup);
