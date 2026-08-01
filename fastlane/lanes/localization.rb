@@ -126,6 +126,14 @@ WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
 # TODO: Remove this function after the corresponding GlotPress translations are corrected.
 def apply_glotpress_translation_patch(parent_dir:)
   patches = {
+    'ko' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l개 단어', '%1$ld개 단어']
+    ],
     'nl' => [
       ['editor.textCounter.wordCount|==|plural.few', '%1$l d woorden', '%1$ld woorden'],
       ['editor.textCounter.wordCount|==|plural.many', '%1$l d woorden', '%1$ld woorden'],
@@ -141,6 +149,30 @@ def apply_glotpress_translation_patch(parent_dir:)
       ['editor.textCounter.wordCount|==|plural.zero', 'Niciun cuvânt', '%1$ld cuvinte'],
       ['mediaLibrary.upload.banner.failedOnly.single', 'A eșuat o încărcare', 'A eșuat %1$d încărcare'],
       ['mediaLibrary.upload.banner.uploadingOnly.single', 'Încarc un element', 'Încarc %1$d element']
+    ],
+    'ru' => [
+      ['editor.textCounter.wordCount|==|plural.few', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.many', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.one', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.other', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.two', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.zero', 'Слов: %1$l', 'Слов: %1$ld']
+    ],
+    'zh-Hans' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l 个字', '%1$ld 个字']
+    ],
+    'zh-Hant' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l 字', '%1$ld 字']
     ]
   }
 
