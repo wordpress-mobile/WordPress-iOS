@@ -28,38 +28,38 @@
             "plural": {
               "zero": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d مرة في الأسبوع"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ من المرات في الأسبوع"
                 }
               },
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d time a week"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ مرة في الأسبوع"
                 }
               },
               "two": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d times a week"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ من المرات في الأسبوع"
                 }
               },
               "few": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d مرات في الأسبوع"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ من المرات في الأسبوع"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d مرة في الأسبوع"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ من المرات في الأسبوع"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d مرة في الأسبوع"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ من المرات في الأسبوع"
                 }
               }
             }
@@ -88,26 +88,26 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d× týdně"
+                  "state": "translated",
+                  "value": "%1$dkrát týdně"
                 }
               },
               "few": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d× týdně"
+                  "state": "translated",
+                  "value": "%1$dkrát týdně"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d× týdně"
+                  "state": "translated",
+                  "value": "%1$dkrát týdně"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d× týdně"
+                  "state": "translated",
+                  "value": "%1$dkrát týdně"
                 }
               }
             }
@@ -268,14 +268,14 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d fois par semaine"
+                  "state": "translated",
+                  "value": "%1$d fois par semaine"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d fois par semaine"
+                  "state": "translated",
+                  "value": "%1$d fois par semaine"
                 }
               }
             }
@@ -286,26 +286,26 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "פעם %1$d בשבוע"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ פעמים בשבוע"
                 }
               },
               "two": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d times a week"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ פעמים בשבוע"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d פעמים בשבוע"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ פעמים בשבוע"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d פעמים בשבוע"
+                  "state": "translated",
+                  "value": "⁦%1$d⁩ פעמים בשבוע"
                 }
               }
             }
@@ -358,7 +358,7 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$d kali seminggu"
                 }
               }
@@ -406,8 +406,8 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "週%1$d回"
+                  "state": "translated",
+                  "value": "週に%1$d回"
                 }
               }
             }
@@ -418,8 +418,8 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "주 %1$d회"
+                  "state": "translated",
+                  "value": "일주일에 %1$d번"
                 }
               }
             }
@@ -556,26 +556,26 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d раз в неделю"
+                  "state": "translated",
+                  "value": "%1$d раз(а) в неделю"
                 }
               },
               "few": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d раза в неделю"
+                  "state": "translated",
+                  "value": "%1$d раз(а) в неделю"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d раз в неделю"
+                  "state": "translated",
+                  "value": "%1$d раз(а) в неделю"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$d раза в неделю"
+                  "state": "translated",
+                  "value": "%1$d раз(а) в неделю"
                 }
               }
             }
@@ -634,13 +634,13 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$d gång i veckan"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$d gånger i veckan"
                 }
               }
@@ -664,14 +664,14 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "haftada %1$d kez"
+                  "state": "translated",
+                  "value": "Haftada %1$d kez"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "haftada %1$d kez"
+                  "state": "translated",
+                  "value": "Haftada %1$d kez"
                 }
               }
             }
@@ -682,7 +682,7 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "每周 %1$d 次"
                 }
               }
@@ -694,8 +694,8 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "每週 %1$d 次"
+                  "state": "translated",
+                  "value": "一週 %1$d 次"
                 }
               }
             }
@@ -730,38 +730,38 @@
             "plural": {
               "zero": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld كلمة"
+                  "state": "translated",
+                  "value": "%1$ld من الكلمات"
                 }
               },
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld word"
+                  "state": "translated",
+                  "value": "%1$ld كلمة"
                 }
               },
               "two": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld words"
+                  "state": "translated",
+                  "value": "%1$ld من الكلمات"
                 }
               },
               "few": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld كلمات"
+                  "state": "translated",
+                  "value": "%1$ld من الكلمات"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld كلمة"
+                  "state": "translated",
+                  "value": "%1$ld من الكلمات"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld كلمة"
+                  "state": "translated",
+                  "value": "%1$ld من الكلمات"
                 }
               }
             }
@@ -790,25 +790,25 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld slovo"
+                  "state": "translated",
+                  "value": "%1$ld se změní na"
                 }
               },
               "few": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld slova"
+                  "state": "translated",
+                  "value": "%1$ld slov"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld slova"
+                  "state": "translated",
+                  "value": "%1$ld slov"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld slov"
                 }
               }
@@ -970,14 +970,14 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld mot"
+                  "state": "translated",
+                  "value": "%1$ld mot"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld mots"
+                  "state": "translated",
+                  "value": "%1$ld mots"
                 }
               }
             }
@@ -988,25 +988,25 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "מילה %1$ld"
+                  "state": "translated",
+                  "value": "%1$ld מילים"
                 }
               },
               "two": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld מילים"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld מילים"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld מילים"
                 }
               }
@@ -1060,7 +1060,7 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld kata"
                 }
               }
@@ -1108,8 +1108,8 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld語"
+                  "state": "translated",
+                  "value": "%1$ld単語"
                 }
               }
             }
@@ -1120,8 +1120,8 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld 단어"
+                  "state": "translated",
+                  "value": "%1$ld개 단어"
                 }
               }
             }
@@ -1258,26 +1258,26 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld слово"
+                  "state": "translated",
+                  "value": "Слов: %1$ld"
                 }
               },
               "few": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld слова"
+                  "state": "translated",
+                  "value": "Слов: %1$ld"
                 }
               },
               "many": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld слов"
+                  "state": "translated",
+                  "value": "Слов: %1$ld"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld слова"
+                  "state": "translated",
+                  "value": "Слов: %1$ld"
                 }
               }
             }
@@ -1336,13 +1336,13 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld ord"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld ord"
                 }
               }
@@ -1366,13 +1366,13 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld sözcük"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld sözcük"
                 }
               }
@@ -1384,7 +1384,7 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld 个字"
                 }
               }
@@ -1396,8 +1396,8 @@
             "plural": {
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
-                  "value": "%1$ld 個字"
+                  "state": "translated",
+                  "value": "%1$ld 字"
                 }
               }
             }
