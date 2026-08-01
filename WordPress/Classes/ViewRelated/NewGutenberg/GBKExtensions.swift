@@ -1,6 +1,5 @@
 import Foundation
 import GutenbergKit
-import Pulse
 import Support
 
 extension GutenbergKit.EditorViewControllerDelegate {
@@ -24,12 +23,13 @@ extension GutenbergKit.EditorViewControllerDelegate {
             headerFields: request.responseHeaders
         )
 
-        LoggerStore.shared.storeRequest(
-            urlRequest,
-            response: httpResponse,
-            error: nil,
-            data: request.responseBody?.data(using: .utf8)
-        )
+        PulseNetworkLogger.shared
+            .storeRequest(
+                urlRequest,
+                response: httpResponse,
+                error: nil,
+                data: request.responseBody?.data(using: .utf8)
+            )
     }
 }
 

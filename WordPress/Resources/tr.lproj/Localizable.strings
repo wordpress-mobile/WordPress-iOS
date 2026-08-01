@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-30 06:31:55+0000 */
+/* Translation-Revision-Date: 2026-07-29 09:59:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -1454,6 +1454,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Veri yüklenemedi. Lütfen daha sonra tekrar yenileyin.";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "Siteler yüklenemedi. Yeniden denemek için dokunun.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Etiketler yüklenemedi. Yeniden denemek için dokunun.";
@@ -6949,6 +6952,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Aşamalandırma";
 
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "Haftada %1$d kez";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "Haftada %1$d kez";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "Haftada %1$d kez";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "Haftada %1$d kez";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "Haftada %1$d kez";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "Haftada %1$d kez";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Kapat";
 
@@ -7380,6 +7401,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Sesten Gönderi Oluştur";
+
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "Taslak kaydedildi";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "Gönderi yayımlandı";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "Gönderi güncellendi";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Kaydetmeye çalıştığınız gönderi bu sırada değiştirildi.";
@@ -7898,6 +7928,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Düzenleyici Yükleniyor";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "Kapat";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "Bu uygulamayı Ayarlar'dan Kilitleme Modunun dışında bırakabilir ve tüm işlevselliği geri yüklemek için düzenleyiciyi yeniden açabilirsiniz.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Daha Fazla Bilgi Edinin";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Kilitleme Modu Algılandı";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "Kilitleme Modu etkinleştirildi. Düzenleyici doğru şekilde çalışmayabilir.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Ortam eklenemedi";
 
@@ -7915,6 +7960,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "Sınıflandırılmamış";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld sözcük";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld sözcük";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld sözcük";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld sözcük";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld sözcük";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld sözcük";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "Örnek: 1122334455";
@@ -9429,6 +9492,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Ekle";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Dosya Seç";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Fotoğraf Kütüphanesi";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "Fotoğraf Çek";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "Video Çek";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "Ekle";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "En boy oranı ızgarası";
 
@@ -9474,6 +9552,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Tekrar dene";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "Harici Ortam";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "Tümü";
 
@@ -9509,6 +9590,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Kare Izgara";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Seçilen ortam indirilemedi: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Sil";
@@ -9599,6 +9683,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Ögeleri seçin";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d karşıya yükleme başarısız oldu";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d karşıya yükleme başarısız oldu";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "%1$d · %2$d karşıya yükleme başarısız oldu";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "%1$d öğe karşıya yükleniyor";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "%1$d öğe karşıya yükleniyor";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "Bu dosya türünün sitenize yüklenmesine izin verilmiyor.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "Bu video sitenizin izin verdiğinden daha uzun.";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "Seçilen dosya bulunamadı.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Fotoğraf karşıya yüklenmek üzere dönüştürülemedi.";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "Seçilen dosyaya erişilemedi.";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "Dosya tipi belirlenemedi.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Video karşıya yükleme için hazırlanamadı: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "Seçilen video kalitesi için dışa aktaran kullanılamaz.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Kamera fotoğrafı";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Kamera videosu";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "Fotoğraf";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Karşıya yüklemeye devam et";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "Hepsi karşıya yüklendi";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Tüm karşıya yüklemeleri iptal et";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Dışa yüklemeleri iptal et";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "Devam eden tüm karşıya yüklemeler iptal edilecek. Bu işlem geri alınamaz.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Başarısız olanların tümünü gizle";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Tümünü yeniden deneme başarısız oldu";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "Kapat";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "Kapat";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "Tekrar dene";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Karşıya yüklemeler";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Görsel Oyun Alanı";

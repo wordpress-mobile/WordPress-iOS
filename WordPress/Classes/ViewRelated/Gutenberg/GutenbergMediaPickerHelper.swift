@@ -21,19 +21,27 @@ struct GutenbergMediaType: OptionSet {
 }
 
 final class GutenbergMediaPickerHelper: NSObject {
-    private let post: AbstractPost
+    private let blog: Blog
     private unowned let context: UIViewController
 
     /// Media Library Data Source
 
     var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
 
-    init(context: UIViewController, post: AbstractPost) {
+    init(context: UIViewController, blog: Blog) {
         self.context = context
-        self.post = post
+        self.blog = blog
     }
 
-    func presetDevicePhotosPicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
+    convenience init(context: UIViewController, post: AbstractPost) {
+        self.init(context: context, blog: post.blog)
+    }
+
+    func presetDevicePhotosPicker(
+        filter: GutenbergMediaType,
+        allowMultipleSelection: Bool,
+        completion: @escaping GutenbergMediaPickerHelperCallback
+    ) {
         didPickMediaCallback = completion
 
         var configuration = PHPickerConfiguration()
@@ -49,11 +57,21 @@ final class GutenbergMediaPickerHelper: NSObject {
         context.present(picker, animated: true)
     }
 
-    func presentSiteMediaPicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, initialSelection: [Int] = [], completion: @escaping GutenbergMediaPickerHelperCallback) {
+    func presentSiteMediaPicker(
+        filter: GutenbergMediaType,
+        allowMultipleSelection: Bool,
+        initialSelection: [Int] = [],
+        completion: @escaping GutenbergMediaPickerHelperCallback
+    ) {
         didPickMediaCallback = completion
         let initialMediaSelection = mapMediaIdsToMedia(initialSelection)
-        MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection, initialSelection: initialMediaSelection)
-            .showSiteMediaPicker(blog: post.blog, delegate: self)
+        MediaPickerMenu(
+            viewController: context,
+            filter: .init(filter),
+            isMultipleSelectionEnabled: allowMultipleSelection,
+            initialSelection: initialMediaSelection
+        )
+        .showSiteMediaPicker(blog: blog, delegate: self)
     }
 
     private func mapMediaIdsToMedia(_ mediaIds: [Int]) -> [Media] {
@@ -66,12 +84,14 @@ final class GutenbergMediaPickerHelper: NSObject {
             let fetchedMedia = try context.fetch(request) as? [Media] ?? []
 
             // Create a dictionary for quick lookup
-            let mediaDict = Dictionary(uniqueKeysWithValues: fetchedMedia.compactMap { media -> (Int, Media)? in
-                if let mediaID = media.mediaID?.intValue {
-                    return (mediaID, media)
+            let mediaDict = Dictionary(
+                uniqueKeysWithValues: fetchedMedia.compactMap { media -> (Int, Media)? in
+                    if let mediaID = media.mediaID?.intValue {
+                        return (mediaID, media)
+                    }
+                    return nil
                 }
-                return nil
-            })
+            )
 
             // Map the original mediaIds to Media objects, preserving order
             return mediaIds.compactMap { mediaDict[$0] }
@@ -80,9 +100,11 @@ final class GutenbergMediaPickerHelper: NSObject {
         }
     }
 
-    func presentCameraCaptureFullScreen(animated: Bool,
-                                        filter: GutenbergMediaType,
-                                        callback: @escaping GutenbergMediaPickerHelperCallback) {
+    func presentCameraCaptureFullScreen(
+        animated: Bool,
+        filter: GutenbergMediaType,
+        callback: @escaping GutenbergMediaPickerHelperCallback
+    ) {
         didPickMediaCallback = callback
         MediaPickerMenu(viewController: context, filter: .init(filter))
             .showCamera(delegate: self)
@@ -90,7 +112,10 @@ final class GutenbergMediaPickerHelper: NSObject {
 }
 
 extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
-    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePicker(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
         context.dismiss(animated: true) {
             guard let mediaType = info[.mediaType] as? String else {
                 return
@@ -106,7 +131,7 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
                 guard let videoURL = info[.mediaURL] as? URL else {
                     return
                 }
-                guard self.post.blog.canUploadVideo(from: videoURL) else {
+                guard self.blog.canUploadVideo(from: videoURL) else {
                     self.presentVideoLimitExceededAfterCapture(on: self.context)
                     return
                 }
@@ -122,7 +147,10 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
 extension GutenbergMediaPickerHelper: VideoLimitsAlertPresenter {}
 
 extension GutenbergMediaPickerHelper: SiteMediaPickerViewControllerDelegate {
-    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+    func siteMediaPickerViewController(
+        _ viewController: SiteMediaPickerViewController,
+        didFinishWithSelection selection: [Media]
+    ) {
         context.dismiss(animated: true)
         didPickMediaCallback?(selection)
         didPickMediaCallback = nil
