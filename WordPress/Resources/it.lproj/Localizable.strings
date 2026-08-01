@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-28 16:09:34+0000 */
+/* Translation-Revision-Date: 2026-07-29 09:55:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: it */
@@ -7898,6 +7898,18 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Caricamento dell'Editor";
 
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "Puoi escludere questa app dalla modalità di blocco nelle Impostazioni, quindi riaprire l'editor per ripristinare tutte le funzionalità.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Scopri di più";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Modalità di blocco rilevata";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "La modalità di blocco è attivata. L'editor potrebbe non funzionare correttamente.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Inserimento file multimediali non riuscito";
 
@@ -9429,6 +9441,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Aggiungi";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Scegli file";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Griglia proporzioni";
 
@@ -9474,6 +9489,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Riprova";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "Media esterni";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "Tutti";
 
@@ -9509,6 +9527,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Griglia quadrata";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Impossibile scaricare il file multimediale selezionato: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Elimina";
@@ -9599,6 +9620,66 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Seleziona elementi";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d caricamenti non riusciti";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d caricamento non riuscito";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "Caricamento di %1$d · %2$d non riuscito";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "Caricamento di %1$d elementi";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "Caricamento di %1$d elemento";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "Questo tipo di file non può essere caricato sul tuo sito.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "Questo video supera la durata massima consentita dal tuo sito.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Impossibile convertire la foto per il caricamento.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Impossibile preparare il video per il caricamento: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "Non è disponibile alcun esportatore per la qualità video selezionata.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Foto della fotocamera";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Video della fotocamera";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Continua a caricare";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "Tutto caricato";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Annulla tutti i caricamenti";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Annulla caricamenti";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "Tutti i caricamenti in corso verranno annullati. Questa operazione non può essere annullata.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Ignora tutti non riuscito";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Riprova tutti non riuscito";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Carica";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Playground immagini";

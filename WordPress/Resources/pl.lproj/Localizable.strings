@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-22 07:23:32+0000 */
+/* Translation-Revision-Date: 2026-07-31 05:03:13+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: pl */
@@ -234,7 +234,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "'%s' is not fully-supported" = "'%s' nie jest w pełni obsługiwany";
 
 /* Empty Post Title */
-"(No Title)" = "(Brak tytułu)";
+"(No Title)" = "(brak tytułu) ";
 
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(brak tytułu)";
@@ -7890,7 +7890,7 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "stuknij dwukrotnie, aby zmienić jednostkę";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "Czy na pewno chcesz to usunąć?";
+"edit.tag.delete.confirmation.message" = "Usunąć?";
 
 /* Title for delete a term confirmation dialog */
 "edit.tag.delete.confirmation.title" = "Usuń";
