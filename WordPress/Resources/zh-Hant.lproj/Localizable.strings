@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-25 09:58:57+0000 */
+/* Translation-Revision-Date: 2026-07-29 09:58:58+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_TW */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "無法載入資料。 請稍後再重新整理。";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "無法載入網站。 點選以重試。";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "無法載入標籤。點選以重試。";
@@ -6931,6 +6934,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "預備";
 
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "一週 %1$d 次";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "一週 %1$d 次";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "一週 %1$d 次";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "一週 %1$d 次";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "一週 %1$d 次";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "一週 %1$d 次";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "關閉";
 
@@ -7356,6 +7377,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.post" = "文章";
+
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "草稿已儲存";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "文章已發表";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "文章已更新";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "你嘗試儲存的文章已在此期間變更。";
@@ -7874,6 +7904,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "正在載入編輯器";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "移除";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "你可以在「設定」中將此應用程式從「鎖定模式」排除，然後重新開啟編輯器以還原完整功能。";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "深入了解";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "偵測到鎖定模式";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "鎖定模式已啟用。 編輯器可能無法正常運作。";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "無法插入媒體檔";
 
@@ -7891,6 +7936,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "未分類";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld 字";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld 字";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld 字";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld 字";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld 字";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld 字";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例如：1122334455";
@@ -9402,6 +9465,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "新增";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "選擇檔案";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "照片庫";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "拍攝照片";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "拍攝影片";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "新增";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "長寬比網格";
 
@@ -9447,6 +9525,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "再試一次";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "外部媒體";
+
 /* Title of the audio filter option in the Media Library filter menu */
 "mediaLibrary.filter.audio" = "音訊";
 
@@ -9479,6 +9560,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "正方形網格";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "無法下載所選媒體檔：%1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "刪除";
@@ -9569,6 +9653,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "選取商品";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d 個上傳檔案失敗";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d 個上傳檔案失敗";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "正在上傳 %1$d 個 · %2$d 個上傳失敗";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "正在上傳 %1$d 個項目";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "正在上傳 %1$d 個項目";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "無法在你的網站上傳這個檔案類型。";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "影片長度超過網站允許上限。";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "找不到所選檔案。";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "無法轉換要上傳的照片。";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "無法存取所選檔案。";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "無法判斷檔案類型。";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "無法準備要上傳的影片：%1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "所選影片畫質沒有可用的匯出工具。";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "相機照片";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "相機影片";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "照片";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "繼續上傳";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "全部上傳完畢";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "取消所有上傳";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "取消上傳";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "所有進行中的上傳都會取消。 此動作無法復原。";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "全部移除失敗";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "全部重試失敗";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "關閉";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "移除";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "重試";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "上傳內容";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "影像樂園";

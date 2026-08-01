@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-25 15:45:39+0000 */
+/* Translation-Revision-Date: 2026-07-29 09:55:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
@@ -1454,6 +1454,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Det gick inte att ladda data. Uppdatera igen senare.";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "Det gick inte att ladda webbplatserna. Tryck för att försöka igen";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Det gick inte att läsa in etiketter. Tryck för att försöka igen.";
@@ -6949,6 +6952,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Utveckling";
 
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "%1$d gånger i veckan";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "%1$d gånger i veckan";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "%1$d gång i veckan";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "%1$d gånger i veckan";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "%1$d gånger i veckan";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "%1$d gånger i veckan";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Avfärda";
 
@@ -7380,6 +7401,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Inlägg från ljud";
+
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "Utkast sparat.";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "Inlägg publicerat";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "Inlägg uppdaterat";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Inlägget du försöker spara har ändrats under tiden.";
@@ -7898,6 +7928,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Hämtar redigerare";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "Avfärda";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "Du kan exkludera den här appen från låst läge i Inställningar och sedan öppna redigeraren igen för att återställa all funktionalitet.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Läs mer";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Låsningsläge upptäckt";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "Låstläget är aktiverat. Redigeraren kanske inte fungerar korrekt.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Misslyckades att infoga media";
 
@@ -7915,6 +7960,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "Okategoriserat";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld ord";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld ord";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld ord";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld ord";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld ord";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld ord";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "till exempel 1122334455";
@@ -9429,6 +9492,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Lägg till";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Välj fil";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Fotobibliotek";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "Ta bild";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "Spela in video";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "Lägg till";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Bildförhållande för rutnät";
 
@@ -9474,6 +9552,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Försök igen";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "Externa medier";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "Alla";
 
@@ -9509,6 +9590,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Fyrkantigt rutnät";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Kunde inte ladda ner det valda mediet: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Ta bort";
@@ -9599,6 +9683,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Välj objekt";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d uppladdningar misslyckades";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d uppladdning misslyckades";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "Uppladdningen %1$d · %2$d misslyckades";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "Laddar upp %1$d objekt";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "Laddar upp %1$d objekt";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "Den här filtypen är inte tillåten för uppladdning på din webbplats.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "Den här videon är längre än vad din webbplats tillåter.";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "Den valda filen kunde inte hittas.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Kunde inte konvertera fotot för uppladdning.";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "Kunde inte komma åt den valda filen.";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "Kunde inte fastställa filtypen.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Kunde inte förbereda videon för uppladdning: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "Ingen exportör är tillgänglig för den valda videokvaliteten.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Kamerafoto";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Kameravideo";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "Foto";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Fortsätt ladda upp";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "Alla uppladdade";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Avbryt all uppladdning";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Avbryt uppladdningar";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "Alla pågående uppladdningar kommer att avbrytas. Det här kan inte ångras.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Stäng alla misslyckade";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Försök igen misslyckades";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "Stäng";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "Avfärda";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "Försök igen";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Uppladdningar";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Playground för bilder";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-24 18:59:14+0000 */
+/* Translation-Revision-Date: 2026-07-29 09:57:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ru */
@@ -1454,6 +1454,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Не удалось загрузить данные. Обновите страницу позже.";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "Не удалось загрузить сайты. Коснитесь, чтобы повторить попытку.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Не удалось загрузить теги. Нажмите, чтобы повторить попытку.";
@@ -6949,6 +6952,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Предварительная версия";
 
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "%1$d раз(а) в неделю";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "%1$d раз(а) в неделю";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "%1$d раз(а) в неделю";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "%1$d раз(а) в неделю";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "%1$d раз(а) в неделю";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "%1$d раз(а) в неделю";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Закрыть";
 
@@ -7380,6 +7401,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Публикация из аудио";
+
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "Черновик сохранён";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "Запись опубликована";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "Запись обновлена";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "За это время запись, которую вы пытаетесь сохранить, была изменена.";
@@ -7898,6 +7928,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Загрузка редактора";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "Удалить";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "Можно в настройках исключить это приложение из режима блокировки, а затем заново открыть редактор, чтобы восстановить полную функциональность.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Подробнее";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Обнаружен режим блокировки";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "Режим блокировки включён. Редактор может работать некорректно.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Не удалось вставить медиафайл";
 
@@ -7915,6 +7960,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "Без рубрики";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "Слов: %1$ld";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "Слов: %1$ld";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "Слов: %1$ld";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "Слов: %1$ld";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "Слов: %1$ld";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "Слов: %1$ld";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "например: 1122334455";
@@ -9429,6 +9492,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Добавить";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Выбрать файл";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Библиотека фотографий";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "Сделать фотоснимок";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "Записать видео";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "Добавить";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Сетка с соотношением сторон";
 
@@ -9474,6 +9552,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Повторить попытку";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "Внешние медиафайлы";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "Все";
 
@@ -9509,6 +9590,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Квадратная сетка";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Не удалось загрузить выбранный медиафайл: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Удалить";
@@ -9599,6 +9683,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Выбрать элементы";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "Неудачных загрузок: %1$d";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "Неудачных загрузок: %1$d";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "Загружается: %1$d · Не удалось загрузить: %2$d";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "Загрузка %1$d эл.";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "Загрузка %1$d эл.";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "Файлы этого типа нельзя загружать на ваш сайт.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "Это видео длиннее, чем позволяет ваш сайт.";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "Не удалось найти выбранный файл.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Не удалось преобразовать фотографию для загрузки.";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "Нет доступа к выбранному файлу.";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "Не удалось определить тип файла.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Не удалось подготовить видео к загрузке: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "Нет доступных средств экспорта видео такого качества.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Фото с камеры";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Видео с камеры";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "Фото";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Продолжить загрузку";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "Все загруженные";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Отменить все загрузки";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Отменить загрузки";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "Все текущие загрузки будут отменены. Это действие невозможно отменить.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Удалить все неудачные";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Повторить все неудачные";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "Закрыть";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "Удалить";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "Повторить";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Загрузки";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Песочница изображений";
