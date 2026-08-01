@@ -1,0 +1,5 @@
+Nous avons corrigé quelques bugs.
+
+- Les catégories et les étiquettes fonctionnent désormais correctement sur les sites auto-hébergés.
+- Le texte sur l’écran des rappels de blog est visible en mode sombre. Plus besoin de jouer à cache-cache.
+- Vous ne verrez plus d’erreur lors du choix d’un site à partir d’une action de feuille de partage lorsque vos sites sont encore en cours de chargement. Nous avons également mis à jour le design du sélecteur de site pour qu’il corresponde à d’autres zones de l’application, un chantier qui était devenu indispensable.

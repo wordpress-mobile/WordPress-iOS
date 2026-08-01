@@ -1,0 +1,5 @@
+Kami telah membenahi beberapa bug.
+
+- Kategori dan tag kini berfungsi normal di situs dengan hosting sendiri.
+- Teks pada layar Pengingat Blogging dapat terlihat dengan jelas dalam mode gelap. Tidak ada lagi teks yang "sembunyi-sembunyi".
+- Anda tidak akan lagi melihat pesan error saat memilih situs dari menu bagikan ketika daftar situs Anda masih dimuat. Kami juga memperbarui desain pemilih situs agar selaras dengan area lain di aplikasi. Jujur saja, tampilan sebelumnya cukup mengganggu pikiran kami.
