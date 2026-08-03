@@ -299,7 +299,9 @@ struct MediaRequestAuthenticator {
     ///
     /// Internal rather than private so unit tests can exercise the allowlist directly.
     func isTokenAllowed(for url: URL) -> Bool {
-        guard let host = url.host else {
+        // DNS hostnames are case-insensitive (RFC 4343), but URL.host preserves the
+        // input casing, so lowercase before matching the allowlist.
+        guard let host = url.host?.lowercased() else {
             return false
         }
         return host == "wordpress.com" || host.hasSuffix(".wordpress.com")

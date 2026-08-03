@@ -154,6 +154,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
         XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://public-api.wordpress.com/file")!))
         XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://i0.wp.com/example.com/img.png")!))
         XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://wp.com/img.png")!))
+        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://example.files.WORDPRESS.COM/img.png")!))
 
         XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "https://attacker.example.com/img.png")!))
         XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "https://evilwordpress.com/img.png")!))
