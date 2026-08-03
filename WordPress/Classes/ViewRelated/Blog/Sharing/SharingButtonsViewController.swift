@@ -208,7 +208,9 @@ class SharingButtonsViewController: UITableViewController {
                 switchCell.onChange = { newValue in
                     self.blog.settings!.sharingDisabledReblogs = !newValue
                     self.didMakeChanges = true
-                    self.saveBlogSettingsChanges(false)
+                    let changes = BlogSettingsChanges()
+                    changes.sharingDisabledReblogs = NSNumber(value: !newValue)
+                    self.saveBlogSettingsChanges(false, changes: changes)
 
                     let properties = [
                         "checked": NSNumber(value: newValue)
@@ -231,7 +233,9 @@ class SharingButtonsViewController: UITableViewController {
                 switchCell.onChange = { newValue in
                     self.blog.settings!.sharingDisabledLikes = !newValue
                     self.didMakeChanges = true
-                    self.saveBlogSettingsChanges(false)
+                    let changes = BlogSettingsChanges()
+                    changes.sharingDisabledLikes = NSNumber(value: !newValue)
+                    self.saveBlogSettingsChanges(false, changes: changes)
                 }
             }
         }
@@ -258,7 +262,9 @@ class SharingButtonsViewController: UITableViewController {
                 switchCell.onChange = { newValue in
                     self.blog.settings!.sharingCommentLikesEnabled = newValue
                     self.didMakeChanges = true
-                    self.saveBlogSettingsChanges(false)
+                    let changes = BlogSettingsChanges()
+                    changes.sharingCommentLikesEnabled = NSNumber(value: newValue)
+                    self.saveBlogSettingsChanges(false, changes: changes)
                 }
             }
         }
@@ -528,7 +534,7 @@ class SharingButtonsViewController: UITableViewController {
     ///
     /// - Parameter refresh: True if the tableview should be reloaded.
     ///
-    private func saveBlogSettingsChanges(_ refresh: Bool) {
+    private func saveBlogSettingsChanges(_ refresh: Bool, changes: BlogSettingsChanges) {
         if refresh {
             tableView.reloadData()
         }
@@ -537,6 +543,7 @@ class SharingButtonsViewController: UITableViewController {
         let dotComID = blog.dotComID
         service.updateSettings(
             for: self.blog,
+            changes: changes,
             success: {
                 WPAppAnalytics.track(.sharingButtonSettingsChanged, blogID: dotComID)
             },
@@ -701,7 +708,9 @@ class SharingButtonsViewController: UITableViewController {
             }
             WPAnalytics.track(.sharingButtonsLabelChanged, properties: [:], blog: blog)
             self.blog.settings!.sharingLabel = value
-            self.saveBlogSettingsChanges(true)
+            let changes = BlogSettingsChanges()
+            changes.sharingLabel = value
+            self.saveBlogSettingsChanges(true, changes: changes)
         }
 
         navigationController?.pushViewController(controller, animated: true)
@@ -736,7 +745,9 @@ class SharingButtonsViewController: UITableViewController {
                 }
 
                 self.blog.settings!.sharingButtonStyle = str
-                self.saveBlogSettingsChanges(true)
+                let changes = BlogSettingsChanges()
+                changes.sharingButtonStyle = str
+                self.saveBlogSettingsChanges(true, changes: changes)
             }
         }
         navigationController?.pushViewController(controller!, animated: true)
@@ -761,7 +772,9 @@ class SharingButtonsViewController: UITableViewController {
             var str = NSString(string: value)
             str = str.replacingOccurrences(of: "@", with: "") as NSString
             self.blog.settings!.sharingTwitterName = str as String
-            self.saveBlogSettingsChanges(true)
+            let changes = BlogSettingsChanges()
+            changes.sharingTwitterName = str as String
+            self.saveBlogSettingsChanges(true, changes: changes)
         }
 
         navigationController?.pushViewController(controller, animated: true)

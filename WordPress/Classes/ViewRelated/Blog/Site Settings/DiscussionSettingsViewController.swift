@@ -11,6 +11,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     private let tracksDiscussionSettingsKey = "site_settings_discussion"
     private var isChangingSettings = false
     private var isSettingsChangeNeeded = false
+    private var pendingChanges = BlogSettingsChanges()
 
     // MARK: - Initializers / Deinitializers
     @objc public convenience init(blog: Blog) {
@@ -77,9 +78,12 @@ open class DiscussionSettingsViewController: UITableViewController {
         isSettingsChangeNeeded = false
         navigationItem.rightBarButtonItem = .activityIndicator
 
+        let changes = pendingChanges
+        pendingChanges = BlogSettingsChanges()
         let service = BlogService(coreDataStack: ContextManager.shared)
         service.updateSettings(
             for: blog,
+            changes: changes,
             success: { [weak self] in
                 self?.didFinishChangingSettings(nil)
             },
@@ -190,40 +194,45 @@ open class DiscussionSettingsViewController: UITableViewController {
         guard let enabled = payload as? Bool else {
             return
         }
-        didChangeSetting("allow_comments", value: enabled as Any)
         settings.commentsAllowed = NSNumber(value: enabled)
+        pendingChanges.commentsAllowed = NSNumber(value: enabled)
+        didChangeSetting("allow_comments", value: enabled as Any)
     }
 
     private func pressedPingbacksInbound(_ payload: AnyObject?) {
         guard let enabled = payload as? Bool else {
             return
         }
-        didChangeSetting("receive_pingbacks", value: enabled as Any)
         settings.pingbackInboundEnabled = NSNumber(value: enabled)
+        pendingChanges.pingbackInboundEnabled = NSNumber(value: enabled)
+        didChangeSetting("receive_pingbacks", value: enabled as Any)
     }
 
     private func pressedPingbacksOutbound(_ payload: AnyObject?) {
         guard let enabled = payload as? Bool else {
             return
         }
-        didChangeSetting("send_pingbacks", value: enabled as Any)
         settings.pingbackOutboundEnabled = enabled
+        pendingChanges.pingbackOutboundEnabled = NSNumber(value: enabled)
+        didChangeSetting("send_pingbacks", value: enabled as Any)
     }
 
     private func pressedRequireNameAndEmail(_ payload: AnyObject?) {
         guard let enabled = payload as? Bool else {
             return
         }
-        didChangeSetting("require_name_and_email", value: enabled as Any)
         settings.commentsRequireNameAndEmail = enabled
+        pendingChanges.commentsRequireNameAndEmail = NSNumber(value: enabled)
+        didChangeSetting("require_name_and_email", value: enabled as Any)
     }
 
     private func pressedRequireRegistration(_ payload: AnyObject?) {
         guard let enabled = payload as? Bool else {
             return
         }
-        didChangeSetting("require_registration", value: enabled as Any)
         settings.commentsRequireRegistration = enabled
+        pendingChanges.commentsRequireRegistration = NSNumber(value: enabled)
+        didChangeSetting("require_registration", value: enabled as Any)
     }
 
     private func pressedCloseCommenting(_ payload: AnyObject?) {
@@ -248,6 +257,8 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.onChange = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsCloseAutomatically = enabled
             self?.settings.commentsCloseAutomaticallyAfterDays = newValue as NSNumber
+            self?.pendingChanges.commentsCloseAutomatically = NSNumber(value: enabled)
+            self?.pendingChanges.commentsCloseAutomaticallyAfterDays = newValue as NSNumber
 
             let value: Any = enabled ? newValue : "disabled"
             self?.didChangeSetting("close_commenting", value: value)
@@ -265,8 +276,11 @@ open class DiscussionSettingsViewController: UITableViewController {
             guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
                 return
             }
-            self?.didChangeSetting("comments_sort_by", value: selected as Any)
             self?.settings.commentsSorting = newSortOrder
+            if let self {
+                self.pendingChanges.commentsSortOrderAscending = NSNumber(value: self.settings.commentsSortOrderAscending)
+            }
+            self?.didChangeSetting("comments_sort_by", value: selected as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -282,6 +296,10 @@ open class DiscussionSettingsViewController: UITableViewController {
                 return
             }
             self?.settings.commentsThreading = newThreadingDepth
+            if let self {
+                self.pendingChanges.commentsThreadingEnabled = NSNumber(value: self.settings.commentsThreadingEnabled)
+                self.pendingChanges.commentsThreadingDepth = self.settings.commentsThreadingDepth
+            }
             self?.didChangeSetting("comments_threading", value: selected as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -304,6 +322,8 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.onChange = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsPagingEnabled = enabled
             self?.settings.commentsPageSize = newValue as NSNumber
+            self?.pendingChanges.commentsPagingEnabled = NSNumber(value: enabled)
+            self?.pendingChanges.commentsPageSize = newValue as NSNumber
 
             let value: Any = enabled ? newValue : "disabled"
             self?.didChangeSetting("comments_paging", value: value)
@@ -323,6 +343,10 @@ open class DiscussionSettingsViewController: UITableViewController {
                 return
             }
             self?.settings.commentsAutoapproval = newApprovalStatus
+            if let self {
+                self.pendingChanges.commentsRequireManualModeration = NSNumber(value: self.settings.commentsRequireManualModeration)
+                self.pendingChanges.commentsFromKnownUsersAllowlisted = NSNumber(value: self.settings.commentsFromKnownUsersAllowlisted)
+            }
             self?.didChangeSetting("comments_automatically_approve", value: selected as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -342,6 +366,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
         pickerViewController.onChange = { [weak self] (_: Bool, newValue: Int) in
             self?.settings.commentsMaximumLinks = newValue as NSNumber
+            self?.pendingChanges.commentsMaximumLinks = newValue as NSNumber
             self?.didChangeSetting("comments_links", value: newValue as Any)
         }
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -365,6 +390,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         )
         settingsViewController.onChange = { [weak self] (updated: Set<String>) in
             self?.settings.commentsModerationKeys = updated
+            self?.pendingChanges.commentsModerationKeys = updated.joined(separator: "\n")
             self?.didChangeSetting("comments_hold_for_moderation", value: updated.count as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -388,6 +414,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         )
         settingsViewController.onChange = { [weak self] (updated: Set<String>) in
             self?.settings.commentsBlocklistKeys = updated
+            self?.pendingChanges.commentsBlocklistKeys = updated.joined(separator: "\n")
             self?.didChangeSetting("comments_block_list", value: updated.count as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
