@@ -65,7 +65,7 @@ struct MediaRequestAuthenticator {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
-        guard !url.isFileURL || url.isHostedAtWPCom || url.isPhoton() else {
+        guard isTokenAllowed(for: url) else {
             let request = URLRequest(url: url)
             provide(request)
             return
@@ -270,8 +270,27 @@ struct MediaRequestAuthenticator {
     ///     - authToken: the Bearer token to add to the resulting request.
     ///
     private func tokenAuthenticatedWPComRequest(for url: URL, authToken: String) -> URLRequest {
+        guard isTokenAllowed(for: url) else {
+            Loggers.networking.warning("Refusing to attach the WP.com token to a non-WP.com host: \(url.host ?? "no host")")
+            return URLRequest(url: url)
+        }
+
         var request = URLRequest(url: url)
         request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         return request
+    }
+
+    /// Whether the URL's host is WordPress.com infrastructure that may receive the WP.com
+    /// Bearer token. The token is account-wide, so sending it to any host outside this
+    /// allowlist (including a private site's own mapped custom domain, which the site owner
+    /// controls) would let a malicious site owner capture it.
+    ///
+    /// Internal rather than private so unit tests can exercise the allowlist directly.
+    func isTokenAllowed(for url: URL) -> Bool {
+        guard let host = url.host else {
+            return false
+        }
+        return host == "wordpress.com" || host.hasSuffix(".wordpress.com")
+            || host == "wp.com" || host.hasSuffix(".wp.com")
     }
 }
