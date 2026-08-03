@@ -217,4 +217,25 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
             XCTFail("This should not be called")
         }
     }
+
+    /// `AVURLAsset` does not expose its options dictionary, so the tests use the URL as the
+    /// observable: the authenticated branch upgrades http to https, the unauthenticated
+    /// branch leaves the URL untouched. `testTokenAllowedHosts` covers the allowlist itself.
+    func testPrivateWPComSiteAssetForExternalHostIsNotAuthenticated() async throws {
+        let authenticator = MediaRequestAuthenticator()
+        let url = URL(string: "http://attacker.example.com/video.mp4")!
+
+        let asset = try await authenticator.authenticatedAsset(for: url, host: .privateWPComSite(authToken: "letMeIn!"))
+
+        XCTAssertEqual(asset.url, url)
+    }
+
+    func testPrivateWPComSiteAssetForWPComHostIsAuthenticated() async throws {
+        let authenticator = MediaRequestAuthenticator()
+        let url = URL(string: "http://example.files.wordpress.com/video.mp4")!
+
+        let asset = try await authenticator.authenticatedAsset(for: url, host: .privateWPComSite(authToken: "letMeIn!"))
+
+        XCTAssertEqual(asset.url, URL(string: "https://example.files.wordpress.com/video.mp4")!)
+    }
 }

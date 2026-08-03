@@ -117,9 +117,21 @@ struct MediaRequestAuthenticator {
     }
 
     private func authenticatedAsset(for url: URL, authToken: String) -> AVURLAsset {
+        guard isTokenAllowed(for: url) else {
+            Loggers.networking.warning("Refusing to attach the WP.com token to a non-WP.com host: \(url.host ?? "no host")")
+            return AVURLAsset(url: url)
+        }
+
+        // Just in case, enforce HTTPs
+        var finalURL = url
+        if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            components.scheme = secureHttpScheme
+            finalURL = components.url ?? url
+        }
+
         let headers: [String: String] = ["Authorization": "Bearer \(authToken)"]
 
-        return AVURLAsset(url: url, options: [
+        return AVURLAsset(url: finalURL, options: [
             "AVURLAssetHTTPHeaderFieldsKey": headers
         ])
     }
