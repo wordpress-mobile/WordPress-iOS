@@ -134,4 +134,72 @@ struct EditorConfigurationTests {
         #expect(config.authHeader == "Basic \(base64Credentials)", "Should use Basic authentication")
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
     }
+
+    // MARK: - Editor Assets Endpoint
+
+    @Test("Editor assets endpoint is appended to a path-based API root")
+    func editorAssetsEndpointWithPathBasedApiRoot() async throws {
+        let context = self.context
+
+        let blog = BlogBuilder(context)
+            .with(atomic: false)
+            .isNotHostedAtWPcom()
+            .with(username: "selfhosteduser")
+            .with(url: "https://self-hosted.org")
+            .withApplicationPassword("test-app-password-1234", using: keychain)
+            .with(restApiRootURL: "https://self-hosted.org/wp-json/")
+            .build()
+
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
+
+        #expect(
+            config.editorAssetsEndpoint
+                == URL(string: "https://self-hosted.org/wp-json/wpcom/v2/editor-assets"),
+            "Should append the endpoint to the path of a path-based API root"
+        )
+    }
+
+    /// Sites using plain permalinks have no path-based REST root, so WordPress advertises the
+    /// query form and the endpoint belongs in the `rest_route` value rather than the URL path.
+    @Test("Editor assets endpoint is appended to the route of a query-based API root")
+    func editorAssetsEndpointWithQueryBasedApiRoot() async throws {
+        let context = self.context
+
+        let blog = BlogBuilder(context)
+            .with(atomic: false)
+            .isNotHostedAtWPcom()
+            .with(username: "selfhosteduser")
+            .with(url: "https://self-hosted.org")
+            .withApplicationPassword("test-app-password-1234", using: keychain)
+            .with(restApiRootURL: "https://self-hosted.org/?rest_route=/")
+            .build()
+
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
+
+        #expect(
+            config.editorAssetsEndpoint
+                == URL(string: "https://self-hosted.org/?rest_route=/wpcom/v2/editor-assets"),
+            "Should append the endpoint to the rest_route value, not the URL path"
+        )
+    }
+
+    @Test("Editor assets endpoint includes the site namespace for WP.com sites")
+    func editorAssetsEndpointIncludesNamespace() async throws {
+        let context = self.context
+
+        let blog = BlogBuilder(context)
+            .with(atomic: false)
+            .isHostedAtWPcom()
+            .withAnAccount(username: "simpleuser", authToken: "simple-bearer-token")
+            .with(dotComID: 12345)
+            .build()
+
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
+
+        #expect(
+            config.editorAssetsEndpoint
+                == URL(string: "https://public-api.wordpress.com/wpcom/v2/sites/12345/editor-assets"),
+            "Should insert the site namespace before the endpoint"
+        )
+    }
 }

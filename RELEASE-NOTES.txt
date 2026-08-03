@@ -1,5 +1,6 @@
 27.2
 -----
+* [*] Experimental Gutenberg editor: fix block assets not loading on self-hosted sites that use plain permalinks [#25859]
 
 
 27.1
