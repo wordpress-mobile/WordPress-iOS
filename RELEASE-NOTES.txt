@@ -1,5 +1,6 @@
 27.2
 -----
+* [*] Stop the media picker from removing gallery images when you cancel it in the experimental editor [#25866]
 
 
 27.1
