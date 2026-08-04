@@ -3,6 +3,8 @@ import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import WebKit
+import WordPressApiCache
+import WordPressCore
 
 extension AccountService {
     // MARK: - Current Account
@@ -47,6 +49,8 @@ extension AccountService {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext) else {
             return
         }
+
+        WordPressApiCache.shared.removeCachedData(for: account.blogs ?? [])
 
         let objectID = TaggedManagedObjectID(account)
         coreDataStack.performAndSave { context in

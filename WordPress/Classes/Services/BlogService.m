@@ -344,6 +344,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     DDLogInfo(@"<Blog:%@> remove", blog.displayURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
     [self unscheduleBloggingRemindersFor:blog];
+    [self removeWordPressApiCachedDataForBlog:blog];
 
     WPAccount *account = blog.account;
 
