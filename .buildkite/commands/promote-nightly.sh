@@ -1,11 +1,9 @@
 #!/bin/bash -eu
 
-# Promotes the last build of the day to the nightly group. No build — just gems + secrets.
+# Promotes the last build of the day to the nightly group. No build — just gems.
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
-
-"$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
 
 echo "--- :new_moon: Promoting last build of the day to nightly beta"
 # The lane refuses to run anywhere but trunk.

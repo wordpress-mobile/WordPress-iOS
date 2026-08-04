@@ -18,8 +18,6 @@ steps:
       echo '--- :ruby: Setup Ruby tools'
       install_gems
 
-      .buildkite/commands/install-secrets.sh
-
       echo '--- :shipit: Update relaese notes and other App Store metadata'
       bundle exec fastlane update_appstore_strings skip_confirm:true
     retry:

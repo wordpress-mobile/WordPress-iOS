@@ -18,8 +18,6 @@ steps:
       echo '--- :ruby: Setup Ruby tools'
       install_gems
 
-      .buildkite/commands/install-secrets.sh
-
       echo '--- :shipit: Run code freeze'
       bundle exec fastlane code_freeze version:"${RELEASE_VERSION}" skip_confirm:true
     retry:

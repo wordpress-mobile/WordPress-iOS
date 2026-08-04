@@ -14,7 +14,5 @@ source use-bot-for-git
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
-"$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
-
 echo '--- :shipit: Complete code freeze'
 bundle exec fastlane complete_code_freeze skip_confirm:true

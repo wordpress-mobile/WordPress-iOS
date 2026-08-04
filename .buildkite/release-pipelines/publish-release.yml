@@ -19,8 +19,6 @@ steps:
       echo '--- :ruby: Setup Ruby tools'
       install_gems
 
-      .buildkite/commands/install-secrets.sh
-
       echo '--- :package: Publish Release'
       bundle exec fastlane publish_release skip_confirm:true
     retry:
