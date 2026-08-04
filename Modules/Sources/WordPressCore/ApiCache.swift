@@ -5,6 +5,16 @@ import WordPressApiCache
 import WordPressShared
 
 extension WordPressApiCache {
+    /// The one cache instance shared by every `WordPressClient`.
+    ///
+    /// A single SQLite database backs the cache for the whole app, so every
+    /// `WordPressApiCache` instance opens and migrates the same file.
+    /// Bootstrapping more than one concurrently can fail and destroy a
+    /// database still in use by another; sharing one instance keeps that to a
+    /// single bootstrap. Swift's once-only static initialization guarantees
+    /// it happens once per process.
+    public static let shared = WordPressApiCache.bootstrap()
+
     /// A failure encountered while opening the on-disk cache. It carries the
     /// point of failure and the underlying error so the two can be reported
     /// together for Sentry classification.
@@ -32,7 +42,7 @@ extension WordPressApiCache {
         case failed(OnDiskCacheFailure)
     }
 
-    static func bootstrap() -> WordPressApiCache {
+    private static func bootstrap() -> WordPressApiCache {
         let cacheURL = URL.libraryDirectory.appending(path: "app.sqlite")
 
         let cache: WordPressApiCache
@@ -159,6 +169,10 @@ extension WordPressApiCache {
     }
 
     private static func memoryCache() -> WordPressApiCache {
+        // Fallback when the on-disk cache cannot be opened. Because the cache
+        // is a process-wide singleton, this degradation lasts the whole
+        // session by design; the cache is refetchable, so the cost is a cold
+        // cache until relaunch.
         // Creating an in-memory database should always succeed.
         let cache = try! WordPressApiCache()
         _ = try! cache.performMigrations()

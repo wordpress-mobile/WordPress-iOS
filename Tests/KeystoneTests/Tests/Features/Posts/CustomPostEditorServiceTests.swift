@@ -276,7 +276,7 @@ private func makeService(
         api: api,
         siteURL: URL(string: "https://example.com")!
     )
-    let wpService = try api.createService(cache: .bootstrap())
+    let wpService = try api.createService(cache: .shared)
 
     return CustomPostEditorService(
         blog: blog,

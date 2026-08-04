@@ -110,4 +110,15 @@ struct ApiCacheBootstrapTests {
         }
         #expect(failure.kind == .couldNotOpenDatabase)
     }
+
+    @Test func clientsShareSingleCacheInstance() async {
+        let clientA = WordPressClient(api: MockWordPressClientAPI(), siteURL: URL(string: "https://example.com")!)
+        let clientB = WordPressClient(api: MockWordPressClientAPI(), siteURL: URL(string: "https://example.org")!)
+
+        let cacheA = await clientA.cache
+        let cacheB = await clientB.cache
+
+        #expect(cacheA === cacheB)
+        #expect(cacheA === WordPressApiCache.shared)
+    }
 }
