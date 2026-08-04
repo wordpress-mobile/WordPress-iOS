@@ -33,7 +33,7 @@ extension GutenbergKit.EditorViewControllerDelegate {
     }
 }
 
-private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString) -> String {
+private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString) -> String? {
     switch value {
     case .showMore:
         NSLocalizedString(
@@ -91,6 +91,24 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "All",
             comment: "Category name for section showing all patterns"
         )
+    case .patternsCount(let count):
+        if count == 1 {
+            NSLocalizedString(
+                "editor.patterns.count.singular",
+                value: "1 pattern",
+                comment: "Singular label displaying the number of patterns in a category"
+            )
+        } else {
+            String(
+                format: NSLocalizedString(
+                    "editor.patterns.count.plural",
+                    value: "%1$d patterns",
+                    comment:
+                        "Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns."
+                ),
+                count
+            )
+        }
     case .loadingEditor:
         NSLocalizedString(
             "editor.loading.title",
@@ -134,11 +152,17 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Dismiss",
             comment: "Button title to dismiss the Lockdown Mode warning"
         )
+    // Declining a key lets the editor render its own string, so strings added
+    // by a newer GutenbergKit appear in English rather than breaking this build.
+    // `@unknown` because a plain `default` warns that it will never execute
+    // while this switch happens to cover every case.
+    @unknown default:
+        nil
     }
 }
 
 extension EditorLocalizableString {
-    var localized: String {
+    var localized: String? {
         getLocalizedString(for: self)
     }
 }
