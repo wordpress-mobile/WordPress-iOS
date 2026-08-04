@@ -5,7 +5,11 @@ set -euo pipefail
 # The committed .age blob is the versioned source of the decrypted secrets file.
 # Where a8c-secrets puts the plaintext is the tool's business, so ask it rather
 # than spelling out its layout here.
-ENCRYPTED_SECRETS_FILE="${SRCROOT}/../.a8c-secrets/Secrets.swift.age"
+#
+# Reach the repo root by trimming SRCROOT's last component rather than appending
+# `/..`: the input file list this path is matched against is the one Xcode
+# resolved, and Xcode collapses `..` when it writes it.
+ENCRYPTED_SECRETS_FILE="${SRCROOT%/*}/.a8c-secrets/Secrets.swift.age"
 
 # To help the Xcode build system optimize the build, we want to ensure each of
 # the secrets we want to copy is defined as an input file for the run script
