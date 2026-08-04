@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Source this, don't execute it: the `Generate Credentials` build phase resolves
+# `a8c-secrets` off PATH, and a child process would take the export below with it.
+
 set -euo pipefail
 
 # `install_a8c-secrets_binary` comes from the a8c-ci-toolkit plugin. It pins the
