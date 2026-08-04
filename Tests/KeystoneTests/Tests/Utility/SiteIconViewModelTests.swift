@@ -93,6 +93,45 @@ final class SiteIconViewModelTests: XCTestCase {
         XCTAssertEqual(optimizedURL, expectedURL)
     }
 
+    // MARK: - Host matching
+
+    /// Tests that a third-party URL whose query mentions a WP.com host is still wrapped in Photon.
+    func testLookalikeQueryIsNotTreatedAsDotcom() {
+        // Given
+        let path = "https://attacker.example.com/icon.png?u=.files.wordpress.com"
+
+        // When
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
+
+        // Then
+        XCTAssertEqual(optimizedURL?.host, "i0.wp.com")
+    }
+
+    /// Tests that a Gravatar-lookalike path on a third-party host is still wrapped in Photon.
+    func testLookalikePathIsNotTreatedAsBlavatar() {
+        // Given
+        let path = "https://attacker.example.com/gravatar.com/blavatar/123"
+
+        // When
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
+
+        // Then
+        XCTAssertEqual(optimizedURL?.host, "i0.wp.com")
+    }
+
+    /// Tests that a WordPress.com subdomain is sized directly rather than wrapped in Photon.
+    func testWPComSubdomainIsTreatedAsDotcom() {
+        // Given
+        let path = "https://example.wordpress.com/icon.png"
+
+        // When
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
+
+        // Then
+        let size = 40 * Int(UIScreen.main.scale)
+        XCTAssertEqual(optimizedURL, URL(string: "\(path)?w=\(size)&h=\(size)"))
+    }
+
     // MARK: - Constants
 
     private struct Constants {

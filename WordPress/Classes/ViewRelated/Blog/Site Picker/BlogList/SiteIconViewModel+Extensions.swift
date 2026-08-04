@@ -35,10 +35,13 @@ extension SiteIconViewModel {
 extension SiteIconViewModel {
     /// Returns the Size Optimized URL for a given Path.
     static func optimizedURL(for path: String, imageSize: CGSize = SiteIconViewModel.Size.regular.size, isP2: Bool = false) -> URL? {
-        if isPhotonURL(path) || isDotcomURL(path) || isP2 {
+        guard let url = URL(string: path) else {
+            return nil
+        }
+        if url.isWordPressComHost || isP2 {
             return optimizedDotcomURL(from: path, imageSize: imageSize)
         }
-        if isBlavatarURL(path) {
+        if isBlavatarURL(url) {
             return optimizedBlavatarURL(from: path, imageSize: imageSize)
         }
         return optimizedPhotonURL(from: path, imageSize: imageSize)
@@ -61,23 +64,14 @@ extension SiteIconViewModel {
         return PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
     }
 
-    /// Indicates if the received URL is hosted at WordPress.com
+    /// Indicates if the received URL is a Gravatar blavatar. Matches the host exactly or as
+    /// a subdomain, never as a substring, so a lookalike URL can't skip the Photon proxy.
     ///
-    private static func isDotcomURL(_ path: String) -> Bool {
-        path.contains(".files.wordpress.com")
-    }
-
-    /// Indicates if the received URL is hosted at Gravatar.com
-    ///
-    private static func isBlavatarURL(_ path: String) -> Bool {
-        path.contains("gravatar.com/blavatar")
-    }
-
-    /// Indicates if the received URL is a Photon Endpoint
-    /// Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
-    ///
-    private static func isPhotonURL(_ path: String) -> Bool {
-        path.contains(".wp.com")
+    private static func isBlavatarURL(_ url: URL) -> Bool {
+        guard let host = url.host?.lowercased() else {
+            return false
+        }
+        return (host == "gravatar.com" || host.hasSuffix(".gravatar.com")) && url.path.hasPrefix("/blavatar")
     }
 
     /// Attempts to parse the URL contained within a Path, with a given query. Returns nil on failure.
@@ -107,7 +101,7 @@ extension SiteIconViewModel {
             }
             return nil
         }
-        if isBlavatarURL(iconURL) {
+        if let url = URL(string: iconURL), isBlavatarURL(url) {
             return optimizedBlavatarURL(from: iconURL, imageSize: size)
         }
         return URL(string: iconURL)
