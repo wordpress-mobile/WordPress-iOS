@@ -523,6 +523,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Related posts table view
         relatedPostsTableView.reloadData()
+
+        // Tags collection view
+        tagsCollectionView.coordinator?.displaySetting = displaySetting
+        tagsCollectionView.reloadData()
     }
 
     /// Configure the webview
@@ -636,6 +640,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             configureTagsCollectionView()
         }
 
+        tagsCollectionView.coordinator?.displaySetting = displaySetting
         tagsCollectionView.topics = tags
         scrollView.layoutIfNeeded()
     }
