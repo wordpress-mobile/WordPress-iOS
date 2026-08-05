@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-# Source this, don't execute it: the `Generate Credentials` build phase resolves
-# `a8c-secrets` off PATH, and a child process would take the export below with it.
+# The `Generate Credentials` build phase resolves `a8c-secrets` off PATH, so the
+# export below has to survive in the caller's shell.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  echo "This script must be sourced, not executed, because it exports PATH." >&2
+  exit 1
+fi
 
 set -euo pipefail
 
