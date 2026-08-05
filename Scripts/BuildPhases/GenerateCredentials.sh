@@ -65,18 +65,11 @@ ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
 SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
-# Only rewrite the destination when the content changed: a checkout can bump an
-# input's mtime without the secrets themselves changing, and an unconditional
-# copy would then force a recompile of Secrets.swift.
-function copy_if_changed() {
-  cmp -s "$1" "$SECRETS_DESTINATION_FILE" || cp -v "$1" "$SECRETS_DESTINATION_FILE"
-}
-
 # `a8c-secrets which` exits non-zero when the file has not been decrypted yet.
 # WordPress, Jetpack, and Reader use all the same secrets at this time.
 if command -v a8c-secrets > /dev/null 2>&1 && SECRETS_FILE=$(a8c-secrets which Secrets.swift 2>/dev/null); then
     echo "Applying Production Secrets"
-    copy_if_changed "$SECRETS_FILE"
+    cp -v "$SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
     exit 0
 fi
 
@@ -91,7 +84,7 @@ if [ -f "$LOCAL_SECRETS_FILE" ]; then
 
     echo "warning: Using local Secrets from $LOCAL_SECRETS_FILE. If you are an external contributor, this is expected and you can ignore this warning. If you are an internal contributor, make sure to use our shared credentials instead."
     echo "Applying Local Secrets"
-    copy_if_changed "$LOCAL_SECRETS_FILE"
+    cp -v "$LOCAL_SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
     exit 0
 fi
 
@@ -113,6 +106,6 @@ case $CONFIGURATION in
   *)
     echo "warning: $COULD_NOT_FIND_SECRET_MSG. Falling back to $EXAMPLE_SECRETS_FILE. In a Release build, this would be an error. $INTERNAL_CONTRIBUTOR_MSG. $EXTERNAL_CONTRIBUTOR_MSG."
     echo "Applying Example Secrets"
-    copy_if_changed "$EXAMPLE_SECRETS_FILE"
+    cp -v "$EXAMPLE_SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
     ;;
 esac
