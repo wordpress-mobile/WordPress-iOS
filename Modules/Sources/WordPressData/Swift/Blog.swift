@@ -68,17 +68,25 @@ public class Blog: NSManagedObject {
     // MARK: - Non-Core Data Properties
 
     private var _xmlrpcApi: WordPressOrgXMLRPCApi?
+    private var _xmlrpcApiEndpoint: URL?
     private var _selfHostedSiteRestApi: WordPressOrgRestApi?
 
     @objc public var xmlrpcApi: WordPressOrgXMLRPCApi? {
         get {
-            if _xmlrpcApi == nil, let endpoint = xmlrpc.flatMap(URL.init(string:)) {
-                _xmlrpcApi = WordPressOrgXMLRPCApi(endpoint: endpoint, userAgent: WPUserAgent.wordPress())
+            let endpoint = xmlrpcURL
+            // The endpoint depends on both `xmlrpc` and `url` (via `xmlrpcURL`), and
+            // `url` can change without clearing this cache (including through a merge
+            // from another Core Data context). Rebuild whenever the computed endpoint
+            // changes so a cached client never keeps sending to a stale endpoint.
+            if _xmlrpcApiEndpoint != endpoint {
+                _xmlrpcApi = endpoint.map { WordPressOrgXMLRPCApi(endpoint: $0, userAgent: WPUserAgent.wordPress()) }
+                _xmlrpcApiEndpoint = endpoint
             }
             return _xmlrpcApi
         }
         set {
             _xmlrpcApi = newValue
+            _xmlrpcApiEndpoint = newValue == nil ? nil : xmlrpcURL
         }
     }
 

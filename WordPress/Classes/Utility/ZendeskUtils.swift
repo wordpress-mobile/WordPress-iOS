@@ -626,7 +626,7 @@ private extension ZendeskUtils {
         // Get email address from remote profile
         guard let username = blog.username,
             let password = blog.password,
-            let xmlrpc = blog.xmlrpc,
+            let xmlrpc = blog.xmlrpcURL?.absoluteString,
             let service = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
                 return
         }
