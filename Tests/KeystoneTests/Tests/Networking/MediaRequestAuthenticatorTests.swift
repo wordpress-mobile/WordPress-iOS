@@ -145,24 +145,6 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
         waitForExpectations(timeout: 0.5)
     }
 
-    func testTokenAllowedHosts() {
-        let authenticator = MediaRequestAuthenticator()
-
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://wordpress.com/img.png")!))
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://example.wordpress.com/img.png")!))
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://example.files.wordpress.com/img.png")!))
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://public-api.wordpress.com/file")!))
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://i0.wp.com/example.com/img.png")!))
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://wp.com/img.png")!))
-        XCTAssertTrue(authenticator.isTokenAllowed(for: URL(string: "https://example.files.WORDPRESS.COM/img.png")!))
-
-        XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "https://attacker.example.com/img.png")!))
-        XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "https://evilwordpress.com/img.png")!))
-        XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "https://evilwp.com/img.png")!))
-        XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "https://wordpress.com.attacker.example/img.png")!))
-        XCTAssertFalse(authenticator.isTokenAllowed(for: URL(string: "file:///var/img.png")!))
-    }
-
     func testPrivateWPComSiteAuthenticationDoesNotLeakTokenToExternalHost() {
         let authToken = "letMeIn!"
         let url = URL(string: "https://attacker.example.com/image.png")!

@@ -65,7 +65,7 @@ struct MediaRequestAuthenticator {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
-        guard isTokenAllowed(for: url) else {
+        guard url.isWordPressComHost else {
             let request = URLRequest(url: url)
             provide(request)
             return
@@ -117,7 +117,7 @@ struct MediaRequestAuthenticator {
     }
 
     private func authenticatedAsset(for url: URL, authToken: String) -> AVURLAsset {
-        guard isTokenAllowed(for: url) else {
+        guard url.isWordPressComHost else {
             Loggers.networking.warning("Refusing to attach the WP.com token to a non-WP.com host: \(url.host ?? "no host")")
             return AVURLAsset(url: url)
         }
@@ -282,7 +282,7 @@ struct MediaRequestAuthenticator {
     ///     - authToken: the Bearer token to add to the resulting request.
     ///
     private func tokenAuthenticatedWPComRequest(for url: URL, authToken: String) -> URLRequest {
-        guard isTokenAllowed(for: url) else {
+        guard url.isWordPressComHost else {
             Loggers.networking.warning("Refusing to attach the WP.com token to a non-WP.com host: \(url.host ?? "no host")")
             return URLRequest(url: url)
         }
@@ -290,21 +290,5 @@ struct MediaRequestAuthenticator {
         var request = URLRequest(url: url)
         request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         return request
-    }
-
-    /// Whether the URL's host is WordPress.com infrastructure that may receive the WP.com
-    /// Bearer token. The token is account-wide, so sending it to any host outside this
-    /// allowlist (including a private site's own mapped custom domain, which the site owner
-    /// controls) would let a malicious site owner capture it.
-    ///
-    /// Internal rather than private so unit tests can exercise the allowlist directly.
-    func isTokenAllowed(for url: URL) -> Bool {
-        // DNS hostnames are case-insensitive (RFC 4343), but URL.host preserves the
-        // input casing, so lowercase before matching the allowlist.
-        guard let host = url.host?.lowercased() else {
-            return false
-        }
-        return host == "wordpress.com" || host.hasSuffix(".wordpress.com")
-            || host == "wp.com" || host.hasSuffix(".wp.com")
     }
 }
