@@ -69,7 +69,7 @@ mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 # WordPress, Jetpack, and Reader use all the same secrets at this time.
 if command -v a8c-secrets > /dev/null 2>&1 && SECRETS_FILE=$(a8c-secrets which Secrets.swift 2>/dev/null); then
     echo "Applying Production Secrets"
-    cp -v "$SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
+    cp "$SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
     exit 0
 fi
 
@@ -84,7 +84,7 @@ if [ -f "$LOCAL_SECRETS_FILE" ]; then
 
     echo "warning: Using local Secrets from $LOCAL_SECRETS_FILE. If you are an external contributor, this is expected and you can ignore this warning. If you are an internal contributor, make sure to use our shared credentials instead."
     echo "Applying Local Secrets"
-    cp -v "$LOCAL_SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
+    cp "$LOCAL_SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
     exit 0
 fi
 
@@ -106,6 +106,6 @@ case $CONFIGURATION in
   *)
     echo "warning: $COULD_NOT_FIND_SECRET_MSG. Falling back to $EXAMPLE_SECRETS_FILE. In a Release build, this would be an error. $INTERNAL_CONTRIBUTOR_MSG. $EXTERNAL_CONTRIBUTOR_MSG."
     echo "Applying Example Secrets"
-    cp -v "$EXAMPLE_SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
+    cp "$EXAMPLE_SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
     ;;
 esac
