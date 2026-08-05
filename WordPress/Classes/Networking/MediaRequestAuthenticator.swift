@@ -65,7 +65,7 @@ struct MediaRequestAuthenticator {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
-        guard !url.isFileURL || url.isHostedAtWPCom || url.isPhoton() else {
+        guard url.isWordPressComHost else {
             let request = URLRequest(url: url)
             provide(request)
             return
@@ -117,9 +117,21 @@ struct MediaRequestAuthenticator {
     }
 
     private func authenticatedAsset(for url: URL, authToken: String) -> AVURLAsset {
+        guard url.isWordPressComHost else {
+            Loggers.networking.warning("Refusing to attach the WP.com token to a non-WP.com host: \(url.host ?? "no host")")
+            return AVURLAsset(url: url)
+        }
+
+        // Just in case, enforce HTTPs
+        var finalURL = url
+        if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            components.scheme = secureHttpScheme
+            finalURL = components.url ?? url
+        }
+
         let headers: [String: String] = ["Authorization": "Bearer \(authToken)"]
 
-        return AVURLAsset(url: url, options: [
+        return AVURLAsset(url: finalURL, options: [
             "AVURLAssetHTTPHeaderFieldsKey": headers
         ])
     }
@@ -270,6 +282,11 @@ struct MediaRequestAuthenticator {
     ///     - authToken: the Bearer token to add to the resulting request.
     ///
     private func tokenAuthenticatedWPComRequest(for url: URL, authToken: String) -> URLRequest {
+        guard url.isWordPressComHost else {
+            Loggers.networking.warning("Refusing to attach the WP.com token to a non-WP.com host: \(url.host ?? "no host")")
+            return URLRequest(url: url)
+        }
+
         var request = URLRequest(url: url)
         request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         return request

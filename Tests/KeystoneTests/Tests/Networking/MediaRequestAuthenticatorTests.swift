@@ -144,4 +144,81 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
         waitForExpectations(timeout: 0.5)
     }
+
+    func testPrivateWPComSiteAuthenticationDoesNotLeakTokenToExternalHost() {
+        let authToken = "letMeIn!"
+        let url = URL(string: "https://attacker.example.com/image.png")!
+        let authenticator = MediaRequestAuthenticator()
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateWPComSite(authToken: authToken),
+            onComplete: { request in
+                let hasAuthorizationHeader = request.allHTTPHeaderFields?.contains(where: { $0.key == "Authorization" }) ?? false
+
+                XCTAssertFalse(hasAuthorizationHeader)
+                XCTAssertEqual(request.url, url)
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+    }
+
+    func testPrivateWPComSiteAuthenticationDoesNotLeakTokenToLookalikeHost() {
+        let authToken = "letMeIn!"
+        let url = URL(string: "https://evilwordpress.com/image.png")!
+        let authenticator = MediaRequestAuthenticator()
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateWPComSite(authToken: authToken),
+            onComplete: { request in
+                let hasAuthorizationHeader = request.allHTTPHeaderFields?.contains(where: { $0.key == "Authorization" }) ?? false
+
+                XCTAssertFalse(hasAuthorizationHeader)
+                XCTAssertEqual(request.url, url)
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+    }
+
+    func testPrivateWPComSiteAuthenticationForPhotonURL() {
+        let authToken = "letMeIn!"
+        let url = URL(string: "https://i0.wp.com/example.files.wordpress.com/image.png")!
+        let authenticator = MediaRequestAuthenticator()
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateWPComSite(authToken: authToken),
+            onComplete: { request in
+                let hasAuthorizationHeader = request.allHTTPHeaderFields?.contains(where: {
+                    $0.key == "Authorization" && $0.value == "Bearer \(authToken)"
+                }) ?? false
+
+                XCTAssertTrue(hasAuthorizationHeader)
+                XCTAssertEqual(request.url, url)
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+    }
+
+    /// `AVURLAsset` does not expose its options dictionary, so the tests use the URL as the
+    /// observable: the authenticated branch upgrades http to https, the unauthenticated
+    /// branch leaves the URL untouched. `testTokenAllowedHosts` covers the allowlist itself.
+    func testPrivateWPComSiteAssetForExternalHostIsNotAuthenticated() async throws {
+        let authenticator = MediaRequestAuthenticator()
+        let url = URL(string: "http://attacker.example.com/video.mp4")!
+
+        let asset = try await authenticator.authenticatedAsset(for: url, host: .privateWPComSite(authToken: "letMeIn!"))
+
+        XCTAssertEqual(asset.url, url)
+    }
+
+    func testPrivateWPComSiteAssetForWPComHostIsAuthenticated() async throws {
+        let authenticator = MediaRequestAuthenticator()
+        let url = URL(string: "http://example.files.wordpress.com/video.mp4")!
+
+        let asset = try await authenticator.authenticatedAsset(for: url, host: .privateWPComSite(authToken: "letMeIn!"))
+
+        XCTAssertEqual(asset.url, URL(string: "https://example.files.wordpress.com/video.mp4")!)
+    }
 }
