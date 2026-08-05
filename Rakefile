@@ -17,7 +17,7 @@ desc 'Install required dependencies'
 task dependencies: %w[dependencies:check dependencies:gutenberg_xcframeworks]
 
 namespace :dependencies do
-  task check: %w[ruby:check bundler:check bundle:check credentials:apply]
+  task check: %w[ruby:check bundler:check bundle:check]
 
   namespace :ruby do
     task :check do
@@ -73,23 +73,6 @@ namespace :dependencies do
     end
     CLOBBER << 'vendor/bundle'
     CLOBBER << '.bundle'
-  end
-
-  namespace :credentials do
-    task :apply do
-      # External contributors build with their own credentials and never install the tool.
-      unless command?('a8c-secrets')
-        puts 'Skipping secrets decryption: `a8c-secrets` is not installed. Internal contributors, see https://github.com/Automattic/a8c-secrets.'
-        next
-      end
-
-      sh('a8c-secrets', 'decrypt') do |ok, _res|
-        next if ok
-
-        # Not fatal: the build phase falls back to the example secrets and errors on its own for Release builds.
-        puts 'Failed to decrypt secrets. See https://github.com/Automattic/a8c-secrets for setup and troubleshooting.'
-      end
-    end
   end
 
   desc 'Download and extract Gutenberg xcframeworks'
