@@ -10,6 +10,7 @@ import WordPressShared
 import BuildSettingsKit
 import SVProgressHUD
 import WordPressSharedUI
+import WordPressUI
 
 struct SelfHostedSiteAuthenticator {
 
@@ -193,7 +194,12 @@ struct SelfHostedSiteAuthenticator {
             {
                 credentials = parsed
             } else {
-                credentials = try await authenticate(details: details, from: viewController)
+                let authenticated = try await authenticate(details: details, from: viewController)
+                credentials = WpApiApplicationPasswordDetails(
+                    siteUrl: details.sanitizedSiteUrl(authenticated.siteUrl),
+                    userLogin: authenticated.userLogin,
+                    password: authenticated.password
+                )
             }
 
             let apiRootURL = details.apiRootUrl.asURL()
@@ -212,6 +218,36 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
+    private func confirmInsecureConnection(host: String, from viewController: UIViewController) async -> Bool {
+        // The continuation is resumed only by the alert actions, matching the app's existing
+        // alert-to-async bridging. The alert is app-modal, so the only way it resolves without an
+        // action is the login flow being torn down while it is on screen. We accept that narrow edge
+        // case (a suspended continuation on an already-cancelled task) rather than add cancellation
+        // plumbing here.
+        await withCheckedContinuation { continuation in
+            let alert = UIAlertController(
+                title: Strings.insecureConnectionTitle,
+                message: Strings.insecureConnectionMessage(host: host),
+                preferredStyle: .alert
+            )
+            alert.addAction(
+                UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel) { _ in
+                    continuation.resume(returning: false)
+                }
+            )
+            alert.addAction(
+                UIAlertAction(title: Strings.insecureConnectionContinue, style: .destructive) { _ in
+                    continuation.resume(returning: true)
+                }
+            )
+            // The sign-in entry points hand us a controller that is already presenting the SwiftUI
+            // login flow, so present from the topmost controller to avoid a no-op present that would
+            // leave the continuation suspended forever.
+            viewController.topmostPresentedViewController.present(alert, animated: true)
+        }
+    }
+
+    @MainActor
     private func authenticate(
         details: AutoDiscoveryAttemptSuccess,
         from viewController: UIViewController
@@ -226,6 +262,14 @@ struct SelfHostedSiteAuthenticator {
                 )
             )
             throw .authentication(failure)
+        }
+
+        if let insecureDestination = details.insecureURL {
+            let host = insecureDestination.host(percentEncoded: false) ?? details.parsedSiteUrl.url()
+            let proceed = await confirmInsecureConnection(host: host, from: viewController)
+            guard proceed else {
+                throw .cancelled
+            }
         }
 
         let appId = Self.wordPressAppId
@@ -678,4 +722,63 @@ private final class EmptyAppNotifier: WpAppNotifier {
     func requestedWithInvalidAuthentication(requestUrl: String) async {
         // Do nothing.
     }
+}
+
+private extension AutoDiscoveryAttemptSuccess {
+    /// The first pre-authorization destination that would receive credentials over an unencrypted
+    /// connection, or nil when the whole flow is secure.
+    ///
+    /// The API root is included because discovery takes it verbatim from the site's Link header,
+    /// and a misconfigured https site can advertise an http API root that would receive the
+    /// application password.
+    var insecureURL: URL? {
+        var destinations = [parsedSiteUrl.asURL(), apiRootUrl.asURL()]
+        if case let .applicationPasswords(authUrl) = authentication {
+            destinations.append(authUrl.asURL())
+        }
+        return destinations.first(where: \.isInsecureConnection)
+    }
+
+    /// Sanitizes the site URL returned by the authorization callback before it is persisted as the
+    /// blog URL and used for XML-RPC discovery.
+    ///
+    /// When the pre-authorization flow was fully secure (the user was never warned), an http value
+    /// here is site misconfiguration and must not silently downgrade later traffic, so its scheme is
+    /// upgraded to https. When the user consented to an insecure flow, the value is left alone.
+    func sanitizedSiteUrl(_ callbackSiteUrl: String) -> String {
+        guard insecureURL == nil,
+            let url = URL(string: callbackSiteUrl),
+            url.isInsecureConnection,
+            var components = URLComponents(string: callbackSiteUrl)
+        else {
+            return callbackSiteUrl
+        }
+        components.scheme = "https"
+        return components.string ?? callbackSiteUrl
+    }
+}
+
+private enum Strings {
+    static let insecureConnectionTitle = NSLocalizedString(
+        "addSite.selfHosted.insecureConnectionAlert.title",
+        value: "This site doesn't use a secure connection",
+        comment: "Title of an alert warning the user that the self-hosted site uses an unencrypted HTTP connection"
+    )
+
+    static func insecureConnectionMessage(host: String) -> String {
+        let format = NSLocalizedString(
+            "addSite.selfHosted.insecureConnectionAlert.message",
+            value:
+                "%@ uses HTTP, which is not encrypted. Your username, password, and site data could be seen by others on the network. Do you want to continue?",
+            comment:
+                "Message of an alert warning the user that the self-hosted site uses an unencrypted HTTP connection. The first argument is the site's host name."
+        )
+        return String(format: format, host)
+    }
+
+    static let insecureConnectionContinue = NSLocalizedString(
+        "addSite.selfHosted.insecureConnectionAlert.continue",
+        value: "Continue Anyway",
+        comment: "Button to proceed with signing in to a self-hosted site over an unencrypted HTTP connection"
+    )
 }
