@@ -60,7 +60,7 @@ extension SiteIconViewModel {
     init(feed: ReaderFeed, faviconURL: URL? = nil, size: Size = .regular) {
         self.init(size: size)
         if let iconURL = feed.iconURL {
-            self.imageURL = SiteIconViewModel.optimizedURL(for: iconURL.absoluteString, imageSize: size.size)
+            self.imageURL = SiteIconViewModel.optimizedURL(for: iconURL, imageSize: size.size)
         } else if let faviconURL {
             self.imageURL = faviconURL
         }
@@ -75,7 +75,8 @@ private extension ReaderFeed {
             return nil
         }
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-            let host = components.host else {
+            let host = components.host
+        else {
             return url.absoluteString
         }
 

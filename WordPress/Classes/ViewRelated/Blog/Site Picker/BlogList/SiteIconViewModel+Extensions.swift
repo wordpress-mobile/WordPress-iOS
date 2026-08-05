@@ -13,7 +13,7 @@ extension SiteIconViewModel {
         self.firstLetter = blog.title?.first
 
         if let icon = blog.iconURL {
-            self.imageURL = SiteIconViewModel.optimizedURL(for: icon.absoluteString, imageSize: size.size, isP2: blog.isAutomatticP2)
+            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size, isP2: blog.isAutomatticP2)
             self.host = MediaHost(blog)
         }
     }
@@ -33,35 +33,35 @@ extension SiteIconViewModel {
 // MARK: - SiteIconViewModel (Optimized URL)
 
 extension SiteIconViewModel {
-    /// Returns the Size Optimized URL for a given Path.
-    static func optimizedURL(for path: String, imageSize: CGSize = SiteIconViewModel.Size.regular.size, isP2: Bool = false) -> URL? {
-        guard let url = URL(string: path) else {
-            return nil
-        }
+    /// Returns the size-optimized URL for a given URL.
+    static func optimizedURL(
+        for url: URL,
+        imageSize: CGSize = SiteIconViewModel.Size.regular.size,
+        isP2: Bool = false
+    ) -> URL? {
         if url.isWordPressComHost || isP2 {
-            return optimizedDotcomURL(from: path, imageSize: imageSize)
+            return optimizedDotcomURL(from: url, imageSize: imageSize)
         }
         if isBlavatarURL(url) {
-            return optimizedBlavatarURL(from: path, imageSize: imageSize)
+            return optimizedBlavatarURL(from: url, imageSize: imageSize)
         }
-        return optimizedPhotonURL(from: path, imageSize: imageSize)
+        return optimizedPhotonURL(from: url, imageSize: imageSize)
     }
 
-    private static func optimizedDotcomURL(from path: String, imageSize: CGSize) -> URL? {
+    private static func optimizedDotcomURL(from url: URL, imageSize: CGSize) -> URL? {
         let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
         let query = String(format: "w=%d&h=%d", Int(size.width), Int(size.height))
-        return parseURL(path: path, query: query)
+        return parseURL(url: url, query: query)
     }
 
-    static func optimizedBlavatarURL(from path: String, imageSize: CGSize) -> URL? {
+    static func optimizedBlavatarURL(from url: URL, imageSize: CGSize) -> URL? {
         let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
         let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
-        return parseURL(path: path, query: query)
+        return parseURL(url: url, query: query)
     }
 
-    private static func optimizedPhotonURL(from path: String, imageSize: CGSize) -> URL? {
-        guard let url = URL(string: path) else { return nil }
-        return PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
+    private static func optimizedPhotonURL(from url: URL, imageSize: CGSize) -> URL? {
+        PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
     }
 
     /// Indicates if the received URL is a Gravatar blavatar. Matches the host exactly or as
@@ -74,9 +74,9 @@ extension SiteIconViewModel {
         return (host == "gravatar.com" || host.hasSuffix(".gravatar.com")) && url.path.hasPrefix("/blavatar")
     }
 
-    /// Attempts to parse the URL contained within a Path, with a given query. Returns nil on failure.
-    private static func parseURL(path: String, query: String) -> URL? {
-        guard var components = URLComponents(string: path) else {
+    /// Attempts to update a URL with a given query. Returns nil on failure.
+    private static func parseURL(url: URL, query: String) -> URL? {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return nil
         }
         components.query = query
@@ -101,10 +101,13 @@ extension SiteIconViewModel {
             }
             return nil
         }
-        if let url = URL(string: iconURL), isBlavatarURL(url) {
-            return optimizedBlavatarURL(from: iconURL, imageSize: size)
+        guard let url = URL(string: iconURL) else {
+            return nil
         }
-        return URL(string: iconURL)
+        if isBlavatarURL(url) {
+            return optimizedBlavatarURL(from: url, imageSize: size)
+        }
+        return url
     }
 
     private static func getHardcodedSiteIconURL(siteID: Int) -> URL? {
