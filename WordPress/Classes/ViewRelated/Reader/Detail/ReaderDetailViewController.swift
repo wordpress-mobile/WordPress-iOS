@@ -62,6 +62,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Wrapper for the Likes summary view
     @IBOutlet weak var likesContainerView: UIView!
 
+    /// Wrapper for the Tags collection view
+    @IBOutlet weak var tagsContainerView: UIView!
+
     /// The loading view, which contains all the ghost views
     @IBOutlet weak var actionStackView: UIStackView!
 
@@ -71,7 +74,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     /// The actual header
-    private lazy var header = ReaderDetailHeaderHostingView()
+    private lazy var header = ReaderPostHeaderView()
+    private var cachedExcerpt: String?
 
     /// Bottom toolbar helper
     private lazy var toolbar = ReaderDetailToolbar()
@@ -83,6 +87,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Likes summary view
     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
+
+    /// Tags collection view
+    private lazy var tagsCollectionView: TopicsCollectionView = {
+        TopicsCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    }()
 
     /// View used to show errors
     private let noResultsViewController = NoResultsViewController.controller()
@@ -251,7 +260,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         toolbar.configure(for: post, in: self)
         updateToolbarItems()
-        header.configure(for: post)
+        cachedExcerpt = post.getUserProvidedExcerpt()
+        configureHeaderView(with: post)
+        updateTagsView(with: post)
         fetchLikes()
         fetchComments()
         checkTranslationAvailability()
@@ -363,7 +374,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private var allContentViews: [UIView] {
-        [webView, likesContainerView, commentsTableView, relatedPostsTableView, actionStackView]
+        [webView, tagsContainerView, likesContainerView, commentsTableView, relatedPostsTableView, actionStackView]
     }
 
     func fetchRelatedPostsIfNeeded(for post: ReaderPost) {
@@ -401,7 +412,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateHeader() {
-        header.refreshFollowButton()
+        guard let post else { return }
+        header.isSubscribed = post.isFollowing
     }
 
     func updateLikesView(with viewModel: ReaderDetailLikesViewModel) {
@@ -490,7 +502,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             headerContainerView.backgroundColor = displaySetting.color.background
 
             // Header view
-            header.displaySetting = displaySetting
+            header.apply(displaySetting)
         }
 
         // Update Reader Post web view
@@ -549,12 +561,25 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureHeader() {
-        header.displaySetting = displaySetting
+        header.apply(displaySetting)
         header.delegate = coordinator
+        header.translatesAutoresizingMaskIntoConstraints = false
         headerContainerView.addSubview(header)
-        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
-
         headerContainerView.pinSubviewToAllEdges(header)
+    }
+
+    private func configureHeaderView(with post: ReaderPost, customTitle: String? = nil) {
+        let featuredImageURL: URL? = post.contentIncludesFeaturedImage() ? nil : post.featuredImageURLForDisplay()
+        header.configure(with: ReaderPostHeaderView.ViewModel(
+            siteName: post.blogNameForDisplay(),
+            postTitle: customTitle ?? post.titleForDisplay(),
+            authorName: post.authorForDisplay() ?? "",
+            authorAvatarURL: post.avatarURLForDisplay(),
+            dateString: post.dateForDisplay()?.mediumStringWithTime(),
+            featuredImageURL: featuredImageURL,
+            excerpt: cachedExcerpt
+        ))
+        updateHeader()
     }
 
     private func fetchLikes() {
@@ -583,6 +608,42 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Because other components are constrained to the likesContainerView, simply hiding it leaves a gap.
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
+        view.setNeedsDisplay()
+    }
+
+    private func configureTagsCollectionView() {
+        tagsContainerView.addSubview(tagsCollectionView)
+        tagsContainerView.translatesAutoresizingMaskIntoConstraints = false
+        tagsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        tagsCollectionView.topicDelegate = self
+
+        NSLayoutConstraint.activate([
+            tagsCollectionView.topAnchor.constraint(equalTo: tagsContainerView.topAnchor),
+            tagsCollectionView.bottomAnchor.constraint(equalTo: tagsContainerView.bottomAnchor),
+            tagsCollectionView.leadingAnchor.constraint(equalTo: tagsContainerView.leadingAnchor),
+            tagsCollectionView.trailingAnchor.constraint(lessThanOrEqualTo: tagsContainerView.trailingAnchor)
+        ])
+    }
+
+    private func updateTagsView(with post: ReaderPost) {
+        let tags = post.tagsForDisplay()
+        guard !tags.isEmpty else {
+            hideTagsView()
+            return
+        }
+
+        if tagsCollectionView.superview == nil {
+            configureTagsCollectionView()
+        }
+
+        tagsCollectionView.topics = tags
+        scrollView.layoutIfNeeded()
+    }
+
+    private func hideTagsView() {
+        // Because other components are constrained to the tagsContainerView, simply hiding it leaves a gap.
+        tagsCollectionView.removeFromSuperview()
+        tagsContainerView.frame.size.height = 0
         view.setNeedsDisplay()
     }
 
@@ -687,7 +748,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             blurView.removeFromSuperview()
         }
 
-        header.configure(for: post, title: translationResults[0])
+        configureHeaderView(with: post, customTitle: translationResults[0])
         do {
             try await webView.setBodyHTML(translationResults[1])
         } catch {
@@ -897,7 +958,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
 
         if updated.contains(post) || refreshed.contains(post) {
-            header.configure(for: post)
+            configureHeaderView(with: post)
         }
     }
 }
@@ -1047,6 +1108,18 @@ extension ReaderDetailViewController: ReaderDisplaySettingStoreDelegate {
 extension ReaderDetailViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+}
+
+// MARK: - ReaderTopicCollectionViewCoordinatorDelegate
+
+extension ReaderDetailViewController: ReaderTopicCollectionViewCoordinatorDelegate {
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
+        self.coordinator?.showTopic(topic)
+    }
+
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
+        // Handle state changes if needed (expand/collapse)
     }
 }
 

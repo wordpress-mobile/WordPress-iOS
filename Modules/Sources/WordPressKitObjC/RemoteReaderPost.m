@@ -135,6 +135,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     self.sortDate = [self sortDateFromPostDictionary:dict];
     self.sortRank = @(self.sortDate.timeIntervalSinceReferenceDate);
     self.status = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyStatus]];
+    self.excerpt = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyExcerpt]];
     self.summary = [self postSummaryFromPostDictionary:dict orPostContent:self.content];
     self.tags = [self tagsFromPostDictionary:dict];
     self.isSharingEnabled = [[dict numberForKey:PostRESTKeySharingEnabled] boolValue];
