@@ -16,6 +16,7 @@
 			dependencies = (
 			);
 			name = "Decrypt Secrets";
+			productName = "Decrypt Secrets";
 		};
 		FFA8E22A1F94E3DE0002170F /* SwiftLint */ = {
 			isa = PBXAggregateTarget;
@@ -939,7 +940,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		0C798C582ED8DD2E0012F3E2 /* Build phase membership exception set */ = {
+		0C798C582ED8DD2E0012F3E2 /* Exceptions for "WordPressKitTests" folder in "Compile Sources" phase from "WordPressKitTests" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 4A8280F92E5FE9B60037E180 /* Sources */;
 			membershipExceptions = (
@@ -953,22 +954,16 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0C1CB0CD2D95C63C00494A8C /* Sources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
 		0C3313B82E0439A8000C3760 /* Miniature */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Miniature;
 			sourceTree = "<group>";
 		};
 		0C3313C62E0439A9000C3760 /* MiniatureTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = MiniatureTests;
 			sourceTree = "<group>";
 		};
@@ -1022,15 +1017,11 @@
 		};
 		0CED35262D959427003015CF /* Misc */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Misc;
 			sourceTree = "<group>";
 		};
 		0CFC380E2DA408BB00DB3386 /* Recoleta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Recoleta;
 			sourceTree = "<group>";
 		};
@@ -1053,7 +1044,7 @@
 		4A8280FE2E5FE9B60037E180 /* WordPressKitTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0C798C582ED8DD2E0012F3E2 /* Build phase membership exception set */,
+				0C798C582ED8DD2E0012F3E2 /* Exceptions for "WordPressKitTests" folder in "Compile Sources" phase from "WordPressKitTests" target */,
 			);
 			path = WordPressKitTests;
 			sourceTree = "<group>";
@@ -1330,7 +1321,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3FD4B20E2DCC468200781DFA /* Modules */,
@@ -2186,7 +2177,9 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -2377,7 +2370,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$HOME/.local/bin:$PATH\"\n\necho \"=== DECRYPT-SECRETS-AGGREGATE at $(date +%H:%M:%S) TARGET_NAME=${TARGET_NAME:-unset} CONFIGURATION=${CONFIGURATION:-unset}\"\n\nif ! command -v a8c-secrets > /dev/null 2>&1; then\n  echo \"warning: a8c-secrets not installed; skipping decrypt\"\n  exit 0\nfi\n\na8c-secrets decrypt --non-interactive\n";
+			shellScript = "\"${SRCROOT}/../Scripts/BuildPhases/DecryptSecrets.sh\"\n";
 		};
 		09607CE7281C9CA6002D2E5A /* [Lint] Check AppLocalizedString usage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3950,6 +3943,32 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		3F004C7A3022F6B50020B519 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Decrypt Secrets";
+			};
+			name = Debug;
+		};
+		3F004C7B3022F6B50020B519 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				PRODUCT_NAME = "Decrypt Secrets";
+			};
+			name = Release;
+		};
+		3F004C7C3022F6B50020B519 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "Decrypt Secrets";
+			};
+			name = "Release-Alpha";
 		};
 		4A8281032E5FE9B60037E180 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5526,9 +5545,9 @@
 		D53494F78D616808DCB4A45E /* Build configuration list for PBXAggregateTarget "Decrypt Secrets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2B337815727E4ACDF651E14C /* Release */,
-				EE6EA9F4BDC8A9037667035C /* Debug */,
-				582CEF48BA2BE648DA780C1F /* Release-Alpha */,
+				3F004C7A3022F6B50020B519 /* Debug */,
+				3F004C7B3022F6B50020B519 /* Release */,
+				3F004C7C3022F6B50020B519 /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
