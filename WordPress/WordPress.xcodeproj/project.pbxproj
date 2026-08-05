@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D53494F78D616808DCB4A45E /* Build configuration list for PBXAggregateTarget "Decrypt Secrets" */;
+			buildPhases = (
+				038B974054F8161836A4FE44 /* Decrypt Secrets */,
+			);
+			dependencies = (
+			);
+			name = "Decrypt Secrets";
+		};
 		FFA8E22A1F94E3DE0002170F /* SwiftLint */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = FFA8E22F1F94E3DE0002170F /* Build configuration list for PBXAggregateTarget "SwiftLint" */;
@@ -214,6 +224,13 @@
 			remoteGlobalIDString = 0107E0B128F97D5000DE87DB;
 			remoteInfo = JetpackStatsWidgets;
 		};
+		0622080DC83F4B988D9A7732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
 		0C3313C42E0439A9000C3760 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -227,6 +244,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0CED016F2D95B897003015CF;
 			remoteInfo = Keystone;
+		};
+		1D5A9F915AFDD37ADAE5B6B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
 		};
 		3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -249,6 +273,13 @@
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = WordPress;
 		};
+		67B2B1BD1B72EDCD56E09378 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
 		7358E6BD210BD318002323EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -262,6 +293,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 74576671202B558C00F42E40;
 			remoteInfo = WordPressDraftActionExtension;
+		};
+		769D3F36016EAF96E0A6942F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
 		};
 		8096212628E5411400940A5D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -290,6 +328,48 @@
 			proxyType = 1;
 			remoteGlobalIDString = 932225A61C7CE50300443B02;
 			remoteInfo = WordPressShare;
+		};
+		AC3931C50F6374EE6BE0878B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
+		B6AD221EACD79608CD4592DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
+		B6C4FB8D0B592DC550A800C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
+		B904E75B46BF37ED7B5187FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
+		D1DAAEDC31CAA402FE8A1DD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
+		};
+		D59FA597D783ED86B07C8D4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A4FB5FE91E0FB8978A881A4;
+			remoteInfo = "Decrypt Secrets";
 		};
 		E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -859,7 +939,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		0C798C582ED8DD2E0012F3E2 /* Exceptions for "WordPressKitTests" folder in "Compile Sources" phase from "WordPressKitTests" target */ = {
+		0C798C582ED8DD2E0012F3E2 /* Build phase membership exception set */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 4A8280F92E5FE9B60037E180 /* Sources */;
 			membershipExceptions = (
@@ -873,16 +953,22 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0C1CB0CD2D95C63C00494A8C /* Sources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
 		0C3313B82E0439A8000C3760 /* Miniature */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Miniature;
 			sourceTree = "<group>";
 		};
 		0C3313C62E0439A9000C3760 /* MiniatureTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MiniatureTests;
 			sourceTree = "<group>";
 		};
@@ -936,11 +1022,15 @@
 		};
 		0CED35262D959427003015CF /* Misc */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Misc;
 			sourceTree = "<group>";
 		};
 		0CFC380E2DA408BB00DB3386 /* Recoleta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Recoleta;
 			sourceTree = "<group>";
 		};
@@ -963,7 +1053,7 @@
 		4A8280FE2E5FE9B60037E180 /* WordPressKitTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0C798C582ED8DD2E0012F3E2 /* Exceptions for "WordPressKitTests" folder in "Compile Sources" phase from "WordPressKitTests" target */,
+				0C798C582ED8DD2E0012F3E2 /* Build phase membership exception set */,
 			);
 			path = WordPressKitTests;
 			sourceTree = "<group>";
@@ -1240,7 +1330,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				3FD4B20E2DCC468200781DFA /* Modules */,
@@ -1569,6 +1659,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FD201323F47B01659717FF80 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C3E79892DB164B3000C7072 /* JetpackStatsWidgets */,
@@ -1643,6 +1734,7 @@
 			);
 			dependencies = (
 				0C5A8A7B2D9B22F100C25301 /* PBXTargetDependency */,
+				6DB3D57911FC0C06F3D132CD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C5A3FAB2D9B1EF400C25301 /* Reader */,
@@ -1703,6 +1795,7 @@
 				932225B01C7CE50300443B02 /* PBXTargetDependency */,
 				7457667B202B558C00F42E40 /* PBXTargetDependency */,
 				7358E6BE210BD318002323EB /* PBXTargetDependency */,
+				3828A866957B1D2DD25E64C4 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C3C98902DA04EF9009F3BFB /* WordPress */,
@@ -1755,6 +1848,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				65CC6335ECE100E214DE55FE /* PBXTargetDependency */,
 			);
 			name = WordPressNotificationServiceExtension;
 			packageProductDependencies = (
@@ -1777,6 +1871,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				27FB1E0DB05514EA97FBA227 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C1CB0CD2D95C63C00494A8C /* Sources */,
@@ -1802,6 +1897,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0502FF518F1263A191852804 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C1CB0CD2D95C63C00494A8C /* Sources */,
@@ -1827,6 +1923,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D4295A73403A34F65E19CC82 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C1CB0CD2D95C63C00494A8C /* Sources */,
@@ -1852,6 +1949,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF65101CD8CB91DC81A54D2C /* PBXTargetDependency */,
 			);
 			name = JetpackNotificationServiceExtension;
 			packageProductDependencies = (
@@ -1874,6 +1972,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8852AC3D54E4A0AD8F746230 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C1CB0CD2D95C63C00494A8C /* Sources */,
@@ -1933,6 +2032,7 @@
 				8096212728E5411400940A5D /* PBXTargetDependency */,
 				8096219028E55F8600940A5D /* PBXTargetDependency */,
 				80F6D05F28EE88FC00953C1A /* PBXTargetDependency */,
+				48675A72EB62C7BDFF515517 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
@@ -2086,9 +2186,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
-			packageReferences = (
-			);
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -2110,6 +2208,7 @@
 				0C3313B62E0439A8000C3760 /* Miniature */,
 				0C3313C22E0439A9000C3760 /* MiniatureTests */,
 				4A8280FC2E5FE9B60037E180 /* WordPressKitTests */,
+				0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */,
 			);
 		};
 /* End PBXProject section */
@@ -2261,6 +2360,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		038B974054F8161836A4FE44 /* Decrypt Secrets */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Decrypt Secrets";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$HOME/.local/bin:$PATH\"\n\necho \"=== DECRYPT-SECRETS-AGGREGATE at $(date +%H:%M:%S) TARGET_NAME=${TARGET_NAME:-unset} CONFIGURATION=${CONFIGURATION:-unset}\"\n\nif ! command -v a8c-secrets > /dev/null 2>&1; then\n  echo \"warning: a8c-secrets not installed; skipping decrypt\"\n  exit 0\nfi\n\na8c-secrets decrypt --non-interactive\n";
+		};
 		09607CE7281C9CA6002D2E5A /* [Lint] Check AppLocalizedString usage */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -2738,6 +2856,12 @@
 			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
 			targetProxy = 0107E0EC28F97E6100DE87DB /* PBXContainerItemProxy */;
 		};
+		0502FF518F1263A191852804 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = D1DAAEDC31CAA402FE8A1DD8 /* PBXContainerItemProxy */;
+		};
 		0C3313C52E0439A9000C3760 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0C3313B62E0439A8000C3760 /* Miniature */;
@@ -2747,6 +2871,18 @@
 			isa = PBXTargetDependency;
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 			targetProxy = 0C5A8A7A2D9B22F100C25301 /* PBXContainerItemProxy */;
+		};
+		27FB1E0DB05514EA97FBA227 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = B904E75B46BF37ED7B5187FD /* PBXContainerItemProxy */;
+		};
+		3828A866957B1D2DD25E64C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = AC3931C50F6374EE6BE0878B /* PBXContainerItemProxy */;
 		};
 		3FCFFAFE2994A949002840C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2758,10 +2894,28 @@
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
 			targetProxy = 3FCFFAFF2994AB25002840C9 /* PBXContainerItemProxy */;
 		};
+		48675A72EB62C7BDFF515517 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = 1D5A9F915AFDD37ADAE5B6B3 /* PBXContainerItemProxy */;
+		};
 		4A8281022E5FE9B60037E180 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 			targetProxy = 4A8281012E5FE9B60037E180 /* PBXContainerItemProxy */;
+		};
+		65CC6335ECE100E214DE55FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = D59FA597D783ED86B07C8D4B /* PBXContainerItemProxy */;
+		};
+		6DB3D57911FC0C06F3D132CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = 0622080DC83F4B988D9A7732 /* PBXContainerItemProxy */;
 		};
 		7358E6BE210BD318002323EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2788,15 +2942,39 @@
 			target = 80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */;
 			targetProxy = 80F6D05E28EE88FC00953C1A /* PBXContainerItemProxy */;
 		};
+		8852AC3D54E4A0AD8F746230 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = 769D3F36016EAF96E0A6942F /* PBXContainerItemProxy */;
+		};
 		932225B01C7CE50300443B02 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
 			targetProxy = 932225AF1C7CE50300443B02 /* PBXContainerItemProxy */;
 		};
+		CF65101CD8CB91DC81A54D2C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = B6C4FB8D0B592DC550A800C3 /* PBXContainerItemProxy */;
+		};
+		D4295A73403A34F65E19CC82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = 67B2B1BD1B72EDCD56E09378 /* PBXContainerItemProxy */;
+		};
 		E16AB93F14D978520047A2E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 			targetProxy = E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */;
+		};
+		FD201323F47B01659717FF80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Decrypt Secrets";
+			target = 0A4FB5FE91E0FB8978A881A4 /* Decrypt Secrets */;
+			targetProxy = B6AD221EACD79608CD4592DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5341,6 +5519,16 @@
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
 				8546B4431BEAD39700193C07 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D53494F78D616808DCB4A45E /* Build configuration list for PBXAggregateTarget "Decrypt Secrets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B337815727E4ACDF651E14C /* Release */,
+				EE6EA9F4BDC8A9037667035C /* Debug */,
+				582CEF48BA2BE648DA780C1F /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
