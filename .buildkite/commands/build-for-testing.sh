@@ -16,7 +16,7 @@ fi
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
-source "$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/install-a8c-secrets.sh"
 
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane "build_${APP}_for_testing"
