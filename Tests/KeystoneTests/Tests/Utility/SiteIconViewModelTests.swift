@@ -108,9 +108,11 @@ final class SiteIconViewModelTests: XCTestCase {
     }
 
     /// Tests that a Gravatar-lookalike path on a third-party host is still wrapped in Photon.
+    /// The path needs an image extension: `PhotonImageURLHelper` declines to wrap
+    /// extension-less URLs and returns them unchanged.
     func testLookalikePathIsNotTreatedAsBlavatar() {
         // Given
-        let path = "https://attacker.example.com/gravatar.com/blavatar/123"
+        let path = "https://attacker.example.com/gravatar.com/blavatar/123.png"
 
         // When
         let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
