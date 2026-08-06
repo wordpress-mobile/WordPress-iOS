@@ -526,7 +526,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Tags collection view
         tagsCollectionView.coordinator?.displaySetting = displaySetting
-        tagsCollectionView.reloadData()
+        tagsCollectionView.coordinator?.reloadData()
     }
 
     /// Configure the webview
