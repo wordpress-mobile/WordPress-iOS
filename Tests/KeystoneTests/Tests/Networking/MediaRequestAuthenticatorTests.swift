@@ -128,7 +128,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
         authenticator.authenticatedRequest(
             for: url,
-            from: .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken),
+            from: .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken, siteHost: nil),
             onComplete: { request in
                 expectation.fulfill()
 

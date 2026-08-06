@@ -64,6 +64,26 @@ struct MediaHostTests {
         let siteID = 16557
         let username = "demouser"
         let authToken = "letMeIn!"
+        let siteHost = "example.com"
+
+        let host = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: true,
+            isAtomic: true,
+            siteID: siteID,
+            username: username,
+            siteHost: siteHost,
+            authToken: authToken,
+            failure: { _ in Issue.record("Should not fail") }
+        )
+
+        #expect(host == .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken, siteHost: siteHost))
+    }
+
+    @Test func initializationWithPrivateAtomicWPComSiteWithoutSiteHost() {
+        let siteID = 16557
+        let username = "demouser"
+        let authToken = "letMeIn!"
 
         let host = MediaHost(
             isAccessibleThroughWPCom: true,
@@ -75,7 +95,7 @@ struct MediaHostTests {
             failure: { _ in Issue.record("Should not fail") }
         )
 
-        #expect(host == .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken))
+        #expect(host == .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken, siteHost: nil))
     }
 
     @Test func initializationWithPrivateAtomicWPComSiteWithoutAuthTokenFails() async {

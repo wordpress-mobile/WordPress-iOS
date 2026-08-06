@@ -18,6 +18,7 @@ extension MediaHost {
             isAtomic: blog.isAtomic,
             siteID: blog.dotComID?.intValue,
             username: blog.effectiveUsername,
+            siteHost: URL(string: blog.url ?? "")?.host,
             authToken: blog.account?.authToken,
             failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
@@ -45,6 +46,7 @@ extension MediaHost {
             isAtomic: post.isBlogAtomic,
             siteID: post.siteID?.intValue,
             username: username,
+            siteHost: URL(string: post.blogURL ?? "")?.host,
             authToken: authToken,
             failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)

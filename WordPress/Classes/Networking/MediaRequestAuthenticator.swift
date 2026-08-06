@@ -86,7 +86,7 @@ struct MediaRequestAuthenticator {
                 authToken: authToken,
                 onComplete: provide,
                 onFailure: fail)
-        case .privateAtomicWPComSite(let siteID, let username, let authToken):
+        case .privateAtomicWPComSite(let siteID, let username, let authToken, _):
             if url.isPhoton() {
                 authenticatedRequestForPrivateAtomicSiteThroughPhoton(
                     for: url,
@@ -112,7 +112,7 @@ struct MediaRequestAuthenticator {
         case .publicWPComSite: AVURLAsset(url: url)
         case .privateSelfHostedSite: AVURLAsset(url: url)
         case .privateWPComSite(let authToken): authenticatedAsset(for: url, authToken: authToken)
-        case .privateAtomicWPComSite(_, _, let authToken): authenticatedAsset(for: url, authToken: authToken)
+        case .privateAtomicWPComSite(_, _, let authToken, _): authenticatedAsset(for: url, authToken: authToken)
         }
     }
 

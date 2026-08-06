@@ -9,7 +9,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
     case publicWPComSite
     case privateSelfHostedSite
     case privateWPComSite(authToken: String)
-    case privateAtomicWPComSite(siteID: Int, username: String, authToken: String)
+    case privateAtomicWPComSite(siteID: Int, username: String, authToken: String, siteHost: String?)
 
     public enum Error: Swift.Error {
         case wpComWithoutSiteID
@@ -23,6 +23,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
         isAtomic: Bool,
         siteID: Int?,
         username: String?,
+        siteHost: String? = nil,
         authToken: @autoclosure () -> String?,
         failure: (Error) -> Void) {
 
@@ -90,7 +91,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
             return
         }
 
-        self = .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken)
+        self = .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken, siteHost: siteHost)
     }
 
     // MARK: - MediaHostProtocol
