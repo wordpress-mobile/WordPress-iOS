@@ -30,6 +30,7 @@ public final class ReaderPostHeaderView: UIView {
         public let authorAvatarURL: URL?
         public let dateString: String?
         public let featuredImageURL: URL?
+        public let featuredImageHost: MediaHostProtocol?
         public let excerpt: String?
 
         public init(
@@ -39,6 +40,7 @@ public final class ReaderPostHeaderView: UIView {
             authorAvatarURL: URL? = nil,
             dateString: String?,
             featuredImageURL: URL? = nil,
+            featuredImageHost: MediaHostProtocol? = nil,
             excerpt: String? = nil
         ) {
             self.siteName = siteName
@@ -47,6 +49,7 @@ public final class ReaderPostHeaderView: UIView {
             self.authorAvatarURL = authorAvatarURL
             self.dateString = dateString
             self.featuredImageURL = featuredImageURL
+            self.featuredImageHost = featuredImageHost
             self.excerpt = excerpt
         }
     }
@@ -233,7 +236,7 @@ public final class ReaderPostHeaderView: UIView {
 
         mainStack.setCustomSpacing(viewModel.featuredImageURL != nil ? 18 : 12, after: authorRow)
 
-        configureFeaturedImage(with: viewModel.featuredImageURL)
+        configureFeaturedImage(with: viewModel.featuredImageURL, host: viewModel.featuredImageHost)
         configureExcerpt(with: viewModel.excerpt)
     }
 
@@ -374,7 +377,7 @@ public final class ReaderPostHeaderView: UIView {
         headerRow.isHidden = siteNameLabel.isHidden
     }
 
-    private func configureFeaturedImage(with url: URL?) {
+    private func configureFeaturedImage(with url: URL?, host: MediaHostProtocol?) {
         guard let url else {
             featuredImageView.isHidden = true
             return
@@ -383,7 +386,7 @@ public final class ReaderPostHeaderView: UIView {
         featuredImageView.isHidden = false
         updateFeaturedImageAspectRatio(Constants.defaultFeaturedImageAspectRatio)
 
-        featuredImageView.setImage(with: ImageRequest(url: url)) { [weak self] result in
+        featuredImageView.setImage(with: ImageRequest(url: url, host: host)) { [weak self] result in
             guard let self, case .success(let image) = result else { return }
             guard image.size.width > 0 else { return }
             let ratio = min(image.size.height / image.size.width, Constants.maxFeaturedImageAspectRatio)

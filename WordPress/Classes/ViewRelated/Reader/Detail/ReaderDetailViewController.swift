@@ -577,6 +577,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             authorAvatarURL: post.avatarURLForDisplay(),
             dateString: post.dateForDisplay()?.mediumStringWithTime(),
             featuredImageURL: featuredImageURL,
+            featuredImageHost: MediaHost(post),
             excerpt: cachedExcerpt
         ))
         updateHeader()
