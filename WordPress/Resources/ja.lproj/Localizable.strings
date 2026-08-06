@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-13 02:49:24+0000 */
+/* Translation-Revision-Date: 2026-07-29 09:55:34+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "データを読み込めませんでした。 後ほど、再読み込みしてください。";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "サイトを読み込めませんでした。 タップして再試行します。";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "タグを読み込めませんでした。タップして再試行します。";
@@ -6931,6 +6934,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "ステージング";
 
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "週に%1$d回";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "週に%1$d回";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "週に%1$d回";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "週に%1$d回";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "週に%1$d回";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "週に%1$d回";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "削除";
 
@@ -7356,6 +7377,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.post" = "投稿";
+
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "下書きを保存しました";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "投稿を公開しました";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "投稿を更新しました";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "保存しようとしている投稿は変更されています。";
@@ -7871,6 +7901,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "エディターの読み込み中";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "閉じる";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "「設定」でこのアプリを「ロックダウンモード」から除外し、エディターを再度開くと、すべての機能を復元できます。";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "さらに詳しく";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "ロックダウンモードを検出しました";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "ロックダウンモードが有効になっています。 エディターが正しく動作しない可能性があります。";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "メディアの挿入に失敗しました";
 
@@ -7888,6 +7933,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "未分類";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld単語";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld単語";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld単語";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld単語";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld単語";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld単語";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例「1122334455」";
@@ -9369,6 +9432,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "追加";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "ファイルを選択";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "フォトライブラリ";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "写真を撮影";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "動画を撮影";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "追加";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "縦横比グリッド";
 
@@ -9414,6 +9492,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "もう一度試す";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "外部メディア";
+
 /* Title of the audio filter option in the Media Library filter menu */
 "mediaLibrary.filter.audio" = "音声";
 
@@ -9446,6 +9527,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "正方形グリッド";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "選択したメディアをダウンロードできませんでした: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "削除";
@@ -9536,6 +9620,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "アイテムを選択する";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d件のアップロードに失敗しました";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d件のアップロードに失敗しました";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "アップロード中 %1$d · 失敗 %2$d";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "%1$d件のアイテムをアップロード中";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "%1$d件のアイテムをアップロード中";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "このファイルタイプはサイトへのアップロードが許可されていません。";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "この動画はサイトでの許容長さを超えています。";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "選択したファイルが見つかりませんでした。";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "写真をアップロード用に変換できませんでした。";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "選択したファイルにアクセスできませんでした。";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "ファイルタイプを特定できませんでした。";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "動画をアップロードする準備ができませんでした: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "選択した動画の品質に使用できるエクスポートツールがありません。";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "カメラ写真";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "カメラ動画";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "写真";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "アップロードを続行";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "すべてアップロード済み";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "すべてのアップロードをキャンセル";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "アップロードをキャンセル";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "すべての進行中のアップロードがキャンセルされます。 この操作は元に戻すことができません。";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "失敗したすべての項目を閉じる";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "失敗したすべての項目を再試行";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "閉じる";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "閉じる";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "再試行";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "アップロード";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "画像の Playground";

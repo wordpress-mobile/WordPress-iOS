@@ -321,7 +321,7 @@ private final class ReaderPostCellView: UIView {
         imageView.isHidden = viewModel.imageURL == nil
 
         if let imageURL = viewModel.imageURL {
-            imageView.setImage(with: imageURL, size: coverSize)
+            imageView.setImage(with: imageURL, host: viewModel.imageHost, size: coverSize)
         }
 
         if viewModel.isSeen == true {

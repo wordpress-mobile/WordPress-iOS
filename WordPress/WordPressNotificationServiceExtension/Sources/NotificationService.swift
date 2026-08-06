@@ -245,10 +245,10 @@ private extension NotificationService {
         var request = URLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
-        // Allow private images to pulled from WordPress sites.
-        if isWPComSite(url: url), let token = self.readExtensionToken() {
+        // Allow private images to be pulled from WordPress.com sites. The token is
+        // account-wide, so only attach it to WordPress.com hosts.
+        if url.isWordPressComHost, let token = self.readExtensionToken() {
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            print("AuthorizationAuthorizationAuthorizationAuthorizationAuthorizationAuthorization")
         }
 
         let session = URLSession(configuration: .default)
@@ -296,21 +296,6 @@ private extension NotificationService {
         } catch {
             return nil
         }
-    }
-
-    /// Perform a simple check to see if the URL is a WP.com site
-    /// This isn't meant to be extensive and has a few flaws, but since we don't know
-    /// much information about the URL and if it's a blog without having to do another request
-    /// this works for the current usecases.
-    ///
-    /// - Parameter url: The URL to check
-    /// - Returns: True if it's a WP.com site, False if not.
-    private func isWPComSite(url: URL) -> Bool {
-        guard let host = url.host else {
-            return false
-        }
-
-        return host.contains("wordpress.com") || host.contains("wp.com")
     }
 }
 // MARK: - Keychain support

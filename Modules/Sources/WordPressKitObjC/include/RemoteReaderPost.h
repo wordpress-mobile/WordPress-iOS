@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSNumber *siteID;
 @property (nonatomic, strong, nullable) NSDate *sortDate;
 @property (nonatomic, strong, nullable) NSNumber *sortRank;
+/// - warning: It may still contain auto-generated excerpts, but they are not automatically trimmed like `summary`.
+@property (nonatomic, strong, nullable) NSString *excerpt;
 @property (nonatomic, strong, nullable) NSString *summary;
 @property (nonatomic, strong, nullable) NSString *tags;
 @property (nonatomic) BOOL isLikesEnabled;

@@ -1,0 +1,5 @@
+Wir haben ein paar Fehler behoben.
+
+- Kategorien und Schlagwörter funktionieren jetzt auf selbst gehosteten Websites einwandfrei.
+- Text auf dem Bildschirm „Blog-Erinnerungen“ ist im Dunkelmodus sichtbar. Er wird nicht mehr ausgeblendet.
+- Du erhältst keine Fehlermeldung mehr, wenn du bei einer Share Sheet-Aktion eine Website auswählst, während deine Websites noch geladen werden. Wir haben auch das Design der Website-Auswahl aktualisiert, um es an andere Bereiche der App anzupassen.

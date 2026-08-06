@@ -106,7 +106,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         UITestConfigurator.prepareApplicationForUITests()
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
-        wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
+        wpkURLSessionNotifyingDelegate = PulseNetworkLogger.shared
 
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
