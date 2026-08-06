@@ -63,6 +63,20 @@ struct MediaRequestAuthenticator {
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
+        // A private Atomic site serves its media from its own mapped domain, which the
+        // WP.com allowlist below rightly refuses to send the account token to. Route those
+        // requests through the atomic-auth-proxy instead: the token is only ever attached
+        // to public-api.wordpress.com, and WP.com decides whether the viewer can access
+        // the file.
+        if case .privateAtomicWPComSite(let siteID, _, let authToken, let siteHost) = host,
+           let siteHost,
+           !url.isWordPressComHost,
+           url.host?.lowercased() == siteHost.lowercased(),
+           let request = atomicProxyRequest(for: url, siteID: siteID, authToken: authToken) {
+            provide(request)
+            return
+        }
+
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
         guard url.isWordPressComHost else {
