@@ -266,7 +266,7 @@ public final class ReaderPostHeaderView: UIView {
         separator.backgroundColor = colors.border
 
         lastExcerptLayoutWidth = 0
-        updateExcerptTruncation()
+        updateExcerptText()
     }
 
     // MARK: - Private
@@ -344,11 +344,19 @@ public final class ReaderPostHeaderView: UIView {
     }
 
     @objc private func excerptTapped() {
-        guard !isExcerptExpanded, let text = fullExcerptText else { return }
+        guard !isExcerptExpanded, fullExcerptText != nil else { return }
         isExcerptExpanded = true
-        let font = displaySettings.font(with: .callout)
-        let textColor = displaySettings.color.secondaryForeground
-        excerptLabel.attributedText = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor])
+        updateExcerptText()
+    }
+
+    private func updateExcerptText() {
+        if isExcerptExpanded, let text = fullExcerptText {
+            let font = displaySettings.font(with: .callout)
+            let textColor = displaySettings.color.secondaryForeground
+            excerptLabel.attributedText = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor])
+        } else {
+            updateExcerptTruncation()
+        }
     }
 
     @objc private func featuredImageTapped() {
@@ -400,12 +408,16 @@ public final class ReaderPostHeaderView: UIView {
 
     private func configureExcerpt(with excerpt: String?) {
         if let excerpt, !excerpt.isEmpty {
+            if excerpt != fullExcerptText {
+                isExcerptExpanded = false
+            }
             fullExcerptText = excerpt
             excerptLabel.isHidden = false
             lastExcerptLayoutWidth = 0
-            updateExcerptTruncation()
+            updateExcerptText()
         } else {
             fullExcerptText = nil
+            isExcerptExpanded = false
             excerptLabel.isHidden = true
         }
     }
