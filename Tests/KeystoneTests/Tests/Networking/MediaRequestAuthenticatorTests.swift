@@ -128,7 +128,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
         authenticator.authenticatedRequest(
             for: url,
-            from: .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken),
+            from: .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken, siteHost: nil),
             onComplete: { request in
                 expectation.fulfill()
 
@@ -220,5 +220,172 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
         let asset = try await authenticator.authenticatedAsset(for: url, host: .privateWPComSite(authToken: "letMeIn!"))
 
         XCTAssertEqual(asset.url, URL(string: "https://example.files.wordpress.com/video.mp4")!)
+    }
+
+    func testPrivateAtomicSitePhotonURLIsRoutedThroughAtomicProxy() {
+        let authToken = "letMeIn!"
+        let siteID = 246482522
+        let url = URL(string: "https://i0.wp.com/example.com/wp-content/uploads/2026/08/photo.jpg?ssl=1")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: siteID, username: "demouser", authToken: authToken, siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                let components = request.url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: true) }
+                XCTAssertEqual(components?.scheme, "https")
+                XCTAssertEqual(components?.host, "public-api.wordpress.com")
+                XCTAssertEqual(components?.path, "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file")
+                XCTAssertEqual(components?.queryItems, [URLQueryItem(name: "path", value: "/wp-content/uploads/2026/08/photo.jpg")])
+                XCTAssertEqual(request.allHTTPHeaderFields?["Authorization"], "Bearer \(authToken)")
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+    func testPrivateAtomicSiteCustomDomainMediaIsRoutedThroughAtomicProxy() {
+        let authToken = "letMeIn!"
+        let siteID = 246482522
+        let url = URL(string: "https://example.com/wp-content/uploads/2026/08/photo.jpg")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: siteID, username: "demouser", authToken: authToken, siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                let components = request.url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: true) }
+                XCTAssertEqual(components?.scheme, "https")
+                XCTAssertEqual(components?.host, "public-api.wordpress.com")
+                XCTAssertEqual(components?.path, "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file")
+                XCTAssertEqual(components?.queryItems, [URLQueryItem(name: "path", value: "/wp-content/uploads/2026/08/photo.jpg")])
+                XCTAssertEqual(request.allHTTPHeaderFields?["Authorization"], "Bearer \(authToken)")
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+    func testPrivateAtomicSiteCustomDomainHostMatchIsCaseInsensitive() {
+        let authToken = "letMeIn!"
+        let url = URL(string: "https://Example.com/wp-content/uploads/photo.jpg")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: 246482522, username: "demouser", authToken: authToken, siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                XCTAssertEqual(request.url?.host, "public-api.wordpress.com")
+                XCTAssertEqual(request.allHTTPHeaderFields?["Authorization"], "Bearer \(authToken)")
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+    func testPrivateAtomicSiteCustomDomainProxyDropsSourceAuthorityFields() {
+        // A crafted source URL must not carry userinfo, a nonstandard port, or a
+        // fragment onto the token-bearing proxy request.
+        let authToken = "letMeIn!"
+        let siteID = 246482522
+        let url = URL(string: "https://user:pass@example.com:8443/wp-content/uploads/photo.jpg#frag")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: siteID, username: "demouser", authToken: authToken, siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                let components = request.url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: true) }
+                XCTAssertEqual(components?.scheme, "https")
+                XCTAssertEqual(components?.host, "public-api.wordpress.com")
+                XCTAssertNil(components?.port)
+                XCTAssertNil(components?.user)
+                XCTAssertNil(components?.password)
+                XCTAssertNil(components?.fragment)
+                XCTAssertEqual(components?.path, "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file")
+                XCTAssertEqual(components?.queryItems, [URLQueryItem(name: "path", value: "/wp-content/uploads/photo.jpg")])
+                XCTAssertEqual(request.allHTTPHeaderFields?["Authorization"], "Bearer \(authToken)")
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+    func testPrivateAtomicSiteCustomDomainWithoutWPContentGetsPlainRequest() {
+        let url = URL(string: "https://example.com/files/photo.jpg")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: 246482522, username: "demouser", authToken: "letMeIn!", siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                XCTAssertEqual(request.url, url)
+                XCTAssertNil(request.allHTTPHeaderFields?["Authorization"])
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+    func testPrivateAtomicSiteDoesNotAuthenticateMismatchedHost() {
+        // The #25863 threat model: a crafted post claiming to be private Atomic must not
+        // get the account token attached to, or its media proxied from, a foreign host.
+        let url = URL(string: "https://attacker.example.com/wp-content/uploads/photo.jpg")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: 246482522, username: "demouser", authToken: "letMeIn!", siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                XCTAssertEqual(request.url, url)
+                XCTAssertNil(request.allHTTPHeaderFields?["Authorization"])
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
+
+    func testPrivateAtomicSiteWithoutSiteHostGetsPlainRequestForCustomDomain() {
+        let url = URL(string: "https://example.com/wp-content/uploads/photo.jpg")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: 246482522, username: "demouser", authToken: "letMeIn!", siteHost: nil),
+            onComplete: { request in
+                expectation.fulfill()
+
+                XCTAssertEqual(request.url, url)
+                XCTAssertNil(request.allHTTPHeaderFields?["Authorization"])
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
     }
 }
