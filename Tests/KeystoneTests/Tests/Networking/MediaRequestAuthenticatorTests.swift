@@ -221,4 +221,30 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
         XCTAssertEqual(asset.url, URL(string: "https://example.files.wordpress.com/video.mp4")!)
     }
+
+    func testPrivateAtomicSitePhotonURLIsRoutedThroughAtomicProxy() {
+        let authToken = "letMeIn!"
+        let siteID = 246482522
+        let url = URL(string: "https://i0.wp.com/example.com/wp-content/uploads/2026/08/photo.jpg?ssl=1")!
+        let authenticator = MediaRequestAuthenticator()
+        let expectation = self.expectation(description: "Completion closure called")
+
+        authenticator.authenticatedRequest(
+            for: url,
+            from: .privateAtomicWPComSite(siteID: siteID, username: "demouser", authToken: authToken, siteHost: "example.com"),
+            onComplete: { request in
+                expectation.fulfill()
+
+                let components = request.url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: true) }
+                XCTAssertEqual(components?.scheme, "https")
+                XCTAssertEqual(components?.host, "public-api.wordpress.com")
+                XCTAssertEqual(components?.path, "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file")
+                XCTAssertEqual(components?.queryItems, [URLQueryItem(name: "path", value: "/wp-content/uploads/2026/08/photo.jpg")])
+                XCTAssertEqual(request.allHTTPHeaderFields?["Authorization"], "Bearer \(authToken)")
+        }) { _ in
+            XCTFail("This should not be called")
+        }
+
+        waitForExpectations(timeout: 0.5)
+    }
 }

@@ -247,30 +247,47 @@ struct MediaRequestAuthenticator {
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            fail(Error.cannotBreakDownURLIntoComponents(url: url))
+        guard let request = atomicProxyRequest(for: url, siteID: siteID, authToken: authToken) else {
+            if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+                fail(Error.cannotFindWPContentInPhotonPath(components: components))
+            } else {
+                fail(Error.cannotBreakDownURLIntoComponents(url: url))
+            }
             return
         }
 
-        guard let wpContentRange = components.path.range(of: "/wp-content") else {
-            fail(Error.cannotFindWPContentInPhotonPath(components: components))
-            return
+        provide(request)
+    }
+
+    /// Builds a token-authenticated atomic-auth-proxy request for a media file under the
+    /// site's wp-content directory. The token is attached to public-api.wordpress.com only,
+    /// never to the original host, so this is safe for URLs on hosts outside the WP.com
+    /// allowlist. Returns nil when the URL cannot be proxied (no /wp-content path segment,
+    /// or the URL cannot be decomposed).
+    private func atomicProxyRequest(for url: URL, siteID: Int, authToken: String) -> URLRequest? {
+        guard let sourceComponents = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              let wpContentRange = sourceComponents.path.range(of: "/wp-content") else {
+            return nil
         }
 
-        let contentPath = String(components.path[wpContentRange.lowerBound ..< components.path.endIndex])
+        let contentPath = String(sourceComponents.path[wpContentRange.lowerBound...])
 
+        // Build the proxy URL from scratch rather than mutating the source URL's
+        // components. The source URL is server-supplied and potentially
+        // attacker-influenced; reusing its components would carry over authority
+        // fields (userinfo, port, fragment) onto the request that attaches the
+        // Bearer token. Only the wp-content path is taken from the source.
+        var components = URLComponents()
         components.scheme = secureHttpScheme
         components.host = wpComApiHost
         components.path = "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file"
         components.queryItems = [URLQueryItem(name: "path", value: contentPath)]
 
         guard let finalURL = components.url else {
-            fail(Error.cannotCreateAtomicProxyURL(components: components))
-            return
+            return nil
         }
 
-        let request = tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
-        provide(request)
+        return tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
     }
 
     // MARK: - Adding the Auth Token
