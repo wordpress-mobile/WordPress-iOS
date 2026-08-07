@@ -627,7 +627,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 - (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content {
     NSString *summary = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyExcerpt]];
     summary = [self formatSummary:summary];
-    if (!summary) {
+    if (summary.length == 0) {
         summary = [self createSummaryFromContent:content];
     }
     return summary;
