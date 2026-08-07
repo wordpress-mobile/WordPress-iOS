@@ -66,7 +66,8 @@ extension StatsContext {
         self.init(
             timeZone: blog.timeZone ?? .current,
             siteID: siteID,
-            api: api
+            api: api,
+            postLikesStore: StatsPostLikesStore(siteID: Int64(siteID))
         )
 
         // Configure avatar preprocessing using Gravatar
