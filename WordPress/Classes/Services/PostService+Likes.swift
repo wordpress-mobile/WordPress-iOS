@@ -5,7 +5,10 @@ final class PostService {
     let managedObjectContext: NSManagedObjectContext
     let postServiceRemoteFactory: PostServiceRemoteFactory
 
-    init(managedObjectContext: NSManagedObjectContext, postServiceRemoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
+    init(
+        managedObjectContext: NSManagedObjectContext,
+        postServiceRemoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()
+    ) {
         self.managedObjectContext = managedObjectContext
         self.postServiceRemoteFactory = postServiceRemoteFactory
     }
@@ -29,14 +32,16 @@ extension PostService {
                             - Number of likes per fetch
      @param failure         A failure block
      */
-    func getLikesFor(postID: NSNumber,
-                     siteID: NSNumber,
-                     count: Int = 90,
-                     before: String? = nil,
-                     excludingIDs: [NSNumber]? = nil,
-                     purgeExisting: Bool = true,
-                     success: @escaping (([LikeUser], Int, Int) -> Void),
-                     failure: @escaping ((Error?) -> Void)) {
+    func getLikesFor(
+        postID: NSNumber,
+        siteID: NSNumber,
+        count: Int = 90,
+        before: String? = nil,
+        excludingIDs: [NSNumber]? = nil,
+        purgeExisting: Bool = true,
+        success: @escaping (([LikeUser], Int, Int) -> Void),
+        failure: @escaping ((Error?) -> Void)
+    ) {
 
         guard let remote = postServiceRemoteFactory.restRemoteFor(siteID: siteID, context: managedObjectContext) else {
             DDLogError("Unable to create a REST remote for posts.")
@@ -44,22 +49,27 @@ extension PostService {
             return
         }
 
-        remote.getLikesForPostID(postID,
-                                 count: NSNumber(value: count),
-                                 before: before,
-                                 excludeUserIDs: excludingIDs,
-                                 success: { remoteLikeUsers, totalLikes in
-                                    self.createNewUsers(from: remoteLikeUsers,
-                                                        postID: postID,
-                                                        siteID: siteID,
-                                                        purgeExisting: purgeExisting) {
-                                        let users = self.likeUsersFor(postID: postID, siteID: siteID)
-                                        success(users, totalLikes.intValue, count)
-                                    }
-                                 }, failure: { error in
-                                    DDLogError("\(String(describing: error))")
-                                    failure(error)
-                                 })
+        remote.getLikesForPostID(
+            postID,
+            count: NSNumber(value: count),
+            before: before,
+            excludeUserIDs: excludingIDs,
+            success: { remoteLikeUsers, totalLikes in
+                self.createNewUsers(
+                    from: remoteLikeUsers,
+                    postID: postID,
+                    siteID: siteID,
+                    purgeExisting: purgeExisting
+                ) {
+                    let users = self.likeUsersFor(postID: postID, siteID: siteID)
+                    success(users, totalLikes.intValue, count)
+                }
+            },
+            failure: { error in
+                DDLogError("\(String(describing: error))")
+                failure(error)
+            }
+        )
     }
 
     /**
@@ -75,7 +85,12 @@ extension PostService {
         request.predicate = {
             if let after {
                 // The date comparison is 'less than' because Likes are in descending order.
-                return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, after as CVarArg)
+                return NSPredicate(
+                    format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@",
+                    siteID,
+                    postID,
+                    after as CVarArg
+                )
             }
 
             return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
@@ -93,36 +108,58 @@ extension PostService {
 
 private extension PostService {
 
-    func createNewUsers(from remoteLikeUsers: [RemoteLikeUser]?,
-                        postID: NSNumber,
-                        siteID: NSNumber,
-                        purgeExisting: Bool,
-                        onComplete: @escaping (() -> Void)) {
+    func createNewUsers(
+        from remoteLikeUsers: [RemoteLikeUser]?,
+        postID: NSNumber,
+        siteID: NSNumber,
+        purgeExisting: Bool,
+        onComplete: @escaping (() -> Void)
+    ) {
 
         guard let remoteLikeUsers,
-              !remoteLikeUsers.isEmpty else {
+            !remoteLikeUsers.isEmpty
+        else {
             DispatchQueue.main.async {
                 onComplete()
             }
             return
         }
 
-        ContextManager.shared.performAndSave({ derivedContext in
-            let likers = remoteLikeUsers.map { remoteUser in
-                LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
-            }
+        ContextManager.shared.performAndSave(
+            { derivedContext in
+                let likers = remoteLikeUsers.map { remoteUser in
+                    LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
+                }
 
-            if purgeExisting {
-                self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext, likesToKeep: likers)
-            }
+                if purgeExisting {
+                    self.deleteExistingUsersFor(
+                        postID: postID,
+                        siteID: siteID,
+                        from: derivedContext,
+                        likesToKeep: likers
+                    )
+                }
 
-            LikeUserHelper.purgeStaleLikes(fromContext: derivedContext)
-        }, completion: onComplete, on: .main)
+                LikeUserHelper.purgeStaleLikes(fromContext: derivedContext)
+            },
+            completion: onComplete,
+            on: .main
+        )
     }
 
-    func deleteExistingUsersFor(postID: NSNumber, siteID: NSNumber, from context: NSManagedObjectContext, likesToKeep: [LikeUser]) {
+    func deleteExistingUsersFor(
+        postID: NSNumber,
+        siteID: NSNumber,
+        from context: NSManagedObjectContext,
+        likesToKeep: [LikeUser]
+    ) {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND NOT (self IN %@)", siteID, postID, likesToKeep)
+        request.predicate = NSPredicate(
+            format: "likedSiteID = %@ AND likedPostID = %@ AND NOT (self IN %@)",
+            siteID,
+            postID,
+            likesToKeep
+        )
 
         do {
             let users = try context.fetch(request)

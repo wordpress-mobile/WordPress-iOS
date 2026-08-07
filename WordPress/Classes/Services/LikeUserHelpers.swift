@@ -36,8 +36,13 @@ import WordPressKit
         let commentID = remoteUser.likedCommentID ?? 0
 
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "userID = %@ AND likedSiteID = %@ AND likedPostID = %@ AND likedCommentID = %@",
-                                        userID, siteID, postID, commentID)
+        request.predicate = NSPredicate(
+            format: "userID = %@ AND likedSiteID = %@ AND likedPostID = %@ AND likedCommentID = %@",
+            userID,
+            siteID,
+            postID,
+            commentID
+        )
         return try? context.fetch(request).first
     }
 
@@ -48,13 +53,23 @@ import WordPressKit
      @param siteID      The ID of the site that contains the post.
      @param after       Filter results to likes after this Date. Optional.
      */
-    class func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date? = nil, in context: NSManagedObjectContext) -> [LikeUser] {
+    class func likeUsersFor(
+        commentID: NSNumber,
+        siteID: NSNumber,
+        after: Date? = nil,
+        in context: NSManagedObjectContext
+    ) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
         request.predicate = {
             if let after {
                 // The date comparison is 'less than' because Likes are in descending order.
-                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
+                return NSPredicate(
+                    format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@",
+                    siteID,
+                    commentID,
+                    after as CVarArg
+                )
             }
 
             return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
@@ -69,7 +84,11 @@ import WordPressKit
         return [LikeUser]()
     }
 
-    private class func updatePreferredBlog(for user: LikeUser, with remoteUser: RemoteLikeUser, context: NSManagedObjectContext) {
+    private class func updatePreferredBlog(
+        for user: LikeUser,
+        with remoteUser: RemoteLikeUser,
+        context: NSManagedObjectContext
+    ) {
         guard let remotePreferredBlog = remoteUser.preferredBlog else {
             if let existingPreferredBlog = user.preferredBlog {
                 context.deleteObject(existingPreferredBlog)

@@ -80,14 +80,25 @@ actor StatsService: StatsServiceProtocol {
         return data
     }
 
-    private func fetchSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
+    private func fetchSiteStats(
+        interval: DateInterval,
+        granularity: DateRangeGranularity
+    ) async throws -> SiteMetricsResponse {
         let interval = convertDateIntervalSiteToLocal(interval)
 
         if granularity == .hour {
             // Hourly data is available only for "Views", so the service has to
             // make a separate request to fetch the total metrics.
-            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(granularity), limit: 0)
-            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(.day), limit: 0)
+            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(
+                interval: interval,
+                unit: .init(granularity),
+                limit: 0
+            )
+            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(
+                interval: interval,
+                unit: .init(.day),
+                limit: 0
+            )
 
             let (hourlyResponse, dailyResponse) = try await (hourlyResponseTask, dailyResponseTask)
 
@@ -95,7 +106,11 @@ actor StatsService: StatsServiceProtocol {
             data.total = mapSiteMetricsResponse(dailyResponse).total
             return data
         } else {
-            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(interval: interval, unit: .init(granularity), limit: 0)
+            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(
+                interval: interval,
+                unit: .init(granularity),
+                limit: 0
+            )
             return mapSiteMetricsResponse(response)
         }
     }
@@ -124,7 +139,10 @@ actor StatsService: StatsServiceProtocol {
         try await service.getWordAdsEarnings()
     }
 
-    private func fetchWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse {
+    private func fetchWordAdsStats(
+        date: Date,
+        granularity: DateRangeGranularity
+    ) async throws -> WordAdsMetricsResponse {
         let localDate = convertDateSiteToLocal(date)
 
         let response: WordPressKit.StatsWordAdsResponse = try await service.getData(
@@ -145,7 +163,10 @@ actor StatsService: StatsServiceProtocol {
 
         let now = Date.now
 
-        func makeDataPoint(from data: WordPressKit.StatsWordAdsResponse.PeriodData, metric: WordPressKit.StatsWordAdsResponse.Metric) -> DataPoint? {
+        func makeDataPoint(
+            from data: WordPressKit.StatsWordAdsResponse.PeriodData,
+            metric: WordPressKit.StatsWordAdsResponse.Metric
+        ) -> DataPoint? {
             guard let value = data[metric] else {
                 return nil
             }
@@ -180,16 +201,37 @@ actor StatsService: StatsServiceProtocol {
         return WordAdsMetricsResponse(total: total, metrics: metrics)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
+    func getTopListData(
+        _ item: TopListItemType,
+        metric: SiteMetric,
+        interval: DateInterval,
+        granularity: DateRangeGranularity,
+        limit: Int?,
+        options: TopListItemOptions
+    ) async throws -> TopListResponse {
         // Check cache first
-        let cacheKey = TopListCacheKey(item: item, metric: metric, options: options, interval: interval, granularity: granularity, limit: limit)
+        let cacheKey = TopListCacheKey(
+            item: item,
+            metric: metric,
+            options: options,
+            interval: interval,
+            granularity: granularity,
+            limit: limit
+        )
         if let cached = topListCache[cacheKey], !cached.isExpired {
             return cached.data
         }
 
         // Fetch fresh data
         do {
-            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit, options: options)
+            let data = try await _getTopListData(
+                item,
+                metric: metric,
+                interval: interval,
+                granularity: granularity,
+                limit: limit,
+                options: options
+            )
 
             // Cache the result
             // Historical data never expires (ttl = nil), current period data expires after 30 seconds
@@ -205,14 +247,22 @@ actor StatsService: StatsServiceProtocol {
             // when there are no recoreded periods (happens when the entire requested
             // period is _before_ the site creation).
             if let error = error as? StatsServiceRemoteV2.ResponseError,
-               error == .emptySummary {
+                error == .emptySummary
+            {
                 return TopListResponse(items: [])
             }
             throw error
         }
     }
 
-    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
+    private func _getTopListData(
+        _ item: TopListItemType,
+        metric: SiteMetric,
+        interval: DateInterval,
+        granularity: DateRangeGranularity,
+        limit: Int?,
+        options: TopListItemOptions
+    ) async throws -> TopListResponse {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -220,7 +270,13 @@ actor StatsService: StatsServiceProtocol {
         ) async throws -> T where T: Sendable {
             /// The `summarize: true` feature works correctly only with the `.day` granularity.
             let interval = convertDateIntervalSiteToLocal(interval)
-            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 0, parameters: parameters)
+            return try await service.getData(
+                interval: interval,
+                unit: .day,
+                summarize: true,
+                limit: limit ?? 0,
+                parameters: parameters
+            )
         }
 
         // Helper function to sort items by metric value (descending), then by displayName, and then by itemID for stable ordering
@@ -277,7 +333,11 @@ actor StatsService: StatsServiceProtocol {
             }
 
             let convertedInterval = convertDateIntervalSiteToLocal(interval)
-            let data = try await service.getDeviceStats(breakdown: breakdown, startDate: convertedInterval.start, endDate: convertedInterval.end)
+            let data = try await service.getDeviceStats(
+                breakdown: breakdown,
+                startDate: convertedInterval.start,
+                endDate: convertedInterval.end
+            )
 
             // TEMPORARY WORKAROUND (CMM-1168):
             // The screensize breakdown returns percentages (e.g., 73.8 for 73.8%), but SiteMetricsSet
@@ -518,7 +578,10 @@ actor StatsService: StatsServiceProtocol {
 
         let now = Date.now
 
-        func makeDataPoint(from data: WordPressKit.StatsSiteMetricsResponse.PeriodData, metric: WordPressKit.StatsSiteMetricsResponse.Metric) -> DataPoint? {
+        func makeDataPoint(
+            from data: WordPressKit.StatsSiteMetricsResponse.PeriodData,
+            metric: WordPressKit.StatsSiteMetricsResponse.Metric
+        ) -> DataPoint? {
             guard let value = data[metric] else {
                 return nil
             }

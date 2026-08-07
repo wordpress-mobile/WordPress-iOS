@@ -17,7 +17,11 @@ public struct StatsContext: Sendable {
     public var upgradeURL: URL?
 
     public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
-        self.init(timeZone: timeZone, siteID: siteID, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
+        self.init(
+            timeZone: timeZone,
+            siteID: siteID,
+            service: StatsService(siteID: siteID, api: api, timeZone: timeZone)
+        )
     }
 
     init(timeZone: TimeZone, siteID: Int, service: (any StatsServiceProtocol)) {
@@ -37,10 +41,10 @@ public struct StatsContext: Sendable {
 
     public static let demo: StatsContext = {
         var context = StatsContext(timeZone: .current, siteID: 1, service: MockStatsService())
-#if DEBUG
+        #if DEBUG
         context.tracker = MockStatsTracker.shared
         context.upgradeURL = URL(string: "https://wordpress.com/pricing/")
-#endif
+        #endif
         return context
     }()
 
