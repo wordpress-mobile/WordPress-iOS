@@ -119,9 +119,24 @@ private extension PostService {
         guard let remoteLikeUsers,
             !remoteLikeUsers.isEmpty
         else {
-            DispatchQueue.main.async {
-                onComplete()
+            guard purgeExisting else {
+                DispatchQueue.main.async {
+                    onComplete()
+                }
+                return
             }
+
+            // A successful, empty first page means the post currently has no
+            // likes. Clear cached rows (seeded by Post Stats or left over from
+            // an earlier fetch) so the list cannot show stale likers under a
+            // zero total. Empty later pages skip this via the guard above.
+            ContextManager.shared.performAndSave(
+                { derivedContext in
+                    self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext, likesToKeep: [])
+                },
+                completion: onComplete,
+                on: .main
+            )
             return
         }
 
@@ -154,12 +169,18 @@ private extension PostService {
         likesToKeep: [LikeUser]
     ) {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(
-            format: "likedSiteID = %@ AND likedPostID = %@ AND NOT (self IN %@)",
-            siteID,
-            postID,
-            likesToKeep
-        )
+        // Core Data's SQLite store does not reliably evaluate `NOT (self IN %@)`
+        // against an empty array (it can match no rows), so when nothing is kept
+        // delete every cached row for the post with a plain predicate instead.
+        request.predicate =
+            likesToKeep.isEmpty
+            ? NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+            : NSPredicate(
+                format: "likedSiteID = %@ AND likedPostID = %@ AND NOT (self IN %@)",
+                siteID,
+                postID,
+                likesToKeep
+            )
 
         do {
             let users = try context.fetch(request)
