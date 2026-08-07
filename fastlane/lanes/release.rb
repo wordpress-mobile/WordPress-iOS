@@ -19,15 +19,15 @@ platform :ios do
     # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
-    # If a new version is passed, use it as source of truth from now on
-    new_version = version || release_version_next
+    # If a new version is passed, use it as source of truth from now on. Otherwise, trunk's
+    # VERSION_SHORT is already pre-allocated to the version being frozen (see
+    # `bump_trunk_version_after_backmerge`), so read it as-is rather than deriving `+1` from it.
+    new_version = version || release_version_current
     release_branch_name = compute_release_branch_name(options: { version: new_version, skip_confirm: skip_confirm }, version: new_version)
     new_build_code = build_code_code_freeze(version_short: new_version)
 
     ensure_branch_does_not_exist!(release_branch_name)
 
-    # The `release_version_next` is used as the `new internal release version` value because the external and internal
-    # release versions are always the same.
     message = <<~MESSAGE
 
       Code Freeze:
@@ -410,7 +410,7 @@ platform :ios do
 
     trigger_release_build
 
-    pr_url = create_backmerge_pr
+    pr_url = create_backmerge_pr(pre_allocate_trunk_version: true)
     message = <<~MESSAGE
       Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
@@ -586,13 +586,20 @@ def commit_version_and_build_files
   )
 end
 
-def create_backmerge_pr(source_branch: release_branch_name, target_branch: nil)
+# @param [Boolean] pre_allocate_trunk_version When true (only for a regular release, never a
+#   hotfix), pre-allocates `trunk`'s `VERSION_SHORT` to the next release version as part of the
+#   backmerge, so trunk never carries a version whose train Apple has closed for new submissions.
+#   See `bump_trunk_version_after_backmerge`.
+def create_backmerge_pr(source_branch: release_branch_name, target_branch: nil, pre_allocate_trunk_version: false)
+  callback = pre_allocate_trunk_version ? method(:bump_trunk_version_after_backmerge).to_proc : nil
+
   pr_url = create_release_backmerge_pull_request(
     repository: GITHUB_REPO,
     source_branch: source_branch,
     target_branches: Array(target_branch),
     labels: ['Releases'],
-    milestone_title: release_version_next
+    milestone_title: release_version_next,
+    intermediate_branch_created_callback: callback
   )
 rescue StandardError => e
   error_message = <<-MESSAGE
@@ -609,6 +616,25 @@ rescue StandardError => e
   UI.user_error!(error_message)
 
   pr_url
+end
+
+# Pre-allocates trunk's `VERSION_SHORT` to the next release version, as the last step of the
+# release backmerge (see `create_backmerge_pr`). No-ops for any target branch other than trunk —
+# a backmerge can also target a newer, already-versioned release branch.
+#
+# Runs on the backmerge's intermediate branch, checked out from the release branch being
+# finalized — so `release_version_next` here computes the version after it.
+def bump_trunk_version_after_backmerge(base_branch, _intermediate_branch)
+  return unless base_branch == DEFAULT_BRANCH
+
+  next_trunk_version = release_version_next
+  UI.message("Pre-allocating trunk's VERSION_SHORT to #{next_trunk_version}...")
+
+  PUBLIC_VERSION_FILE.write(
+    version_short: next_trunk_version,
+    version_long: build_code_code_freeze(version_short: next_trunk_version)
+  )
+  commit_version_and_build_files
 end
 
 def ensure_git_branch_is_release_branch!
