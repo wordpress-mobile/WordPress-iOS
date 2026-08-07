@@ -16,11 +16,16 @@ public struct StatsContext: Sendable {
     /// URL to upgrade the site's plan
     public var upgradeURL: URL?
 
-    public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
+    public init(
+        timeZone: TimeZone,
+        siteID: Int,
+        api: WordPressComRestApi,
+        postLikesStore: (any PostLikesStore)? = nil
+    ) {
         self.init(
             timeZone: timeZone,
             siteID: siteID,
-            service: StatsService(siteID: siteID, api: api, timeZone: timeZone)
+            service: StatsService(siteID: siteID, api: api, timeZone: timeZone, postLikesStore: postLikesStore)
         )
     }
 

@@ -14,6 +14,7 @@ actor StatsService: StatsServiceProtocol {
     private let siteTimeZone: TimeZone
     // Temporary
     private var mocks: MockStatsService
+    private let postLikesStore: (any PostLikesStore)?
 
     // Cache
     private var siteStatsCache: [SiteStatsCacheKey: CachedEntity<SiteMetricsResponse>] = [:]
@@ -46,7 +47,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    init(siteID: Int, api: WordPressComRestApi, timeZone: TimeZone) {
+    init(siteID: Int, api: WordPressComRestApi, timeZone: TimeZone, postLikesStore: (any PostLikesStore)? = nil) {
         self.siteID = siteID
         self.api = api
         self.service = StatsServiceRemoteV2(
@@ -56,6 +57,7 @@ actor StatsService: StatsServiceProtocol {
         )
         self.siteTimeZone = timeZone
         self.mocks = MockStatsService(timeZone: timeZone)
+        self.postLikesStore = postLikesStore
     }
 
     // MARK: - StatsServiceProtocol
@@ -462,7 +464,8 @@ actor StatsService: StatsServiceProtocol {
         )
 
         // Fetch likes using the REST API
-        let result = try await withCheckedThrowingContinuation { continuation in
+        let (result, seeds): (PostLikesData, [PostLikeSeed]) = try await withCheckedThrowingContinuation {
+            continuation in
             postService.getLikesForPostID(
                 NSNumber(value: postID),
                 count: NSNumber(value: count),
@@ -478,8 +481,9 @@ actor StatsService: StatsServiceProtocol {
                             avatarURL: remoteLike.avatarURL.flatMap(URL.init)
                         )
                     }
+                    let seeds = users.map(PostLikeSeed.init(remoteUser:))
                     let postLikes = PostLikesData(users: likeUsers, totalCount: found.intValue)
-                    continuation.resume(returning: postLikes)
+                    continuation.resume(returning: (postLikes, seeds))
                 },
                 failure: { error in
                     continuation.resume(throwing: error ?? StatsServiceError.unknown)
@@ -487,7 +491,44 @@ actor StatsService: StatsServiceProtocol {
             )
         }
 
+        await storeSeeds(seeds, totalCount: result.totalCount, postID: postID)
+
         return result
+    }
+
+    /// Seeds the shared likes cache with the just-fetched likers.
+    ///
+    /// A positive `totalCount` seeds fire-and-forget: seeding real likers must
+    /// never delay or fail the UI, and a slightly late partial page is benign.
+    /// A confirmed zero result is awaited, because it purges the post's cache
+    /// and this method returns before Post Stats exposes the "0 likes" total: a
+    /// fast tap-through to the Likes list would otherwise snapshot stale seeded
+    /// rows that, offline, it never refetches or observes being deleted.
+    func storeSeeds(_ seeds: [PostLikeSeed], totalCount: Int, postID: Int) async {
+        let task = storeSeedsIfNeeded(seeds, totalCount: totalCount, postID: postID)
+        if totalCount == 0 {
+            await task?.value
+        }
+    }
+
+    /// Hands freshly fetched likers to the app's shared likes cache.
+    ///
+    /// Write-only by design: Post Stats refetches on every screen entry (this
+    /// service instance is created per screen), and the shared cache carries
+    /// no total like count, so reading it back here would render a wrong
+    /// total in the likes strip. The write exists solely to seed the Likes
+    /// list screen. `totalCount` is forwarded so the store can clear the post's
+    /// cache on a confirmed zero-like result instead of leaving stale rows.
+    /// Returns the seeding task so callers can await it (see `storeSeeds`).
+    @discardableResult
+    func storeSeedsIfNeeded(_ seeds: [PostLikeSeed], totalCount: Int, postID: Int) -> Task<Void, Never>? {
+        guard let postLikesStore else {
+            return nil
+        }
+
+        return Task {
+            await postLikesStore.storeLikes(seeds, totalCount: totalCount, forPost: postID)
+        }
     }
 
     func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
