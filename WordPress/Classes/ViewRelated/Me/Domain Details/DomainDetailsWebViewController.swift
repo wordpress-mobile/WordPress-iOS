@@ -13,21 +13,17 @@ final class DomainDetailsWebViewController: WebKitViewController {
         static let manageAllDomainsPath = "\(domainsPath)/manage/all"
     }
 
-    // MARK: - Properties
-
-    private let domain: String
-
-    private var observation: NSKeyValueObservation?
-
     // MARK: - Init
 
     init(domain: String, siteSlug: String, type: DomainType, analyticsSource: String? = nil) {
-        self.domain = domain
         let url = Self.wpcomDetailsURL(domain: domain, siteSlug: siteSlug, type: type)
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.customTitle = domain
         configuration.analyticsSource = analyticsSource
         configuration.secureInteraction = true
+        if let url {
+            configuration.linkBehavior = .urlOnly(url)
+        }
         configuration.authenticateWithDefaultAccount()
         super.init(configuration: configuration)
     }
@@ -40,23 +36,7 @@ final class DomainDetailsWebViewController: WebKitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.observeURL()
         self.trackWebViewShownEvent(url: url)
-    }
-
-    // MARK: - Handling URL Changes
-
-    private func observeURL() {
-        self.observation = webView.observe(\.url) { [weak self] webView, _ in
-            guard let self, let url = webView.url else {
-                return
-            }
-            if !self.shouldAllowNavigation(for: url) {
-                // Open URL in device browser then go back to Domain Management page.
-                self.open(url)
-                self.goBack()
-            }
-        }
     }
 
     // MARK: - Navigation
@@ -82,14 +62,6 @@ final class DomainDetailsWebViewController: WebKitViewController {
     private func trackWebViewShownEvent(url: URL?) {
         let properties = ["url": url?.absoluteString ?? ""]
         WPAnalytics.track(.allDomainsDomainDetailsWebViewShown, properties: properties)
-    }
-
-    private func shouldAllowNavigation(for url: URL) -> Bool {
-        return url.absoluteString == self.url?.absoluteString
-    }
-
-    private func open(_ url: URL) {
-        UIApplication.shared.open(url)
     }
 
     private static func wpcomDetailsURL(domain: String, siteSlug: String, type: DomainType) -> URL? {
