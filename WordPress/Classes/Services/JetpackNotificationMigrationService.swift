@@ -23,7 +23,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     private let jetpackNotificationMigrationDefaultsKey = "jetpackNotificationMigrationDefaultsKey"
 
     private var jetpackMigrationPreventDuplicateNotifications: Bool {
-        return RemoteFeatureFlag.jetpackMigrationPreventDuplicateNotifications.enabled(using: featureFlagStore)
+        RemoteFeatureFlag.jetpackMigrationPreventDuplicateNotifications.enabled(using: featureFlagStore)
     }
 
     private lazy var notificationSettingsService: NotificationSettingsService? = {
@@ -79,17 +79,19 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     /// disableWordPressNotificationsFromJetpack may get triggered multiple times from Jetpack app but it only needs to be executed the first time
     private var isMigrationDone: Bool {
         get {
-            return userDefaults.bool(forKey: jetpackNotificationMigrationDefaultsKey)
+            userDefaults.bool(forKey: jetpackNotificationMigrationDefaultsKey)
         }
         set {
             userDefaults.setValue(newValue, forKey: jetpackNotificationMigrationDefaultsKey)
         }
     }
 
-    init(remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
-         featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-         userDefaults: UserDefaults = .standard,
-         isWordPress: Bool = AppConfiguration.isWordPress) {
+    init(
+        remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
+        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        userDefaults: UserDefaults = .standard,
+        isWordPress: Bool = AppConfiguration.isWordPress
+    ) {
         self.remoteNotificationRegister = remoteNotificationRegister
         self.featureFlagStore = featureFlagStore
         self.userDefaults = userDefaults
@@ -97,12 +99,13 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     func shouldShowNotificationControl() -> Bool {
-        return jetpackMigrationPreventDuplicateNotifications && isWordPress
+        jetpackMigrationPreventDuplicateNotifications && isWordPress
     }
 
     func shouldPresentNotifications() -> Bool {
         let notificationsDisabled = !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
-        let appMigrated = jetpackMigrationPreventDuplicateNotifications
+        let appMigrated =
+            jetpackMigrationPreventDuplicateNotifications
             && isWordPress
             && userDefaults.bool(forKey: wordPressNotificationsToggledDefaultsKey)
             && !wordPressNotificationsEnabled
@@ -160,7 +163,9 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     // MARK: - Local notifications
 
-    private func cancelAllPendingWordPressLocalNotifications(notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
+    private func cancelAllPendingWordPressLocalNotifications(
+        notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()
+    ) {
         if isWordPress {
             notificationCenter.removeAllPendingNotificationRequests()
         }
@@ -178,21 +183,25 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     private func rescheduleBloggingReminderNotifications() {
-        notificationSettingsService?.getAllSettings { [weak self] settings in
-            for setting in settings {
-                if let blog = setting.blog,
-                   let schedule = self?.bloggingRemindersScheduler?.schedule(for: blog),
-                   let time = self?.bloggingRemindersScheduler?.scheduledTime(for: blog) {
-                    if schedule != .none {
-                        self?.bloggingRemindersScheduler?.schedule(schedule, for: blog, time: time) { result in
-                            if case .success = result {
-                                BloggingRemindersFlow.setHasShownWeeklyRemindersFlow(for: blog)
-                            }
+        notificationSettingsService?
+            .getAllSettings { [weak self] settings in
+                for setting in settings {
+                    if let blog = setting.blog,
+                        let schedule = self?.bloggingRemindersScheduler?.schedule(for: blog),
+                        let time = self?.bloggingRemindersScheduler?.scheduledTime(for: blog)
+                    {
+                        if schedule != .none {
+                            self?.bloggingRemindersScheduler?
+                                .schedule(schedule, for: blog, time: time) { result in
+                                    if case .success = result {
+                                        BloggingRemindersFlow.setHasShownWeeklyRemindersFlow(for: blog)
+                                    }
+                                }
                         }
                     }
                 }
+            } failure: { _ in
             }
-        } failure: { _ in }
     }
 }
 
