@@ -65,8 +65,7 @@ private extension MigrationHeaderConfiguration {
             case .welcome:
                 return welcomeSecondaryDescription(plural: multiSite)
             case .notifications:
-                return JetpackNotificationMigrationService.shared.isMigrationSupported
-                    ? notificationsSecondaryDescription : nil
+                return nil
             case .done:
                 return nil
             case .dismiss:
@@ -114,12 +113,6 @@ private extension MigrationHeaderConfiguration {
             "migration.done.secondaryDescription",
             value: "It's time to continue your WordPress journey on the Jetpack app!",
             comment: "Secondary description (second paragraph) in the migration done screen."
-        )
-
-        static let notificationsSecondaryDescription = NSLocalizedString(
-            "migration.notifications.secondaryDescription",
-            value: "We’ll disable notifications for the WordPress app.",
-            comment: "Secondary description in the migration notifications screen"
         )
 
         static func welcomeSecondaryDescription(plural: Bool) -> String {
