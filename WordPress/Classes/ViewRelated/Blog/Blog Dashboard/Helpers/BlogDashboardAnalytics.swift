@@ -17,19 +17,18 @@ class BlogDashboardAnalytics {
     /// This will track the given event and properties given they haven't been
     /// triggered before.
     ///
+    /// The My Site dashboard always shows exactly one site, so every card-shown
+    /// event carries that site. `blog` is required so the site identifier is
+    /// always attached and no future card can regress by omitting it.
+    ///
     /// - Parameters:
     ///   - event: a `String` that represents the event name
     ///   - properties: a `Hash` that represents the properties
-    ///   - blog: a `Blog` asssociated with the event
-    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: String] = [:], blog: Blog? = nil) {
+    ///   - blog: the `Blog` whose dashboard is being shown
+    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: String] = [:], blog: Blog) {
         if !fired.contains(where: { $0 == (event, properties) }) {
             fired.append((event, properties))
-
-            if let blog {
-                WPAnalytics.track(event, properties: properties, blog: blog)
-            } else {
-                WPAnalytics.track(event, properties: properties)
-            }
+            WPAnalytics.track(event, properties: properties, blog: blog)
         }
     }
 
