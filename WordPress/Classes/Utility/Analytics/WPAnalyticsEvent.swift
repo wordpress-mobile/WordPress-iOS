@@ -1978,17 +1978,39 @@ extension WPAnalytics {
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
 
-    /// This will call each registered tracker and fire the given event.
+    /// This will call each registered tracker and fire the given event, attaching the site.
     /// - Parameters:
     ///   - event: a `String` that represents the event name
     ///   - properties: a `Hash` that represents the properties
-    ///   - blog: a `Blog` asssociated with the event
-    static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
+    ///   - blogProperties: a value-type snapshot of the site associated with the event
+    static func track(
+        _ event: WPAnalyticsEvent,
+        properties: [AnyHashable: Any] = [:],
+        blogProperties: BlogAnalyticsProperties
+    ) {
         var props = properties
-        props[WPAppAnalyticsKeyBlogID] = blog.dotComID
+        if let dotComID = blogProperties.dotComID {
+            props[WPAppAnalyticsKeyBlogID] = dotComID
+        }
         props[WPAppAnalyticsKeySiteType] =
-            blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
+            blogProperties.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
+    }
+
+    /// This will call each registered tracker and fire the given event, attaching the site.
+    ///
+    /// Only a `Sendable` ``BlogAnalyticsProperties`` snapshot crosses into the analytics
+    /// layer; the Core Data read happens once, in the model's `analyticsProperties`.
+    /// - Parameters:
+    ///   - event: a `String` that represents the event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: the site associated with the event
+    static func track(
+        _ event: WPAnalyticsEvent,
+        properties: [AnyHashable: Any] = [:],
+        blog: some BlogAnalyticsRepresentable
+    ) {
+        track(event, properties: properties, blogProperties: blog.analyticsProperties)
     }
 
     /// Track a Reader event
