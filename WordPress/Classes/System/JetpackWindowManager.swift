@@ -94,11 +94,6 @@ private extension JetpackWindowManager {
         MigrationAppDetection.getWordPressInstallationState() == .wordPressInstalledAndMigratable
     }
 
-    /// Checks whether the WordPress app has previously failed to export user content.
-    var hasFailedExportAttempts: Bool {
-        ContentMigrationCoordinator.shared.previousMigrationError != nil
-    }
-
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
         self.migrationTracker.trackWordPressMigrationEligibility()
 
@@ -129,7 +124,7 @@ private extension JetpackWindowManager {
                 self.showMigrationUI(blog)
             case .failure(let error):
                 self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
-                self.handleMigrationFailure(error)
+                self.handleMigrationFailure()
             }
         }
     }
@@ -158,82 +153,15 @@ private extension JetpackWindowManager {
         showAppUI(for: blog)
     }
 
-    /// Shown when the WordPress pre-flight process hasn't ran, but WordPress is installed.
-    /// Note: We don't know if the user has ever logged into WordPress at this point, only
-    /// that they have a version compatible with migrating.
-    /// - Parameter schemeUrl: Deep link URL used to open the WordPress app
-    func showLoadWordPressUI(schemeUrl: URL) {
-        let actions = MigrationLoadWordPressViewModel.Actions()
-        let loadWordPressViewModel = MigrationLoadWordPressViewModel(actions: actions)
-        let loadWordPressViewController = MigrationLoadWordPressViewController(
-            viewModel: loadWordPressViewModel,
-            tracker: migrationTracker
-        )
-        actions.primary = { [weak self] in
-            self?.migrationTracker.track(.loadWordPressScreenOpenTapped)
-            UIApplication.shared.open(schemeUrl)
-        }
-        actions.secondary = { [weak self, weak loadWordPressViewController] in
-            self?.migrationTracker.track(.loadWordPressScreenNoThanksTapped)
-            loadWordPressViewController?.dismiss(animated: true) {
-                self?.showSignInUI()
-            }
-        }
-        self.show(loadWordPressViewController)
-    }
-
-    /// Determine how to handle the error when the migration fails.
+    /// Shows the sign in flow when the content import fails.
     ///
-    /// Show the loadWordPress path when:
-    ///   - A compatible WordPress app version exists,
-    ///   - There's no data to import, and
-    ///   - There's no data because the export was never triggered, not because WP tried to export and failed.
-    ///
-    /// Otherwise, show the sign in flow.
-    ///
-    /// - Parameter error: Error object from the data migration process.
-    func handleMigrationFailure(_ error: DataMigrationError) {
-        guard
-            isCompatibleWordPressAppPresent,
-            case .dataNotReadyToImport = error,
-            !hasFailedExportAttempts,
-            let schemeUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
-        else {
-            performSafeRootNavigation { [weak self] in
-                self?.showSignInUI()
-            }
+    /// The import is attempted whenever the app is foregrounded, so only
+    /// navigate when there is no root view controller yet. This prevents
+    /// whatever screen the user is looking at from being abruptly replaced.
+    func handleMigrationFailure() {
+        guard rootViewController == nil else {
             return
         }
-
-        /// WordPress is a compatible version for migrations, but needs to be loaded to prepare the data
-        performSafeRootNavigation { [weak self] in
-            self?.showLoadWordPressUI(schemeUrl: schemeUrl)
-        }
-    }
-
-    /// This method takes care of preventing screens being abruptly replaced.
-    ///
-    /// Since the import method is called whenever the app is foregrounded, we want to make sure that
-    /// any root view controller replacements only happen where it is "allowed":
-    ///
-    ///   1. When there's no root view controller yet, or
-    ///   2. When the Load WordPress screen is shown.
-    ///
-    /// Note: We should remove this method when the migration phase is concluded and we no longer need
-    /// to perform the migration.
-    ///
-    /// - Parameter navigationClosure: The closure containing logic that eventually calls the `show` method.
-    func performSafeRootNavigation(with navigationClosure: @escaping () -> Void) {
-        switch rootViewController {
-        case .none:
-            // we can perform the navigation directly when there's no root view controller yet.
-            navigationClosure()
-        case .some(let viewController) where viewController is MigrationLoadWordPressViewController:
-            // allow the Load WordPress view to be replaced in case the migration process fails.
-            viewController.dismiss(animated: true, completion: navigationClosure)
-        default:
-            // do nothing when another root view controller is already displayed.
-            break
-        }
+        showSignInUI()
     }
 }
