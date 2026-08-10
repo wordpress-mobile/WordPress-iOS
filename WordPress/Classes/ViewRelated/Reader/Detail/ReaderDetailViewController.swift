@@ -523,6 +523,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Related posts table view
         relatedPostsTableView.reloadData()
+
+        // Tags collection view
+        tagsCollectionView.coordinator?.displaySetting = displaySetting
+        tagsCollectionView.coordinator?.reloadData()
     }
 
     /// Configure the webview
@@ -577,6 +581,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             authorAvatarURL: post.avatarURLForDisplay(),
             dateString: post.dateForDisplay()?.mediumStringWithTime(),
             featuredImageURL: featuredImageURL,
+            featuredImageHost: MediaHost(post),
             excerpt: cachedExcerpt
         ))
         updateHeader()
@@ -636,6 +641,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             configureTagsCollectionView()
         }
 
+        tagsCollectionView.coordinator?.displaySetting = displaySetting
         tagsCollectionView.topics = tags
         scrollView.layoutIfNeeded()
     }

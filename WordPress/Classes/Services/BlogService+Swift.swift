@@ -124,21 +124,37 @@ extension BlogService {
     @objc func syncXMLRPCOptionsIfApplicable(
         for blog: Blog,
         optionsHandler: @escaping (_ options: NSDictionary) -> Void,
-        failure: @escaping () -> Void
+        failure: @escaping (Error) -> Void
     ) {
         let blogObjectID = blog.objectID
 
-        guard blog.isSelfHosted,
-            let xmlrpcApi = blog.xmlrpcApi,
-              let username = blog.username,
-              let password = blog.password else {
+        func failWithoutRequest(_ error: Error) {
+            self.coreDataStack.performAndSave(
+                { context in
+                    guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
+                    blog.isXMLRPCDisabled = false
+                },
+                completion: {
+                    failure(error)
+                },
+                on: .main
+            )
+        }
 
-            // Set isXMLRPCDisabled to false if the site is not a self-hosted site.
-            self.coreDataStack.performAndSave({ context in
-                guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
-                blog.isXMLRPCDisabled = false
-            }, completion: failure, on: .main)
-
+        guard blog.isSelfHosted else {
+            failWithoutRequest(Blog.BlogCredentialsError.invalidCredentialsUrl)
+            return
+        }
+        guard let xmlrpcApi = blog.xmlrpcApi else {
+            failWithoutRequest(Blog.BlogCredentialsError.invalidXmlRpcEndpoint)
+            return
+        }
+        guard let username = blog.username else {
+            failWithoutRequest(Blog.BlogCredentialsError.blogUsernameMissing)
+            return
+        }
+        guard let password = blog.password ?? (try? blog.getApplicationToken()) else {
+            failWithoutRequest(Blog.BlogCredentialsError.blogPasswordMissing)
             return
         }
 
@@ -147,26 +163,30 @@ extension BlogService {
         Task { @MainActor in
             let result = await xmlrpcApi.call(method: "wp.getOptions", parameters: parameters)
 
-            self.coreDataStack.performAndSave { context in
-                guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
-                if case let .failure(error) = result {
-                    blog.isXMLRPCDisabled = error.xmlrpcAvailability == .unavailable
-                } else {
-                    blog.isXMLRPCDisabled = false
-                }
-            }
-
-            switch result {
-            case .success(let response):
-                if let options = response.body as? NSDictionary {
-                    optionsHandler(options)
-                } else {
-                    failure()
-                }
-            case .failure(let error):
-                DDLogError("Failed syncing XML-RPC options for blog: \(error)")
-                failure()
-            }
+            self.coreDataStack.performAndSave(
+                { context in
+                    guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
+                    if case let .failure(error) = result {
+                        blog.isXMLRPCDisabled = error.xmlrpcAvailability == .unavailable
+                    } else {
+                        blog.isXMLRPCDisabled = false
+                    }
+                },
+                completion: {
+                    switch result {
+                    case .success(let response):
+                        if let options = response.body as? NSDictionary {
+                            optionsHandler(options)
+                        } else {
+                            failure(WordPressOrgXMLRPCApiError.responseSerializationFailed)
+                        }
+                    case .failure(let error):
+                        DDLogError("Failed syncing XML-RPC options for blog: \(error)")
+                        failure(error)
+                    }
+                },
+                on: .main
+            )
         }
     }
 

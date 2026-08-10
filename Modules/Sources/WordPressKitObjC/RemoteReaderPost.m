@@ -709,7 +709,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [string wpkit_summarized];
+    return [string wpkit_makePlainText];
 }
 
 /**
