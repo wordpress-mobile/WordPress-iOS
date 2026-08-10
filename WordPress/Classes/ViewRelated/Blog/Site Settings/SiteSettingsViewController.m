@@ -48,7 +48,6 @@ NS_ENUM(NSInteger, SiteSettingsAdvanced) {
 NS_ENUM(NSInteger, SiteSettingsJetpack) {
     SiteSettingsJetpackSecurity = 0,
     SiteSettingsJetpackConnection,
-    SiteSettingsJetpackCount,
 };
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
@@ -280,9 +279,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         }
         case SiteSettingsSectionJetpackSettings:
         {
-            if ([Feature enabled:FeatureFlagJetpackDisconnect]) {
-                return SiteSettingsJetpackCount;
-            }
             return 1;
         }
         case SiteSettingsSectionAdvanced:
