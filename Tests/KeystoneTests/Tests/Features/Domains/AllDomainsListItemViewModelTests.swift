@@ -72,7 +72,7 @@ fileprivate extension AllDomainsListItemViewModel.Row {
         status: DomainStatus = .init(value: "Active", type: .success),
         expiryDate: String? = Self.defaultExpiryDate()
     ) -> Self {
-        return .init(
+        .init(
             name: name,
             description: description,
             status: status,
@@ -91,11 +91,11 @@ fileprivate extension AllDomainsListItemViewModel.Row {
 
 extension AllDomainsListItemViewModel.Row: Equatable {
 
-    static public func ==(left: Self, right: Self) -> Bool {
-        return left.name == right.name
-        && left.description == right.description
-        && left.expiryDate == right.expiryDate
-        && left.status?.value == right.status?.value
-        && left.status?.type == right.status?.type
+    static public func == (left: Self, right: Self) -> Bool {
+        left.name == right.name
+            && left.description == right.description
+            && left.expiryDate == right.expiryDate
+            && left.status?.value == right.status?.value
+            && left.status?.type == right.status?.type
     }
 }
