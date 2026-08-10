@@ -15,8 +15,5 @@ source use-bot-for-git
 echo '--- :ruby: Setup Ruby tools'
 install_gems
 
-echo '--- :closed_lock_with_key: Access secrets'
-bundle exec fastlane run configure_apply
-
 echo '--- :shipit: Finalize hotfix'
 bundle exec fastlane finalize_hotfix_release skip_confirm:true

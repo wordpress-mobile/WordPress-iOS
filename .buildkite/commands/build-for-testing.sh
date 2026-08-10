@@ -16,8 +16,7 @@ fi
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
-echo "--- :closed_lock_with_key: Installing Secrets"
-bundle exec fastlane run configure_apply
+source "$(dirname "${BASH_SOURCE[0]}")/install-a8c-secrets.sh"
 
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane "build_${APP}_for_testing"
