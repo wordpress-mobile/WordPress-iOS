@@ -9,7 +9,6 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.intelligence,
         FeatureFlag.newStats,
         RemoteFeatureFlag.newGutenberg,
-        FeatureFlag.customPostTypes,
         FeatureFlag.newSupport,
     ]
 
