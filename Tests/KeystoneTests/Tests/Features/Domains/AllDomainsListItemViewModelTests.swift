@@ -29,9 +29,16 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
         )
     }
 
-    func testMappingWithUnregisteredDomain() throws {
+    func testMappingWithDomainRegisteredElsewhere() throws {
         self.assert(
-            viewModelFromDomain: try .make(hasRegistration: false),
+            viewModelFromDomain: try .make(hasRegistration: false, expiryDate: nil),
+            equalTo: .make(expiryDate: nil)
+        )
+    }
+
+    func testMappingWithFreeWpComDomain() throws {
+        self.assert(
+            viewModelFromDomain: try .make(hasRegistration: false, expiryDate: nil, wpcomDomain: true),
             equalTo: .make(expiryDate: "Never expires")
         )
     }

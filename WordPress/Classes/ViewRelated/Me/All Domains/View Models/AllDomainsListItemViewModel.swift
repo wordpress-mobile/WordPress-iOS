@@ -67,9 +67,13 @@ struct AllDomainsListItemViewModel {
         return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
     }
 
-    static func expiryDate(from domain: Domain) -> String {
-        guard let date = domain.expiryDate, domain.hasRegistration else {
-            return Strings.neverExpires
+    static func expiryDate(from domain: Domain) -> String? {
+        guard let date = domain.expiryDate else {
+            // Only WP.com-provided subdomains (*.wordpress.com and staging
+            // addresses) genuinely never expire. For other domains a missing
+            // expiry means the date is unknown (registered elsewhere) or
+            // doesn't apply (subdomains), so show nothing.
+            return domain.type == .wpCom ? Strings.neverExpires : nil
         }
         let expired = date < Date()
         let format = expired ? Strings.expired : Strings.expiresOn
