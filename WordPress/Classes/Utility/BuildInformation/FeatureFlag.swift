@@ -14,7 +14,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case siteIconCreator
     case betaSiteDesigns
-    case commentModerationUpdate
     case compliancePopover
     case googleDomainsCard
     case voiceToContent
@@ -56,8 +55,6 @@ public enum FeatureFlag: Int, CaseIterable {
         case .siteIconCreator:
             return BuildConfiguration.current.isInternal
         case .betaSiteDesigns:
-            return false
-        case .commentModerationUpdate:
             return false
         case .compliancePopover:
             return true
@@ -116,7 +113,6 @@ extension FeatureFlag {
         case .jetpackDisconnect: "Jetpack disconnect"
         case .siteIconCreator: "Site Icon Creator"
         case .betaSiteDesigns: "Fetch Beta Site Designs"
-        case .commentModerationUpdate: "Comments Moderation Update"
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
