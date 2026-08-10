@@ -262,9 +262,9 @@ private extension PostsCardViewModel {
     func trackCardDisplayedIfNeeded() {
         switch currentState {
         case .posts:
-            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue], blog: blog)
         case .error:
-            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"], blog: blog)
         case .loading:
             return
         }

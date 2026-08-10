@@ -74,10 +74,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         contentView.addSubview(frameView)
         contentView.pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
     }
-
-    func trackPostsDisplayed() {
-        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
-    }
 }
 
 // MARK: BlogDashboardCardConfigurable
