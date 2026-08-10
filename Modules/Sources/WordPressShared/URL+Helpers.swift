@@ -69,6 +69,31 @@ public extension URL {
         return host.hasSuffix(".wordpress.com")
     }
 
+    /// Whether the URL's host is WordPress.com infrastructure — a `wordpress.com` or
+    /// `wp.com` host, or a subdomain of either.
+    ///
+    /// This is the allowlist for sending the account-wide WordPress.com OAuth token: that
+    /// token authenticates every WP.com REST call for the account, so it must never be
+    /// attached to a host outside this set — including a private site's own mapped custom
+    /// domain, which the site owner controls.
+    ///
+    /// The host is matched exactly or as a subdomain, never as a substring, so a lookalike
+    /// such as `wordpress.com.attacker.example` or `myevilwp.com` is rejected. It is
+    /// lowercased first because DNS hostnames are case-insensitive (RFC 4343) while
+    /// `URL.host` preserves the input casing.
+    ///
+    /// - Note: This is broader than `isHostedAtWPCom`, which matches only `.wordpress.com`
+    ///   subdomains for a narrower routing decision. Prefer this property for any check that
+    ///   gates sending WordPress.com credentials.
+    var isWordPressComHost: Bool {
+        guard let host = host?.lowercased() else {
+            return false
+        }
+
+        return host == "wordpress.com" || host.hasSuffix(".wordpress.com")
+            || host == "wp.com" || host.hasSuffix(".wp.com")
+    }
+
     var isWordPressDotComPost: Bool {
         // year, month, day, slug
         let components = pathComponents.filter({ $0 != "/" })

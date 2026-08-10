@@ -31,4 +31,46 @@ struct GutenbergPostExcerptGeneratorTests {
         let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
         #expect(summary == "Before")
     }
+
+    @Test func testPostWithBRTags() {
+        let content = #"<p class="wp-block-paragraph">Yes,<br>look behind<br><br>in remembrance and with gratitude.</p><p class="wp-block-paragraph">Then,<br>stay present,<BR />or miss memories in the making.</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Yes, look behind in remembrance and with gratitude.")
+    }
+
+    @Test func ignoresLeadingCodeBlock() {
+        let content = #"<pre class="wp-block-code"><code>let x = 1</code></pre><p>Actual paragraph.</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Actual paragraph.")
+    }
+
+    @Test func ignoresLeadingVerseBlock() {
+        let content = #"<pre class="wp-block-verse">Roses are red</pre><p>Real paragraph.</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Real paragraph.")
+    }
+
+    @Test func convertsAttributedBreakTagsToSpaces() {
+        let content = #"<p>foo<br class="clear">bar<br clear="all">baz<br />qux</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "foo bar baz qux")
+    }
+
+    @Test func collapsesWhitespaceAroundBreakTags() {
+        let content = "<p>Hello <br> world<br>  <br>again</p>"
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Hello world again")
+    }
+
+    @Test func preservesNonBreakingSpace() {
+        let content = "<p>some contents&nbsp;go here</p>"
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "some contents\u{00A0}go here")
+    }
 }

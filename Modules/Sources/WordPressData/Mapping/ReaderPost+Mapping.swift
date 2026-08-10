@@ -74,6 +74,7 @@ extension ReaderPost {
         permaLink = remotePost.permalink
         postID = remotePost.postID
         postTitle = remotePost.postTitle
+        mt_excerpt = remotePost.excerpt?.nonEmptyString()
         railcar = remotePost.railcar
         score = remotePost.score
         siteID = remotePost.siteID

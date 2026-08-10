@@ -31,25 +31,29 @@ final class DashboardBlazeCardCell: DashboardCollectionViewCell {
         switch viewModel.state {
         case .promo:
             let cardView = DashboardBlazePromoCardView(.make(with: blog, viewController: viewController))
-            self.setCardView(cardView, subtype: .promo)
+            self.setCardView(cardView, subtype: .promo, blog: blog)
         case .campaign(let campaign):
             let cardView = DashboardBlazeCampaignsCardView()
             cardView.configure(blog: blog, viewController: viewController, campaign: campaign)
-            self.setCardView(cardView, subtype: .campaigns)
+            self.setCardView(cardView, subtype: .campaigns, blog: blog)
         }
     }
 
-    private func setCardView(_ cardView: UIView, subtype: DashboardBlazeCardSubtype) {
+    private func setCardView(_ cardView: UIView, subtype: DashboardBlazeCardSubtype, blog: Blog) {
         contentView.subviews.forEach { $0.removeFromSuperview() }
 
         cardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cardView)
         contentView.pinSubviewToAllEdges(cardView, priority: UILayoutPriority(999))
 
-        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: [
-            "type": DashboardCard.blaze.rawValue,
-            "sub_type": subtype.rawValue
-        ])
+        BlogDashboardAnalytics.shared.track(
+            .dashboardCardShown,
+            properties: [
+                "type": DashboardCard.blaze.rawValue,
+                "sub_type": subtype.rawValue
+            ],
+            blog: blog
+        )
     }
 }
 

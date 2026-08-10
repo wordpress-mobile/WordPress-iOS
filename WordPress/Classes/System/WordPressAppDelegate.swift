@@ -610,8 +610,6 @@ extension WordPressAppDelegate {
             return "Login View"
         case is MigrationNavigationController:
             return "Jetpack Migration View"
-        case is MigrationLoadWordPressViewController:
-            return "Jetpack Migration Load WordPress View"
         default:
             return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         }

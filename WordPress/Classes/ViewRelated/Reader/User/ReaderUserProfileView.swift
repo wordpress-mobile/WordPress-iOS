@@ -56,6 +56,12 @@ struct ReaderUserProfileViewModel {
         self.name = comment.author
         self.siteURL = URL(string: comment.author_url)
     }
+
+    init(post: ReaderPost) {
+        self.avatarURL = post.avatarURLForDisplay()
+        self.name = post.authorForDisplay() ?? ""
+        self.siteURL = post.blogURL.flatMap(URL.init(string:))
+    }
 }
 
 private enum Strings {
