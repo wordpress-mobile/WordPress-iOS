@@ -1711,10 +1711,10 @@ extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
     private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {
         let targetSize = coverSize
         return indexPaths.compactMap {
-            guard let imageURL = getPost(at: $0)?.featuredImageURLForDisplay() else {
+            guard let post = getPost(at: $0), let imageURL = post.featuredImageURLForDisplay() else {
                 return nil
             }
-            return ImageRequest(url: imageURL, options: ImageRequestOptions(size: targetSize))
+            return ImageRequest(url: imageURL, host: MediaHost(post), options: ImageRequestOptions(size: targetSize))
         }
     }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-06-18 08:15:49+0000 */
+/* Translation-Revision-Date: 2026-07-28 06:32:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: cs_CZ */
@@ -1454,6 +1454,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Data nelze načíst. Obnovte prosím stránku později.";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "Stránky se nepodařilo načíst. Klepnutím to zkuste znovu.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Značky se nepodařilo načíst. Zmáčkni pro opakování.";
@@ -6949,6 +6952,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Staging";
 
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "%1$dkrát týdně";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "%1$dkrát týdně";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "%1$dkrát týdně";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "%1$dkrát týdně";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "%1$dkrát týdně";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "%1$dkrát týdně";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Odmítnout";
 
@@ -7380,6 +7401,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Příspěvek ze zvuku";
+
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "Návrh uložen";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "Příspěvek zveřejněn";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "Příspěvek aktualizován";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Příspěvek, který se pokoušíte uložit, byl mezitím změněn.";
@@ -7898,6 +7928,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Načítání editoru";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "Zavřít";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "V nastavení můžete tuto aplikaci vyloučit z režimu uzamčení a poté editor znovu otevřít, čímž obnovíte plnou funkčnost.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Další informace";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Zjištěn režim uzamčení";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "Je zapnutý režim uzamčení. Editor nemusí fungovat správně.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Vložení média se nezdařilo";
 
@@ -7915,6 +7960,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for patterns without a category */
 "editor.patterns.uncategorized" = "Nezařazeno";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld slov";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld slov";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld se změní na";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld slov";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld slov";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld slov";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "eg. 1122334455";
@@ -9429,6 +9492,21 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Přidat";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Vyberte soubor";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Fotogalerie";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "Pořídit fotografii";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "Natočit video";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "Přidat";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Mřížka s poměrem stran";
 
@@ -9474,6 +9552,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Zkuste to znovu";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "Externí média";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "Vše";
 
@@ -9509,6 +9590,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Čtvercová mřížka";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Vybraný soubor se nepodařilo stáhnout: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Smazat";
@@ -9599,6 +9683,87 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Vybrat položky";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d nahrání se nezdařilo";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d – nahrání se nezdařilo";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "Nahrávání %1$d · %2$d se nezdařilo";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "Nahrávání %1$d položek";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "Nahrávání %1$d položky";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "Tento typ souboru nelze na vašem webu nahrát.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "Toto video je delší, než kolik váš web umožňuje.";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "Vybraný soubor nebyl nalezen.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Nepodařilo se převést fotografii pro nahrání.";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "Nepodařilo se získat přístup k vybranému souboru.";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "Nedařilo se určit typ souboru.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Nepodařilo se připravit video k nahrání: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "Pro vybranou kvalitu videa není k dispozici žádný exportér.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Fotografie z fotoaparátu";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Videokamera";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "Fotografie";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Pokračujte v nahrávání";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "Všechny nahrané soubory";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Zrušit veškeré nahrávání";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Zrušit nahrávání";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "Všechna probíhající nahrávání budou zrušena. Tuto akci nelze vrátit zpět.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Zrušit všechny neúspěšné";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Zkusit znovu všechny neúspěšné pokusy";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "Zavřít";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "Zavřít";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "Zkusit znovu";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Nahrané soubory";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Image Playground";
@@ -12887,8 +13052,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Stav";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Nejoblíbenější příspěvky všech dob a příspěvky s nejvyšším počtem zhlédnutí";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Celkový počet zobrazení";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Celkový počet zobrazení a návštěvníků";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Nejlepší pohledy ze všech";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Nejvíce zhlédnutí";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Nelze načíst statistiky za celé období.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Vytvořte nebo přidejte web, abyste si mohli prohlédnout statistiky za celé období.";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Příspěvky";
@@ -12911,6 +13094,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Pro zobrazení dnešních statistik se přihlaste do Jetpacku.";
 
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Celkový počet zobrazení";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Dnešní počet zobrazení";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Nelze načíst statistiky za tento týden.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Vytvořte si web nebo přidejte existující, abyste si mohli prohlédnout statistiky za tento týden.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Zůstaňte v obraze o aktivitě tohoto týdne na vašem WordPress webu.";
 
@@ -12923,6 +13118,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Komentáře";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistiky byly přesunuty do aplikace Jetpack. Přechod je zdarma a zabere jen minutu.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "To se mi líbí";
 
@@ -12931,6 +13129,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the no data view in today widget */
 "widget.today.nodata.view.title" = "Nelze načíst statistiky webu.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Vytvořte si web nebo přidejte existující, abyste si mohli prohlédnout dnešní statistiky.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Zůstaňte v obraze o dnešních aktivitách na vašem WordPress webu.";
@@ -12949,6 +13150,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Návštěvníci";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Dnešní lajky a komentáře";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Dnešní názory";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Dnešní zobrazení a návštěvníci";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "nebude v budoucnu k dispozici.";

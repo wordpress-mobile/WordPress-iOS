@@ -6463,21 +6463,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Title of the migration done screen. */
 "migration.done.title" = "Thanks for switching to Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "It looks like you have the WordPress app installed.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Open WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "No thanks";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Would you like to transfer your data from the WordPress app and sign in automatically?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Welcome to Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decide later";
 

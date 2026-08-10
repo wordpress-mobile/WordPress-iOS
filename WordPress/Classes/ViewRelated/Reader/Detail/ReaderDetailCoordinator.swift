@@ -1,4 +1,7 @@
+import AsyncImageKit
 import Foundation
+import SafariServices
+import SwiftUI
 import WordPressData
 import WordPressReader
 import WordPressShared
@@ -466,7 +469,7 @@ class ReaderDetailCoordinator {
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-    private func showTopic(_ topic: String) {
+    func showTopic(_ topic: String) {
         let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
         controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
@@ -534,7 +537,7 @@ class ReaderDetailCoordinator {
         scrollToHashIfNeeded()
     }
 
-    private func followSite(completion: @escaping () -> Void) {
+    private func toggleFollowSite(completion: @escaping () -> Void) {
         guard let post else {
             return
         }
@@ -691,26 +694,48 @@ class ReaderDetailCoordinator {
     }
 }
 
-// MARK: - ReaderDetailHeaderViewDelegate
-extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
-    func didTapBlogName() {
-        previewSite()
+// MARK: - ReaderPostHeaderViewDelegate
+extension ReaderDetailCoordinator: ReaderPostHeaderViewDelegate {
+    func readerPostHeaderView(_ view: ReaderPostHeaderView, didTap element: ReaderPostHeaderView.Element) {
+        switch element {
+        case .siteName:
+            previewSite()
+        case .subscribe:
+            view.isShowingSubscribeLoadingIndicator = true
+            toggleFollowSite { [weak self] in
+                view.isShowingSubscribeLoadingIndicator = false
+                self?.view?.updateHeader()
+            }
+        case .author:
+            showAuthorProfile()
+        case .featuredImage:
+            showFeaturedImage(view.featuredImageView)
+        }
     }
 
-    func didTapTagButton() {
-        showTag()
+    private func showFeaturedImage(_ sender: AsyncImageView) {
+        guard let post, let imageURL = post.featuredImage.flatMap(URL.init) else {
+            return
+        }
+        WPAnalytics.trackReader(.readerArticleImageTapped)
+        let lightboxVC = LightboxViewController(sourceURL: imageURL, host: MediaHost(post))
+        MainActor.assumeIsolated {
+            lightboxVC.thumbnail = sender.image
+        }
+        lightboxVC.configureZoomTransition(sourceView: sender)
+        viewController?.present(lightboxVC, animated: true)
     }
 
-    func didTapHeaderAvatar() {
-        previewSite()
-    }
-
-    func didTapFollowButton(completion: @escaping () -> Void) {
-        followSite(completion: completion)
-    }
-
-    func didSelectTopic(_ topic: String) {
-        showTopic(topic)
+    private func showAuthorProfile() {
+        guard let post else { return }
+        let viewModel = ReaderUserProfileViewModel(post: post)
+        let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
+        let navigationVC = UINavigationController(rootViewController: profileVC)
+        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak profileVC] _ in
+            profileVC?.presentingViewController?.dismiss(animated: true)
+        })
+        navigationVC.sheetPresentationController?.detents = [.medium()]
+        viewController?.present(navigationVC, animated: true)
     }
 }
 

@@ -13,6 +13,7 @@ final class ReaderPostCellViewModel {
     let details: String
     let isSeen: Bool?
     let imageURL: URL?
+    let imageHost: MediaHostProtocol?
 
     // Footer (Buttons)
     private(set) var isToolbarHidden = false
@@ -41,6 +42,7 @@ final class ReaderPostCellViewModel {
         self.details = post.contentPreviewForDisplay() ?? ""
         self.isSeen = post.isSeenSupported ? post.isSeen : nil
         self.imageURL = post.featuredImageURLForDisplay() ?? post.pathForDisplayImage.flatMap(URL.init)
+        self.imageHost = MediaHost(post)
 
         self.toolbar = ReaderPostToolbarViewModel.make(post: post)
         if isP2 && post.primaryTag == "afk" {
@@ -68,6 +70,7 @@ final class ReaderPostCellViewModel {
         self.author = "WordPress Mobile Apps"
         self.time = "9d ago"
         self.isSeen = nil
+        self.imageHost = nil
         self.title = "Discovering the Wonders of the Wild"
         self.details = "Lorem ipsum dolor sit amet. Non omnis quia et natus voluptatum et eligendi voluptate vel iusto fuga sit repellendus molestiae aut voluptatem blanditiis ad neque sapiente. Id galisum distinctio quo enim aperiam non veritatis vitae et ducimus rerum."
         self.imageURL = URL(string: "https://picsum.photos/1260/630.jpg")

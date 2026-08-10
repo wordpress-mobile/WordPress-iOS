@@ -76,7 +76,7 @@ actor ApplicationPasswordRepository {
         // No need to propagate the API request error.
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
-            notifyingDelegate: PulseNetworkLogger(),
+            notifyingDelegate: PulseNetworkLogger.shared,
             siteInfo: .selfHosted(siteUrl: try .from(url: site.siteURL), apiRoot: credentials.apiRootURL),
             authentication: .init(username: credentials.username, password: credentials.token)
         )
@@ -179,7 +179,7 @@ private extension ApplicationPasswordRepository {
         for password in passwords {
             let api = WordPressAPI(
                 urlSession: session,
-                notifyingDelegate: PulseNetworkLogger(),
+                notifyingDelegate: PulseNetworkLogger.shared,
                 siteInfo: .selfHosted(siteUrl: parsedSiteURL, apiRoot: apiRootURL),
                 authentication: .init(username: siteUsername, password: password.password)
             )

@@ -240,7 +240,7 @@ public class Post: AbstractPost {
                 return preview
             }
             let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200)
-                .withCollapsedNewlines().trimmedForPreview()
+                .trimmedForPreview()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {

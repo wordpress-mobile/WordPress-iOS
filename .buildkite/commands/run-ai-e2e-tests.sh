@@ -23,7 +23,11 @@
 #   SIMULATOR_NAME                 Simulator to boot if none running (default: iPhone 16)
 #   TEST_DIR                       Test directory (default: Tests/AgentTests/ui-tests)
 #   SIMULATOR_LLM_PILOT_REPO_URL   Remote repo URL for simulator-llm-pilot
+#   SIMULATOR_LLM_PILOT_REF        Full commit SHA, branch, or tag for
+#                                  simulator-llm-pilot (abbreviated commit
+#                                  SHAs are not supported)
 #   SIMULATOR_LLM_PILOT_SOURCE_PATH Local source checkout override for simulator-llm-pilot
+#   SIMULATOR_LLM_PILOT_TRANSCRIPT_POLICY Transcript output: none | failures | all (default: failures)
 
 set -euo pipefail
 
@@ -183,6 +187,7 @@ export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 17}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
+export SIMULATOR_LLM_PILOT_TRANSCRIPT_POLICY="${SIMULATOR_LLM_PILOT_TRANSCRIPT_POLICY:-failures}"
 
 case "$APP" in
   wordpress) APP_BUNDLE_ID="org.wordpress"; APP_DISPLAY_NAME="WordPress" ;;
@@ -250,6 +255,7 @@ simulator-llm-pilot run "$TEST_DIR" \
   --app-bundle-id "$APP_BUNDLE_ID" \
   --app-name "$APP_DISPLAY_NAME" \
   --app-instructions-file "$APP_INSTRUCTIONS_FILE" \
+  --rest-api-policy verification-readonly \
   --simulator-udid "$UDID" \
   --results-dir "$RESULTS_DIR" \
   || EXIT_CODE=$?
