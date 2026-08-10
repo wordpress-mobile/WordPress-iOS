@@ -23,19 +23,19 @@ final class InteractiveNotificationsManager: NSObject {
     /// Returns the Core Data main context.
     ///
     @objc var context: NSManagedObjectContext {
-        return ContextManager.shared.mainContext
+        ContextManager.shared.mainContext
     }
 
     /// Returns a CommentService instance.
     ///
     @objc var commentService: CommentService {
-        return CommentService(coreDataStack: ContextManager.shared)
+        CommentService(coreDataStack: ContextManager.shared)
     }
 
     /// Returns a NotificationSyncMediator instance.
     ///
     var notificationSyncMediator: NotificationSyncMediator? {
-       return NotificationSyncMediator()
+        NotificationSyncMediator()
     }
 
     /// Registers the device for User Notifications.
@@ -61,11 +61,10 @@ final class InteractiveNotificationsManager: NSObject {
         let options: UNAuthorizationOptions = [.badge, .sound, .alert, .providesAppNotificationSettings]
 
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: options) { [weak self] allowed, _ in
+        notificationCenter.requestAuthorization(options: options) { allowed, _ in
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)
-                    self?.disableWordPressNotificationsIfNeeded()
                 } else {
                     WPAnalytics.track(.pushNotificationOSAlertDenied)
                 }
@@ -83,10 +82,23 @@ final class InteractiveNotificationsManager: NSObject {
     /// - Returns: True on success
     ///
     @objc @discardableResult
-    func handleAction(with identifier: String, category: String, threadId: String?, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleAction(
+        with identifier: String,
+        category: String,
+        threadId: String?,
+        userInfo: NSDictionary,
+        responseText: String?
+    ) -> Bool {
         if let noteCategory = NoteCategoryDefinition(rawValue: category),
-            noteCategory.isLocalNotification {
-            return handleLocalNotificationAction(with: identifier, category: category, threadId: threadId, userInfo: userInfo, responseText: responseText)
+            noteCategory.isLocalNotification
+        {
+            return handleLocalNotificationAction(
+                with: identifier,
+                category: category,
+                threadId: threadId,
+                userInfo: userInfo,
+                responseText: responseText
+            )
         }
 
         if NoteActionDefinition.approveLogin == NoteActionDefinition(rawValue: identifier) {
@@ -96,7 +108,8 @@ final class InteractiveNotificationsManager: NSObject {
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
-            let commentID = userInfo.object(forKey: "comment_id") as? NSNumber else {
+            let commentID = userInfo.object(forKey: "comment_id") as? NSNumber
+        else {
 
             return false
         }
@@ -137,14 +150,20 @@ final class InteractiveNotificationsManager: NSObject {
             ]
             WPAppAnalytics.track(.pushNotificationQuickActionCompleted, withProperties: modernEventProperties)
 
-            let legacyEventProperties = [ WPAppAnalyticsKeyLegacyQuickAction: true ]
+            let legacyEventProperties = [WPAppAnalyticsKeyLegacyQuickAction: true]
             WPAppAnalytics.track(actionEvent, withProperties: legacyEventProperties)
         }
 
         return true
     }
 
-    func handleLocalNotificationAction(with identifier: String, category: String, threadId: String?, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleLocalNotificationAction(
+        with identifier: String,
+        category: String,
+        threadId: String?,
+        userInfo: NSDictionary,
+        responseText: String?
+    ) -> Bool {
         if let noteCategory = NoteCategoryDefinition(rawValue: category) {
             switch noteCategory {
             case .mediaUploadSuccess, .mediaUploadFailure:
@@ -250,7 +269,7 @@ final class InteractiveNotificationsManager: NSObject {
 
                     case .dismissPrompt: // user taps on the "Dismiss" button.
                         WPAnalytics.track(.promptsNotificationDismissActionTapped)
-                        // no-op, let the notification be dismissed.
+                    // no-op, let the notification be dismissed.
 
                     default:
                         break
@@ -291,7 +310,8 @@ extension InteractiveNotificationsManager {
 
     private func blog(from threadId: String?) -> Blog? {
         if let threadId,
-           let blogId = Int(threadId) {
+            let blogId = Int(threadId)
+        {
             return try? Blog.lookup(withID: blogId, in: ContextManager.shared.mainContext)
         }
 
@@ -316,12 +336,17 @@ private extension InteractiveNotificationsManager {
     ///     - siteID: The site identifier
     ///
     func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
-        commentService.likeComment(withID: commentID, siteID: siteID, success: {
-            self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-            DDLogInfo("Liked comment from push notification")
-        }, failure: { _ in
-            DDLogInfo("Couldn't like comment from push notification")
-        })
+        commentService.likeComment(
+            withID: commentID,
+            siteID: siteID,
+            success: {
+                self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
+                DDLogInfo("Liked comment from push notification")
+            },
+            failure: { _ in
+                DDLogInfo("Couldn't like comment from push notification")
+            }
+        )
     }
 
     /// Approves a comment and marks the associated notification as read
@@ -331,12 +356,17 @@ private extension InteractiveNotificationsManager {
     ///     - siteID: The site identifier
     ///
     func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
-        commentService.approveComment(withID: commentID, siteID: siteID, success: {
-            self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-            DDLogInfo("Successfully moderated comment from push notification")
-        }, failure: { _ in
-            DDLogInfo("Couldn't moderate comment from push notification")
-        })
+        commentService.approveComment(
+            withID: commentID,
+            siteID: siteID,
+            success: {
+                self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
+                DDLogInfo("Successfully moderated comment from push notification")
+            },
+            failure: { _ in
+                DDLogInfo("Couldn't moderate comment from push notification")
+            }
+        )
     }
 
     /// Opens the details for a given notificationId
@@ -355,12 +385,18 @@ private extension InteractiveNotificationsManager {
     ///     - content: The text for the comment reply
     ///
     func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
-        commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
-            self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-            DDLogInfo("Successfully replied comment from push notification")
-        }, failure: { _ in
-            DDLogInfo("Couldn't reply to comment from push notification")
-        })
+        commentService.replyToComment(
+            withID: commentID,
+            siteID: siteID,
+            content: content,
+            success: {
+                self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
+                DDLogInfo("Successfully replied comment from push notification")
+            },
+            failure: { _ in
+                DDLogInfo("Couldn't reply to comment from push notification")
+            }
+        )
     }
 
     /// Returns a collection of *UNNotificationCategory* instances, for each one of the
@@ -369,7 +405,9 @@ private extension InteractiveNotificationsManager {
     /// - Returns: A set of *UNNotificationCategory* instances.
     ///
     func supportedNotificationCategories() -> Set<UNNotificationCategory> {
-        let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
+        let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({
+            $0.notificationCategory()
+        })
         return Set(categories)
     }
 
@@ -379,7 +417,7 @@ private extension InteractiveNotificationsManager {
     /// - Returns: True if successfule. Otherwise false.
     ///
     func approveAuthChallenge(_ userInfo: NSDictionary) -> Bool {
-        return PushNotificationsManager.shared.handleAuthenticationApprovedAction(userInfo)
+        PushNotificationsManager.shared.handleAuthenticationApprovedAction(userInfo)
     }
 }
 
@@ -440,11 +478,11 @@ extension InteractiveNotificationsManager {
         }
 
         var identifier: String {
-            return rawValue
+            rawValue
         }
 
         var isLocalNotification: Bool {
-            return NoteCategoryDefinition.localDefinitions.contains(self)
+            NoteCategoryDefinition.localDefinitions.contains(self)
         }
 
         var notificationCategoryOptions: [UNNotificationCategoryOptions] {
@@ -457,15 +495,23 @@ extension InteractiveNotificationsManager {
         }
 
         func notificationCategory() -> UNNotificationCategory {
-            return UNNotificationCategory(
+            UNNotificationCategory(
                 identifier: identifier,
                 actions: actions.map({ $0.notificationAction() }),
                 intentIdentifiers: [],
-                options: UNNotificationCategoryOptions())
+                options: UNNotificationCategoryOptions()
+            )
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly, bloggingPrompt]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup, bloggingPrompt]
+        static var allDefinitions = [
+            commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure,
+            postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly,
+            bloggingPrompt
+        ]
+        static var localDefinitions = [
+            mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess,
+            shareUploadFailure, bloggingReminderWeekly, weeklyRoundup, bloggingPrompt
+        ]
     }
 
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
@@ -496,11 +542,17 @@ extension InteractiveNotificationsManager {
             case .mediaRetry:
                 return NSLocalizedString("Retry", comment: "Opens the media library .")
             case .postView:
-                return NSLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
+                return NSLocalizedString(
+                    "View",
+                    comment: "Opens the post epilogue screen to allow sharing / viewing of a post."
+                )
             case .shareEditPost:
                 return NSLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
             case .approveLogin:
-                return NSLocalizedString("Approve", comment: "Verb. Approves a 2fa authentication challenge, and logs in a user.")
+                return NSLocalizedString(
+                    "Approve",
+                    comment: "Verb. Approves a 2fa authentication challenge, and logs in a user."
+                )
             case .denyLogin:
                 return NSLocalizedString("Deny", comment: "Verb. Denies a 2fa authentication challenge.")
             case .answerPrompt:
@@ -515,11 +567,11 @@ extension InteractiveNotificationsManager {
         }
 
         var destructive: Bool {
-            return false
+            false
         }
 
         var identifier: String {
-            return rawValue
+            rawValue
         }
 
         var requiresAuthentication: Bool {
@@ -556,13 +608,25 @@ extension InteractiveNotificationsManager {
         func notificationAction() -> UNNotificationAction {
             switch self {
             case .commentReply:
-                return UNTextInputNotificationAction(identifier: identifier,
-                                                     title: description,
-                                                     options: notificationActionOptions,
-                                                     textInputButtonTitle: NSLocalizedString("Reply", comment: "Verb. Button title. Reply to a comment."),
-                                                     textInputPlaceholder: NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view"))
+                return UNTextInputNotificationAction(
+                    identifier: identifier,
+                    title: description,
+                    options: notificationActionOptions,
+                    textInputButtonTitle: NSLocalizedString(
+                        "Reply",
+                        comment: "Verb. Button title. Reply to a comment."
+                    ),
+                    textInputPlaceholder: NSLocalizedString(
+                        "Write a reply…",
+                        comment: "Placeholder text for inline compose view"
+                    )
+                )
             default:
-                return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)
+                return UNNotificationAction(
+                    identifier: identifier,
+                    title: description,
+                    options: notificationActionOptions
+                )
             }
         }
 
@@ -582,29 +646,39 @@ extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postView, shareEditPost, approveLogin, denyLogin, answerPrompt, dismissPrompt]
+        static var allDefinitions = [
+            commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postView, shareEditPost,
+            approveLogin, denyLogin, answerPrompt, dismissPrompt
+        ]
     }
 }
 
 // MARK: - UNUserNotificationCenterDelegate Conformance
 //
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
-                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void
+    ) {
         let userInfo = notification.request.content.userInfo as NSDictionary
 
         // If the app is open, and a Zendesk view is being shown, Zendesk will display an alert allowing the user to view the updated ticket.
         handleZendeskNotification(userInfo: userInfo)
 
         // Otherwise see if it's an auth notification
-        if PushNotificationsManager.shared.handleAuthenticationNotification(userInfo, userInteraction: true, completionHandler: nil) {
+        if PushNotificationsManager.shared.handleAuthenticationNotification(
+            userInfo,
+            userInteraction: true,
+            completionHandler: nil
+        ) {
             return
         }
 
         // If it's a blogging reminder notification, display it in-app
         if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue
-            || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue {
+            || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue
+        {
 
             completionHandler([.banner, .list, .sound])
             return
@@ -613,10 +687,13 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         // Otherwise a share notification
         let category = notification.request.content.categoryIdentifier
 
-        guard category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier,
+        guard
+            category == ShareNoticeConstants.categorySuccessIdentifier
+                || category == ShareNoticeConstants.categoryFailureIdentifier,
             (userInfo.object(forKey: ShareNoticeUserInfoKey.originatedFromAppExtension) as? Bool) == true,
-            let postUploadOpID = userInfo.object(forKey: ShareNoticeUserInfoKey.postUploadOpID) as? String  else {
-                return
+            let postUploadOpID = userInfo.object(forKey: ShareNoticeUserInfoKey.postUploadOpID) as? String
+        else {
+            return
         }
 
         // If the notification originated from the share extension, disregard this current notification and resend a new one.
@@ -626,25 +703,30 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
     private func handleZendeskNotification(userInfo: NSDictionary) {
         if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-            type == ZendeskUtils.PushNotificationIdentifiers.type {
+            type == ZendeskUtils.PushNotificationIdentifiers.type
+        {
             ZendeskUtils.handlePushNotification(userInfo)
         }
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                       didReceive response: UNNotificationResponse,
-                                       withCompletionHandler completionHandler: @escaping () -> Void) {
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
         let textInputResponse = response as? UNTextInputNotificationResponse
 
         // Analytics
         PushNotificationsManager.shared.trackNotification(with: userInfo, response: response)
 
-        if handleAction(with: response.actionIdentifier,
-                        category: response.notification.request.content.categoryIdentifier,
-                        threadId: response.notification.request.content.threadIdentifier,
-                        userInfo: userInfo,
-                        responseText: textInputResponse?.userText) {
+        if handleAction(
+            with: response.actionIdentifier,
+            category: response.notification.request.content.categoryIdentifier,
+            threadId: response.notification.request.content.threadIdentifier,
+            userInfo: userInfo,
+            responseText: textInputResponse?.userText
+        ) {
             completionHandler()
             return
         }
@@ -669,13 +751,5 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
         MeNavigationAction.notificationSettings.perform(router: UniversalLinkRouter.shared)
-    }
-}
-
-private extension InteractiveNotificationsManager {
-    /// A temporary setting to allow controlling WordPress notifications when they are disabled after Jetpack installation
-    /// Disable WordPress notifications when they are enabled on Jetpack
-    func disableWordPressNotificationsIfNeeded() {
-        JetpackNotificationMigrationService.shared.disableWordPressNotificationsFromJetpack()
     }
 }
