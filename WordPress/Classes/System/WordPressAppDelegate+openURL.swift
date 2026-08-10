@@ -155,19 +155,14 @@ import WordPressShared
         // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        let post = blog.createDraftPost()
-        post.postTitle = title
-        post.content = contentEscaped
-        post.tags = tags
-
-        let postVC = EditPostViewController(post: post)
-        postVC.modalPresentationStyle = .fullScreen
-
-        RootViewCoordinator.sharedPresenter.rootViewController.present(postVC, animated: true, completion: nil)
-
-        WPAppAnalytics.track(
-            .editorCreatedPost,
-            withProperties: [WPAppAnalyticsKeyTapSource: "url_scheme", WPAppAnalyticsKeyPostType: "post"]
+        RootViewCoordinator.sharedPresenter.showNewPostEditor(
+            blog: blog,
+            context: NewPostEditorContext(
+                title: title,
+                content: contentEscaped,
+                tags: tags,
+                analytics: .editorCreatedPost(source: "url_scheme", postType: "post")
+            )
         )
 
         return true
@@ -196,11 +191,13 @@ import WordPressShared
         // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        RootViewCoordinator.sharedPresenter.showPageEditor(
+        RootViewCoordinator.sharedPresenter.showNewPageEditor(
             blog: blog,
-            title: title,
-            content: contentEscaped,
-            source: "url_scheme"
+            context: NewPostEditorContext(
+                title: title,
+                content: contentEscaped,
+                analytics: .editorCreatedPage(source: "url_scheme")
+            )
         )
 
         return true

@@ -32,9 +32,12 @@ final class PageListViewController: AbstractPostListViewController {
     private lazy var homepageSettingsService = HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
-        let action = PageAction(handler: { [weak self] in
-            self?.createPost()
-        }, source: Constant.Events.source)
+        let action = PageAction(
+            handler: { [weak self] in
+                self?.createPost()
+            },
+            source: Constant.Events.source
+        )
         return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
@@ -46,7 +49,10 @@ final class PageListViewController: AbstractPostListViewController {
         return isFSETheme && filterSettings.currentPostListFilter().filterType == .published
     }
 
-    private lazy var editorSettingsService = BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
+    private lazy var editorSettingsService = BlockEditorSettingsService(
+        blog: blog,
+        coreDataStack: ContextManager.shared
+    )
 
     private var pages: [Page] = []
 
@@ -75,7 +81,11 @@ final class PageListViewController: AbstractPostListViewController {
 
         title = NSLocalizedString("Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
-        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+        createButtonCoordinator.add(
+            to: view,
+            trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+            bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor
+        )
 
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
@@ -112,18 +122,24 @@ final class PageListViewController: AbstractPostListViewController {
         tableView.estimatedRowHeight = Constant.Size.pageCellEstimatedRowHeight
 
         tableView.register(PageListCell.self, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
-        tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
+        tableView.register(
+            TemplatePageTableViewCell.self,
+            forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier
+        )
     }
 
     private func beginRefreshingManually() {
         refreshControl.beginRefreshing()
-        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height), animated: true)
+        tableView.setContentOffset(
+            CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height),
+            animated: true
+        )
     }
 
     // MARK: - Sync Methods
 
     override internal func postTypeToSync() -> PostServiceType {
-        return .page
+        .page
     }
 
     @MainActor
@@ -142,19 +158,34 @@ final class PageListViewController: AbstractPostListViewController {
         return (posts, false)
     }
 
-    override func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> ())?, failure: ((NSError) -> ())?) {
+    override func syncHelper(
+        _ syncHelper: WPContentSyncHelper,
+        syncContentWithUserInteraction userInteraction: Bool,
+        success: ((Bool) -> ())?,
+        failure: ((NSError) -> ())?
+    ) {
         // The success and failure blocks are called in the parent class `AbstractPostListViewController` by the `syncPosts` method. Since that class is
         // used by both this one and the "Posts" screen, making changes to the sync helper is tough. To get around that, we make the fetch settings call
         // async and then just await it before calling either the final success or failure block. This ensures that both the `syncPosts` call in the parent
         // and the `fetchSettings` call here finish before calling the final success or failure block.
         let (wrappedSuccess, wrappedFailure) = fetchEditorSettings(success: success, failure: failure)
-        super.syncHelper(syncHelper, syncContentWithUserInteraction: userInteraction, success: wrappedSuccess, failure: wrappedFailure)
+        super
+            .syncHelper(
+                syncHelper,
+                syncContentWithUserInteraction: userInteraction,
+                success: wrappedSuccess,
+                failure: wrappedFailure
+            )
     }
 
-    private func fetchEditorSettings(success: ((Bool) -> ())?, failure: ((NSError) -> ())?) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
+    private func fetchEditorSettings(
+        success: ((Bool) -> ())?,
+        failure: ((NSError) -> ())?
+    ) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
         let fetchTask = Task { @MainActor [weak self] in
             guard RemoteFeatureFlag.siteEditorMVP.enabled(),
-                  let result = await self?.editorSettingsService?.fetchSettings() else {
+                let result = await self?.editorSettingsService?.fetchSettings()
+            else {
                 return
             }
             switch result {
@@ -232,7 +263,13 @@ final class PageListViewController: AbstractPostListViewController {
         // Do nothing
     }
 
-    override func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    override func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+    ) {
         // Do nothing, refresh all
     }
 
@@ -245,7 +282,7 @@ final class PageListViewController: AbstractPostListViewController {
     // MARK: - Core Data
 
     override func entityName() -> String {
-        return String(describing: Page.self)
+        String(describing: Page.self)
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
@@ -276,10 +313,11 @@ final class PageListViewController: AbstractPostListViewController {
         }
 
         if RemoteFeatureFlag.siteEditorMVP.enabled(),
-                   blog.blockEditorSettings?.isFSETheme ?? false,
-                   let homepageID = blog.homepagePageID,
-                   let homepageType = blog.homepageType,
-           homepageType == .page {
+            blog.blockEditorSettings?.isFSETheme ?? false,
+            let homepageID = blog.homepagePageID,
+            let homepageType = blog.homepageType,
+            homepageType == .page
+        {
             predicates.append(NSPredicate(format: "postID != %i", homepageID))
         }
 
@@ -298,9 +336,11 @@ final class PageListViewController: AbstractPostListViewController {
                 return
             }
 
-            let webViewController = WebViewControllerFactory.controller(url: editorUrl,
-                                                                        blog: blog,
-                                                                        source: Constant.Events.editHomepageSource)
+            let webViewController = WebViewControllerFactory.controller(
+                url: editorUrl,
+                blog: blog,
+                source: Constant.Events.editHomepageSource
+            )
             let navigationController = UINavigationController(rootViewController: webViewController)
             present(navigationController, animated: true)
         case .pages:
@@ -310,7 +350,11 @@ final class PageListViewController: AbstractPostListViewController {
         }
     }
 
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
         guard indexPath.section == Section.pages.rawValue else { return nil }
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
@@ -320,13 +364,19 @@ final class PageListViewController: AbstractPostListViewController {
         }
     }
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         guard indexPath.section == Section.pages.rawValue else { return nil }
         let actions = AbstractPostHelper.makeLeadingContextualActions(for: pages[indexPath.row], delegate: self)
         return UISwipeActionsConfiguration(actions: actions)
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         guard indexPath.section == Section.pages.rawValue else { return nil }
         let actions = AbstractPostHelper.makeTrailingContextualActions(for: pages[indexPath.row], delegate: self)
         return UISwipeActionsConfiguration(actions: actions)
@@ -354,19 +404,29 @@ final class PageListViewController: AbstractPostListViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             return cell
         case .pages:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifiers.pageCellIdentifier, for: indexPath) as! PageListCell
+            let cell =
+                tableView.dequeueReusableCell(withIdentifier: Constant.Identifiers.pageCellIdentifier, for: indexPath)
+                as! PageListCell
             let page = pages[indexPath.row]
             let indentation = getIndentationLevel(at: indexPath)
-            let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
+            let isFirstSubdirectory =
+                getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section))
+                == (indentation - 1)
             let viewModel = PageListItemViewModel(page: page)
-            cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
+            cell.configure(
+                with: viewModel,
+                indentation: indentation,
+                isFirstSubdirectory: isFirstSubdirectory,
+                delegate: self
+            )
             return cell
         }
     }
 
     private func getIndentationLevel(at indexPath: IndexPath) -> Int {
         guard filterSettings.currentPostListFilter().filterType == .published,
-              indexPath.row > 0 else {
+            indexPath.row > 0
+        else {
             return 0
         }
         return pages[indexPath.row].hierarchyIndex
@@ -375,16 +435,31 @@ final class PageListViewController: AbstractPostListViewController {
     // MARK: - Post Actions
 
     override func createPost() {
-        WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: Constant.Events.source, WPAppAnalyticsKeyPostType: Constant.Events.pagePostType], blog: blog)
+        var context = NewPostEditorContext(
+            entryPoint: .pagesList,
+            analytics: .editorCreatedPost(
+                source: Constant.Events.source,
+                postType: Constant.Events.pagePostType
+            ),
+            animated: false
+        )
+        context.trackAnalytics(for: blog)
+        context.analytics = .none
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] selectedLayout in
-            self?.createPage(selectedLayout)
+            self?.createPage(selectedLayout, context: context)
         }
     }
 
-    private func createPage(_ starterLayout: PageTemplateLayout?) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content)
-        present(editorViewController, animated: false)
+    private func createPage(_ starterLayout: PageTemplateLayout?, context: NewPostEditorContext) {
+        var context = context
+        context.title = starterLayout?.title
+        context.content = starterLayout?.content
+        PostEditorRouter.showNewPage(
+            for: blog,
+            from: self,
+            context: context
+        )
     }
 
     // MARK: - Cell Action Handling
@@ -392,26 +467,38 @@ final class PageListViewController: AbstractPostListViewController {
     func setPageAsHomepage(_ page: Page) {
         guard let homePageID = page.postID?.intValue else { return }
         beginRefreshingManually()
-        homepageSettingsService?.setHomepageType(.page, homePageID: homePageID, success: { [weak self] in
-            self?.refreshAndReload()
-            self?.handleHomepageSettingsSuccess()
-        }, failure: { [weak self] _ in
-            self?.refreshControl.endRefreshing()
-            self?.handleHomepageSettingsFailure()
-        })
+        homepageSettingsService?
+            .setHomepageType(
+                .page,
+                homePageID: homePageID,
+                success: { [weak self] in
+                    self?.refreshAndReload()
+                    self?.handleHomepageSettingsSuccess()
+                },
+                failure: { [weak self] _ in
+                    self?.refreshControl.endRefreshing()
+                    self?.handleHomepageSettingsFailure()
+                }
+            )
     }
 
     func togglePageAsPostsPage(_ page: Page) {
         let newValue = !page.isSitePostsPage
         let postsPageID = page.isSitePostsPage ? 0 : (page.postID?.intValue ?? 0)
         beginRefreshingManually()
-        homepageSettingsService?.setHomepageType(.page, withPostsPageID: postsPageID, success: { [weak self] in
-            self?.refreshAndReload()
-            self?.handleHomepagePostsPageSettingsSuccess(isPostsPage: newValue)
-        }, failure: { [weak self] _ in
-            self?.refreshControl.endRefreshing()
-            self?.handleHomepageSettingsFailure()
-        })
+        homepageSettingsService?
+            .setHomepageType(
+                .page,
+                withPostsPageID: postsPageID,
+                success: { [weak self] in
+                    self?.refreshAndReload()
+                    self?.handleHomepagePostsPageSettingsSuccess(isPostsPage: newValue)
+                },
+                failure: { [weak self] _ in
+                    self?.refreshControl.endRefreshing()
+                    self?.handleHomepageSettingsFailure()
+                }
+            )
     }
 
     private func handleHomepageSettingsSuccess() {
@@ -420,29 +507,52 @@ final class PageListViewController: AbstractPostListViewController {
     }
 
     private func handleHomepagePostsPageSettingsSuccess(isPostsPage: Bool) {
-        let title = isPostsPage ? HomepageSettingsText.updatePostsPageSuccessTitle : HomepageSettingsText.updatePageSuccessTitle
+        let title =
+            isPostsPage ? HomepageSettingsText.updatePostsPageSuccessTitle : HomepageSettingsText.updatePageSuccessTitle
         let notice = Notice(title: title, feedbackType: .success)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     private func handleHomepageSettingsFailure() {
-        let notice = Notice(title: HomepageSettingsText.updateErrorTitle, message: HomepageSettingsText.updateErrorMessage, feedbackType: .error)
+        let notice = Notice(
+            title: HomepageSettingsText.updateErrorTitle,
+            message: HomepageSettingsText.updateErrorMessage,
+            feedbackType: .error
+        )
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some pages may be unavailable while offline.",
-                                 comment: "Error message shown when the user is browsing Site Pages without an internet connection.")
+        NSLocalizedString(
+            "No internet connection. Some pages may be unavailable while offline.",
+            comment: "Error message shown when the user is browsing Site Pages without an internet connection."
+        )
     }
 
     struct HomepageSettingsText {
-        static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
-        static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
-        static let updatePageSuccessTitle = NSLocalizedString("pages.updatePage.successTitle", value: "Page successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
-        static let updateHomepageSuccessTitle = NSLocalizedString("Homepage successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
-        static let updatePostsPageSuccessTitle = NSLocalizedString("Posts page successfully updated", comment: "Message informing the user that their static homepage for posts was set successfully")
+        static let updateErrorTitle = NSLocalizedString(
+            "Unable to update homepage settings",
+            comment: "Error informing the user that their homepage settings could not be updated"
+        )
+        static let updateErrorMessage = NSLocalizedString(
+            "Please try again later.",
+            comment: "Prompt for the user to retry a failed action again later"
+        )
+        static let updatePageSuccessTitle = NSLocalizedString(
+            "pages.updatePage.successTitle",
+            value: "Page successfully updated",
+            comment: "Message informing the user that their static homepage page was set successfully"
+        )
+        static let updateHomepageSuccessTitle = NSLocalizedString(
+            "Homepage successfully updated",
+            comment: "Message informing the user that their static homepage page was set successfully"
+        )
+        static let updatePostsPageSuccessTitle = NSLocalizedString(
+            "Posts page successfully updated",
+            comment: "Message informing the user that their static homepage for posts was set successfully"
+        )
     }
 }
 
@@ -453,20 +563,33 @@ private extension PageListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: nil, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
+            noResultsViewController.configure(
+                title: "",
+                noConnectionTitle: NoResultsText.noConnectionTitle,
+                buttonTitle: nil,
+                subtitle: nil,
+                noConnectionSubtitle: NoResultsText.noConnectionSubtitle,
+                attributedSubtitle: nil,
+                attributedSubtitleConfiguration: nil,
+                image: nil,
+                subtitleImage: nil,
+                accessoryView: nil
+            )
             return
         }
 
         let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: nil,
-                                          image: noResultsImageName,
-                                          accessoryView: accessoryView)
+        noResultsViewController.configure(
+            title: noResultsTitle(),
+            buttonTitle: nil,
+            image: noResultsImageName,
+            accessoryView: accessoryView
+        )
     }
 
     var noResultsImageName: String {
-        return "pages-no-results"
+        "pages-no-results"
     }
 
     func noResultsTitle() -> String {
@@ -493,11 +616,29 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-        static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
-        static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
-        static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-        static let noConnectionTitle: String = NSLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
-        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
+        static let noDraftsTitle = NSLocalizedString(
+            "You don't have any draft pages",
+            comment: "Displayed when the user views drafts in the pages list and there are no pages"
+        )
+        static let noScheduledTitle = NSLocalizedString(
+            "You don't have any scheduled pages",
+            comment: "Displayed when the user views scheduled pages in the pages list and there are no pages"
+        )
+        static let noTrashedTitle = NSLocalizedString(
+            "You don't have any trashed pages",
+            comment: "Displayed when the user views trashed in the pages list and there are no pages"
+        )
+        static let noPublishedTitle = NSLocalizedString(
+            "You haven't published any pages yet",
+            comment: "Displayed when the user views published pages in the pages list and there are no pages"
+        )
+        static let noConnectionTitle: String = NSLocalizedString(
+            "Unable to load pages right now.",
+            comment: "Title for No results full page screen displayedfrom pages list when there is no connection"
+        )
+        static let noConnectionSubtitle: String = NSLocalizedString(
+            "Check your network connection and try again. Or draft a page.",
+            comment: "Subtitle for No results full page screen displayed from pages list when there is no connection"
+        )
     }
 }

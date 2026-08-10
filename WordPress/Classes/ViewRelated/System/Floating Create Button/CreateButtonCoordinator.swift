@@ -28,7 +28,10 @@ final class CreateButtonCoordinator: NSObject {
         } else {
             button = FloatingActionButton(image: .gridicon(.plus))
         }
-        button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
+        button.accessibilityLabel = NSLocalizedString(
+            "Create",
+            comment: "Accessibility label for create floating action button"
+        )
         button.accessibilityIdentifier = "floatingCreateButton"
         return button
     }()
@@ -39,7 +42,7 @@ final class CreateButtonCoordinator: NSObject {
     private var prompt: BloggingPrompt?
 
     private lazy var bloggingPromptsService: BloggingPromptsService? = {
-        return BloggingPromptsService(blog: blog)
+        BloggingPromptsService(blog: blog)
     }()
 
     private let actions: [ActionSheetItem]
@@ -69,16 +72,23 @@ final class CreateButtonCoordinator: NSObject {
     /// Should be called any time the `viewController`'s trait collections will change. Dismisses when horizontal class changes to transition from .popover -> .custom
     /// - Parameter previousTraitCollection: The previous trait collection
     /// - Parameter newTraitCollection: The new trait collection
-    func presentingTraitCollectionWillChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
+    func presentingTraitCollectionWillChange(
+        _ previousTraitCollection: UITraitCollection,
+        newTraitCollection: UITraitCollection
+    ) {
         if let actionSheetController = viewController?.presentedViewController as? ActionSheetViewController {
             if previousTraitCollection.horizontalSizeClass != newTraitCollection.horizontalSizeClass {
-                viewController?.dismiss(animated: false, completion: { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    self.setupPresentation(on: actionSheetController, for: newTraitCollection)
-                    self.viewController?.present(actionSheetController, animated: false, completion: nil)
-                })
+                viewController?
+                    .dismiss(
+                        animated: false,
+                        completion: { [weak self] in
+                            guard let self else {
+                                return
+                            }
+                            self.setupPresentation(on: actionSheetController, for: newTraitCollection)
+                            self.viewController?.present(actionSheetController, animated: false, completion: nil)
+                        }
+                    )
             }
         }
     }
@@ -98,7 +108,7 @@ final class CreateButtonCoordinator: NSObject {
         if #unavailable(iOS 26) {
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
-                button.widthAnchor.constraint(equalToConstant: Constants.heightWidth),
+                button.widthAnchor.constraint(equalToConstant: Constants.heightWidth)
             ])
         }
 
@@ -115,9 +125,13 @@ final class CreateButtonCoordinator: NSObject {
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
-            viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
-                WPAnalytics.track(.createSheetShown, properties: ["source": self?.source ?? ""])
-            })
+            viewController.present(
+                actionSheetVC,
+                animated: true,
+                completion: { [weak self] in
+                    WPAnalytics.track(.createSheetShown, properties: ["source": self?.source ?? ""])
+                }
+            )
         }
     }
 
@@ -130,14 +144,19 @@ final class CreateButtonCoordinator: NSObject {
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
         viewController.modalPresentationStyle = .popover
         viewController.popoverPresentationController?.sourceView = button
-        viewController.popoverPresentationController?.sourceRect = button.bounds.offsetBy(dx: 0, dy: Constants.popoverOffset)
+        viewController.popoverPresentationController?.sourceRect = button.bounds.offsetBy(
+            dx: 0,
+            dy: Constants.popoverOffset
+        )
 
         // Pre-compute `preferredContentSize`
         viewController.view.layoutIfNeeded()
 
-        viewController.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.custom { [weak viewController] _ in
-            viewController?.preferredContentSize.height ?? 320
-        }]
+        viewController.popoverPresentationController?.adaptiveSheetPresentationController.detents = [
+            .custom { [weak viewController] _ in
+                viewController?.preferredContentSize.height ?? 320
+            }
+        ]
 
         if #available(iOS 18.0, *) {
             viewController.preferredTransition = .zoom { [weak self] _ in
@@ -186,22 +205,26 @@ private extension CreateButtonCoordinator {
             return
         }
 
-        bloggingPromptsService.todaysPrompt(success: { [weak self] prompt in
-            self?.prompt = prompt
-        }, failure: { [weak self] error in
-            self?.prompt = nil
-            DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
-        })
+        bloggingPromptsService.todaysPrompt(
+            success: { [weak self] prompt in
+                self?.prompt = prompt
+            },
+            failure: { [weak self] error in
+                self?.prompt = nil
+                DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
+            }
+        )
     }
 
     private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
         guard FeatureFlag.bloggingPrompts.enabled,
-              let blog,
-              blog.isAccessibleThroughWPCom,
-              let prompt,
-              let siteID = blog.dotComID,
-              BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts),
-              !userSkippedPrompt(prompt, for: blog) else {
+            let blog,
+            blog.isAccessibleThroughWPCom,
+            let prompt,
+            let siteID = blog.dotComID,
+            BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts),
+            !userSkippedPrompt(prompt, for: blog)
+        else {
             return nil
         }
 
@@ -209,12 +232,18 @@ private extension CreateButtonCoordinator {
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
             WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
-            self?.viewController?.dismiss(animated: true) {
-                let editor = EditPostViewController(blog: blog, prompt: prompt)
-                editor.modalPresentationStyle = .fullScreen
-                editor.entryPoint = .bloggingPromptsActionSheetHeader
-                self?.viewController?.present(editor, animated: true)
-            }
+            self?.viewController?
+                .dismiss(animated: true) {
+                    guard let viewController = self?.viewController else { return }
+                    PostEditorRouter.showNewPost(
+                        for: blog,
+                        from: viewController,
+                        context: NewPostEditorContext(
+                            prompt: prompt,
+                            entryPoint: .bloggingPromptsActionSheetHeader
+                        )
+                    )
+                }
         }
 
         promptsHeaderView.infoButtonHandler = { [weak self] in
@@ -222,7 +251,8 @@ private extension CreateButtonCoordinator {
             guard let presentedViewController = self?.viewController?.presentedViewController else {
                 return
             }
-            BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presentedViewController)
+            BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog))
+                .present(from: presentedViewController)
         }
 
         return promptsHeaderView
@@ -230,8 +260,10 @@ private extension CreateButtonCoordinator {
 
     func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
         guard AppConfiguration.isJetpack,
-              let siteID = blog.dotComID?.stringValue,
-              let allSkippedPrompts = UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] else {
+            let siteID = blog.dotComID?.stringValue,
+            let allSkippedPrompts = UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey)
+                as? [[String: Int32]]
+        else {
             return false
         }
         let siteSkippedPrompts = allSkippedPrompts.filter { $0.keys.first == siteID }
@@ -277,7 +309,8 @@ private extension UIButton {
         let scaleFinal = Constants.Minimize.finalScale
         let duration = Constants.Minimize.duration
 
-        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal) { [weak self] _ in
+        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal) {
+            [weak self] _ in
             self?.transform = .identity
             self?.isHidden = true
         }
@@ -293,7 +326,13 @@ private extension UIButton {
         scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal)
     }
 
-    private func scaleAnimation(duration: TimeInterval, damping: CGFloat, scaleInitial: CGFloat, scaleFinal: CGFloat, completion: ((Bool) -> Void)? = nil) {
+    private func scaleAnimation(
+        duration: TimeInterval,
+        damping: CGFloat,
+        scaleInitial: CGFloat,
+        scaleFinal: CGFloat,
+        completion: ((Bool) -> Void)? = nil
+    ) {
         setNeedsDisplay() // Make sure we redraw so that corners are rounded
         transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
         isHidden = false
@@ -310,5 +349,9 @@ private extension UIButton {
 
 private enum Strings {
     static let readerSource = "reader"
-    static let createPostHint = NSLocalizedString("createPostSheet.createPostHint", value: "Create a post or page", comment: "Accessibility hint for create floating action button")
+    static let createPostHint = NSLocalizedString(
+        "createPostSheet.createPostHint",
+        value: "Create a post or page",
+        comment: "Accessibility hint for create floating action button"
+    )
 }

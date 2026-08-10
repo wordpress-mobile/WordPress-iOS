@@ -4,32 +4,20 @@ import WordPressData
 import WordPressShared
 
 extension MySiteViewController {
-
-    static func shouldUseCoreRESTEditor(for blog: Blog?) -> Bool {
-        guard let blog else { return false }
-        return blog.isSelfHosted && blog.isXMLRPCDisabled
-    }
-
     /// Make a create button coordinator with
     /// - Returns: CreateButtonCoordinator with new post, page, and story actions.
     @objc func makeCreateButtonCoordinator() -> CreateButtonCoordinator {
 
-        let newPage = { [weak self] in
-            let presenter = RootViewCoordinator.sharedPresenter
-            if let blog = self?.blog, Self.shouldUseCoreRESTEditor(for: blog) {
-                presenter.showCoreRESTPageEditor(blog: blog)
-            } else {
-                presenter.showPageEditor()
-            }
+        let newPage = {
+            RootViewCoordinator.sharedPresenter.showNewPageEditor()
         }
 
-        let newPost = { [weak self] in
-            let presenter = RootViewCoordinator.sharedPresenter
-            if let blog = self?.blog, Self.shouldUseCoreRESTEditor(for: blog) {
-                presenter.showCoreRESTPostEditor(blog: blog)
-            } else {
-                presenter.showPostEditor()
-            }
+        let newPost = {
+            RootViewCoordinator.sharedPresenter.showNewPostEditor(
+                context: NewPostEditorContext(
+                    analytics: .editorCreatedPost(source: "create_button", postType: "post")
+                )
+            )
         }
 
         let source = "my_site"
@@ -67,10 +55,14 @@ extension MySiteViewController {
         let viewModel = VoiceToContentViewModel(blog: blog) { [weak self] transcription in
             guard let self else { return }
             self.dismiss(animated: true) {
-                let presenter = RootViewCoordinator.sharedPresenter
-                let post = blog.createDraftPost()
-                post.voiceContent = transcription
-                presenter.showPostEditor(post: post)
+                PostEditorRouter.showNewPost(
+                    for: blog,
+                    from: self,
+                    context: NewPostEditorContext(
+                        voiceContent: transcription,
+                        analytics: .editorCreatedPost(source: "create_button", postType: "post")
+                    )
+                )
             }
         }
         let view = VoiceToContentView(viewModel: viewModel)
