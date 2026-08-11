@@ -98,17 +98,6 @@ extern NSString *const WPBlogSettingsUpdatedNotification;
                     failure:(void (^)(NSError *error))failure;
 
 /**
- *  Update blog settings to the server
- *
- *  @param blog    the blog to update
- *  @param success a block that is invoked when the update is successful
- *  @param failure a block that in invoked when the update fails.
- */
-- (void)updateSettingsForBlog:(Blog *)blog
-                      success:(nullable void (^)(void))success
-                      failure:(nullable void (^)(NSError *error))failure;
-
-/**
  * Associate synced blogs to the specified Jetpack account.
  *
  *  @param account the account

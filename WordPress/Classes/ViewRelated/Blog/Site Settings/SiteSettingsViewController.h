@@ -2,6 +2,7 @@
 
 @class Blog;
 @class SettingTableViewCell;
+@class BlogSettingsChanges;
 
 typedef NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
@@ -24,7 +25,7 @@ typedef NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (instancetype)initWithBlog:(Blog *)blog;
 
-- (void)saveSettings;
+- (void)saveSettingsWithChanges:(BlogSettingsChanges *)changes;
 
 // General Settings: These were made available here to help with the transition to Swift.
 

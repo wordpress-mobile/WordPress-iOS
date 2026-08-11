@@ -300,6 +300,15 @@ public actor WordPressClient {
         }
     }
 
+    /// Updates site settings and replaces the cached settings with the
+    /// server's response, so `fetchSiteSettings()` stays coherent after a
+    /// save without a refetch.
+    public func updateSiteSettings(params: SiteSettingsUpdateParams) async throws -> SiteSettingsWithEditContext {
+        let updated = try await api.siteSettings.update(params: params).data
+        self.loadSiteSettingsTask = Task<SiteSettingsWithEditContext, Error> { updated }
+        return updated
+    }
+
     /// Creates a new task to fetch the site settings from the server.
     private func newSiteSettingsTask() -> Task<SiteSettingsWithEditContext, Error> {
         Task {
