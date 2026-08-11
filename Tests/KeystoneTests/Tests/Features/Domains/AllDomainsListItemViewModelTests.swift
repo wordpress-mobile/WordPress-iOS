@@ -43,6 +43,13 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
         )
     }
 
+    func testMappingWithMappedDomainWithExpiry() throws {
+        self.assert(
+            viewModelFromDomain: try .make(hasRegistration: false, expiryDate: "2099-10-17T00:00:00+00:00"),
+            equalTo: .make(expiryDate: "Expires on Oct 17, 2099")
+        )
+    }
+
     // The API sends `expiry` as a midnight UTC timestamp encoding a calendar
     // date. The formatted date must preserve that calendar date; formatting in
     // a device timezone west of UTC would print Oct 16. The expected string is
