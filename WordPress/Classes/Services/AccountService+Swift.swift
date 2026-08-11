@@ -18,7 +18,8 @@ extension AccountService {
             return
         }
 
-        UserPersistentStoreFactory.instance().set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
+        UserPersistentStoreFactory.instance()
+            .set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
 
         let objectID = TaggedManagedObjectID(account)
         let notifyAccountChange = {

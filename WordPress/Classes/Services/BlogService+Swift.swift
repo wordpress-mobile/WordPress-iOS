@@ -20,11 +20,12 @@ extension BlogService {
 
     @objc public func updatePromptSettings(for blog: RemoteBlog?, context: NSManagedObjectContext) {
         guard let blog,
-              let jsonSettings = blog.options["blogging_prompts_settings"] as? [String: Any],
-              let settingsValue = jsonSettings["value"] as? [String: Any],
-              JSONSerialization.isValidJSONObject(settingsValue),
-              let data = try? JSONSerialization.data(withJSONObject: settingsValue),
-              let remoteSettings = try? JSONDecoder().decode(RemoteBloggingPromptsSettings.self, from: data) else {
+            let jsonSettings = blog.options["blogging_prompts_settings"] as? [String: Any],
+            let settingsValue = jsonSettings["value"] as? [String: Any],
+            JSONSerialization.isValidJSONObject(settingsValue),
+            let data = try? JSONSerialization.data(withJSONObject: settingsValue),
+            let remoteSettings = try? JSONDecoder().decode(RemoteBloggingPromptsSettings.self, from: data)
+        else {
             return
         }
 
@@ -190,7 +191,10 @@ extension BlogService {
         }
     }
 
-    static func blog(with site: JetpackSiteRef, context: NSManagedObjectContext = ContextManager.shared.mainContext) -> Blog? {
+    static func blog(
+        with site: JetpackSiteRef,
+        context: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) -> Blog? {
         let blog: Blog?
 
         if site.isSelfHostedWithoutJetpack, let xmlRPC = site.xmlRPC {
@@ -204,7 +208,18 @@ extension BlogService {
 }
 
 private extension BlogService {
-    private func findBlogAuthor(with userId: NSNumber, and blog: Blog, in context: NSManagedObjectContext) -> BlogAuthor {
-        return context.entity(of: BlogAuthor.self, with: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@ AND \(#keyPath(BlogAuthor.blog)) = %@", userId, blog))
+    private func findBlogAuthor(
+        with userId: NSNumber,
+        and blog: Blog,
+        in context: NSManagedObjectContext
+    ) -> BlogAuthor {
+        context.entity(
+            of: BlogAuthor.self,
+            with: NSPredicate(
+                format: "\(#keyPath(BlogAuthor.userID)) = %@ AND \(#keyPath(BlogAuthor.blog)) = %@",
+                userId,
+                blog
+            )
+        )
     }
 }
