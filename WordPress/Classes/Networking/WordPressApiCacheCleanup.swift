@@ -23,22 +23,23 @@ extension WordPressApiCache {
 
     private func removeCachedData(for blogs: [Blog]) {
         for blog in blogs {
-            do {
-                // `restApiRootURL` remains after an Atomic site's application
-                // password is removed, so it records that direct transport was
-                // configured without requiring the credential itself.
-                let isDirect = !blog.isHostedAtWPcom || (blog.isAtomic && blog.restApiRootURL != nil)
-                if isDirect {
-                    try removeSelfHostedSite(url: blog.getUrl())
-                } else if let siteID = blog.dotComID?.intValue {
-                    try removeWordpressComSite(siteId: WpComSiteId(siteID))
-                } else {
-                    Loggers.app.error(
-                        "Skipped WordPress API cache cleanup because the site's durable metadata is incomplete"
-                    )
+            // A site is cached under its self-hosted URL, its WordPress.com
+            // site ID, or (for Atomic) both. Removal is a no-op when the key
+            // is absent, so clear every key the site has instead of inferring
+            // which representation applies.
+            if let url = try? blog.getUrl() {
+                do {
+                    try removeSelfHostedSite(url: url)
+                } catch {
+                    Loggers.app.error("Failed to remove self-hosted API cached data: \(error)")
                 }
-            } catch {
-                Loggers.app.error("Failed to remove WordPress API cached data: \(error)")
+            }
+            if let siteID = blog.dotComID?.intValue {
+                do {
+                    try removeWordpressComSite(siteId: WpComSiteId(siteID))
+                } catch {
+                    Loggers.app.error("Failed to remove WordPress.com API cached data: \(error)")
+                }
             }
         }
     }
