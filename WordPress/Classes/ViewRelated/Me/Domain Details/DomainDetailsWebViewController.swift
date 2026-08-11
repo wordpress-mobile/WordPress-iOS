@@ -15,19 +15,19 @@ final class DomainDetailsWebViewController: WebKitViewController {
 
     // MARK: - Properties
 
-    private let domain: String
-
     private var observation: NSKeyValueObservation?
 
     // MARK: - Init
 
     init(domain: String, siteSlug: String, type: DomainType, analyticsSource: String? = nil) {
-        self.domain = domain
         let url = Self.wpcomDetailsURL(domain: domain, siteSlug: siteSlug, type: type)
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.customTitle = domain
         configuration.analyticsSource = analyticsSource
         configuration.secureInteraction = true
+        if let url {
+            configuration.linkBehavior = .urlOnly(url)
+        }
         configuration.authenticateWithDefaultAccount()
         super.init(configuration: configuration)
     }
@@ -51,9 +51,13 @@ final class DomainDetailsWebViewController: WebKitViewController {
             guard let self, let url = webView.url else {
                 return
             }
-            if !self.shouldAllowNavigation(for: url) {
+            if !Self.shouldAllowNavigation(
+                to: url,
+                domainDetailsURL: self.url,
+                isLoading: webView.isLoading
+            ) {
                 // Open URL in device browser then go back to Domain Management page.
-                self.open(url)
+                UIApplication.shared.open(url)
                 self.goBack()
             }
         }
@@ -84,12 +88,12 @@ final class DomainDetailsWebViewController: WebKitViewController {
         WPAnalytics.track(.allDomainsDomainDetailsWebViewShown, properties: properties)
     }
 
-    private func shouldAllowNavigation(for url: URL) -> Bool {
-        return url.absoluteString == self.url?.absoluteString
-    }
-
-    private func open(_ url: URL) {
-        UIApplication.shared.open(url)
+    static func shouldAllowNavigation(
+        to url: URL,
+        domainDetailsURL: URL?,
+        isLoading: Bool
+    ) -> Bool {
+        isLoading || url == domainDetailsURL
     }
 
     private static func wpcomDetailsURL(domain: String, siteSlug: String, type: DomainType) -> URL? {
