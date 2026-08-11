@@ -73,7 +73,7 @@ struct AllDomainsListItemViewModel {
             // addresses) genuinely never expire. For other domains a missing
             // expiry means the date is unknown (registered elsewhere) or
             // doesn't apply (subdomains), so show nothing.
-            return domain.type == .wpCom ? Strings.neverExpires : nil
+            return (domain.type == .wpCom || domain.isWpcomStagingDomain) ? Strings.neverExpires : nil
         }
         let expired = date < Date()
         let format = expired ? Strings.expired : Strings.expiresOn
