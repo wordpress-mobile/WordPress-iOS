@@ -70,12 +70,35 @@ struct DomainDetailsNavigationTests {
             siteSlug: "example.wordpress.com",
             type: .mapped
         )
+        let domainDetailsURL = try #require(controller.url)
         let redirectURL = try #require(
             URL(string: "https://wordpress.com/domains/manage/all/example.com/edit/example.wordpress.com?redirected=1")
         )
         var redirectRequest = URLRequest(url: redirectURL)
         redirectRequest.mainDocumentURL = redirectURL
         let externalURLHandler = ExternalURLHandlerSpy()
+
+        #expect(
+            DomainDetailsWebViewController.shouldAllowNavigation(
+                to: redirectURL,
+                domainDetailsURL: domainDetailsURL,
+                isLoading: true
+            )
+        )
+        #expect(
+            DomainDetailsWebViewController.shouldAllowNavigation(
+                to: domainDetailsURL,
+                domainDetailsURL: domainDetailsURL,
+                isLoading: false
+            )
+        )
+        #expect(
+            !DomainDetailsWebViewController.shouldAllowNavigation(
+                to: redirectURL,
+                domainDetailsURL: domainDetailsURL,
+                isLoading: false
+            )
+        )
 
         let redirectPolicy = controller.linkBehavior.handle(
             request: redirectRequest,

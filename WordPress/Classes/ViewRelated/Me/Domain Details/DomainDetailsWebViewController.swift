@@ -13,6 +13,10 @@ final class DomainDetailsWebViewController: WebKitViewController {
         static let manageAllDomainsPath = "\(domainsPath)/manage/all"
     }
 
+    // MARK: - Properties
+
+    private var observation: NSKeyValueObservation?
+
     // MARK: - Init
 
     init(domain: String, siteSlug: String, type: DomainType, analyticsSource: String? = nil) {
@@ -36,7 +40,27 @@ final class DomainDetailsWebViewController: WebKitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.observeURL()
         self.trackWebViewShownEvent(url: url)
+    }
+
+    // MARK: - Handling URL Changes
+
+    private func observeURL() {
+        self.observation = webView.observe(\.url) { [weak self] webView, _ in
+            guard let self, let url = webView.url else {
+                return
+            }
+            if !Self.shouldAllowNavigation(
+                to: url,
+                domainDetailsURL: self.url,
+                isLoading: webView.isLoading
+            ) {
+                // Open URL in device browser then go back to Domain Management page.
+                UIApplication.shared.open(url)
+                self.goBack()
+            }
+        }
     }
 
     // MARK: - Navigation
@@ -62,6 +86,14 @@ final class DomainDetailsWebViewController: WebKitViewController {
     private func trackWebViewShownEvent(url: URL?) {
         let properties = ["url": url?.absoluteString ?? ""]
         WPAnalytics.track(.allDomainsDomainDetailsWebViewShown, properties: properties)
+    }
+
+    static func shouldAllowNavigation(
+        to url: URL,
+        domainDetailsURL: URL?,
+        isLoading: Bool
+    ) -> Bool {
+        isLoading || url == domainDetailsURL
     }
 
     private static func wpcomDetailsURL(domain: String, siteSlug: String, type: DomainType) -> URL? {
