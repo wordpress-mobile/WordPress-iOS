@@ -47,11 +47,9 @@ NS_ENUM(NSInteger, SiteSettingsAdvanced) {
 
 NS_ENUM(NSInteger, SiteSettingsJetpack) {
     SiteSettingsJetpackSecurity = 0,
-    SiteSettingsJetpackConnection,
-    SiteSettingsJetpackCount,
 };
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
@@ -75,7 +73,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 @property (nonatomic, strong) SwitchTableViewCell *ampSettingCell;
 #pragma mark - Jetpack Settings Section
 @property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
-@property (nonatomic, strong) SettingTableViewCell *jetpackConnectionCell;
 #pragma mark - Device Section
 @property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Advanced Section
@@ -280,9 +277,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         }
         case SiteSettingsSectionJetpackSettings:
         {
-            if ([Feature enabled:FeatureFlagJetpackDisconnect]) {
-                return SiteSettingsJetpackCount;
-            }
             return 1;
         }
         case SiteSettingsSectionAdvanced:
@@ -518,17 +512,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     return _jetpackSecurityCell;
 }
 
-- (SettingTableViewCell *)jetpackConnectionCell
-{
-    if (_jetpackConnectionCell) {
-        return _jetpackConnectionCell;
-    }
-    _jetpackConnectionCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Manage Connection", @"Label for managing the Blog Jetpack Connection section")
-                                                                editable:YES
-                                                         reuseIdentifier:nil];
-    return _jetpackConnectionCell;
-}
-
 - (void)configureEditorSelectorCell
 {
     [self.editorSelectorCell setOn:self.blog.isGutenbergEnabled];
@@ -612,9 +595,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     switch (row) {
         case (SiteSettingsJetpackSecurity):
             return self.jetpackSecurityCell;
-
-        case (SiteSettingsJetpackConnection):
-            return self.jetpackConnectionCell;
     }
     return nil;
 }
@@ -949,10 +929,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case SiteSettingsJetpackSecurity:
             [self showJetpackSettingsForBlog:self.blog];
             break;
-
-        case SiteSettingsJetpackConnection:
-            [self showJetpackConnectionForBlog:self.blog];
-            break;
     }
 }
 
@@ -1184,25 +1160,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
     JetpackSettingsViewController *settings = [[JetpackSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:settings animated:YES];
-}
-
-- (void)showJetpackConnectionForBlog:(Blog *)blog
-{
-
-    NSParameterAssert(blog);
-
-    JetpackConnectionViewController *jetpackConnectionVC = [[JetpackConnectionViewController alloc] initWithBlog:blog];
-    jetpackConnectionVC.delegate = self;
-    [self.navigationController pushViewController:jetpackConnectionVC animated:YES];
-}
-
-#pragma mark - JetpackConnectionViewControllerDelegate
-
-- (void)jetpackDisconnectedForBlog:(Blog *)blog
-{
-    if (blog == self.blog) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate
