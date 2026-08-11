@@ -6,14 +6,16 @@ struct AllDomainsListItemViewModel {
 
     private enum Strings {
         static let expired = NSLocalizedString(
-            "domain.management.card.expired.label",
-            value: "Expired",
-            comment: "The expired label of the domain card in All Domains screen."
+            "domain.management.card.expiredDate.label",
+            value: "Expired %1$@",
+            comment:
+                "The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date."
         )
-        static let renews = NSLocalizedString(
-            "domain.management.card.renews.label",
-            value: "Renews",
-            comment: "The renews label of the domain card in All Domains screen."
+        static let expiresOn = NSLocalizedString(
+            "domain.management.card.expiresOn.label",
+            value: "Expires on %1$@",
+            comment:
+                "The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date."
         )
 
         static let neverExpires = NSLocalizedString(
@@ -33,6 +35,11 @@ struct AllDomainsListItemViewModel {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
+        // The API sends `expiry` as a midnight UTC timestamp encoding the
+        // registry's expiry date, a calendar date that is UTC by registry
+        // convention. Format it in UTC to preserve that date. Formatting in
+        // the device timezone would print the previous day west of UTC.
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         return formatter
     }()
 
@@ -60,13 +67,17 @@ struct AllDomainsListItemViewModel {
         return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
     }
 
-    static func expiryDate(from domain: Domain) -> String {
-        guard let date = domain.expiryDate, domain.hasRegistration else {
-            return Strings.neverExpires
+    static func expiryDate(from domain: Domain) -> String? {
+        guard let date = domain.expiryDate else {
+            // Only WP.com-provided subdomains (*.wordpress.com and staging
+            // addresses) genuinely never expire. For other domains a missing
+            // expiry means the date is unknown (registered elsewhere) or
+            // doesn't apply (subdomains), so show nothing.
+            return (domain.type == .wpCom || domain.isWpcomStagingDomain) ? Strings.neverExpires : nil
         }
         let expired = date < Date()
-        let notice = expired ? Strings.expired : Strings.renews
+        let format = expired ? Strings.expired : Strings.expiresOn
         let formatted = Self.dateFormatter.string(from: date)
-        return "\(notice) \(formatted)"
+        return String.localizedStringWithFormat(format, formatted)
     }
 }
