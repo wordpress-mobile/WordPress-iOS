@@ -23,8 +23,6 @@ extension WPAppAnalytics {
     public class func track(_ stat: WPAnalyticsStat, properties: [String: Any]?, blog: Blog?) {
         var properties = properties ?? [:]
         if let blog {
-            // Snapshot on the blog's context queue so the Core Data reads
-            // (`dotComID`'s getter can mutate the object) never run off-queue.
             let blogProperties = blog.analyticsProperties
             if let blogID = blogProperties.dotComID {
                 properties[WPAppAnalyticsKeyBlogID] = blogID
