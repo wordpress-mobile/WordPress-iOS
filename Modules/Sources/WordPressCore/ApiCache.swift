@@ -15,6 +15,17 @@ extension WordPressApiCache {
     /// it happens once per process.
     public static let shared = WordPressApiCache.bootstrap()
 
+    /// An isolated in-memory cache for unit tests.
+    ///
+    /// Prefer this over `shared`, which is a process-wide singleton backed by
+    /// an on-disk database and reused across the whole test run, so writing
+    /// through it leaks state between tests.
+    static func forTesting() throws -> WordPressApiCache {
+        let cache = try WordPressApiCache()
+        _ = try cache.performMigrations()
+        return cache
+    }
+
     /// A failure encountered while opening the on-disk cache. It carries the
     /// point of failure and the underlying error so the two can be reported
     /// together for Sentry classification.
