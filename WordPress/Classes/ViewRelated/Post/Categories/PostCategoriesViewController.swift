@@ -178,9 +178,20 @@ import WordPressUI
         let indentationLevel = categoryIndentationDict[category.categoryID.intValue]
         cell.indentationLevel = indentationLevel ?? 0
         cell.indentationWidth = Constants.categoryCellIndentation
-        cell.textLabel?.text = category.categoryName.stringByDecodingXMLCharacters()
+        let title = category.categoryName.stringByDecodingXMLCharacters()
+        cell.textLabel?.text = title
         WPStyleGuide.configureTableViewCell(cell)
-        cell.accessoryView = makeAccessoryView(isSelected: selectedCategories.contains(category))
+
+        let isSelected = selectedCategories.contains(category)
+        cell.accessoryView = makeAccessoryView(isSelected: isSelected)
+
+        // The checkmark is drawn in an image view, which carries no accessibility
+        // information, so selected and unselected rows were indistinguishable.
+        // Make the cell a single element and let the trait carry the state, rather
+        // than appending "selected" to the label.
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = title
+        cell.accessibilityTraits = isSelected ? [.selected] : []
     }
 
     private func makeAccessoryView(isSelected: Bool) -> UIView {
