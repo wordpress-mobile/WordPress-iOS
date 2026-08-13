@@ -16,6 +16,6 @@ struct NewPostForSiteRoute: Route {
 
 struct NewPostNavigationAction: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        RootViewCoordinator.sharedPresenter.showPostEditor(blog: blog(from: values))
+        RootViewCoordinator.sharedPresenter.showNewPostEditor(blog: blog(from: values))
     }
 }

@@ -76,7 +76,7 @@ extension BlogDetailsViewController {
     public func showPostList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPosts, from: source)
 
-        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+        if blog.usesCustomPostTypeViewsForPostsAndPages {
             showPinnedPostType(.posts)
             return
         }
@@ -89,7 +89,7 @@ extension BlogDetailsViewController {
     public func showPageList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPages, from: source)
 
-        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+        if blog.usesCustomPostTypeViewsForPostsAndPages {
             showPinnedPostType(.pages)
             return
         }

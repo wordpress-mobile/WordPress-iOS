@@ -41,7 +41,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     }
 
     private lazy var bloggingPromptsService: BloggingPromptsService? = {
-        return BloggingPromptsService(blog: blog)
+        BloggingPromptsService(blog: blog)
     }()
 
     /// When set to true, a "default" version of the card is displayed. That is:
@@ -103,7 +103,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promptLabel)
-        view.pinSubviewToAllEdges(promptLabel, insets: UIEdgeInsets(top: Constants.spacing, left: 0, bottom: 0, right: 0))
+        view.pinSubviewToAllEdges(
+            promptLabel,
+            insets: UIEdgeInsets(top: Constants.spacing, left: 0, bottom: 0, right: 0)
+        )
 
         return view
     }()
@@ -164,8 +167,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
         button.setTitleColor(
             RemoteFeatureFlag.bloggingPromptsSocial.enabled()
-            ? WPStyleGuide.BloggingPrompts.buttonTitleColor
-            : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
+                ? WPStyleGuide.BloggingPrompts.buttonTitleColor
+                : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
             for: .normal
         )
         button.titleLabel?.numberOfLines = 0
@@ -177,7 +180,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     @objc
     private func didTapAnswerInfoButton() {
         guard RemoteFeatureFlag.bloggingPromptsSocial.enabled(),
-              let promptID = prompt?.promptID else {
+            let promptID = prompt?.promptID
+        else {
             return
         }
         let tagName = "\(ReaderTagTopic.dailyPromptTag)-\(promptID)"
@@ -229,7 +233,9 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     private lazy var attributionTrailingImage = UIImageView()
 
     private lazy var attributionStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel, attributionTrailingImage])
+        let stackView = UIStackView(arrangedSubviews: [
+            attributionIcon, attributionSourceLabel, attributionTrailingImage
+        ])
         stackView.setCustomSpacing(Constants.attributionTrailingImageSpacing, after: attributionSourceLabel)
         stackView.alignment = .center
 
@@ -338,15 +344,23 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     }
 
     private var contextMenu: UIMenu {
-        return .init(title: String(), options: .displayInline, children: contextMenuItems.map { menuSection in
-            UIMenu(title: String(), options: .displayInline, children: [
-                // Use an uncached deferred element so we can track each time the menu is shown
-                UIDeferredMenuElement.uncached { completion in
-                    WPAnalytics.track(.promptsDashboardCardMenu)
-                    completion(menuSection.map { $0.toAction })
-                }
-            ])
-        })
+        .init(
+            title: String(),
+            options: .displayInline,
+            children: contextMenuItems.map { menuSection in
+                UIMenu(
+                    title: String(),
+                    options: .displayInline,
+                    children: [
+                        // Use an uncached deferred element so we can track each time the menu is shown
+                        UIDeferredMenuElement.uncached { completion in
+                            WPAnalytics.track(.promptsDashboardCardMenu)
+                            completion(menuSection.map { $0.toAction })
+                        }
+                    ]
+                )
+            }
+        )
     }
 
     // MARK: Initializers
@@ -364,7 +378,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         //  refresh when the appearance style changed so the placeholder images are correctly recolored.
         if let previousTraitCollection,
-            previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle
+        {
             refreshStackView()
         }
     }
@@ -380,8 +395,9 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
-              blog.isAccessibleThroughWPCom,
-              let promptsService = BloggingPromptsService(blog: blog) else {
+            blog.isAccessibleThroughWPCom,
+            let promptsService = BloggingPromptsService(blog: blog)
+        else {
             return false
         }
 
@@ -449,10 +465,10 @@ private extension DashboardPromptsCardCell {
 
     func observeManagedObjectsChange() {
         NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(handleObjectsChange),
-                name: .NSManagedObjectContextObjectsDidChange,
-                object: ContextManager.shared.mainContext
+            self,
+            selector: #selector(handleObjectsChange),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: ContextManager.shared.mainContext
         )
     }
 
@@ -477,36 +493,46 @@ private extension DashboardPromptsCardCell {
             return
         }
 
-        bloggingPromptsService.todaysPrompt(success: { [weak self] prompt in
-            self?.prompt = prompt
-            self?.didFailLoadingPrompt = false
-        }, failure: { [weak self] error in
-            self?.prompt = nil
-            self?.didFailLoadingPrompt = true
-            DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
-        })
+        bloggingPromptsService.todaysPrompt(
+            success: { [weak self] prompt in
+                self?.prompt = prompt
+                self?.didFailLoadingPrompt = false
+            },
+            failure: { [weak self] error in
+                self?.prompt = nil
+                self?.didFailLoadingPrompt = true
+                DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
+            }
+        )
     }
 
     // MARK: Button actions
 
     @objc func answerButtonTapped() {
         guard let blog,
-              let prompt else {
+            let prompt
+        else {
             return
         }
         WPAnalytics.track(.promptsDashboardCardAnswerPrompt)
 
-        let editor = EditPostViewController(blog: blog, prompt: prompt)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .bloggingPromptsDashboardCard
-        presenterViewController?.present(editor, animated: true)
+        guard let presenterViewController else { return }
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: presenterViewController,
+            context: NewPostEditorContext(
+                prompt: prompt,
+                entryPoint: .bloggingPromptsDashboardCard
+            )
+        )
     }
 
     // MARK: Context menu actions
 
     func viewMoreMenuTapped() {
         guard let blog,
-              let presenterViewController else {
+            let presenterViewController
+        else {
             DDLogError("Failed showing Blogging Prompts from Dashboard card. Missing blog or controller.")
             return
         }
@@ -519,7 +545,11 @@ private extension DashboardPromptsCardCell {
         WPAnalytics.track(.promptsDashboardCardMenuSkip)
         saveSkippedPromptForSite()
         presenterViewController?.reloadCardsLocally()
-        let notice = Notice(title: Strings.promptSkippedTitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
+        let notice = Notice(
+            title: Strings.promptSkippedTitle,
+            feedbackType: .success,
+            actionTitle: Strings.undoSkipTitle
+        ) { [weak self] _ in
             self?.clearSkippedPromptForSite()
             self?.presenterViewController?.reloadCardsLocally()
         }
@@ -542,32 +572,62 @@ private extension DashboardPromptsCardCell {
             wpAssertionFailure("invalid_state")
             return
         }
-        BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
+        BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog))
+            .present(from: presenterViewController)
     }
 
     // MARK: Constants
 
     struct Strings {
-        static let examplePrompt = NSLocalizedString("Cast the movie of your life.", comment: "Example prompt for the Prompts card in Feature Introduction.")
-        static let cardFrameTitle = NSLocalizedString("Prompts", comment: "Title label for the Prompts card in My Sites tab.")
-        static let answerButtonTitle = NSLocalizedString("Answer Prompt", comment: "Title for a call-to-action button on the prompts card.")
-        static let answeredLabelTitle = NSLocalizedString("✓ Answered", comment: "Title label that indicates the prompt has been answered.")
-        static let answerInfoSingularFormat = NSLocalizedString("%1$d answer", comment: "Singular format string for displaying the number of users "
-                                                                + "that answered the blogging prompt.")
-        static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
-                                                              + "that answered the blogging prompt.")
-        static let viewAllResponses = NSLocalizedString("prompts.card.viewprompts.title",
-                                                        value: "View all responses",
-                                                        comment: "Title for a tappable string that opens the reader with a prompts tag")
-        static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
-        static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
-        static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
+        static let examplePrompt = NSLocalizedString(
+            "Cast the movie of your life.",
+            comment: "Example prompt for the Prompts card in Feature Introduction."
+        )
+        static let cardFrameTitle = NSLocalizedString(
+            "Prompts",
+            comment: "Title label for the Prompts card in My Sites tab."
+        )
+        static let answerButtonTitle = NSLocalizedString(
+            "Answer Prompt",
+            comment: "Title for a call-to-action button on the prompts card."
+        )
+        static let answeredLabelTitle = NSLocalizedString(
+            "✓ Answered",
+            comment: "Title label that indicates the prompt has been answered."
+        )
+        static let answerInfoSingularFormat = NSLocalizedString(
+            "%1$d answer",
+            comment: "Singular format string for displaying the number of users "
+                + "that answered the blogging prompt."
+        )
+        static let answerInfoPluralFormat = NSLocalizedString(
+            "%1$d answers",
+            comment: "Plural format string for displaying the number of users "
+                + "that answered the blogging prompt."
+        )
+        static let viewAllResponses = NSLocalizedString(
+            "prompts.card.viewprompts.title",
+            value: "View all responses",
+            comment: "Title for a tappable string that opens the reader with a prompts tag"
+        )
+        static let errorTitle = NSLocalizedString(
+            "Error loading prompt",
+            comment: "Text displayed when there is a failure loading a blogging prompt."
+        )
+        static let promptSkippedTitle = NSLocalizedString(
+            "Prompt skipped",
+            comment: "Title of the notification presented when a prompt is skipped"
+        )
+        static let undoSkipTitle = NSLocalizedString(
+            "Undo",
+            comment: "Button in the notification presented when a prompt is skipped"
+        )
     }
 
     struct Style {
         static var avatarPlaceholderImage: UIImage {
             // this needs to be computed so the color is correct depending on the user interface style.
-            return UIImage(color: UIColor(light: .quaternarySystemFill, dark: .systemGray4))
+            UIImage(color: UIColor(light: .quaternarySystemFill, dark: .systemGray4))
         }
     }
 
@@ -598,9 +658,15 @@ private extension DashboardPromptsCardCell {
             case .skip:
                 return NSLocalizedString("Skip for today", comment: "Menu title to skip today's prompt.")
             case .remove:
-                return NSLocalizedString("Turn off prompts", comment: "Destructive menu title to remove the prompt card from the dashboard.")
+                return NSLocalizedString(
+                    "Turn off prompts",
+                    comment: "Destructive menu title to remove the prompt card from the dashboard."
+                )
             case .learnMore:
-                return NSLocalizedString("Learn more", comment: "Menu title to show the prompts feature introduction modal.")
+                return NSLocalizedString(
+                    "Learn more",
+                    comment: "Menu title to show the prompts feature introduction modal."
+                )
             }
         }
 
@@ -629,9 +695,9 @@ private extension DashboardPromptsCardCell {
         var toAction: UIAction {
             switch self {
             case .viewMore(let handler),
-                 .skip(let handler),
-                 .remove(let handler),
-                 .learnMore(let handler):
+                .skip(let handler),
+                .remove(let handler),
+                .learnMore(let handler):
                 return UIAction(title: title, image: image, attributes: menuAttributes) { _ in
                     handler()
                 }
@@ -645,12 +711,13 @@ private extension DashboardPromptsCardCell {
 private extension DashboardPromptsCardCell {
 
     static var allSkippedPrompts: [[String: Int32]] {
-        return UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] ?? []
+        UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] ?? []
     }
 
     func saveSkippedPromptForSite() {
         guard let prompt,
-        let siteID = blog?.dotComID?.stringValue else {
+            let siteID = blog?.dotComID?.stringValue
+        else {
             return
         }
 
@@ -674,7 +741,8 @@ private extension DashboardPromptsCardCell {
 
     static func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
-            let siteID = blog.dotComID?.stringValue else {
+            let siteID = blog.dotComID?.stringValue
+        else {
             return false
         }
 

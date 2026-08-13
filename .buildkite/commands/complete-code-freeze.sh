@@ -10,7 +10,7 @@ fi
 echo '--- :robot_face: Use bot for Git operations'
 source use-bot-for-git
 
-.buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
+checkout_release_branch "$RELEASE_NUMBER"
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 

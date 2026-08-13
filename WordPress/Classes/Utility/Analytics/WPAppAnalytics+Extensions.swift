@@ -23,10 +23,13 @@ extension WPAppAnalytics {
     public class func track(_ stat: WPAnalyticsStat, properties: [String: Any]?, blog: Blog?) {
         var properties = properties ?? [:]
         if let blog {
-            if let blogID = blog.dotComID {
+            let blogProperties = blog.analyticsProperties
+            if let blogID = blogProperties.dotComID {
                 properties[WPAppAnalyticsKeyBlogID] = blogID
             }
-            properties[WPAppAnalyticsKeySiteType] = siteType(for: blog)
+            properties[WPAppAnalyticsKeySiteType] =
+                blogProperties.isWPForTeams
+                ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         }
         WPAppAnalytics.track(stat, withProperties: properties)
     }

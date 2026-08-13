@@ -1,4 +1,5 @@
 import XCTest
+import Testing
 
 @testable import WordPress
 
@@ -54,7 +55,79 @@ final class DomainDetailsWebViewControllerTests: XCTestCase {
         siteSlug: String = Constants.siteSlug,
         viewSlug: String = Constants.viewSlug
     ) throws -> String {
-        let url = "\(Constants.domainManagementBase)/\(domain)/\(viewSlug)/\(siteSlug)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = "\(Constants.domainManagementBase)/\(domain)/\(viewSlug)/\(siteSlug)"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         return try XCTUnwrap(url)
+    }
+}
+
+@MainActor
+struct DomainDetailsNavigationTests {
+
+    @Test func navigationPolicyDistinguishesRedirectsFromLinks() throws {
+        let controller = DomainDetailsWebViewController(
+            domain: "example.com",
+            siteSlug: "example.wordpress.com",
+            type: .mapped
+        )
+        let domainDetailsURL = try #require(controller.url)
+        let redirectURL = try #require(
+            URL(string: "https://wordpress.com/domains/manage/all/example.com/edit/example.wordpress.com?redirected=1")
+        )
+        var redirectRequest = URLRequest(url: redirectURL)
+        redirectRequest.mainDocumentURL = redirectURL
+        let externalURLHandler = ExternalURLHandlerSpy()
+
+        #expect(
+            DomainDetailsWebViewController.shouldAllowNavigation(
+                to: redirectURL,
+                domainDetailsURL: domainDetailsURL,
+                isLoading: true
+            )
+        )
+        #expect(
+            DomainDetailsWebViewController.shouldAllowNavigation(
+                to: domainDetailsURL,
+                domainDetailsURL: domainDetailsURL,
+                isLoading: false
+            )
+        )
+        #expect(
+            !DomainDetailsWebViewController.shouldAllowNavigation(
+                to: redirectURL,
+                domainDetailsURL: domainDetailsURL,
+                isLoading: false
+            )
+        )
+
+        let redirectPolicy = controller.linkBehavior.handle(
+            request: redirectRequest,
+            with: .other,
+            externalURLHandler: externalURLHandler
+        )
+
+        #expect(redirectPolicy == .allow)
+        #expect(externalURLHandler.openedURL == nil)
+
+        let linkURL = try #require(URL(string: "https://wordpress.com/support"))
+        var linkRequest = URLRequest(url: linkURL)
+        linkRequest.mainDocumentURL = linkURL
+
+        let linkPolicy = controller.linkBehavior.handle(
+            request: linkRequest,
+            with: .linkActivated,
+            externalURLHandler: externalURLHandler
+        )
+
+        #expect(linkPolicy == .cancel)
+        #expect(externalURLHandler.openedURL == linkURL)
+    }
+}
+
+private final class ExternalURLHandlerSpy: ExternalURLHandler {
+    private(set) var openedURL: URL?
+
+    func open(_ url: URL) {
+        openedURL = url
     }
 }

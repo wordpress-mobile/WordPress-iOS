@@ -56,18 +56,21 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
          success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure
 {
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
-        BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
-        [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
-                                                                    completionHandler:success]
-                                         failure:failure];
-    } else if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
-        BlogServiceRemoteREST *restRemote = remote;
-        [restRemote syncBlogWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
-                                                               completionHandler:success]
-                                failure:failure];
+    if ([blog supports:BlogFeatureWpComRESTAPI]) {
+        id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+        if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
+            BlogServiceRemoteREST *restRemote = remote;
+            [restRemote syncBlogWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
+                                                                   completionHandler:success]
+                                    failure:failure];
+            return;
+        }
     }
+
+    [self syncXMLRPCOptionsIfApplicableFor:blog
+                            optionsHandler:[self optionsHandlerWithBlogObjectID:blog.objectID
+                                                                        completionHandler:success]
+                                    failure:failure];
 }
 
 - (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)(void))completionHandler
@@ -108,7 +111,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                                     completionHandler:^{ dispatch_group_leave(syncGroup); }];
         [self syncXMLRPCOptionsIfApplicableFor:blog
                                 optionsHandler:handler
-                                        failure:^{ dispatch_group_leave(syncGroup); }];
+                                        failure:^(NSError * __unused error) { dispatch_group_leave(syncGroup); }];
     }
 
     dispatch_group_enter(syncGroup);
@@ -238,47 +241,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         failure(error);
-    }];
-}
-
-- (void)updateSettingsForBlog:(Blog *)blog
-                     success:(void (^)(void))success
-                     failure:(void (^)(NSError *error))failure
-{
-    NSManagedObjectID *blogID = [blog objectID];
-    NSManagedObjectContext *context = self.coreDataStack.mainContext;
-    [context performBlock:^{
-        Blog *blogInContext = (Blog *)[context objectWithID:blogID];
-        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        RemoteBlogSettings *remoteSettings = [self remoteSettingFromSettings:blogInContext.settings];
-
-        void(^onSuccess)(void) = ^() {
-            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-                Blog *blogInContext = (Blog *)[context existingObjectWithID:blogID error:nil];
-                if (blogInContext) {
-                    [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
-                }
-            } completion:^{
-                if (success) {
-                    success();
-                }
-            } onQueue:dispatch_get_main_queue()];
-        };
-
-        if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
-
-            BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
-            [xmlrpcRemote updateBlogOptionsWith:[RemoteBlogOptionsHelper remoteOptionsForUpdatingBlogTitleAndTagline:remoteSettings]
-                                        success:onSuccess
-                                        failure:failure];
-
-        } else if([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
-
-            BlogServiceRemoteREST *restRemote = remote;
-            [restRemote updateBlogSettings:remoteSettings
-                               success:onSuccess
-                               failure:failure];
-        }
     }];
 }
 
@@ -756,77 +718,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     settings.sharingCommentLikesEnabled = [remoteSettings.sharingCommentLikesEnabled boolValue];
     settings.sharingDisabledLikes = [remoteSettings.sharingDisabledLikes boolValue];
     settings.sharingDisabledReblogs = [remoteSettings.sharingDisabledReblogs boolValue];
-}
-
-- (RemoteBlogSettings *)remoteSettingFromSettings:(BlogSettings *)settings
-{
-    NSParameterAssert(settings);
-    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
-
-    // Transformables
-    NSString *joinedBlocklistKeys = [[settings.commentsBlocklistKeys allObjects] componentsJoinedByString:@"\n"];
-    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@"\n"];
-    
-    // General
-    remoteSettings.name = settings.name;
-    remoteSettings.tagline = settings.tagline;
-    remoteSettings.privacy = settings.privacy;
-    remoteSettings.languageID = settings.languageID;
-    remoteSettings.iconMediaID = settings.iconMediaID;
-    remoteSettings.gmtOffset = settings.gmtOffset;
-    remoteSettings.timezoneString = settings.timezoneString;
-    
-    // Writing
-    remoteSettings.defaultCategoryID = settings.defaultCategoryID;
-    remoteSettings.defaultPostFormat = settings.defaultPostFormat;
-    remoteSettings.dateFormat = settings.dateFormat;
-    remoteSettings.timeFormat = settings.timeFormat;
-    remoteSettings.startOfWeek = settings.startOfWeek;
-    remoteSettings.postsPerPage = settings.postsPerPage;
-
-    // Discussion
-    remoteSettings.commentsAllowed = settings.commentsAllowed;
-    remoteSettings.commentsBlocklistKeys = joinedBlocklistKeys;
-    remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
-    remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
-    remoteSettings.commentsFromKnownUsersAllowlisted = @(settings.commentsFromKnownUsersAllowlisted);
-    
-    remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
-    remoteSettings.commentsModerationKeys = joinedModerationKeys;
-    
-    remoteSettings.commentsPagingEnabled = @(settings.commentsPagingEnabled);
-    remoteSettings.commentsPageSize = settings.commentsPageSize;
-    
-    remoteSettings.commentsRequireManualModeration = @(settings.commentsRequireManualModeration);
-    remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
-    remoteSettings.commentsRequireRegistration = @(settings.commentsRequireRegistration);
-
-    remoteSettings.commentsSortOrderAscending = settings.commentsSortOrderAscending;
-    
-    remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
-    remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
-    
-    remoteSettings.pingbackInboundEnabled = settings.pingbackInboundEnabled;
-    remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
-
-    // AMP
-    remoteSettings.ampEnabled = @(settings.ampEnabled);
-    
-    // Related Posts
-    remoteSettings.relatedPostsAllowed = @(settings.relatedPostsAllowed);
-    remoteSettings.relatedPostsEnabled = @(settings.relatedPostsEnabled);
-    remoteSettings.relatedPostsShowHeadline = @(settings.relatedPostsShowHeadline);
-    remoteSettings.relatedPostsShowThumbnails = @(settings.relatedPostsShowThumbnails);
-
-    // Sharing
-    remoteSettings.sharingButtonStyle = settings.sharingButtonStyle;
-    remoteSettings.sharingLabel =  settings.sharingLabel;
-    remoteSettings.sharingTwitterName = settings.sharingTwitterName;
-    remoteSettings.sharingCommentLikesEnabled = @(settings.sharingCommentLikesEnabled);
-    remoteSettings.sharingDisabledLikes = @(settings.sharingDisabledLikes);
-    remoteSettings.sharingDisabledReblogs = @(settings.sharingDisabledReblogs);
-    
-    return remoteSettings;
 }
 
 @end

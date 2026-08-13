@@ -94,7 +94,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     private var shouldCancelNextUpdateAnimation = false
 
     private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
-        return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
+        NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
     }()
 
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
@@ -121,7 +121,10 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: - View Lifecycle
 
-    static func showInPopover(from presentingVC: UIViewController, sourceItem: UIPopoverPresentationControllerSourceItem) {
+    static func showInPopover(
+        from presentingVC: UIViewController,
+        sourceItem: UIPopoverPresentationControllerSourceItem
+    ) {
         let notificationsVC = Notifications.instantiateInitialViewController()
         notificationsVC.isSidebarModeEnabled = true
 
@@ -285,7 +288,9 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier) as? TableViewCell,
-              let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification else {
+            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
+                as? WordPressData.Notification
+        else {
             return UITableViewCell()
         }
         cell.selectionStyle = splitViewControllerIsHorizontallyCompact ? .none : .default
@@ -302,18 +307,23 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        true
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
+    func tableView(
+        _ tableView: UITableView,
+        editingStyleForRowAt indexPath: IndexPath
+    ) -> UITableViewCell.EditingStyle {
+        .none
     }
 
     // MARK: - UITableViewDelegate Methods
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler?.resultsController?.sections?[section],
-              let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NotificationsTableHeaderView.reuseIdentifier) as? NotificationsTableHeaderView
+            let view = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: NotificationsTableHeaderView.reuseIdentifier
+            ) as? NotificationsTableHeaderView
         else {
             return nil
         }
@@ -323,12 +333,12 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         // Make sure no SectionFooter is rendered
-        return CGFloat.leastNormalMagnitude
+        CGFloat.leastNormalMagnitude
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Make sure no SectionFooter is rendered
-        return nil
+        nil
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -343,12 +353,15 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
-        guard let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification else {
+        guard
+            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
+                as? WordPressData.Notification
+        else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -369,56 +382,83 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification,
-              deletionRequestForNoteWithID(note.objectID) == nil else {
+        guard
+            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
+                as? WordPressData.Notification,
+            deletionRequestForNoteWithID(note.objectID) == nil
+        else {
             return nil
         }
 
         let isRead = note.read
 
-        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") :
-                             NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
+        let title =
+            isRead
+            ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread")
+            : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
 
-        let action = UIContextualAction(style: .normal, title: title, handler: { _, _, completionHandler in
-            if isRead {
-                WPAnalytics.track(.notificationMarkAsUnreadTapped)
-                self.markAsUnread(note: note)
-            } else {
-                WPAnalytics.track(.notificationMarkAsReadTapped)
-                self.markAsRead(note: note)
+        let action = UIContextualAction(
+            style: .normal,
+            title: title,
+            handler: { _, _, completionHandler in
+                if isRead {
+                    WPAnalytics.track(.notificationMarkAsUnreadTapped)
+                    self.markAsUnread(note: note)
+                } else {
+                    WPAnalytics.track(.notificationMarkAsReadTapped)
+                    self.markAsRead(note: note)
+                }
+                completionHandler(true)
             }
-            completionHandler(true)
-        })
+        )
         action.backgroundColor = UIAppColor.neutral(.shade50)
 
         return UISwipeActionsConfiguration(actions: [action])
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification,
+        guard
+            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
+                as? WordPressData.Notification,
             let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
-            deletionRequestForNoteWithID(note.objectID) == nil else {
+            deletionRequestForNoteWithID(note.objectID) == nil
+        else {
             return nil
         }
 
         // Approve comment
         guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled,
-              approveEnabled == true,
-              let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()),
-              let actionTitle = approveAction.command?.actionTitle else {
+            approveEnabled == true,
+            let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()),
+            let actionTitle = approveAction.command?.actionTitle
+        else {
             return nil
         }
 
-        let action = UIContextualAction(style: .normal, title: actionTitle, handler: { _, _, completionHandler in
-            WPAppAnalytics.track(approveAction.on ? .notificationsCommentUnapproved : .notificationsCommentApproved, properties: [Stats.sourceKey: Stats.sourceValue], blogID: block.metaSiteID)
+        let action = UIContextualAction(
+            style: .normal,
+            title: actionTitle,
+            handler: { _, _, completionHandler in
+                WPAppAnalytics.track(
+                    approveAction.on ? .notificationsCommentUnapproved : .notificationsCommentApproved,
+                    properties: [Stats.sourceKey: Stats.sourceValue],
+                    blogID: block.metaSiteID
+                )
 
-            let actionContext = ActionContext(block: block)
-            approveAction.execute(context: actionContext)
-            completionHandler(true)
-        })
+                let actionContext = ActionContext(block: block)
+                approveAction.execute(context: actionContext)
+                completionHandler(true)
+            }
+        )
         action.backgroundColor = approveAction.command?.actionColor
 
         let configuration = UISwipeActionsConfiguration(actions: [action])
@@ -426,7 +466,10 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         return configuration
     }
 
-    fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: WordPressData.Notification) {
+    fileprivate func configureDetailsViewController(
+        _ detailsViewController: NotificationDetailsViewController,
+        withNote note: WordPressData.Notification
+    ) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.hidesBottomBarWhenPushed = true
         detailsViewController.dataSource = self
@@ -483,7 +526,8 @@ private extension NotificationsViewController {
     func makeMoreMenuElements() -> [UIAction] {
         // Mark All As Read
         let markAllAsRead: UIAction? = { () -> UIAction? in
-            guard let notes = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
+            guard let notes = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification]
+            else {
                 return nil
             }
             let isEnabled = notes.contains { !$0.read }
@@ -538,7 +582,10 @@ private extension NotificationsViewController {
 
     func setupTableView() {
         // Register the cells
-        tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
+        tableView.register(
+            NotificationsTableHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier
+        )
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseIdentifier)
 
         // UITableView
@@ -612,39 +659,67 @@ extension NotificationsViewController {
 private extension NotificationsViewController {
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
-        nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: UIContentSizeCategory.didChangeNotification, object: nil)
+        nc.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        nc.addObserver(
+            self,
+            selector: #selector(notificationsWereUpdated),
+            name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
+            object: nil
+        )
+        nc.addObserver(
+            self,
+            selector: #selector(dynamicTypeDidChange),
+            name: UIContentSizeCategory.didChangeNotification,
+            object: nil
+        )
     }
 
     func startListeningToAccountNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
+        nc.addObserver(
+            self,
+            selector: #selector(defaultAccountDidChange),
+            name: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil
+        )
     }
 
     func startListeningToTimeChangeNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self,
-                       selector: #selector(significantTimeChange),
-                       name: UIApplication.significantTimeChangeNotification,
-                       object: nil)
+        nc.addObserver(
+            self,
+            selector: #selector(significantTimeChange),
+            name: UIApplication.significantTimeChangeNotification,
+            object: nil
+        )
     }
 
     func startListeningToCommentDeletedNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(removeDeletedNotification),
-                                               name: .NotificationCommentDeletedNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(removeDeletedNotification),
+            name: .NotificationCommentDeletedNotification,
+            object: nil
+        )
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.removeObserver(self,
-                          name: UIApplication.didBecomeActiveNotification,
-                          object: nil)
-        nc.removeObserver(self,
-                          name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
-                          object: nil)
+        nc.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        nc.removeObserver(
+            self,
+            name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
+            object: nil
+        )
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
@@ -684,15 +759,17 @@ private extension NotificationsViewController {
         needsReloadResults = true
         if UIApplication.shared.applicationState == .active
             && isViewLoaded == true
-            && view.window != nil {
+            && view.window != nil
+        {
             reloadResultsControllerIfNeeded()
         }
     }
 
     @objc func dynamicTypeDidChange() {
-        tableViewHandler?.resultsController?.fetchedObjects?.forEach {
-            ($0 as? WordPressData.Notification)?.resetCachedAttributes()
-        }
+        tableViewHandler?.resultsController?.fetchedObjects?
+            .forEach {
+                ($0 as? WordPressData.Notification)?.resetCachedAttributes()
+            }
     }
 }
 
@@ -770,11 +847,14 @@ extension NotificationsViewController {
         //
         if let postID = note.metaPostID,
             let siteID = note.metaSiteID,
-            note.kind == .matcher || note.kind == .newPost {
+            note.kind == .matcher || note.kind == .newPost
+        {
 
             if isSidebarModeEnabled && splitViewController == nil {
                 presentingViewController?.dismiss(animated: true)
-                RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postID.intValue, siteID: siteID.intValue))
+                RootViewCoordinator.sharedPresenter.showReader(
+                    path: .post(postID: postID.intValue, siteID: siteID.intValue)
+                )
             } else {
                 let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
                 readerViewController.navigationItem.largeTitleDisplayMode = .never
@@ -815,8 +895,12 @@ extension NotificationsViewController {
         }
     }
 
-    private func getNotificationCommentDetailViewController(for note: WordPressData.Notification) -> NotificationCommentDetailViewController? {
-        guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
+    private func getNotificationCommentDetailViewController(
+        for note: WordPressData.Notification
+    ) -> NotificationCommentDetailViewController? {
+        guard
+            let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note)
+        else {
             DDLogError("Notifications: failed creating Comment Detail view.")
             return nil
         }
@@ -829,7 +913,9 @@ extension NotificationsViewController {
         return commentDetailViewController
     }
 
-    private func getNotificationDetailsViewController(for note: WordPressData.Notification) -> NotificationDetailsViewController? {
+    private func getNotificationDetailsViewController(
+        for note: WordPressData.Notification
+    ) -> NotificationDetailsViewController? {
         let viewControllerID = NotificationDetailsViewController.classNameWithoutNamespaces()
         let detailsViewController = storyboard?.instantiateViewController(withIdentifier: viewControllerID)
         guard let detailsViewController = detailsViewController as? NotificationDetailsViewController else {
@@ -880,9 +966,11 @@ extension NotificationsViewController {
             return
         }
 
-        let noteIndexPath = tableView.indexPathsForVisibleRows?.first { indexPath in
-            return note == tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification
-        }
+        let noteIndexPath = tableView.indexPathsForVisibleRows?
+            .first { indexPath in
+                note == tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
+                    as? WordPressData.Notification
+            }
 
         guard noteIndexPath == nil else {
             return
@@ -912,7 +1000,11 @@ extension NotificationsViewController {
     ///
     @objc func showNotificationSettings() {
         let controller = NotificationSettingsViewController()
-        controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeNotificationSettings))
+        controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(closeNotificationSettings)
+        )
 
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
@@ -957,11 +1049,15 @@ private extension NotificationsViewController {
         notificationDeletionRequests.removeValue(forKey: noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
-        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(deleteNoteWithID), object: noteObjectID)
+        NSObject.cancelPreviousPerformRequests(
+            withTarget: self,
+            selector: #selector(deleteNoteWithID),
+            object: noteObjectID
+        )
     }
 
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
-        return notificationDeletionRequests[noteObjectID]
+        notificationDeletionRequests[noteObjectID]
     }
 
     // MARK: - Notifications Deletion from CommentDetailViewController
@@ -974,7 +1070,7 @@ private extension NotificationsViewController {
         selectNextAvailableNotification(ignoring: notificationCommentDetailCoordinator.notificationsCommentModerated)
 
         notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
-            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: {_ in })
+            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: { _ in })
         }
 
         notificationCommentDetailCoordinator.notificationsCommentModerated = []
@@ -982,10 +1078,11 @@ private extension NotificationsViewController {
 
     @objc func removeDeletedNotification(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
-              let deletedCommentID = userInfo[userInfoCommentIdKey] as? Int32,
-              let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
-                  return
-              }
+            let deletedCommentID = userInfo[userInfoCommentIdKey] as? Int32,
+            let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification]
+        else {
+            return
+        }
 
         let notification = notifications.first(where: { notification -> Bool in
             guard let commentID = notification.metaCommentID else {
@@ -1005,24 +1102,33 @@ private extension NotificationsViewController {
 
         selectNextAvailableNotification(ignoring: [notification])
 
-        syncNotification(with: notification.notificationId, timeout: Syncing.pushMaxWait, success: { [weak self] notification in
-            self?.notificationCommentDetailCoordinator.notificationsCommentModerated.removeAll(where: { $0.notificationId == notification.notificationId })
-        })
+        syncNotification(
+            with: notification.notificationId,
+            timeout: Syncing.pushMaxWait,
+            success: { [weak self] notification in
+                self?.notificationCommentDetailCoordinator.notificationsCommentModerated
+                    .removeAll(where: { $0.notificationId == notification.notificationId })
+            }
+        )
     }
 
     func selectNextAvailableNotification(ignoring: [WordPressData.Notification]) {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
         if !splitViewControllerIsHorizontallyCompact,
-           let selectedNotification,
-           ignoring.contains(selectedNotification) {
+            let selectedNotification,
+            ignoring.contains(selectedNotification)
+        {
 
-            guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification],
-                  let nextAvailable = notifications.first(where: { !ignoring.contains($0) }),
-                  let indexPath = tableViewHandler?.resultsController?.indexPath(forObject: nextAvailable) else {
-                      self.selectedNotification = nil
-                      return
-                  }
+            guard
+                let notifications = tableViewHandler?.resultsController?.fetchedObjects
+                    as? [WordPressData.Notification],
+                let nextAvailable = notifications.first(where: { !ignoring.contains($0) }),
+                let indexPath = tableViewHandler?.resultsController?.indexPath(forObject: nextAvailable)
+            else {
+                self.selectedNotification = nil
+                return
+            }
 
             self.selectedNotification = nextAvailable
             tableView(tableView, didSelectRowAt: indexPath)
@@ -1074,12 +1180,17 @@ private extension NotificationsViewController {
             !$0.read
         }
 
-        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { error in
-            let notice = Notice(
-                title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
+        NotificationSyncMediator()?
+            .markAsRead(
+                unreadNotifications,
+                completion: { error in
+                    let notice = Notice(
+                        title: error != nil
+                            ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
+                    )
+                    ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+                }
             )
-            ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
-        })
     }
 
     /// Presents a confirmation action sheet for mark all as read action.
@@ -1096,7 +1207,8 @@ private extension NotificationsViewController {
         default:
             title = NSLocalizedString(
                 "Mark all %1$@ notifications as read?",
-                comment: "Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name."
+                comment:
+                    "Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name."
             )
         }
 
@@ -1148,9 +1260,10 @@ private extension NotificationsViewController {
         // This is additive because we don't want to remove anything
         // from the list unless we explicitly call
         // clearUnreadNotifications()
-        notes.lazy.filter({ !$0.read }).forEach { note in
-            unreadNotificationIds.insert(note.objectID)
-        }
+        notes.lazy.filter({ !$0.read })
+            .forEach { note in
+                unreadNotificationIds.insert(note.objectID)
+            }
         if previous != unreadNotificationIds && reloadingResultsController {
             reloadResultsController()
         }
@@ -1213,20 +1326,26 @@ private extension NotificationsViewController {
         }
     }
 
-    func selectRow(for notification: WordPressData.Notification, animated: Bool = true,
-                   scrollPosition: UITableView.ScrollPosition = .none) {
+    func selectRow(
+        for notification: WordPressData.Notification,
+        animated: Bool = true,
+        scrollPosition: UITableView.ScrollPosition = .none
+    ) {
         selectedNotification = notification
 
         // also ensure that the index path returned from results controller does not have negative row index.
         // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
         guard let indexPath = tableViewHandler?.resultsController?.indexPath(forObject: notification),
-              indexPath != tableView.indexPathForSelectedRow,
-              0..<tableView.numberOfSections ~= indexPath.section,
-              0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
-                  return
-              }
+            indexPath != tableView.indexPathForSelectedRow,
+            0..<tableView.numberOfSections ~= indexPath.section,
+            0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row
+        else {
+            return
+        }
 
-        DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
+        DDLogInfo(
+            "\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")"
+        )
         tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
 
@@ -1270,12 +1389,14 @@ extension NotificationsViewController {
 
 extension NotificationsViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
-        return tableViewHandler?.resultsController?.isEmpty() ?? true
+        tableViewHandler?.resultsController?.isEmpty() ?? true
     }
 
     func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
-                                 comment: "Error message shown when the user is browsing Notifications without an internet connection.")
+        NSLocalizedString(
+            "No internet connection. Some content may be unavailable while offline.",
+            comment: "Error message shown when the user is browsing Notifications without an internet connection."
+        )
     }
 }
 
@@ -1308,8 +1429,10 @@ extension NotificationsViewController {
         }
 
         // If we don't currently have a selected notification and there is a notification in the list, then select it.
-        if let firstNotification = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification,
-           let indexPath = tableViewHandler?.resultsController?.indexPath(forObject: firstNotification) {
+        if let firstNotification = tableViewHandler?.resultsController?.fetchedObjects?.first
+            as? WordPressData.Notification,
+            let indexPath = tableViewHandler?.resultsController?.indexPath(forObject: firstNotification)
+        {
             selectRow(for: firstNotification, animated: false, scrollPosition: .none)
             self.tableView(tableView, didSelectRowAt: indexPath)
             return
@@ -1329,7 +1452,7 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.shared.mainContext
+        ContextManager.shared.mainContext
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
@@ -1360,8 +1483,11 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification,
-              let cell = cell as? ListTableViewCell else {
+        guard
+            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
+                as? WordPressData.Notification,
+            let cell = cell as? ListTableViewCell
+        else {
             return
         }
 
@@ -1378,24 +1504,26 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func sectionNameKeyPath() -> String {
-        return "sectionIdentifier"
+        "sectionIdentifier"
     }
 
     @objc func entityName() -> String {
-        return Notification.classNameWithoutNamespaces()
+        Notification.classNameWithoutNamespaces()
     }
 
     private var shouldCountNotificationsForSecondAlert: Bool {
-        userDefaults.notificationPrimerInlineWasAcknowledged &&
-            userDefaults.secondNotificationsAlertCount != Constants.secondNotificationsAlertDisabled
+        userDefaults.notificationPrimerInlineWasAcknowledged
+            && userDefaults.secondNotificationsAlertCount != Constants.secondNotificationsAlertDisabled
     }
 
     func tableViewWillChangeContent(_ tableView: UITableView) {
         guard shouldCountNotificationsForSecondAlert,
-              let notification = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification,
-            let timestamp = notification.timestamp else {
-                timestampBeforeUpdatesForSecondAlert = nil
-                return
+            let notification = tableViewHandler?.resultsController?.fetchedObjects?.first
+                as? WordPressData.Notification,
+            let timestamp = notification.timestamp
+        else {
+            timestampBeforeUpdatesForSecondAlert = nil
+            return
         }
 
         timestampBeforeUpdatesForSecondAlert = timestamp
@@ -1429,14 +1557,15 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func shouldCancelUpdateAnimation() -> Bool {
-        return shouldCancelNextUpdateAnimation
+        shouldCancelNextUpdateAnimation
     }
 
     // counts the new notifications for the second alert
     private var newNotificationsForSecondAlert: Int {
 
         guard let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
-              let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
+            let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification]
+        else {
 
             return 0
         }
@@ -1451,17 +1580,25 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     private static func accessibilityHint(for note: WordPressData.Notification) -> String? {
         switch note.kind {
         case .comment:
-            return NSLocalizedString("Shows details and moderation actions.",
-                                     comment: "Accessibility hint for a comment notification.")
+            return NSLocalizedString(
+                "Shows details and moderation actions.",
+                comment: "Accessibility hint for a comment notification."
+            )
         case .commentLike, .like:
-            return NSLocalizedString("Shows all likes.",
-                                     comment: "Accessibility hint for a post or comment “like” notification.")
+            return NSLocalizedString(
+                "Shows all likes.",
+                comment: "Accessibility hint for a post or comment “like” notification."
+            )
         case .follow:
-            return NSLocalizedString("Shows all followers",
-                                     comment: "Accessibility hint for a follow notification.")
+            return NSLocalizedString(
+                "Shows all followers",
+                comment: "Accessibility hint for a follow notification."
+            )
         case .matcher, .newPost:
-            return NSLocalizedString("Shows the post",
-                                     comment: "Accessibility hint for a match/mention on a post notification.")
+            return NSLocalizedString(
+                "Shows the post",
+                comment: "Accessibility hint for a match/mention on a post notification."
+            )
         default:
             return nil
         }
@@ -1476,9 +1613,12 @@ private extension NotificationsViewController {
             return
         }
 
-        UIView.animate(withDuration: 0.33, animations: {
-            self.filterTabBar.isHidden = false
-        })
+        UIView.animate(
+            withDuration: 0.33,
+            animations: {
+                self.filterTabBar.isHidden = false
+            }
+        )
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
@@ -1491,7 +1631,7 @@ private extension NotificationsViewController {
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        return mainContext.countObjects(ofType: Notification.self) > 0 && !shouldDisplayJetpackPrompt
+        mainContext.countObjects(ofType: Notification.self) > 0 && !shouldDisplayJetpackPrompt
     }
 }
 
@@ -1531,13 +1671,19 @@ private extension NotificationsViewController {
                 switch filter {
                 case .none, .comment, .follow, .like:
                     Button(Strings.openReader) {
-                        WPAnalytics.track(.notificationsTappedViewReader, withProperties: [Stats.sourceKey: Stats.sourceValue])
+                        WPAnalytics.track(
+                            .notificationsTappedViewReader,
+                            withProperties: [Stats.sourceKey: Stats.sourceValue]
+                        )
                         RootViewCoordinator.sharedPresenter.showReader()
                     }
                 case .unread:
                     Button(Strings.createPost) {
-                        WPAnalytics.track(.notificationsTappedNewPost, withProperties: [Stats.sourceKey: Stats.sourceValue])
-                        RootViewCoordinator.sharedPresenter.showPostEditor()
+                        WPAnalytics.track(
+                            .notificationsTappedNewPost,
+                            withProperties: [Stats.sourceKey: Stats.sourceValue]
+                        )
+                        RootViewCoordinator.sharedPresenter.showNewPostEditor()
                     }
                 }
             }
@@ -1548,7 +1694,9 @@ private extension NotificationsViewController {
     }
 
     func showNoConnectionView() {
-        noResultsViewController.rootView = AnyView(EmptyStateView(noConnectionTitleText, systemImage: "network.slash", description: noConnectionMessage()))
+        noResultsViewController.rootView = AnyView(
+            EmptyStateView(noConnectionTitleText, systemImage: "network.slash", description: noConnectionMessage())
+        )
         addNoResultsToView()
     }
 
@@ -1570,27 +1718,30 @@ private extension NotificationsViewController {
     }
 
     var noConnectionTitleText: String {
-        return NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        NSLocalizedString(
+            "Unable to Sync",
+            comment: "Title of error prompt shown when a sync the user initiated fails."
+        )
     }
 
     var noResultsButtonText: String? {
-        return filter.noResultsButtonTitle
+        filter.noResultsButtonTitle
     }
 
     var shouldDisplayJetpackPrompt: Bool {
-        return AccountHelper.isDotcomAvailable() == false && blogForJetpackPrompt != nil
+        AccountHelper.isDotcomAvailable() == false && blogForJetpackPrompt != nil
     }
 
     var shouldDisplaySettingsButton: Bool {
-        return AccountHelper.isDotcomAvailable()
+        AccountHelper.isDotcomAvailable()
     }
 
     var shouldDisplayNoResultsView: Bool {
-        return tableViewHandler?.resultsController?.fetchedObjects?.isEmpty == true && !shouldDisplayJetpackPrompt
+        tableViewHandler?.resultsController?.fetchedObjects?.isEmpty == true && !shouldDisplayJetpackPrompt
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {
-        return shouldDisplayNoResultsView && filter == .none
+        shouldDisplayNoResultsView && filter == .none
     }
 }
 
@@ -1600,27 +1751,46 @@ internal extension NotificationsViewController {
     func showInlinePrompt() {
         guard inlinePromptView.alpha != 1,
             userDefaults.notificationPrimerAlertWasDisplayed,
-            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
+            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount
+        else {
             return
         }
 
-        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn, animations: {
-            self.inlinePromptView.isHidden = false
-        })
+        UIView.animate(
+            withDuration: 0.33,
+            delay: 0,
+            options: .curveEaseIn,
+            animations: {
+                self.inlinePromptView.isHidden = false
+            }
+        )
 
-        UIView.animate(withDuration: 0.33 * 0.5, delay: 0.33 * 0.75, options: .curveEaseIn, animations: {
-            self.inlinePromptView.alpha = 1
-        })
+        UIView.animate(
+            withDuration: 0.33 * 0.5,
+            delay: 0.33 * 0.75,
+            options: .curveEaseIn,
+            animations: {
+                self.inlinePromptView.alpha = 1
+            }
+        )
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
-        UIView.animate(withDuration: 0.33 * 0.75, delay: delay, animations: {
-            self.inlinePromptView.alpha = 0
-        })
+        UIView.animate(
+            withDuration: 0.33 * 0.75,
+            delay: delay,
+            animations: {
+                self.inlinePromptView.alpha = 0
+            }
+        )
 
-        UIView.animate(withDuration: 0.33, delay: delay + 0.33 * 0.5, animations: {
-            self.inlinePromptView.isHidden = true
-        })
+        UIView.animate(
+            withDuration: 0.33,
+            delay: delay + 0.33 * 0.5,
+            animations: {
+                self.inlinePromptView.isHidden = true
+            }
+        )
     }
 }
 
@@ -1636,30 +1806,36 @@ private extension NotificationsViewController {
         mediator?.sync()
     }
 
-    func syncNotification(with noteId: String, timeout: TimeInterval, success: @escaping (_ note: WordPressData.Notification) -> Void) {
+    func syncNotification(
+        with noteId: String,
+        timeout: TimeInterval,
+        success: @escaping (_ note: WordPressData.Notification) -> Void
+    ) {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
         DDLogInfo("Sync'ing Notification [\(noteId)]")
 
-        mediator?.syncNote(with: noteId) { _, note in
-            guard abs(startDate.timeIntervalSinceNow) <= timeout else {
-                DDLogError("Error: Timeout while trying to load Notification [\(noteId)]")
-                return
-            }
+        mediator?
+            .syncNote(with: noteId) { _, note in
+                guard abs(startDate.timeIntervalSinceNow) <= timeout else {
+                    DDLogError("Error: Timeout while trying to load Notification [\(noteId)]")
+                    return
+                }
 
-            guard let note else {
-                DDLogError("Error: Couldn't load Notification [\(noteId)]")
-                return
-            }
+                guard let note else {
+                    DDLogError("Error: Couldn't load Notification [\(noteId)]")
+                    return
+                }
 
-            DDLogInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
-            success(note)
-        }
+                DDLogInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
+                success(note)
+            }
     }
 
     func updateLastSeenTime() {
-        guard let note = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification else {
+        guard let note = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification
+        else {
             return
         }
 
@@ -1672,8 +1848,12 @@ private extension NotificationsViewController {
         return mainContext.firstObject(ofType: Notification.self, matching: predicate)
     }
 
-    func loadNotification(near note: WordPressData.Notification, withIndexDelta delta: Int) -> WordPressData.Notification? {
-        guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
+    func loadNotification(
+        near note: WordPressData.Notification,
+        withIndexDelta delta: Int
+    ) -> WordPressData.Notification? {
+        guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification]
+        else {
             return nil
         }
 
@@ -1705,11 +1885,11 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: NotificationsNavigationDataSource {
     @objc func notification(succeeding note: WordPressData.Notification) -> WordPressData.Notification? {
-        return loadNotification(near: note, withIndexDelta: -1)
+        loadNotification(near: note, withIndexDelta: -1)
     }
 
     @objc func notification(preceding note: WordPressData.Notification) -> WordPressData.Notification? {
-        return loadNotification(near: note, withIndexDelta: +1)
+        loadNotification(near: note, withIndexDelta: +1)
     }
 }
 
@@ -1717,16 +1897,22 @@ extension NotificationsViewController: NotificationsNavigationDataSource {
 //
 extension NotificationsViewController: SearchableActivityConvertable {
     var activityType: String {
-        return WPActivityType.notifications.rawValue
+        WPActivityType.notifications.rawValue
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
+        NSLocalizedString(
+            "Notifications",
+            comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS."
+        )
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, notifications, alerts, updates",
-                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab.")
+        let keyWordString = NSLocalizedString(
+            "wordpress, notifications, alerts, updates",
+            comment:
+                "This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab."
+        )
         let keywordArray = keyWordString.arrayOfTags()
 
         guard !keywordArray.isEmpty else {
@@ -1741,11 +1927,11 @@ extension NotificationsViewController: SearchableActivityConvertable {
 //
 private extension NotificationsViewController {
     var mainContext: NSManagedObjectContext {
-        return ContextManager.shared.mainContext
+        ContextManager.shared.mainContext
     }
 
     var userDefaults: UserPersistentRepository {
-        return UserPersistentStoreFactory.instance()
+        UserPersistentStoreFactory.instance()
     }
 
     var filter: Filter {
@@ -1768,82 +1954,147 @@ private extension NotificationsViewController {
 
         var condition: String? {
             switch self {
-            case .none:     return nil
-            case .unread:   return "read = NO"
-            case .comment:  return "type = '\(NotificationKind.comment.rawValue)'"
-            case .follow:   return "type = '\(NotificationKind.follow.rawValue)'"
-            case .like:     return "type = '\(NotificationKind.like.rawValue)' OR type = '\(NotificationKind.commentLike.rawValue)'"
+            case .none: return nil
+            case .unread: return "read = NO"
+            case .comment: return "type = '\(NotificationKind.comment.rawValue)'"
+            case .follow: return "type = '\(NotificationKind.follow.rawValue)'"
+            case .like:
+                return "type = '\(NotificationKind.like.rawValue)' OR type = '\(NotificationKind.commentLike.rawValue)'"
             }
         }
 
         var title: String {
             switch self {
-            case .none:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
-            case .unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
-            case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
-            case .follow:   return NSLocalizedString("notifications.filter.subscribers.title", value: "Subscribers", comment: "Filters Subscribers Notifications")
-            case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            case .none: return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
+            case .unread: return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
+            case .comment: return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
+            case .follow:
+                return NSLocalizedString(
+                    "notifications.filter.subscribers.title",
+                    value: "Subscribers",
+                    comment: "Filters Subscribers Notifications"
+                )
+            case .like: return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
             }
         }
 
         var analyticsTitle: String {
             switch self {
-            case .none:     return "All"
-            case .unread:   return "Unread"
-            case .comment:  return "Comments"
-            case .follow:   return "Follows"
-            case .like:     return "Likes"
+            case .none: return "All"
+            case .unread: return "Unread"
+            case .comment: return "Comments"
+            case .follow: return "Follows"
+            case .like: return "Likes"
             }
         }
 
         var confirmationMessageTitle: String {
             switch self {
-            case .none:     return ""
-            case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
-            case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
-            case .follow:   return NSLocalizedString("notifications.filter.subscriptions.confirmationMessageTitle", value: "subscribe", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
-            case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
+            case .none: return ""
+            case .unread:
+                return NSLocalizedString(
+                    "unread",
+                    comment: "Displayed in the confirmation alert when marking unread notifications as read."
+                )
+            case .comment:
+                return NSLocalizedString(
+                    "comment",
+                    comment: "Displayed in the confirmation alert when marking comment notifications as read."
+                )
+            case .follow:
+                return NSLocalizedString(
+                    "notifications.filter.subscriptions.confirmationMessageTitle",
+                    value: "subscribe",
+                    comment: "Displayed in the confirmation alert when marking follow notifications as read."
+                )
+            case .like:
+                return NSLocalizedString(
+                    "like",
+                    comment: "Displayed in the confirmation alert when marking like notifications as read."
+                )
             }
         }
 
         var noResultsTitle: String {
             switch self {
-            case .none:     return NSLocalizedString("No notifications yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
-            case .unread:   return NSLocalizedString("You're all up to date!",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
-            case .comment:  return NSLocalizedString("No comments yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("notifications.noresults.subscribers", value: "No subscribers yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications")
-            case .like:     return NSLocalizedString("No likes yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
+            case .none:
+                return NSLocalizedString(
+                    "No notifications yet",
+                    comment: "Displayed in the Notifications Tab as a title, when there are no notifications"
+                )
+            case .unread:
+                return NSLocalizedString(
+                    "You're all up to date!",
+                    comment:
+                        "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title"
+                )
+            case .comment:
+                return NSLocalizedString(
+                    "No comments yet",
+                    comment:
+                        "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications"
+                )
+            case .follow:
+                return NSLocalizedString(
+                    "notifications.noresults.subscribers",
+                    value: "No subscribers yet",
+                    comment:
+                        "Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications"
+                )
+            case .like:
+                return NSLocalizedString(
+                    "No likes yet",
+                    comment:
+                        "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications"
+                )
             }
         }
 
         var noResultsMessage: String {
             switch self {
-            case .none:     return NSLocalizedString("Get active! Comment on posts from blogs you follow.",
-                                                     comment: "Displayed in the Notifications Tab as a message, when there are no notifications")
-            case .unread:   return NSLocalizedString("Reignite the conversation: write a new post.",
-                                                     comment: "Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications")
-            case .comment:  return NSLocalizedString("Join a conversation: comment on posts from blogs you follow.",
-                                                     comment: "Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications")
+            case .none:
+                return NSLocalizedString(
+                    "Get active! Comment on posts from blogs you follow.",
+                    comment: "Displayed in the Notifications Tab as a message, when there are no notifications"
+                )
+            case .unread:
+                return NSLocalizedString(
+                    "Reignite the conversation: write a new post.",
+                    comment:
+                        "Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications"
+                )
+            case .comment:
+                return NSLocalizedString(
+                    "Join a conversation: comment on posts from blogs you follow.",
+                    comment:
+                        "Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications"
+                )
             case .follow,
-                 .like:     return NSLocalizedString("Get noticed: comment on posts you've read.",
-                                                     comment: "Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications")
+                .like:
+                return NSLocalizedString(
+                    "Get noticed: comment on posts you've read.",
+                    comment:
+                        "Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications"
+                )
             }
         }
 
         var noResultsButtonTitle: String {
             switch self {
             case .none,
-                 .comment,
-                 .follow,
-                 .like:     return NSLocalizedString("Go to Reader",
-                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-            case .unread:   return NSLocalizedString("Create a Post",
-                                                     comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
+                .comment,
+                .follow,
+                .like:
+                return NSLocalizedString(
+                    "Go to Reader",
+                    comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"
+                )
+            case .unread:
+                return NSLocalizedString(
+                    "Create a Post",
+                    comment:
+                        "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications"
+                )
             }
         }
 
@@ -1964,13 +2215,21 @@ extension NotificationsViewController: JPScrollViewDelegate {
 
 extension NotificationsViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
-        return "Notifications"
+        "Notifications"
     }
 }
 
 private enum Strings {
-    static let openReader = NSLocalizedString("notifications.emptyState.buttonOpenReader", value: "Open Reader", comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-    static let createPost = NSLocalizedString("notifications.emptyState.buttonCreatePost", value: "Create Post", comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
+    static let openReader = NSLocalizedString(
+        "notifications.emptyState.buttonOpenReader",
+        value: "Open Reader",
+        comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"
+    )
+    static let createPost = NSLocalizedString(
+        "notifications.emptyState.buttonCreatePost",
+        value: "Create Post",
+        comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications"
+    )
 
     enum NavigationBar {
         static let notificationSettingsActionTitle = NSLocalizedString(

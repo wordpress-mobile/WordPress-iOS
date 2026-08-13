@@ -1,7 +1,8 @@
 27.2
 -----
+* [*] Custom Post Types: Make custom post types with REST API and editor support available in My Site [#25849]
 * [*] Stop the media picker from removing gallery images when you cancel it in the experimental editor [#25866]
-
+* [*] Stats: Fix the screen getting stuck on a loading indicator for self-hosted sites that are not connected to Jetpack [#25858]
 
 27.1
 -----

@@ -49,22 +49,29 @@ import WordPressData
     ///   - promptID: The ID of the blogging prompt. When nil, the method will use today's prompt.
     ///   - blog: The blog associated with the blogging prompt.
     ///   - completion: Closure invoked after the post creation flow is presented.
-    func showPromptAnsweringFlow(from viewController: UIViewController,
-                                 promptID: Int? = nil,
-                                 blog: Blog,
-                                 source: Source,
-                                 completion: (() -> Void)? = nil) {
+    func showPromptAnsweringFlow(
+        from viewController: UIViewController,
+        promptID: Int? = nil,
+        blog: Blog,
+        source: Source,
+        completion: (() -> Void)? = nil
+    ) {
         fetchPrompt(with: promptID, blog: blog) { result in
             guard case .success(let prompt) = result else {
                 completion?()
                 return
             }
 
-            // Present the post creation flow.
-            let editor = EditPostViewController(blog: blog, prompt: prompt)
-            editor.modalPresentationStyle = .fullScreen
-            editor.entryPoint = source.editorEntryPoint
-            viewController.present(editor, animated: true)
+            MainActor.assumeIsolated {
+                PostEditorRouter.showNewPost(
+                    for: blog,
+                    from: viewController,
+                    context: NewPostEditorContext(
+                        prompt: prompt,
+                        entryPoint: source.editorEntryPoint
+                    )
+                )
+            }
             completion?()
         }
     }
@@ -76,16 +83,18 @@ import WordPressData
     ///   - completion: Closure invoked after the scheduling process completes.
     func updatePromptsIfNeeded(for blog: Blog, completion: ((Result<Void, Error>) -> Void)? = nil) {
         guard FeatureFlag.bloggingPrompts.enabled,
-              let service = self.promptsServiceFactory.makeService(for: blog) else {
+            let service = self.promptsServiceFactory.makeService(for: blog)
+        else {
             return
         }
 
         // fetch and update local prompts.
         service.fetchPrompts { [weak self] _ in
             // try to reschedule prompts if the user has any active reminders.
-            self?.reschedulePromptRemindersIfNeeded(for: blog) {
-                completion?(.success(()))
-            }
+            self?
+                .reschedulePromptRemindersIfNeeded(for: blog) {
+                    completion?(.success(()))
+                }
         } failure: { error in
             completion?(.failure(error ?? Errors.unknown))
         }
@@ -114,37 +123,47 @@ private extension BloggingPromptCoordinator {
         }
     }
 
-    private func reschedulePromptRemindersIfNeeded(for blog: Blog, in context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func reschedulePromptRemindersIfNeeded(
+        for blog: Blog,
+        in context: NSManagedObjectContext,
+        completion: @escaping () -> Void
+    ) {
         assert(blog.managedObjectContext == context)
 
         guard let settings = try? BloggingPromptSettings.of(blog),
-              let activeWeekdays = settings.reminderDays?.getActiveWeekdays(),
-              let reminderTimeDate = settings.reminderTimeDate(),
-              settings.promptRemindersEnabled
+            let activeWeekdays = settings.reminderDays?.getActiveWeekdays(),
+            let reminderTimeDate = settings.reminderTimeDate(),
+            settings.promptRemindersEnabled
         else {
             completion()
             return
         }
 
         // IMPORTANT: Ensure that push authorization is already granted before rescheduling.
-        UNUserNotificationCenter.current().getNotificationSettings { [weak self] notificationSettings in
-            guard let self,
-                  notificationSettings.authorizationStatus == .authorized else {
-                completion()
-                return
-            }
-
-            context.perform {
-                // Reschedule the prompt reminders.
-                let schedule = BloggingRemindersScheduler.Schedule.weekdays(activeWeekdays)
-                self.scheduler.schedule(schedule, for: blog, time: reminderTimeDate) { _ in
+        UNUserNotificationCenter.current()
+            .getNotificationSettings { [weak self] notificationSettings in
+                guard let self,
+                    notificationSettings.authorizationStatus == .authorized
+                else {
                     completion()
+                    return
+                }
+
+                context.perform {
+                    // Reschedule the prompt reminders.
+                    let schedule = BloggingRemindersScheduler.Schedule.weekdays(activeWeekdays)
+                    self.scheduler.schedule(schedule, for: blog, time: reminderTimeDate) { _ in
+                        completion()
+                    }
                 }
             }
-        }
     }
 
-    func fetchPrompt(with localPromptID: Int? = nil, blog: Blog, completion: @escaping (Result<BloggingPrompt, Error>) -> Void) {
+    func fetchPrompt(
+        with localPromptID: Int? = nil,
+        blog: Blog,
+        completion: @escaping (Result<BloggingPrompt, Error>) -> Void
+    ) {
         guard let service = promptsServiceFactory.makeService(for: blog) else {
             completion(.failure(Errors.invalidSite))
             return
@@ -152,7 +171,8 @@ private extension BloggingPromptCoordinator {
 
         // When the promptID is specified, there may be a cached prompt available.
         if let promptID = localPromptID,
-           let prompt = service.loadPrompt(with: promptID, in: blog) {
+            let prompt = service.loadPrompt(with: promptID, in: blog)
+        {
             completion(.success(prompt))
             return
         }

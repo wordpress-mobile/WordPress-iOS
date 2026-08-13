@@ -57,7 +57,8 @@ class PagesCardViewModel: NSObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<PagesListSection, PagesListItem>
     typealias PagesSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
-    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] tableView, indexPath, item -> UITableViewCell? in
+    lazy var diffableDataSource = DataSource(tableView: view!.tableView) {
+        [weak self] tableView, indexPath, item -> UITableViewCell? in
         guard let self else {
             return nil
         }
@@ -67,11 +68,20 @@ class PagesCardViewModel: NSObject {
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
         case .createPage(let compact, let hasPages):
-            return self.configureCreationCell(compact: compact, hasPages: hasPages, tableView: tableView, indexPath: indexPath)
+            return self.configureCreationCell(
+                compact: compact,
+                hasPages: hasPages,
+                tableView: tableView,
+                indexPath: indexPath
+            )
         }
     }
 
-    init(blog: Blog, view: PagesCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(
+        blog: Blog,
+        view: PagesCardView,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) {
         self.blog = blog
         self.view = view
         self.managedObjectContext = managedObjectContext
@@ -105,14 +115,28 @@ class PagesCardViewModel: NSObject {
         guard let viewController = view?.parentViewController else {
             return
         }
+        trackCreateSectionTapped()
+        var context = NewPostEditorContext(
+            analytics: .editorCreatedPage(source: Constants.analyticsPageCreationSource),
+            animated: false
+        )
+        context.trackAnalytics(for: blog)
+        context.analytics = .none
         PageCoordinator.showLayoutPickerIfNeeded(from: viewController, forBlog: blog) { [weak self] selectedLayout in
             guard let blog = self?.blog else {
                 return
             }
-            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content)
-            viewController.present(editorViewController, animated: false)
+            var context = context
+            context.title = selectedLayout?.title
+            context.content = selectedLayout?.content
+            MainActor.assumeIsolated {
+                PostEditorRouter.showNewPage(
+                    for: blog,
+                    from: viewController,
+                    context: context
+                )
+            }
         }
-        trackCreateSectionTapped()
     }
 
     func trackPageTapped() {
@@ -121,10 +145,6 @@ class PagesCardViewModel: NSObject {
 
     private func trackCreateSectionTapped() {
         trackCardItemTapped(itemType: Constants.analyticsCreationItemType)
-
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
-                          properties: [WPAppAnalyticsKeyTapSource: Constants.analyticsPageCreationSource],
-                          blog: blog)
     }
 
     private func trackCardItemTapped(itemType: String) {
@@ -132,9 +152,11 @@ class PagesCardViewModel: NSObject {
             Constants.analyticsTypeKey: DashboardCard.pages.rawValue,
             Constants.analyticsItemTypeKey: itemType
         ]
-        WPAnalytics.track(.dashboardCardItemTapped,
-                          properties: properties,
-                          blog: blog)
+        WPAnalytics.track(
+            .dashboardCardItemTapped,
+            properties: properties,
+            blog: blog
+        )
     }
 
     func tearDown() {
@@ -146,12 +168,18 @@ class PagesCardViewModel: NSObject {
 // MARK: Cells Configuration
 
 private extension PagesCardViewModel {
-    private func configurePageCell(objectID: NSManagedObjectID, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configurePageCell(
+        objectID: NSManagedObjectID,
+        tableView: UITableView,
+        indexPath: IndexPath
+    ) -> UITableViewCell {
         guard let page = try? self.managedObjectContext.existingObject(with: objectID) as? Page else {
             return UITableViewCell()
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCell.defaultReuseID, for: indexPath) as? DashboardPageCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: DashboardPageCell.defaultReuseID, for: indexPath)
+            as? DashboardPageCell
 
         cell?.accessoryType = .none
         cell?.configure(using: page, rowIndex: indexPath.row)
@@ -160,23 +188,38 @@ private extension PagesCardViewModel {
     }
 
     private func configureGhostCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, for: indexPath) as? BlogDashboardPostCardGhostCell
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: UIAppColor.placeholderElement,
-                               beatEndColor: UIAppColor.placeholderElementFaded)
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, for: indexPath)
+            as? BlogDashboardPostCardGhostCell
+        let style = GhostStyle(
+            beatDuration: GhostStyle.Defaults.beatDuration,
+            beatStartColor: UIAppColor.placeholderElement,
+            beatEndColor: UIAppColor.placeholderElementFaded
+        )
         cell?.contentView.stopGhostAnimation()
         cell?.contentView.startGhostAnimation(style: style)
         return cell ?? UITableViewCell()
     }
 
-    private func configureCreationCell(compact: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureCreationCell(
+        compact: Bool,
+        hasPages: Bool,
+        tableView: UITableView,
+        indexPath: IndexPath
+    ) -> UITableViewCell {
         var cell: DashboardPageCreationCell?
         if compact {
-            cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCompactCell.defaultReuseID,
-                                                 for: indexPath) as? DashboardPageCreationCell
+            cell =
+                tableView.dequeueReusableCell(
+                    withIdentifier: DashboardPageCreationCompactCell.defaultReuseID,
+                    for: indexPath
+                ) as? DashboardPageCreationCell
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationExpandedCell.defaultReuseID,
-                                                 for: indexPath) as? DashboardPageCreationCell
+            cell =
+                tableView.dequeueReusableCell(
+                    withIdentifier: DashboardPageCreationExpandedCell.defaultReuseID,
+                    for: indexPath
+                ) as? DashboardPageCreationCell
         }
         cell?.viewModel = self
         cell?.configure(hasPages: hasPages)
@@ -202,7 +245,12 @@ private extension PagesCardViewModel {
         fetchedResultsController?.delegate = nil
         fetchedResultsController = nil
 
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest(), managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest(),
+            managedObjectContext: managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
 
         fetchedResultsController?.delegate = self
     }
@@ -221,7 +269,7 @@ private extension PagesCardViewModel {
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        return filter.sortDescriptors
+        filter.sortDescriptors
     }
 
     func sync() {
@@ -238,15 +286,18 @@ private extension PagesCardViewModel {
         // Only show loading state if there are no pages at all
         if numberOfPages == 0 && isSyncing {
             currentState = .loading
-        }
-        else {
+        } else {
             currentState = .loaded
         }
     }
 
     func trackCardDisplayedIfNeeded() {
         if currentState == .loaded {
-            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": DashboardCard.pages.rawValue], blog: blog)
+            BlogDashboardAnalytics.shared.track(
+                .dashboardCardShown,
+                properties: ["type": DashboardCard.pages.rawValue],
+                blog: blog
+            )
         }
     }
 
@@ -263,12 +314,15 @@ private extension PagesCardViewModel {
 // MARK: DashboardPostsSyncManagerListener
 
 extension PagesCardViewModel: DashboardPostsSyncManagerListener {
-    func postsSynced(success: Bool,
-                     blog: Blog,
-                     postType: DashboardPostsSyncManager.PostType,
-                     for statuses: [BasePost.Status]) {
+    func postsSynced(
+        success: Bool,
+        blog: Blog,
+        postType: DashboardPostsSyncManager.PostType,
+        for statuses: [BasePost.Status]
+    ) {
         guard postType == .page,
-              self.blog == blog else {
+            self.blog == blog
+        else {
             return
         }
 
@@ -282,7 +336,10 @@ extension PagesCardViewModel: DashboardPostsSyncManagerListener {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
+    ) {
         guard let dataSource = view?.tableView.dataSource as? DataSource else {
             return
         }
@@ -313,7 +370,8 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
             var adjustedPagesSnapshot = pagesSnapshot
 
             // Delete extra pages
-            let sequenceToDelete = adjustedPagesSnapshot.itemIdentifiers.enumerated().filter { $0.offset > Constants.numberOfPages - 1 }
+            let sequenceToDelete = adjustedPagesSnapshot.itemIdentifiers.enumerated()
+                .filter { $0.offset > Constants.numberOfPages - 1 }
             let managedObjectIDsToDelete = sequenceToDelete.map { $0.element }
             adjustedPagesSnapshot.deleteItems(managedObjectIDsToDelete)
 
@@ -322,15 +380,19 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
             snapshot.appendItems(pageItems, toSection: .pages)
 
             // Reload items if needed
-            let reloadIdentifiers = identifiersToBeReloaded(newSnapshot: snapshot,
-                                                            currentSnapshot: currentSnapshot,
-                                                            pagesSnapshot: pagesSnapshot)
+            let reloadIdentifiers = identifiersToBeReloaded(
+                newSnapshot: snapshot,
+                currentSnapshot: currentSnapshot,
+                pagesSnapshot: pagesSnapshot
+            )
             snapshot.reloadItems(reloadIdentifiers)
 
             // Add Create Page Item
             // Section should be compact if there are more than one pages. Should be expanded otherwise.
-            let createPageItem: PagesListItem = .createPage(compact: pageItems.hasMultiplePages,
-                                                            hasPages: pageItems.hasPages)
+            let createPageItem: PagesListItem = .createPage(
+                compact: pageItems.hasMultiplePages,
+                hasPages: pageItems.hasPages
+            )
             snapshot.appendItems([createPageItem], toSection: .create)
 
         case .loading:
@@ -347,16 +409,23 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
     ///   - currentSnapshot: The old snapshot. Used to check if the item changed position
     ///   - pagesSnapshot: Snapshot retrieved from CoreDate
     /// - Returns: Array of items that should be reloaded
-    private func identifiersToBeReloaded(newSnapshot: Snapshot, currentSnapshot: Snapshot, pagesSnapshot: PagesSnapshot) -> [PagesListItem] {
-        return newSnapshot.itemIdentifiers.compactMap { item in
+    private func identifiersToBeReloaded(
+        newSnapshot: Snapshot,
+        currentSnapshot: Snapshot,
+        pagesSnapshot: PagesSnapshot
+    ) -> [PagesListItem] {
+        newSnapshot.itemIdentifiers.compactMap { item in
             guard case PagesListItem.page(let objectID) = item,
-                  let currentIndex = currentSnapshot.indexOfItem(item),
-                  let index = pagesSnapshot.indexOfItem(objectID),
-                  index == currentIndex else {
+                let currentIndex = currentSnapshot.indexOfItem(item),
+                let index = pagesSnapshot.indexOfItem(objectID),
+                index == currentIndex
+            else {
                 return nil // No need to reload if the index changed
             }
-            guard let existingObject = try? fetchedResultsController?.managedObjectContext.existingObject(with: objectID),
-                  existingObject.isUpdated else {
+            guard
+                let existingObject = try? fetchedResultsController?.managedObjectContext.existingObject(with: objectID),
+                existingObject.isUpdated
+            else {
                 return nil // No need to reload if the object wasn't updated
             }
             return item
@@ -372,10 +441,10 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
 
 private extension Array where Element == PagesListItem {
     var hasPages: Bool {
-        return !isEmpty
+        !isEmpty
     }
 
     var hasMultiplePages: Bool {
-        return count > 1
+        count > 1
     }
 }

@@ -47,11 +47,9 @@ NS_ENUM(NSInteger, SiteSettingsAdvanced) {
 
 NS_ENUM(NSInteger, SiteSettingsJetpack) {
     SiteSettingsJetpackSecurity = 0,
-    SiteSettingsJetpackConnection,
-    SiteSettingsJetpackCount,
 };
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
@@ -75,7 +73,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 @property (nonatomic, strong) SwitchTableViewCell *ampSettingCell;
 #pragma mark - Jetpack Settings Section
 @property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
-@property (nonatomic, strong) SettingTableViewCell *jetpackConnectionCell;
 #pragma mark - Device Section
 @property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Advanced Section
@@ -280,9 +277,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         }
         case SiteSettingsSectionJetpackSettings:
         {
-            if ([Feature enabled:FeatureFlagJetpackDisconnect]) {
-                return SiteSettingsJetpackCount;
-            }
             return 1;
         }
         case SiteSettingsSectionAdvanced:
@@ -500,7 +494,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     __weak __typeof__(self) weakSelf = self;
     _ampSettingCell.onChange = ^(BOOL value){
         weakSelf.blog.settings.ampEnabled = value;
-        [weakSelf saveSettings];
+        BlogSettingsChanges *changes = [BlogSettingsChanges new];
+        changes.ampEnabled = @(value);
+        [weakSelf saveSettingsWithChanges:changes];
         [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"amp_enabled" value:@(value)];
     };
 
@@ -516,17 +512,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                                                                  editable:YES
                                                           reuseIdentifier:nil];
     return _jetpackSecurityCell;
-}
-
-- (SettingTableViewCell *)jetpackConnectionCell
-{
-    if (_jetpackConnectionCell) {
-        return _jetpackConnectionCell;
-    }
-    _jetpackConnectionCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Manage Connection", @"Label for managing the Blog Jetpack Connection section")
-                                                                editable:YES
-                                                         reuseIdentifier:nil];
-    return _jetpackConnectionCell;
 }
 
 - (void)configureEditorSelectorCell
@@ -612,9 +597,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     switch (row) {
         case (SiteSettingsJetpackSecurity):
             return self.jetpackSecurityCell;
-
-        case (SiteSettingsJetpackConnection):
-            return self.jetpackConnectionCell;
     }
     return nil;
 }
@@ -823,7 +805,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     LanguageViewController *languageViewController = [[LanguageViewController alloc] initWithBlog:blog];
     languageViewController.onChange = ^(NSNumber *newLanguageID){
         weakSelf.blog.settings.languageID = newLanguageID;
-        [weakSelf saveSettings];
+        BlogSettingsChanges *changes = [BlogSettingsChanges new];
+        changes.languageID = newLanguageID;
+        [weakSelf saveSettingsWithChanges:changes];
         [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"language" value:newLanguageID];
     };
 
@@ -896,7 +880,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                 if ([weakSelf savingWritingDefaultsIsAvailable]) {
                     [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"default_post_format"];
 
-                    [weakSelf saveSettings];
+                    BlogSettingsChanges *changes = [BlogSettingsChanges new];
+                    changes.defaultPostFormat = status;
+                    [weakSelf saveSettingsWithChanges:changes];
                 }
             }
         }
@@ -948,10 +934,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     switch (row) {
         case SiteSettingsJetpackSecurity:
             [self showJetpackSettingsForBlog:self.blog];
-            break;
-
-        case SiteSettingsJetpackConnection:
-            [self showJetpackConnectionForBlog:self.blog];
             break;
     }
 }
@@ -1119,15 +1101,15 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 #pragma mark - Saving methods
 
-- (void)saveSettings
+- (void)saveSettingsWithChanges:(BlogSettingsChanges *)changes
 {
-    if (!self.blog.settings.hasChanges) {
+    if (changes.isEmpty) {
         return;
     }
 
     [self showActivityIndicator];
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    [blogService updateSettingsForBlog:self.blog success:^{
+    [blogService updateSettingsForBlog:self.blog changes:changes success:^{
         [self hideActivityIndicator];
         [NSNotificationCenter.defaultCenter postNotificationName:WPBlogSettingsUpdatedNotification object:nil];
     } failure:^(NSError *error) {
@@ -1186,25 +1168,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self.navigationController pushViewController:settings animated:YES];
 }
 
-- (void)showJetpackConnectionForBlog:(Blog *)blog
-{
-
-    NSParameterAssert(blog);
-
-    JetpackConnectionViewController *jetpackConnectionVC = [[JetpackConnectionViewController alloc] initWithBlog:blog];
-    jetpackConnectionVC.delegate = self;
-    [self.navigationController pushViewController:jetpackConnectionVC animated:YES];
-}
-
-#pragma mark - JetpackConnectionViewControllerDelegate
-
-- (void)jetpackDisconnectedForBlog:(Blog *)blog
-{
-    if (blog == self.blog) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
 #pragma mark - PostCategoriesViewControllerDelegate
 
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller
@@ -1216,7 +1179,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [WPAnalytics trackSettingsChange:@"site_settings"
                                fieldName:@"default_category"];
 
-        [self saveSettings];
+        BlogSettingsChanges *changes = [BlogSettingsChanges new];
+        changes.defaultCategoryID = category.categoryID;
+        [self saveSettingsWithChanges:changes];
     }
 }
 

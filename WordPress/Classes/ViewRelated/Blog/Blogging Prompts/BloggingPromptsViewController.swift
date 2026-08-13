@@ -18,7 +18,7 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
     }
 
     private lazy var bloggingPromptsService: BloggingPromptsService? = {
-        return BloggingPromptsService(blog: blog)
+        BloggingPromptsService(blog: blog)
     }()
 
     private var isLoading: Bool = false {
@@ -63,8 +63,10 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
 private extension BloggingPromptsViewController {
 
     func configureTableView() {
-        tableView.register(BloggingPromptTableViewCell.defaultNib,
-                           forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID)
+        tableView.register(
+            BloggingPromptTableViewCell.defaultNib,
+            forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID
+        )
 
         tableView.accessibilityIdentifier = "Blogging Prompts List"
         tableView.allowsSelection = FeatureFlag.bloggingPrompts.enabled
@@ -88,24 +90,30 @@ private extension BloggingPromptsViewController {
 
     func showNoResultsView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: view,
-                                     title: NoResults.emptyTitle,
-                                     image: NoResults.imageName)
+        configureAndDisplayNoResults(
+            on: view,
+            title: NoResults.emptyTitle,
+            image: NoResults.imageName
+        )
     }
 
     func showLoadingView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: view,
-                                     title: NoResults.loadingTitle,
-                                     accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayNoResults(
+            on: view,
+            title: NoResults.loadingTitle,
+            accessoryView: NoResultsViewController.loadingAccessoryView()
+        )
     }
 
     func showErrorView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: view,
-                                     title: NoResults.errorTitle,
-                                     subtitle: NoResults.errorSubtitle,
-                                     image: NoResults.imageName)
+        configureAndDisplayNoResults(
+            on: view,
+            title: NoResults.errorTitle,
+            subtitle: NoResults.errorSubtitle,
+            image: NoResults.imageName
+        )
     }
 
     func fetchPrompts() {
@@ -117,14 +125,17 @@ private extension BloggingPromptsViewController {
 
         isLoading = true
 
-        bloggingPromptsService.fetchListPrompts(success: { [weak self] prompts in
-            self?.isLoading = false
-            self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
-        }, failure: { [weak self] error in
-            DDLogError("Failed fetching blogging prompts: \(String(describing: error))")
-            self?.isLoading = false
-            self?.showErrorView()
-        })
+        bloggingPromptsService.fetchListPrompts(
+            success: { [weak self] prompts in
+                self?.isLoading = false
+                self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+            },
+            failure: { [weak self] error in
+                DDLogError("Failed fetching blogging prompts: \(String(describing: error))")
+                self?.isLoading = false
+                self?.showErrorView()
+            }
+        )
     }
 
     enum Strings {
@@ -132,10 +143,22 @@ private extension BloggingPromptsViewController {
     }
 
     enum NoResults {
-        static let loadingTitle = NSLocalizedString("Loading prompts...", comment: "Displayed while blogging prompts are being loaded.")
-        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading blogging prompts.")
-        static let errorSubtitle = NSLocalizedString("There was an error loading prompts.", comment: "Text displayed when there is a failure loading blogging prompts.")
-        static let emptyTitle = NSLocalizedString("No prompts yet", comment: "Title displayed when there are no blogging prompts to display.")
+        static let loadingTitle = NSLocalizedString(
+            "Loading prompts...",
+            comment: "Displayed while blogging prompts are being loaded."
+        )
+        static let errorTitle = NSLocalizedString(
+            "Oops",
+            comment: "Title for the view when there's an error loading blogging prompts."
+        )
+        static let errorSubtitle = NSLocalizedString(
+            "There was an error loading prompts.",
+            comment: "Text displayed when there is a failure loading blogging prompts."
+        )
+        static let emptyTitle = NSLocalizedString(
+            "No prompts yet",
+            comment: "Title displayed when there are no blogging prompts to display."
+        )
         static let imageName = "wp-illustration-empty-results"
     }
 }
@@ -145,12 +168,15 @@ private extension BloggingPromptsViewController {
 extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return prompts.count
+        prompts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BloggingPromptTableViewCell.defaultReuseID) as? BloggingPromptTableViewCell,
-              let prompt = prompts[safe: indexPath.row] else {
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: BloggingPromptTableViewCell.defaultReuseID)
+                as? BloggingPromptTableViewCell,
+            let prompt = prompts[safe: indexPath.row]
+        else {
             return UITableViewCell()
         }
 
@@ -161,16 +187,21 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard FeatureFlag.bloggingPrompts.enabled,
-              let blog,
-              let cell = tableView.cellForRow(at: indexPath) as? BloggingPromptTableViewCell,
-              let prompt = cell.prompt else {
+            let blog,
+            let cell = tableView.cellForRow(at: indexPath) as? BloggingPromptTableViewCell,
+            let prompt = cell.prompt
+        else {
             return
         }
 
-        let editor = EditPostViewController(blog: blog, prompt: prompt)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .bloggingPromptsListView
-        present(editor, animated: true)
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: self,
+            context: NewPostEditorContext(
+                prompt: prompt,
+                entryPoint: .bloggingPromptsListView
+            )
+        )
     }
 }
 
@@ -194,7 +225,8 @@ private extension BloggingPromptsViewController {
             switch self {
             case .all: return NSLocalizedString("All", comment: "Title of all Blogging Prompts filter.")
             case .answered: return NSLocalizedString("Answered", comment: "Title of answered Blogging Prompts filter.")
-            case .notAnswered: return NSLocalizedString("Not Answered", comment: "Title of unanswered Blogging Prompts filter.")
+            case .notAnswered:
+                return NSLocalizedString("Not Answered", comment: "Title of unanswered Blogging Prompts filter.")
             }
         }
     }
@@ -216,6 +248,6 @@ private extension BloggingPromptsViewController {
 
 extension BloggingPromptsViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
-        return "BloggingPromptsViewController"
+        "BloggingPromptsViewController"
     }
 }

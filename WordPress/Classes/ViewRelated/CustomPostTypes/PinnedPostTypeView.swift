@@ -92,6 +92,10 @@ struct PinnedPostType: Codable, Hashable {
 extension PinnedPostType {
     // TODO: Ideally use the post type details directly instead of PinnedPostType,
     // once the CPT infrastructure is more mature.
+    var isBuiltInPostOrPage: Bool {
+        slug == Self.posts.slug || slug == Self.pages.slug
+    }
+
     static let posts = PinnedPostType(slug: "post", name: "Posts", icon: nil)
     static let pages = PinnedPostType(slug: "page", name: "Pages", icon: nil)
 }
