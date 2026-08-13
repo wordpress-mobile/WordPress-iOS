@@ -18,13 +18,30 @@ public final class WordPressClientFactory: Sendable {
     /// routes differently — the proxy namespaces everything under `/sites/{id}/`. Caching on the
     /// blog alone kept serving a client whose cached API root no longer matched the transport its
     /// callers were reasoning about, so route lookups silently missed.
+    ///
+    /// The transport's credentials are part of the identity, not just which case it is: rotating
+    /// an application password or refreshing the site's REST API root changes where requests go
+    /// and how they authenticate while staying `.direct`, and a client built for the superseded
+    /// credentials would keep being served.
     private struct CacheKey: Hashable {
         let blogId: TaggedManagedObjectID<Blog>
-        let isProxied: Bool
+        let transport: Transport
+
+        /// The identity of a `WordPressSite.Transport`, which is not itself `Hashable`.
+        enum Transport: Hashable {
+            case direct(WordPressSite.ApplicationPasswordCredentials)
+            case dotComProxy(siteId: Int, oAuthToken: String)
+        }
 
         init(site: WordPressSite) {
             self.blogId = site.blogId
-            self.isProxied = if case .dotComProxy = site.transport { true } else { false }
+            self.transport =
+                switch site.transport {
+                case let .direct(credentials):
+                    .direct(credentials)
+                case let .dotComProxy(siteId, oAuthToken):
+                    .dotComProxy(siteId: siteId, oAuthToken: oAuthToken)
+                }
         }
     }
 
