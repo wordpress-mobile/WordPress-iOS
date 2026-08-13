@@ -10,7 +10,7 @@ open class SwitchTableViewCell: WPTableViewCell {
 
     @objc open var name: String {
         get {
-            return textLabel?.text ?? String()
+            textLabel?.text ?? String()
         }
         set {
             textLabel?.text = newValue
@@ -19,7 +19,7 @@ open class SwitchTableViewCell: WPTableViewCell {
 
     @objc open var on: Bool {
         get {
-            return flipSwitch.isOn
+            flipSwitch.isOn
         }
         set {
             flipSwitch.isOn = newValue

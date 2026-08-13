@@ -21,7 +21,10 @@ final class EditorConfigurationPluginsTests {
     }
 
     func tearDown() {
-        featureFlags.override(RemoteFeatureFlag.newGutenbergPlugins, withValue: RemoteFeatureFlag.newGutenbergPlugins.originalValue)
+        featureFlags.override(
+            RemoteFeatureFlag.newGutenbergPlugins,
+            withValue: RemoteFeatureFlag.newGutenbergPlugins.originalValue
+        )
     }
 
     @Test("Should disable plugins for non-Jetpack-connected sites without app password")
@@ -125,11 +128,12 @@ final class EditorConfigurationPluginsTests {
 
         let result = EditorConfiguration.shouldEnablePlugins(for: blog)
 
-        let expectedResult = RemoteFeatureFlag.newGutenbergPlugins.enabled() &&
-                           blog.isAccessibleThroughWPCom &&
-                           blog.isHostedAtWPcom
+        let expectedResult =
+            RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isAccessibleThroughWPCom && blog.isHostedAtWPcom
 
-        #expect(result == expectedResult,
-                "Should use RemoteFeatureFlag.newGutenbergPlugins.enabled() when not provided")
+        #expect(
+            result == expectedResult,
+            "Should use RemoteFeatureFlag.newGutenbergPlugins.enabled() when not provided"
+        )
     }
 }
