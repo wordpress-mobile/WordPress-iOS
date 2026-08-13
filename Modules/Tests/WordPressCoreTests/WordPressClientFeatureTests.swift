@@ -14,6 +14,33 @@ struct WordPressClientFeatureTests {
         #expect(WordPressClient.Feature.blockEditorSettings.stringValue == "block-editor-settings")
         #expect(WordPressClient.Feature.applicationPasswordExtras.stringValue == "application-password-extras")
         #expect(WordPressClient.Feature.plugins.stringValue == "plugins")
+        #expect(WordPressClient.Feature.editorAssets.stringValue == "editor-assets")
+    }
+
+    /// `editorAssets` reports whether the site can serve blocks provided by plugins, which is
+    /// the `editor-assets` route. `plugins` reports whether the plugin *management* API is
+    /// exposed — a different route that WP.com Simple sites don't have. Conflating the two
+    /// makes third-party blocks look unsupported on sites that support them perfectly well.
+    @Test
+    func editorAssetsIsDistinctFromPluginManagement() async throws {
+        let mockAPI = MockWordPressClientAPI()
+        mockAPI.mockRoutes = ["/wpcom/v2/editor-assets"]
+
+        let client = WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
+
+        #expect(try await client.supports(.editorAssets) == true)
+        #expect(try await client.supports(.plugins) == false)
+    }
+
+    /// WP.com sites expose the route under a site-namespaced path.
+    @Test
+    func editorAssetsAcceptsSiteNamespacedRoute() async throws {
+        let mockAPI = MockWordPressClientAPI()
+        mockAPI.mockRoutes = ["/wpcom/v2/sites/12345/editor-assets"]
+
+        let client = WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
+
+        #expect(try await client.supports(.editorAssets, forSiteId: 12345) == true)
     }
 }
 
