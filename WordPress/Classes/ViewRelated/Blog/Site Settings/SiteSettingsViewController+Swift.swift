@@ -267,7 +267,7 @@ extension SiteSettingsViewController {
         let footer = makeFooterView()
 
         var text = Strings.thirdPartyBlocksFooterEnabled
-        if case .unsupported = GutenbergSettings().resolveThirdPartyBlocks(for: self.blog) {
+        if GutenbergSettingsBridge.CapabilityValue(rawValue: self.thirdPartyBlocksCapabilityValue()) == .unsupported {
             text += "\n\n" + Strings.thirdPartyBlocksFooterUnsupported
         }
         footer.textLabel?.text = text

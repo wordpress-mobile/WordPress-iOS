@@ -86,8 +86,14 @@ extension GutenbergSettings {
 
         // Requires a WP.com Simple site, or an application password to authenticate all REST API
         // requests — including those originating from non-core blocks.
-        let applicationPassword = appPassword ?? (try? blog.getApplicationToken(using: keychain))
-        guard blog.isHostedAtWPcom || applicationPassword != nil else {
+        //
+        // The keychain lookup is a synchronous Security-framework call and this runs on the main
+        // thread while cells and footers are built, so it is deferred behind the WP.com check
+        // rather than resolved up front.
+        let hasApplicationPassword = {
+            (appPassword ?? (try? blog.getApplicationToken(using: keychain))) != nil
+        }
+        guard blog.isHostedAtWPcom || hasApplicationPassword() else {
             return .unsupported
         }
 
@@ -125,16 +131,37 @@ extension GutenbergSettingsBridge {
         }
     }
 
-    /// Whether the Site Settings row should be shown for the given blog.
-    @objc(isThirdPartyBlocksVisibleForBlog:)
-    public static func isThirdPartyBlocksVisible(for blog: Blog) -> Bool {
-        GutenbergSettings().resolveThirdPartyBlocks(for: blog).isVisibleInSiteSettings
+    /// The resolved third-party blocks capability, in a form Objective-C can hold onto.
+    ///
+    /// Resolving reads the keychain, so callers that ask more than once per pass — Site Settings
+    /// builds its sections, cell, and footer from it — should resolve once and pass the result to
+    /// the `...ForCapability:` accessors below.
+    @objc(ThirdPartyBlocksCapabilityValue)
+    public enum CapabilityValue: Int {
+        case hidden
+        case unsupported
+        case available
     }
 
-    /// Whether the Site Settings row should be interactive for the given blog. A visible but
-    /// non-interactive row means the site can't support the feature.
-    @objc(isThirdPartyBlocksSupportedForBlog:)
-    public static func isThirdPartyBlocksSupported(for blog: Blog) -> Bool {
-        GutenbergSettings().resolveThirdPartyBlocks(for: blog).isInteractive
+    @objc(thirdPartyBlocksCapabilityForBlog:)
+    public static func thirdPartyBlocksCapability(for blog: Blog) -> CapabilityValue {
+        switch GutenbergSettings().resolveThirdPartyBlocks(for: blog) {
+        case .hidden: return .hidden
+        case .unsupported: return .unsupported
+        case .available: return .available
+        }
+    }
+
+    /// Whether the Site Settings row should be shown.
+    @objc(isThirdPartyBlocksVisibleForCapability:)
+    public static func isThirdPartyBlocksVisible(for capability: CapabilityValue) -> Bool {
+        capability != .hidden
+    }
+
+    /// Whether the Site Settings row should be interactive. A visible but non-interactive row
+    /// means the site can't support the feature.
+    @objc(isThirdPartyBlocksSupportedForCapability:)
+    public static func isThirdPartyBlocksSupported(for capability: CapabilityValue) -> Bool {
+        capability == .available
     }
 }

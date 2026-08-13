@@ -87,6 +87,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 @property (nonatomic, strong) NSArray<NSNumber *> *tableSections;
 @property (nonatomic, strong) NSArray<NSNumber *> *writingSectionRows;
+/// Caches the resolved third-party blocks capability for one reload pass. Resolving it reads the
+/// keychain, and the sections, cells, and footers each ask for it while the table is being built.
+/// Cleared by `reloadSections` so the next pass picks up newly probed capabilities.
+@property (nonatomic, strong) NSNumber *cachedThirdPartyBlocksCapability;
 @end
 
 @implementation SiteSettingsViewController
@@ -143,6 +147,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 {
     [super viewDidAppear:animated];
 
+    self.cachedThirdPartyBlocksCapability = nil; // re-resolve against newly probed capabilities.
     [self.tableView reloadData];
 }
 
@@ -177,7 +182,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
         // Third-party blocks are gated behind their own remote flag, and the row is hidden
         // outright for sites that aren't offered the feature.
-        if ([GutenbergSettings isThirdPartyBlocksVisibleForBlog:self.blog]) {
+        if ([GutenbergSettings isThirdPartyBlocksVisibleForCapability:[self thirdPartyBlocksCapabilityValue]]) {
             [sections addObject:@(SiteSettingsSectionThirdPartyBlocks)];
         }
     }
@@ -559,7 +564,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     // Use the property, not the ivar: the cell is created lazily, so on the first pass the ivar
     // is still nil and assigning to it is silently dropped — leaving the row with the disabled
     // state its factory applies.
-    BOOL isSupported = [GutenbergSettings isThirdPartyBlocksSupportedForBlog:self.blog];
+    BOOL isSupported = [GutenbergSettings isThirdPartyBlocksSupportedForCapability:[self thirdPartyBlocksCapabilityValue]];
     self.thirdPartyBlocksSelectorCell.isEnabled = isSupported;
     [self.thirdPartyBlocksSelectorCell setOn:isSupported && [GutenbergSettings isThirdPartyBlocksEnabledForBlog:self.blog]];
 }
@@ -1057,9 +1062,18 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self refreshData];
 }
 
+- (NSInteger)thirdPartyBlocksCapabilityValue
+{
+    if (!self.cachedThirdPartyBlocksCapability) {
+        self.cachedThirdPartyBlocksCapability = @([GutenbergSettings thirdPartyBlocksCapabilityForBlog:self.blog]);
+    }
+    return self.cachedThirdPartyBlocksCapability.integerValue;
+}
+
 - (void)reloadSections
 {
     self.tableSections = nil; // force the tableSections to be repopulated.
+    self.cachedThirdPartyBlocksCapability = nil; // re-resolve against newly probed capabilities.
     [self.tableView reloadData];
 }
 
@@ -1071,6 +1085,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [service syncSettingsForBlog:self.blog success:^{
         [weakSelf.refreshControl endRefreshing];
         self.tableSections = nil; // force the tableSections to be repopulated.
+        self.cachedThirdPartyBlocksCapability = nil; // re-resolve against newly probed capabilities.
         [weakSelf.tableView reloadData];
     } failure:^(NSError * __unused error) {
         [weakSelf.refreshControl endRefreshing];
