@@ -26,6 +26,13 @@ class GutenbergSettings {
             let url = urlString(fromBlogURL: url)
             return "com.wordpress.gutenberg-third-party-blocks-" + url
         }
+        /// Keyed on the blog rather than its URL, so the record survives a site changing address.
+        ///
+        /// Reading and writing must agree exactly: `hasProbedSupport(for:blog:)` tells "the server
+        /// said no" from "we never asked" purely by whether this key is present.
+        static func supports(_ feature: WordPressClient.Feature, forBlog blog: Blog) -> String {
+            "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+        }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
@@ -292,8 +299,7 @@ class GutenbergSettings {
     ///   - blog: The blog to set theme styles setting for
     @discardableResult
     func setSupports(_ feature: WordPressClient.Feature, _ newValue: Bool, for blog: Blog) -> Self {
-        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
-        database.set(newValue, forKey: key)
+        database.set(newValue, forKey: Key.supports(feature, forBlog: blog))
         return self
     }
 
@@ -302,7 +308,7 @@ class GutenbergSettings {
     /// - Parameter blog: The blog to check the given API feature for
     /// - Returns: true if the feature is available, false if the server hasn't been queried for support yet, or if the server doesn't support it.
     func getSupports(_ feature: WordPressClient.Feature, for blog: Blog) -> Bool {
-        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+        let key = Key.supports(feature, forBlog: blog)
 
         if database.object(forKey: key) != nil {
             return database.bool(forKey: key)
@@ -322,8 +328,7 @@ class GutenbergSettings {
     ///   - blog: The blog to check the given API feature for
     /// - Returns: true if a capability probe has recorded a result for this feature and blog
     func hasProbedSupport(for feature: WordPressClient.Feature, blog: Blog) -> Bool {
-        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
-        return database.object(forKey: key) != nil
+        database.object(forKey: Key.supports(feature, forBlog: blog)) != nil
     }
 }
 
