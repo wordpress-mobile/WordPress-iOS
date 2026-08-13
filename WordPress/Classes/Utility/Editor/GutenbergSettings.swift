@@ -22,6 +22,10 @@ class GutenbergSettings {
             let url = urlString(fromBlogURL: url)
             return "com.wordpress.gutenberg-theme-styles-" + url
         }
+        static func thirdPartyBlocksEnabled(forBlogURL url: String?) -> String {
+            let url = urlString(fromBlogURL: url)
+            return "com.wordpress.gutenberg-third-party-blocks-" + url
+        }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
@@ -258,6 +262,29 @@ class GutenbergSettings {
         database.set(isEnabled, forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
     }
 
+    // MARK: - Third-Party Blocks
+
+    /// Returns whether third-party blocks are enabled for the given blog.
+    ///
+    /// This is the user's per-site preference only. It is stored locally and is never
+    /// posted to the server. Whether the preference is honored also depends on the
+    /// remote feature flag and on the site advertising the capability.
+    ///
+    /// - Parameter blog: The blog to check the third-party blocks setting for
+    /// - Returns: true if the user opted in, false otherwise (default: false)
+    func isThirdPartyBlocksEnabled(for blog: Blog) -> Bool {
+        database.bool(forKey: Key.thirdPartyBlocksEnabled(forBlogURL: blog.url))
+    }
+
+    /// Sets whether third-party blocks are enabled for the given blog.
+    ///
+    /// - Parameters:
+    ///   - isEnabled: Whether to enable third-party blocks
+    ///   - blog: The blog to set the third-party blocks setting for
+    func setThirdPartyBlocksEnabled(_ isEnabled: Bool, for blog: Blog) {
+        database.set(isEnabled, forKey: Key.thirdPartyBlocksEnabled(forBlogURL: blog.url))
+    }
+
     /// Sets whether the given API feature is available for the given blog. This is unrelated to whether it's *enabled* for that blog.
     ///
     /// - Parameters:
@@ -282,6 +309,21 @@ class GutenbergSettings {
         }
 
         return false
+    }
+
+    /// Returns whether the server has been queried for support of the given API feature on the given blog.
+    ///
+    /// `getSupports(_:for:)` reports `false` both for "the server said no" and for "we never
+    /// asked". Callers that need to tell those apart — to avoid presenting an unprobed site as
+    /// unsupported — should check this first.
+    ///
+    /// - Parameters:
+    ///   - feature: The API feature to check
+    ///   - blog: The blog to check the given API feature for
+    /// - Returns: true if a capability probe has recorded a result for this feature and blog
+    func hasProbedSupport(for feature: WordPressClient.Feature, blog: Blog) -> Bool {
+        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+        return database.object(forKey: key) != nil
     }
 }
 
@@ -310,6 +352,7 @@ public class GutenbergSettingsBridge: NSObject {
     @objc(setThemeStylesEnabled:forBlog:)
     public static func setThemeStylesEnabled(_ isEnabled: Bool, for blog: Blog) {
         GutenbergSettings().setThemeStylesEnabled(isEnabled, for: blog)
+        invalidatePrefetchedEditor(for: blog)
     }
 
     @objc(isThemeStylesSupportedForBlog:)
