@@ -257,6 +257,33 @@ final class EditorConfigurationPluginsTests {
         )
     }
 
+    @Test("shouldEnablePlugins resolves the application password with the injected keychain")
+    func shouldEnablePluginsUsesInjectedKeychain() throws {
+        let blog = makeSelfHostedBlog()
+        let settings = settings
+        settings.setSupports(.editorAssets, true, for: blog)
+        settings.setThirdPartyBlocksEnabled(true, for: blog)
+
+        // The site is eligible only by way of an application password, and that password exists
+        // solely in the injected keychain. Without it the lookup falls back to the device
+        // keychain, finds nothing, and the site resolves as unsupported.
+        let keychain = TestKeychain()
+        try keychain.setPassword(
+            for: try blog.getUsername(),
+            to: "app-password",
+            serviceName: try blog.getUrlString()
+        )
+
+        #expect(
+            EditorConfiguration.shouldEnablePlugins(
+                for: blog,
+                settings: settings,
+                keychain: keychain,
+                isFeatureFlagEnabled: true
+            ) == true
+        )
+    }
+
     @Test("Preference survives the remote flag being turned off and back on")
     func preferenceSurvivesFlagCycle() throws {
         let blog = makeSimpleBlog()

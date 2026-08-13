@@ -53,7 +53,9 @@ extension EditorConfiguration {
         .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
         .setAuthHeader(authHeader)
         .setShouldUseThemeStyles(GutenbergSettings().isThemeStylesEnabled(for: blog))
-        .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
+        .setShouldUsePlugins(
+            Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword, keychain: keychain)
+        )
         .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
         .setEnableNetworkLogging(ExtensiveLogging.enabled)
         .setNetworkFallbackMode(.automatic)
@@ -80,12 +82,14 @@ extension EditorConfiguration {
         for blog: Blog,
         appPassword: String? = nil,
         settings: GutenbergSettings = GutenbergSettings(),
+        keychain: KeychainAccessible = AppKeychain(),
         isFeatureFlagEnabled: Bool = RemoteFeatureFlag.newGutenbergPlugins.enabled()
     ) -> Bool {
         settings
             .resolveThirdPartyBlocks(
                 for: blog,
                 appPassword: appPassword,
+                keychain: keychain,
                 isFeatureFlagEnabled: isFeatureFlagEnabled
             )
             .shouldApplyInEditor
