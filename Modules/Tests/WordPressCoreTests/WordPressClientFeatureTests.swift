@@ -91,9 +91,9 @@ struct WordPressClientCachingTests {
 
         let results = try await [result1, result2, result3, result4]
 
-        #expect(results[0] == true)  // blockEditorSettings
-        #expect(results[1] == true)  // blockTheme
-        #expect(results[2] == true)  // plugins
+        #expect(results[0] == true) // blockEditorSettings
+        #expect(results[1] == true) // blockTheme
+        #expect(results[2] == true) // plugins
         #expect(results[3] == false) // applicationPasswordExtras (not in routes)
 
         // Despite 4 concurrent calls, API should only be called once

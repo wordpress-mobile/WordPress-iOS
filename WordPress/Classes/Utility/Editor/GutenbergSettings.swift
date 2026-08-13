@@ -26,11 +26,11 @@ class GutenbergSettings {
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
         private static func urlString(fromBlogURL url: String?) -> String {
-            return (url ?? "")
-            // New sites will add a slash at the end of URL.
-            // This is removed when the URL is refreshed from remote.
-            // Removing trailing '/' in case there is one for consistency.
-            .removingTrailingCharacterIfExists("/")
+            (url ?? "")
+                // New sites will add a slash at the end of URL.
+                // This is removed when the URL is refreshed from remote.
+                // Removing trailing '/' in case there is one for consistency.
+                .removingTrailingCharacterIfExists("/")
         }
     }
 
@@ -91,7 +91,8 @@ class GutenbergSettings {
         let blogURLs: [String?] = coreDataStack.performQuery { context in
             guard let blogs = try? BlogQuery().blogs(in: context) else { return [] }
 
-            return blogs
+            return
+                blogs
                 .filter { $0.editor == .aztec }
                 .map { $0.url }
         }
@@ -100,13 +101,17 @@ class GutenbergSettings {
             database.set(true, forKey: Key.enabledOnce(forBlogURL: blogURL))
         }
         let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
-        editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
-            WPAnalytics.refreshMetadata()
-        })
+        editorSettingsService.migrateGlobalSettingToRemote(
+            isGutenbergEnabled: true,
+            overrideRemote: true,
+            onSuccess: {
+                WPAnalytics.refreshMetadata()
+            }
+        )
     }
 
     func shouldPresentInformativeDialog(for blog: Blog) -> Bool {
-        return database.bool(forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
+        database.bool(forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
     }
 
     func setShowPhase2Dialog(_ showDialog: Bool, forBlogURL url: String?) {
@@ -129,12 +134,16 @@ class GutenbergSettings {
         let mobileEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
         blog.mobileEditor = mobileEditor
 
-        coreDataStack.performAndSave({ context in
-            let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog
-            blogInContext?.mobileEditor = mobileEditor
-        }, completion: {
-            WPAnalytics.refreshMetadata()
-        }, on: .main)
+        coreDataStack.performAndSave(
+            { context in
+                let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog
+                blogInContext?.mobileEditor = mobileEditor
+            },
+            completion: {
+                WPAnalytics.refreshMetadata()
+            },
+            on: .main
+        )
     }
 
     private func shouldUpdateSettings(enabling isEnablingGutenberg: Bool, for blog: Blog) -> Bool {
@@ -162,12 +171,12 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return database.object(forKey: Key.enabledOnce(forBlogURL: blog.url)) != nil
+        database.object(forKey: Key.enabledOnce(forBlogURL: blog.url)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return !wasGutenbergEnabledOnce(for: post.blog)
+        !wasGutenbergEnabledOnce(for: post.blog)
     }
 
     func willShowDialog(for blog: Blog) {
@@ -196,7 +205,7 @@ class GutenbergSettings {
     // MARK: - Gutenberg Choice Logic
 
     func isSimpleWPComSite(_ blog: Blog) -> Bool {
-        return !blog.isAtomic && blog.isHostedAtWPcom
+        !blog.isAtomic && blog.isHostedAtWPcom
     }
 
     /// Call this method to know if Gutenberg must be used for the specified post.
@@ -290,12 +299,12 @@ public class GutenbergSettingsBridge: NSObject {
 
     @objc(isSimpleWPComSite:)
     public static func isSimpleWPComSite(_ blog: Blog) -> Bool {
-        return GutenbergSettings().isSimpleWPComSite(blog)
+        GutenbergSettings().isSimpleWPComSite(blog)
     }
 
     @objc(isThemeStylesEnabledForBlog:)
     public static func isThemeStylesEnabled(for blog: Blog) -> Bool {
-        return GutenbergSettings().isThemeStylesEnabled(for: blog)
+        GutenbergSettings().isThemeStylesEnabled(for: blog)
     }
 
     @objc(setThemeStylesEnabled:forBlog:)
