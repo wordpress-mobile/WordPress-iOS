@@ -18,4 +18,11 @@ extension NSString {
     public func wpkit_makePlainText() -> String {
         makePlainText()
     }
+
+    /// Converts an HTML excerpt into single-line plain text, turning `<br>`
+    /// tags into spaces so adjacent words don't run together.
+    @objc
+    public func wpkit_makeSingleLinePlainText() -> String {
+        GutenbergExcerptGenerator.singleLinePlainText(from: (self as String))
+    }
 }
