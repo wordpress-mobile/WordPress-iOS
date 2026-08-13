@@ -292,12 +292,12 @@ final class EditorDependencyManager: Sendable {
 
         let hasBlockTheme = try await client.supports(.blockTheme, forSiteId: siteId)
         let hasBlockSettings = try await client.supports(.blockEditorSettings, forSiteId: siteId)
-        let supportsPlugins = try await client.supports(.plugins, forSiteId: siteId)
+        let supportsEditorAssets = try await client.supports(.editorAssets, forSiteId: siteId)
 
         GutenbergSettings()
             .setSupports(.blockEditorSettings, hasBlockSettings, for: blog)
             .setSupports(.blockTheme, hasBlockTheme, for: blog)
-            .setSupports(.plugins, supportsPlugins, for: blog)
+            .setSupports(.editorAssets, supportsEditorAssets, for: blog)
     }
 
     /// Query the server for its editor capabilities, and update the local editor settings store with the result.
