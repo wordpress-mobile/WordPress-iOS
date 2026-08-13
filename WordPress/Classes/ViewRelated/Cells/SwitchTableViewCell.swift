@@ -26,6 +26,29 @@ open class SwitchTableViewCell: WPTableViewCell {
         }
     }
 
+    /// Whether the row can be toggled.
+    ///
+    /// Disabling the `flipSwitch` alone isn't enough: the whole row carries a tap gesture that
+    /// toggles the value, so the switch would still change when the row is tapped. This also
+    /// dims the label, and re-applies that dimming on layout — `WPStyleGuide.configureTableViewCell`
+    /// calls `sizeToFit()`, which restores the label's default color.
+    @objc open var isEnabled: Bool = true {
+        didSet {
+            flipSwitch.isEnabled = isEnabled
+            tapGestureRecognizer.isEnabled = isEnabled
+            applyLabelColor()
+        }
+    }
+
+    private func applyLabelColor() {
+        textLabel?.textColor = isEnabled ? .label : .secondaryLabel
+    }
+
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        applyLabelColor()
+    }
+
     // MARK: - Initializers
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
