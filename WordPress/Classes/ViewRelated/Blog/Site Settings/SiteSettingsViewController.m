@@ -57,6 +57,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 #pragma mark - Writing Section
 @property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
 @property (nonatomic, strong) SwitchTableViewCell  *themeStylesSelectorCell;
+@property (nonatomic, strong) SwitchTableViewCell  *thirdPartyBlocksSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *customTaxonomiesCell;
@@ -173,6 +174,12 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     // Only show theme styles toggle when GutenbergKit is enabled
     if ([RemoteFeature enabled:RemoteFeatureFlagNewGutenberg]) {
         [sections addObject:@(SiteSettingsSectionThemeStyles)];
+
+        // Third-party blocks are gated behind their own remote flag, and the row is hidden
+        // outright for sites that aren't offered the feature.
+        if ([GutenbergSettings isThirdPartyBlocksVisibleForBlog:self.blog]) {
+            [sections addObject:@(SiteSettingsSectionThirdPartyBlocks)];
+        }
     }
 
     if ([self.blog supports:BlogFeatureWpComRESTAPI] && self.blog.isAdmin) {
@@ -256,6 +263,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             return 1;
         }
         case SiteSettingsSectionThemeStyles:
+        {
+            return 1;
+        }
+        case SiteSettingsSectionThirdPartyBlocks:
         {
             return 1;
         }
@@ -359,12 +370,29 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             [GutenbergSettings setThemeStylesEnabled:value forBlog:blog];
         };
 
-        // Default to greyed-out, only make the control interactive if theme styles are supported
-        _themeStylesSelectorCell.flipSwitch.enabled = false;
-        _themeStylesSelectorCell.textLabel.textColor = UIColor.lightGrayColor;
+        // Default to disabled, only make the control interactive if theme styles are supported
+        _themeStylesSelectorCell.isEnabled = false;
         [self.themeStylesSelectorCell setOn:false];
     }
     return _themeStylesSelectorCell;
+}
+
+- (SwitchTableViewCell *)thirdPartyBlocksSelectorCell
+{
+    if (!_thirdPartyBlocksSelectorCell) {
+        _thirdPartyBlocksSelectorCell = [SwitchTableViewCell new];
+        _thirdPartyBlocksSelectorCell.name = NSLocalizedString(@"Use third-party blocks (beta)", @"Option to load blocks provided by plugins installed on the site");
+        _thirdPartyBlocksSelectorCell.flipSwitch.accessibilityIdentifier = @"useThirdPartyBlocksSwitch";
+        __weak Blog *blog = self.blog;
+        _thirdPartyBlocksSelectorCell.onChange = ^(BOOL value){
+            [GutenbergSettings setThirdPartyBlocksEnabled:value forBlog:blog];
+        };
+
+        // Default to disabled, only make the control interactive if the site supports the feature
+        _thirdPartyBlocksSelectorCell.isEnabled = false;
+        [self.thirdPartyBlocksSelectorCell setOn:false];
+    }
+    return _thirdPartyBlocksSelectorCell;
 }
 
 - (SettingTableViewCell *)defaultCategoryCell
@@ -521,11 +549,19 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)configureThemeStylesSelectorCell
 {
-    if ([GutenbergSettings isThemeStylesSupportedForBlog: self.blog]){
-        _themeStylesSelectorCell.flipSwitch.enabled = true;
-        _themeStylesSelectorCell.textLabel.textColor = UIColor.labelColor;
-        [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
-    }
+    BOOL isSupported = [GutenbergSettings isThemeStylesSupportedForBlog:self.blog];
+    self.themeStylesSelectorCell.isEnabled = isSupported;
+    [self.themeStylesSelectorCell setOn:isSupported && [GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+}
+
+- (void)configureThirdPartyBlocksSelectorCell
+{
+    // Use the property, not the ivar: the cell is created lazily, so on the first pass the ivar
+    // is still nil and assigning to it is silently dropped — leaving the row with the disabled
+    // state its factory applies.
+    BOOL isSupported = [GutenbergSettings isThirdPartyBlocksSupportedForBlog:self.blog];
+    self.thirdPartyBlocksSelectorCell.isEnabled = isSupported;
+    [self.thirdPartyBlocksSelectorCell setOn:isSupported && [GutenbergSettings isThirdPartyBlocksEnabledForBlog:self.blog]];
 }
 
 - (void)configureDefaultCategoryCell
@@ -680,6 +716,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             [self configureThemeStylesSelectorCell];
             return self.themeStylesSelectorCell;
 
+        case SiteSettingsSectionThirdPartyBlocks:
+            [self configureThirdPartyBlocksSelectorCell];
+            return self.thirdPartyBlocksSelectorCell;
+
         case SiteSettingsSectionWriting:
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
 
@@ -753,6 +793,14 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             }
             break;
 
+        case SiteSettingsSectionThirdPartyBlocks:
+            // Only show "Editor" header if no earlier editor section already carries it
+            if (![self.tableSections containsObject:@(SiteSettingsSectionBlockEditor)]
+                && ![self.tableSections containsObject:@(SiteSettingsSectionThemeStyles)]) {
+                headingTitle = NSLocalizedString(@"Editor", @"Title for the editor section in site settings screen");
+            }
+            break;
+
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
             break;
@@ -787,6 +835,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
         case SiteSettingsSectionThemeStyles:
             footerView = [self getThemeStylesSectionFooterView];
+            break;
+
+        case SiteSettingsSectionThirdPartyBlocks:
+            footerView = [self getThirdPartyBlocksSectionFooterView];
             break;
 
         case SiteSettingsSectionTraffic:
@@ -1003,6 +1055,12 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (IBAction)refreshTriggered:(id)sender
 {
     [self refreshData];
+}
+
+- (void)reloadSections
+{
+    self.tableSections = nil; // force the tableSections to be repopulated.
+    [self.tableView reloadData];
 }
 
 - (void)refreshData

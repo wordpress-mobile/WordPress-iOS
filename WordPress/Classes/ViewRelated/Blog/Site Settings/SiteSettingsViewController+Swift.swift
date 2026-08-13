@@ -92,7 +92,16 @@ extension SiteSettingsViewController {
             return
         }
 
-        EditorDependencyManager.shared.fetchEditorCapabilities(for: self.blog)
+        // The probe is asynchronous, and the editor rows are built from its results. Without
+        // reloading when it lands, the rows keep whatever state they were built with — which,
+        // on first load, is before any capability is known.
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+
+            try? await EditorDependencyManager.shared.fetchEditorCapabilities(for: self.blog)
+
+            self.reloadSections()
+        }
     }
 
     // MARK: - Timezone
@@ -241,13 +250,27 @@ extension SiteSettingsViewController {
     public func themeStylesSectionFooterView() -> UIView {
         let footer = makeFooterView()
         let settings = GutenbergSettings()
+
+        var text = Strings.themeStylesFooterEnabled
         if !settings.getSupports(.blockTheme, for: self.blog) {
-            footer.textLabel?.text = Strings.themeStylesFooterBlockThemeSuggested
+            text += "\n\n" + Strings.themeStylesFooterBlockThemeSuggested
         } else if !settings.getSupports(.blockEditorSettings, for: self.blog) {
-            footer.textLabel?.text = Strings.themeStylesFooterGutenbergRequired
-        } else {
-            footer.textLabel?.text = Strings.themeStylesFooterEnabled
+            text += "\n\n" + Strings.themeStylesFooterGutenbergRequired
         }
+        footer.textLabel?.text = text
+
+        return footer
+    }
+
+    @objc(getThirdPartyBlocksSectionFooterView)
+    public func thirdPartyBlocksSectionFooterView() -> UIView {
+        let footer = makeFooterView()
+
+        var text = Strings.thirdPartyBlocksFooterEnabled
+        if case .unsupported = GutenbergSettings().resolveThirdPartyBlocks(for: self.blog) {
+            text += "\n\n" + Strings.thirdPartyBlocksFooterUnsupported
+        }
+        footer.textLabel?.text = text
 
         return footer
     }
@@ -555,6 +578,19 @@ private extension SiteSettingsViewController {
             "siteSettings.themeStyles.footer.enabled",
             value: "Make the block editor look like your theme.",
             comment: "Explanation for the option to enable theme styles when the feature is available"
+        )
+
+        static let thirdPartyBlocksFooterEnabled = NSLocalizedString(
+            "siteSettings.thirdPartyBlocks.footer.enabled",
+            value: "Load third-party blocks from plugins installed on your site.",
+            comment: "Explanation for the option to load blocks provided by plugins installed on the site"
+        )
+
+        static let thirdPartyBlocksFooterUnsupported = NSLocalizedString(
+            "siteSettings.thirdPartyBlocks.footer.unsupported",
+            value: "Install the Jetpack plugin on your site to activate third-party block support.",
+            comment:
+                "Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature"
         )
     }
 }
