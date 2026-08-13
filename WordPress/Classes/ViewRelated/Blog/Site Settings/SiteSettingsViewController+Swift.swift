@@ -569,7 +569,7 @@ private extension SiteSettingsViewController {
 
         static let themeStylesFooterGutenbergRequired = NSLocalizedString(
             "siteSettings.themeStyles.footer.gutenbergRequired",
-            value: "Install the Gutenberg Plugin on your site to activate theme style support.",
+            value: "Install the Gutenberg plugin on your site to activate theme style support.",
             comment:
                 "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin"
         )
