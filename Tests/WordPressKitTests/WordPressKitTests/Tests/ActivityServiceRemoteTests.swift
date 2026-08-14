@@ -195,6 +195,30 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
+    func testGetActivityWithNotGroup() {
+        let expect = expectation(description: "Get activity for site success when calling with notGroup")
+
+        stubRemoteResponse(
+            "not_group%5B%5D=rewind&not_group%5B%5D=scan&number=20&page=1",
+            filename: getActivitySuccessOneMockFilename,
+            contentType: .ApplicationJSON
+        )
+        remote.getActivityForSite(
+            siteID,
+            count: 20,
+            notGroup: ["rewind", "scan"],
+            success: { _, _ in
+                expect.fulfill()
+            },
+            failure: { _ in
+                XCTFail("This callback shouldn't get called")
+                expect.fulfill()
+            }
+        )
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
     func testGetActivityWithBadAuthFails() {
         let expect = expectation(description: "Get activity with bad auth failure")
 
@@ -331,6 +355,30 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
             }
         )
 
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetActivityGroupsWithNotGroup() {
+        let expect = expectation(
+            description: "Get activity groups for site success when calling with notGroup"
+        )
+
+        stubRemoteResponse(
+            "not_group%5B%5D=rewind&not_group%5B%5D=scan",
+            filename: getActivityGroupsSuccessMockFilename,
+            contentType: .ApplicationJSON
+        )
+        remote.getActivityGroupsForSite(
+            siteID,
+            notGroup: ["rewind", "scan"],
+            success: { _ in
+                expect.fulfill()
+            },
+            failure: { _ in
+                XCTFail("This callback shouldn't get called")
+                expect.fulfill()
+            }
+        )
         waitForExpectations(timeout: timeout, handler: nil)
     }
 

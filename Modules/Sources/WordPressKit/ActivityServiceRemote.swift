@@ -23,6 +23,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     ///     - after: Only activies after the given Date will be returned
     ///     - before: Only activies before the given Date will be returned
     ///     - group: Array of strings of activity types, eg. post, attachment, user
+    ///     - notGroup: Array of strings of activity types to exclude, eg. rewind, scan
     ///     - success: Closure to be executed on success
     ///     - failure: Closure to be executed on error.
     ///
@@ -35,6 +36,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         after: Date? = nil,
         before: Date? = nil,
         group: [String] = [],
+        notGroup: [String] = [],
         rewindable: Bool? = nil,
         searchText: String? = nil,
         success: @escaping (_ activities: [Activity], _ hasMore: Bool) -> Void,
@@ -46,6 +48,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         }
 
         path?.queryItems = group.map { URLQueryItem(name: "group[]", value: $0) }
+        path?.queryItems?.append(contentsOf: notGroup.map { URLQueryItem(name: "not_group[]", value: $0) })
 
         let pageNumber = (offset / count) + 1
         path?.queryItems?.append(URLQueryItem(name: "number", value: "\(count)"))
@@ -94,6 +97,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     ///     - siteID: The target site's ID.
     ///     - after: Only activity groups after the given Date will be returned.
     ///     - before: Only activity groups before the given Date will be returned.
+    ///     - notGroup: Array of strings of activity groups to exclude, eg. rewind, scan
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on error.
     ///
@@ -103,12 +107,17 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         _ siteID: Int,
         after: Date? = nil,
         before: Date? = nil,
+        notGroup: [String] = [],
         success: @escaping (_ groups: [ActivityGroup]) -> Void,
         failure: @escaping (Error) -> Void
     ) {
         let endpoint = "sites/\(siteID)/activity/count/group"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
         var parameters: [String: AnyObject] = [:]
+
+        if !notGroup.isEmpty {
+            parameters["not_group"] = notGroup as AnyObject
+        }
 
         if let after, let before, let lastSecondOfBeforeDay = before.endOfDay() {
             parameters["after"] = formatter.string(from: after) as AnyObject
