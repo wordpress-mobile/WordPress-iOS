@@ -83,8 +83,13 @@ final class ActivityLogsViewModel: ObservableObject {
 
     func fetchActivityGroups(after: Date? = nil, before: Date? = nil) async throws -> [WordPressKit.ActivityGroup] {
         guard let siteID = blog.dotComID?.intValue,
-              let api = blog.wordPressComRestApi else {
-            throw NSError(domain: "ActivityLogs", code: 0, userInfo: [NSLocalizedDescriptionKey: "Site ID or API not available"])
+            let api = blog.wordPressComRestApi
+        else {
+            throw NSError(
+                domain: "ActivityLogs",
+                code: 0,
+                userInfo: [NSLocalizedDescriptionKey: "Site ID or API not available"]
+            )
         }
 
         let service = ActivityServiceRemote(wordPressComRestApi: api)
@@ -96,11 +101,19 @@ final class ActivityLogsViewModel: ObservableObject {
         return groups.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
     }
 
-    private func makeResponse(searchText: String?, parameters: GetActivityLogsParameters) async throws -> ActivityLogsPaginatedResponse {
+    private func makeResponse(
+        searchText: String?,
+        parameters: GetActivityLogsParameters
+    ) async throws -> ActivityLogsPaginatedResponse {
         try await ActivityLogsPaginatedResponse { [blog, isBackupMode] offset in
             guard let siteID = blog.dotComID?.intValue,
-                  let api = blog.wordPressComRestApi else {
-                throw NSError(domain: "ActivityLogs", code: 0, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
+                let api = blog.wordPressComRestApi
+            else {
+                throw NSError(
+                    domain: "ActivityLogs",
+                    code: 0,
+                    userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic]
+                )
             }
             let service = ActivityServiceRemote(wordPressComRestApi: api)
             let offset = offset ?? 0
@@ -159,8 +172,15 @@ struct GetActivityLogsParameters: Hashable {
 }
 
 private extension ActivityServiceRemote {
-    func getActivities(siteID: Int, offset: Int, pageSize: Int, searchText: String? = nil, parameters: GetActivityLogsParameters = .init(), rewindable: Bool? = nil) async throws -> ([Activity], hasMore: Bool) {
-        return try await withCheckedThrowingContinuation { continuation in
+    func getActivities(
+        siteID: Int,
+        offset: Int,
+        pageSize: Int,
+        searchText: String? = nil,
+        parameters: GetActivityLogsParameters = .init(),
+        rewindable: Bool? = nil
+    ) async throws -> ([Activity], hasMore: Bool) {
+        try await withCheckedThrowingContinuation { continuation in
             getActivityForSite(
                 siteID,
                 offset: offset,
@@ -178,7 +198,11 @@ private extension ActivityServiceRemote {
         }
     }
 
-    func getActivityGroups(siteID: Int, after: Date? = nil, before: Date? = nil) async throws -> [WordPressKit.ActivityGroup] {
+    func getActivityGroups(
+        siteID: Int,
+        after: Date? = nil,
+        before: Date? = nil
+    ) async throws -> [WordPressKit.ActivityGroup] {
         try await withCheckedThrowingContinuation { continuation in
             getActivityGroupsForSite(
                 siteID,

@@ -51,8 +51,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         path?.queryItems?.append(URLQueryItem(name: "number", value: "\(count)"))
         path?.queryItems?.append(URLQueryItem(name: "page", value: "\(pageNumber)"))
 
-        if let after, let before,
-           let lastSecondOfBeforeDay = before.endOfDay() {
+        if let after, let before, let lastSecondOfBeforeDay = before.endOfDay() {
             path?.queryItems?.append(URLQueryItem(name: "after", value: formatter.string(from: after)))
             path?.queryItems?.append(URLQueryItem(name: "before", value: formatter.string(from: lastSecondOfBeforeDay)))
         } else if let on = after ?? before {
@@ -68,22 +67,25 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
 
         let finalPath = self.path(forEndpoint: endpoint, withVersion: ._2_0)
 
-        wordPressComRESTAPI.get(finalPath,
-                                parameters: nil,
-                                success: { response, _ in
-                                    do {
-                                        let (activities, totalItems) = try self.mapActivitiesResponse(response)
-                                        let hasMore = totalItems > pageNumber * (count + 1)
-                                        success(activities, hasMore)
-                                    } catch {
-                                        WPKitLogError("Error parsing activity response for site \(siteID)")
-                                        WPKitLogError("\(error)")
-                                        WPKitLogDebug("Full response: \(response)")
-                                        failure(error)
-                                    }
-                                }, failure: { error, _ in
-                                    failure(error)
-                                })
+        wordPressComRESTAPI.get(
+            finalPath,
+            parameters: nil,
+            success: { response, _ in
+                do {
+                    let (activities, totalItems) = try self.mapActivitiesResponse(response)
+                    let hasMore = totalItems > pageNumber * (count + 1)
+                    success(activities, hasMore)
+                } catch {
+                    WPKitLogError("Error parsing activity response for site \(siteID)")
+                    WPKitLogError("\(error)")
+                    WPKitLogDebug("Full response: \(response)")
+                    failure(error)
+                }
+            },
+            failure: { error, _ in
+                failure(error)
+            }
+        )
     }
 
     /// Retrieves activity groups associated with a site.
@@ -97,38 +99,42 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of available activity groups for a site.
     ///
-    open func getActivityGroupsForSite(_ siteID: Int,
-                                       after: Date? = nil,
-                                       before: Date? = nil,
-                                       success: @escaping (_ groups: [ActivityGroup]) -> Void,
-                                       failure: @escaping (Error) -> Void) {
+    open func getActivityGroupsForSite(
+        _ siteID: Int,
+        after: Date? = nil,
+        before: Date? = nil,
+        success: @escaping (_ groups: [ActivityGroup]) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
         let endpoint = "sites/\(siteID)/activity/count/group"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
         var parameters: [String: AnyObject] = [:]
 
-        if let after, let before,
-           let lastSecondOfBeforeDay = before.endOfDay() {
+        if let after, let before, let lastSecondOfBeforeDay = before.endOfDay() {
             parameters["after"] = formatter.string(from: after) as AnyObject
             parameters["before"] = formatter.string(from: lastSecondOfBeforeDay) as AnyObject
         } else if let on = after ?? before {
             parameters["on"] = formatter.string(from: on) as AnyObject
         }
 
-        wordPressComRESTAPI.get(path,
-                                parameters: parameters,
-                                success: { response, _ in
-                                    do {
-                                        let groups = try self.mapActivityGroupsResponse(response)
-                                        success(groups)
-                                    } catch {
-                                        WPKitLogError("Error parsing activity groups for site \(siteID)")
-                                        WPKitLogError("\(error)")
-                                        WPKitLogDebug("Full response: \(response)")
-                                        failure(error)
-                                    }
-                                }, failure: { error, _ in
-                                    failure(error)
-                                })
+        wordPressComRESTAPI.get(
+            path,
+            parameters: parameters,
+            success: { response, _ in
+                do {
+                    let groups = try self.mapActivityGroupsResponse(response)
+                    success(groups)
+                } catch {
+                    WPKitLogError("Error parsing activity groups for site \(siteID)")
+                    WPKitLogError("\(error)")
+                    WPKitLogDebug("Full response: \(response)")
+                    failure(error)
+                }
+            },
+            failure: { error, _ in
+                failure(error)
+            }
+        )
     }
 
     /// Retrieves the site current rewind state.
@@ -138,43 +144,49 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: The current rewind status for the site.
     ///
-    open func getRewindStatus(_ siteID: Int,
-                              success: @escaping (RewindStatus) -> Void,
-                              failure: @escaping (Error) -> Void) {
+    open func getRewindStatus(
+        _ siteID: Int,
+        success: @escaping (RewindStatus) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
         let endpoint = "sites/\(siteID)/rewind"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
 
-        wordPressComRESTAPI.get(path,
-                                parameters: nil,
-                                success: { response, _ in
-                                    guard let rewindStatus = response as? [String: AnyObject] else {
-                                        failure(ResponseError.decodingFailure)
-                                        return
-                                    }
-                                    do {
-                                        let status = try RewindStatus(dictionary: rewindStatus)
-                                        success(status)
-                                    } catch {
-                                        WPKitLogError("Error parsing rewind response for site \(siteID)")
-                                        WPKitLogError("\(error)")
-                                        WPKitLogDebug("Full response: \(response)")
-                                        failure(ResponseError.decodingFailure)
-                                    }
-                                }, failure: { error, _ in
-                                    // FIXME: A hack to support free WPCom sites and Rewind. Should be obsolote as soon as the backend
-                                    // stops returning 412's for those sites.
-                                    let nsError = error as NSError
+        wordPressComRESTAPI.get(
+            path,
+            parameters: nil,
+            success: { response, _ in
+                guard let rewindStatus = response as? [String: AnyObject] else {
+                    failure(ResponseError.decodingFailure)
+                    return
+                }
+                do {
+                    let status = try RewindStatus(dictionary: rewindStatus)
+                    success(status)
+                } catch {
+                    WPKitLogError("Error parsing rewind response for site \(siteID)")
+                    WPKitLogError("\(error)")
+                    WPKitLogDebug("Full response: \(response)")
+                    failure(ResponseError.decodingFailure)
+                }
+            },
+            failure: { error, _ in
+                // FIXME: A hack to support free WPCom sites and Rewind. Should be obsolote as soon as the backend
+                // stops returning 412's for those sites.
+                let nsError = error as NSError
 
-                                    guard nsError.domain == WordPressComRestApiEndpointError.errorDomain,
-                                       nsError.code == WordPressComRestApiErrorCode.preconditionFailure.rawValue else {
-                                        failure(error)
-                                        return
-                                    }
+                guard nsError.domain == WordPressComRestApiEndpointError.errorDomain,
+                    nsError.code == WordPressComRestApiErrorCode.preconditionFailure.rawValue
+                else {
+                    failure(error)
+                    return
+                }
 
-                                    let status = RewindStatus(state: .unavailable)
-                                    success(status)
-                                    return
-                                })
+                let status = RewindStatus(state: .unavailable)
+                success(status)
+                return
+            }
+        )
     }
 }
 
@@ -183,7 +195,8 @@ private extension ActivityServiceRemote {
     func mapActivitiesResponse(_ response: Any) throws -> ([Activity], Int) {
 
         guard let json = response as? [String: AnyObject],
-              let totalItems = json["totalItems"] as? Int else {
+            let totalItems = json["totalItems"] as? Int
+        else {
             throw ActivityServiceRemote.ResponseError.decodingFailure
         }
 
@@ -192,7 +205,8 @@ private extension ActivityServiceRemote {
         }
 
         guard let current = json["current"] as? [String: AnyObject],
-              let orderedItems = current["orderedItems"] as? [[String: AnyObject]] else {
+            let orderedItems = current["orderedItems"] as? [[String: AnyObject]]
+        else {
             throw ActivityServiceRemote.ResponseError.decodingFailure
         }
 
@@ -210,7 +224,8 @@ private extension ActivityServiceRemote {
 
     func mapActivityGroupsResponse(_ response: Any) throws -> ([ActivityGroup]) {
         guard let json = response as? [String: AnyObject],
-              let totalItems = json["totalItems"] as? Int, totalItems > 0 else {
+            let totalItems = json["totalItems"] as? Int, totalItems > 0
+        else {
             return []
         }
 
