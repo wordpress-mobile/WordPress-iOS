@@ -252,10 +252,14 @@ extension SiteSettingsViewController {
         let settings = GutenbergSettings()
 
         var text = Strings.themeStylesFooterEnabled
-        if !settings.getSupports(.blockTheme, for: self.blog) {
-            text += "\n\n" + Strings.themeStylesFooterBlockThemeSuggested
-        } else if !settings.getSupports(.blockEditorSettings, for: self.blog) {
+        // Ordered to match what gates the row: missing block editor settings is what disables the
+        // toggle, so it has to be the reason shown. A non-block theme only means the styles may
+        // not match, which is advice for a site whose toggle still works — a site failing both
+        // would otherwise be told to check its theme while the switch sat greyed out.
+        if !settings.getSupports(.blockEditorSettings, for: self.blog) {
             text += "\n\n" + Strings.themeStylesFooterGutenbergRequired
+        } else if !settings.getSupports(.blockTheme, for: self.blog) {
+            text += "\n\n" + Strings.themeStylesFooterBlockThemeSuggested
         }
         footer.textLabel?.text = text
 
@@ -564,7 +568,7 @@ private extension SiteSettingsViewController {
             value:
                 "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.",
             comment:
-                "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme"
+                "Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content."
         )
 
         static let themeStylesFooterGutenbergRequired = NSLocalizedString(
