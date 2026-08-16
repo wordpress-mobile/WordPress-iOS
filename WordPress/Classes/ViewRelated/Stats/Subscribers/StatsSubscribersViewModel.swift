@@ -51,11 +51,11 @@ private extension StatsSubscribersViewModel {
     }
 
     func loadingRows(_ section: StatSection, numberOfColumns: Int) -> [any StatsHashableImmuTableRow] {
-        return [StatsGhostTopImmutableRow(numberOfColumns: numberOfColumns, statSection: section)]
+        [StatsGhostTopImmutableRow(numberOfColumns: numberOfColumns, statSection: section)]
     }
 
     func errorRows(_ section: StatSection) -> [any StatsHashableImmuTableRow] {
-        return [StatsErrorRow(rowStatus: .error, statType: .subscribers, statSection: section)]
+        [StatsErrorRow(rowStatus: .error, statType: .subscribers, statSection: section)]
     }
 }
 
@@ -128,7 +128,7 @@ private extension StatsSubscribersViewModel {
     }
 
     func emailsSummaryDataRows(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
-        return emailsSummary.posts.map {
+        emailsSummary.posts.map {
             StatsTotalRowData(
                 name: $0.title.stringByDecodingXMLCharacters(),
                 data: $0.opens.abbreviatedString(),
@@ -163,8 +163,8 @@ private extension StatsSubscribersViewModel {
     }
 
     func subscribersListDataRows(_ subscribers: [StatsFollower]) -> [StatsTotalRowData] {
-        return subscribers.map {
-            return StatsTotalRowData(
+        subscribers.map {
+            StatsTotalRowData(
                 name: $0.name,
                 data: $0.subscribedDate.relativeStringInPast(),
                 userIconURL: $0.avatarURL,
