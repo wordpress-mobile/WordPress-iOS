@@ -98,6 +98,12 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         XCTAssertEqual(subscribersListRow?.dataRows[2].name, "Third Subscriber")
     }
 
+    func testRefreshData_requestsEmailsSummarySortedByPostDate() throws {
+        sut.refreshData()
+
+        XCTAssertEqual(store.emailsSummarySortField, .postDate)
+    }
+
     func testTableViewSnapshot_emailsSummaryLoaded() throws {
         let expectation = expectation(description: "Fourth section should be TopTotalsPeriodStatsRow")
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
@@ -150,9 +156,11 @@ private class StatsSubscribersStoreMock: StatsSubscribersStoreProtocol {
     var updateEmailsSummaryCalled = false
     var updateChartSummaryCalled = false
     var updateSubscribersListCalled = false
+    var emailsSummarySortField: StatsEmailsSummaryData.SortField?
 
     func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
         updateEmailsSummaryCalled = true
+        emailsSummarySortField = sortField
     }
 
     func updateChartSummary() {

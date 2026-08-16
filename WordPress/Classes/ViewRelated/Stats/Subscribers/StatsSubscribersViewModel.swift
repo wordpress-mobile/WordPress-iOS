@@ -15,7 +15,10 @@ final class StatsSubscribersViewModel {
 
     func refreshData() {
         store.updateChartSummary()
-        store.updateEmailsSummary(quantity: 10, sortField: .postId)
+        // Sort by post date to match the web's Subscribers > Emails list. Sorting by
+        // post ID buries posts that were drafted early but published recently, so
+        // the newest emailed posts could fall outside the returned result set (CMM-2323).
+        store.updateEmailsSummary(quantity: 10, sortField: .postDate)
         store.updateSubscribersList(quantity: 10)
     }
 
