@@ -25,23 +25,11 @@ public final class WordPressClientFactory: Sendable {
     /// credentials would keep being served.
     private struct CacheKey: Hashable {
         let blogId: TaggedManagedObjectID<Blog>
-        let transport: Transport
-
-        /// The identity of a `WordPressSite.Transport`, which is not itself `Hashable`.
-        enum Transport: Hashable {
-            case direct(WordPressSite.ApplicationPasswordCredentials)
-            case dotComProxy(siteId: Int, oAuthToken: String)
-        }
+        let transport: WordPressSite.Transport
 
         init(site: WordPressSite) {
             self.blogId = site.blogId
-            self.transport =
-                switch site.transport {
-                case let .direct(credentials):
-                    .direct(credentials)
-                case let .dotComProxy(siteId, oAuthToken):
-                    .dotComProxy(siteId: siteId, oAuthToken: oAuthToken)
-                }
+            self.transport = site.transport
         }
     }
 
