@@ -15,10 +15,14 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     private let allowableFileExtensions: Set<String>
     private let makeMediaSettings: @Sendable () -> MediaSettings
 
-    /// Image types the WordPress REST API reliably accepts. Other image
+    /// Raster image types the WordPress REST API reliably accepts. Other image
     /// formats (e.g. HEIC) are converted to JPEG during processing, mirroring
     /// `ItemProviderMediaExporter`.
-    private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg, .gif, .svg]
+    ///
+    /// - Note: SVG is deliberately absent. It is web-safe, but it is a vector
+    ///   format that ImageIO cannot decode or encode, so it never reaches the
+    ///   exporter — `processFile` returns it unchanged (see below).
+    private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg, .gif]
 
     @MainActor
     convenience init(blog: Blog) {
@@ -65,11 +69,20 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             }
             return .original
         case .image:
+            let type = url.typeIdentifier.flatMap(UTType.init)
+
+            // SVG conforms to `UTType.image`, so it lands here, but ImageIO
+            // cannot decode or encode it: the export would fail rather than
+            // produce a file. Upload it unchanged, like a GIF.
+            if type == .svg {
+                return .original
+            }
+
             // Skip processing when it would be a no-op: optimization and
             // location stripping disabled, and the format is web-safe.
             if !settings.imageOptimizationEnabled,
                 !settings.removeLocationSetting,
-                let type = url.typeIdentifier.flatMap(UTType.init),
+                let type,
                 Self.webSafeImageTypes.contains(type)
             {
                 return .original

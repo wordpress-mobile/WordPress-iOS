@@ -95,6 +95,31 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
+    /// SVG conforms to `UTType.image`, so it reaches the image branch, but
+    /// ImageIO cannot decode or encode it. It must pass through untouched
+    /// rather than fail in the exporter.
+    @Test func svgPassesThroughUntouched() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.removeLocationSetting = true
+        let processor = makeProcessor(settings: settings)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).svg")
+        try #"<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"/>"#
+            .write(to: url, atomically: true, encoding: .utf8)
+        defer { cleanUp(url) }
+
+        let result = try await processor.processFile(
+            at: url,
+            mimeType: "image/svg+xml",
+            filename: url.lastPathComponent
+        )
+
+        guard case .original = result else {
+            Issue.record("Expected the original file to pass through")
+            return
+        }
+    }
+
     @Test func disallowedFileExtensionThrows() async throws {
         let processor = GBKMediaUploadProcessor(
             videoDurationLimit: nil,
