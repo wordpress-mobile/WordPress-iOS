@@ -192,25 +192,12 @@ struct ChartCard: View {
 
     private var chartTypeSection: some View {
         Section {
-            ControlGroup {
-                ForEach(ChartType.allCases) { type in
-                    Button {
-                        let previousType = viewModel.selectedChartType
-                        viewModel.selectedChartType = type
-
-                        viewModel.tracker?
-                            .send(
-                                .chartTypeChanged,
-                                properties: [
-                                    "from_type": previousType.rawValue,
-                                    "to_type": type.rawValue
-                                ]
-                            )
-                    } label: {
-                        Label(type.localizedTitle, systemImage: type.systemImage)
-                    }
-                }
-            }
+            ChartTypeControlGroup(
+                selection: Binding(
+                    get: { viewModel.selectedChartType },
+                    set: { viewModel.selectChartType($0) }
+                )
+            )
         }
     }
 

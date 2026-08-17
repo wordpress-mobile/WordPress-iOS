@@ -155,15 +155,7 @@ struct StandaloneChartCard: View {
     private var moreMenu: some View {
         Menu {
             Section {
-                ControlGroup {
-                    ForEach(ChartType.allCases, id: \.self) { type in
-                        Button {
-                            chartType = type
-                        } label: {
-                            Label(type.localizedTitle, systemImage: type.systemImage)
-                        }
-                    }
-                }
+                ChartTypeControlGroup(selection: $chartType)
             }
         } label: {
             Image(systemName: "ellipsis")

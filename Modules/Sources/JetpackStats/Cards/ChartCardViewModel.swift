@@ -102,6 +102,21 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         configurationDelegate?.saveConfiguration(for: self)
     }
 
+    func selectChartType(_ chartType: ChartType) {
+        guard chartType != selectedChartType else { return }
+
+        let previousType = selectedChartType
+        selectedChartType = chartType
+        tracker?
+            .send(
+                .chartTypeChanged,
+                properties: [
+                    "from_type": previousType.rawValue,
+                    "to_type": chartType.rawValue
+                ]
+            )
+    }
+
     func onAppear() {
         guard isFirstAppear else { return }
         isFirstAppear = false
