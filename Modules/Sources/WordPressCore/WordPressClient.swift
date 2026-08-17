@@ -56,6 +56,17 @@ public actor WordPressClient {
         /// WordPress.com sites don't all support plugins.
         case plugins
 
+        /// The editor assets API serves the scripts and styles for blocks provided by
+        /// plugins installed on the site. This is distinct from ``plugins``, which reports
+        /// whether the site exposes the plugin *management* API.
+        ///
+        /// A site serves this route under exactly one of two paths, decided by how the app
+        /// reaches it: proxied through WP.com it is namespaced under `/sites/{id}/`, and
+        /// addressed directly it is bare. Probing for the form the site does not serve is the
+        /// correct answer, because that is the form the editor would fetch — so `siteId` must
+        /// reflect the transport the editor will actually use.
+        case editorAssets
+
         /// A string representation of the feature for use in API queries or logging.
         public var stringValue: String {
             switch self {
@@ -63,6 +74,7 @@ public actor WordPressClient {
             case .blockEditorSettings: "block-editor-settings"
             case .applicationPasswordExtras: "application-password-extras"
             case .plugins: "plugins"
+            case .editorAssets: "editor-assets"
             }
         }
     }
@@ -180,6 +192,7 @@ public actor WordPressClient {
             case .blockEditorSettings: apiRoot.hasRoute(route: "/wp-block-editor/v1/sites/\(siteId)/settings")
             case .blockTheme: isBlockTheme
             case .plugins: apiRoot.hasRoute(route: "/wp/v2/plugins")
+            case .editorAssets: apiRoot.hasRoute(route: "/wpcom/v2/sites/\(siteId)/editor-assets")
             case .applicationPasswordExtras: apiRoot.hasRoute(route: "/application-password-extras/v1/admin-ajax")
             }
         }
@@ -188,6 +201,7 @@ public actor WordPressClient {
         case .blockEditorSettings: apiRoot.hasRoute(route: "/wp-block-editor/v1/settings")
         case .blockTheme: isBlockTheme
         case .plugins: apiRoot.hasRoute(route: "/wp/v2/plugins")
+        case .editorAssets: apiRoot.hasRoute(route: "/wpcom/v2/editor-assets")
         case .applicationPasswordExtras: apiRoot.hasRoute(route: "/application-password-extras/v1/admin-ajax")
         }
     }

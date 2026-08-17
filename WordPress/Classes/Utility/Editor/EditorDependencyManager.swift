@@ -277,8 +277,18 @@ final class EditorDependencyManager: Sendable {
 
     /// Query the server for its editor capabilities, and update the local editor settings store with the result.
     ///
+    /// Joins the probe already in flight for this site, if there is one, rather than starting a
+    /// second. Errors from a joined probe are logged by it rather than rethrown here.
+    ///
     @MainActor
     public func fetchEditorCapabilities(for blog: Blog) async throws {
+        await capabilityTask(for: blog).value
+    }
+
+    /// Query the server for its editor capabilities, and update the local editor settings store with the result.
+    ///
+    @MainActor
+    private func performFetchEditorCapabilities(for blog: Blog) async throws {
         let site = try WordPressSite(blog: blog)
         let client = WordPressClientFactory.shared.instance(for: site)
 
@@ -292,12 +302,12 @@ final class EditorDependencyManager: Sendable {
 
         let hasBlockTheme = try await client.supports(.blockTheme, forSiteId: siteId)
         let hasBlockSettings = try await client.supports(.blockEditorSettings, forSiteId: siteId)
-        let supportsPlugins = try await client.supports(.plugins, forSiteId: siteId)
+        let supportsEditorAssets = try await client.supports(.editorAssets, forSiteId: siteId)
 
         GutenbergSettings()
             .setSupports(.blockEditorSettings, hasBlockSettings, for: blog)
             .setSupports(.blockTheme, hasBlockTheme, for: blog)
-            .setSupports(.plugins, supportsPlugins, for: blog)
+            .setSupports(.editorAssets, supportsEditorAssets, for: blog)
     }
 
     /// Query the server for its editor capabilities, and update the local editor settings store with the result.
@@ -305,30 +315,35 @@ final class EditorDependencyManager: Sendable {
     /// Returns immediately and ignores errors – prefer the `async` version of this method.
     ///
     public func fetchEditorCapabilities(for blog: Blog) {
+        _ = capabilityTask(for: blog)
+    }
+
+    /// Returns the capability probe in flight for the site, starting one if there is none.
+    ///
+    /// Deduplication lives here rather than in one of the entry points so that every caller shares
+    /// a single probe per site, however it was reached.
+    private func capabilityTask(for blog: Blog) -> Task<Void, Never> {
         let blogID = TaggedManagedObjectID(blog)
 
-        let isAlreadyRunning = state.withLock { state in
-            state.capabilityTasks[blogID] != nil
-        }
-
-        guard !isAlreadyRunning else {
-            return
-        }
-
-        let task = Task {
-            do {
-                try await self.fetchEditorCapabilities(for: blog)
-            } catch {
-                DDLogError("EditorDependencyManager: Failed to fetch editor capabilities: \(error)")
+        return state.withLock { state in
+            if let existing = state.capabilityTasks[blogID] {
+                return existing
             }
 
-            self.state.withLock { state in
-                _ = state.capabilityTasks.removeValue(forKey: blogID)
-            }
-        }
+            let task = Task {
+                do {
+                    try await self.performFetchEditorCapabilities(for: blog)
+                } catch {
+                    DDLogError("EditorDependencyManager: Failed to fetch editor capabilities: \(error)")
+                }
 
-        state.withLock { state in
+                self.state.withLock { state in
+                    _ = state.capabilityTasks.removeValue(forKey: blogID)
+                }
+            }
+
             state.capabilityTasks[blogID] = task
+            return task
         }
     }
 }

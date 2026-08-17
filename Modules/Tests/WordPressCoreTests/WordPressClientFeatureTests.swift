@@ -14,6 +14,67 @@ struct WordPressClientFeatureTests {
         #expect(WordPressClient.Feature.blockEditorSettings.stringValue == "block-editor-settings")
         #expect(WordPressClient.Feature.applicationPasswordExtras.stringValue == "application-password-extras")
         #expect(WordPressClient.Feature.plugins.stringValue == "plugins")
+        #expect(WordPressClient.Feature.editorAssets.stringValue == "editor-assets")
+    }
+
+    /// `editorAssets` reports whether the site can serve blocks provided by plugins, which is
+    /// the `editor-assets` route. `plugins` reports whether the plugin *management* API is
+    /// exposed — a different route that WP.com Simple sites don't have. Conflating the two
+    /// makes third-party blocks look unsupported on sites that support them perfectly well.
+    @Test
+    func editorAssetsIsDistinctFromPluginManagement() async throws {
+        let mockAPI = MockWordPressClientAPI()
+        mockAPI.mockRoutes = ["/wpcom/v2/editor-assets"]
+
+        let client = WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
+
+        #expect(try await client.supports(.editorAssets) == true)
+        #expect(try await client.supports(.plugins) == false)
+    }
+
+    /// A site proxied through WP.com — a Simple site, or a Jetpack site with no application
+    /// password — serves the route namespaced under its site id.
+    @Test
+    func editorAssetsUsesTheNamespacedRouteWhenProxied() async throws {
+        let mockAPI = MockWordPressClientAPI()
+        mockAPI.mockRoutes = ["/wpcom/v2/sites/12345/editor-assets"]
+
+        let client = WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
+
+        #expect(try await client.supports(.editorAssets, forSiteId: 12345) == true)
+    }
+
+    /// The two forms are alternatives, not aliases: the editor fetches whichever one matches the
+    /// transport it is configured for, so a route the site serves under the *other* form is not
+    /// support. Accepting either here reported support for sites the editor would then fail to
+    /// load assets from.
+    @Test
+    func editorAssetsRejectsTheFormTheEditorWouldNotFetch() async throws {
+        let bareOnly = MockWordPressClientAPI()
+        bareOnly.mockRoutes = ["/wpcom/v2/editor-assets"]
+        let proxiedClient = WordPressClient(api: bareOnly, siteURL: URL(string: "https://example.com")!)
+
+        // Proxied: the editor fetches the namespaced path, which this site does not serve.
+        #expect(try await proxiedClient.supports(.editorAssets, forSiteId: 12345) == false)
+
+        let namespacedOnly = MockWordPressClientAPI()
+        namespacedOnly.mockRoutes = ["/wpcom/v2/sites/12345/editor-assets"]
+        let directClient = WordPressClient(api: namespacedOnly, siteURL: URL(string: "https://example.com")!)
+
+        // Direct: the editor fetches the bare path, which this site does not serve.
+        #expect(try await directClient.supports(.editorAssets) == false)
+    }
+
+    /// An Atomic, Jetpack, or self-hosted site addressed with an application password serves the
+    /// route bare, and is probed without a site id.
+    @Test
+    func editorAssetsUsesTheBareRouteWhenDirect() async throws {
+        let mockAPI = MockWordPressClientAPI()
+        mockAPI.mockRoutes = ["/wpcom/v2/editor-assets"]
+
+        let client = WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
+
+        #expect(try await client.supports(.editorAssets) == true)
     }
 }
 
@@ -91,9 +152,9 @@ struct WordPressClientCachingTests {
 
         let results = try await [result1, result2, result3, result4]
 
-        #expect(results[0] == true)  // blockEditorSettings
-        #expect(results[1] == true)  // blockTheme
-        #expect(results[2] == true)  // plugins
+        #expect(results[0] == true) // blockEditorSettings
+        #expect(results[1] == true) // blockTheme
+        #expect(results[2] == true) // plugins
         #expect(results[3] == false) // applicationPasswordExtras (not in routes)
 
         // Despite 4 concurrent calls, API should only be called once

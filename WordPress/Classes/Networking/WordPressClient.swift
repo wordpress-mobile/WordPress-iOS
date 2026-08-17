@@ -10,18 +10,45 @@ import WordPressShared
 public final class WordPressClientFactory: Sendable {
     public static let shared = WordPressClientFactory()
 
-    private let instances = OSAllocatedUnfairLock<[TaggedManagedObjectID<Blog>: WordPressClient]>(initialState: [:])
+    /// Identifies a cached client by both the site and the transport it was built for.
+    ///
+    /// A site's transport changes underneath us: a WordPress.com site starts out proxied through
+    /// the WP.com REST API and switches to addressing its own API root once an application
+    /// password is created. The two speak to different API roots, whose discovery documents key
+    /// routes differently — the proxy namespaces everything under `/sites/{id}/`. Caching on the
+    /// blog alone kept serving a client whose cached API root no longer matched the transport its
+    /// callers were reasoning about, so route lookups silently missed.
+    ///
+    /// The transport's credentials are part of the identity, not just which case it is: rotating
+    /// an application password or refreshing the site's REST API root changes where requests go
+    /// and how they authenticate while staying `.direct`, and a client built for the superseded
+    /// credentials would keep being served.
+    private struct CacheKey: Hashable {
+        let blogId: TaggedManagedObjectID<Blog>
+        let transport: WordPressSite.Transport
+
+        init(site: WordPressSite) {
+            self.blogId = site.blogId
+            self.transport = site.transport
+        }
+    }
+
+    private let instances = OSAllocatedUnfairLock<[CacheKey: WordPressClient]>(initialState: [:])
     private init() {}
 
     public func instance(for site: WordPressSite) -> WordPressClient {
-        instances.withLock { dict in
-            if let client = dict[site.blogId] {
-                return client
-            } else {
-                let client = WordPressClient(site: site)
-                dict[site.blogId] = client
+        let key = CacheKey(site: site)
+        return instances.withLock { dict in
+            if let client = dict[key] {
                 return client
             }
+
+            let client = WordPressClient(site: site)
+            // Drop any client built for this site's previous transport; its cached API root
+            // describes a different root than the one this site now uses.
+            dict = dict.filter { $0.key.blogId != key.blogId }
+            dict[key] = client
+            return client
         }
     }
 
