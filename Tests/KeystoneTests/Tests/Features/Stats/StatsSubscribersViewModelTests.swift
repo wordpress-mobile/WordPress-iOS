@@ -59,10 +59,14 @@ final class StatsSubscribersViewModelTests: XCTestCase {
             })
             .store(in: &cancellables)
 
-        let chartSummary = StatsSubscribersSummaryData(history: [
-            .init(date: Date(), count: 1),
-            .init(date: Date(), count: 2),
-        ], period: .day, periodEndDate: Date())
+        let chartSummary = StatsSubscribersSummaryData(
+            history: [
+                .init(date: Date(), count: 1),
+                .init(date: Date(), count: 2)
+            ],
+            period: .day,
+            periodEndDate: Date()
+        )
         store.chartSummary.send(.success(chartSummary))
 
         wait(for: [expectation], timeout: 1)
@@ -94,6 +98,12 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         XCTAssertEqual(subscribersListRow?.dataRows[2].name, "Third Subscriber")
     }
 
+    func testRefreshData_requestsEmailsSummarySortedByPostDate() throws {
+        sut.refreshData()
+
+        XCTAssertEqual(store.emailsSummarySortField, .postDate)
+    }
+
     func testTableViewSnapshot_emailsSummaryLoaded() throws {
         let expectation = expectation(description: "Fourth section should be TopTotalsPeriodStatsRow")
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
@@ -107,8 +117,24 @@ final class StatsSubscribersViewModelTests: XCTestCase {
             .store(in: &cancellables)
 
         let emailsSummary = StatsEmailsSummaryData(posts: [
-            .init(id: 1, link: URL(string: "https://example.com")!, date: Date(), title: "Title", type: .post, opens: 1, clicks: 154),
-            .init(id: 2, link: URL(string: "https://example.com")!, date: Date(), title: "Title 2", type: .post, opens: 10, clicks: 0)
+            .init(
+                id: 1,
+                link: URL(string: "https://example.com")!,
+                date: Date(),
+                title: "Title",
+                type: .post,
+                opens: 1,
+                clicks: 154
+            ),
+            .init(
+                id: 2,
+                link: URL(string: "https://example.com")!,
+                date: Date(),
+                title: "Title 2",
+                type: .post,
+                opens: 10,
+                clicks: 0
+            )
         ])
         store.emailsSummary.send(.success(emailsSummary))
 
@@ -123,14 +149,18 @@ final class StatsSubscribersViewModelTests: XCTestCase {
 private class StatsSubscribersStoreMock: StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> = .init(.idle)
     var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersData>, Never> = .init(.idle)
-    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(.idle)
+    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(
+        .idle
+    )
 
     var updateEmailsSummaryCalled = false
     var updateChartSummaryCalled = false
     var updateSubscribersListCalled = false
+    var emailsSummarySortField: StatsEmailsSummaryData.SortField?
 
     func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
         updateEmailsSummaryCalled = true
+        emailsSummarySortField = sortField
     }
 
     func updateChartSummary() {
