@@ -81,6 +81,34 @@ struct GBKMediaUploadProcessorTests {
         #expect(filename.hasSuffix(".jpg") || filename.hasSuffix(".jpeg"))
     }
 
+    /// GutenbergKit removes the exported file but never its enclosing
+    /// directories, so exports must share one directory rather than each
+    /// creating its own.
+    @Test func exportsShareOneTemporaryDirectory() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.maxImageSizeSetting = 200
+        let processor = makeProcessor(settings: settings)
+        let url = try fixtureURL("test-image-device-photo-gps.jpg")
+
+        var directories: Set<URL> = []
+        for _ in 0..<3 {
+            let result = try await processor.processFile(
+                at: url,
+                mimeType: "image/jpeg",
+                filename: url.lastPathComponent
+            )
+            guard case .processed(let outputURL, _, _) = result else {
+                Issue.record("Expected a processed file")
+                return
+            }
+            defer { cleanUp(outputURL) }
+            directories.insert(outputURL.deletingLastPathComponent())
+        }
+
+        #expect(directories.count == 1)
+    }
+
     // MARK: - GIFs and other files
 
     @Test func gifPassesThroughUntouched() async throws {

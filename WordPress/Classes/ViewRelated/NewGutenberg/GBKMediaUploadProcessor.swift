@@ -24,6 +24,13 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     ///   exporter — `processFile` returns it unchanged (see below).
     private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg, .gif]
 
+    /// A fixed ID for the temporary directory exports are written to, so every
+    /// upload reuses the same directory instead of creating a new one.
+    ///
+    /// Stable across launches: a directory orphaned by a crash is reused rather
+    /// than accumulating alongside a new one.
+    private static let exportDirectoryID = UUID(uuidString: "1D8A4E5C-1F3B-4E7A-9C2D-6B0F8A5E3C71")!
+
     @MainActor
     convenience init(blog: Blog) {
         // HEIC isn't supported when uploading an image, so we filter it out,
@@ -110,7 +117,13 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
         // GutenbergKit deletes the processed file after uploading it, so the
         // export is written to a temporary directory rather than the uploads
         // directory tracked by `MediaFileManager`.
-        exporter.mediaDirectoryType = .temporary
+        //
+        // Reuse one directory for every export rather than `MediaDirectory
+        // .temporary`, which mints a new UUID per access. GutenbergKit removes
+        // only the exported file, never its enclosing directories, so a fresh
+        // UUID each time would leave an empty `tmp/<uuid>/Media/` behind for
+        // every upload.
+        exporter.mediaDirectoryType = .temporary(id: Self.exportDirectoryID)
 
         var imageOptions = MediaImageExporter.Options()
         imageOptions.maximumImageSize = maximumImageSize(from: settings)
