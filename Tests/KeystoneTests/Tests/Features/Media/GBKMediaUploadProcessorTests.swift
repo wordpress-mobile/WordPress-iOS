@@ -91,7 +91,12 @@ struct GBKMediaUploadProcessorTests {
         let processor = makeProcessor(settings: settings)
         let url = try fixtureURL("test-image-device-photo-gps.jpg")
 
-        var directories: Set<URL> = []
+        // Keep every export on disk until the end: deleting each one before the
+        // next would free its filename, so all three would collide on the same
+        // path and the directory count would match even if exports did not
+        // share a directory.
+        var outputURLs: [URL] = []
+        defer { outputURLs.forEach(cleanUp) }
         for _ in 0..<3 {
             let result = try await processor.processFile(
                 at: url,
@@ -102,11 +107,11 @@ struct GBKMediaUploadProcessorTests {
                 Issue.record("Expected a processed file")
                 return
             }
-            defer { cleanUp(outputURL) }
-            directories.insert(outputURL.deletingLastPathComponent())
+            outputURLs.append(outputURL)
         }
 
-        #expect(directories.count == 1)
+        #expect(Set(outputURLs).count == 3)
+        #expect(Set(outputURLs.map { $0.deletingLastPathComponent() }).count == 1)
     }
 
     // MARK: - GIFs and other files
