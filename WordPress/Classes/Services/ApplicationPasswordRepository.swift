@@ -346,14 +346,36 @@ private extension ApplicationPasswordRepository {
             return try (blog.getUrlString(), blog.restApiRootURL)
         }
 
+        // A stored API root on a different host than the site is stale and must be rediscovered.
+        // Notably, WP.com Simple sites advertise a `public-api.wordpress.com/wp-json/?rest_route=...`
+        // API root, which stops working once the site moves to Atomic (CMM-2282). A site's domain
+        // change also leaves the stored root pointing at the old host.
+        if let restApiRootUrl,
+            let parsed = try? ParsedUrl.parse(input: restApiRootUrl),
+            host(of: restApiRootUrl) == host(of: siteUrl)
+        {
+            return parsed
+        }
+
         let session = URLSession(configuration: .ephemeral)
         let loginClient = WordPressLoginClient(urlSession: session)
         let apiRootURL: ParsedUrl
-        if let restApiRootUrl, let parsed = try? ParsedUrl.parse(input: restApiRootUrl) {
-            apiRootURL = parsed
-        } else {
+        do {
             apiRootURL = try await loginClient.details(ofSite: siteUrl).apiRootUrl
+        } catch {
+            // Rediscovery of a stale root is best-effort. Keep using the stored root when
+            // discovery fails (e.g. the site is temporarily unreachable), rather than breaking
+            // flows that used to work with it.
+            if !error.isCancellationError(),
+                let restApiRootUrl,
+                let stored = try? ParsedUrl.parse(input: restApiRootUrl)
+            {
+                return stored
+            }
+            throw error
+        }
 
+        if apiRootURL.url() != restApiRootUrl {
             try await coreDataStack.performAndSave { context in
                 let blog = try context.existingObject(with: blogId)
                 blog.restApiRootURL = apiRootURL.url()
@@ -361,6 +383,10 @@ private extension ApplicationPasswordRepository {
         }
 
         return apiRootURL
+    }
+
+    private func host(of urlString: String) -> String? {
+        URL(string: urlString)?.host?.lowercased()
     }
 
     func updateSiteUsernameIfNeeded(_ blogId: TaggedManagedObjectID<Blog>) async throws -> String {
