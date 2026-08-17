@@ -7,16 +7,10 @@ struct StandaloneMetricView: View {
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
-            HStack(spacing: 4) {
-                Image(systemName: metric.systemImage)
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
-
-                Text(metric.localizedTitle)
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
-                    .textCase(.uppercase)
-            }
+            Text(metric.localizedTitle)
+                .font(.caption.weight(.medium))
+                .foregroundColor(.secondary)
+                .textCase(.uppercase)
             Text(StatsValueFormatter.formatNumber(value, onlyLarge: true))
                 .font(Constants.Typography.smallDisplayFont)
                 .foregroundColor(.primary)

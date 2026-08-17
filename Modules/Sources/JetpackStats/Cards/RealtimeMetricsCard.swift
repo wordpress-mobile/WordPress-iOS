@@ -35,7 +35,6 @@ struct RealtimeMetricsCard: View {
 
             HStack(spacing: 16) {
                 realtimeStatRow(
-                    systemImage: SiteMetric.views.systemImage,
                     label: SiteMetric.views.localizedTitle,
                     value: viewsLast30Min.formatted(.number.notation(.compactName))
                 )
@@ -43,7 +42,6 @@ struct RealtimeMetricsCard: View {
                 .accessibilityLabel("\(SiteMetric.views.localizedTitle), \(viewsLast30Min.formatted())")
 
                 realtimeStatRow(
-                    systemImage: SiteMetric.visitors.systemImage,
                     label: SiteMetric.visitors.localizedTitle,
                     value: visitorsLast30Min.formatted(.number.notation(.compactName))
                 )
@@ -51,7 +49,6 @@ struct RealtimeMetricsCard: View {
                 .accessibilityLabel("\(SiteMetric.visitors.localizedTitle), \(visitorsLast30Min.formatted())")
 
                 realtimeStatRow(
-                    systemImage: SiteMetric.visitors.systemImage,
                     label: Strings.SiteMetrics.visitorsNow,
                     value: activeVisitors.formatted(.number.notation(.compactName))
                 )
@@ -68,18 +65,11 @@ struct RealtimeMetricsCard: View {
         }
     }
 
-    private func realtimeStatRow(systemImage: String, label: String, value: String) -> some View {
+    private func realtimeStatRow(label: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: 4) {
-                Image(systemName: systemImage)
-                    .font(.caption2.weight(.medium))
-                    .foregroundColor(.secondary)
-                    .accessibilityHidden(true)
-
-                Text(label.uppercased())
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
-            }
+            Text(label.uppercased())
+                .font(.caption.weight(.medium))
+                .foregroundColor(.secondary)
 
             Text(value)
                 .contentTransition(.numericText())
