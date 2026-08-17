@@ -363,6 +363,11 @@ private extension ApplicationPasswordRepository {
         do {
             apiRootURL = try await loginClient.details(ofSite: siteUrl).apiRootUrl
         } catch {
+            // A cancelled discovery surfaces as a discovery failure, not as a `CancellationError`,
+            // so check for cancellation explicitly. Falling back on cancellation would let a
+            // cancelled operation continue running.
+            try Task.checkCancellation()
+
             // Rediscovery of a stale root is best-effort. Keep using the stored root when
             // discovery fails (e.g. the site is temporarily unreachable), rather than breaking
             // flows that used to work with it.

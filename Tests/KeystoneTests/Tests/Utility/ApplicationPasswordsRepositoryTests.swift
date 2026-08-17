@@ -138,6 +138,52 @@ class ApplicationPasswordsRepositoryTests {
     }
 
     @Test
+    func cancelDuringStaleRestApiRootUrlRediscovery() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let staleRootURL = "https://public-api.wordpress.com/wp-json/?rest_route=/sites/atomic.com"
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+        try await setRestApiRootURL(staleRootURL, of: blog)
+
+        // Discovery that can never succeed: a slow homepage and a 404 API root. Without this,
+        // discovery may still succeed after cancellation and `WordPressLoginClient.details`
+        // itself reports the cancellation, hiding the fallback path under test.
+        let discoveryMonitor = Monitor(delay: 0.5)
+        stubWPComProxyRestNoRoute()
+        stub(condition: isHost("atomic.com") && isPath("/")) { _ in
+            discoveryMonitor.requestReceived()
+
+            let response = HTTPStubsResponse(
+                data: "<html>homepage</html>".data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Link": "<https://atomic.com/wp-json/>; rel=\"https://api.w.org/\""]
+            )
+            response.responseTime = 0.5
+            return response
+        }
+        stub(condition: isHost("atomic.com") && isPath("/wp-json")) { _ in
+            HTTPStubsResponse(data: "<html>page not found</html>".data(using: .utf8)!, statusCode: 404, headers: nil)
+        }
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        let task = Task {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+
+        await discoveryMonitor.hasReceivedRequest()
+        task.cancel()
+
+        let result = await task.result
+        #expect(result.isCancellationError())
+
+        let restApiRootURL = await restApiRootURL(of: blog)
+        #expect(restApiRootURL == staleRootURL)
+    }
+
+    @Test
     func selfHostedSite() async throws {
         defer { HTTPStubs.removeAllStubs() }
 
