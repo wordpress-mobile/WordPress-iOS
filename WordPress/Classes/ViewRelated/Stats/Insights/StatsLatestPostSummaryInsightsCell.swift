@@ -193,6 +193,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
         siteStatsInsightsDelegate = delegate
         statSection = .insightsLatestPostSummary
+        selectionStyle = lastPostInsight == nil ? .none : .default
 
         guard let lastPostInsight else {
             toggleNoData(show: true)
