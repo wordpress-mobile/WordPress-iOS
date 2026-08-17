@@ -107,7 +107,7 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             break
         }
 
-        let export = try await makeExporter(for: url, settings: settings).export()
+        let export = try await makeExporter(for: url, expected: expected, settings: settings).export()
 
         guard let mimeType = export.url.typeIdentifier.flatMap(UTType.init)?.preferredMIMEType else {
             throw MediaURLExporter.URLExportError.unknownFileUTI
@@ -119,7 +119,11 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
 
     /// Builds an exporter configured from the app's Media settings, mirroring
     /// the option mapping in `MediaImportService`.
-    private func makeExporter(for url: URL, settings: MediaSettings) -> MediaURLExporter {
+    private func makeExporter(
+        for url: URL,
+        expected: MediaURLExporter.URLExportExpectation,
+        settings: MediaSettings
+    ) -> MediaURLExporter {
         let exporter = MediaURLExporter(url: url)
         // GutenbergKit deletes the processed file after uploading it, so the
         // export is written to a temporary directory rather than the uploads
@@ -136,7 +140,14 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
         imageOptions.maximumImageSize = maximumImageSize(from: settings)
         imageOptions.stripsGeoLocationIfNeeded = settings.removeLocationSetting
         imageOptions.imageCompressionQuality = settings.imageQualityForUpload.doubleValue
-        if let type = url.typeIdentifier.flatMap(UTType.init), !Self.webSafeImageTypes.contains(type) {
+        // Only meaningful for an image export: `exportImageType` is the
+        // destination type `MediaImageExporter` writes, and it also determines
+        // the output file extension. `exportVideo` ignores `imageOptions`, so
+        // setting it for a video would be misleading rather than harmless.
+        if case .image = expected,
+            let type = url.typeIdentifier.flatMap(UTType.init),
+            !Self.webSafeImageTypes.contains(type)
+        {
             imageOptions.exportImageType = UTType.jpeg.identifier
         }
         exporter.imageOptions = imageOptions
