@@ -408,8 +408,8 @@ import WordPressShared
         static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
         static let mostPopularTime = NSLocalizedString(
             "stats.insights.mostPopularCard.title",
-            value: "🔥 Most Popular Time",
-            comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string."
+            value: "Most Popular Time",
+            comment: "Insights 'Most Popular Time' header."
         )
         static let likesTotals = NSLocalizedString("Total Likes", comment: "Insights 'Total Likes' header")
         static let commentsTotals = NSLocalizedString("Total Comments", comment: "Insights 'Total Comments' header")
