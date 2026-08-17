@@ -85,8 +85,15 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
                 return .original
             }
 
-            // Skip processing when it would be a no-op: optimization and
-            // location stripping disabled, and the format is web-safe.
+            // Skip the export when nothing would change the file: no
+            // downscaling, no location stripping, and no format conversion.
+            //
+            // This is narrower than "processing changes nothing". With
+            // optimization off, `imageQualityForUpload` is still `.high`, so a
+            // web-safe image that reaches the exporter is re-encoded at that
+            // quality even though `imageSizeForUpload` leaves its dimensions
+            // alone. That mirrors `MediaImportService`, which maps the same
+            // settings the same way.
             if !settings.imageOptimizationEnabled,
                 !settings.removeLocationSetting,
                 let type,
