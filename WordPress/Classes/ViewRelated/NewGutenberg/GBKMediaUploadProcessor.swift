@@ -15,6 +15,20 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     private let allowableFileExtensions: Set<String>
     private let makeMediaSettings: @Sendable () -> MediaSettings
 
+    /// The temporary directory an export is written to.
+    ///
+    /// GutenbergKit deletes the processed file after uploading it, so exports
+    /// go to a temporary directory rather than the uploads directory tracked by
+    /// `MediaFileManager`.
+    ///
+    /// Every export gets its own directory. Destination names come from
+    /// `URL.incrementalFilename()`, a check-then-act `fileExists` loop with no
+    /// locking, and uploads are processed concurrently — one task per
+    /// connection — so sharing a directory lets two exports of the same source
+    /// name resolve to the same path and clobber each other. A per-export
+    /// directory removes the shared state instead of racing on it.
+    private let makeExportDirectory: @Sendable () -> MediaDirectory
+
     /// Raster image types the WordPress REST API reliably accepts. Other image
     /// formats (e.g. HEIC) are converted to JPEG during processing, mirroring
     /// `ItemProviderMediaExporter`.
@@ -23,13 +37,6 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     ///   format that ImageIO cannot decode or encode, so it never reaches the
     ///   exporter — `processFile` returns it unchanged (see below).
     private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg, .gif]
-
-    /// A fixed ID for the temporary directory exports are written to, so every
-    /// upload reuses the same directory instead of creating a new one.
-    ///
-    /// Stable across launches: a directory orphaned by a crash is reused rather
-    /// than accumulating alongside a new one.
-    private static let exportDirectoryID = UUID(uuidString: "1D8A4E5C-1F3B-4E7A-9C2D-6B0F8A5E3C71")!
 
     @MainActor
     convenience init(blog: Blog) {
@@ -47,17 +54,20 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     init(
         videoDurationLimit: TimeInterval?,
         allowableFileExtensions: Set<String>,
-        makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() }
+        makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() },
+        makeExportDirectory: @escaping @Sendable () -> MediaDirectory = { .temporary(id: UUID()) }
     ) {
         self.videoDurationLimit = videoDurationLimit
         self.allowableFileExtensions = allowableFileExtensions
         self.makeMediaSettings = makeMediaSettings
+        self.makeExportDirectory = makeExportDirectory
     }
 
     // MARK: - MediaUploadDelegate
 
     func processFile(at url: URL, mimeType: String, filename: String) async throws -> ProcessedProxyFile {
-        let expected = try MediaURLExporter.expectedExport(with: url)
+        let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType)
+        let expected = try Self.expectedExport(of: url, type: sourceType)
         let settings = makeMediaSettings()
 
         switch expected {
@@ -76,12 +86,10 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             }
             return .original
         case .image:
-            let type = url.typeIdentifier.flatMap(UTType.init)
-
             // SVG conforms to `UTType.image`, so it lands here, but ImageIO
             // cannot decode or encode it: the export would fail rather than
             // produce a file. Upload it unchanged, like a GIF.
-            if type == .svg {
+            if sourceType == .svg {
                 return .original
             }
 
@@ -96,8 +104,8 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             // settings the same way.
             if !settings.imageOptimizationEnabled,
                 !settings.removeLocationSetting,
-                let type,
-                Self.webSafeImageTypes.contains(type)
+                let sourceType,
+                Self.webSafeImageTypes.contains(sourceType)
             {
                 return .original
             }
@@ -107,67 +115,151 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             break
         }
 
-        let export = try await makeExporter(for: url, expected: expected, settings: settings).export()
+        let exportImageType = Self.exportImageType(for: expected, sourceType: sourceType)
+        let directory = makeExportDirectory()
 
-        guard let mimeType = export.url.typeIdentifier.flatMap(UTType.init)?.preferredMIMEType else {
-            throw MediaURLExporter.URLExportError.unknownFileUTI
+        do {
+            let export = try await makeExporter(
+                for: url,
+                expected: expected,
+                settings: settings,
+                exportImageType: exportImageType,
+                directory: directory
+            )
+            .export()
+
+            let mimeType = try Self.mimeType(of: export.url, exportImageType: exportImageType)
+            return .processed(export.url, mimeType: mimeType, filename: export.url.lastPathComponent)
+        } catch {
+            // Nothing else sweeps this directory: GutenbergKit removes only the
+            // file it is handed, and `MediaFileManager`'s cleanup covers the
+            // uploads directory alone. On the success path the directory is
+            // left holding the file GutenbergKit is about to upload, but a
+            // failure here would otherwise abandon a full-size export — and any
+            // directory the export already created — for the lifetime of the
+            // app's container.
+            try? FileManager.default.removeItem(at: directory.url)
+            throw error
         }
-        return .processed(export.url, mimeType: mimeType, filename: export.url.lastPathComponent)
     }
 
     // MARK: - Exporter configuration
 
     /// Builds an exporter configured from the app's Media settings, mirroring
     /// the option mapping in `MediaImportService`.
+    ///
+    /// Returns the concrete exporter for the branch rather than
+    /// `MediaURLExporter`, which re-derives the type from the path extension in
+    /// `exportURL` and so would reject a file classified via its reported MIME
+    /// type. `MediaImageExporter` reads the type from the file's contents with
+    /// `CGImageSourceGetType`, so it handles an extensionless image correctly.
     private func makeExporter(
         for url: URL,
         expected: MediaURLExporter.URLExportExpectation,
-        settings: MediaSettings
-    ) -> MediaURLExporter {
-        let exporter = MediaURLExporter(url: url)
-        // GutenbergKit deletes the processed file after uploading it, so the
-        // export is written to a temporary directory rather than the uploads
-        // directory tracked by `MediaFileManager`.
-        //
-        // Reuse one directory for every export rather than `MediaDirectory
-        // .temporary`, which mints a new UUID per access. GutenbergKit removes
-        // only the exported file, never its enclosing directories, so a fresh
-        // UUID each time would leave an empty `tmp/<uuid>/Media/` behind for
-        // every upload.
-        exporter.mediaDirectoryType = .temporary(id: Self.exportDirectoryID)
-
-        var imageOptions = MediaImageExporter.Options()
-        imageOptions.maximumImageSize = maximumImageSize(from: settings)
-        imageOptions.stripsGeoLocationIfNeeded = settings.removeLocationSetting
-        imageOptions.imageCompressionQuality = settings.imageQualityForUpload.doubleValue
-        // Only meaningful for an image export: `exportImageType` is the
-        // destination type `MediaImageExporter` writes, and it also determines
-        // the output file extension. `exportVideo` ignores `imageOptions`, so
-        // setting it for a video would be misleading rather than harmless.
-        if case .image = expected,
-            let type = url.typeIdentifier.flatMap(UTType.init),
-            !Self.webSafeImageTypes.contains(type)
-        {
-            imageOptions.exportImageType = UTType.jpeg.identifier
+        settings: MediaSettings,
+        exportImageType: UTType?,
+        directory: MediaDirectory
+    ) -> any MediaExporter {
+        switch expected {
+        case .video:
+            let exporter = MediaVideoExporter(url: url)
+            exporter.mediaDirectoryType = directory
+            var options = MediaVideoExporter.Options()
+            options.stripsGeoLocationIfNeeded = settings.removeLocationSetting
+            options.exportPreset = settings.maxVideoSizeSetting.videoPreset
+            options.durationLimit = videoDurationLimit
+            exporter.options = options
+            return exporter
+        case .image, .gif, .other:
+            // Only images reach the exporter: `.gif` and `.other` return
+            // `.original` before this point.
+            let exporter = MediaImageExporter(url: url)
+            exporter.mediaDirectoryType = directory
+            var options = MediaImageExporter.Options()
+            options.maximumImageSize = maximumImageSize(from: settings)
+            options.stripsGeoLocationIfNeeded = settings.removeLocationSetting
+            options.imageCompressionQuality = settings.imageQualityForUpload.doubleValue
+            // `exportImageType` is the destination type `MediaImageExporter`
+            // writes, and it also determines the output file extension. Left
+            // nil, the source type is kept.
+            options.exportImageType = exportImageType?.identifier
+            exporter.options = options
+            return exporter
         }
-        exporter.imageOptions = imageOptions
-
-        var videoOptions = MediaVideoExporter.Options()
-        videoOptions.stripsGeoLocationIfNeeded = settings.removeLocationSetting
-        videoOptions.exportPreset = settings.maxVideoSizeSetting.videoPreset
-        videoOptions.durationLimit = videoDurationLimit
-        exporter.videoOptions = videoOptions
-
-        var urlOptions = MediaURLExporter.Options()
-        urlOptions.allowableFileExtensions = allowableFileExtensions
-        urlOptions.stripsGeoLocationIfNeeded = settings.removeLocationSetting
-        exporter.urlOptions = urlOptions
-
-        return exporter
     }
 
     private func maximumImageSize(from settings: MediaSettings) -> CGFloat? {
         let maxUploadSize = settings.imageSizeForUpload
         return maxUploadSize < Int.max ? CGFloat(maxUploadSize) : nil
+    }
+
+    // MARK: - Type resolution
+
+    /// The type of the file to process.
+    ///
+    /// Resolved from the file itself, falling back to the type the editor
+    /// reported. The URL resolves its type from the path extension alone, and
+    /// an upload can arrive without one — GutenbergKit names the temp file
+    /// after the multipart `filename`, which the editor does not guarantee
+    /// carries an extension (its native inserter derives one from a URL path
+    /// segment). Such a file resolves to the generic `public.data`, which
+    /// conforms to no media type, so the export would be rejected outright.
+    private static func sourceType(of url: URL, reportedMIMEType: String) -> UTType? {
+        guard let type = url.typeIdentifier.flatMap(UTType.init), type != .data else {
+            return UTType(mimeType: reportedMIMEType)
+        }
+        return type
+    }
+
+    /// Classifies a file the way `MediaURLExporter.expectedExport(with:)` does,
+    /// but from an already-resolved type so the caller can supply one the URL
+    /// alone cannot provide.
+    private static func expectedExport(
+        of url: URL,
+        type: UTType?
+    ) throws -> MediaURLExporter.URLExportExpectation {
+        guard url.isFileURL else {
+            throw MediaURLExporter.URLExportError.invalidFileURL
+        }
+        guard let type else {
+            throw MediaURLExporter.URLExportError.unknownFileUTI
+        }
+        if type == .gif {
+            return .gif
+        } else if type.conforms(to: .video) || type.conforms(to: .movie) {
+            return .video
+        } else if type.conforms(to: .image) {
+            return .image
+        } else if type.conforms(to: .content) || type.conforms(to: .zip) {
+            return .other
+        }
+        throw MediaURLExporter.URLExportError.unsupportedFileType
+    }
+
+    /// The type `MediaImageExporter` should write, or `nil` to keep the source
+    /// type. Only image exports convert: everything the REST API accepts as-is
+    /// is left alone, and the rest becomes JPEG.
+    private static func exportImageType(
+        for expected: MediaURLExporter.URLExportExpectation,
+        sourceType: UTType?
+    ) -> UTType? {
+        guard case .image = expected, let sourceType else {
+            return nil
+        }
+        return webSafeImageTypes.contains(sourceType) ? nil : .jpeg
+    }
+
+    /// The MIME type of a finished export.
+    ///
+    /// An image export writes `exportImageType` when set, so that value is
+    /// authoritative and needs no round-trip through the output path. Only the
+    /// cases that keep the source type — every video, and a web-safe image —
+    /// fall back to reading the file back.
+    private static func mimeType(of url: URL, exportImageType: UTType?) throws -> String {
+        let type = exportImageType ?? url.typeIdentifier.flatMap(UTType.init)
+        guard let mimeType = type?.preferredMIMEType else {
+            throw MediaURLExporter.URLExportError.unknownFileUTI
+        }
+        return mimeType
     }
 }

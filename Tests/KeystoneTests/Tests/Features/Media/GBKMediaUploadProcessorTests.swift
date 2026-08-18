@@ -81,37 +81,64 @@ struct GBKMediaUploadProcessorTests {
         #expect(filename.hasSuffix(".jpg") || filename.hasSuffix(".jpeg"))
     }
 
-    /// GutenbergKit removes the exported file but never its enclosing
-    /// directories, so exports must share one directory rather than each
-    /// creating its own.
-    @Test func exportsShareOneTemporaryDirectory() async throws {
+    /// Destination names come from a check-then-act `fileExists` loop, and
+    /// GutenbergKit processes uploads concurrently, so exports of the same
+    /// source must not share a directory to race in.
+    @Test func concurrentExportsOfTheSameFileDoNotCollide() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
         settings.maxImageSizeSetting = 200
         let processor = makeProcessor(settings: settings)
         let url = try fixtureURL("test-image-device-photo-gps.jpg")
 
-        // Keep every export on disk until the end: deleting each one before the
-        // next would free its filename, so all three would collide on the same
-        // path and the directory count would match even if exports did not
-        // share a directory.
-        var outputURLs: [URL] = []
-        defer { outputURLs.forEach(cleanUp) }
-        for _ in 0..<3 {
-            let result = try await processor.processFile(
-                at: url,
-                mimeType: "image/jpeg",
-                filename: url.lastPathComponent
-            )
-            guard case .processed(let outputURL, _, _) = result else {
-                Issue.record("Expected a processed file")
-                return
+        let outputURLs = try await withThrowingTaskGroup(of: URL.self) { group in
+            for _ in 0..<8 {
+                group.addTask {
+                    let result = try await processor.processFile(
+                        at: url,
+                        mimeType: "image/jpeg",
+                        filename: url.lastPathComponent
+                    )
+                    guard case .processed(let outputURL, _, _) = result else {
+                        throw ProcessingError.expectedProcessedFile
+                    }
+                    return outputURL
+                }
             }
-            outputURLs.append(outputURL)
+            return try await group.reduce(into: [URL]()) { $0.append($1) }
+        }
+        defer { outputURLs.forEach(cleanUp) }
+
+        // Every export is its own file, and every one of them survived the
+        // others finishing rather than being overwritten or swept away.
+        #expect(Set(outputURLs).count == outputURLs.count)
+        for outputURL in outputURLs {
+            #expect(FileManager.default.fileExists(atPath: outputURL.path))
+            #expect(max(try imageSize(at: outputURL).width, try imageSize(at: outputURL).height) == 200)
+        }
+    }
+
+    /// A failed export must not leave its temporary directory behind: nothing
+    /// else sweeps it, so an abandoned export would outlive the app session.
+    ///
+    /// The video exporter throws after `makeLocalMediaURL` has already created
+    /// the directory, which is exactly what an implementation without the
+    /// failure-path cleanup would leak.
+    @Test func failedExportLeavesNoDirectoryBehind() async throws {
+        let directory = MediaDirectory.temporary(id: UUID())
+        let processor = GBKMediaUploadProcessor(
+            videoDurationLimit: 1,
+            allowableFileExtensions: [],
+            makeMediaSettings: makeSettingsFactory(makeSettings()),
+            makeExportDirectory: { directory }
+        )
+        let url = try fixtureURL("test-video-device-gps.m4v")
+
+        await #expect(throws: (any Error).self) {
+            try await processor.processFile(at: url, mimeType: "video/mp4", filename: url.lastPathComponent)
         }
 
-        #expect(Set(outputURLs).count == 3)
-        #expect(Set(outputURLs.map { $0.deletingLastPathComponent() }).count == 1)
+        #expect(!FileManager.default.fileExists(atPath: directory.url.path))
     }
 
     // MARK: - GIFs and other files
@@ -168,6 +195,64 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
+    // MARK: - Files without an extension
+
+    /// GutenbergKit names the temp file after the multipart `filename`, which
+    /// the editor does not guarantee carries an extension (its native inserter
+    /// derives one from a URL path segment). Such a file resolves to
+    /// `public.data`, so the reported MIME type has to stand in for the type.
+    @Test func extensionlessImageIsProcessedUsingReportedMIMEType() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.maxImageSizeSetting = 200
+        let processor = makeProcessor(settings: settings)
+        let url = try copyFixtureDroppingExtension("test-image-device-photo-gps.jpg")
+        defer { cleanUp(url) }
+
+        let result = try await processor.processFile(
+            at: url,
+            mimeType: "image/jpeg",
+            filename: url.lastPathComponent
+        )
+
+        guard case .processed(let outputURL, let mimeType, _) = result else {
+            Issue.record("Expected a processed file")
+            return
+        }
+        defer { cleanUp(outputURL) }
+        #expect(mimeType == "image/jpeg")
+        #expect(max(try imageSize(at: outputURL).width, try imageSize(at: outputURL).height) == 200)
+    }
+
+    /// The fallback only applies when the URL yields no type of its own — a
+    /// mismatched MIME type must not override what the file actually is.
+    @Test func fileExtensionWinsOverReportedMIMEType() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = false
+        settings.removeLocationSetting = false
+        let processor = makeProcessor(settings: settings)
+        let url = try fixtureURL("test-gif.gif")
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: url.lastPathComponent)
+
+        // Classified as a GIF from the extension, not as a JPEG from the
+        // reported type, so it passes through instead of being re-encoded.
+        guard case .original = result else {
+            Issue.record("Expected the original file to pass through")
+            return
+        }
+    }
+
+    @Test func extensionlessFileWithUnusableMIMETypeThrows() async throws {
+        let processor = makeProcessor(settings: makeSettings())
+        let url = try copyFixtureDroppingExtension("test-image-device-photo-gps.jpg")
+        defer { cleanUp(url) }
+
+        await #expect(throws: MediaURLExporter.URLExportError.self) {
+            try await processor.processFile(at: url, mimeType: "not-a-mime-type", filename: url.lastPathComponent)
+        }
+    }
+
     // MARK: - Videos
 
     @Test func videoExceedingDurationLimitThrows() async throws {
@@ -210,6 +295,17 @@ struct GBKMediaUploadProcessorTests {
         return url
     }
 
+    /// Copies a fixture to a temporary file with no path extension, mirroring
+    /// an upload whose multipart `filename` carried none.
+    private func copyFixtureDroppingExtension(_ filename: String) throws -> URL {
+        let source = try fixtureURL(filename)
+        let destination = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: false)
+        try FileManager.default.copyItem(at: source, to: destination)
+        #expect(destination.pathExtension.isEmpty)
+        return destination
+    }
+
     private func imageProperties(at url: URL) throws -> [CFString: Any] {
         let source = try #require(CGImageSourceCreateWithURL(url as CFURL, nil))
         let properties = try #require(CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any])
@@ -225,6 +321,10 @@ struct GBKMediaUploadProcessorTests {
 
     private func cleanUp(_ url: URL) {
         try? FileManager.default.removeItem(at: url)
+    }
+
+    private enum ProcessingError: Error {
+        case expectedProcessedFile
     }
 }
 
