@@ -5,6 +5,7 @@ import DesignSystem
 struct ReferrerStatsView: View {
     let referrer: TopListItem.Referrer
     let dateRange: StatsDateRange
+    var onMarkedAsSpam: () -> Void = {}
 
     private let imageSize: CGFloat = 28
 
@@ -164,7 +165,8 @@ struct ReferrerStatsView: View {
             TopListItemsView(
                 data: childrenChartData,
                 itemLimit: referrer.children.count,
-                dateRange: dateRange
+                dateRange: dateRange,
+                onReferrerMarkedAsSpam: onMarkedAsSpam
             )
         }
         .padding(.vertical, Constants.step2)
@@ -188,6 +190,7 @@ struct ReferrerStatsView: View {
             try await context.service.toggleSpamState(for: domain, currentValue: isMarkedAsSpam)
             // Update local state to reflect the change
             isMarkedAsSpam = true
+            onMarkedAsSpam()
         } catch {
             errorMessage =
                 error.localizedDescription.isEmpty

@@ -11,6 +11,8 @@ struct TopListScreenView: View {
     @Environment(\.context) var context
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
+    private let onRefresh: () -> Void
+
     init(
         selection: TopListViewModel.Selection,
         dateRange: StatsDateRange,
@@ -18,7 +20,9 @@ struct TopListScreenView: View {
         context: StatsContext,
         initialData: TopListData? = nil,
         filter: TopListViewModel.Filter? = nil,
+        onRefresh: @escaping () -> Void = {}
     ) {
+        self.onRefresh = onRefresh
         let configuration = TopListCardConfiguration(
             item: selection.item,
             metric: selection.metric
@@ -239,11 +243,17 @@ struct TopListScreenView: View {
                 previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
                 metric: viewModel.selection.metric,
                 maxValue: data.metrics.maxValue,
-                dateRange: viewModel.effectiveDateRange
+                dateRange: viewModel.effectiveDateRange,
+                onReferrerMarkedAsSpam: refreshReferrers
             )
             .frame(height: TopListItemView.defaultCellHeight)
         }
         .listRowInsets(EdgeInsets(top: Constants.step0_5 / 2, leading: 0, bottom: Constants.step0_5 / 2, trailing: 0))
+    }
+
+    private func refreshReferrers() {
+        viewModel.refresh()
+        onRefresh()
     }
 
     private func getDisplayedItems(

@@ -11,6 +11,7 @@ struct TopListItemView: View {
     let maxValue: Int
     let dateRange: StatsDateRange
     var totalValue: Int?
+    var onReferrerMarkedAsSpam: () -> Void = {}
 
     @State private var isPressed = false
 
@@ -170,7 +171,11 @@ private extension TopListItemView {
                 .environment(\.router, router)
             router.navigate(to: detailsView, title: Strings.AuthorDetails.title)
         case let referrer as TopListItem.Referrer:
-            let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
+            let detailsView = ReferrerStatsView(
+                referrer: referrer,
+                dateRange: dateRange,
+                onMarkedAsSpam: onReferrerMarkedAsSpam
+            )
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView, title: Strings.ReferrerDetails.title)
