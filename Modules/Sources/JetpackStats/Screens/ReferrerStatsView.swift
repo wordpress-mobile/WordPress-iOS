@@ -55,21 +55,23 @@ struct ReferrerStatsView: View {
     var headerCard: some View {
         VStack(spacing: Constants.step2) {
             referrerInfoRow
-            Divider()
-            markAsSpamButton
-                .confirmationDialog(
-                    Strings.ReferrerDetails.markAsSpam,
-                    isPresented: $showConfirmationDialog
-                ) {
-                    Button(Strings.ReferrerDetails.markAsSpam, role: .destructive) {
-                        Task {
-                            await markAsSpam()
+            if referrer.canMarkAsSpam {
+                Divider()
+                markAsSpamButton
+                    .confirmationDialog(
+                        Strings.ReferrerDetails.markAsSpam,
+                        isPresented: $showConfirmationDialog
+                    ) {
+                        Button(Strings.ReferrerDetails.markAsSpam, role: .destructive) {
+                            Task {
+                                await markAsSpam()
+                            }
                         }
+                        Button(Strings.Buttons.cancel, role: .cancel) {}
+                    } message: {
+                        Text(Strings.ReferrerDetails.confirmAsSpamMessage(domain: referrer.spamDomain ?? ""))
                     }
-                    Button(Strings.Buttons.cancel, role: .cancel) {}
-                } message: {
-                    Text(Strings.ReferrerDetails.confirmAsSpamMessage(domain: referrer.domain ?? ""))
-                }
+            }
         }
         .padding(Constants.step2)
         .cardStyle()
@@ -178,7 +180,7 @@ struct ReferrerStatsView: View {
     }
 
     private func markAsSpam() async {
-        guard let domain = referrer.domain else { return }
+        guard let domain = referrer.spamDomain else { return }
 
         isMarkingAsSpam = true
 
@@ -214,11 +216,13 @@ private extension TopListItem.Referrer {
     static let mock = TopListItem.Referrer(
         name: "Google Search",
         domain: "google.com",
+        url: nil,
         iconURL: URL(string: "https://www.google.com/favicon.ico"),
         children: [
             TopListItem.Referrer(
                 name: "wordpress development tutorial",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 850)
@@ -226,6 +230,7 @@ private extension TopListItem.Referrer {
             TopListItem.Referrer(
                 name: "swift programming blog",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 750)
@@ -233,6 +238,7 @@ private extension TopListItem.Referrer {
             TopListItem.Referrer(
                 name: "ios app development best practices",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 600)

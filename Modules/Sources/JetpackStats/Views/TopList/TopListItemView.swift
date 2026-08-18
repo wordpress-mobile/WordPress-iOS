@@ -270,6 +270,7 @@ private func makePreviewItems() -> some View {
             TopListItem.Referrer(
                 name: "Google Search",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 50000)
@@ -281,6 +282,7 @@ private func makePreviewItems() -> some View {
             TopListItem.Referrer(
                 name: "Direct Traffic",
                 domain: nil,
+                url: nil,
                 iconURL: nil,
                 children: [],
                 metrics: SiteMetricsSet(views: 12300)
