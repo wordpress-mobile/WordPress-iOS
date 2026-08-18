@@ -183,6 +183,9 @@ steps:
       - linters_group
       - prototype_builds_group
       - unit_tests_group
+      # The TestFlight uploads outlast every other group, so without this the analysis
+      # runs before they finish and reports a failing build as clean.
+      - testflight_builds_group
     allow_dependency_failure: true
     agents:
       queue: upload
