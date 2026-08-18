@@ -38,7 +38,7 @@ final class ActivityLogsViewModel: ObservableObject {
     /// The backup list is exempt: it shows rewindable events only, which all
     /// belong to the `rewind` group, and its entry point has its own gating.
     var excludedActivityGroups: [String] {
-        if isBackupMode || blog.planActiveFeatures?.contains("backups-self-serve") == true {
+        if isBackupMode || blog.hasPlanFeature(.backupsSelfServe) {
             return []
         }
         return ["rewind", "scan"]
