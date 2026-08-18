@@ -10,13 +10,10 @@ fi
 echo '--- :robot_face: Use bot for Git operations'
 source use-bot-for-git
 
-.buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
+checkout_release_branch "$RELEASE_NUMBER"
 
 echo '--- :ruby: Setup Ruby tools'
 install_gems
-
-echo '--- :closed_lock_with_key: Access secrets'
-bundle exec fastlane run configure_apply
 
 echo '--- :shipit: Finalize release'
 bundle exec fastlane finalize_release skip_confirm:true

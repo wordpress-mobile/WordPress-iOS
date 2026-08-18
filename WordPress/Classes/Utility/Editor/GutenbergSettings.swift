@@ -22,15 +22,26 @@ class GutenbergSettings {
             let url = urlString(fromBlogURL: url)
             return "com.wordpress.gutenberg-theme-styles-" + url
         }
+        static func thirdPartyBlocksEnabled(forBlogURL url: String?) -> String {
+            let url = urlString(fromBlogURL: url)
+            return "com.wordpress.gutenberg-third-party-blocks-" + url
+        }
+        /// Keyed on the blog rather than its URL, so the record survives a site changing address.
+        ///
+        /// Reading and writing must agree exactly: `hasProbedSupport(for:blog:)` tells "the server
+        /// said no" from "we never asked" purely by whether this key is present.
+        static func supports(_ feature: WordPressClient.Feature, forBlog blog: Blog) -> String {
+            "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+        }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
         private static func urlString(fromBlogURL url: String?) -> String {
-            return (url ?? "")
-            // New sites will add a slash at the end of URL.
-            // This is removed when the URL is refreshed from remote.
-            // Removing trailing '/' in case there is one for consistency.
-            .removingTrailingCharacterIfExists("/")
+            (url ?? "")
+                // New sites will add a slash at the end of URL.
+                // This is removed when the URL is refreshed from remote.
+                // Removing trailing '/' in case there is one for consistency.
+                .removingTrailingCharacterIfExists("/")
         }
     }
 
@@ -91,7 +102,8 @@ class GutenbergSettings {
         let blogURLs: [String?] = coreDataStack.performQuery { context in
             guard let blogs = try? BlogQuery().blogs(in: context) else { return [] }
 
-            return blogs
+            return
+                blogs
                 .filter { $0.editor == .aztec }
                 .map { $0.url }
         }
@@ -100,13 +112,17 @@ class GutenbergSettings {
             database.set(true, forKey: Key.enabledOnce(forBlogURL: blogURL))
         }
         let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
-        editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
-            WPAnalytics.refreshMetadata()
-        })
+        editorSettingsService.migrateGlobalSettingToRemote(
+            isGutenbergEnabled: true,
+            overrideRemote: true,
+            onSuccess: {
+                WPAnalytics.refreshMetadata()
+            }
+        )
     }
 
     func shouldPresentInformativeDialog(for blog: Blog) -> Bool {
-        return database.bool(forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
+        database.bool(forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
     }
 
     func setShowPhase2Dialog(_ showDialog: Bool, forBlogURL url: String?) {
@@ -129,12 +145,16 @@ class GutenbergSettings {
         let mobileEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
         blog.mobileEditor = mobileEditor
 
-        coreDataStack.performAndSave({ context in
-            let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog
-            blogInContext?.mobileEditor = mobileEditor
-        }, completion: {
-            WPAnalytics.refreshMetadata()
-        }, on: .main)
+        coreDataStack.performAndSave(
+            { context in
+                let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog
+                blogInContext?.mobileEditor = mobileEditor
+            },
+            completion: {
+                WPAnalytics.refreshMetadata()
+            },
+            on: .main
+        )
     }
 
     private func shouldUpdateSettings(enabling isEnablingGutenberg: Bool, for blog: Blog) -> Bool {
@@ -162,12 +182,12 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return database.object(forKey: Key.enabledOnce(forBlogURL: blog.url)) != nil
+        database.object(forKey: Key.enabledOnce(forBlogURL: blog.url)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return !wasGutenbergEnabledOnce(for: post.blog)
+        !wasGutenbergEnabledOnce(for: post.blog)
     }
 
     func willShowDialog(for blog: Blog) {
@@ -196,7 +216,7 @@ class GutenbergSettings {
     // MARK: - Gutenberg Choice Logic
 
     func isSimpleWPComSite(_ blog: Blog) -> Bool {
-        return !blog.isAtomic && blog.isHostedAtWPcom
+        !blog.isAtomic && blog.isHostedAtWPcom
     }
 
     /// Call this method to know if Gutenberg must be used for the specified post.
@@ -249,6 +269,29 @@ class GutenbergSettings {
         database.set(isEnabled, forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
     }
 
+    // MARK: - Third-Party Blocks
+
+    /// Returns whether third-party blocks are enabled for the given blog.
+    ///
+    /// This is the user's per-site preference only. It is stored locally and is never
+    /// posted to the server. Whether the preference is honored also depends on the
+    /// remote feature flag and on the site advertising the capability.
+    ///
+    /// - Parameter blog: The blog to check the third-party blocks setting for
+    /// - Returns: true if the user opted in, false otherwise (default: false)
+    func isThirdPartyBlocksEnabled(for blog: Blog) -> Bool {
+        database.bool(forKey: Key.thirdPartyBlocksEnabled(forBlogURL: blog.url))
+    }
+
+    /// Sets whether third-party blocks are enabled for the given blog.
+    ///
+    /// - Parameters:
+    ///   - isEnabled: Whether to enable third-party blocks
+    ///   - blog: The blog to set the third-party blocks setting for
+    func setThirdPartyBlocksEnabled(_ isEnabled: Bool, for blog: Blog) {
+        database.set(isEnabled, forKey: Key.thirdPartyBlocksEnabled(forBlogURL: blog.url))
+    }
+
     /// Sets whether the given API feature is available for the given blog. This is unrelated to whether it's *enabled* for that blog.
     ///
     /// - Parameters:
@@ -256,8 +299,7 @@ class GutenbergSettings {
     ///   - blog: The blog to set theme styles setting for
     @discardableResult
     func setSupports(_ feature: WordPressClient.Feature, _ newValue: Bool, for blog: Blog) -> Self {
-        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
-        database.set(newValue, forKey: key)
+        database.set(newValue, forKey: Key.supports(feature, forBlog: blog))
         return self
     }
 
@@ -266,13 +308,27 @@ class GutenbergSettings {
     /// - Parameter blog: The blog to check the given API feature for
     /// - Returns: true if the feature is available, false if the server hasn't been queried for support yet, or if the server doesn't support it.
     func getSupports(_ feature: WordPressClient.Feature, for blog: Blog) -> Bool {
-        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+        let key = Key.supports(feature, forBlog: blog)
 
         if database.object(forKey: key) != nil {
             return database.bool(forKey: key)
         }
 
         return false
+    }
+
+    /// Returns whether the server has been queried for support of the given API feature on the given blog.
+    ///
+    /// `getSupports(_:for:)` reports `false` both for "the server said no" and for "we never
+    /// asked". Callers that need to tell those apart — to avoid presenting an unprobed site as
+    /// unsupported — should check this first.
+    ///
+    /// - Parameters:
+    ///   - feature: The API feature to check
+    ///   - blog: The blog to check the given API feature for
+    /// - Returns: true if a capability probe has recorded a result for this feature and blog
+    func hasProbedSupport(for feature: WordPressClient.Feature, blog: Blog) -> Bool {
+        database.object(forKey: Key.supports(feature, forBlog: blog)) != nil
     }
 }
 
@@ -290,17 +346,18 @@ public class GutenbergSettingsBridge: NSObject {
 
     @objc(isSimpleWPComSite:)
     public static func isSimpleWPComSite(_ blog: Blog) -> Bool {
-        return GutenbergSettings().isSimpleWPComSite(blog)
+        GutenbergSettings().isSimpleWPComSite(blog)
     }
 
     @objc(isThemeStylesEnabledForBlog:)
     public static func isThemeStylesEnabled(for blog: Blog) -> Bool {
-        return GutenbergSettings().isThemeStylesEnabled(for: blog)
+        GutenbergSettings().isThemeStylesEnabled(for: blog)
     }
 
     @objc(setThemeStylesEnabled:forBlog:)
     public static func setThemeStylesEnabled(_ isEnabled: Bool, for blog: Blog) {
         GutenbergSettings().setThemeStylesEnabled(isEnabled, for: blog)
+        invalidatePrefetchedEditor(for: blog)
     }
 
     @objc(isThemeStylesSupportedForBlog:)

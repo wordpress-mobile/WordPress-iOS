@@ -10,7 +10,7 @@ open class SwitchTableViewCell: WPTableViewCell {
 
     @objc open var name: String {
         get {
-            return textLabel?.text ?? String()
+            textLabel?.text ?? String()
         }
         set {
             textLabel?.text = newValue
@@ -19,11 +19,37 @@ open class SwitchTableViewCell: WPTableViewCell {
 
     @objc open var on: Bool {
         get {
-            return flipSwitch.isOn
+            flipSwitch.isOn
         }
         set {
             flipSwitch.isOn = newValue
         }
+    }
+
+    /// Whether the row can be toggled.
+    ///
+    /// Disabling the `flipSwitch` alone isn't enough: the whole row carries a tap gesture that
+    /// toggles the value, so the switch would still change when the row is tapped. A disabled row
+    /// also dims its label, to match how the switch reads.
+    @objc open var isEnabled: Bool = true {
+        didSet {
+            flipSwitch.isEnabled = isEnabled
+            tapGestureRecognizer.isEnabled = isEnabled
+            applyLabelColor()
+        }
+    }
+
+    private func applyLabelColor() {
+        textLabel?.textColor = isEnabled ? .label : .secondaryLabel
+    }
+
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // Callers that never touch `isEnabled` — most of them — would otherwise inherit both the
+        // flag and the dimmed label from whichever row last used this cell, with no `didSet` to
+        // put either back.
+        isEnabled = true
     }
 
     // MARK: - Initializers

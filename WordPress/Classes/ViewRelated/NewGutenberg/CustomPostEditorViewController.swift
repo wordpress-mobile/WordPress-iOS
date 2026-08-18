@@ -16,6 +16,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     let details: PostTypeDetailsWithEditContext
     let completion: () -> Void
     let editorService: CustomPostEditorService
+    private var editorSession: PostEditorAnalyticsSession?
 
     private lazy var primarySaveButton = UIBarButtonItem(primaryAction: savePostAction())
     private lazy var redoButton = UIBarButtonItem(
@@ -39,11 +40,21 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         details: PostTypeDetailsWithEditContext,
         initialSettings: PostSettings? = nil,
         initialContent: EditorContent? = nil,
+        entryPoint: PostEditorEntryPoint? = nil,
         completion: @escaping () -> Void
     ) {
         self.client = client
         self.details = details
         self.completion = completion
+        self.editorSession = entryPoint.map {
+            PostEditorAnalyticsSession(
+                editor: .gutenbergKit,
+                blog: blog,
+                postType: details.slug,
+                contentType: .init(content: initialContent?.content),
+                entryPoint: $0
+            )
+        }
 
         self.editorService = CustomPostEditorService(
             blog: blog,
@@ -86,6 +97,12 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         navigationItem.rightBarButtonItems = rightBarButtonItems()
         redoButton.isEnabled = false
         undoButton.isEnabled = false
+    }
+
+    override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        if editorSession?.started == false {
+            editorSession?.start()
+        }
     }
 
     override func editor(
@@ -134,7 +151,9 @@ private extension CustomPostEditorViewController {
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
             alert.addDestructiveActionWithTitle(PostEditorStrings.discardChanges) { [weak self] _ in
-                self?.navigationController?.dismiss(animated: true)
+                guard let self else { return }
+                self.endEditorSession(outcome: .discard)
+                self.navigationController?.dismiss(animated: true)
             }
             if post?.status ?? .draft == .draft {
                 alert.addAction(
@@ -153,7 +172,8 @@ private extension CustomPostEditorViewController {
             alert.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
             self.present(alert, animated: true)
         } else {
-            self.navigationController?.dismiss(animated: true)
+            endEditorSession(outcome: .cancel)
+            navigationController?.dismiss(animated: true)
         }
     }
 
@@ -229,6 +249,7 @@ private extension CustomPostEditorViewController {
             from: self,
             completion: { [weak self] result in
                 if case .published = result {
+                    self?.endEditorSession(outcome: .publish)
                     self?.completion()
                 }
             }
@@ -237,6 +258,12 @@ private extension CustomPostEditorViewController {
 
     private func separator() -> UIBarButtonItem {
         UIBarButtonItem(systemItem: .fixedSpace)
+    }
+
+    func endEditorSession(outcome: PostEditorAnalyticsSession.Outcome) {
+        guard let editorSession, editorSession.started else { return }
+        editorSession.end(outcome: outcome)
+        self.editorSession = nil
     }
 }
 

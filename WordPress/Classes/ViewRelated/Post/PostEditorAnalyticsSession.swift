@@ -15,11 +15,27 @@ struct PostEditorAnalyticsSession {
     private let startTime = DispatchTime.now().uptimeNanoseconds
 
     init(editor: Editor, post: AbstractPost) {
-        currentEditor = editor
-        postType = post.analyticsPostType ?? "unsupported"
-        blogID = post.blog.dotComID
-        blogType = post.blog.analyticsType.rawValue
-        contentType = ContentType(post: post).rawValue
+        self.init(
+            editor: editor,
+            blog: post.blog,
+            postType: post.analyticsPostType ?? "unsupported",
+            contentType: ContentType(post: post)
+        )
+    }
+
+    init(
+        editor: Editor,
+        blog: Blog,
+        postType: String,
+        contentType: ContentType,
+        entryPoint: PostEditorEntryPoint? = nil
+    ) {
+        self.currentEditor = editor
+        self.postType = postType
+        self.blogID = blog.dotComID
+        self.blogType = blog.analyticsType.rawValue
+        self.contentType = contentType.rawValue
+        self.entryPoint = entryPoint
     }
 
     mutating func start(unsupportedBlocks: [String] = []) {
@@ -37,7 +53,7 @@ struct PostEditorAnalyticsSession {
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
         let startupTimeMilliseconds = Int(Double(startupTimeNanoseconds) / 1_000_000)
-        var properties: [String: Any] = [ Property.startupTime: startupTimeMilliseconds ]
+        var properties: [String: Any] = [Property.startupTime: startupTimeMilliseconds]
 
         // Tracks custom event types can't be arrays so we need to convert this to JSON
         if let data = try? JSONSerialization.data(withJSONObject: unsupportedBlocks, options: .fragmentsAllowed) {
@@ -60,7 +76,8 @@ struct PostEditorAnalyticsSession {
         let properties: [String: Any] = [
             Property.outcome: outcome.rawValue,
             Property.entryPoint: (entryPoint ?? .unknown).rawValue
-        ].merging(commonProperties, uniquingKeysWith: { $1 })
+        ]
+        .merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
@@ -83,15 +100,16 @@ private extension PostEditorAnalyticsSession {
     }
 
     var commonProperties: [String: String] {
-        return [
+        [
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
             Property.postType: postType,
             Property.blogID: blogID?.stringValue,
             Property.blogType: blogType,
             Property.sessionId: sessionId,
-            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",
-        ].compactMapValues { $0 }
+            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
+        ]
+        .compactMapValues { $0 }
     }
 }
 
@@ -109,9 +127,15 @@ extension PostEditorAnalyticsSession {
         case classic
 
         init(post: AbstractPost) {
-            if post.isContentEmpty() {
+            self.init(content: post.content)
+        }
+
+        init(content: String?) {
+            // A duplication of `BasePost.isContentEmpty`
+            let emptyGutenbergParagraph = "<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"
+            if content?.isEmpty != false || content == emptyGutenbergParagraph {
                 self = .new
-            } else if post.containsGutenbergBlocks() {
+            } else if content?.contains("<!-- wp:") == true {
                 self = .gutenberg
             } else {
                 self = .classic

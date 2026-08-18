@@ -53,8 +53,9 @@ extension EditorConfiguration {
         .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
         .setAuthHeader(authHeader)
         .setShouldUseThemeStyles(GutenbergSettings().isThemeStylesEnabled(for: blog))
-        // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
-        .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
+        .setShouldUsePlugins(
+            Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword, keychain: keychain)
+        )
         .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
         .setEnableNetworkLogging(ExtensiveLogging.enabled)
         .setNetworkFallbackMode(.automatic)
@@ -74,11 +75,23 @@ extension EditorConfiguration {
     /// Returns true if the plugins should be enabled for the given blog.
     /// This is used to determine if the editor should load third-party
     /// plugins providing blocks.
-    static func shouldEnablePlugins(for blog: Blog, appPassword: String? = nil) -> Bool {
-        // Requires a Jetpack until editor assets endpoint is available in WordPress core.
-        // Requires a WP.com Simple site or an application password to authenticate all REST
-        // API requests, including those originating from non-core blocks.
-        RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isAccessibleThroughWPCom
-            && (blog.isHostedAtWPcom || appPassword != nil)
+    ///
+    /// Requires the remote feature flag, a site that can support the feature, and the user's
+    /// per-site opt-in. See `GutenbergSettings.resolveThirdPartyBlocks(for:)`.
+    static func shouldEnablePlugins(
+        for blog: Blog,
+        appPassword: String? = nil,
+        settings: GutenbergSettings = GutenbergSettings(),
+        keychain: KeychainAccessible = AppKeychain(),
+        isFeatureFlagEnabled: Bool = RemoteFeatureFlag.newGutenbergPlugins.enabled()
+    ) -> Bool {
+        settings
+            .resolveThirdPartyBlocks(
+                for: blog,
+                appPassword: appPassword,
+                keychain: keychain,
+                isFeatureFlagEnabled: isFeatureFlagEnabled
+            )
+            .shouldApplyInEditor
     }
 }

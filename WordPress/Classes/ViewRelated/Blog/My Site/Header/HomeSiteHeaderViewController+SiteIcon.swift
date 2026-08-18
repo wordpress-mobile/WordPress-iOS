@@ -90,7 +90,7 @@ extension HomeSiteHeaderViewController {
     func removeSiteIcon() {
         blogDetailHeaderView.updatingIcon = true
         blog.settings?.iconMediaID = NSNumber(value: 0)
-        updateBlogSettingsAndRefreshIcon()
+        updateBlogSettingsAndRefreshIcon(iconURL: nil)
         WPAnalytics.track(.siteSettingsSiteIconRemoved)
     }
 
@@ -101,17 +101,48 @@ extension HomeSiteHeaderViewController {
 
     func updateBlogIconWithMedia(_ media: Media) {
         blog.settings?.iconMediaID = media.mediaID
-        updateBlogSettingsAndRefreshIcon()
+        updateBlogSettingsAndRefreshIcon(iconURL: media.remoteURL)
     }
 
-    func updateBlogSettingsAndRefreshIcon() {
-        blogService.updateSettings(for: blog, success: { [weak self] in
+    /// - Parameter iconURL: the icon's image URL to reflect in the header once
+    ///   the write is acknowledged, or `nil` when the icon is removed. The
+    ///   header renders from `blog.icon`, which is otherwise only refreshed by
+    ///   `syncBlog`; that has no Core REST path, so we set it from this
+    ///   authoritative value to keep the header correct on every transport.
+    func updateBlogSettingsAndRefreshIcon(iconURL: String?) {
+        let changes = BlogSettingsChanges()
+        changes.iconMediaID = blog.settings?.iconMediaID
+        let blogID = blog.objectID
+        blogService.updateSettings(for: blog, changes: changes, success: { [weak self] in
             guard let self else {
                 return
             }
-            self.blogService.syncBlog(self.blog, success: {
-                self.blogDetailHeaderView.updatingIcon = false
-                self.blogDetailHeaderView.refreshIconImage()
+            self.blog.icon = iconURL
+            // Persist just this blog's icon URL so it survives a context reset
+            // or relaunch. Core REST has no `syncBlog` to repair `blog.icon`
+            // from the stored `iconMediaID`, and the settings write only saves
+            // the setting itself. Scoped to the icon field on a background
+            // context so no unrelated pending main-context edits are saved.
+            ContextManager.shared.performAndSave(
+                { context in
+                    guard let blog = (try? context.existingObject(with: blogID)) as? Blog else {
+                        return
+                    }
+                    blog.icon = iconURL
+                },
+                completion: nil,
+                on: .main
+            )
+            // Clear the loading state as soon as the write is acknowledged.
+            // `syncBlog` cannot gate this: it has no Core REST implementation
+            // and never invokes its callbacks for application-password sites,
+            // which would otherwise leave the icon spinner stuck forever.
+            self.blogDetailHeaderView.updatingIcon = false
+            self.blogDetailHeaderView.refreshIconImage()
+            // Best-effort metadata refresh so transports that support blog sync
+            // (WP.com REST, XML-RPC) reconcile `blog.icon` with the server.
+            self.blogService.syncBlog(self.blog, success: { [weak self] in
+                self?.blogDetailHeaderView.refreshIconImage()
             }, failure: { _ in })
         }, failure: { [weak self] _ in
             self?.showErrorForSiteIconUpdate()

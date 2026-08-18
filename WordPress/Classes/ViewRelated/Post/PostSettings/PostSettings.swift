@@ -61,6 +61,7 @@ struct PostSettings: Hashable {
     var otherTerms: [String: [Term]] = [:]
     var featuredImageID: Int?
     var metadata: PostMetadata
+    var bloggingPromptID: String?
 
     // MARK: - Post-specific
     var postFormat: String?
@@ -519,6 +520,13 @@ struct PostSettings: Hashable {
         if metadata.isJetpackNewsletterEmailDisabled {
             params.meta = (params.meta ?? PostMeta())
                 .addingJetpackNewsletterEmailDisabled(true)
+        }
+        if let bloggingPromptID {
+            params.meta = (params.meta ?? PostMeta())
+                .withValue(
+                    key: "_jetpack_blogging_prompt_key",
+                    value: .string(bloggingPromptID)
+                )
         }
 
         return params

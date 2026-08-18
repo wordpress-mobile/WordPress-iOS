@@ -14,13 +14,10 @@ steps:
       echo '--- :robot_face: Use bot for Git operations'
       source use-bot-for-git
 
-      .buildkite/commands/checkout-release-branch.sh "$RELEASE_VERSION"
+      checkout_release_branch "$RELEASE_VERSION"
 
       echo '--- :ruby: Setup Ruby tools'
       install_gems
-
-      echo '--- :closed_lock_with_key: Access secrets'
-      bundle exec fastlane run configure_apply
 
       echo '--- :package: Publish Release'
       bundle exec fastlane publish_release skip_confirm:true

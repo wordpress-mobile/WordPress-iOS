@@ -4,12 +4,21 @@ import WordPressCore
 import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
+import WordPressShared
 
 @objc public class BlogServiceRemoteCoreREST: NSObject, BlogServiceRemote {
     let client: WordPressClient
 
     @objc public convenience init?(blog: Blog) {
         guard let site = try? WordPressSite(blog: blog) else { return nil }
+
+        self.init(
+            client: WordPressClientFactory.shared.instance(for: site)
+        )
+    }
+
+    public convenience init?(blog: Blog, keychain: KeychainAccessible) {
+        guard let site = try? WordPressSite(blog: blog, keychain: keychain) else { return nil }
 
         self.init(
             client: WordPressClientFactory.shared.instance(for: site)
@@ -128,11 +137,13 @@ import WordPressAPIInternal
         settings.pingbackInboundEnabled = siteSettings.defaultPingStatus
             .map { NSNumber(value: $0.allowsDiscussion) }
 
+        // Site icon
+        settings.iconMediaID = NSNumber(value: siteSettings.siteIcon)
+
         // The following properties are not available from the Core REST API
         // site settings endpoint.
         settings.privacy = nil
         settings.languageID = nil
-        settings.iconMediaID = nil
         settings.gmtOffset = nil
         settings.commentsBlocklistKeys = nil
         settings.commentsCloseAutomatically = nil
@@ -163,6 +174,39 @@ import WordPressAPIInternal
         settings.sharingDisabledReblogs = nil
 
         return settings
+    }
+
+    /// Maps a sparse `RemoteBlogSettings` (only the caller's declared fields
+    /// are non-nil) to the Core REST update params. A nil field is left out
+    /// of the params so it is not written.
+    static func makeUpdateParams(from settings: RemoteBlogSettings) -> SiteSettingsUpdateParams {
+        // "standard" is stored as "0" server-side; mirror of the read mapping above.
+        let postFormat: String? = settings.defaultPostFormat.map { $0 == "standard" ? "0" : $0 }
+
+        // A plugin-defined custom status cannot be expressed by the app's
+        // Bool model. The field is only ever non-nil when the user toggled
+        // it, so writing open/closed is their explicit choice.
+        return SiteSettingsUpdateParams(
+            title: settings.name,
+            description: settings.tagline,
+            timezone: settings.timezoneString,
+            dateFormat: settings.dateFormat,
+            timeFormat: settings.timeFormat,
+            startOfWeek: settings.startOfWeek.flatMap { UInt64($0) },
+            defaultCategory: settings.defaultCategoryID.map { UInt64(truncating: $0) },
+            defaultPostFormat: postFormat,
+            postsPerPage: settings.postsPerPage.map { UInt64(truncating: $0) },
+            defaultPingStatus: settings.pingbackInboundEnabled.map { $0.boolValue ? .open : .closed },
+            defaultCommentStatus: settings.commentsAllowed.map { $0.boolValue ? .open : .closed },
+            siteIcon: settings.iconMediaID.map { UInt64(truncating: $0) }
+        )
+    }
+
+    /// Writes the declared settings (a sparse `RemoteBlogSettings`) through
+    /// the Core REST `/wp/v2/settings` endpoint.
+    func updateBlogSettings(_ settings: RemoteBlogSettings) async throws {
+        let params = Self.makeUpdateParams(from: settings)
+        _ = try await client.updateSiteSettings(params: params)
     }
 
     @objc public func syncBlogSettings(

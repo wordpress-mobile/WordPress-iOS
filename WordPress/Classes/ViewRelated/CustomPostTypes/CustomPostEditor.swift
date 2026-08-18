@@ -13,6 +13,7 @@ struct CustomPostEditor: View {
     let blog: Blog
     let initialSettings: PostSettings?
     let initialContent: EditorContent?
+    var entryPoint: PostEditorEntryPoint? = nil
 
     var body: some View {
         ViewControllerWrapper(
@@ -22,7 +23,8 @@ struct CustomPostEditor: View {
             details: details,
             blog: blog,
             initialSettings: initialSettings,
-            initialContent: initialContent
+            initialContent: initialContent,
+            entryPoint: entryPoint
         )
         .ignoresSafeArea()
     }
@@ -36,6 +38,7 @@ private struct ViewControllerWrapper: UIViewControllerRepresentable {
     let blog: Blog
     let initialSettings: PostSettings?
     let initialContent: EditorContent?
+    let entryPoint: PostEditorEntryPoint?
 
     @Environment(\.dismiss)
     var dismiss: DismissAction
@@ -48,7 +51,8 @@ private struct ViewControllerWrapper: UIViewControllerRepresentable {
             post: post,
             details: details,
             initialSettings: initialSettings,
-            initialContent: initialContent
+            initialContent: initialContent,
+            entryPoint: entryPoint
         ) {
             dismiss()
         }

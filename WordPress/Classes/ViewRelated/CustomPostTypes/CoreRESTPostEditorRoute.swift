@@ -5,7 +5,9 @@ import WordPressData
 struct CoreRESTPostEditorRoute: View {
     let blog: Blog
     let postType: PinnedPostType
+    let initialSettings: PostSettings?
     let initialContent: EditorContent?
+    let entryPoint: PostEditorEntryPoint
     weak var presentingViewController: UIViewController?
 
     @Environment(\.dismiss) private var dismiss
@@ -40,8 +42,9 @@ struct CoreRESTPostEditorRoute: View {
                             post: nil,
                             details: resolved.details,
                             blog: blog,
-                            initialSettings: nil,
-                            initialContent: initialContent
+                            initialSettings: initialSettings,
+                            initialContent: initialContent,
+                            entryPoint: entryPoint
                         )
                         .toolbar(.hidden, for: .navigationBar)
                     )

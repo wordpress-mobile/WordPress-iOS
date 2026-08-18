@@ -400,10 +400,6 @@ private struct PostStatsMetricsStripView: View {
         var body: some View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(spacing: 2) {
-                    Image(systemName: metric.systemImage)
-                        .font(.caption2.weight(.medium))
-                        .foregroundColor(.secondary)
-
                     Text(metric.localizedTitle.uppercased())
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
@@ -474,27 +470,23 @@ private struct PostStatsEmailMetricsView: View {
             EmailMetric(
                 id: "sends",
                 title: Strings.PostDetails.emailsSent.uppercased(),
-                value: emailData.totalSends ?? 0,
-                icon: "envelope"
+                value: emailData.totalSends ?? 0
             ),
             EmailMetric(
                 id: "rate",
                 title: Strings.PostDetails.openRate.uppercased(),
                 value: nil,
-                rate: emailData.opensRate,
-                icon: "percent"
+                rate: emailData.opensRate
             ),
             EmailMetric(
                 id: "unique",
                 title: Strings.PostDetails.uniqueOpens.uppercased(),
-                value: emailData.uniqueOpens ?? 0,
-                icon: "envelope.open"
+                value: emailData.uniqueOpens ?? 0
             ),
             EmailMetric(
                 id: "total",
                 title: Strings.PostDetails.totalOpens.uppercased(),
-                value: emailData.totalOpens ?? 0,
-                icon: "envelope.open.fill"
+                value: emailData.totalOpens ?? 0
             )
         ]
     }
@@ -504,7 +496,6 @@ private struct PostStatsEmailMetricsView: View {
         let title: String
         let value: Int?
         var rate: Double?
-        let icon: String
     }
 
     struct MetricView: View {
@@ -514,15 +505,9 @@ private struct PostStatsEmailMetricsView: View {
 
         var body: some View {
             VStack(alignment: .leading, spacing: 4) {
-                HStack(alignment: .center, spacing: 2) {
-                    Image(systemName: metric.icon)
-                        .font(.caption2.weight(.medium))
-                        .foregroundColor(.secondary)
-
-                    Text(metric.title)
-                        .font(.caption.weight(.medium))
-                        .foregroundColor(.secondary)
-                }
+                Text(metric.title)
+                    .font(.caption.weight(.medium))
+                    .foregroundColor(.secondary)
                 HStack {
                     Text(formattedValue)
                         .contentTransition(.numericText())

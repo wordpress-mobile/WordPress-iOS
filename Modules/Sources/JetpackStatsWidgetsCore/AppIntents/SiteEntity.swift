@@ -8,11 +8,16 @@ import Foundation
 /// the `identifier` of the legacy SiriKit `Site` object so that widget configurations created
 /// before the App Intents migration keep resolving to the same site.
 ///
-/// The "ios-widget.ILcGmf" localization key resolves against the app bundle on iOS 26 and
-/// the widget extension bundle on iOS 17; see `SelectSiteIntent` for the details.
+/// The "ios-widget.ILcGmf" localization key resolves against the app bundle on iOS 18 and
+/// later; see `SelectSiteIntent` for the details.
 public struct SiteEntity: AppEntity {
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("ios-widget.ILcGmf", defaultValue: "Site")
+        name: LocalizedStringResource(
+            "ios-widget.ILcGmf",
+            defaultValue: "Site",
+            table: "Localizable",
+            comment: "Name of the site entity used by widgets and App Intents."
+        )
     )
 
     public static var defaultQuery: SiteEntityQuery { SiteEntityQuery() }

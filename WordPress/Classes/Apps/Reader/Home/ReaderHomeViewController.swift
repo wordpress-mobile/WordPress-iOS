@@ -16,7 +16,12 @@ final class ReaderHomeViewController: ReaderStreamViewController {
         titleView.textLabel.text = SharedStrings.Reader.home
         navigationItem.titleView = titleView
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "wpl-add-card")?.resized(to: CGSize(width: 28, height: 28)), style: .plain, target: self, action: #selector(buttonCreatePostTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "wpl-add-card")?.resized(to: CGSize(width: 28, height: 28)),
+            style: .plain,
+            target: self,
+            action: #selector(buttonCreatePostTapped)
+        )
     }
 
     override func headerForStream(_ topic: ReaderAbstractTopic?, container: UITableViewController) -> UIView? {
@@ -44,12 +49,18 @@ final class ReaderHomeViewController: ReaderStreamViewController {
     }
 
     private func showCreatePostScreen(blog: Blog) {
-        let editorVC = EditPostViewController(blog: blog)
-        editorVC.entryPoint = .dashboard
-        present(editorVC, animated: true)
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: self,
+            context: NewPostEditorContext(entryPoint: .dashboard)
+        )
     }
 }
 
 private enum Strings {
-    static let homeDetails = NSLocalizedString("reader.home.header.details", value: "Stay current with the blogs you've subscribed to.", comment: "Screen header details")
+    static let homeDetails = NSLocalizedString(
+        "reader.home.header.details",
+        value: "Stay current with the blogs you've subscribed to.",
+        comment: "Screen header details"
+    )
 }

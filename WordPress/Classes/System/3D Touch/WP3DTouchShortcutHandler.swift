@@ -10,7 +10,7 @@ open class WP3DTouchShortcutHandler: NSObject {
         case Notifications
 
         var type: String {
-            return Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
+            Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
         }
     }
 
@@ -20,27 +20,32 @@ open class WP3DTouchShortcutHandler: NSObject {
         let rootViewPresenter = RootViewCoordinator.sharedPresenter
 
         switch shortcutItem.type {
-            case ShortcutIdentifier.LogIn.type:
-                WPAnalytics.track(.shortcutLogIn)
-                return true
-            case ShortcutIdentifier.NewPost.type:
-                WPAnalytics.track(.shortcutNewPost)
-                rootViewPresenter.showPostEditor(animated: false)
-                return true
-            case ShortcutIdentifier.Stats.type:
-                WPAnalytics.track(.shortcutStats)
-                clearCurrentViewController(rootViewPresenter.rootViewController)
-                if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
-                    rootViewPresenter.showStats(for: mainBlog, source: .shortcut)
-                }
-                return true
-            case ShortcutIdentifier.Notifications.type:
-                WPAnalytics.track(.shortcutNotifications)
-                clearCurrentViewController(rootViewPresenter.rootViewController)
-                rootViewPresenter.showNotificationsTab()
-                return true
-            default:
-                return false
+        case ShortcutIdentifier.LogIn.type:
+            WPAnalytics.track(.shortcutLogIn)
+            return true
+        case ShortcutIdentifier.NewPost.type:
+            WPAnalytics.track(.shortcutNewPost)
+            rootViewPresenter.showNewPostEditor(
+                context: NewPostEditorContext(
+                    analytics: .editorCreatedPost(source: "create_button", postType: "post"),
+                    animated: false
+                )
+            )
+            return true
+        case ShortcutIdentifier.Stats.type:
+            WPAnalytics.track(.shortcutStats)
+            clearCurrentViewController(rootViewPresenter.rootViewController)
+            if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+                rootViewPresenter.showStats(for: mainBlog, source: .shortcut)
+            }
+            return true
+        case ShortcutIdentifier.Notifications.type:
+            WPAnalytics.track(.shortcutNotifications)
+            clearCurrentViewController(rootViewPresenter.rootViewController)
+            rootViewPresenter.showNotificationsTab()
+            return true
+        default:
+            return false
         }
     }
 
