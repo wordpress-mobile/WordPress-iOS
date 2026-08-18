@@ -65,6 +65,48 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
 
     // MARK: - MediaUploadDelegate
 
+    /// Whether the file is worth materializing for `processFile`.
+    ///
+    /// GutenbergKit calls this from the multipart headers alone, before
+    /// streaming the upload to a temp file. Returning `false` skips that copy
+    /// and forwards the original request body to WordPress unchanged, so it is
+    /// only correct where `processFile` would return `.original` for *any*
+    /// Media settings — the metadata here cannot answer anything finer.
+    ///
+    /// This is a fast path, never a second place the policy lives: every `false`
+    /// below mirrors a branch of `processFile` that ignores `settings`.
+    /// Declining is also unrecoverable — the file is never seen again — so
+    /// anything undecidable from metadata claims the file and decides for real
+    /// once the bytes are on disk.
+    func handlesFile(ofType mimeType: String, named filename: String) -> Bool {
+        // The URL the file will be written to isn't available yet, so classify
+        // from the reported type alone, falling back to the filename extension
+        // when it is a placeholder. Both are untrustworthy in ways `processFile`
+        // can recover from and this cannot, hence the bias toward `true`.
+        guard let type = Self.type(ofMIMEType: mimeType) ?? Self.type(ofExtensionIn: filename) else {
+            return true
+        }
+        guard let expected = try? Self.expectedExport(of: nil, type: type) else {
+            return true
+        }
+        switch expected {
+        case .gif:
+            // Always returned unchanged, whatever the settings.
+            return false
+        case .other:
+            // Claim these only to enforce the site's allowed extensions, which
+            // `processFile` throws on. Declining would spend a full upload on a
+            // file the site rejects and surface the server's error instead of
+            // ours. With no restriction to enforce, there is nothing to do.
+            return !allowableFileExtensions.isEmpty
+        case .image, .video:
+            // An image may be downscaled, stripped, or converted, and a video
+            // is always exported. Both depend on settings or on the file's
+            // contents, so decide in `processFile`.
+            return true
+        }
+    }
+
     func processFile(at url: URL, mimeType: String, filename: String) async throws -> ProcessedProxyFile {
         let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType)
         let expected = try Self.expectedExport(of: url, type: sourceType)
@@ -102,6 +144,17 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             // quality even though `imageSizeForUpload` leaves its dimensions
             // alone. That mirrors `MediaImportService`, which maps the same
             // settings the same way.
+            //
+            // Skipping the export also skips the exporter's unconditional EXIF
+            // orientation normalization, so a sideways-shot photo uploads with
+            // its orientation flag intact rather than rotated into its pixels.
+            // That is deliberate: the normalization predates WordPress 5.3,
+            // whose `wp_create_image_subsizes` rotates on the server for every
+            // site, self-hosted included. Re-encoding here to bake in a
+            // rotation the server performs anyway would cost a lossy pass on a
+            // photo the user asked not to optimize.
+            //
+            // See WordPress-iOS#12703 and core changeset 46202.
             if !settings.imageOptimizationEnabled,
                 !settings.removeLocationSetting,
                 let sourceType,
@@ -206,19 +259,63 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     /// conforms to no media type, so the export would be rejected outright.
     private static func sourceType(of url: URL, reportedMIMEType: String) -> UTType? {
         guard let type = url.typeIdentifier.flatMap(UTType.init), type != .data else {
-            return UTType(mimeType: reportedMIMEType)
+            return type(ofMIMEType: reportedMIMEType)
         }
         return type
+    }
+
+    /// The type a reported MIME type names, or `nil` when it names nothing
+    /// usable.
+    ///
+    /// `UTType(mimeType:)` matches the bare `type/subtype` only, so the header
+    /// is normalized first. Two shapes reach us that it would otherwise miss:
+    ///
+    /// - Parameters and casing: `Content-Type` may carry parameters
+    ///   (`image/jpeg; charset=binary`) and its casing is not significant
+    ///   (RFC 9110 §8.3). Left as-is, both resolve to a dynamic UTType that
+    ///   conforms to nothing.
+    /// - Placeholders: GutenbergKit's multipart parser defaults a part with no
+    ///   `Content-Type` to `text/plain` (RFC 7578 §4.4), and it picks the file
+    ///   part by the presence of a `filename` parameter rather than by content
+    ///   type — so a real image can arrive labeled `text/plain`. Treating that
+    ///   as authoritative would classify a photo as a document.
+    private static func type(ofMIMEType mimeType: String) -> UTType? {
+        let normalized = mimeType.prefix(while: { $0 != ";" })
+            .trimmingCharacters(in: .whitespaces)
+            .lowercased()
+        guard !normalized.isEmpty, !placeholderMIMETypes.contains(normalized) else {
+            return nil
+        }
+        return UTType(mimeType: normalized)
+    }
+
+    /// MIME types that carry no information about the file. `octet-stream` is
+    /// the generic "unknown bytes" type; `text/plain` is what GutenbergKit's
+    /// multipart parser substitutes for a part that sent no `Content-Type`.
+    private static let placeholderMIMETypes: Set<String> = [
+        "application/octet-stream", "text/plain"
+    ]
+
+    /// The type a filename's extension names, for use before the file exists.
+    /// `processFile` reads the type off the file itself instead.
+    private static func type(ofExtensionIn filename: String) -> UTType? {
+        let fileExtension = (filename as NSString).pathExtension.lowercased()
+        guard !fileExtension.isEmpty else {
+            return nil
+        }
+        return UTType(filenameExtension: fileExtension)
     }
 
     /// Classifies a file the way `MediaURLExporter.expectedExport(with:)` does,
     /// but from an already-resolved type so the caller can supply one the URL
     /// alone cannot provide.
+    /// - Parameter url: The file being classified, or `nil` when only the type
+    ///   is known — `handlesFile` runs before the file exists.
     private static func expectedExport(
-        of url: URL,
+        of url: URL?,
         type: UTType?
     ) throws -> MediaURLExporter.URLExportExpectation {
-        guard url.isFileURL else {
+        if let url, !url.isFileURL {
             throw MediaURLExporter.URLExportError.invalidFileURL
         }
         guard let type else {

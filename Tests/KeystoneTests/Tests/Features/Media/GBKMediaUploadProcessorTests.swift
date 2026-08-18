@@ -253,6 +253,96 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
+    // MARK: - handlesFile
+
+    /// The invariant the metadata gate rests on: declining a file must mean
+    /// `processFile` would have returned it unchanged. If this fails, the gate
+    /// is skipping work that `processFile` would actually have done.
+    @Test(arguments: [true, false], [true, false])
+    func decliningAFileImpliesProcessFileWouldNotTouchIt(
+        optimizationEnabled: Bool,
+        removeLocation: Bool
+    ) async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = optimizationEnabled
+        settings.removeLocationSetting = removeLocation
+        settings.maxImageSizeSetting = 200
+        let processor = makeProcessor(settings: settings)
+
+        let fixtures: [(filename: String, mimeType: String)] = [
+            ("test-image-device-photo-gps.jpg", "image/jpeg"),
+            ("iphone-photo.heic", "image/heic"),
+            ("test-gif.gif", "image/gif"),
+            ("test-video-device-gps.m4v", "video/mp4")
+        ]
+
+        for fixture in fixtures {
+            guard !processor.handlesFile(ofType: fixture.mimeType, named: fixture.filename) else {
+                continue
+            }
+            let url = try fixtureURL(fixture.filename)
+            let result = try await processor.processFile(
+                at: url,
+                mimeType: fixture.mimeType,
+                filename: fixture.filename
+            )
+            guard case .original = result else {
+                Issue.record("Declined \(fixture.filename) but processFile would have processed it")
+                return
+            }
+        }
+    }
+
+    @Test func gifIsDeclinedBeforeBeingCopiedToDisk() {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(!processor.handlesFile(ofType: "image/gif", named: "animation.gif"))
+    }
+
+    @Test func imagesAndVideosAreAlwaysClaimed() {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(processor.handlesFile(ofType: "image/jpeg", named: "photo.jpg"))
+        #expect(processor.handlesFile(ofType: "image/heic", named: "photo.heic"))
+        #expect(processor.handlesFile(ofType: "video/mp4", named: "clip.mp4"))
+    }
+
+    /// A document is only worth claiming when there is a restriction to
+    /// enforce; otherwise `processFile` returns it unchanged.
+    @Test func documentsAreClaimedOnlyToEnforceAllowedExtensions() {
+        let unrestricted = makeProcessor(settings: makeSettings())
+        #expect(!unrestricted.handlesFile(ofType: "application/pdf", named: "doc.pdf"))
+
+        let restricted = GBKMediaUploadProcessor(
+            videoDurationLimit: nil,
+            allowableFileExtensions: ["pdf"],
+            makeMediaSettings: makeSettingsFactory(makeSettings())
+        )
+        #expect(restricted.handlesFile(ofType: "application/pdf", named: "doc.pdf"))
+    }
+
+    /// A part with no `Content-Type` arrives as `text/plain`, and a real
+    /// `Content-Type` may carry parameters or arbitrary casing. None of those
+    /// may cause a photo to be mistaken for a document and declined.
+    @Test(
+        arguments: [
+            "image/jpeg; charset=binary",
+            "IMAGE/JPEG",
+            "text/plain",
+            "application/octet-stream",
+            ""
+        ]
+    )
+    func imagesAreClaimedWhateverTheReportedMIMEType(mimeType: String) {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(processor.handlesFile(ofType: mimeType, named: "photo.jpg"))
+    }
+
+    /// Nothing decidable from the metadata means the file is claimed, so
+    /// `processFile` can read the type off the bytes instead.
+    @Test func unrecognizableMetadataIsClaimed() {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(processor.handlesFile(ofType: "text/plain", named: "upload"))
+    }
+
     // MARK: - Videos
 
     @Test func videoExceedingDurationLimitThrows() async throws {
