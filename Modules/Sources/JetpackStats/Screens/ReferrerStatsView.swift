@@ -39,7 +39,7 @@ struct ReferrerStatsView: View {
         .navigationTitle(Strings.ReferrerDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .alert(Strings.ReferrerDetails.errorAlertTitle, isPresented: $showErrorAlert) {
-            Button(Strings.Buttons.ok, role: .cancel) { }
+            Button(Strings.Buttons.ok, role: .cancel) {}
         } message: {
             Text(errorMessage)
         }
@@ -66,7 +66,7 @@ struct ReferrerStatsView: View {
                             await markAsSpam()
                         }
                     }
-                    Button(Strings.Buttons.cancel, role: .cancel) { }
+                    Button(Strings.Buttons.cancel, role: .cancel) {}
                 } message: {
                     Text(Strings.ReferrerDetails.confirmAsSpamMessage(domain: referrer.domain ?? ""))
                 }
@@ -170,7 +170,7 @@ struct ReferrerStatsView: View {
     }
 
     private var childrenChartData: TopListData {
-        return TopListData(
+        TopListData(
             item: .referrers,
             metric: .views,
             items: referrer.children
@@ -187,7 +187,9 @@ struct ReferrerStatsView: View {
             // Update local state to reflect the change
             isMarkedAsSpam = true
         } catch {
-            errorMessage = error.localizedDescription.isEmpty ? Strings.ReferrerDetails.markAsSpamError : error.localizedDescription
+            errorMessage =
+                error.localizedDescription.isEmpty
+                ? Strings.ReferrerDetails.markAsSpamError : error.localizedDescription
             showErrorAlert = true
         }
 
