@@ -21,8 +21,16 @@ struct ReferrerStatsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step3) {
-                headerCard
-                    .dynamicTypeSize(...DynamicTypeSize.xLarge)
+                VStack(alignment: .leading, spacing: Constants.step1) {
+                    headerCard
+                        .dynamicTypeSize(...DynamicTypeSize.xLarge)
+                    if referrer.canMarkAsSpam && !isMarkedAsSpam {
+                        Text(Strings.ReferrerDetails.markAsSpamExplanation)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, Constants.step2)
+                    }
+                }
                 if !referrer.children.isEmpty {
                     childrenCard
                 }
@@ -204,10 +212,21 @@ struct ReferrerStatsView: View {
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Without Spam Button") {
     NavigationView {
         ReferrerStatsView(
             referrer: .mock,
+            dateRange: Calendar.demo.makeDateRange(for: .thisYear)
+        )
+    }
+    .navigationViewStyle(.stack)
+    .tint(Constants.Colors.jetpack)
+}
+
+#Preview("With Spam Button") {
+    NavigationView {
+        ReferrerStatsView(
+            referrer: .spamEligibleMock,
             dateRange: Calendar.demo.makeDateRange(for: .thisYear)
         )
     }
@@ -248,5 +267,14 @@ private extension TopListItem.Referrer {
             )
         ],
         metrics: SiteMetricsSet(views: 2200)
+    )
+
+    static let spamEligibleMock = TopListItem.Referrer(
+        name: "google.com",
+        domain: mock.domain,
+        url: mock.url,
+        iconURL: mock.iconURL,
+        children: mock.children,
+        metrics: mock.metrics
     )
 }
