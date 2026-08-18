@@ -343,7 +343,7 @@ private extension ApplicationPasswordRepository {
     func updateRestAPIURLIfNeeded(_ blogId: TaggedManagedObjectID<Blog>) async throws -> ParsedUrl {
         let (siteUrl, restApiRootUrl) = try await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
-            return try (blog.getUrlString(), blog.restApiRootURL)
+            return try (blog.getUrl(), blog.restApiRootURL)
         }
 
         // A stored API root on a different host than the site is stale and must be rediscovered.
@@ -352,7 +352,7 @@ private extension ApplicationPasswordRepository {
         // change also leaves the stored root pointing at the old host.
         if let restApiRootUrl,
             let parsed = try? ParsedUrl.parse(input: restApiRootUrl),
-            host(of: restApiRootUrl) == host(of: siteUrl)
+            parsed.asURL().host?.lowercased() == siteUrl.host?.lowercased()
         {
             return parsed
         }
@@ -361,7 +361,7 @@ private extension ApplicationPasswordRepository {
         let loginClient = WordPressLoginClient(urlSession: session)
         let apiRootURL: ParsedUrl
         do {
-            apiRootURL = try await loginClient.details(ofSite: siteUrl).apiRootUrl
+            apiRootURL = try await loginClient.details(ofSite: siteUrl.absoluteString).apiRootUrl
         } catch {
             // A cancelled discovery surfaces as a discovery failure, not as a `CancellationError`,
             // so check for cancellation explicitly. Falling back on cancellation would let a
@@ -388,10 +388,6 @@ private extension ApplicationPasswordRepository {
         }
 
         return apiRootURL
-    }
-
-    private func host(of urlString: String) -> String? {
-        URL(string: urlString)?.host?.lowercased()
     }
 
     func updateSiteUsernameIfNeeded(_ blogId: TaggedManagedObjectID<Blog>) async throws -> String {
