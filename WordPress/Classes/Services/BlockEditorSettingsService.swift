@@ -204,6 +204,6 @@ private extension BlockEditorSettingsService {
         let endpoint = isBlockEditorSettings ? "wp-block-editor" : "theme_supports"
         let properties: [AnyHashable: Any] = ["endpoint": endpoint,
                                               "full_site_editing": "\(isFSE)"]
-        WPAnalytics.track(.gutenbergEditorSettingsFetched, properties: properties)
+        WPAnalytics.track(.gutenbergEditorSettingsFetched, properties: properties, blog: blog)
     }
 }
