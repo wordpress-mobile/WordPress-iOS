@@ -76,6 +76,114 @@ class ApplicationPasswordsRepositoryTests {
     }
 
     @Test
+    func staleRestApiRootUrlIsRediscovered() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+        // A WP.com proxy API root saved while the site was a Simple site (CMM-2282).
+        try await setRestApiRootURL("https://public-api.wordpress.com/wp-json/?rest_route=/sites/atomic.com", of: blog)
+
+        stubWPComProxyRestNoRoute()
+        stubApiDiscovery(siteHost: "atomic.com")
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let restApiRootURL = await restApiRootURL(of: blog)
+        #expect(restApiRootURL == "https://atomic.com/wp-json/")
+    }
+
+    @Test
+    func matchingRestApiRootUrlSkipsRediscovery() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+
+        let discoveryMonitor = Monitor()
+        stubApiDiscovery(siteHost: "atomic.com", monitor: discoveryMonitor)
+        stubCurrentApplicationPassword(host: "atomic.com")
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        #expect(discoveryMonitor.numberOfRequests == 0)
+
+        let restApiRootURL = await restApiRootURL(of: blog)
+        #expect(restApiRootURL == "https://atomic.com/wp-json")
+    }
+
+    @Test
+    func staleRestApiRootUrlKeptWhenRediscoveryFails() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let staleRootURL = "https://public-api.wordpress.com/wp-json/?rest_route=/sites/atomic.com"
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+        try await setRestApiRootURL(staleRootURL, of: blog)
+
+        stubWPComProxyRestNoRoute()
+        stubApiDiscoveryFailure(siteHost: "atomic.com")
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let restApiRootURL = await restApiRootURL(of: blog)
+        #expect(restApiRootURL == staleRootURL)
+    }
+
+    @Test
+    func cancelDuringStaleRestApiRootUrlRediscovery() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let staleRootURL = "https://public-api.wordpress.com/wp-json/?rest_route=/sites/atomic.com"
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+        try await setRestApiRootURL(staleRootURL, of: blog)
+
+        // Discovery that can never succeed: a slow homepage and a 404 API root. Without this,
+        // discovery may still succeed after cancellation and `WordPressLoginClient.details`
+        // itself reports the cancellation, hiding the fallback path under test.
+        let discoveryMonitor = Monitor(delay: 0.5)
+        stubWPComProxyRestNoRoute()
+        stub(condition: isHost("atomic.com") && isPath("/")) { _ in
+            discoveryMonitor.requestReceived()
+
+            let response = HTTPStubsResponse(
+                data: "<html>homepage</html>".data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Link": "<https://atomic.com/wp-json/>; rel=\"https://api.w.org/\""]
+            )
+            response.responseTime = 0.5
+            return response
+        }
+        stub(condition: isHost("atomic.com") && isPath("/wp-json")) { _ in
+            HTTPStubsResponse(data: "<html>page not found</html>".data(using: .utf8)!, statusCode: 404, headers: nil)
+        }
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        let task = Task {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+
+        await discoveryMonitor.hasReceivedRequest()
+        task.cancel()
+
+        let result = await task.result
+        #expect(result.isCancellationError())
+
+        let restApiRootURL = await restApiRootURL(of: blog)
+        #expect(restApiRootURL == staleRootURL)
+    }
+
+    @Test
     func selfHostedSite() async throws {
         defer { HTTPStubs.removeAllStubs() }
 
@@ -325,6 +433,27 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
+    func setRestApiRootURL(_ url: String, of blog: TaggedManagedObjectID<Blog>) async throws {
+        try await coreDataStack.performAndSave { context in
+            try context.existingObject(with: blog).restApiRootURL = url
+        }
+    }
+
+    func restApiRootURL(of blog: TaggedManagedObjectID<Blog>) async -> String? {
+        await coreDataStack.performQuery { context in
+            (try? context.existingObject(with: blog))?.restApiRootURL
+        }
+    }
+
+    /// WP.com does not serve `?rest_route=/sites/{site}/...` URLs; they all return `rest_no_route`.
+    func stubWPComProxyRestNoRoute() {
+        stub(condition: isHost("public-api.wordpress.com") && isPath("/wp-json")) { _ in
+            let json =
+                #"{"code":"rest_no_route","message":"No route was found matching the URL and request method.","data":{"status":404}}"#
+            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 404, headers: nil)
+        }
+    }
+
     func createSelfHostedSite(host: String) async throws -> TaggedManagedObjectID<Blog> {
         try await coreDataStack.performAndSave { context in
             let blog = Blog(context: context)
@@ -567,9 +696,11 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
-    func stubApiDiscovery(siteHost: String) {
+    func stubApiDiscovery(siteHost: String, monitor: Monitor? = nil) {
         stub(condition: isHost(siteHost) && isPath("/")) { _ in
-            HTTPStubsResponse(
+            monitor?.requestReceived()
+
+            return HTTPStubsResponse(
                 data: "<html>homepage</html>".data(using: .utf8)!,
                 statusCode: 200,
                 headers: ["Link": "<https://\(siteHost)/wp-json/>; rel=\"https://api.w.org/\""]

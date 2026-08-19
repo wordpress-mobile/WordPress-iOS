@@ -88,6 +88,11 @@ actor ApplicationPasswordRepository {
     }
 
     /// When returning true, a valid application password is guaranteed to be returned by the `Blog.getApplicationToken` function.
+    ///
+    /// This function is safe to call multiple times, but every call performs real work, including
+    /// HTTP requests (password validation, and REST API root rediscovery when the stored root is
+    /// stale). Limit calls to once per "site launch" (app launch, switching site, etc.) to avoid
+    /// that unnecessary work.
     func createPasswordIfNeeded(for blogId: TaggedManagedObjectID<Blog>) async throws {
         if let _ = try await validatePasswords(in: blogId) {
             return
@@ -343,17 +348,44 @@ private extension ApplicationPasswordRepository {
     func updateRestAPIURLIfNeeded(_ blogId: TaggedManagedObjectID<Blog>) async throws -> ParsedUrl {
         let (siteUrl, restApiRootUrl) = try await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
-            return try (blog.getUrlString(), blog.restApiRootURL)
+            return try (blog.getUrl(), blog.restApiRootURL)
+        }
+
+        // A stored API root on a different host than the site is stale and must be rediscovered.
+        // Notably, WP.com Simple sites advertise a `public-api.wordpress.com/wp-json/?rest_route=...`
+        // API root, which stops working once the site moves to Atomic (CMM-2282). A site's domain
+        // change also leaves the stored root pointing at the old host.
+        if let restApiRootUrl,
+            let parsed = try? ParsedUrl.parse(input: restApiRootUrl),
+            parsed.asURL().host?.lowercased() == siteUrl.host?.lowercased()
+        {
+            return parsed
         }
 
         let session = URLSession(configuration: .ephemeral)
         let loginClient = WordPressLoginClient(urlSession: session)
         let apiRootURL: ParsedUrl
-        if let restApiRootUrl, let parsed = try? ParsedUrl.parse(input: restApiRootUrl) {
-            apiRootURL = parsed
-        } else {
-            apiRootURL = try await loginClient.details(ofSite: siteUrl).apiRootUrl
+        do {
+            apiRootURL = try await loginClient.details(ofSite: siteUrl.absoluteString).apiRootUrl
+        } catch {
+            // A cancelled discovery surfaces as a discovery failure, not as a `CancellationError`,
+            // so check for cancellation explicitly. Falling back on cancellation would let a
+            // cancelled operation continue running.
+            try Task.checkCancellation()
 
+            // Rediscovery of a stale root is best-effort. Keep using the stored root when
+            // discovery fails (e.g. the site is temporarily unreachable), rather than breaking
+            // flows that used to work with it.
+            if !error.isCancellationError(),
+                let restApiRootUrl,
+                let stored = try? ParsedUrl.parse(input: restApiRootUrl)
+            {
+                return stored
+            }
+            throw error
+        }
+
+        if apiRootURL.url() != restApiRootUrl {
             try await coreDataStack.performAndSave { context in
                 let blog = try context.existingObject(with: blogId)
                 blog.restApiRootURL = apiRootURL.url()
