@@ -88,6 +88,11 @@ actor ApplicationPasswordRepository {
     }
 
     /// When returning true, a valid application password is guaranteed to be returned by the `Blog.getApplicationToken` function.
+    ///
+    /// This function is safe to call multiple times, but every call performs real work, including
+    /// HTTP requests (password validation, and REST API root rediscovery when the stored root is
+    /// stale). Limit calls to once per "site launch" (app launch, switching site, etc.) to avoid
+    /// that unnecessary work.
     func createPasswordIfNeeded(for blogId: TaggedManagedObjectID<Blog>) async throws {
         if let _ = try await validatePasswords(in: blogId) {
             return
