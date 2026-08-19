@@ -16,7 +16,8 @@ import WordPressData
     }
 
     @objc public class func trackBlazeEntryPointDisplayed(source: BlazeSource) {
-        BlazeEventsTracker.trackEntryPointDisplayed(for: source)
+        // This ObjC bridge has no site in scope, so the event is tracked without a blog_id.
+        BlazeEventsTracker.trackEntryPointDisplayed(for: source, blogProperties: nil)
     }
 
     @objc public class var isWordPress: Bool {
