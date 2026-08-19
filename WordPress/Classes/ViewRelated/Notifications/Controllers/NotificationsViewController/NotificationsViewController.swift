@@ -180,8 +180,11 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         // While we're onscreen, please, update rows with animations
         tableViewHandler?.updateRowAnimation = .fade
 
-        // Tracking
-        WPAnalytics.track(WPAnalyticsStat.openedNotificationsList)
+        // Tracking. The notifications list spans all sites, so there is no site truly
+        // scoped to this event. Attach the currently visible (or last used) site to
+        // give the account-level event a blog_id, matching how other tab-access events
+        // are tracked.
+        WPAppAnalytics.track(.openedNotificationsList, blog: RootViewCoordinator.sharedPresenter.currentOrLastBlog())
 
         // Notifications
         startListeningToNotifications()
