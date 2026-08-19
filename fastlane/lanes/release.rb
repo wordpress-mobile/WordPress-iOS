@@ -92,17 +92,18 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     # Copy the branch protection settings from the default branch to the new release branch
-    copy_branch_protection(
-      repository: GITHUB_REPO,
-      from_branch: DEFAULT_BRANCH,
-      to_branch: release_branch_name
-    )
-    # But allow admins to bypass restrictions, so that wpmobilebot can push to the release branch directly
-    set_branch_protection(
-      repository: GITHUB_REPO,
-      branch: release_branch_name,
-      enforce_admins: false
-    )
+    # Temporary workaround. See here for context: https://linear.app/a8c/issue/AINFRA-2937
+    # copy_branch_protection(
+    #   repository: GITHUB_REPO,
+    #   from_branch: DEFAULT_BRANCH,
+    #   to_branch: release_branch_name
+    # )
+    # # But allow admins to bypass restrictions, so that wpmobilebot can push to the release branch directly
+    # set_branch_protection(
+    #   repository: GITHUB_REPO,
+    #   branch: release_branch_name,
+    #   enforce_admins: false
+    # )
 
     begin
       # Move PRs to next milestone
