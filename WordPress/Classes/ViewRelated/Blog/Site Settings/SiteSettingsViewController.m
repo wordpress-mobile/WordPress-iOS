@@ -1122,7 +1122,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"")];
 
-    NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
+    NSURL *xmlRpcURL = self.blog.xmlrpcURL;
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRpcURL userAgent:[WPUserAgent wordPressUserAgent]];
     __weak __typeof__(self) weakSelf = self;
     [api checkCredentials:self.username password:self.password success:^(id __unused responseObject, NSHTTPURLResponse *__unused httpResponse) {
