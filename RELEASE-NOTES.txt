@@ -5,6 +5,7 @@
 * [*] Stats: Fix the screen getting stuck on a loading indicator for self-hosted sites that are not connected to Jetpack [#25858]
 * [*] Stats: Fix an issue where new post may not appear in the Subscribers -> Emails card [#25895]
 * [*] [internal] Experimental Gutenberg editor: add a per-site "Use Third-Party Blocks (Beta)" toggle to Site Settings, matching Android [#25889]
+* [*] Fixes an isuse where back up logs incorrectly show up in some Personal plan sites
 
 27.1
 -----
