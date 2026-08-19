@@ -82,7 +82,7 @@ final class BlogDashboardViewController: UIViewController {
             cards.forEach(trackCardViewed)
         }
 
-        WPAnalytics.track(.mySiteDashboardShown)
+        WPAnalytics.track(.mySiteDashboardShown, blog: blog)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
