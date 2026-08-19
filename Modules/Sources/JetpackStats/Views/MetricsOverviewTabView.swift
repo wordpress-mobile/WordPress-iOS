@@ -97,18 +97,11 @@ private struct MetricItemView<Metric: MetricType>: View {
     }
 
     private var headerView: some View {
-        HStack(spacing: 2) {
-            if showTrend {
-                Image(systemName: data.metric.systemImage)
-                    .font(.caption2.weight(.medium))
-                    .scaleEffect(x: 0.9, y: 0.9)
-            }
-            Text(data.metric.localizedTitle.uppercased())
-                .font(.caption.weight(.medium))
-        }
-        .foregroundColor(isSelected ? .primary : .secondary)
-        .animation(.easeInOut(duration: 0.25), value: isSelected)
-        .padding(.trailing, 4) // Visually spacing matters less than for metricsView
+        Text(data.metric.localizedTitle.uppercased())
+            .font(.caption.weight(.medium))
+            .foregroundColor(isSelected ? .primary : .secondary)
+            .animation(.easeInOut(duration: 0.25), value: isSelected)
+            .padding(.trailing, 4) // Visually spacing matters less than for metricsView
     }
 
     private var metricsView: some View {

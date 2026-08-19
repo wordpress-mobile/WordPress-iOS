@@ -28,7 +28,9 @@ extension SiteSettingsViewController {
         let view = SiteSettingsPrivacyPicker(blog: blog, selection: blog.siteVisibility) { [weak self] in
             guard let self, self.blog.siteVisibility != $0 else { return }
             self.blog.siteVisibility = $0
-            self.saveSettings()
+            let changes = BlogSettingsChanges()
+            changes.privacy = NSNumber(value: $0.rawValue)
+            self.saveSettings(with: changes)
             self.trackSettingsChange(fieldName: "site_settings", value: $0.rawValue)
         }
         let viewController = UIHostingController(rootView: view)
@@ -90,7 +92,16 @@ extension SiteSettingsViewController {
             return
         }
 
-        EditorDependencyManager.shared.fetchEditorCapabilities(for: self.blog)
+        // The probe is asynchronous, and the editor rows are built from its results. Without
+        // reloading when it lands, the rows keep whatever state they were built with — which,
+        // on first load, is before any capability is known.
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+
+            try? await EditorDependencyManager.shared.fetchEditorCapabilities(for: self.blog)
+
+            self.reloadSections()
+        }
     }
 
     // MARK: - Timezone
@@ -151,7 +162,10 @@ extension SiteSettingsViewController {
         let view = TimeZoneSelectorView(selectedValue: timezoneValue) { [weak self] newValue in
             self?.blog.settings?.gmtOffset = newValue.gmtOffset as NSNumber?
             self?.blog.settings?.timezoneString = newValue.timezoneString
-            self?.saveSettings()
+            let changes = BlogSettingsChanges()
+            changes.gmtOffset = newValue.gmtOffset as NSNumber?
+            changes.timezoneString = newValue.timezoneString
+            self?.saveSettings(with: changes)
             self?
                 .trackSettingsChange(
                     fieldName: "timezone",
@@ -185,7 +199,9 @@ extension SiteSettingsViewController {
         }
         pickerViewController.onChange = { [weak self] (_: Bool, newValue: Int) in
             self?.blog.settings?.postsPerPage = newValue as NSNumber?
-            self?.saveSettings()
+            let changes = BlogSettingsChanges()
+            changes.postsPerPage = newValue as NSNumber
+            self?.saveSettings(with: changes)
             self?.trackSettingsChange(fieldName: "posts_per_page", value: newValue as Any)
         }
 
@@ -234,13 +250,31 @@ extension SiteSettingsViewController {
     public func themeStylesSectionFooterView() -> UIView {
         let footer = makeFooterView()
         let settings = GutenbergSettings()
-        if !settings.getSupports(.blockTheme, for: self.blog) {
-            footer.textLabel?.text = Strings.themeStylesFooterBlockThemeSuggested
-        } else if !settings.getSupports(.blockEditorSettings, for: self.blog) {
-            footer.textLabel?.text = Strings.themeStylesFooterGutenbergRequired
-        } else {
-            footer.textLabel?.text = Strings.themeStylesFooterEnabled
+
+        var text = Strings.themeStylesFooterEnabled
+        // Ordered to match what gates the row: missing block editor settings is what disables the
+        // toggle, so it has to be the reason shown. A non-block theme only means the styles may
+        // not match, which is advice for a site whose toggle still works — a site failing both
+        // would otherwise be told to check its theme while the switch sat greyed out.
+        if !settings.getSupports(.blockEditorSettings, for: self.blog) {
+            text += "\n\n" + Strings.themeStylesFooterGutenbergRequired
+        } else if !settings.getSupports(.blockTheme, for: self.blog) {
+            text += "\n\n" + Strings.themeStylesFooterBlockThemeSuggested
         }
+        footer.textLabel?.text = text
+
+        return footer
+    }
+
+    @objc(getThirdPartyBlocksSectionFooterView)
+    public func thirdPartyBlocksSectionFooterView() -> UIView {
+        let footer = makeFooterView()
+
+        var text = Strings.thirdPartyBlocksFooterEnabled
+        if GutenbergSettingsBridge.CapabilityValue(rawValue: self.thirdPartyBlocksCapabilityValue()) == .unsupported {
+            text += "\n\n" + Strings.thirdPartyBlocksFooterUnsupported
+        }
+        footer.textLabel?.text = text
 
         return footer
     }
@@ -456,7 +490,9 @@ extension SiteSettingsViewController {
 
             if value != self.blog.settings?.name {
                 self.blog.settings?.name = value
-                self.saveSettings()
+                let changes = BlogSettingsChanges()
+                changes.name = value
+                self.saveSettings(with: changes)
 
                 self.trackSettingsChange(fieldName: "site_title")
             }
@@ -499,7 +535,9 @@ extension SiteSettingsViewController {
 
             if normalizedTagline != self.blog.settings?.tagline {
                 self.blog.settings?.tagline = normalizedTagline
-                self.saveSettings()
+                let changes = BlogSettingsChanges()
+                changes.tagline = normalizedTagline
+                self.saveSettings(with: changes)
 
                 self.trackSettingsChange(fieldName: "tagline")
             }
@@ -530,12 +568,12 @@ private extension SiteSettingsViewController {
             value:
                 "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.",
             comment:
-                "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme"
+                "Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content."
         )
 
         static let themeStylesFooterGutenbergRequired = NSLocalizedString(
             "siteSettings.themeStyles.footer.gutenbergRequired",
-            value: "Install the Gutenberg Plugin on your site to activate theme style support.",
+            value: "Install the Gutenberg plugin on your site to activate theme style support.",
             comment:
                 "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin"
         )
@@ -544,6 +582,19 @@ private extension SiteSettingsViewController {
             "siteSettings.themeStyles.footer.enabled",
             value: "Make the block editor look like your theme.",
             comment: "Explanation for the option to enable theme styles when the feature is available"
+        )
+
+        static let thirdPartyBlocksFooterEnabled = NSLocalizedString(
+            "siteSettings.thirdPartyBlocks.footer.enabled",
+            value: "Load third-party blocks from plugins installed on your site.",
+            comment: "Explanation for the option to load blocks provided by plugins installed on the site"
+        )
+
+        static let thirdPartyBlocksFooterUnsupported = NSLocalizedString(
+            "siteSettings.thirdPartyBlocks.footer.unsupported",
+            value: "Install the Jetpack plugin on your site to activate third-party block support.",
+            comment:
+                "Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature"
         )
     }
 }

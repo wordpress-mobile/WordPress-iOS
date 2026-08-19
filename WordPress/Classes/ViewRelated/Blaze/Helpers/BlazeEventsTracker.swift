@@ -6,8 +6,13 @@ struct BlazeEventsTracker {
     private static let currentStepPropertyKey = "current_step"
     private static let errorPropertyKey = "error"
 
-    static func trackEntryPointDisplayed(for source: BlazeSource) {
-        WPAnalytics.track(.blazeEntryPointDisplayed, properties: analyticsProperties(for: source))
+    static func trackEntryPointDisplayed(for source: BlazeSource, blogProperties: BlogAnalyticsProperties?) {
+        let properties = analyticsProperties(for: source)
+        if let blogProperties {
+            WPAnalytics.track(.blazeEntryPointDisplayed, properties: properties, blogProperties: blogProperties)
+        } else {
+            WPAnalytics.track(.blazeEntryPointDisplayed, properties: properties)
+        }
     }
 
     static func trackEntryPointTapped(for source: BlazeSource) {

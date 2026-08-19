@@ -72,7 +72,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         var buttons = [AbstractPostButton]()
 
         if isBlazeFlagEnabled && page.canBlaze {
-            BlazeEventsTracker.trackEntryPointDisplayed(for: .pagesList)
+            BlazeEventsTracker.trackEntryPointDisplayed(for: .pagesList, blogProperties: page.blog.analyticsProperties)
             buttons.append(.blaze)
         }
 
