@@ -74,7 +74,7 @@ extension StatsContext {
             return avatarURL.replacing(options: options)?.url ?? url
         }
 
-        self.tracker = WPAnalyticsStatsTracker()
+        self.tracker = WPAnalyticsStatsTracker(blogProperties: blog.analyticsProperties)
 
         self.upgradeURL = Self.makeUpgradeURL(for: blog)
     }
@@ -120,12 +120,19 @@ private final class JetpackAppStatsRouterScreenFactory: StatsRouterScreenFactory
 
 /// A StatsTracker implementation that bridges JetpackStats analytics to WPAnalytics
 private final class WPAnalyticsStatsTracker: StatsTracker {
+    private let blogProperties: BlogAnalyticsProperties
+
+    init(blogProperties: BlogAnalyticsProperties) {
+        self.blogProperties = blogProperties
+    }
+
     func send(_ event: StatsEvent, properties: [String: String]) {
         // Convert String properties to [AnyHashable: Any]
         let wpProperties: [AnyHashable: Any] = properties.reduce(into: [:]) { result, pair in
             result[pair.key] = pair.value
         }
 
-        WPAnalytics.track(event.wpEvent, properties: wpProperties)
+        // Every Stats event is scoped to the site being viewed, so attach its blog_id and site_type.
+        WPAnalytics.track(event.wpEvent, properties: wpProperties, blogProperties: blogProperties)
     }
 }

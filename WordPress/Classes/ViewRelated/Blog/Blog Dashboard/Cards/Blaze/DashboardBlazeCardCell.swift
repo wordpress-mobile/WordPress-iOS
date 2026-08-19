@@ -11,7 +11,7 @@ final class DashboardBlazeCardCell: DashboardCollectionViewCell {
         self.blog = blog
         self.viewController = viewController
 
-        BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard)
+        BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard, blogProperties: blog.analyticsProperties)
     }
 
     func configure(_ viewModel: DashboardBlazeCardCellViewModel) {
