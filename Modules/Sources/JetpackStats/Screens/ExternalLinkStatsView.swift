@@ -101,7 +101,7 @@ struct ExternalLinkStatsView: View {
     @ViewBuilder
     var viewsCount: some View {
         if let views = externalLink.metrics.views {
-            StandaloneMetricView(metric: .views, value: views)
+            StandaloneMetricView(metric: .views, value: views, dateInterval: dateRange.dateInterval)
         }
     }
 

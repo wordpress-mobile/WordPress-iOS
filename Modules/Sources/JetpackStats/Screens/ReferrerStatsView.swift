@@ -133,7 +133,7 @@ struct ReferrerStatsView: View {
     @ViewBuilder
     var viewsCount: some View {
         if let views = referrer.metrics.views {
-            StandaloneMetricView(metric: .views, value: views)
+            StandaloneMetricView(metric: .views, value: views, dateInterval: dateRange.dateInterval)
         }
     }
 
@@ -216,7 +216,7 @@ struct ReferrerStatsView: View {
     NavigationView {
         ReferrerStatsView(
             referrer: .mock,
-            dateRange: Calendar.demo.makeDateRange(for: .thisYear)
+            dateRange: Calendar.demo.makeDateRange(for: .last7Days)
         )
     }
     .navigationViewStyle(.stack)
