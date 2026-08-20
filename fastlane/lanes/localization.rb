@@ -122,6 +122,73 @@ end
 
 WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
 
+# Applies temporary, exact-value patches for known GlotPress translations that fail placeholder linting.
+# TODO: Remove this function after the corresponding GlotPress translations are corrected.
+def apply_glotpress_translation_patch(parent_dir:)
+  patches = {
+    'ko' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l개 단어', '%1$ld개 단어'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l개 단어', '%1$ld개 단어']
+    ],
+    'nl' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l d woorden', '%1$ld woorden'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l d woorden', '%1$ld woorden'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l d woord', '%1$ld woord'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l d woorden', '%1$ld woorden'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l d woorden', '%1$ld woorden'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l d woorden', '%1$ld woorden']
+    ],
+    'ro' => [
+      ['blogging.reminders.weeklyCount|==|plural.one', 'O dată pe săptămână', '%1$d dată pe săptămână'],
+      ['blogging.reminders.weeklyCount|==|plural.zero', 'Nicio dată pe săptămână', 'De %1$d ori pe săptămână'],
+      ['editor.textCounter.wordCount|==|plural.one', 'Un cuvânt', '%1$ld cuvânt'],
+      ['editor.textCounter.wordCount|==|plural.zero', 'Niciun cuvânt', '%1$ld cuvinte'],
+      ['mediaLibrary.upload.banner.failedOnly.single', 'A eșuat o încărcare', 'A eșuat %1$d încărcare'],
+      ['mediaLibrary.upload.banner.uploadingOnly.single', 'Încarc un element', 'Încarc %1$d element']
+    ],
+    'ru' => [
+      ['editor.textCounter.wordCount|==|plural.few', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.many', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.one', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.other', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.two', 'Слов: %1$l', 'Слов: %1$ld'],
+      ['editor.textCounter.wordCount|==|plural.zero', 'Слов: %1$l', 'Слов: %1$ld']
+    ],
+    'zh-Hans' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l 个字', '%1$ld 个字'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l 个字', '%1$ld 个字']
+    ],
+    'zh-Hant' => [
+      ['editor.textCounter.wordCount|==|plural.few', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.many', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.one', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.other', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.two', '%1$l 字', '%1$ld 字'],
+      ['editor.textCounter.wordCount|==|plural.zero', '%1$l 字', '%1$ld 字']
+    ]
+  }
+
+  patches.each do |locale, replacements|
+    path = File.join(parent_dir, "#{locale}.lproj", 'Localizable.strings')
+    content = File.read(path)
+    patched = replacements.reduce(content) do |result, (key, current, replacement)|
+      result.sub(%("#{key}" = "#{current}";), %("#{key}" = "#{replacement}";))
+    end
+    next if patched == content
+
+    File.write(path, patched)
+    UI.message("Applied temporary GlotPress translation patch for #{locale}.")
+  end
+end
+
 #################################################
 # Lanes
 #################################################
@@ -389,6 +456,7 @@ platform :ios do
       locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
       download_dir: parent_dir_for_lprojs
     )
+    apply_glotpress_translation_patch(parent_dir: parent_dir_for_lprojs)
     git_commit(
       path: File.join(parent_dir_for_lprojs, '*.lproj', 'Localizable.strings'),
       message: 'Update app translations – `Localizable.strings`',
