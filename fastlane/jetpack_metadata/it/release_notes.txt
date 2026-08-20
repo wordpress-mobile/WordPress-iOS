@@ -1,5 +1,0 @@
-Abbiamo risolto alcuni bug.
-
-- Le categorie e i tag ora funzionano correttamente sui siti ospitati personalmente. 
-- Il testo nella schermata Promemoria relativi al blog è visibile in modalità scura.  Basta giocare nascondino.
-- Non vedrai più un messaggio di errore quando selezioni un sito da un'azione del foglio di condivisione mentre i siti sono ancora in fase di caricamento. Abbiamo anche aggiornato il design del selettore del sito per uniformarlo alle altre sezioni dell'app, perché la cosa ci teneva svegli la notte.
