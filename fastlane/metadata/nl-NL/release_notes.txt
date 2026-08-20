@@ -1,5 +1,0 @@
-We hebben een paar bugs verholpen.
-
-- Categorieën en tags werken nu correct op self-gehoste sites.
-- Tekst op het scherm blogging herinneringen is zichtbaar in donkere modus. Geen verstoppertje meer.
-- Je ziet geen fout meer bij het kiezen van een site vanuit een deelbladactie terwijl je sites nog laden. We hebben ook het site kiezerontwerp geüpdatet om te matchen met andere gebieden van de app, omdat het ons wakker hield.
