@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-29 09:55:42+0000 */
+/* Translation-Revision-Date: 2026-08-12 09:54:20+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3078,7 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "管理";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "管理连接";
 
@@ -7757,14 +7756,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "直接购买域名";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "已到期";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "永不过期";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "续订";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "查找域名";
@@ -9240,6 +9233,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "搜索字词";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "视频";
 
@@ -9822,21 +9818,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "感谢您切换至 Jetpack！";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "您似乎已安装 WordPress 应用。";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "打开 WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "不，谢谢";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "是否要通过 WordPress 应用程序传输数据并自动登录？";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "欢迎使用 Jetpack！";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍后再决定";
 
@@ -9848,9 +9829,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "您将收到所有相同的通知，但现在这些通知来自 Jetpack 应用程序。";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "我们将禁用 WordPress 应用的通知。";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "允许通知，持续关注您的站点";
@@ -11411,9 +11389,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "订阅";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "查看原文";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "更多操作";
 
@@ -12288,14 +12263,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "您的站点未使用区块主题，因此编辑器可能无法正确匹配您的内容。 如果显示异常，您可以禁用编辑器样式。";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "让区块编辑器的外观与您的主题风格保持一致。";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "在您的站点上安装 Gutenberg 插件，以激活主题样式支持。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "添加 %1$@";
