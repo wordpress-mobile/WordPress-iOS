@@ -1,5 +1,0 @@
-Hemos solucionado algunos fallos.
-
-- Las categorías y las etiquetas ahora funcionan correctamente en los sitios web autohospedados.
-- El texto de la pantalla «Recordatorios de blog» se ve bien en modo oscuro. Se acabó el juego del escondite.
-- Ya no te aparecerá un error al elegir un sitio desde una acción de la hoja para compartir mientras tus sitios aún se están cargando. También hemos actualizado el diseño del selector de sitios para que vaya a juego con el resto de la app, porque nos quitaba el sueño.

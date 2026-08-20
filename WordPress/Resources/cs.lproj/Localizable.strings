@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-28 06:32:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Spravovat";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Správa připojení";
 
@@ -7766,14 +7765,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Jen koupit doménu";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Vypršelo";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nikdy nevyprší";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Obnoví se";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Najít doménu";
@@ -9834,21 +9827,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Děkujeme, že jste přešli na Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Vypadá to, že máte nainstalovanou aplikaci WordPress.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Otevřít WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Ne, děkuji";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Chcete přenést svá data z aplikace WordPress a přihlásit se automaticky?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Vítejte v Jetpacku!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vybrat později";
 
@@ -9860,9 +9838,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Budete dostávat všechna stejná oznámení, ale nyní budou pocházet z aplikace Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Vypneme oznámení z WordPress aplikace.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Povolte oznámení, abyste udrželi krok s vaším webem";
@@ -11441,9 +11416,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Přihlásit se k odběru";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Zobrazit originál";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Další akce";
 
@@ -12318,14 +12290,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Soukromí";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Váš web nepoužívá blokový motiv, takže editor nemusí správně odpovídat vašemu obsahu. Pokud věci nevypadají správně, můžete zakázat styly editoru.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Přizpůsobte editor bloků svému motivu.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Nainstalujte zásuvný modul Gutenberg na svůj web pro aktivaci podpory stylů motivu.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Přidat %1$@";

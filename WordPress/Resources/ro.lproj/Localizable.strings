@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-22 13:53:44+0000 */
+/* Translation-Revision-Date: 2026-08-19 12:26:53+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Administrează";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Administrează conexiunea";
 
@@ -5058,7 +5057,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Synced patterns" = "Modele sincronizate";
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
-"System default" = "Implicit de sistem";
+"System default" = "Implicit în sistem";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabel arătând %@";
@@ -5900,6 +5899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Folosește stilurile temei";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Folosește blocuri terțe (Beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -6036,7 +6038,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Vulnerable Theme %1$@ (version %2$@)" = "Temă vulnerabilă: %1$@ (versiunea %2$@)";
 
 /* Downloadable/Restorable items: WP-content directory */
-"WP-content directory" = "Directorul wp-content";
+"WP-content directory" = "Director wp-content";
 
 /* No comment provided by engineer. */
 "Waiting for connection" = "Aștept conexiunea";
@@ -7766,14 +7768,14 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Doar cumpără un domeniu";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Expirate";
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "A expirat pe %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Expiră pe %1$@";
 
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nu expiră niciodată";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Reînnoiri";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Găsește un domeniu";
@@ -7948,6 +7950,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Toate";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d modele";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "Un model";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Inserează un model";
@@ -9361,7 +9369,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.wordAds.adsServed.count" = "%@ reclame dufuzate";
 
 /* Total earnings from WordAds */
-"jetpackStats.wordAds.earnings" = "Câștiguri";
+"jetpackStats.wordAds.earnings" = "Câștig";
 
 /* Button to learn more about WordAds earnings */
 "jetpackStats.wordAds.learnMore" = "Învață mai multe";
@@ -9834,21 +9842,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Îți mulțumim că ai comutat la Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Se pare că ai instalată aplicația WordPress.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Deschide WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Nu, mulțumesc";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Vrei să transferi datele din aplicația WordPress și să te conectezi automat?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Bine ai venit la Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Poți să decizi mai târziu";
 
@@ -9860,9 +9853,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Vei primi aceleași notificări, dar acum vor veni din aplicația Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Vom dezactiva notificările pentru aplicația WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Permite ca notificările să continue pe site-ul tău";
@@ -10528,6 +10518,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Actualizează";
+
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "Elementul Media selectat nu a putut fi adăugat.";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Formate pentru articol nu au fost configurate pentru acest site.";
@@ -11438,11 +11431,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Deschide informațiile despre site";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Vezi profilul autorului";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Vezi articolele de pe site";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Abonează-te";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Vezi originalul";
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Abonat";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}vezi mai multe";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Mai multe acțiuni";
@@ -12318,7 +12320,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Site-ul tău nu folosește o temă cu blocuri, deci este posibil ca editorul să nu se potrivească corect cu conținutul tău. Dacă lucrurile nu arată bine, poți să dezactivezi stilurile pentru editor.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
@@ -12326,6 +12328,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
 "siteSettings.themeStyles.footer.gutenbergRequired" = "Instalează modulul Gutenberg pe site-ul tău pentru a activa suportul pentru stiluri temă.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Încarcă blocuri terțe din modulele instalate pe site-ul tău.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Instalează modulul Jetpack pe site-ul tău pentru a activa suportul pentru blocuri terțe.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Adaugă %1$@";

@@ -8,11 +8,10 @@ private func apiBase(blog: Blog) -> URL? {
         return nil
     }
 
-    guard let urlString = blog.url(withPath: "wp-json/") else {
-        return nil
-    }
-
-    return URL(string: urlString)
+    // Prefer the REST root observed during discovery over one derived from the raw
+    // `xmlrpc` string, which an older app version could have persisted as http for an
+    // https site (GHSA-qxpr-7v78-mh5g). See `Blog.selfHostedRestApiRootURL`.
+    return blog.selfHostedRestApiRootURL
 }
 
 extension WordPressOrgRestApi {

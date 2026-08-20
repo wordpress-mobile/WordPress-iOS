@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-29 09:57:33+0000 */
+/* Translation-Revision-Date: 2026-08-19 15:41:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Управление";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Управление подключением";
 
@@ -7766,14 +7765,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Просто купить домен";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Срок истек";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Бессрочно";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Продление";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Найти домен";
@@ -9834,21 +9827,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Спасибо за выбор Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Похоже, что у вас установлено приложение WordPress.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Открыть WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Нет, спасибо";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Вы хотите перенести свои данные из приложения WordPress и автоматически войти?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Jetpack приветствует вас!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Решить позже";
 
@@ -9860,9 +9838,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Вы будете получать всё те же уведомления, но теперь они будут от приложения Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Уведомления от приложения WordPress были отключены.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Разрешите уведомления, чтобы быть в курсе происходящего на вашем сайте";
@@ -11441,9 +11416,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Подписаться";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Смотреть оригинал";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Другие действия";
 
@@ -12318,7 +12290,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Конфиденциальность";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "На сайте не используется тема на блоках, поэтому редактор может неправильно сопоставить содержимое. Если что-то смотрится не так, вы можете отключить стили редактора.";
 
 /* Explanation for the option to enable theme styles when the feature is available */

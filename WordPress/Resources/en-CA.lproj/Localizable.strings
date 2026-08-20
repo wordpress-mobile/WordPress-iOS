@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2025-09-04 22:04:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: en_CA */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3066,7 +3066,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Manage";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Manage Connection";
 
@@ -7178,14 +7177,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Just buy a domain";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Expired";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Never expires";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Renews";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Find a domain";
@@ -8553,21 +8546,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Thanks for switching to Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "It looks like you have the WordPress app installed.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Open WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "No thanks";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Would you like to transfer your data from the WordPress app and sign in automatically?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Welcome to Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decide later";
 
@@ -8579,9 +8557,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "You’ll get all the same notifications but now they’ll come from the Jetpack app.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "We’ll disable notifications for the WordPress app.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Allow notifications to keep up with your site";

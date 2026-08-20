@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-29 09:57:28+0000 */
+/* Translation-Revision-Date: 2026-08-12 09:57:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "إدارة";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "إدارة الاتصال";
 
@@ -7757,14 +7756,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "شراء نطاق فقط";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "منتهي الصلاحية";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "لا تنتهي الصلاحية أبدًا";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "التجديدات";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "العثور على نطاق";
@@ -9813,21 +9806,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "شكرًا على التبديل إلى Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "يبدو أن تطبيق ووردبريس مثبَّت لديك.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "فتح ووردبريس";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "لا شكرًا";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "هل ترغب في نقل بياناتك من تطبيق ووردبريس وتسجيل الدخول تلقائيًا؟";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "مرحبًا بك في Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "التقرير لاحقًا";
 
@@ -9839,9 +9817,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "ستتلقى كل التنبيهات نفسها ولكنها ستأتي الآن من تطبيق Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "سنقوم بتعطيل التنبيهات في تطبيق ووردبريس.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "السماح بالتنبيهات بمواكبة موقعك";
@@ -9938,6 +9913,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Noun. Links to a blog's dashboard screen. */
 "mySite.menu.home" = "الصفحة الرئيسية";
+
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.jetpackSettings" = "إعدادات Jetpack";
@@ -11402,9 +11380,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "اشتراك";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "عرض الأصلي";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "مزيد من الإجراءات";
 
@@ -12270,14 +12245,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "لا يستخدم موقعك قالب مكوّن، لذا قد لا يتطابق المحرر مع محتواك بشكل صحيح. إذا لم تسر الأمور على ما يرام، فيمكنك تعطيل أنماط المحرر.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "اجعل محرر المكوّن يبدو مثل قالبك.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "قم بتثبيت إضافة Gutenberg على موقعك لتفعيل دعم نمط القالب.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "إضافة %1$@";
