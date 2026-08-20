@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-03-02 23:11:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3072,7 +3072,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Gerencie";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Gerenciar conexão";
 
@@ -7554,14 +7553,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Apenas comprar um domínio";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Expirado";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nunca expira";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Renova em";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Encontrar um domínio";
@@ -8833,21 +8826,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Obrigado por mudar para o Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Parece que você tem o aplicativo WordPress instalado.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Abrir WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Não, obrigado";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Você gostaria de transferir seus dados do aplicativo WordPress e conectar-se automaticamente?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Boas-vindas ao Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decidir depois";
 
@@ -8859,9 +8837,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Você receberá as mesmas notificações, mas agora elas virão do aplicativo Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Desativaremos as notificações do aplicativo WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Permitir notificações para acompanhar seu site";
@@ -11031,14 +11006,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacidade";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Seu site não está usando um tema de blocos, então o editor pode não corresponder corretamente ao conteúdo. Se as coisas não parecerem certas, você pode desativar os estilos do editor.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Faça com que o editor de blocos se pareça com seu tema.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Instale o plugin Gutenberg no seu site para ativar o suporte no estilo de tema.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Adicionar %1$@";

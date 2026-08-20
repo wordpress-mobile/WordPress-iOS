@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-24 05:48:19+0000 */
+/* Translation-Revision-Date: 2026-08-19 11:09:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Beheren";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Beheer connectie";
 
@@ -5900,6 +5899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Themastijlen gebruiken";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Gebruik blokken van derden (beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7766,14 +7768,14 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Koop gewoon een domein";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Verlopen";
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Verlopen %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Verloopt op %1$@";
 
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Verloopt nooit";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Verlengingen";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Een domein vinden";
@@ -7948,6 +7950,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Alle";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d patronen";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 patroon";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Patroon invoegen";
@@ -9834,21 +9842,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Bedankt dat je bent overgestapt naar Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Het lijkt erop dat je de WordPress app geïnstalleerd hebt.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Open WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Nee, dank je";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Wil je je gegevens verplaatsen van de WordPress app en automatisch aanmelden?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Welkom bij Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Later beslissen";
 
@@ -9860,9 +9853,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Je krijgt dezelfde meldingen, maar ze komen nu van de Jetpack app.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "We hebben meldingen voor de WordPress app uitgeschakeld.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Meldingen toestaan om op de hoogte te blijven van je site";
@@ -10528,6 +10518,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Updaten";
+
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "De geselecteerde media konden niet worden toegevoegd.";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Bericht formats zijn niet geconfigureerd voor deze site.";
@@ -11438,11 +11431,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Opent de site details";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Bekijkt het profiel van de auteur";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Bekijkt berichten van de site";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Abonneren";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Origineel bekijken";
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Geabonneerd";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}bekijk meer";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Meer acties";
@@ -12318,14 +12320,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Je site gebruikt geen blokthema, dus de editor komt mogelijk niet overeen met je inhoud. Als dingen er niet goed uitzien, kun je editor stijlen uitschakelen.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Laat de blok-editor eruitzien als je thema.";
 
 /* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Installeer de Gutenberg plugin op je site om thema stijl ondersteuning te activeren.";
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Installeer de Gutenberg plugin op je site om ondersteuning voor themastijlen te activeren.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Laad blokken van derden van plugins die op je site zijn geïnstalleerd.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Installeer de Jetpack plugin op je site om ondersteuning voor blokken van derden te activeren.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Toevoegen %1$@";
