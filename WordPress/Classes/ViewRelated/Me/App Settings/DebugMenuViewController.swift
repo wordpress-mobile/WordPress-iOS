@@ -85,6 +85,13 @@ struct DebugMenuView: View {
         NavigationLink(Strings.readerCssTitle) {
             readerSettings
         }
+        Button(Strings.showReaderInterests) {
+            presentReaderInterests()
+        }
+        Button(Strings.resetReaderInterestsPrompt) {
+            UserDefaults.standard.readerDidSelectInterestsKey = false
+            showSuccessNotice()
+        }
     }
 
     @ViewBuilder private var tipKit: some View {
@@ -193,6 +200,17 @@ struct DebugMenuView: View {
 
         let webViewController = WebViewControllerFactory.controller(url: url, source: "debug_menu")
         navigation.push(webViewController)
+    }
+
+    /// Presents the Reader "Discover" select-interests screen directly, bypassing
+    /// the `readerDidSelectInterestsKey` flag *and* the `isFollowingInterests`
+    /// check that normally gate it, so it can be inspected on any account.
+    private func presentReaderInterests() {
+        let interestsViewController = ReaderSelectInterestsViewController(configuration: .discover)
+        interestsViewController.didSaveInterests = { [weak interestsViewController] _ in
+            interestsViewController?.presentingViewController?.dismiss(animated: true)
+        }
+        navigation.parentViewController?.present(interestsViewController, animated: true)
     }
 
     private var readerSettings: some View {
@@ -310,6 +328,8 @@ private enum Strings {
     static let readerCssTitle = NSLocalizedString("debugMenu.readerCellTitle", value: "Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
     static let readerURLPlaceholder = NSLocalizedString("debugMenu.readerDefaultURL", value: "Default URL", comment: "Placeholder for the reader CSS URL")
     static let readerURLHint = NSLocalizedString("debugMenu.readerHit", value: "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
+    static let showReaderInterests = NSLocalizedString("debugMenu.showReaderInterests", value: "Show Reader Interests Screen", comment: "Debug menu action that presents the Reader select interests screen")
+    static let resetReaderInterestsPrompt = NSLocalizedString("debugMenu.resetReaderInterestsPrompt", value: "Reset Reader Interests Prompt", comment: "Debug menu action that clears the flag so the Reader select interests prompt can appear again")
     static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
     static let analyics = NSLocalizedString("debugMenu.analytics", value: "Analytics", comment: "Debug menu item title")
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
