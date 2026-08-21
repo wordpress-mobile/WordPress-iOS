@@ -13,6 +13,21 @@ struct ReaderSelectInterestsConfiguration {
     let subtitle: String?
     let buttonTitle: (enabled: String, disabled: String)?
     let loading: String
+    let showsSkipButton: Bool
+
+    init(
+        title: String,
+        subtitle: String?,
+        buttonTitle: (enabled: String, disabled: String)?,
+        loading: String,
+        showsSkipButton: Bool = false
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.buttonTitle = buttonTitle
+        self.loading = loading
+        self.showsSkipButton = showsSkipButton
+    }
 }
 
 class ReaderSelectInterestsViewController: UIViewController {
@@ -34,8 +49,19 @@ class ReaderSelectInterestsViewController: UIViewController {
             value: "No new tags to follow",
             comment: "Message shown when there are no new topics to follow."
         )
-        static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
-        static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")
+        static let tryAgainNoticeTitle = NSLocalizedString(
+            "Something went wrong. Please try again.",
+            comment: "Error message shown when the app fails to save user selected interests"
+        )
+        static let tryAgainButtonTitle = NSLocalizedString(
+            "Try Again",
+            comment: "Try to load the list of interests again."
+        )
+        static let skipButtonTitle = NSLocalizedString(
+            "reader.select.tags.skip",
+            value: "Skip",
+            comment: "Button title. Lets the user continue without selecting any tags."
+        )
     }
 
     // MARK: - IBOutlets
@@ -54,7 +80,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     // MARK: - Data
     private lazy var dataSource: ReaderInterestsDataSource = {
-        return ReaderInterestsDataSource(topics: topics)
+        ReaderInterestsDataSource(topics: topics)
     }()
 
     private let coordinator = ReaderSelectInterestsCoordinator()
@@ -90,13 +116,15 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureI18N()
         configureCollectionView()
         configureNoResultsViewController()
+        configureSkipButton()
         applyStyles()
         updateNextButtonState()
         refreshData()
 
         // If the view is being presented overCurrentContext take into account tab bar height
         if modalPresentationStyle == .overCurrentContext {
-            bottomSpaceHeightConstraint.constant = presentingViewController?.tabBarController?.tabBar.bounds.size.height ?? 0
+            bottomSpaceHeightConstraint.constant =
+                presentingViewController?.tabBarController?.tabBar.bounds.size.height ?? 0
         }
     }
 
@@ -140,7 +168,10 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     // MARK: - Private: Configuration
     private func configureCollectionView() {
-        collectionView.register(ReaderInterestsCollectionViewCell.defaultNib, forCellWithReuseIdentifier: Constants.reuseIdentifier)
+        collectionView.register(
+            ReaderInterestsCollectionViewCell.defaultNib,
+            forCellWithReuseIdentifier: Constants.reuseIdentifier
+        )
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellIdentifier)
 
         guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
@@ -154,6 +185,30 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private func configureNoResultsViewController() {
         noResultsViewController.delegate = self
+    }
+
+    /// Adds a "Skip" button below the primary button, letting the user continue
+    /// without selecting any tags. Only used by the Discover flow.
+    private func configureSkipButton() {
+        guard configuration.showsSkipButton else {
+            return
+        }
+
+        let button = UIButton(type: .system)
+        button.setTitle(Strings.skipButtonTitle, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+        ReaderInterestsStyleGuide.applySkipButtonStyle(button: button)
+
+        if let index = contentContainerView.arrangedSubviews.firstIndex(of: buttonContainerView) {
+            contentContainerView.insertArrangedSubview(button, at: index + 1)
+        } else {
+            contentContainerView.addArrangedSubview(button)
+        }
+    }
+
+    @objc private func skipButtonTapped() {
+        didSaveInterests?([])
     }
 
     private func applyStyles() {
@@ -173,9 +228,11 @@ class ReaderSelectInterestsViewController: UIViewController {
             return
         }
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                           target: self,
-                                                           action: #selector(saveSelectedInterests))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(saveSelectedInterests)
+        )
     }
 
     private func configureI18N() {
@@ -271,10 +328,13 @@ class ReaderSelectInterestsViewController: UIViewController {
     private func stopLoading() {
         activityIndicatorView.stopAnimating()
 
-        UIView.animate(withDuration: Constants.animationDuration, animations: {
-            self.contentContainerView.alpha = 1
-            self.loadingView.alpha = 0
-        }) { _ in
+        UIView.animate(
+            withDuration: Constants.animationDuration,
+            animations: {
+                self.contentContainerView.alpha = 1
+                self.loadingView.alpha = 0
+            }
+        ) { _ in
             self.loadingView.isHidden = true
         }
     }
@@ -287,23 +347,38 @@ class ReaderSelectInterestsViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        dataSource.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier,
-                                                          for: indexPath) as? ReaderInterestsCollectionViewCell else {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: Constants.reuseIdentifier,
+                for: indexPath
+            ) as? ReaderInterestsCollectionViewCell
+        else {
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
         }
 
         guard let interest = dataSource.interest(for: indexPath.row) else {
-            CrashLogging.main.logMessage("ReaderSelectInterestsViewController: Requested for data at invalid row",
-                                         properties: ["row": indexPath.row], level: .warning)
-            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.defaultCellIdentifier, for: indexPath)
+            CrashLogging.main.logMessage(
+                "ReaderSelectInterestsViewController: Requested for data at invalid row",
+                properties: ["row": indexPath.row],
+                level: .warning
+            )
+            return collectionView.dequeueReusableCell(
+                withReuseIdentifier: Constants.defaultCellIdentifier,
+                for: indexPath
+            )
         }
 
-        ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
-                                                      isSelected: interest.isSelected)
+        ReaderInterestsStyleGuide.applyCellLabelStyle(
+            label: cell.label,
+            isSelected: interest.isSelected
+        )
 
         cell.layer.borderWidth = interest.isSelected ? 0 : 1
         cell.layer.borderColor = UIColor.separator.cgColor
@@ -333,7 +408,11 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewFlowLayout
 extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         guard let interest = dataSource.interest(for: indexPath.row) else {
             return .zero
         }
@@ -381,9 +460,11 @@ extension ReaderSelectInterestsViewController {
     }
 
     func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
-        noResultsViewController.configure(title: title,
-                                          buttonTitle: Strings.tryAgainButtonTitle,
-                                          accessoryView: accessoryView)
+        noResultsViewController.configure(
+            title: title,
+            buttonTitle: Strings.tryAgainButtonTitle,
+            accessoryView: accessoryView
+        )
         showLoadingView()
     }
 
@@ -447,7 +528,8 @@ extension ReaderSelectInterestsConfiguration {
             title: title,
             subtitle: subtitle,
             buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
-            loading: loading
+            loading: loading,
+            showsSkipButton: true
         )
     }
 }
