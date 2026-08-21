@@ -90,7 +90,10 @@ struct DebugMenuView: View {
         }
         Button(Strings.resetReaderInterestsPrompt) {
             UserDefaults.standard.readerDidSelectInterestsKey = false
-            showSuccessNotice()
+            // A bare emoji notice is illegible on the notice's inverted
+            // background in dark mode; a text title renders legibly in both.
+            let notice = Notice(title: Strings.readerInterestsPromptResetNotice, feedbackType: .success)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 
@@ -330,6 +333,7 @@ private enum Strings {
     static let readerURLHint = NSLocalizedString("debugMenu.readerHit", value: "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
     static let showReaderInterests = NSLocalizedString("debugMenu.showReaderInterests", value: "Show Reader Interests Screen", comment: "Debug menu action that presents the Reader select interests screen")
     static let resetReaderInterestsPrompt = NSLocalizedString("debugMenu.resetReaderInterestsPrompt", value: "Reset Reader Interests Prompt", comment: "Debug menu action that clears the flag so the Reader select interests prompt can appear again")
+    static let readerInterestsPromptResetNotice = NSLocalizedString("debugMenu.readerInterestsPromptReset", value: "Reader interests prompt reset", comment: "Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt")
     static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
     static let analyics = NSLocalizedString("debugMenu.analytics", value: "Analytics", comment: "Debug menu item title")
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
