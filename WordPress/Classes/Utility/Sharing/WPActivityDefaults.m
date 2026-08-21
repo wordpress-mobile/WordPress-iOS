@@ -28,8 +28,6 @@
         stat = WPAnalyticsStatSentItemToInstapaper;
     } else if ([activityType isEqualToString:@"com.ideashower.ReadItLaterPro.AddToPocketExtension"]) {
         stat = WPAnalyticsStatSentItemToPocket;
-    } else if ([activityType isEqualToString:@"com.google.GooglePlus.ShareExtension"]) {
-        stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
         return;
     } else {
