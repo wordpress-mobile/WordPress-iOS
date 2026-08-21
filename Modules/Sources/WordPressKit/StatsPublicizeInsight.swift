@@ -53,9 +53,6 @@ private extension StatsPublicizeService {
         case "tumblr":
             niceName = "Tumblr"
             icon = URL(string: "https://secure.gravatar.com/blavatar/84314f01e87cb656ba5f382d22d85134?s=60")
-        case "google_plus":
-            niceName = "Google+"
-            icon = URL(string: "https://secure.gravatar.com/blavatar/4a4788c1dfc396b1f86355b274cc26b3?s=60")
         case "linkedin":
             niceName = "LinkedIn"
             icon = URL(string: "https://secure.gravatar.com/blavatar/f54db463750940e0e7f7630fe327845e?s=60")
