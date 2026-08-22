@@ -179,7 +179,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        configureNavBarAppearance()
+        configureNavBarAppearance(animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -187,7 +187,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         // Only reset for a push to avoid animating the My Site title behind a presented modal.
         if navigationController?.topViewController !== self {
-            resetNavBarAppearance()
+            resetNavBarAppearance(animated: animated)
         }
         createButtonCoordinator?.hideCreateButton()
     }
@@ -322,34 +322,29 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
-    private func configureNavBarAppearance() {
-        guard !isReaderAppModeEnabled else {
+    private func configureNavBarAppearance(animated: Bool) {
+        
+        guard navigationController?.topViewController === self else {
             return
         }
-        // Residual scroll deceleration/bounce can still deliver `scrollViewDidScroll` after a Quick
-        // Action pushes another view controller on top. Without this guard, those calls would keep
-        // hiding/showing the shared navigation bar on whatever is now on top of the stack, not `self`.
-        guard navigationController?.topViewController === self else {
+        
+        guard !isReaderAppModeEnabled else {
             return
         }
         if scrollView.contentOffset.y >= 60 {
             if isNavigationBarHidden {
-                setNavigationBarHidden(false)
+                setNavigationBarHidden(false, animated: animated)
             }
             isNavigationBarHidden = false
         } else {
             if !isNavigationBarHidden {
-                setNavigationBarHidden(true)
+                setNavigationBarHidden(true, animated: animated)
             }
             isNavigationBarHidden = true
         }
     }
 
-    /// Always applied without animation. Scroll-driven changes fire on every `scrollViewDidScroll`
-    /// tick, and an in-flight animated bar transition can collide with a push transition that
-    /// starts right after (e.g. tapping a Quick Action while the scroll view is still settling from
-    /// an overscroll bounce), leaving the navigation bar and back button stuck hidden.
-    private func setNavigationBarHidden(_ isHidden: Bool) {
+    private func setNavigationBarHidden(_ isHidden: Bool, animated: Bool) {
         if isSidebarModeEnabled {
             navigationItem.titleView =
                 isHidden
@@ -366,22 +361,22 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                     return button
                 }()
         } else {
-            navigationController?.setNavigationBarHidden(isHidden, animated: false)
+            navigationController?.setNavigationBarHidden(isHidden, animated: animated)
         }
     }
 
-    private func resetNavBarAppearance() {
+    private func resetNavBarAppearance(animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
         isNavigationBarHidden = false
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        configureNavBarAppearance()
+        configureNavBarAppearance(animated: true)
     }
 
     // MARK: - Main Blog
 
-    /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
+    ///  This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
     /// There's no scenario where this is shown empty, for an account that HAS blogs.
     ///
     /// In order to adhere to this logic, if this VC is shown without a blog being set, we will try to load the "main" blog (ie in order: the last used blog,
