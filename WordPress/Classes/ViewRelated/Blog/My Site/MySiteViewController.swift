@@ -366,7 +366,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func resetNavBarAppearance(animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         isNavigationBarHidden = false
     }
 
@@ -376,7 +376,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Main Blog
 
-    ///  This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
+    /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
     /// There's no scenario where this is shown empty, for an account that HAS blogs.
     ///
     /// In order to adhere to this logic, if this VC is shown without a blog being set, we will try to load the "main" blog (ie in order: the last used blog,
