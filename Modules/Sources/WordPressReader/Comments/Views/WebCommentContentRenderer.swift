@@ -34,6 +34,13 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         }
     }
 
+    /// Google requires an HTTP referrer for YouTube embeds, otherwise the player shows an error
+    /// instead of the video. Matches the referrer `ReaderWebView` uses for post content so that
+    /// embeds behave the same way in comments.
+    ///
+    /// Documentation: https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
+    private static let baseURL = URL(string: "https://wordpress.com/reader")!
+
     private var cachedHead: String?
     private var comment: String?
     private var currentNavigation: WKNavigation?
@@ -68,7 +75,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     }
 
     private func actuallyRender(comment: String) {
-        currentNavigation = webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: nil)
+        currentNavigation = webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Self.baseURL)
     }
 
     public func prepareForReuse() {
