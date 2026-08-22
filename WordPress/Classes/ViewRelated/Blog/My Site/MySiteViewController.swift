@@ -179,7 +179,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        configureNavBarAppearance(animated: animated)
+        configureNavBarAppearance()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -187,7 +187,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         // Only reset for a push to avoid animating the My Site title behind a presented modal.
         if navigationController?.topViewController !== self {
-            resetNavBarAppearance(animated: animated)
+            resetNavBarAppearance()
         }
         createButtonCoordinator?.hideCreateButton()
     }
@@ -322,24 +322,34 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
-    private func configureNavBarAppearance(animated: Bool) {
+    private func configureNavBarAppearance() {
         guard !isReaderAppModeEnabled else {
+            return
+        }
+        // Residual scroll deceleration/bounce can still deliver `scrollViewDidScroll` after a Quick
+        // Action pushes another view controller on top. Without this guard, those calls would keep
+        // hiding/showing the shared navigation bar on whatever is now on top of the stack, not `self`.
+        guard navigationController?.topViewController === self else {
             return
         }
         if scrollView.contentOffset.y >= 60 {
             if isNavigationBarHidden {
-                setNavigationBarHidden(false, animated: animated)
+                setNavigationBarHidden(false)
             }
             isNavigationBarHidden = false
         } else {
             if !isNavigationBarHidden {
-                setNavigationBarHidden(true, animated: animated)
+                setNavigationBarHidden(true)
             }
             isNavigationBarHidden = true
         }
     }
 
-    private func setNavigationBarHidden(_ isHidden: Bool, animated: Bool) {
+    /// Always applied without animation. Scroll-driven changes fire on every `scrollViewDidScroll`
+    /// tick, and an in-flight animated bar transition can collide with a push transition that
+    /// starts right after (e.g. tapping a Quick Action while the scroll view is still settling from
+    /// an overscroll bounce), leaving the navigation bar and back button stuck hidden.
+    private func setNavigationBarHidden(_ isHidden: Bool) {
         if isSidebarModeEnabled {
             navigationItem.titleView =
                 isHidden
@@ -356,17 +366,17 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                     return button
                 }()
         } else {
-            navigationController?.setNavigationBarHidden(isHidden, animated: animated)
+            navigationController?.setNavigationBarHidden(isHidden, animated: false)
         }
     }
 
-    private func resetNavBarAppearance(animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+    private func resetNavBarAppearance() {
+        navigationController?.setNavigationBarHidden(false, animated: false)
         isNavigationBarHidden = false
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        configureNavBarAppearance(animated: true)
+        configureNavBarAppearance()
     }
 
     // MARK: - Main Blog
