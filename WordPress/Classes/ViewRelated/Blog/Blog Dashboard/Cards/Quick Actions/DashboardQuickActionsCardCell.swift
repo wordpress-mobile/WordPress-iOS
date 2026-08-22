@@ -64,6 +64,12 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
                 self.parentViewController?.collectionView.collectionViewLayout.invalidateLayout()
             }
             .store(in: &cancellables)
+
+        viewModel.didRefresh
+            .sink { [weak self] in
+                self?.parentViewController?.collectionView.collectionViewLayout.invalidateLayout()
+            }
+            .store(in: &cancellables)
     }
 
     private func deselectCurrentCell() {
