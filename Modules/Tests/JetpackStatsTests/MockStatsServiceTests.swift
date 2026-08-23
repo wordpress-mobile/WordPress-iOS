@@ -57,4 +57,44 @@ struct MockStatsServiceTests {
         // THEN - Basic validations
         #expect(!response.metrics.isEmpty, "Should return at least one data point")
     }
+
+    @Test("Marking a referrer as spam removes it from subsequent responses")
+    func markingReferrerAsSpamRemovesIt() async throws {
+        let service = MockStatsService(timeZone: .eastern)
+        await service.disableDelays()
+        let dateInterval = calendar.makeDateInterval(for: .today)
+        let response = try await service.getTopListData(
+            .referrers,
+            metric: .views,
+            interval: dateInterval,
+            granularity: dateInterval.preferredGranularity,
+            limit: nil,
+            options: TopListItemOptions()
+        )
+        let referrer = try #require(response.items.compactMap { $0 as? TopListItem.Referrer }.first)
+        let domain = try #require(referrer.spamDomain)
+
+        for _ in 0..<20 {
+            do {
+                try await service.toggleSpamState(for: domain, currentValue: false)
+                break
+            } catch {
+                continue
+            }
+        }
+
+        let refreshedResponse = try await service.getTopListData(
+            .referrers,
+            metric: .views,
+            interval: dateInterval,
+            granularity: dateInterval.preferredGranularity,
+            limit: nil,
+            options: TopListItemOptions()
+        )
+        let domains = refreshedResponse.items
+            .compactMap { $0 as? TopListItem.Referrer }
+            .compactMap(\.spamDomain)
+
+        #expect(!domains.contains(domain))
+    }
 }

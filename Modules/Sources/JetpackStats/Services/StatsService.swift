@@ -212,6 +212,10 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
+    func invalidateTopListData(for item: TopListItemType) {
+        topListCache = topListCache.filter { $0.key.item != item }
+    }
+
     private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
