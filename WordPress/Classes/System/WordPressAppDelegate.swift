@@ -136,8 +136,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Opts the app into the UIScene life cycle and names the scene delegate in code,
     /// instead of a `UISceneConfigurations` entry duplicated in each target's Info.plist.
-    /// The unit test host runs TestingAppDelegate, which doesn't implement this method,
-    /// so tests keep the legacy life cycle.
+    /// The unit test host (TestingAppDelegate) opts into the scene life cycle the same
+    /// way, because iOS 27 removed the legacy window life cycle.
     public func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
