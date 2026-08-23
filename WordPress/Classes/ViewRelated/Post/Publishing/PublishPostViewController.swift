@@ -51,10 +51,7 @@ final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>:
         publishVC.onCompletion = completion
         // - warning: Has to be UIKit because some of the  `PostSettingsView` rows rely on it.
         let navigationVC = UINavigationController(rootViewController: publishVC)
-        navigationVC.sheetPresentationController?.detents = [
-            .custom(identifier: .medium, resolver: { _ in 526 }),
-            .large()
-        ]
+        configureSheetPresentation(of: navigationVC, from: presentingViewController)
         presentingViewController.present(navigationVC, animated: true)
     }
 
@@ -90,10 +87,7 @@ final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>:
             completion(result)
         }
         let navigationVC = UINavigationController(rootViewController: publishVC)
-        navigationVC.sheetPresentationController?.detents = [
-            .custom(identifier: .medium, resolver: { _ in 526 }),
-            .large()
-        ]
+        configureSheetPresentation(of: navigationVC, from: presentingViewController)
         presentingViewController.present(navigationVC, animated: true)
     }
 
@@ -118,6 +112,27 @@ final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>:
         // Set the view controller reference for navigation
         // This is temporary until we can fully migrate to SwiftUI navigation
         viewModel.viewController = self
+    }
+}
+
+/// Configures how the publishing sheet is presented based on the screen size.
+///
+/// In compact width, the sheet opens at a partial-height detent that can be
+/// dragged to full height. In regular width, it is presented as a plain form
+/// sheet instead. A sheet resting at a non-large detent is not marked as
+/// accessibility-modal by UIKit, which left Voice Control unable to reach any
+/// of the sheet's elements when presented over the editor (CMM-2216).
+private func configureSheetPresentation(
+    of navigationVC: UINavigationController,
+    from presentingViewController: UIViewController
+) {
+    if presentingViewController.traitCollection.horizontalSizeClass == .regular {
+        navigationVC.modalPresentationStyle = .formSheet
+    } else {
+        navigationVC.sheetPresentationController?.detents = [
+            .custom(identifier: .medium, resolver: { _ in 526 }),
+            .large()
+        ]
     }
 }
 
