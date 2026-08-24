@@ -154,11 +154,13 @@ extension TopListData {
             return TopListItem.Referrer(
                 name: data.0,
                 domain: data.1,
+                url: nil,
                 iconURL: nil,
                 children: [
                     TopListItem.Referrer(
                         name: "wordpress development tutorial",
                         domain: "google.com",
+                        url: nil,
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
                         children: [],
                         metrics: SiteMetricsSet(views: 850)
@@ -166,6 +168,7 @@ extension TopListData {
                     TopListItem.Referrer(
                         name: "swift programming blog",
                         domain: "google.com",
+                        url: nil,
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
                         children: [],
                         metrics: SiteMetricsSet(views: 750)
@@ -173,6 +176,7 @@ extension TopListData {
                     TopListItem.Referrer(
                         name: "ios app development best practices",
                         domain: "google.com",
+                        url: nil,
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
                         children: [],
                         metrics: SiteMetricsSet(views: 600)
