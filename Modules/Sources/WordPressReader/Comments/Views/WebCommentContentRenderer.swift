@@ -11,12 +11,15 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     public var view: UIView { webView }
 
-    private let webView = WKWebView(frame: .zero, configuration: {
-        let configuration = WKWebViewConfiguration()
-        configuration.allowsInlineMediaPlayback = true
-        configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-        return configuration
-    }())
+    private let webView = WKWebView(
+        frame: .zero,
+        configuration: {
+            let configuration = WKWebViewConfiguration()
+            configuration.allowsInlineMediaPlayback = true
+            configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+            return configuration
+        }()
+    )
 
     /// It can't be changed at the moment, but this capability was included from the
     /// start, and this implementation continues supporting it.
@@ -30,6 +33,13 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
             cachedHead = nil
         }
     }
+
+    /// Google requires an HTTP referrer for YouTube embeds, otherwise the player shows an error
+    /// instead of the video. Matches the referrer `ReaderWebView` uses for post content so that
+    /// embeds behave the same way in comments.
+    ///
+    /// Documentation: https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
+    private static let baseURL = URL(string: "https://wordpress.com/reader")!
 
     private var cachedHead: String?
     private var comment: String?
@@ -51,7 +61,12 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.backgroundColor = .clear
         webView.scrollView.isScrollEnabled = false
 
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     public func render(comment: String) {
@@ -60,7 +75,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     }
 
     private func actuallyRender(comment: String) {
-        currentNavigation = webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: nil)
+        currentNavigation = webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Self.baseURL)
     }
 
     public func prepareForReuse() {
@@ -101,8 +116,9 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
             webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
                 guard let self,
-                      let height = height as? CGFloat,
-                      navigation === self.currentNavigation else {
+                    let height = height as? CGFloat,
+                    navigation === self.currentNavigation
+                else {
                     return
                 }
 
@@ -115,7 +131,10 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
         }
     }
 
-    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+    public func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction
+    ) async -> WKNavigationActionPolicy {
         switch navigationAction.navigationType {
         case .other:
             // allow local file requests.
@@ -149,17 +168,18 @@ private extension WebCommentContentRenderer {
     func formattedHTMLString(for comment: String) -> String {
         // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
         // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
-        let comment = comment
+        let comment =
+            comment
             .replacingOccurrences(of: Self.emptyElementRegexPattern, with: "", options: [.regularExpression])
             .trimmingCharacters(in: .whitespacesAndNewlines)
         return """
-        <html dir="auto">
-        \(makeHead())
-        <body>
-            \(comment)
-        </body>
-        </html>
-        """
+            <html dir="auto">
+            \(makeHead())
+            <body>
+                \(comment)
+            </body>
+            </html>
+            """
     }
 
     static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
@@ -175,14 +195,16 @@ private extension WebCommentContentRenderer {
     }
 
     private func actuallyMakeHead() -> String {
-        let meta = "width=device-width,initial-scale=\(displaySettings.size.scale),maximum-scale=\(displaySettings.size.scale),user-scalable=no,shrink-to-fit=no"
+        let meta =
+            "width=device-width,initial-scale=\(displaySettings.size.scale),maximum-scale=\(displaySettings.size.scale),user-scalable=no,shrink-to-fit=no"
         let styles = displaySettings.makeStyles(tintColor: webView.tintColor)
         return String(format: Self.headTemplate, meta, styles)
     }
 
     private static let headTemplate: String = {
         guard let fileURL = Bundle.module.url(forResource: "gutenbergCommentHeadTemplate", withExtension: "html"),
-              let string = try? String(contentsOf: fileURL) else {
+            let string = try? String(contentsOf: fileURL)
+        else {
             assertionFailure("template missing")
             return ""
         }
