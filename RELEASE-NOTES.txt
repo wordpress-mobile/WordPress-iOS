@@ -4,6 +4,7 @@
 
 27.2
 -----
+* [*] Reader: Fix YouTube videos embedded in comments showing a player error instead of the video [#25929]
 * [*] Fix an issue where an https self-hosted site's application password could be sent over insecure http when using its REST API [#25914]
 * [*] Custom Post Types: Make custom post types with REST API and editor support available in My Site [#25849]
 * [*] Stop the media picker from removing gallery images when you cancel it in the experimental editor [#25866]
