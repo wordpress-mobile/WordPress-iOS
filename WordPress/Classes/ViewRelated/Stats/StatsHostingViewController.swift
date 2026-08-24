@@ -9,7 +9,11 @@ import BuildSettingsKit
 
 /// A UIViewController wrapper for the new SwiftUI StatsMainView
 class StatsHostingViewController: UIViewController {
-    static func makeNewTrafficViewController(blog: Blog? = nil, parentViewController: UIViewController, isDemo: Bool = false) -> UIViewController? {
+    static func makeNewTrafficViewController(
+        blog: Blog? = nil,
+        parentViewController: UIViewController,
+        isDemo: Bool = false
+    ) -> UIViewController? {
         let context: StatsContext
         if isDemo {
             context = StatsContext.demo
@@ -54,14 +58,16 @@ class StatsHostingViewController: UIViewController {
 extension StatsContext {
     init?(blog: Blog) {
         guard let siteID = blog.dotComID?.intValue,
-              let api = blog.account?.wordPressComRestApi else {
+            let api = blog.account?.wordPressComRestApi
+        else {
             wpAssertionFailure("required context missing")
             return nil
         }
         self.init(
             timeZone: blog.timeZone ?? .current,
             siteID: siteID,
-            api: api
+            api: api,
+            postLikesStore: StatsPostLikesStore(siteID: Int64(siteID))
         )
 
         // Configure avatar preprocessing using Gravatar

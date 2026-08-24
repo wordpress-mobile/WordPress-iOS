@@ -14,6 +14,7 @@ actor StatsService: StatsServiceProtocol {
     private let siteTimeZone: TimeZone
     // Temporary
     private var mocks: MockStatsService
+    private let postLikesStore: (any PostLikesStore)?
 
     // Cache
     private var siteStatsCache: [SiteStatsCacheKey: CachedEntity<SiteMetricsResponse>] = [:]
@@ -46,7 +47,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    init(siteID: Int, api: WordPressComRestApi, timeZone: TimeZone) {
+    init(siteID: Int, api: WordPressComRestApi, timeZone: TimeZone, postLikesStore: (any PostLikesStore)? = nil) {
         self.siteID = siteID
         self.api = api
         self.service = StatsServiceRemoteV2(
@@ -56,6 +57,7 @@ actor StatsService: StatsServiceProtocol {
         )
         self.siteTimeZone = timeZone
         self.mocks = MockStatsService(timeZone: timeZone)
+        self.postLikesStore = postLikesStore
     }
 
     // MARK: - StatsServiceProtocol
@@ -80,14 +82,25 @@ actor StatsService: StatsServiceProtocol {
         return data
     }
 
-    private func fetchSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
+    private func fetchSiteStats(
+        interval: DateInterval,
+        granularity: DateRangeGranularity
+    ) async throws -> SiteMetricsResponse {
         let interval = convertDateIntervalSiteToLocal(interval)
 
         if granularity == .hour {
             // Hourly data is available only for "Views", so the service has to
             // make a separate request to fetch the total metrics.
-            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(granularity), limit: 0)
-            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(.day), limit: 0)
+            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(
+                interval: interval,
+                unit: .init(granularity),
+                limit: 0
+            )
+            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(
+                interval: interval,
+                unit: .init(.day),
+                limit: 0
+            )
 
             let (hourlyResponse, dailyResponse) = try await (hourlyResponseTask, dailyResponseTask)
 
@@ -95,7 +108,11 @@ actor StatsService: StatsServiceProtocol {
             data.total = mapSiteMetricsResponse(dailyResponse).total
             return data
         } else {
-            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(interval: interval, unit: .init(granularity), limit: 0)
+            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(
+                interval: interval,
+                unit: .init(granularity),
+                limit: 0
+            )
             return mapSiteMetricsResponse(response)
         }
     }
@@ -124,7 +141,10 @@ actor StatsService: StatsServiceProtocol {
         try await service.getWordAdsEarnings()
     }
 
-    private func fetchWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse {
+    private func fetchWordAdsStats(
+        date: Date,
+        granularity: DateRangeGranularity
+    ) async throws -> WordAdsMetricsResponse {
         let localDate = convertDateSiteToLocal(date)
 
         let response: WordPressKit.StatsWordAdsResponse = try await service.getData(
@@ -145,7 +165,10 @@ actor StatsService: StatsServiceProtocol {
 
         let now = Date.now
 
-        func makeDataPoint(from data: WordPressKit.StatsWordAdsResponse.PeriodData, metric: WordPressKit.StatsWordAdsResponse.Metric) -> DataPoint? {
+        func makeDataPoint(
+            from data: WordPressKit.StatsWordAdsResponse.PeriodData,
+            metric: WordPressKit.StatsWordAdsResponse.Metric
+        ) -> DataPoint? {
             guard let value = data[metric] else {
                 return nil
             }
@@ -180,16 +203,37 @@ actor StatsService: StatsServiceProtocol {
         return WordAdsMetricsResponse(total: total, metrics: metrics)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
+    func getTopListData(
+        _ item: TopListItemType,
+        metric: SiteMetric,
+        interval: DateInterval,
+        granularity: DateRangeGranularity,
+        limit: Int?,
+        options: TopListItemOptions
+    ) async throws -> TopListResponse {
         // Check cache first
-        let cacheKey = TopListCacheKey(item: item, metric: metric, options: options, interval: interval, granularity: granularity, limit: limit)
+        let cacheKey = TopListCacheKey(
+            item: item,
+            metric: metric,
+            options: options,
+            interval: interval,
+            granularity: granularity,
+            limit: limit
+        )
         if let cached = topListCache[cacheKey], !cached.isExpired {
             return cached.data
         }
 
         // Fetch fresh data
         do {
-            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit, options: options)
+            let data = try await _getTopListData(
+                item,
+                metric: metric,
+                interval: interval,
+                granularity: granularity,
+                limit: limit,
+                options: options
+            )
 
             // Cache the result
             // Historical data never expires (ttl = nil), current period data expires after 30 seconds
@@ -205,7 +249,8 @@ actor StatsService: StatsServiceProtocol {
             // when there are no recoreded periods (happens when the entire requested
             // period is _before_ the site creation).
             if let error = error as? StatsServiceRemoteV2.ResponseError,
-               error == .emptySummary {
+                error == .emptySummary
+            {
                 return TopListResponse(items: [])
             }
             throw error
@@ -216,7 +261,14 @@ actor StatsService: StatsServiceProtocol {
         topListCache = topListCache.filter { $0.key.item != item }
     }
 
-    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
+    private func _getTopListData(
+        _ item: TopListItemType,
+        metric: SiteMetric,
+        interval: DateInterval,
+        granularity: DateRangeGranularity,
+        limit: Int?,
+        options: TopListItemOptions
+    ) async throws -> TopListResponse {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -224,7 +276,13 @@ actor StatsService: StatsServiceProtocol {
         ) async throws -> T where T: Sendable {
             /// The `summarize: true` feature works correctly only with the `.day` granularity.
             let interval = convertDateIntervalSiteToLocal(interval)
-            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 0, parameters: parameters)
+            return try await service.getData(
+                interval: interval,
+                unit: .day,
+                summarize: true,
+                limit: limit ?? 0,
+                parameters: parameters
+            )
         }
 
         // Helper function to sort items by metric value (descending), then by displayName, and then by itemID for stable ordering
@@ -281,7 +339,11 @@ actor StatsService: StatsServiceProtocol {
             }
 
             let convertedInterval = convertDateIntervalSiteToLocal(interval)
-            let data = try await service.getDeviceStats(breakdown: breakdown, startDate: convertedInterval.start, endDate: convertedInterval.end)
+            let data = try await service.getDeviceStats(
+                breakdown: breakdown,
+                startDate: convertedInterval.start,
+                endDate: convertedInterval.end
+            )
 
             // TEMPORARY WORKAROUND (CMM-1168):
             // The screensize breakdown returns percentages (e.g., 73.8 for 73.8%), but SiteMetricsSet
@@ -406,7 +468,8 @@ actor StatsService: StatsServiceProtocol {
         )
 
         // Fetch likes using the REST API
-        let result = try await withCheckedThrowingContinuation { continuation in
+        let (result, seeds): (PostLikesData, [PostLikeSeed]) = try await withCheckedThrowingContinuation {
+            continuation in
             postService.getLikesForPostID(
                 NSNumber(value: postID),
                 count: NSNumber(value: count),
@@ -422,8 +485,9 @@ actor StatsService: StatsServiceProtocol {
                             avatarURL: remoteLike.avatarURL.flatMap(URL.init)
                         )
                     }
+                    let seeds = users.map(PostLikeSeed.init(remoteUser:))
                     let postLikes = PostLikesData(users: likeUsers, totalCount: found.intValue)
-                    continuation.resume(returning: postLikes)
+                    continuation.resume(returning: (postLikes, seeds))
                 },
                 failure: { error in
                     continuation.resume(throwing: error ?? StatsServiceError.unknown)
@@ -431,7 +495,44 @@ actor StatsService: StatsServiceProtocol {
             )
         }
 
+        await storeSeeds(seeds, totalCount: result.totalCount, postID: postID)
+
         return result
+    }
+
+    /// Seeds the shared likes cache with the just-fetched likers.
+    ///
+    /// A positive `totalCount` seeds fire-and-forget: seeding real likers must
+    /// never delay or fail the UI, and a slightly late partial page is benign.
+    /// A confirmed zero result is awaited, because it purges the post's cache
+    /// and this method returns before Post Stats exposes the "0 likes" total: a
+    /// fast tap-through to the Likes list would otherwise snapshot stale seeded
+    /// rows that, offline, it never refetches or observes being deleted.
+    func storeSeeds(_ seeds: [PostLikeSeed], totalCount: Int, postID: Int) async {
+        let task = storeSeedsIfNeeded(seeds, totalCount: totalCount, postID: postID)
+        if totalCount == 0 {
+            await task?.value
+        }
+    }
+
+    /// Hands freshly fetched likers to the app's shared likes cache.
+    ///
+    /// Write-only by design: Post Stats refetches on every screen entry (this
+    /// service instance is created per screen), and the shared cache carries
+    /// no total like count, so reading it back here would render a wrong
+    /// total in the likes strip. The write exists solely to seed the Likes
+    /// list screen. `totalCount` is forwarded so the store can clear the post's
+    /// cache on a confirmed zero-like result instead of leaving stale rows.
+    /// Returns the seeding task so callers can await it (see `storeSeeds`).
+    @discardableResult
+    func storeSeedsIfNeeded(_ seeds: [PostLikeSeed], totalCount: Int, postID: Int) -> Task<Void, Never>? {
+        guard let postLikesStore else {
+            return nil
+        }
+
+        return Task {
+            await postLikesStore.storeLikes(seeds, totalCount: totalCount, forPost: postID)
+        }
     }
 
     func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
@@ -522,7 +623,10 @@ actor StatsService: StatsServiceProtocol {
 
         let now = Date.now
 
-        func makeDataPoint(from data: WordPressKit.StatsSiteMetricsResponse.PeriodData, metric: WordPressKit.StatsSiteMetricsResponse.Metric) -> DataPoint? {
+        func makeDataPoint(
+            from data: WordPressKit.StatsSiteMetricsResponse.PeriodData,
+            metric: WordPressKit.StatsSiteMetricsResponse.Metric
+        ) -> DataPoint? {
             guard let value = data[metric] else {
                 return nil
             }
