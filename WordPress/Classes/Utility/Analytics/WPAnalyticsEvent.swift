@@ -73,6 +73,7 @@ import WordPressShared
     // Reader
     case selectInterestsShown
     case selectInterestsPicked
+    case selectInterestsSkipped
     case readerDiscoverShown
     case readerFollowingShown
     case readerSavedListShown
@@ -821,6 +822,8 @@ import WordPressShared
             return "select_interests_shown"
         case .selectInterestsPicked:
             return "select_interests_picked"
+        case .selectInterestsSkipped:
+            return "select_interests_skipped"
         case .readerDiscoverShown:
             return "reader_discover_shown"
         case .readerFollowingShown:

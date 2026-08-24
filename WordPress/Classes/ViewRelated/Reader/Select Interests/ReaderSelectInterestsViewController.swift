@@ -197,7 +197,7 @@ class ReaderSelectInterestsViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle(Strings.skipButtonTitle, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(skipButtonTapped(_:)), for: .touchUpInside)
         ReaderInterestsStyleGuide.applySkipButtonStyle(button: button)
 
         if let index = contentContainerView.arrangedSubviews.firstIndex(of: buttonContainerView) {
@@ -207,8 +207,19 @@ class ReaderSelectInterestsViewController: UIViewController {
         }
     }
 
-    @objc private func skipButtonTapped() {
+    @objc private func skipButtonTapped(_ sender: UIButton) {
+        // Disable on first tap so a fast double-tap can't complete the flow
+        // (re-triggering dismiss / stream refresh) twice, matching the primary
+        // button, which disables itself before dismissing.
+        sender.isEnabled = false
+
+        WPAnalytics.trackReader(.selectInterestsSkipped)
+
         didSaveInterests?([])
+        // Keep skip symmetric with the save-success path so a flow that both
+        // shows the Skip button and sets `readerDiscoverFlowDelegate` still
+        // completes. The only current Skip flow (Discover) leaves this nil.
+        readerDiscoverFlowDelegate?.didCompleteReaderDiscoverFlow()
     }
 
     private func applyStyles() {
