@@ -121,6 +121,10 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
     func cancelLoading() {
         loadingTask?.cancel()
         loadingTask = nil
+        // The cancelled task returns before its own `isLoading = false` reset
+        // runs, so reset it here; otherwise `refreshIfNeeded()`'s in-flight
+        // guard would treat the abandoned load as still running forever.
+        isLoading = false
     }
 
     /// Recomputes the `.today` range against the current date (rolling it over

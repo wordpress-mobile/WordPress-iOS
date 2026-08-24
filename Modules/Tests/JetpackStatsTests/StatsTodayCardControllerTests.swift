@@ -108,6 +108,30 @@ struct StatsTodayCardControllerTests {
         #expect(vm.loadingError == nil)
     }
 
+    @Test("refreshIfNeeded reloads after a cancelled load")
+    func refreshesAfterCancelledLoad() async {
+        let service = ControllableStatsService()
+        await service.setHoldLoads(true)
+        let vm = Self.makeViewModel(service: service)
+
+        vm.onAppear()
+        // Let the load enter the (held) service call, then abandon it.
+        try? await Task.sleep(for: .milliseconds(30))
+        vm.cancelLoading()
+        try? await Task.sleep(for: .milliseconds(40))
+
+        // The abandoned load must not be mistaken for an in-flight one.
+        #expect(!vm.isLoading)
+
+        await service.setHoldLoads(false)
+        let count = await service.loadCount
+        vm.refreshIfNeeded()
+        await Self.waitUntilIdle(vm)
+
+        #expect(vm.data != nil)
+        #expect(await service.loadCount > count)
+    }
+
     @Test("the controller forwards refresh and reports load failures")
     func controllerForwardsRefreshAndReportsFailures() async {
         let service = ControllableStatsService()
