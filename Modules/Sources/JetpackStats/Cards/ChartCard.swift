@@ -81,7 +81,9 @@ struct ChartCard: View {
         return ChartCardHeaderView.ViewModel(
             trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
             metricTitle: metric.localizedTitle,
-            period: context.formatters.dateRange.string(from: viewModel.dateRange.subrange ?? viewModel.dateRange.range),
+            period: context.formatters.dateRange.string(
+                from: viewModel.dateRange.subrange ?? viewModel.dateRange.range
+            ),
             showDisclosureIndicator: viewModel.dateRange.subrange != nil
         )
     }
@@ -93,9 +95,12 @@ struct ChartCard: View {
             .padding(.trailing, Constants.step3 + Constants.step0_5)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
-            .simultaneousGesture(TapGesture().onEnded {
-                viewModel.promoteSubrangeToMainRange()
-            })
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded {
+                        viewModel.promoteSubrangeToMainRange()
+                    }
+            )
     }
 
     @ViewBuilder
@@ -135,9 +140,13 @@ struct ChartCard: View {
             data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
             selectedMetric: $viewModel.selectedMetric,
             onMetricSelected: { metric in
-                viewModel.tracker?.send(.chartMetricSelected, properties: [
-                    "metric": metric.analyticsName
-                ])
+                viewModel.tracker?
+                    .send(
+                        .chartMetricSelected,
+                        properties: [
+                            "metric": metric.analyticsName
+                        ]
+                    )
             }
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
@@ -183,21 +192,12 @@ struct ChartCard: View {
 
     private var chartTypeSection: some View {
         Section {
-            ControlGroup {
-                ForEach(ChartType.allCases) { type in
-                    Button {
-                        let previousType = viewModel.selectedChartType
-                        viewModel.selectedChartType = type
-
-                        viewModel.tracker?.send(.chartTypeChanged, properties: [
-                            "from_type": previousType.rawValue,
-                            "to_type": type.rawValue
-                        ])
-                    } label: {
-                        Label(type.localizedTitle, systemImage: type.systemImage)
-                    }
-                }
-            }
+            ChartTypeControlGroup(
+                selection: Binding(
+                    get: { viewModel.selectedChartType },
+                    set: { viewModel.selectChartType($0) }
+                )
+            )
         }
     }
 
@@ -219,10 +219,14 @@ struct ChartCard: View {
         Button {
             let previousGranularity = viewModel.selectedGranularity
             viewModel.selectedGranularity = granularity
-            viewModel.tracker?.send(.chartGranularityChanged, properties: [
-                "from": previousGranularity?.analyticsName ?? "automatic",
-                "to": granularity?.analyticsName ?? "automatic"
-            ])
+            viewModel.tracker?
+                .send(
+                    .chartGranularityChanged,
+                    properties: [
+                        "from": previousGranularity?.analyticsName ?? "automatic",
+                        "to": granularity?.analyticsName ?? "automatic"
+                    ]
+                )
         } label: {
             Label(
                 granularity?.localizedTitle ?? Strings.Granularity.automatic,
@@ -235,10 +239,14 @@ struct ChartCard: View {
         Section {
             Button {
                 // Track raw data view
-                viewModel.tracker?.send(.rawDataViewed, properties: [
-                    "card_type": "chart",
-                    "metric": viewModel.selectedMetric.analyticsName
-                ])
+                viewModel.tracker?
+                    .send(
+                        .rawDataViewed,
+                        properties: [
+                            "card_type": "chart",
+                            "metric": viewModel.selectedMetric.analyticsName
+                        ]
+                    )
                 isShowingRawData = true
             } label: {
                 Label(Strings.Chart.showData, systemImage: "tablecells")
@@ -281,7 +289,7 @@ private struct CardGradientBackground: View {
         LinearGradient(
             colors: [
                 metric.primaryColor.opacity(colorScheme == .light ? 0.03 : 0.04),
-                Constants.Colors.secondaryBackground,
+                Constants.Colors.secondaryBackground
             ],
             startPoint: .top,
             endPoint: .center
@@ -348,11 +356,14 @@ struct ChartCardHeaderView: View {
                     }
                 }
                 if viewModel.showComparison {
-                    Text(verbatim: "\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)")
-                        .font(.caption.weight(.semibold))
-                        .foregroundColor(viewModel.trend.sentiment.foregroundColor)
-                        .contentTransition(.numericText())
-                        .padding(.top, 5)
+                    Text(
+                        verbatim:
+                            "\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)"
+                    )
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(viewModel.trend.sentiment.foregroundColor)
+                    .contentTransition(.numericText())
+                    .padding(.top, 5)
                 }
             }
             Spacer(minLength: 0)

@@ -155,15 +155,7 @@ struct StandaloneChartCard: View {
     private var moreMenu: some View {
         Menu {
             Section {
-                ControlGroup {
-                    ForEach(ChartType.allCases, id: \.self) { type in
-                        Button {
-                            chartType = type
-                        } label: {
-                            Label(type.localizedTitle, systemImage: type.systemImage)
-                        }
-                    }
-                }
+                ChartTypeControlGroup(selection: $chartType)
             }
         } label: {
             Image(systemName: "ellipsis")
@@ -306,9 +298,10 @@ private func generateMockDataPoints(days: Int, valueRange: ClosedRange<Int> = 50
     let calendar = Calendar.demo
     let today = Date()
 
-    return (0..<days).compactMap { dayOffset in
-        guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { return nil }
-        let value = Int.random(in: valueRange)
-        return DataPoint(date: date, value: value)
-    }
+    return (0..<days)
+        .compactMap { dayOffset in
+            guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { return nil }
+            let value = Int.random(in: valueRange)
+            return DataPoint(date: date, value: value)
+        }
 }
