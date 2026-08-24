@@ -249,16 +249,14 @@ private extension ContextManager {
     }
 }
 
-// MARK: - Initialise Core Data stack
-
-private extension ContextManager {
+public extension ContextManager {
     /// The current version of the data model, loaded once per process.
     ///
-    /// Every loaded `NSManagedObjectModel` registers its entities in Core Data's global
-    /// class-to-entity table. Loading the model file more than once (which happens in unit
-    /// tests, where each test creates its own `ContextManager` instance) leaves multiple
-    /// entity descriptions claiming the same `NSManagedObject` subclasses, and
-    /// `+[NSManagedObject entity]` fails to resolve them.
+    /// Reuse this shared instance instead of loading the model again. Every loaded
+    /// `NSManagedObjectModel` registers its entities in Core Data's global class-to-entity table,
+    /// so loading the model file more than once (which happens in unit tests that each create their
+    /// own `ContextManager`) leaves multiple entity descriptions claiming the same `NSManagedObject`
+    /// subclasses, and `+[NSManagedObject entity]` fails to resolve them.
     static let currentObjectModel: NSManagedObjectModel = {
         guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd") else {
             fatalError("Can't find WordPress.momd")
@@ -270,7 +268,11 @@ private extension ContextManager {
 
         return objectModel
     }()
+}
 
+// MARK: - Initialise Core Data stack
+
+private extension ContextManager {
     static func objectModel(named modelName: String) -> NSManagedObjectModel {
         guard modelName != ContextManagerModelNameCurrent else {
             return currentObjectModel
