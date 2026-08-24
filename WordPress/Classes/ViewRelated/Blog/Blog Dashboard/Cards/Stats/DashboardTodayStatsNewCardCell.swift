@@ -176,6 +176,15 @@ final class DashboardTodayStatsNewCardCell: DashboardCollectionViewCell {
         }) {
             Label(Strings.viewStats, systemImage: "chart.bar.xaxis")
         }
+        // Menu items only appear on screen when the menu is actually presented,
+        // so `onAppear` here fires once per open, matching the legacy frame
+        // view's `onEllipsisButtonTap` tracking. Logging in this builder's body
+        // instead would over-count: SwiftUI evaluates it on every host
+        // re-render. `.todaysStatsNew` reports the legacy `todays_stats` card
+        // identity, keeping the event continuous across the flag.
+        .onAppear {
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: DashboardCard.todaysStatsNew)
+        }
         Button(role: .destructive, action: { [weak self] in
             self?.hideCard(for: blog)
         }) {
