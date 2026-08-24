@@ -84,6 +84,7 @@ final class LikesListViewModel: ObservableObject {
         }
 
         isLoadingPage = true
+        error = nil
 
         if isFirstLoad {
             // Seed from Core Data so cached likes render immediately, before the remote refresh.
@@ -92,11 +93,7 @@ final class LikesListViewModel: ObservableObject {
 
         guard ReachabilityUtils.isInternetReachable() else {
             isLoadingPage = false
-
-            if users.isEmpty {
-                error = ErrorViewModel(title: errorTitle, subtitle: nil)
-            }
-
+            error = ErrorViewModel(title: errorTitle, subtitle: nil)
             return
         }
 
@@ -115,7 +112,6 @@ final class LikesListViewModel: ObservableObject {
                     return
                 }
 
-                self.error = nil
                 self.users = users
                 self.totalLikes = totalLikes
                 self.totalLikesFetched = users.count

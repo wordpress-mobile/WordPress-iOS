@@ -25,7 +25,9 @@ struct LikesListViewModelTests {
         viewModel.loadMore()
 
         #expect(viewModel.users.map { $0.userID } == [10, 11])
-        #expect(viewModel.error == nil)
+        // Offline still surfaces the error state; the view renders it as a
+        // footer that keeps the cached likes on screen.
+        #expect(viewModel.error != nil)
         #expect(service.getLikesCallCount == 0)
     }
 
@@ -125,6 +127,48 @@ struct LikesListViewModelTests {
 
         #expect(viewModel.error != nil)
         #expect(viewModel.error?.subtitle == nil)
+    }
+
+    @Test("A failed page load keeps the likes that already loaded")
+    func failureKeepsLoadedUsers() {
+        makeNetworkAvailable()
+
+        let page = [makeUser(id: 40), makeUser(id: 41)]
+        let service = FakePostLikesService()
+        service.totalLikes = 100
+        service.pages = [page]
+
+        let viewModel = LikesListViewModel(siteID: siteID, postID: postID, totalLikes: 100, service: service)
+        viewModel.loadMore()
+        #expect(viewModel.users.map { $0.userID } == [40, 41])
+
+        service.failureError = NSError(domain: "test", code: 500)
+        viewModel.loadMore()
+
+        #expect(viewModel.users.map { $0.userID } == [40, 41])
+        #expect(viewModel.error != nil)
+        #expect(!viewModel.isLoadingPage)
+    }
+
+    @Test("A successful retry after a failure clears the error")
+    func retryAfterFailureClearsError() {
+        makeNetworkAvailable()
+
+        let service = FakePostLikesService()
+        service.failureError = NSError(domain: "test", code: 500)
+
+        let viewModel = LikesListViewModel(siteID: siteID, postID: postID, totalLikes: 1, service: service)
+        viewModel.loadMore()
+        #expect(viewModel.error != nil)
+        #expect(viewModel.users.isEmpty)
+
+        service.failureError = nil
+        service.totalLikes = 1
+        service.pages = [[makeUser(id: 50)]]
+        viewModel.loadMore()
+
+        #expect(viewModel.error == nil)
+        #expect(viewModel.users.map { $0.userID } == [50])
     }
 
     // MARK: - Helpers

@@ -30,12 +30,18 @@ struct LikesListView: View {
     }
 
     var body: some View {
-        if let error = viewModel.error {
-            EmptyStateView(
-                error.title,
-                systemImage: "exclamationmark.circle",
-                description: error.subtitle
-            )
+        // A full-screen error only when there is nothing to show. With likes already
+        // loaded, a failure renders as a footer instead so the list stays on screen.
+        if let error = viewModel.error, viewModel.users.isEmpty {
+            EmptyStateView {
+                Label(error.title, systemImage: "exclamationmark.circle")
+            } description: {
+                error.subtitle.map { Text($0) }
+            } actions: {
+                Button(SharedStrings.Button.retry) {
+                    viewModel.loadMore()
+                }
+            }
         } else {
             ScrollView {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
@@ -53,6 +59,10 @@ struct LikesListView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding()
+                } else if let error = viewModel.error {
+                    LikesListErrorFooterView(title: error.title) {
+                        viewModel.loadMore()
+                    }
                 }
             }
         }
@@ -60,6 +70,27 @@ struct LikesListView: View {
 
     private enum Metrics {
         static let minimumColumnWidth: CGFloat = 300
+    }
+}
+
+/// Inline footer shown in place of the loading spinner when fetching the next page
+/// fails, keeping the already-loaded likes on screen instead of replacing them with
+/// a full-screen error.
+private struct LikesListErrorFooterView: View {
+    let title: String
+    let onRetry: () -> Void
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Text(title)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Button(SharedStrings.Button.retry, action: onRetry)
+                .font(.subheadline.weight(.medium))
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .padding()
     }
 }
 
