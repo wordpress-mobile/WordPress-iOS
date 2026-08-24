@@ -106,8 +106,14 @@ struct TodayCard: View {
         if let data = viewModel.data {
             makeSparklineView(data)
         } else {
-            let placeholder = makeSparklineView(placeholderData)
-                .redacted(reason: .placeholder)
+            // A plain shape instead of a `Chart` with placeholder data. See the
+            // matching note in `ChartCard`: building Swift Charts during the push
+            // transition is a measurable part of the first-open lag.
+            let placeholder = SparklinePlaceholder(metric: .views)
+                .frame(maxWidth: .infinity)
+                .padding(.trailing, 32)
+                .padding(.vertical, 2)
+                .offset(y: -3)
             if viewModel.isLoading {
                 placeholder.pulsating().opacity(0.33)
             } else {
@@ -198,6 +204,31 @@ struct TodayCard: View {
             }
         }
         EditCardMenuContent(cardViewModel: viewModel)
+    }
+}
+
+/// A cheap stand-in for `SparklineChart` while the first data set loads:
+/// a gently rising polyline with light jitter, echoing the bell-curve flank
+/// the real chart's placeholder data used to draw. No area wash: under the
+/// loading state's dimming its contribution measures ~2/255, invisible.
+private struct SparklinePlaceholder: View {
+    let metric: SiteMetric
+
+    private let relativeHeights: [CGFloat] = [
+        0.08, 0.11, 0.10, 0.14, 0.16, 0.22, 0.25, 0.35, 0.41, 0.53, 0.61, 0.75, 0.83
+    ]
+
+    var body: some View {
+        GeometryReader { proxy in
+            let size = proxy.size
+            let step = size.width / CGFloat(relativeHeights.count - 1)
+            Path { path in
+                path.addLines(relativeHeights.enumerated().map { index, height in
+                    CGPoint(x: CGFloat(index) * step, y: size.height * (1 - height))
+                })
+            }
+            .stroke(metric.primaryColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+        }
     }
 }
 
@@ -348,4 +379,10 @@ private struct TodayCardPreview: View {
         TodayCard(viewModel: viewModel)
             .cardStyle()
     }
+}
+
+#Preview("Sparkline placeholder") {
+    SparklinePlaceholder(metric: .views)
+        .frame(width: 220, height: 52)
+        .padding()
 }

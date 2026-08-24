@@ -118,8 +118,13 @@ struct ChartCard: View {
     @ViewBuilder
     private var chartContentView: some View {
         if viewModel.isFirstLoad {
-            mainChartView(metric: selectedMetric, data: mockChartData)
-                .redacted(reason: .placeholder)
+            // Plain shapes instead of a `Chart` with mock data. Building Swift Charts
+            // (and compiling its Metal shaders) during the push transition is a
+            // measurable part of the first-open lag, and the placeholder is replaced
+            // as soon as data arrives anyway.
+            ChartLoadingPlaceholder(chartType: selectedChartType, metric: selectedMetric)
+                .frame(height: chartHeight)
+                .padding(.horizontal, -Constants.step1)
                 .opacity(0.2)
                 .pulsating()
         } else if let data = viewModel.chartData[selectedMetric] {
@@ -291,6 +296,53 @@ struct ChartCard: View {
     }
 }
 
+/// A cheap stand-in for the chart while the first data set loads, mirroring the
+/// card's selected chart type.
+private struct ChartLoadingPlaceholder: View {
+    let chartType: ChartType
+    let metric: SiteMetric
+
+    private let barHeights: [CGFloat] = [0.45, 0.7, 0.55, 0.9, 0.6, 0.8, 0.5, 0.75, 0.65, 0.85, 0.4, 0.7, 0.6, 0.95]
+    private let lineHeights: [CGFloat] = [
+        0.32, 0.38, 0.35, 0.42, 0.46, 0.43, 0.50, 0.55, 0.52, 0.58, 0.63, 0.60, 0.67, 0.72, 0.69, 0.78, 0.85
+    ]
+
+    var body: some View {
+        switch chartType {
+        case .columns:
+            bars
+        case .line:
+            line
+        }
+    }
+
+    private var bars: some View {
+        GeometryReader { proxy in
+            HStack(alignment: .bottom, spacing: Constants.step0_5) {
+                ForEach(barHeights.indices, id: \.self) { index in
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(metric.primaryColor)
+                        .frame(height: proxy.size.height * barHeights[index])
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+        }
+    }
+
+    private var line: some View {
+        GeometryReader { proxy in
+            let size = proxy.size
+            let step = size.width / CGFloat(lineHeights.count - 1)
+            Path { path in
+                path.addLines(lineHeights.enumerated().map { index, height in
+                    CGPoint(x: CGFloat(index) * step, y: size.height * (1 - height))
+                })
+            }
+            .stroke(metric.primaryColor, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+        }
+    }
+}
+
 private struct CardGradientBackground: View {
     let metric: SiteMetric
 
@@ -407,4 +459,14 @@ private struct ChartCardPreview: View {
         .padding(.vertical)
     }
     .background(Color(.systemGroupedBackground))
+}
+
+#Preview("Loading placeholders") {
+    VStack(spacing: 24) {
+        ChartLoadingPlaceholder(chartType: .columns, metric: .views)
+            .frame(height: 140)
+        ChartLoadingPlaceholder(chartType: .line, metric: .views)
+            .frame(height: 140)
+    }
+    .padding()
 }
