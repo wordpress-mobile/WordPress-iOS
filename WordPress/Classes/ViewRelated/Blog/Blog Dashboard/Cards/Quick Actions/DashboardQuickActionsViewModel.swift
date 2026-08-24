@@ -7,9 +7,6 @@ final class DashboardQuickActionsViewModel {
 
     @Published private(set) var items: [DashboardQuickActionItemViewModel] = []
 
-    /// Emits every time settings are refreshed, even if `items` didn't change.
-    /// Used to force a layout re-measure of the hosting cell regardless of content diffing.
-    let didRefresh = PassthroughSubject<Void, Never>()
     let blog: Blog
 
     private let personalizationService: BlogDashboardPersonalizationService
@@ -40,8 +37,6 @@ final class DashboardQuickActionsViewModel {
         if self.items != items {
             self.items = items
         }
-
-        didRefresh.send(())
     }
 
     func viewWillAppear() {
