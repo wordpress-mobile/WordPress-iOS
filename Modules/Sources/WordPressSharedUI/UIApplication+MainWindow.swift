@@ -2,9 +2,8 @@ import UIKit
 
 public extension UIApplication {
     @objc var mainWindow: UIWindow? {
-        // The delegate-window fallback covers the moments when no scene key window
-        // exists: early in scene connection (before makeKeyAndVisible) and in the unit
-        // test host, which never connects a window scene.
+        // The delegate-window fallback covers the brief moment early in scene
+        // connection, before the scene's key window is made visible.
         connectedScenes
             .compactMap { ($0 as? UIWindowScene)?.keyWindow }
             .first
