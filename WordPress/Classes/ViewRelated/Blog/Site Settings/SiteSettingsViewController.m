@@ -47,11 +47,9 @@ NS_ENUM(NSInteger, SiteSettingsAdvanced) {
 
 NS_ENUM(NSInteger, SiteSettingsJetpack) {
     SiteSettingsJetpackSecurity = 0,
-    SiteSettingsJetpackConnection,
-    SiteSettingsJetpackCount,
 };
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
@@ -59,6 +57,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 #pragma mark - Writing Section
 @property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
 @property (nonatomic, strong) SwitchTableViewCell  *themeStylesSelectorCell;
+@property (nonatomic, strong) SwitchTableViewCell  *thirdPartyBlocksSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *customTaxonomiesCell;
@@ -75,7 +74,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 @property (nonatomic, strong) SwitchTableViewCell *ampSettingCell;
 #pragma mark - Jetpack Settings Section
 @property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
-@property (nonatomic, strong) SettingTableViewCell *jetpackConnectionCell;
 #pragma mark - Device Section
 @property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Advanced Section
@@ -89,6 +87,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 @property (nonatomic, strong) NSArray<NSNumber *> *tableSections;
 @property (nonatomic, strong) NSArray<NSNumber *> *writingSectionRows;
+/// Caches the resolved third-party blocks capability for one reload pass. Resolving it reads the
+/// keychain, and the sections, cells, and footers each ask for it while the table is being built.
+/// Cleared by `reloadSections` so the next pass picks up newly probed capabilities.
+@property (nonatomic, strong) NSNumber *cachedThirdPartyBlocksCapability;
 @end
 
 @implementation SiteSettingsViewController
@@ -145,6 +147,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 {
     [super viewDidAppear:animated];
 
+    self.cachedThirdPartyBlocksCapability = nil; // re-resolve against newly probed capabilities.
     [self.tableView reloadData];
 }
 
@@ -176,6 +179,12 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     // Only show theme styles toggle when GutenbergKit is enabled
     if ([RemoteFeature enabled:RemoteFeatureFlagNewGutenberg]) {
         [sections addObject:@(SiteSettingsSectionThemeStyles)];
+
+        // Third-party blocks are gated behind their own remote flag, and the row is hidden
+        // outright for sites that aren't offered the feature.
+        if ([GutenbergSettings isThirdPartyBlocksVisibleForCapability:[self thirdPartyBlocksCapabilityValue]]) {
+            [sections addObject:@(SiteSettingsSectionThirdPartyBlocks)];
+        }
     }
 
     if ([self.blog supports:BlogFeatureWpComRESTAPI] && self.blog.isAdmin) {
@@ -262,6 +271,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         {
             return 1;
         }
+        case SiteSettingsSectionThirdPartyBlocks:
+        {
+            return 1;
+        }
         case SiteSettingsSectionWriting:
         {
             return self.writingSectionRows.count;
@@ -280,9 +293,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         }
         case SiteSettingsSectionJetpackSettings:
         {
-            if ([Feature enabled:FeatureFlagJetpackDisconnect]) {
-                return SiteSettingsJetpackCount;
-            }
             return 1;
         }
         case SiteSettingsSectionAdvanced:
@@ -365,12 +375,29 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             [GutenbergSettings setThemeStylesEnabled:value forBlog:blog];
         };
 
-        // Default to greyed-out, only make the control interactive if theme styles are supported
-        _themeStylesSelectorCell.flipSwitch.enabled = false;
-        _themeStylesSelectorCell.textLabel.textColor = UIColor.lightGrayColor;
+        // Default to disabled, only make the control interactive if theme styles are supported
+        _themeStylesSelectorCell.isEnabled = false;
         [self.themeStylesSelectorCell setOn:false];
     }
     return _themeStylesSelectorCell;
+}
+
+- (SwitchTableViewCell *)thirdPartyBlocksSelectorCell
+{
+    if (!_thirdPartyBlocksSelectorCell) {
+        _thirdPartyBlocksSelectorCell = [SwitchTableViewCell new];
+        _thirdPartyBlocksSelectorCell.name = NSLocalizedString(@"Use third-party blocks (beta)", @"Option to load blocks provided by plugins installed on the site");
+        _thirdPartyBlocksSelectorCell.flipSwitch.accessibilityIdentifier = @"useThirdPartyBlocksSwitch";
+        __weak Blog *blog = self.blog;
+        _thirdPartyBlocksSelectorCell.onChange = ^(BOOL value){
+            [GutenbergSettings setThirdPartyBlocksEnabled:value forBlog:blog];
+        };
+
+        // Default to disabled, only make the control interactive if the site supports the feature
+        _thirdPartyBlocksSelectorCell.isEnabled = false;
+        [self.thirdPartyBlocksSelectorCell setOn:false];
+    }
+    return _thirdPartyBlocksSelectorCell;
 }
 
 - (SettingTableViewCell *)defaultCategoryCell
@@ -500,7 +527,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     __weak __typeof__(self) weakSelf = self;
     _ampSettingCell.onChange = ^(BOOL value){
         weakSelf.blog.settings.ampEnabled = value;
-        [weakSelf saveSettings];
+        BlogSettingsChanges *changes = [BlogSettingsChanges new];
+        changes.ampEnabled = @(value);
+        [weakSelf saveSettingsWithChanges:changes];
         [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"amp_enabled" value:@(value)];
     };
 
@@ -518,17 +547,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     return _jetpackSecurityCell;
 }
 
-- (SettingTableViewCell *)jetpackConnectionCell
-{
-    if (_jetpackConnectionCell) {
-        return _jetpackConnectionCell;
-    }
-    _jetpackConnectionCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Manage Connection", @"Label for managing the Blog Jetpack Connection section")
-                                                                editable:YES
-                                                         reuseIdentifier:nil];
-    return _jetpackConnectionCell;
-}
-
 - (void)configureEditorSelectorCell
 {
     [self.editorSelectorCell setOn:self.blog.isGutenbergEnabled];
@@ -536,11 +554,19 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)configureThemeStylesSelectorCell
 {
-    if ([GutenbergSettings isThemeStylesSupportedForBlog: self.blog]){
-        _themeStylesSelectorCell.flipSwitch.enabled = true;
-        _themeStylesSelectorCell.textLabel.textColor = UIColor.labelColor;
-        [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
-    }
+    BOOL isSupported = [GutenbergSettings isThemeStylesSupportedForBlog:self.blog];
+    self.themeStylesSelectorCell.isEnabled = isSupported;
+    [self.themeStylesSelectorCell setOn:isSupported && [GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+}
+
+- (void)configureThirdPartyBlocksSelectorCell
+{
+    // Use the property, not the ivar: the cell is created lazily, so on the first pass the ivar
+    // is still nil and assigning to it is silently dropped — leaving the row with the disabled
+    // state its factory applies.
+    BOOL isSupported = [GutenbergSettings isThirdPartyBlocksSupportedForCapability:[self thirdPartyBlocksCapabilityValue]];
+    self.thirdPartyBlocksSelectorCell.isEnabled = isSupported;
+    [self.thirdPartyBlocksSelectorCell setOn:isSupported && [GutenbergSettings isThirdPartyBlocksEnabledForBlog:self.blog]];
 }
 
 - (void)configureDefaultCategoryCell
@@ -612,9 +638,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     switch (row) {
         case (SiteSettingsJetpackSecurity):
             return self.jetpackSecurityCell;
-
-        case (SiteSettingsJetpackConnection):
-            return self.jetpackConnectionCell;
     }
     return nil;
 }
@@ -698,6 +721,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             [self configureThemeStylesSelectorCell];
             return self.themeStylesSelectorCell;
 
+        case SiteSettingsSectionThirdPartyBlocks:
+            [self configureThirdPartyBlocksSelectorCell];
+            return self.thirdPartyBlocksSelectorCell;
+
         case SiteSettingsSectionWriting:
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
 
@@ -771,6 +798,14 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             }
             break;
 
+        case SiteSettingsSectionThirdPartyBlocks:
+            // Only show "Editor" header if no earlier editor section already carries it
+            if (![self.tableSections containsObject:@(SiteSettingsSectionBlockEditor)]
+                && ![self.tableSections containsObject:@(SiteSettingsSectionThemeStyles)]) {
+                headingTitle = NSLocalizedString(@"Editor", @"Title for the editor section in site settings screen");
+            }
+            break;
+
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
             break;
@@ -807,6 +842,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             footerView = [self getThemeStylesSectionFooterView];
             break;
 
+        case SiteSettingsSectionThirdPartyBlocks:
+            footerView = [self getThirdPartyBlocksSectionFooterView];
+            break;
+
         case SiteSettingsSectionTraffic:
             footerView = [self getTrafficSettingsSectionFooterView];
             break;
@@ -823,7 +862,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     LanguageViewController *languageViewController = [[LanguageViewController alloc] initWithBlog:blog];
     languageViewController.onChange = ^(NSNumber *newLanguageID){
         weakSelf.blog.settings.languageID = newLanguageID;
-        [weakSelf saveSettings];
+        BlogSettingsChanges *changes = [BlogSettingsChanges new];
+        changes.languageID = newLanguageID;
+        [weakSelf saveSettingsWithChanges:changes];
         [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"language" value:newLanguageID];
     };
 
@@ -896,7 +937,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                 if ([weakSelf savingWritingDefaultsIsAvailable]) {
                     [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"default_post_format"];
 
-                    [weakSelf saveSettings];
+                    BlogSettingsChanges *changes = [BlogSettingsChanges new];
+                    changes.defaultPostFormat = status;
+                    [weakSelf saveSettingsWithChanges:changes];
                 }
             }
         }
@@ -948,10 +991,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     switch (row) {
         case SiteSettingsJetpackSecurity:
             [self showJetpackSettingsForBlog:self.blog];
-            break;
-
-        case SiteSettingsJetpackConnection:
-            [self showJetpackConnectionForBlog:self.blog];
             break;
     }
 }
@@ -1023,6 +1062,21 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self refreshData];
 }
 
+- (NSInteger)thirdPartyBlocksCapabilityValue
+{
+    if (!self.cachedThirdPartyBlocksCapability) {
+        self.cachedThirdPartyBlocksCapability = @([GutenbergSettings thirdPartyBlocksCapabilityForBlog:self.blog]);
+    }
+    return self.cachedThirdPartyBlocksCapability.integerValue;
+}
+
+- (void)reloadSections
+{
+    self.tableSections = nil; // force the tableSections to be repopulated.
+    self.cachedThirdPartyBlocksCapability = nil; // re-resolve against newly probed capabilities.
+    [self.tableView reloadData];
+}
+
 - (void)refreshData
 {
     __weak __typeof__(self) weakSelf = self;
@@ -1031,6 +1085,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [service syncSettingsForBlog:self.blog success:^{
         [weakSelf.refreshControl endRefreshing];
         self.tableSections = nil; // force the tableSections to be repopulated.
+        self.cachedThirdPartyBlocksCapability = nil; // re-resolve against newly probed capabilities.
         [weakSelf.tableView reloadData];
     } failure:^(NSError * __unused error) {
         [weakSelf.refreshControl endRefreshing];
@@ -1067,7 +1122,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"")];
 
-    NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
+    NSURL *xmlRpcURL = self.blog.xmlrpcURL;
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRpcURL userAgent:[WPUserAgent wordPressUserAgent]];
     __weak __typeof__(self) weakSelf = self;
     [api checkCredentials:self.username password:self.password success:^(id __unused responseObject, NSHTTPURLResponse *__unused httpResponse) {
@@ -1119,15 +1174,15 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 #pragma mark - Saving methods
 
-- (void)saveSettings
+- (void)saveSettingsWithChanges:(BlogSettingsChanges *)changes
 {
-    if (!self.blog.settings.hasChanges) {
+    if (changes.isEmpty) {
         return;
     }
 
     [self showActivityIndicator];
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    [blogService updateSettingsForBlog:self.blog success:^{
+    [blogService updateSettingsForBlog:self.blog changes:changes success:^{
         [self hideActivityIndicator];
         [NSNotificationCenter.defaultCenter postNotificationName:WPBlogSettingsUpdatedNotification object:nil];
     } failure:^(NSError *error) {
@@ -1186,25 +1241,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self.navigationController pushViewController:settings animated:YES];
 }
 
-- (void)showJetpackConnectionForBlog:(Blog *)blog
-{
-
-    NSParameterAssert(blog);
-
-    JetpackConnectionViewController *jetpackConnectionVC = [[JetpackConnectionViewController alloc] initWithBlog:blog];
-    jetpackConnectionVC.delegate = self;
-    [self.navigationController pushViewController:jetpackConnectionVC animated:YES];
-}
-
-#pragma mark - JetpackConnectionViewControllerDelegate
-
-- (void)jetpackDisconnectedForBlog:(Blog *)blog
-{
-    if (blog == self.blog) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
 #pragma mark - PostCategoriesViewControllerDelegate
 
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller
@@ -1216,7 +1252,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [WPAnalytics trackSettingsChange:@"site_settings"
                                fieldName:@"default_category"];
 
-        [self saveSettings];
+        BlogSettingsChanges *changes = [BlogSettingsChanges new];
+        changes.defaultCategoryID = category.categoryID;
+        [self saveSettingsWithChanges:changes];
     }
 }
 

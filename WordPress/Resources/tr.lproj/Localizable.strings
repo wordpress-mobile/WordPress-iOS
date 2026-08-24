@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-29 09:59:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Yönet";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Bağlantı yönetimi";
 
@@ -7766,14 +7765,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Yalnızca etki alanı satın alın";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Süresi dolmuş";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Süresi asla bitmez";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Yenilemeler";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Bir etki alanı bulun";
@@ -9834,21 +9827,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack uygulamasına geçtiğiniz için teşekkürler!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "WordPress uygulaması kurulu gibi görünüyor.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "WordPress aç";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Hayır, teşekkürler";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Verilerinizi WordPress uygulamasından aktarmak ve otomatik olarak oturum açmak ister misiniz?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Jetpack eklentisine hoş geldiniz!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Daha sonra karar ver";
 
@@ -9860,9 +9838,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Aynı bildirimleri alacaksınız, ancak bunlar artık Jetpack uygulamasından gelecek.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "WordPress uygulamasının bildirimlerini kapatacağız.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Sitenizle ilgili bilgileri almak için bildirimlere izin verin";
@@ -11441,9 +11416,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Abone Ol";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Orijinali Gör";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Daha fazla işlem";
 
@@ -12318,14 +12290,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Siteniz bir Blok Teması kullanmıyor, bu nedenle düzenleyici içeriğinizle doğru şekilde eşleşmeyebilir. İşler yolunda gitmiyorsa düzenleyici stillerini devre dışı bırakabilirsiniz.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Blok düzenleyiciyi temanız gibi gösterin.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Tema stili desteğini etkinleştirmek için sitenize Gutenberg Eklentisini yükleyin.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ ekle";

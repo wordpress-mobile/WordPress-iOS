@@ -5,6 +5,7 @@ struct TopListItemsView: View {
     let itemLimit: Int
     let dateRange: StatsDateRange
     var reserveSpace: Bool = false
+    var onReferrerMarkedAsSpam: () -> Void = {}
 
     @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
 
@@ -34,7 +35,8 @@ struct TopListItemsView: View {
             metric: data.metric,
             maxValue: data.metrics.maxValue,
             dateRange: dateRange,
-            totalValue: data.metrics.total
+            totalValue: data.metrics.total,
+            onReferrerMarkedAsSpam: onReferrerMarkedAsSpam
         )
         .frame(height: cellHeight)
     }

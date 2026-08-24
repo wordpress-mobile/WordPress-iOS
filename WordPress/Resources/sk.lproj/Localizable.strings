@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2025-01-08 15:01:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1374,7 +1374,6 @@
 "Manage" = "Spravovať";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Spravovať pripojenie";
 

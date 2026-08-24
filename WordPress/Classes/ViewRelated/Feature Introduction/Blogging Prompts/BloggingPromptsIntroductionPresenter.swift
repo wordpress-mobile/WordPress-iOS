@@ -38,7 +38,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     }()
 
     private lazy var bloggingPromptsService: BloggingPromptsService? = {
-        return BloggingPromptsService(blog: blogToUse())
+        BloggingPromptsService(blog: blogToUse())
     }()
 
     // MARK: - Init
@@ -81,7 +81,8 @@ private extension BloggingPromptsIntroductionPresenter {
 
     func showPostCreation() {
         guard let blog = blogToUse(),
-              let presentingViewController else {
+            let presentingViewController
+        else {
             wpAssertionFailure("invalid_state")
             navigationController.dismiss(animated: true)
             return
@@ -94,38 +95,57 @@ private extension BloggingPromptsIntroductionPresenter {
                 return
             }
 
-            let editor = EditPostViewController(blog: blog, prompt: prompt)
-            editor.modalPresentationStyle = .fullScreen
-            editor.entryPoint = .bloggingPromptsFeatureIntroduction
-
-            self?.navigationController.dismiss(animated: true, completion: { [weak self] in
-                presentingViewController.present(editor, animated: false)
-                self?.trackPostEditorShown(blog)
-            })
+            self?.navigationController
+                .dismiss(
+                    animated: true,
+                    completion: { [weak self] in
+                        PostEditorRouter.showNewPost(
+                            for: blog,
+                            from: presentingViewController,
+                            context: NewPostEditorContext(
+                                prompt: prompt,
+                                entryPoint: .bloggingPromptsFeatureIntroduction
+                            )
+                        )
+                        self?.trackPostEditorShown(blog)
+                    }
+                )
         })
     }
 
     func showRemindersScheduling() {
         guard let blog = blogToUse(),
-        let presentingViewController else {
+            let presentingViewController
+        else {
             wpAssertionFailure("invalid_state")
             navigationController.dismiss(animated: true)
             return
         }
 
-        navigationController.dismiss(animated: true, completion: {
-            BloggingRemindersFlow.present(from: presentingViewController,
-                                          for: blog,
-                                          source: .bloggingPromptsFeatureIntroduction)
-        })
+        navigationController.dismiss(
+            animated: true,
+            completion: {
+                BloggingRemindersFlow.present(
+                    from: presentingViewController,
+                    for: blog,
+                    source: .bloggingPromptsFeatureIntroduction
+                )
+            }
+        )
     }
 
     func blogToUse() -> Blog? {
-        return accountHasMultipleSites ? selectedBlog : accountSites?.first
+        accountHasMultipleSites ? selectedBlog : accountSites?.first
     }
 
     func trackPostEditorShown(_ blog: Blog) {
-        WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: "blogging_prompts_feature_introduction", WPAppAnalyticsKeyPostType: "post"], blog: blog)
+        WPAppAnalytics.track(
+            .editorCreatedPost,
+            properties: [
+                WPAppAnalyticsKeyTapSource: "blogging_prompts_feature_introduction", WPAppAnalyticsKeyPostType: "post"
+            ],
+            blog: blog
+        )
     }
 
     // MARK: Prompt Fetching
@@ -138,16 +158,22 @@ private extension BloggingPromptsIntroductionPresenter {
             return
         }
 
-        bloggingPromptsService.fetchTodaysPrompt(success: { prompt in
-            completion(prompt)
-        }, failure: { error in
-            completion(nil)
-            DDLogError("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
-        })
+        bloggingPromptsService.fetchTodaysPrompt(
+            success: { prompt in
+                completion(prompt)
+            },
+            failure: { error in
+                completion(nil)
+                DDLogError("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
+            }
+        )
     }
 
     func dispatchErrorNotice() {
-        let message = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
+        let message = NSLocalizedString(
+            "Error loading prompt",
+            comment: "Text displayed when there is a failure loading a blogging prompt."
+        )
         presentingViewController?.displayNotice(title: message)
     }
 }

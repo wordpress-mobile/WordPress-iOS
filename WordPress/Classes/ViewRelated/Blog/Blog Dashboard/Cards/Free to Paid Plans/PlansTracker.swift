@@ -10,9 +10,13 @@ struct PlansTracker {
 
     // MARK: - Dashboard Card
 
-    static func trackFreeToPaidPlansDashboardCardShown(in position: Int) {
+    static func trackFreeToPaidPlansDashboardCardShown(in position: Int, blogProperties: BlogAnalyticsProperties?) {
         let properties = [positionKey: position]
-        WPAnalytics.track(.freeToPaidPlansDashboardCardShown, properties: properties)
+        if let blogProperties {
+            WPAnalytics.track(.freeToPaidPlansDashboardCardShown, properties: properties, blogProperties: blogProperties)
+        } else {
+            WPAnalytics.track(.freeToPaidPlansDashboardCardShown, properties: properties)
+        }
     }
 
     static func trackFreeToPaidPlansDashboardCardHidden(in position: Int) {

@@ -109,13 +109,13 @@ struct StatsTotalInsightsData: Equatable {
 
     private enum TextContent {
         static let likesTotalGuideTextSingular = NSLocalizedString(
-            "stats.insights.totalLikes.guideText.singular",
-            value: "Your latest post %1$@ has received %2$@ like.",
-            comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one.")
+            "stats.insights.totalLikes.guideText.latestPost.singular",
+            value: "The latest post %1$@ has received %2$@ like.",
+            comment: "A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one.")
         static let likesTotalGuideTextPlural = NSLocalizedString(
-            "stats.insights.totalLikes.guideText.plural",
-            value: "Your latest post %1$@ has received %2$@ likes.",
-            comment: "A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes.")
+            "stats.insights.totalLikes.guideText.latestPost.plural",
+            value: "The latest post %1$@ has received %2$@ likes.",
+            comment: "A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes.")
         static let commentsTotalGuideText = NSLocalizedString("Tap \"View more\" to see your top commenters.", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
     }
 }

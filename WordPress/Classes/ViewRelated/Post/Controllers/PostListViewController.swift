@@ -17,7 +17,11 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         return vc
     }
 
-    static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
+    static func showForBlog(
+        _ blog: Blog,
+        from sourceController: UIViewController,
+        withPostStatus postStatus: BasePost.Status? = nil
+    ) {
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.initialFilterWithPostStatus = postStatus
@@ -34,7 +38,11 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
 
-        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+        createButtonCoordinator.add(
+            to: view,
+            trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+            bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor
+        )
 
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
@@ -47,10 +55,13 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
         var actions: [ActionSheetItem] = [
-            PostAction(handler: { [weak self] in
-                self?.dismiss(animated: false, completion: nil)
-                self?.createPost()
-            }, source: Constants.source)
+            PostAction(
+                handler: { [weak self] in
+                    self?.dismiss(animated: false, completion: nil)
+                    self?.createPost()
+                },
+                source: Constants.source
+            )
         ]
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
     }()
@@ -90,16 +101,18 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     /// Listens for the app coming to foreground in order to properly set the create button
     private func listenForAppComingToForeground() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(toggleCreateButton),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(toggleCreateButton),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     // MARK: - Sync Methods
 
     override func postTypeToSync() -> PostServiceType {
-        return .post
+        .post
     }
 
     // MARK: - Data Model Interaction
@@ -114,7 +127,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     // MARK: - TableViewHandler
 
     override func entityName() -> String {
-        return String(describing: Post.self)
+        String(describing: Post.self)
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
@@ -144,7 +157,8 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     // MARK: - UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
         let post = postAtIndexPath(indexPath)
         cell.accessoryType = .none
         cell.configure(with: PostListItemViewModel(post: post, shouldHideAuthor: shouldHideAuthor), delegate: self)
@@ -162,7 +176,11 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         editPost(post)
     }
 
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
             let post = self.postAtIndexPath(indexPath)
@@ -171,12 +189,18 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         }
     }
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         let actions = AbstractPostHelper.makeLeadingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
         return UISwipeActionsConfiguration(actions: actions)
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         let actions = AbstractPostHelper.makeTrailingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
         return UISwipeActionsConfiguration(actions: actions)
     }
@@ -184,11 +208,14 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     // MARK: - Post Actions
 
     override func createPost() {
-        let editor = EditPostViewController(blog: blog)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .postsList
-        present(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], blog: blog)
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: self,
+            context: NewPostEditorContext(
+                entryPoint: .postsList,
+                analytics: .editorCreatedPost(source: "posts_view", postType: "post")
+            )
+        )
     }
 
     private func editPost(_ post: AbstractPost) {
@@ -243,7 +270,12 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     func comments(_ post: AbstractPost) {
         WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
         let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.shared.mainContext)
-        try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
+        try? contentCoordinator.displayCommentsWithPostId(
+            post.postID,
+            siteID: blog.dotComID,
+            commentID: nil,
+            source: .postsList
+        )
     }
 
     func showSettings(for post: AbstractPost) {
@@ -254,8 +286,10 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some posts may be unavailable while offline.",
-                                 comment: "Error message shown when the user is browsing Site Posts without an internet connection.")
+        NSLocalizedString(
+            "No internet connection. Some posts may be unavailable while offline.",
+            comment: "Error message shown when the user is browsing Site Posts without an internet connection."
+        )
     }
 
     private enum Constants {
@@ -270,20 +304,33 @@ private extension PostListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: nil, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
+            noResultsViewController.configure(
+                title: "",
+                noConnectionTitle: NoResultsText.noConnectionTitle,
+                buttonTitle: nil,
+                subtitle: nil,
+                noConnectionSubtitle: NoResultsText.noConnectionSubtitle,
+                attributedSubtitle: nil,
+                attributedSubtitleConfiguration: nil,
+                image: nil,
+                subtitleImage: nil,
+                accessoryView: nil
+            )
             return
         }
 
         let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: nil,
-                                          image: noResultsImageName,
-                                          accessoryView: accessoryView)
+        noResultsViewController.configure(
+            title: noResultsTitle(),
+            buttonTitle: nil,
+            image: noResultsImageName,
+            accessoryView: accessoryView
+        )
     }
 
     var noResultsImageName: String {
-        return "posts-no-results"
+        "posts-no-results"
     }
 
     func noResultsTitle() -> String {
@@ -310,11 +357,29 @@ private extension PostListViewController {
     }
 
     struct NoResultsText {
-        static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-        static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-        static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
-        static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-        static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
-        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
+        static let noDraftsTitle = NSLocalizedString(
+            "You don't have any draft posts",
+            comment: "Displayed when the user views drafts in the posts list and there are no posts"
+        )
+        static let noScheduledTitle = NSLocalizedString(
+            "You don't have any scheduled posts",
+            comment: "Displayed when the user views scheduled posts in the posts list and there are no posts"
+        )
+        static let noTrashedTitle = NSLocalizedString(
+            "You don't have any trashed posts",
+            comment: "Displayed when the user views trashed in the posts list and there are no posts"
+        )
+        static let noPublishedTitle = NSLocalizedString(
+            "You haven't published any posts yet",
+            comment: "Displayed when the user views published posts in the posts list and there are no posts"
+        )
+        static let noConnectionTitle: String = NSLocalizedString(
+            "Unable to load posts right now.",
+            comment: "Title for No results full page screen displayedfrom post list when there is no connection"
+        )
+        static let noConnectionSubtitle: String = NSLocalizedString(
+            "Check your network connection and try again. Or draft a post.",
+            comment: "Subtitle for No results full page screen displayed from post list when there is no connection"
+        )
     }
 }

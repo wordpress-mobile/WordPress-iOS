@@ -1,5 +1,0 @@
-Finalmente, corrigimos alguns bugs. A partir de agora:
-
-- Categorias e tags funcionam corretamente em sites auto-hospedados.
-- O texto na tela Lembretes de publicação fica visível no modo escuro. Chega de esconde-esconde.
-- Você não verá mais um erro ao escolher um site da ação do menu de compartilhamento enquanto seus sites ainda carregam. Também atualizamos o design do seletor de sites para corresponder a outras áreas do aplicativo, porque ele estava nos preocupando.

@@ -15,10 +15,6 @@ import WordPressData
         SupportTableViewController().showFromTabBar()
     }
 
-    @objc public class func trackBlazeEntryPointDisplayed(source: BlazeSource) {
-        BlazeEventsTracker.trackEntryPointDisplayed(for: source)
-    }
-
     @objc public class var isWordPress: Bool {
         AppConfiguration.isWordPress
     }

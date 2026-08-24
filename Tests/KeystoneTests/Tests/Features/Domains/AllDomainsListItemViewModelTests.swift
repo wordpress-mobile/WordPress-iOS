@@ -29,20 +29,35 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
         )
     }
 
-    func testMappingWithUnregisteredDomain() throws {
+    func testMappingWithDomainRegisteredElsewhere() throws {
         self.assert(
-            viewModelFromDomain: try .make(hasRegistration: false),
+            viewModelFromDomain: try .make(hasRegistration: false, expiryDate: nil),
+            equalTo: .make(expiryDate: nil)
+        )
+    }
+
+    func testMappingWithFreeWpComDomain() throws {
+        self.assert(
+            viewModelFromDomain: try .make(hasRegistration: false, expiryDate: nil, wpcomDomain: true),
             equalTo: .make(expiryDate: "Never expires")
         )
     }
 
-    func testMappingWithValidDomain() throws {
-        let futureDate = Date(timeIntervalSinceNow: 365 * 24 * 60 * 60)
-        let iso8601Date = ViewModel.Row.DateFormatters.iso8601.string(from: futureDate)
-        let humanReadableDate = ViewModel.Row.DateFormatters.humanReadable.string(from: futureDate)
+    func testMappingWithMappedDomainWithExpiry() throws {
         self.assert(
-            viewModelFromDomain: try .make(expiryDate: iso8601Date),
-            equalTo: .make(expiryDate: "Renews \(humanReadableDate)")
+            viewModelFromDomain: try .make(hasRegistration: false, expiryDate: "2099-10-17T00:00:00+00:00"),
+            equalTo: .make(expiryDate: "Expires on Oct 17, 2099")
+        )
+    }
+
+    // The API sends `expiry` as a midnight UTC timestamp encoding a calendar
+    // date. The formatted date must preserve that calendar date; formatting in
+    // a device timezone west of UTC would print Oct 16. The expected string is
+    // a literal because the test plan pins the en/US locale.
+    func testMappingWithValidDomain() throws {
+        self.assert(
+            viewModelFromDomain: try .make(expiryDate: "2099-10-17T00:00:00+00:00"),
+            equalTo: .make(expiryDate: "Expires on Oct 17, 2099")
         )
     }
 
@@ -56,46 +71,29 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
 
 fileprivate extension AllDomainsListItemViewModel.Row {
 
-    enum DateFormatters {
-        static let iso8601 = ISO8601DateFormatter()
-        static let humanReadable: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .none
-            return formatter
-        }()
-    }
-
     static func make(
         name: String = "example1.com",
         description: String? = "Example Blog 1",
         status: DomainStatus = .init(value: "Active", type: .success),
-        expiryDate: String? = Self.defaultExpiryDate()
+        // The rendering of Domain.Defaults.expiryDate (2023-01-01T00:00:00+00:00).
+        expiryDate: String? = "Expired Jan 1, 2023"
     ) -> Self {
-        return .init(
+        .init(
             name: name,
             description: description,
             status: status,
             expiryDate: expiryDate
         )
     }
-
-    private static func defaultExpiryDate() -> String? {
-        guard let input = Domain.Defaults.expiryDate, let date = DateFormatters.iso8601.date(from: input) else {
-            return nil
-        }
-        let formatted = DateFormatters.humanReadable.string(from: date)
-        return "Expired \(formatted)"
-    }
 }
 
 extension AllDomainsListItemViewModel.Row: Equatable {
 
-    static public func ==(left: Self, right: Self) -> Bool {
-        return left.name == right.name
-        && left.description == right.description
-        && left.expiryDate == right.expiryDate
-        && left.status?.value == right.status?.value
-        && left.status?.type == right.status?.type
+    static public func == (left: Self, right: Self) -> Bool {
+        left.name == right.name
+            && left.description == right.description
+            && left.expiryDate == right.expiryDate
+            && left.status?.value == right.status?.value
+            && left.status?.type == right.status?.type
     }
 }

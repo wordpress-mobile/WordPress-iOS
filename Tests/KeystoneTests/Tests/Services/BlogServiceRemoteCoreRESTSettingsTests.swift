@@ -17,7 +17,8 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
         startOfWeek: UInt64 = 1,
         defaultCategory: UInt64 = 1,
         defaultPostFormat: String = "standard",
-        postsPerPage: UInt64 = 10
+        postsPerPage: UInt64 = 10,
+        siteIcon: UInt64 = 0
     ) -> SiteSettingsWithEditContext {
         SiteSettingsWithEditContext(
             title: title,
@@ -39,7 +40,7 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
             defaultPingStatus: .closed,
             defaultCommentStatus: .closed,
             siteLogo: nil,
-            siteIcon: 0,
+            siteIcon: siteIcon,
             additionalFields: WpAdditionalFields()
         )
     }
@@ -123,5 +124,82 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
             makeSiteSettings(postsPerPage: 25)
         )
         #expect(result.postsPerPage == NSNumber(value: 25))
+    }
+
+    // MARK: - Write mapping
+
+    @Test func writeMapsTitleOnly() {
+        let sparse = RemoteBlogSettings()
+        sparse.name = "New Title"
+        let params = BlogServiceRemoteCoreREST.makeUpdateParams(from: sparse)
+        #expect(params.title == "New Title")
+        #expect(params.description == nil)
+        #expect(params.timezone == nil)
+        #expect(params.defaultCommentStatus == nil)
+        #expect(params.defaultPingStatus == nil)
+        #expect(params.siteIcon == nil)
+    }
+
+    @Test func writeMapsWritingFields() {
+        let sparse = RemoteBlogSettings()
+        sparse.tagline = "tag"
+        sparse.timezoneString = "Europe/Vienna"
+        sparse.dateFormat = "F j, Y"
+        sparse.timeFormat = "g:i a"
+        sparse.startOfWeek = "1"
+        sparse.defaultCategoryID = 7
+        sparse.postsPerPage = 12
+        let params = BlogServiceRemoteCoreREST.makeUpdateParams(from: sparse)
+        #expect(params.description == "tag")
+        #expect(params.timezone == "Europe/Vienna")
+        #expect(params.dateFormat == "F j, Y")
+        #expect(params.timeFormat == "g:i a")
+        #expect(params.startOfWeek == 1)
+        #expect(params.defaultCategory == 7)
+        #expect(params.postsPerPage == 12)
+    }
+
+    @Test func writeMapsStandardPostFormatToZero() {
+        let sparse = RemoteBlogSettings()
+        sparse.defaultPostFormat = "standard"
+        #expect(BlogServiceRemoteCoreREST.makeUpdateParams(from: sparse).defaultPostFormat == "0")
+    }
+
+    @Test func writeMapsNonStandardPostFormatVerbatim() {
+        let sparse = RemoteBlogSettings()
+        sparse.defaultPostFormat = "aside"
+        #expect(BlogServiceRemoteCoreREST.makeUpdateParams(from: sparse).defaultPostFormat == "aside")
+    }
+
+    @Test func writeOmitsNonNumericStartOfWeek() {
+        let sparse = RemoteBlogSettings()
+        sparse.startOfWeek = "monday"
+        #expect(BlogServiceRemoteCoreREST.makeUpdateParams(from: sparse).startOfWeek == nil)
+    }
+
+    @Test func writeMapsDiscussionBooleans() {
+        let sparse = RemoteBlogSettings()
+        sparse.commentsAllowed = true
+        sparse.pingbackInboundEnabled = false
+        let params = BlogServiceRemoteCoreREST.makeUpdateParams(from: sparse)
+        #expect(params.defaultCommentStatus == .open)
+        #expect(params.defaultPingStatus == .closed)
+    }
+
+    @Test func writeMapsIconAndRemoval() {
+        let set = RemoteBlogSettings()
+        set.iconMediaID = 42
+        #expect(BlogServiceRemoteCoreREST.makeUpdateParams(from: set).siteIcon == 42)
+
+        let removal = RemoteBlogSettings()
+        removal.iconMediaID = 0
+        #expect(BlogServiceRemoteCoreREST.makeUpdateParams(from: removal).siteIcon == 0)
+    }
+
+    // MARK: - Icon read mapping
+
+    @Test func readMapsSiteIcon() {
+        let result = BlogServiceRemoteCoreREST.mapSiteSettings(makeSiteSettings(siteIcon: 42))
+        #expect(result.iconMediaID == 42)
     }
 }

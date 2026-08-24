@@ -627,7 +627,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 - (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content {
     NSString *summary = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyExcerpt]];
     summary = [self formatSummary:summary];
-    if (!summary) {
+    if (summary.length == 0) {
         summary = [self createSummaryFromContent:content];
     }
     return summary;
@@ -670,14 +670,14 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 /**
  Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
- HTML is stripped and the extra bit is removed.
+ HTML is stripped and the extra bit is removed. `<br>` tags become spaces so adjacent words don't run together.
 
  @param summary The summary to format.
  @return The formatted summary.
  */
 - (NSString *)formatSummary:(NSString *)summary
 {
-    summary = [self makePlainText:summary];
+    summary = [summary wpkit_makeSingleLinePlainText];
 
     NSString *continueReading = NSLocalizedString(@"Continue reading", @"Part of a prompt suggesting that there is more content for the user to read.");
     continueReading = [NSString stringWithFormat:@"%@ →", continueReading];

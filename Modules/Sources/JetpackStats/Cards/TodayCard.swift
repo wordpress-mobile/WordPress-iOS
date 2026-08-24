@@ -56,16 +56,11 @@ struct TodayCard: View {
     }
 
     private var prominentMetricLabel: some View {
-        HStack(spacing: 2) {
-            Image(systemName: SiteMetric.views.systemImage)
-                .font(.caption2.weight(.medium))
-                .scaleEffect(x: 0.9, y: 0.9)
-            Text(SiteMetric.views.localizedTitle.uppercased())
-                .font(.caption.weight(.medium))
-        }
-        .foregroundStyle(Color.secondary)
-        .offset(y: 3) // Get it close to the value
-        .dynamicTypeSize(...DynamicTypeSize.large)
+        Text(SiteMetric.views.localizedTitle.uppercased())
+            .font(.caption.weight(.medium))
+            .foregroundStyle(Color.secondary)
+            .offset(y: 3) // Get it close to the value
+            .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
     private var currentDateText: String {

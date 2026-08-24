@@ -185,7 +185,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        resetNavBarAppearance(animated: animated)
+        // Only reset for a push to avoid animating the My Site title behind a presented modal.
+        if navigationController?.topViewController !== self {
+            resetNavBarAppearance(animated: animated)
+        }
         createButtonCoordinator?.hideCreateButton()
     }
 
@@ -320,6 +323,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func configureNavBarAppearance(animated: Bool) {
+
+        guard navigationController?.topViewController === self else {
+            return
+        }
+
         guard !isReaderAppModeEnabled else {
             return
         }

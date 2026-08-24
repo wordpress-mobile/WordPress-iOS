@@ -421,7 +421,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatReaderTagPreviewed,
     WPAnalyticsStatReaderTagUnfollowed,
     WPAnalyticsStatSelectedInstallJetpack,
-    WPAnalyticsStatSentItemToGooglePlus,
     WPAnalyticsStatSentItemToInstapaper,
     WPAnalyticsStatSentItemToPocket,
     WPAnalyticsStatSentItemToWordPress,

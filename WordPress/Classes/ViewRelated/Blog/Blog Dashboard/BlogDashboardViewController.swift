@@ -82,7 +82,7 @@ final class BlogDashboardViewController: UIViewController {
             cards.forEach(trackCardViewed)
         }
 
-        WPAnalytics.track(.mySiteDashboardShown)
+        WPAnalytics.track(.mySiteDashboardShown, blog: blog)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -182,7 +182,7 @@ final class BlogDashboardViewController: UIViewController {
         guard let event = card.cardType.viewedAnalytic else {
             return
         }
-        WPAnalytics.track(event, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
+        WPAnalytics.track(event, properties: [WPAppAnalyticsKeyTabSource: "dashboard"], blog: blog)
     }
 }
 
