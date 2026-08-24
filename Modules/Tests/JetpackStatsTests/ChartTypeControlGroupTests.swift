@@ -19,7 +19,7 @@ struct ChartTypeControlGroupTests {
         #expect(selection == .columns)
     }
 
-    @Test("Deselecting the active chart type keeps it selected")
+    @Test("Reflects the active type and never clears the selection")
     func deselectingChartTypeKeepsSelection() {
         var selection = ChartType.line
         let controlGroup = ChartTypeControlGroup(
@@ -29,8 +29,11 @@ struct ChartTypeControlGroupTests {
             )
         )
 
-        controlGroup.selectionBinding(for: .line).wrappedValue = false
+        #expect(controlGroup.selectionBinding(for: .line).wrappedValue == true)
+        #expect(controlGroup.selectionBinding(for: .columns).wrappedValue == false)
 
+        // Deselecting is a no-op: `set(false)` must never change the selection.
+        controlGroup.selectionBinding(for: .columns).wrappedValue = false
         #expect(selection == .line)
     }
 }
