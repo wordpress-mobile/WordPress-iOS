@@ -169,17 +169,19 @@ private final class FakePostLikesService: PostLikesServing {
     private(set) var lastPurgeExisting: Bool?
 
     func likeUsersFor(postID: NSNumber, siteID: NSNumber, after: Date?) -> [LikeUser] {
-        return after == nil ? storedUsers : storedUsersAfter
+        after == nil ? storedUsers : storedUsersAfter
     }
 
-    func getLikesFor(postID: NSNumber,
-                     siteID: NSNumber,
-                     count: Int,
-                     before: String?,
-                     excludingIDs: [NSNumber]?,
-                     purgeExisting: Bool,
-                     success: @escaping (([LikeUser], Int, Int) -> Void),
-                     failure: @escaping ((Error?) -> Void)) {
+    func getLikesFor(
+        postID: NSNumber,
+        siteID: NSNumber,
+        count: Int,
+        before: String?,
+        excludingIDs: [NSNumber]?,
+        purgeExisting: Bool,
+        success: @escaping (([LikeUser], Int, Int) -> Void),
+        failure: @escaping ((Error?) -> Void)
+    ) {
         getLikesCallCount += 1
         lastBefore = before
         lastExcludingIDs = excludingIDs

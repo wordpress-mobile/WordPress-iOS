@@ -11,14 +11,16 @@ import WordPressShared
 protocol PostLikesServing: AnyObject {
     func likeUsersFor(postID: NSNumber, siteID: NSNumber, after: Date?) -> [LikeUser]
 
-    func getLikesFor(postID: NSNumber,
-                     siteID: NSNumber,
-                     count: Int,
-                     before: String?,
-                     excludingIDs: [NSNumber]?,
-                     purgeExisting: Bool,
-                     success: @escaping (([LikeUser], Int, Int) -> Void),
-                     failure: @escaping ((Error?) -> Void))
+    func getLikesFor(
+        postID: NSNumber,
+        siteID: NSNumber,
+        count: Int,
+        before: String?,
+        excludingIDs: [NSNumber]?,
+        purgeExisting: Bool,
+        success: @escaping (([LikeUser], Int, Int) -> Void),
+        failure: @escaping ((Error?) -> Void)
+    )
 }
 
 extension PostService: PostLikesServing {}
@@ -57,7 +59,7 @@ final class LikesListViewModel: ObservableObject {
 
     /// Whether another page can be fetched. Mirrors `LikesListController.hasMoreLikes`.
     var hasMoreLikes: Bool {
-        return totalLikesFetched < totalLikes
+        totalLikesFetched < totalLikes
     }
 
     init(siteID: NSNumber, postID: NSNumber, totalLikes: Int, service: PostLikesServing? = nil) {
@@ -134,8 +136,9 @@ final class LikesListViewModel: ObservableObject {
 
                 let subtitle: String? = {
                     guard let error = error as? NSError,
-                          error.domain == WordPressComRestApiEndpointError.errorDomain,
-                          error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                        error.domain == WordPressComRestApiEndpointError.errorDomain,
+                        error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue
+                    else {
                         return nil
                     }
                     return Strings.privateBlogErrorMessage
