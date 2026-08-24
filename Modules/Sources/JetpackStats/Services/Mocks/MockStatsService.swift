@@ -192,6 +192,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return TopListResponse(items: Array(sortedItems.prefix(limit ?? Int.max)))
     }
 
+    func invalidateTopListData(for item: TopListItemType) {
+    }
+
     func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListResponse {
         // Load base items from JSON
         let baseItems = loadRealtimeBaseItems(for: dataType)
@@ -320,6 +323,18 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         let shouldSucceed = Double.random(in: 0...1) > 0.1 // 90% success rate
         if !shouldSucceed {
             throw URLError(.networkConnectionLost)
+        }
+
+        guard !currentValue else { return }
+        for key in dailyTopListData.keys where key.itemType == .referrers {
+            guard var data = dailyTopListData[key] else { continue }
+            for (date, items) in data {
+                data[date] = items.filter {
+                    guard let referrer = $0 as? TopListItem.Referrer else { return true }
+                    return referrer.spamDomain != referrerDomain
+                }
+            }
+            dailyTopListData[key] = data
         }
     }
 

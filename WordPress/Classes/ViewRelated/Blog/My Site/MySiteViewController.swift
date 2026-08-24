@@ -323,6 +323,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func configureNavBarAppearance(animated: Bool) {
+
+        guard navigationController?.topViewController === self else {
+            return
+        }
+
         guard !isReaderAppModeEnabled else {
             return
         }

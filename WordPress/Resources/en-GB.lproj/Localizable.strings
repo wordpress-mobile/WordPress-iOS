@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-19 11:38:19+0000 */
+/* Translation-Revision-Date: 2026-08-20 09:45:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: en_GB */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Couldn't establish a secure connection to your site's XML-RPC endpoint.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Couldn't load data. Please refresh again later.";
