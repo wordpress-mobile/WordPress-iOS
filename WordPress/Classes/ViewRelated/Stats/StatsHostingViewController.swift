@@ -107,7 +107,7 @@ extension StatsRouter {
 /// Shared router implementation for Jetpack app stats navigation
 private final class JetpackAppStatsRouterScreenFactory: StatsRouterScreenFactory {
     func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController {
-        StatsLikesListViewController(
+        LikesListHostViewController(
             siteID: siteID as NSNumber,
             postID: NSNumber(value: postID),
             totalLikes: totalLikes

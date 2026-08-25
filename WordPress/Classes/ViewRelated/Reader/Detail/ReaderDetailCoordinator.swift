@@ -611,7 +611,9 @@ class ReaderDetailCoordinator {
         guard let post else {
             return
         }
-        let controller = ReaderDetailLikesListController(post: post, totalLikes: post.likeCount?.intValue ?? 0)
+        guard let controller = LikesListHostViewController(post: post) else {
+            return
+        }
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
