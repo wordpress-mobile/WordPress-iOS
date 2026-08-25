@@ -8,12 +8,25 @@ import UIKit
 
 @MainActor
 @Suite(.serialized)
-struct PostGBKEditorViewControllerTests {
+final class PostGBKEditorViewControllerTests {
 
-    @Test("presents the site media library for GutenbergKit requests")
-    func presentsSiteMediaLibrary() throws {
-        let context = ContextManager.forTesting().mainContext
-        let blog = BlogBuilder(context).build()
+    /// Keeps every editor built here alive for the whole suite.
+    ///
+    /// `viewDidLoad` starts `prepareEditor()` asynchronously, and that work
+    /// reaches `startUploadServer()` after the test method has returned. The
+    /// editor holds `mediaUploadDelegate` weakly, so if the controller — the
+    /// only owner of `PostGBKEditorViewController.mediaUploadProcessor` — is
+    /// released at scope exit, the delegate is gone by the time the load
+    /// arrives and GutenbergKit trips its "released before the editor loaded"
+    /// precondition, crashing the test host and taking every concurrently
+    /// running suite with it.
+    ///
+    /// Production ownership is correct: the controller outlives its own load.
+    /// Only the test's scope was shorter than the async work it kicked off.
+    private var retainedWindows: [UIWindow] = []
+
+    /// Builds an editor and retains it (via its window) for the suite's lifetime.
+    private func makeEditor(blog: Blog) -> PostGBKEditorViewController {
         let viewController = PostGBKEditorViewController(
             postId: nil,
             postType: .post,
@@ -26,6 +39,15 @@ struct PostGBKEditorViewControllerTests {
         window.rootViewController = viewController
         window.makeKeyAndVisible()
         viewController.loadViewIfNeeded()
+        retainedWindows.append(window)
+        return viewController
+    }
+
+    @Test("presents the site media library for GutenbergKit requests")
+    func presentsSiteMediaLibrary() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let viewController = makeEditor(blog: blog)
 
         let data = Data(
             #"{"allowedTypes":["image"],"multiple":true,"value":[],"contextId":"test"}"#.utf8
@@ -108,18 +130,7 @@ struct PostGBKEditorViewControllerTests {
         for blog: Blog,
         requesting mediaIds: [Int]
     ) throws -> SiteMediaPickerViewController {
-        let viewController = PostGBKEditorViewController(
-            postId: nil,
-            postType: .post,
-            title: "",
-            content: "",
-            status: "draft",
-            blog: blog
-        )
-        let window = UIWindow()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.loadViewIfNeeded()
+        let viewController = makeEditor(blog: blog)
 
         let value = mediaIds.map(String.init).joined(separator: ",")
         let data = Data(
