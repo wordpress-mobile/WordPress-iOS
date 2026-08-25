@@ -9,10 +9,9 @@ import WordPressData
 ///
 /// Assigned to `GutenbergKit.EditorViewController.mediaUploadDelegate`, which
 /// holds it weakly and invokes it off the main actor, so the type is `Sendable`
-/// and snapshots the `Blog`-derived values it needs at initialization.
+/// and snapshots the `Blog`-derived value it needs at initialization.
 final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     private let videoDurationLimit: TimeInterval?
-    private let allowableFileExtensions: Set<String>
     private let makeMediaSettings: @Sendable () -> MediaSettings
 
     /// The temporary directory an export is written to.
@@ -40,25 +39,15 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
 
     @MainActor
     convenience init(blog: Blog) {
-        // HEIC isn't supported when uploading an image, so we filter it out,
-        // mirroring `MediaImportService`.
-        var allowedFileTypes = blog.allowedFileTypes
-        allowedFileTypes.remove("heic")
-
-        self.init(
-            videoDurationLimit: blog.videoDurationLimit,
-            allowableFileExtensions: allowedFileTypes
-        )
+        self.init(videoDurationLimit: blog.videoDurationLimit)
     }
 
     init(
         videoDurationLimit: TimeInterval?,
-        allowableFileExtensions: Set<String>,
         makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() },
         makeExportDirectory: @escaping @Sendable () -> MediaDirectory = { .temporary(id: UUID()) }
     ) {
         self.videoDurationLimit = videoDurationLimit
-        self.allowableFileExtensions = allowableFileExtensions
         self.makeMediaSettings = makeMediaSettings
         self.makeExportDirectory = makeExportDirectory
     }
@@ -90,15 +79,10 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             return true
         }
         switch expected {
-        case .gif:
-            // Always returned unchanged, whatever the settings.
+        case .gif, .other:
+            // Always returned unchanged, whatever the settings: only images and
+            // videos are processed.
             return false
-        case .other:
-            // Claim these only to enforce the site's allowed extensions, which
-            // `processFile` throws on. Declining would spend a full upload on a
-            // file the site rejects and surface the server's error instead of
-            // ours. With no restriction to enforce, there is nothing to do.
-            return !allowableFileExtensions.isEmpty
         case .image, .video:
             // An image may be downscaled, stripped, or converted, and a video
             // is always exported. Both depend on settings or on the file's
@@ -117,15 +101,17 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             // GIFs are uploaded unchanged; processing would only copy the file.
             return .original
         case .other:
-            // Non-media files are uploaded unchanged, but enforce the site's
-            // allowed file extensions, mirroring `MediaURLExporter.exportURL`.
-            if let fileExtension = url.typeIdentifierFileExtension,
-                !MediaImportService.defaultAllowableFileExtensions.contains(fileExtension),
-                !allowableFileExtensions.isEmpty,
-                !allowableFileExtensions.contains(fileExtension)
-            {
-                throw MediaURLExporter.URLExportError.unsupportedFileType
-            }
+            // Non-media files are uploaded unchanged.
+            //
+            // Deliberately narrower than `MediaURLExporter.exportURL`, which
+            // also rejects extensions outside the site's allowed list. That
+            // check belongs to the legacy picker, which hands over arbitrary
+            // files with nothing having vetted them. Here the editor has already
+            // validated the file against the site's real `allowedMimeTypes` from
+            // `/wp-block-editor/v1/settings` before the upload reaches us, so
+            // re-checking against `Blog.allowedFileTypes` — a cached option that
+            // can lag the server — could only ever reject a file the server
+            // would have accepted.
             return .original
         case .image:
             // SVG conforms to `UTType.image`, so it lands here, but ImageIO

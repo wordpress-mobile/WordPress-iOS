@@ -128,7 +128,6 @@ struct GBKMediaUploadProcessorTests {
         let directory = MediaDirectory.temporary(id: UUID())
         let processor = GBKMediaUploadProcessor(
             videoDurationLimit: 1,
-            allowableFileExtensions: [],
             makeMediaSettings: makeSettingsFactory(makeSettings()),
             makeExportDirectory: { directory }
         )
@@ -180,18 +179,25 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
-    @Test func disallowedFileExtensionThrows() async throws {
-        let processor = GBKMediaUploadProcessor(
-            videoDurationLimit: nil,
-            allowableFileExtensions: ["pdf"],
-            makeMediaSettings: makeSettingsFactory(makeSettings())
-        )
+    /// The editor validates uploads against the site's real `allowedMimeTypes`
+    /// before they reach the delegate, so the processor does not second-guess it
+    /// with `Blog.allowedFileTypes` — a cached option that can lag the server and
+    /// could only reject a file the server would have accepted.
+    @Test func documentPassesThroughWhateverTheSiteAllows() async throws {
+        let processor = makeProcessor(settings: makeSettings())
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).txt")
         try "plain text".write(to: url, atomically: true, encoding: .utf8)
         defer { cleanUp(url) }
 
-        await #expect(throws: MediaURLExporter.URLExportError.self) {
-            try await processor.processFile(at: url, mimeType: "text/plain", filename: url.lastPathComponent)
+        let result = try await processor.processFile(
+            at: url,
+            mimeType: "text/plain",
+            filename: url.lastPathComponent
+        )
+
+        guard case .original = result else {
+            Issue.record("Expected the original file to pass through")
+            return
         }
     }
 
@@ -305,18 +311,12 @@ struct GBKMediaUploadProcessorTests {
         #expect(processor.handlesFile(ofType: "video/mp4", named: "clip.mp4"))
     }
 
-    /// A document is only worth claiming when there is a restriction to
-    /// enforce; otherwise `processFile` returns it unchanged.
-    @Test func documentsAreClaimedOnlyToEnforceAllowedExtensions() {
-        let unrestricted = makeProcessor(settings: makeSettings())
-        #expect(!unrestricted.handlesFile(ofType: "application/pdf", named: "doc.pdf"))
-
-        let restricted = GBKMediaUploadProcessor(
-            videoDurationLimit: nil,
-            allowableFileExtensions: ["pdf"],
-            makeMediaSettings: makeSettingsFactory(makeSettings())
-        )
-        #expect(restricted.handlesFile(ofType: "application/pdf", named: "doc.pdf"))
+    /// `processFile` returns every document unchanged, so claiming one would
+    /// only spend a full temp-file copy to hand it straight back.
+    @Test func documentsAreDeclinedBeforeBeingCopiedToDisk() {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(!processor.handlesFile(ofType: "application/pdf", named: "doc.pdf"))
+        #expect(!processor.handlesFile(ofType: "text/csv", named: "data.csv"))
     }
 
     /// A part with no `Content-Type` arrives as `text/plain`, and a real
@@ -348,7 +348,6 @@ struct GBKMediaUploadProcessorTests {
     @Test func videoExceedingDurationLimitThrows() async throws {
         let processor = GBKMediaUploadProcessor(
             videoDurationLimit: 1,
-            allowableFileExtensions: [],
             makeMediaSettings: makeSettingsFactory(makeSettings())
         )
         let url = try fixtureURL("test-video-device-gps.m4v")
@@ -363,7 +362,6 @@ struct GBKMediaUploadProcessorTests {
     private func makeProcessor(settings: MediaSettings) -> GBKMediaUploadProcessor {
         GBKMediaUploadProcessor(
             videoDurationLimit: nil,
-            allowableFileExtensions: [],
             makeMediaSettings: makeSettingsFactory(settings)
         )
     }
