@@ -1,6 +1,6 @@
 27.3
 -----
-
+* [*] Stats: Improve performance when opening the Stats screen [#25938]
 
 27.2
 -----
