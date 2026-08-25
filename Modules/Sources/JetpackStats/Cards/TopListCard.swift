@@ -185,7 +185,8 @@ struct TopListCard: View {
             service: context.service,
             context: context,
             initialData: viewModel.data,
-            filter: viewModel.filter
+            filter: viewModel.filter,
+            onRefresh: viewModel.refresh
         )
         .environment(\.context, context)
         .environment(\.router, router)
@@ -341,7 +342,8 @@ struct TopListCard: View {
                 data: data,
                 itemLimit: showMoreInline && isExpanded ? data.items.count : itemLimit,
                 dateRange: viewModel.effectiveDateRange,
-                reserveSpace: reserveSpace
+                reserveSpace: reserveSpace,
+                onReferrerMarkedAsSpam: viewModel.refresh
             )
             if showMoreInline && data.items.count > itemLimit {
                 showMoreInlineButton

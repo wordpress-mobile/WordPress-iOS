@@ -66,8 +66,9 @@ struct ExternalLinkStatsView: View {
     @ViewBuilder
     var linkIcon: some View {
         if let url = URL(string: externalLink.url),
-           let host = url.host,
-           let iconURL = URL(string: "https://www.google.com/s2/favicons?domain=\(host)&sz=128") {
+            let host = url.host,
+            let iconURL = URL(string: "https://www.google.com/s2/favicons?domain=\(host)&sz=128")
+        {
             CachedAsyncImage(url: iconURL) { image in
                 image
                     .resizable()
@@ -100,7 +101,7 @@ struct ExternalLinkStatsView: View {
     @ViewBuilder
     var viewsCount: some View {
         if let views = externalLink.metrics.views {
-            StandaloneMetricView(metric: .views, value: views)
+            StandaloneMetricView(metric: .views, value: views, dateInterval: dateRange.dateInterval)
         }
     }
 
@@ -131,7 +132,7 @@ struct ExternalLinkStatsView: View {
     }
 
     private var childrenChartData: TopListData {
-        return TopListData(
+        TopListData(
             item: .externalLinks,
             metric: .views,
             items: externalLink.children

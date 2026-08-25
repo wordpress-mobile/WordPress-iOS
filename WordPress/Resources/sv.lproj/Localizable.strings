@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-29 09:55:23+0000 */
+/* Translation-Revision-Date: 2026-08-19 13:59:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Hantera";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Hantera anslutning";
 
@@ -7766,14 +7765,14 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Köp bara en domän";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Löpt ut";
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Löpte ut %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Löper ut den %1$@";
 
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Löper aldrig ut";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Förnyas";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Hitta en domän";
@@ -7948,6 +7947,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Alla";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d mönster";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 mönster";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Infoga mönster";
@@ -9834,21 +9839,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Tack för att du bytt till Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Det ser ut som att du har WordPress-appen installerad.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Öppna WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Nej tack";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Vill du överföra din data från WordPress-appen och logga in automatiskt?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Välkommen till Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Bestäm senare";
 
@@ -9860,9 +9850,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Du kommer att få samma aviseringar som tidigare, men nu från Jetpack-appen.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Vi har inaktiverat aviseringar för WordPress-appen.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Tillåt aviseringar för att hålla koll på din webbplats";
@@ -11438,11 +11425,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Öppnar webbplatsinformationen";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Visar författarens profil";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Visar inlägg från webbplatsen";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Prenumerera";
-
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Visa källa";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Fler åtgärder";
@@ -12318,14 +12308,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Din webbplats använder inget Blocktema, så redigeraren kanske inte matchar ditt innehåll ordentligt. Om saker och ting inte ser bra ut kan du inaktivera redigerarstilar.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Få blockredigeraren att se ut som ditt tema.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Installera Gutenberg-tillägget på din webbplats för att aktivera stöd för temastilar.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Lägg till %1$@";

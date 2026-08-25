@@ -74,6 +74,17 @@ class ReaderInterestsStyleGuide {
         button.layer.cornerRadius = 5.0
     }
 
+    // MARK: - Skip Button
+    public class func applySkipButtonStyle(button: UIButton) {
+        button.configuration = {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 12.0, leading: 0.0, bottom: 12.0, trailing: 0.0)
+            config.titleTextAttributesTransformer = .transformer(with: .preferredFont(forTextStyle: .body))
+            return config
+        }()
+        button.setTitleColor(.secondaryLabel, for: .normal)
+    }
+
     // MARK: - Loading
     public class func applyLoadingLabelStyles(label: UILabel) {
         label.font = .preferredFont(forTextStyle: .body)
