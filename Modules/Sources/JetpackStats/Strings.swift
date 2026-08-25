@@ -158,6 +158,8 @@ enum Strings {
 
     enum Chart {
         static let showData = AppLocalizedString("jetpackStats.chart.showData", value: "Show Data", comment: "Show chart data menu item")
+        static let selectedPeriod = AppLocalizedString("jetpackStats.chart.legend.selectedPeriod", value: "Selected period", comment: "Accessibility label for the selected chart period")
+        static let comparisonPeriod = AppLocalizedString("jetpackStats.chart.legend.comparisonPeriod", value: "Comparison period", comment: "Accessibility label for the comparison chart period")
         static let lineChart = AppLocalizedString("jetpackStats.chart.lineChart", value: "Lines", comment: "Line chart type")
         static let barChart = AppLocalizedString("jetpackStats.chart.barChart", value: "Bars", comment: "Bar chart type")
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
@@ -165,6 +167,20 @@ enum Strings {
         static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data for period", comment: "Shown for empty states")
         static let granularity = AppLocalizedString("jetpackStats.chart.granularity", value: "Granularity", comment: "Granularity picker label")
         static let other = AppLocalizedString("jetpackStats.chart.other", value: "Other", comment: "Label for aggregated 'Other' segment in pie charts")
+
+        static func comparisonLegendItem(comparison: String, range: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.chart.legend.comparisonLabel", value: "%1$@ · %2$@", comment: "Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range."),
+                comparison, range
+            )
+        }
+
+        static func legendItem(period: String, range: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.chart.legend.accessibilityLabel", value: "%1$@: %2$@", comment: "Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range."),
+                period, range
+            )
+        }
     }
 
     enum TopListTitles {

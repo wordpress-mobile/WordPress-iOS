@@ -262,6 +262,17 @@ struct ChartCard: View {
     @ViewBuilder
     private func mainChartView(metric: SiteMetric, data: ChartData) -> some View {
         VStack(alignment: .leading, spacing: Constants.step1 / 2) {
+            if dateRange.comparison != .off {
+                ChartComparisonLegend(
+                    model: ChartComparisonLegendModel(
+                        dateRange: dateRange,
+                        chartType: selectedChartType,
+                        formatter: context.formatters.dateRange
+                    ),
+                    metric: metric
+                )
+            }
+
             chartContentView(data: data)
                 .frame(height: chartHeight)
                 .padding(.horizontal, -Constants.step1)
