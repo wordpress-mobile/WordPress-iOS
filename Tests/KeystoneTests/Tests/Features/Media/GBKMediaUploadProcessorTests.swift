@@ -335,6 +335,15 @@ struct GBKMediaUploadProcessorTests {
         #expect(!processor.handlesFile(ofType: "image/gif", named: "animation.gif"))
     }
 
+    /// SVG conforms to `UTType.image`, but ImageIO cannot decode it, so
+    /// `processFile` returns it unchanged for any settings. Claiming it would
+    /// buy a full temp-file copy that is handed straight back.
+    @Test func svgIsDeclinedBeforeBeingCopiedToDisk() {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(!processor.handlesFile(ofType: "image/svg+xml", named: "logo.svg"))
+        #expect(!processor.handlesFile(ofType: "text/plain", named: "logo.svg"))
+    }
+
     @Test func imagesAndVideosAreAlwaysClaimed() {
         let processor = makeProcessor(settings: makeSettings())
         #expect(processor.handlesFile(ofType: "image/jpeg", named: "photo.jpg"))

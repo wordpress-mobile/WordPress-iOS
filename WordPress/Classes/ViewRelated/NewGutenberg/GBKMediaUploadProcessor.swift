@@ -88,10 +88,17 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             // Always returned unchanged, whatever the settings: only images and
             // videos are processed.
             return false
-        case .image, .video:
-            // An image may be downscaled, stripped, or converted, and a video
-            // is always exported. Both depend on settings or on the file's
-            // contents, so decide in `processFile`.
+        case .image:
+            // SVG conforms to `UTType.image` but is returned unchanged for any
+            // settings, because ImageIO cannot decode it (see `processFile`).
+            // Declining it skips a temp-file copy that could never be used.
+            //
+            // Every other image may be downscaled, stripped, or converted
+            // depending on settings and on the file's contents, so decide in
+            // `processFile`.
+            return type != .svg
+        case .video:
+            // Always exported, to apply the preset and duration limit.
             return true
         }
     }
