@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-05-14 08:38:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3069,7 +3069,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Administroni";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Administroni Lidhje";
 
@@ -7664,14 +7663,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Thjesht blini një përkatësi";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "E skaduar";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "S’skadon kurrë";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Rinovohet më";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Gjeni një përkatësi";
@@ -9366,21 +9359,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Faleminderit që kaloni në Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Duket sikur keni të instaluar aplikacionin WordPress.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Hap WordPress-in";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Jo, faleminderit";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Do të donit të shpërngulnit të dhënat tuaja nga aplikacioni WordPress dhe të bëhet hyrja automatikisht?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Mirë se vini te Jetpack-u!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vendosni më vonë";
 
@@ -9392,9 +9370,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Do të merrni të njëjtat njoftime, por tani do të vijnë nga aplikacioni Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Do të çaktivizojmë njoftimet për aplikacionin WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Lejoni njoftime, që të jeni në dijeni se ç’ndodh në sajtin tuaj";
@@ -11757,14 +11732,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privatësi";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Sajti juaj s’po përdor ndonjë Temë Me Blloqe, ndaj përpunuesi s’mund të përkojë saktë me lëndën tuaj. Nëse gjërat s’duken mirë, mund të çaktivizoni stile përpunuesi.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Bëjeni përpunuesin me blloqe të duket si tema juaj.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Që të aktivizoni mbulim stilesh temash, instaloni në sajtin tuaj shtojcën Gutenberg.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Shtoni %1$@";

@@ -180,8 +180,10 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         // While we're onscreen, please, update rows with animations
         tableViewHandler?.updateRowAnimation = .fade
 
-        // Tracking
-        WPAnalytics.track(WPAnalyticsStat.openedNotificationsList)
+        // Tracking. The notifications list spans all sites, so there is no site truly
+        // scoped to this event. Attach the currently visible site when there is one so
+        // the event can carry a blog_id; when no site is on screen, track it without one.
+        WPAppAnalytics.track(.openedNotificationsList, blog: RootViewCoordinator.sharedPresenter.currentlyVisibleBlog())
 
         // Notifications
         startListeningToNotifications()

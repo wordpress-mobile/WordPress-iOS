@@ -20,6 +20,7 @@ extension TopListItem.Referrer {
         self.init(
             name: referrer.title,
             domain: referrer.url?.host,
+            url: referrer.url,
             iconURL: referrer.iconURL,
             children: referrer.children.map { TopListItem.Referrer($0) },
             metrics: SiteMetricsSet(views: referrer.viewsCount)

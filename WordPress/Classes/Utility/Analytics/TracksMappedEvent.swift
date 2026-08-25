@@ -876,8 +876,6 @@ extension TracksMappedEvent {
             name = "reader_reader_tag_unfollowed"
         case .selectedInstallJetpack:
             name = "install_jetpack_selected"
-        case .sentItemToGooglePlus:
-            name = "sent_item_to_google_plus"
         case .sentItemToInstapaper:
             name = "sent_item_to_instapaper"
         case .sentItemToPocket:

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-29 09:56:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3078,7 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Kelola";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Kelola Koneksi";
 
@@ -7754,14 +7753,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Beli domain saja";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Kedaluwarsa";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Tidak akan kedaluwarsa";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Perpanjangan";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Cari domain";
@@ -9789,21 +9782,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Terima kasih telah beralih ke Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Tampaknya aplikasi WordPress sudah diinstal.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Buka WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Tidak, terima kasih";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Apakah ingin mentransfer data Anda dari aplikasi WordPress dan login otomatis?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Selamat datang di Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Tentukan nanti";
 
@@ -9815,9 +9793,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Anda tetap akan menerima pemberitahuan yang sama tetapi dari aplikasi Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Kami akan menonaktifkan pemberitahuan untuk aplikasi WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Izinkan pemberitahuan untuk mengikuti perkembangan situs Anda";
@@ -11378,9 +11353,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Berlangganan";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Tampilan Orisinal";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Tindakan lainnya";
 
@@ -12252,14 +12224,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privasi";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Situs Anda tidak menggunakan Tema Blok sehingga editor mungkin kurang pas dengan konten Anda. Jika kurang berkenan, Anda dapat menonaktifkan gaya editor.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Jadikan editor blok terlihat seperti tema Anda.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Instal Plugin Gutenberg di situs untuk mengaktifkan dukungan gaya tema.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Tambahkan %1$@";

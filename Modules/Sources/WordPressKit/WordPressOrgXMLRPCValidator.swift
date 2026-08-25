@@ -10,6 +10,7 @@ import Foundation
     case blocked = 405 // Server returned a 405 error while reading xmlrpc file
     case invalid // Doesn't look to be valid XMLRPC Endpoint.
     case xmlrpc_missing // site contains RSD link but XML-RPC information is missing
+    case insecureEndpoint // The endpoint resolved to plain http for a site that was requested over https
 
     public var localizedDescription: String {
         switch self {
@@ -34,6 +35,11 @@ import Foundation
             return NSLocalizedString("Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.", comment: "Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden.")
         case .xmlrpc_missing:
             return NSLocalizedString("Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem.", comment: "Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing.")
+        case .insecureEndpoint:
+            return NSLocalizedString(
+                "Couldn't establish a secure connection to your site's XML-RPC endpoint.",
+                comment: "Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS."
+            )
         }
     }
 }
@@ -95,15 +101,28 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             sitesToTry.append(site.replacingOccurrences(of: "http://", with: "https://"))
         } else if site.hasPrefix("https://") {
             sitesToTry.append(site)
-            if !secureAccessOnly {
-                sitesToTry.append(site.replacingOccurrences(of: "https://", with: "http://"))
-            }
         } else {
             failure(WordPressOrgXMLRPCValidatorError.invalidScheme as NSError)
             return
         }
 
-        tryGuessXMLRPCURLForSites(sitesToTry, userAgent: userAgent, success: success, failure: failure)
+        // Never hand back a plaintext endpoint when the caller asked for a secure site.
+        // Besides the (removed) http probe candidate, redirects and RSD discovery can
+        // also resolve to http:// for an https:// input (GHSA-qxpr-7v78-mh5g).
+        let validatedSuccess: (URL) -> Void
+        if site.hasPrefix("https://") {
+            validatedSuccess = { xmlrpcURL in
+                if xmlrpcURL.scheme?.lowercased() == "https" {
+                    success(xmlrpcURL)
+                } else {
+                    failure(WordPressOrgXMLRPCValidatorError.insecureEndpoint as NSError)
+                }
+            }
+        } else {
+            validatedSuccess = success
+        }
+
+        tryGuessXMLRPCURLForSites(sitesToTry, userAgent: userAgent, success: validatedSuccess, failure: failure)
     }
 
     /// Helper for `guessXMLRPCURLForSite(_:userAgent:success:failure)`

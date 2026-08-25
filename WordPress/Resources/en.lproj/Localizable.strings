@@ -2295,6 +2295,9 @@ Example: Reply to Pamela Nguyen */
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
 
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Couldn't establish a secure connection to your site's XML-RPC endpoint.";
+
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Couldn't load data. Please refresh again later.";
 
@@ -2944,14 +2947,14 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Just buy a domain";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Expired";
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Expired %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Expires on %1$@";
 
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Never expires";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Renews";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Find a domain";
@@ -3334,6 +3337,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "All";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d patterns";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 pattern";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Insert Pattern";
@@ -5932,7 +5941,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 "Manage" = "Manage";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Manage Connection";
 
@@ -6474,9 +6482,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "You’ll get all the same notifications but now they’ll come from the Jetpack app.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "We’ll disable notifications for the WordPress app.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Allow notifications to keep up with your site";
@@ -7961,6 +7966,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Update";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "The selected media could not be added.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Post formats haven't been configured for this site.";
 
@@ -9037,11 +9045,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Opens the site details";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Views the author's profile";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Views posts from the site";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Subscribe";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "View Original";
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Subscribed";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "\u{2026}view more";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "More actions";
@@ -10543,14 +10560,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Make the block editor look like your theme.";
 
 /* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Install the Gutenberg Plugin on your site to activate theme style support.";
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Install the Gutenberg plugin on your site to activate theme style support.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Load third-party blocks from plugins installed on your site.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Install the Jetpack plugin on your site to activate third-party block support.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Add %1$@";
@@ -12248,6 +12271,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Use theme styles";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Use third-party blocks (beta)";
+
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Site's User";
 
@@ -13251,13 +13277,13 @@ from anywhere.";
 /* MARK: - Localizable.strings */
 
 /* Source strings for the stats widget configuration UI, uploaded to GlotPress under the
-   "ios-widget.ios-widget." prefix (see MANUALLY_MAINTAINED_STRINGS_FILES in fastlane/lanes/localization.rb).
+   "ios-widget." prefix (see MANUALLY_MAINTAINED_STRINGS_FILES in fastlane/lanes/localization.rb).
    The keys are the identifiers Xcode generated for the legacy Sites.intentdefinition; they are
    kept so the existing GlotPress translations keep matching after the migration to App Intents.
 
-   This file is not shipped in any bundle. At runtime the prefixed keys are resolved from the
-   app's Localizable.strings (iOS 26) or from the static copies in
-   Sources/JetpackStatsWidgets/Resources/<locale>.lproj/Localizable.strings (iOS 17). */
+   This file is not shipped in any bundle. At runtime, iOS 18 and later resolve the prefixed
+   keys from the app's Localizable.strings (verified on simulators). iOS 17 only checks the
+   widget extension bundle, so it uses the English default values. */
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

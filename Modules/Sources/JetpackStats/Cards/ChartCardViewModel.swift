@@ -102,16 +102,35 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         configurationDelegate?.saveConfiguration(for: self)
     }
 
+    func selectChartType(_ chartType: ChartType) {
+        guard chartType != selectedChartType else { return }
+
+        let previousType = selectedChartType
+        selectedChartType = chartType
+        tracker?
+            .send(
+                .chartTypeChanged,
+                properties: [
+                    "from_type": previousType.rawValue,
+                    "to_type": chartType.rawValue
+                ]
+            )
+    }
+
     func onAppear() {
         guard isFirstAppear else { return }
         isFirstAppear = false
 
         // Track card shown event
-        tracker?.send(.cardShown, properties: [
-            "card_type": CardType.chart.rawValue,
-            "configuration": metrics.map { $0.analyticsName }.joined(separator: "_"),
-            "chart_type": selectedChartType.rawValue
-        ])
+        tracker?
+            .send(
+                .cardShown,
+                properties: [
+                    "card_type": CardType.chart.rawValue,
+                    "configuration": metrics.map { $0.analyticsName }.joined(separator: "_"),
+                    "chart_type": selectedChartType.rawValue
+                ]
+            )
 
         loadData(for: effectiveDateRange)
     }
@@ -229,21 +248,28 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var selectedBarTrend: TrendViewModel? {
         guard let selectedBarDate,
-              let data = chartData[selectedMetric],
-              let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate }) else {
+            let data = chartData[selectedMetric],
+            let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate })
+        else {
             return nil
         }
         let currentValue = data.currentData[index].value
         let previousValue = index > 0 ? data.currentData[index - 1].value : 0
-        return TrendViewModel(currentValue: currentValue, previousValue: previousValue, metric: data.metric, context: .regular)
+        return TrendViewModel(
+            currentValue: currentValue,
+            previousValue: previousValue,
+            metric: data.metric,
+            context: .regular
+        )
     }
 
     /// The index of the bar preceding the selected bar in `currentData`, if any.
     var selectedBarPreviousIndex: Int? {
         guard let selectedBarDate,
-              let data = chartData[selectedMetric],
-              let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate }),
-              index > 0 else {
+            let data = chartData[selectedMetric],
+            let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate }),
+            index > 0
+        else {
             return nil
         }
         return index - 1
@@ -253,7 +279,8 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         metrics.map { metric in
             if let chartData = chartData[metric] {
                 if let selectedBarDate,
-                   let index = chartData.currentData.firstIndex(where: { $0.date == selectedBarDate }) {
+                    let index = chartData.currentData.firstIndex(where: { $0.date == selectedBarDate })
+                {
                     let currentValue = chartData.currentData[index].value
                     let previousValue = index > 0 ? chartData.currentData[index - 1].value : 0
                     return .init(metric: metric, value: currentValue, previousValue: previousValue)

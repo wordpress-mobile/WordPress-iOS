@@ -45,6 +45,7 @@ extension TopListItem {
     struct Referrer: Codable, TopListItemProtocol {
         let name: String
         let domain: String?
+        let url: URL?
         let iconURL: URL?
         let children: [Referrer]
         var metrics: SiteMetricsSet
@@ -55,6 +56,18 @@ extension TopListItem {
 
         var displayName: String {
             name
+        }
+
+        var spamDomain: String? {
+            domain ?? children.first?.domain
+        }
+
+        var canMarkAsSpam: Bool {
+            guard spamDomain != nil else { return false }
+            if let url {
+                return url.absoluteString.contains(name)
+            }
+            return name.contains(".")
         }
     }
 

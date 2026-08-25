@@ -209,6 +209,11 @@ class BlogBuilder {
         return self
     }
 
+    func with(capabilities: [String: Bool]) -> Self {
+        blog.capabilities = capabilities
+        return self
+    }
+
     @discardableResult
     func build() -> Blog {
         blog

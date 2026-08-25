@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-29 09:55:34+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3078,7 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "管理";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "連携の管理";
 
@@ -7739,14 +7738,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "ドメインだけを購入";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "期限切れ";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "期限なし";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "更新";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "ドメインを探す";
@@ -9771,21 +9764,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack にお切り替えいただきありがとうございます。";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "WordPress アプリがインストールされているようです。";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "WordPress を開く";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "いいえ";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "WordPress アプリからデータを転送して自動でサインインしますか ?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Jetpack へようこそ !";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "後で決める";
 
@@ -9797,9 +9775,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "通知内容はすべて同じですが、Jetpack アプリから送信されるようになりました。";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "WordPress アプリの通知を無効にします。";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "サイトを更新するよう通知を許可する";
@@ -11345,9 +11320,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "購読";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "元の投稿を表示";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "その他の操作";
 
@@ -12210,14 +12182,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "プライバシー";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "サイトでブロックテーマが使用されていないため、エディターがコンテンツと正しくマッチしない可能性があります。 表示に問題がある場合は、エディターのスタイルを無効化できます。";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "ブロックエディターをテーマと同じ外観にします。";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "サイトに Gutenberg プラグインをインストールして、テーマスタイルのサポートを有効化します。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@を追加";
