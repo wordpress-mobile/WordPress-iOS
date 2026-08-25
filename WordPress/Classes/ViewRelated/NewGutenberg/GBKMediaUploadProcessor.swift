@@ -171,7 +171,11 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             .export()
 
             let mimeType = try Self.mimeType(of: export.url, exportImageType: exportImageType)
-            return .processed(export.url, mimeType: mimeType, filename: export.url.lastPathComponent)
+            return .processed(
+                export.url,
+                mimeType: mimeType,
+                filename: Self.uploadFilename(original: filename, exportURL: export.url)
+            )
         } catch {
             // Nothing else sweeps this directory: GutenbergKit removes only the
             // file it is handed, and `MediaFileManager`'s cleanup covers the
@@ -183,6 +187,31 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             try? FileManager.default.removeItem(at: directory.url)
             throw error
         }
+    }
+
+    // MARK: - Output naming
+
+    /// The name the processed file is uploaded under.
+    ///
+    /// Keeps the name the editor sent, which is the one the user recognizes,
+    /// and takes only the extension from the export — a conversion (HEIC to
+    /// JPEG, MOV to MP4) changes it, and the extension must match the bytes.
+    ///
+    /// The export's own name is unusable here: `MediaImageExporter(url:)` seeds
+    /// it from `url.lastPathComponent`, and that URL is the temp file
+    /// GutenbergKit named `<uuid>-<filename>`. Uploading that verbatim would
+    /// make the UUID part of the attachment's slug and title.
+    private static func uploadFilename(original: String, exportURL: URL) -> String {
+        let name = (original as NSString).lastPathComponent
+        let base = (name as NSString).deletingPathExtension
+        guard !base.isEmpty else {
+            return exportURL.lastPathComponent
+        }
+        let exportExtension = exportURL.pathExtension
+        guard !exportExtension.isEmpty else {
+            return base
+        }
+        return "\(base).\(exportExtension)"
     }
 
     // MARK: - Exporter configuration

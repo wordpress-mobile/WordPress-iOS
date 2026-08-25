@@ -259,6 +259,49 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
+    // MARK: - Output naming
+
+    /// GutenbergKit names the temp file it hands over `<uuid>-<filename>`, and
+    /// the returned name becomes the attachment's slug and title. The name the
+    /// editor sent must survive processing, or the UUID ends up in both.
+    @Test func processedFileKeepsTheNameTheEditorSent() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.maxImageSizeSetting = 200
+        let processor = makeProcessor(settings: settings)
+        let url = try copyFixture("test-image-device-photo-gps.jpg", as: "\(UUID().uuidString)-img_1234.jpg")
+        defer { cleanUp(url) }
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "IMG_1234.jpg")
+
+        guard case .processed(let outputURL, _, let filename) = result else {
+            throw ProcessingError.expectedProcessedFile
+        }
+        defer { cleanUp(outputURL) }
+        // The basename is the editor's, with no trace of the UUID the temp file
+        // carried. The extension is the export's — `.jpg` normalizes to the
+        // type's preferred `.jpeg` even though the format did not change.
+        #expect(filename == "IMG_1234.jpeg")
+    }
+
+    /// A conversion changes the bytes, so the extension has to follow them even
+    /// though the basename does not.
+    @Test func convertedFileKeepsItsNameButTakesTheExportExtension() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        let processor = makeProcessor(settings: settings)
+        let url = try fixtureURL("iphone-photo.heic")
+
+        let result = try await processor.processFile(at: url, mimeType: "image/heic", filename: "IMG_1234.HEIC")
+
+        guard case .processed(let outputURL, let mimeType, let filename) = result else {
+            throw ProcessingError.expectedProcessedFile
+        }
+        defer { cleanUp(outputURL) }
+        #expect(mimeType == "image/jpeg")
+        #expect(filename == "IMG_1234.jpeg")
+    }
+
     // MARK: - handlesFile
 
     /// The invariant the metadata gate rests on: declining a file must mean
@@ -403,6 +446,21 @@ struct GBKMediaUploadProcessorTests {
         let ext = (filename as NSString).pathExtension
         let url = try #require(bundle.url(forResource: name, withExtension: ext))
         return url
+    }
+
+    /// Copies a fixture to a temporary file under a different name, mirroring
+    /// the `<uuid>-<filename>` temp file GutenbergKit hands to `processFile`.
+    private func copyFixture(_ filename: String, as destinationName: String) throws -> URL {
+        let source = try fixtureURL(filename)
+        let destination = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+            .appendingPathComponent(destinationName, isDirectory: false)
+        try FileManager.default.createDirectory(
+            at: destination.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try FileManager.default.copyItem(at: source, to: destination)
+        return destination
     }
 
     /// Copies a fixture to a temporary file with no path extension, mirroring
