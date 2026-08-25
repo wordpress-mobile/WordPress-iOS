@@ -1,188 +1,21 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 ---
 
-# Most of the steps need to run on a macOS agent, so let's define it as a root property.
+# Validation-only for wordpress-mobile/WordPress-iOS#25934. Close; do not merge.
+
 agents:
   queue: mac
 env:
   IMAGE_ID: $IMAGE_ID
 
-# This is the default pipeline – it will build and test the app
 steps:
-  #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    key: prototype_builds_group
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
-  # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
-  #################
-  - group: ":testflight: TestFlight Builds"
-    key: testflight_builds_group
-    steps:
-      - label: ":testflight: Build & Upload {{matrix}}"
-        command: ".buildkite/commands/build-and-upload-testflight.sh {{matrix}}"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.branch == 'trunk'"
-        matrix:
-          - "wordpress"
-          - "jetpack"
-          # Reader is omitted: its App Store archive has been broken since #25321
-          # (PostHelper moved to the app target without updating the Reader target),
-          # and went undetected after #25179 removed Reader from CI. Re-add once
-          # the Reader target archives again.
-          # - "reader"
-        notify:
-          - github_commit_status:
-              context: "TestFlight Build ({{matrix}})"
-
-  #################
-  # Create Builds for Testing
-  #################
-  - group: "🛠 Builds for Testing"
-    steps:
-      - label: "🛠 :wordpress: Build for Testing"
-        key: "build_wordpress"
-        command: ".buildkite/commands/build-for-testing.sh wordpress"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "WordPress Build for Testing"
-
-      - label: "🛠 :jetpack: Build for Testing"
-        key: "build_jetpack"
-        command: ".buildkite/commands/build-for-testing.sh jetpack"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Jetpack Build for Testing"
-
-  #################
-  # Run Unit Tests
-  #################
-  - group: "🔬 Unit Tests"
-    key: unit_tests_group
-    steps:
-      - label: "🔬 :swift: Swift Package Tests"
-        command: .buildkite/commands/run-swift-package-tests.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Swift Package Tests"
-
-      - label: "🔬 :wordpress: Unit Tests"
-        command: ".buildkite/commands/run-unit-tests.sh"
-        depends_on: "build_wordpress"
-        plugins:
-          - $CI_TOOLKIT_PLUGIN
-          - ${TEST_COLLECTOR}:
-              files: build/results/report.junit
-              format: junit
-              missing-error: 0
-              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Unit Tests"
-      - label: "🔬 Reader Unit Tests"
-        command: ".buildkite/commands/run-unit-tests-reader.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Reader Unit Tests"
-      # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
-      # - label: "🔬 Keystone Unit Tests"
-      #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
-      #   plugins: [$CI_TOOLKIT_PLUGIN]
-      #   artifact_paths:
-      #     - "build/results/*"
-      #   notify:
-      #     - github_commit_status:
-      #         context: "Unit Tests Keystone"
-
-  #################
-  # Linters
-  #################
-  - group: "Linters"
-    key: linters_group
-    steps:
-      - label: ":danger: Danger - PR Check"
-        command: danger
-        key: danger
-        # No "build.pull_request.id" condition as we want this check to run also on merge queues where it is a no-op
-        retry:
-          manual:
-            permit_on_passed: true
-        agents:
-          queue: "linter"
-
-      - label: ":swift: SwiftLint"
-        command: swiftlint
-        notify:
-          - github_commit_status:
-              context: "SwiftLint"
-        agents:
-          queue: "linter"
-
-      - label: "🧹 Lint Translations"
-        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-        plugins:
-          - docker#v3.8.0:
-              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-        agents:
-          queue: "default"
-        notify:
-          - github_commit_status:
-              context: "Lint Translations"
-
-      - label: ":sleuth_or_spy: Lint Localized Strings Format"
-        command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-
-      - label: ":mag: Verify String Catalog Coverage"
-        command: .buildkite/commands/verify-strings-catalog.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Verify String Catalog Coverage"
-
-      - label: ":test_tube: Localization Tooling Unit Tests"
-        command: .buildkite/commands/test-localization-tooling.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Localization Tooling Unit Tests"
-
-  #################
-  # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
-  #################
-  - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
-    command: .buildkite/commands/upload-claude-analysis.sh
-    # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
-    depends_on:
-      - linters_group
-      - prototype_builds_group
-      - unit_tests_group
-    allow_dependency_failure: true
-    agents:
-      queue: upload
+  - label: ":wordpress: Validate App Store archive (no ASC upload)"
+    key: validate_app_store_archive
+    command: .buildkite/commands/validate-app-store-archive.sh
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    artifact_paths:
+      - Artifacts/*.ipa
+      - Artifacts/*.dSYM.zip
+    notify:
+      - github_commit_status:
+          context: Validate App Store archive

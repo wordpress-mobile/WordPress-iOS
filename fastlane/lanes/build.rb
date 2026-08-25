@@ -169,6 +169,14 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
+    # THROW AWAY: stop before TestFlight. Close the validation PR after this answers.
+    ipa_path = lane_context[SharedValues::IPA_OUTPUT_PATH]
+    UI.user_error!('VALIDATION: gym did not produce an IPA') if ipa_path.nil? || !File.exist?(ipa_path)
+    ipa_size = File.size(ipa_path)
+    UI.user_error!("VALIDATION: IPA at #{ipa_path} is empty") if ipa_size.zero?
+    UI.success("VALIDATION: archive succeeded (#{ipa_size} bytes at #{ipa_path}); stopping before ASC upload")
+    next
+
     upload_build_to_testflight(
       ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
       whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
