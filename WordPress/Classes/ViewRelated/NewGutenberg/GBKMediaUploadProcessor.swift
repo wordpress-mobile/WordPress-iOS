@@ -14,19 +14,19 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     private let videoDurationLimit: TimeInterval?
     private let makeMediaSettings: @Sendable () -> MediaSettings
 
-    /// The temporary directory an export is written to.
+    /// The temporary directory exports are written to.
     ///
-    /// GutenbergKit deletes the processed file after uploading it, so exports
-    /// go to a temporary directory rather than the uploads directory tracked by
-    /// `MediaFileManager`.
+    /// One directory, reused: GutenbergKit deletes the file it was handed on
+    /// both the success and the failure path, so nothing here needs cleanup. A
+    /// fresh directory per export would, since nothing sweeps those.
     ///
-    /// Every export gets its own directory. Destination names come from
-    /// `URL.incrementalFilename()`, a check-then-act `fileExists` loop with no
-    /// locking, and uploads are processed concurrently — one task per
-    /// connection — so sharing a directory lets two exports of the same source
-    /// name resolve to the same path and clobber each other. A per-export
-    /// directory removes the shared state instead of racing on it.
+    /// Sharing it is safe despite `incrementalFilename()`'s unlocked
+    /// check-then-act loop: GutenbergKit writes each upload to
+    /// `<uuid>-<filename>` and the exporters name their output after it, so
+    /// concurrent exports cannot resolve to the same name.
     private let makeExportDirectory: @Sendable () -> MediaDirectory
+
+    private static let exportDirectoryID = UUID(uuidString: "1D8A4E5C-1F3B-4E7A-9C2D-6B0F8A5E3C71")!
 
     /// Raster image types the WordPress REST API reliably accepts. Other image
     /// formats (e.g. HEIC) are converted to JPEG during processing, mirroring
@@ -45,7 +45,9 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     init(
         videoDurationLimit: TimeInterval?,
         makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() },
-        makeExportDirectory: @escaping @Sendable () -> MediaDirectory = { .temporary(id: UUID()) }
+        makeExportDirectory: @escaping @Sendable () -> MediaDirectory = {
+            .temporary(id: GBKMediaUploadProcessor.exportDirectoryID)
+        }
     ) {
         self.videoDurationLimit = videoDurationLimit
         self.makeMediaSettings = makeMediaSettings
@@ -158,49 +160,31 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
         }
 
         let exportImageType = Self.exportImageType(for: expected, sourceType: sourceType)
-        let directory = makeExportDirectory()
+        let export = try await makeExporter(
+            for: url,
+            expected: expected,
+            settings: settings,
+            exportImageType: exportImageType,
+            directory: makeExportDirectory()
+        )
+        .export()
 
-        do {
-            let export = try await makeExporter(
-                for: url,
-                expected: expected,
-                settings: settings,
-                exportImageType: exportImageType,
-                directory: directory
-            )
-            .export()
-
-            let mimeType = try Self.mimeType(of: export.url, exportImageType: exportImageType)
-            return .processed(
-                export.url,
-                mimeType: mimeType,
-                filename: Self.uploadFilename(original: filename, exportURL: export.url)
-            )
-        } catch {
-            // Nothing else sweeps this directory: GutenbergKit removes only the
-            // file it is handed, and `MediaFileManager`'s cleanup covers the
-            // uploads directory alone. On the success path the directory is
-            // left holding the file GutenbergKit is about to upload, but a
-            // failure here would otherwise abandon a full-size export — and any
-            // directory the export already created — for the lifetime of the
-            // app's container.
-            try? FileManager.default.removeItem(at: directory.url)
-            throw error
-        }
+        let mimeType = try Self.mimeType(of: export.url, exportImageType: exportImageType)
+        return .processed(
+            export.url,
+            mimeType: mimeType,
+            filename: Self.uploadFilename(original: filename, exportURL: export.url)
+        )
     }
 
     // MARK: - Output naming
 
-    /// The name the processed file is uploaded under.
+    /// The name the processed file is uploaded under, which WordPress turns
+    /// into the attachment's slug and title.
     ///
-    /// Keeps the name the editor sent, which is the one the user recognizes,
-    /// and takes only the extension from the export — a conversion (HEIC to
-    /// JPEG, MOV to MP4) changes it, and the extension must match the bytes.
-    ///
-    /// The export's own name is unusable here: `MediaImageExporter(url:)` seeds
-    /// it from `url.lastPathComponent`, and that URL is the temp file
-    /// GutenbergKit named `<uuid>-<filename>`. Uploading that verbatim would
-    /// make the UUID part of the attachment's slug and title.
+    /// The editor's name, with the extension from the export because a
+    /// conversion changes it. The export's own name carries the UUID prefix
+    /// GutenbergKit gave the temp file, so it can't be used.
     private static func uploadFilename(original: String, exportURL: URL) -> String {
         let name = (original as NSString).lastPathComponent
         let base = (name as NSString).deletingPathExtension

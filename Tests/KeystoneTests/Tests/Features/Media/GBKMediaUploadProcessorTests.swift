@@ -81,23 +81,33 @@ struct GBKMediaUploadProcessorTests {
         #expect(filename.hasSuffix(".jpg") || filename.hasSuffix(".jpeg"))
     }
 
-    /// Destination names come from a check-then-act `fileExists` loop, and
-    /// GutenbergKit processes uploads concurrently, so exports of the same
-    /// source must not share a directory to race in.
-    @Test func concurrentExportsOfTheSameFileDoNotCollide() async throws {
+    /// Destination names come from a check-then-act `fileExists` loop with no
+    /// locking, and GutenbergKit processes uploads concurrently, so concurrent
+    /// exports sharing one directory must still resolve to distinct files.
+    ///
+    /// They do because GutenbergKit writes each upload to `<uuid>-<filename>`
+    /// and the exporters name their output after that, so every export name is
+    /// already unique before the loop is consulted. The sources here carry that
+    /// prefix, as they do in production.
+    @Test func concurrentExportsDoNotCollide() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
         settings.maxImageSizeSetting = 200
         let processor = makeProcessor(settings: settings)
-        let url = try fixtureURL("test-image-device-photo-gps.jpg")
+
+        let sources = try (0..<8)
+            .map { _ in
+                try copyFixture("test-image-device-photo-gps.jpg", as: "\(UUID().uuidString)-photo.jpg")
+            }
+        defer { sources.forEach(cleanUp) }
 
         let outputURLs = try await withThrowingTaskGroup(of: URL.self) { group in
-            for _ in 0..<8 {
+            for source in sources {
                 group.addTask {
                     let result = try await processor.processFile(
-                        at: url,
+                        at: source,
                         mimeType: "image/jpeg",
-                        filename: url.lastPathComponent
+                        filename: "photo.jpg"
                     )
                     guard case .processed(let outputURL, _, _) = result else {
                         throw ProcessingError.expectedProcessedFile
@@ -116,28 +126,6 @@ struct GBKMediaUploadProcessorTests {
             #expect(FileManager.default.fileExists(atPath: outputURL.path))
             #expect(max(try imageSize(at: outputURL).width, try imageSize(at: outputURL).height) == 200)
         }
-    }
-
-    /// A failed export must not leave its temporary directory behind: nothing
-    /// else sweeps it, so an abandoned export would outlive the app session.
-    ///
-    /// The video exporter throws after `makeLocalMediaURL` has already created
-    /// the directory, which is exactly what an implementation without the
-    /// failure-path cleanup would leak.
-    @Test func failedExportLeavesNoDirectoryBehind() async throws {
-        let directory = MediaDirectory.temporary(id: UUID())
-        let processor = GBKMediaUploadProcessor(
-            videoDurationLimit: 1,
-            makeMediaSettings: makeSettingsFactory(makeSettings()),
-            makeExportDirectory: { directory }
-        )
-        let url = try fixtureURL("test-video-device-gps.m4v")
-
-        await #expect(throws: (any Error).self) {
-            try await processor.processFile(at: url, mimeType: "video/mp4", filename: url.lastPathComponent)
-        }
-
-        #expect(!FileManager.default.fileExists(atPath: directory.url.path))
     }
 
     // MARK: - GIFs and other files
