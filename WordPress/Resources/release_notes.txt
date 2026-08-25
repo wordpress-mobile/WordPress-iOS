@@ -1,4 +1,3 @@
-* [*] Custom Post Types: Make custom post types with REST API and editor support available in My Site [#25849]
-* [*] Stop the media picker from removing gallery images when you cancel it in the experimental editor [#25866]
-* [*] [internal] Experimental Gutenberg editor: add a per-site "Use Third-Party Blocks (Beta)" toggle to Site Settings, matching Android [#25889]
-* [*] Fixes an isuse where back up logs incorrectly show up in some Personal plan sites
+Some custom post types are now available. You can manage them under My Site if your site is built with WP.com, or on the home screen if your site is self-hosted. We know, we’re amazing. (But very humble about it.)
+
+While we were making your day better, we fixed an issue where canceling the media picker in the experimental block editor would remove images from galleries. Backup logs will also stay in their lane and won’t show up in Personal plan sites by mistake.
