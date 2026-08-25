@@ -68,11 +68,14 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     /// anything undecidable from metadata claims the file and decides for real
     /// once the bytes are on disk.
     func handlesFile(ofType mimeType: String, named filename: String) -> Bool {
-        // The URL the file will be written to isn't available yet, so classify
-        // from the reported type alone, falling back to the filename extension
-        // when it is a placeholder. Both are untrustworthy in ways `processFile`
-        // can recover from and this cannot, hence the bias toward `true`.
-        guard let type = Self.type(ofMIMEType: mimeType) ?? Self.type(ofExtensionIn: filename) else {
+        // The file doesn't exist yet, so stand in for it with the filename
+        // extension and resolve in the same order `sourceType(of:)` does: the
+        // file's own type first, the reported one only as a fallback. Reversing
+        // the two here would let a mislabeled `Content-Type` decline a file
+        // `processFile` would have classified — and processed — from its
+        // extension. Both signals are untrustworthy in ways `processFile` can
+        // recover from and this cannot, hence the bias toward `true`.
+        guard let type = Self.type(ofExtensionIn: filename) ?? Self.type(ofMIMEType: mimeType) else {
             return true
         }
         guard let expected = try? Self.expectedExport(of: nil, type: type) else {

@@ -343,6 +343,28 @@ struct GBKMediaUploadProcessorTests {
         #expect(processor.handlesFile(ofType: "text/plain", named: "upload"))
     }
 
+    /// `handlesFile` must resolve the type the way `processFile` does — the
+    /// extension first — or a mislabeled `Content-Type` silently declines a
+    /// photo that would have been downscaled and stripped. Declining is
+    /// unrecoverable, so the two cannot disagree.
+    @Test func mislabeledContentTypeDoesNotDeclineAnImage() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.removeLocationSetting = true
+        settings.maxImageSizeSetting = 200
+        let processor = makeProcessor(settings: settings)
+
+        #expect(processor.handlesFile(ofType: "application/pdf", named: "photo.jpg"))
+
+        // And the claim is warranted: `processFile` really does process it.
+        let url = try fixtureURL("test-image-device-photo-gps.jpg")
+        let result = try await processor.processFile(at: url, mimeType: "application/pdf", filename: "photo.jpg")
+        guard case .processed(let outputURL, _, _) = result else {
+            throw ProcessingError.expectedProcessedFile
+        }
+        cleanUp(outputURL)
+    }
+
     // MARK: - Videos
 
     @Test func videoExceedingDurationLimitThrows() async throws {
