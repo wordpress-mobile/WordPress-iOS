@@ -32,10 +32,12 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     /// formats (e.g. HEIC) are converted to JPEG during processing, mirroring
     /// `ItemProviderMediaExporter`.
     ///
-    /// - Note: SVG is deliberately absent. It is web-safe, but it is a vector
-    ///   format that ImageIO cannot decode or encode, so it never reaches the
-    ///   exporter — `processFile` returns it unchanged (see below).
-    private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg, .gif]
+    /// Only consulted for an `.image` export, so it lists just the types that
+    /// reach that branch. GIF and SVG are web-safe too but are absent: both
+    /// return `.original` before any of this is read — GIF from its own
+    /// `expectedExport` case, SVG because ImageIO can neither decode nor encode
+    /// it.
+    private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg]
 
     @MainActor
     convenience init(blog: Blog) {
