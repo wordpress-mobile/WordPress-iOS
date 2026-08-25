@@ -6,26 +6,35 @@ import UIKit
 @testable import WordPress
 @testable import WordPressData
 
+/// Keeps every editor these tests build alive for the lifetime of the process.
+///
+/// `viewDidLoad` starts the editor's load on a `Task` that reaches
+/// `startUploadServer()` after the test method returns, where GutenbergKit
+/// asserts an assigned `mediaUploadDelegate` is still alive. Tripping that
+/// precondition crashes the test host, killing every concurrently running suite
+/// — so the damage is not contained to this file.
+///
+/// Only a test can reach that state. `PostGBKEditorViewController` holds the
+/// editor and its `GBKMediaUploadProcessor` as strong `let`s on one object, so
+/// in the app they always die together and the load's `[weak self]` is already
+/// nil. Here a window is the controller's only owner, so releasing it mid-load
+/// leaves the editor reachable with a dead delegate.
+///
+/// Retention must outlive the *suite instance*: Swift Testing builds a fresh
+/// one per test, so an instance property dies at the very deadline being
+/// missed. The race is timing-dependent, so a green run does not prove the
+/// hazard is gone.
+@MainActor
+private enum RetainedEditors {
+    static var windows: [UIWindow] = []
+}
+
 @MainActor
 @Suite(.serialized)
-final class PostGBKEditorViewControllerTests {
+struct PostGBKEditorViewControllerTests {
 
-    /// Keeps every editor built here alive for the whole suite.
-    ///
-    /// `viewDidLoad` starts `prepareEditor()` asynchronously, and that work
-    /// reaches `startUploadServer()` after the test method has returned. The
-    /// editor holds `mediaUploadDelegate` weakly, so if the controller — the
-    /// only owner of `PostGBKEditorViewController.mediaUploadProcessor` — is
-    /// released at scope exit, the delegate is gone by the time the load
-    /// arrives and GutenbergKit trips its "released before the editor loaded"
-    /// precondition, crashing the test host and taking every concurrently
-    /// running suite with it.
-    ///
-    /// Production ownership is correct: the controller outlives its own load.
-    /// Only the test's scope was shorter than the async work it kicked off.
-    private var retainedWindows: [UIWindow] = []
-
-    /// Builds an editor and retains it (via its window) for the suite's lifetime.
+    /// Builds an editor, retaining it for the process's lifetime so the load it
+    /// starts cannot outlive its delegate. See ``RetainedEditors``.
     private func makeEditor(blog: Blog) -> PostGBKEditorViewController {
         let viewController = PostGBKEditorViewController(
             postId: nil,
@@ -39,7 +48,7 @@ final class PostGBKEditorViewControllerTests {
         window.rootViewController = viewController
         window.makeKeyAndVisible()
         viewController.loadViewIfNeeded()
-        retainedWindows.append(window)
+        RetainedEditors.windows.append(window)
         return viewController
     }
 
