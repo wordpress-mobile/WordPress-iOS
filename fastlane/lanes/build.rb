@@ -149,9 +149,7 @@ platform :ios do
   # @param [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
   lane :build_and_upload_app_store_connect do |skip_confirm: false, skip_prechecks: false, create_release: false, beta_release: false|
-    unless skip_prechecks
-      ensure_git_status_clean unless is_ci
-    end
+    ensure_git_status_clean unless skip_prechecks || is_ci
 
     UI.important("Building version #{release_version_current} (#{build_code_current}) and uploading to TestFlight")
     UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
