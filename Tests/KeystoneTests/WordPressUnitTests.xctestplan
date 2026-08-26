@@ -128,6 +128,13 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressCommentsTests",
+        "name" : "WordPressCommentsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressDataTests",
         "name" : "WordPressDataTests"
       }

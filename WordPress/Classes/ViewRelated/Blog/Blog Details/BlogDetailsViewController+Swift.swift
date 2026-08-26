@@ -265,6 +265,17 @@ extension BlogDetailsViewController {
     }
 
     public func showComments(from source: BlogDetailsNavigationSource) {
+        if let v2 = CommentsRouting.makeViewController(for: blog) {
+            let properties: [String: Any] = [
+                WPAppAnalyticsKeyTapSource: source.string,
+                WPAppAnalyticsKeyTabSource: "site_menu",
+                "is_v2": "1"
+            ]
+            WPAppAnalytics.track(.openedComments, properties: properties, blog: blog)
+            presentationDelegate?.presentBlogDetailsViewController(v2)
+            return
+        }
+
         trackEvent(.openedComments, from: source)
 
         guard let commentsVC = CommentsViewController(blog: blog) else {
