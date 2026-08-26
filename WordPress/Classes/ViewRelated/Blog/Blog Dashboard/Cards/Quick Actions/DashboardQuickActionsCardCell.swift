@@ -103,6 +103,16 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             trackQuickActionsEvent(.openedPages, blog: blog)
             PageListViewController.showForBlog(blog, from: parentViewController)
         case .comments:
+            if let v2 = CommentsRouting.makeViewController(for: blog) {
+                let properties: [String: Any] = [
+                    WPAppAnalyticsKeyTapSource: "quick_actions",
+                    WPAppAnalyticsKeyTabSource: "dashboard",
+                    "is_v2": "1"
+                ]
+                WPAppAnalytics.track(.openedComments, properties: properties, blog: blog)
+                parentViewController.show(v2, sender: nil)
+                return
+            }
             if let viewController = CommentsViewController(blog: blog) {
                 trackQuickActionsEvent(.openedComments, blog: blog)
                 parentViewController.show(viewController, sender: nil)
