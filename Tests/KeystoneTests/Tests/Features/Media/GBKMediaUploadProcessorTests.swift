@@ -237,6 +237,47 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
+    /// An extension no UTI declares resolves to a *dynamic* type rather than to
+    /// `public.data`, so it clears a `!= .data` check while still conforming to
+    /// nothing. `.jfif` is a plain JPEG WordPress accepts, and the reported
+    /// `image/jpeg` says so, so it has to be processed like any other JPEG
+    /// instead of failing the upload outright.
+    @Test func undeclaredExtensionIsProcessedUsingReportedMIMEType() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.maxImageSizeSetting = 200
+        let processor = makeProcessor(settings: settings)
+        let url = try copyFixture("test-image-device-photo-gps.jpg", as: "photo.jfif")
+        defer { cleanUp(url) }
+        // Guards the premise: if `jfif` ever gains a real declaration this test
+        // stops exercising the dynamic-type path.
+        #expect(try #require(url.typeIdentifier.flatMap(UTType.init)).isDynamic)
+
+        let result = try await processor.processFile(
+            at: url,
+            mimeType: "image/jpeg",
+            filename: "photo.jfif"
+        )
+
+        guard case .processed(let outputURL, let mimeType, _) = result else {
+            throw ProcessingError.expectedProcessedFile
+        }
+        defer { cleanUp(outputURL) }
+        #expect(mimeType == "image/jpeg")
+        #expect(max(try imageSize(at: outputURL).width, try imageSize(at: outputURL).height) == 200)
+    }
+
+    /// `handlesFile` resolves the type from the extension, which is dynamic for
+    /// `.jfif` too. It has to discard it the same way, or the file is claimed
+    /// (or declined) on a classification `processFile` does not share.
+    @Test func undeclaredExtensionIsClaimedFromItsReportedMIMEType() {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(processor.handlesFile(ofType: "image/jpeg", named: "photo.jfif"))
+        // Nothing decidable from either signal still means claim, so
+        // `processFile` gets to read the bytes.
+        #expect(processor.handlesFile(ofType: "text/plain", named: "photo.jfif"))
+    }
+
     @Test func extensionlessFileWithUnusableMIMETypeThrows() async throws {
         let processor = makeProcessor(settings: makeSettings())
         let url = try copyFixtureDroppingExtension("test-image-device-photo-gps.jpg")

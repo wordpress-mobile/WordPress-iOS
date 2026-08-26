@@ -263,17 +263,32 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
     ///
     /// Resolved from the file itself, falling back to the type the editor
     /// reported. The URL resolves its type from the path extension alone, and
-    /// an upload can arrive without one — GutenbergKit names the temp file
-    /// after the multipart `filename`, which the editor does not guarantee
-    /// carries an extension (its native inserter derives one from a URL path
-    /// segment). Such a file resolves to the generic `public.data`, which
-    /// conforms to no media type, so the export would be rejected outright.
+    /// two kinds of upload defeat that:
+    ///
+    /// - No extension at all. GutenbergKit names the temp file after the
+    ///   multipart `filename`, which the editor does not guarantee carries an
+    ///   extension (its native inserter derives one from a URL path segment).
+    ///   Such a file resolves to the generic `public.data`.
+    /// - An extension no UTI declares. `photo.jfif` is a plain JPEG WordPress
+    ///   accepts, but nothing claims `jfif`, so it resolves to a *dynamic* type
+    ///   synthesized from the extension (`dyn.ah62d4rv4ge80y3xmq2`).
+    ///
+    /// Neither conforms to any media type, so `expectedExport` would throw and
+    /// fail an upload that the reported `Content-Type` describes perfectly.
+    /// Both therefore defer to it — for `photo.jfif`, `image/jpeg`.
     private static func sourceType(of url: URL, reportedMIMEType: String) -> UTType? {
-        guard let type = url.typeIdentifier.flatMap(UTType.init), type != .data else {
+        guard let type = url.typeIdentifier.flatMap(UTType.init), !isUninformative(type) else {
             return type(ofMIMEType: reportedMIMEType)
         }
         return type
     }
+
+    /// Whether a type says nothing about the file's format and should give way
+    /// to the reported MIME type. See `sourceType(of:reportedMIMEType:)`.
+    private static func isUninformative(_ type: UTType) -> Bool {
+        type == .data || type.isDynamic
+    }
+
 
     /// The type a reported MIME type names, or `nil` when it names nothing
     /// usable.
@@ -309,12 +324,18 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
 
     /// The type a filename's extension names, for use before the file exists.
     /// `processFile` reads the type off the file itself instead.
+    ///
+    /// Discards a dynamic type for the same reason `sourceType` does, and to
+    /// stay in step with it: an extension no UTI declares must fall through to
+    /// the reported MIME type in both places, or `handlesFile` would classify a
+    /// `.jfif` from a type that conforms to nothing while `processFile`
+    /// classifies the same file as the JPEG it is.
     private static func type(ofExtensionIn filename: String) -> UTType? {
         let fileExtension = (filename as NSString).pathExtension.lowercased()
         guard !fileExtension.isEmpty else {
             return nil
         }
-        return UTType(filenameExtension: fileExtension)
+        return UTType(filenameExtension: fileExtension).flatMap { isUninformative($0) ? nil : $0 }
     }
 
     /// Classifies a file the way `MediaURLExporter.expectedExport(with:)` does,
