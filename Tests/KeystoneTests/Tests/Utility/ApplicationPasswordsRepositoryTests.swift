@@ -386,6 +386,183 @@ class ApplicationPasswordsRepositoryTests {
         let password = await password(of: blog)
         #expect(password == uuid)
     }
+
+    @Test
+    func insecureSiteDoesNotTransmitCredentials() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let host = "insecure.example.com"
+        stub(condition: isHost(host)) { _ in
+            Issue.record("No request should be sent to an insecure site")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let blog = try await coreDataStack.performAndSave { context in
+            let blog = Blog(context: context)
+            blog.url = "http://\(host)"
+            blog.xmlrpc = "http://\(host)/xmlrpc.php"
+            blog.username = "demo"
+            blog.password = "pass"
+            return TaggedManagedObjectID(blog)
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        await #expect(throws: ApplicationPasswordRepositoryError.insecureConnection) {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+    }
+
+    @Test
+    func insecureRestApiRootDoesNotTransmitCredentials() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let secureHost = "secure.example.com"
+        let insecureHost = "insecure-root.example.com"
+        stub(condition: isHost(secureHost) || isHost(insecureHost)) { _ in
+            Issue.record("No request should be sent when a credential destination is insecure")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let blog = try await coreDataStack.performAndSave { context in
+            let blog = Blog(context: context)
+            blog.url = "https://\(secureHost)"
+            blog.xmlrpc = "https://\(secureHost)/xmlrpc.php"
+            blog.restApiRootURL = "http://\(insecureHost)/wp-json"
+            blog.username = "demo"
+            blog.password = "pass"
+            return TaggedManagedObjectID(blog)
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        await #expect(throws: ApplicationPasswordRepositoryError.insecureConnection) {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+    }
+
+    @Test
+    func insecureXMLRPCDerivedDestinationDoesNotTransmitCredentials() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        // The site URL is https, so validation proceeds through an unauthenticated discovery over
+        // https. But login_url, admin_url, and the wp-json base are derived from the http xmlrpc
+        // endpoint, so self-hosted password creation is rejected before any credential-bearing
+        // request reaches the insecure host.
+        let secureHost = "secure-site.example.com"
+        let insecureHost = "insecure-xmlrpc.example.com"
+        stubApiDiscovery(siteHost: secureHost)
+        stub(condition: isHost(insecureHost)) { _ in
+            Issue.record("No request should be sent to an xmlrpc-derived insecure destination")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let blog = try await coreDataStack.performAndSave { context in
+            let blog = Blog(context: context)
+            blog.url = "https://\(secureHost)"
+            blog.xmlrpc = "http://\(insecureHost)/xmlrpc.php"
+            blog.username = "demo"
+            blog.password = "pass"
+            return TaggedManagedObjectID(blog)
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        await #expect(throws: ApplicationPasswordRepositoryError.insecureConnection) {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+    }
+
+    @Test
+    func validTokenValidatesOverHttpsDespiteInsecureXMLRPC() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        // A valid stored token validates over the https site URL and REST root. The http
+        // xmlrpc-derived login/admin/wp-json urls are only needed to create a password, so an
+        // existing token must not be blocked by them, and creation must not be attempted.
+        let secureHost = "valid-token.example.com"
+        let insecureHost = "insecure-xmlrpc.example.com"
+        stubCurrentApplicationPassword(host: secureHost)
+        stub(condition: isHost(insecureHost)) { _ in
+            Issue.record("No request should reach the insecure xmlrpc-derived host")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let blog = try await coreDataStack.performAndSave { [keychain] context in
+            let blog = Blog(context: context)
+            blog.url = "https://\(secureHost)"
+            blog.xmlrpc = "http://\(insecureHost)/xmlrpc.php"
+            blog.restApiRootURL = "https://\(secureHost)/wp-json"
+            blog.username = "demo"
+            blog.password = "pass"
+            try blog.setApplicationToken("valid token", using: keychain)
+            return TaggedManagedObjectID(blog)
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let password = await password(of: blog)
+        #expect(password == "valid token")
+    }
+
+    @Test
+    func discoveredInsecureRestApiRootDoesNotTransmitCredentials() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let host = "discovered-insecure.example.com"
+        let blog = try await coreDataStack.performAndSave { context in
+            let blog = Blog(context: context)
+            blog.url = "https://\(host)"
+            blog.xmlrpc = "https://\(host)/xmlrpc.php"
+            blog.username = "demo"
+            blog.password = "pass"
+            return TaggedManagedObjectID(blog)
+        }
+
+        // The blog has no stored REST root, so discovery resolves one. Discovery advertises an http
+        // root, and no credential-bearing request may follow.
+        stubApiDiscoveryWithInsecureRoot(siteHost: host)
+        stub(
+            condition: isPath("/wp-json/wp/v2/users/me")
+                || isPath("/wp-json/wp/v2/users/me/application-passwords")
+        ) { _ in
+            Issue.record("No credentials should be sent to a discovered insecure REST root")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        await #expect(throws: ApplicationPasswordRepositoryError.insecureConnection) {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+
+        // The rejected http root must not be persisted, or other consumers could later use it.
+        let storedRoot = await coreDataStack.performQuery { context in
+            (try? context.existingObject(with: blog))?.restApiRootURL
+        }
+        #expect(storedRoot == nil)
+    }
+
+    @Test
+    func loopbackHttpSiteCreatesPassword() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        let blog = try await coreDataStack.performAndSave { context in
+            let blog = Blog(context: context)
+            blog.url = "http://localhost:8881"
+            blog.xmlrpc = "http://localhost:8881/xmlrpc.php"
+            blog.username = "demo"
+            blog.password = "pass"
+            return TaggedManagedObjectID(blog)
+        }
+
+        stubApiDiscovery(siteHost: "localhost")
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: "localhost", password: "abcd efgh")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let password = await password(of: blog)
+        #expect(password == "abcd efgh")
+    }
 }
 
 // MARK: - Helpers
@@ -752,6 +929,39 @@ private extension ApplicationPasswordsRepositoryTests {
                       }
                     ]
                   }
+                }
+                """
+            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+    }
+
+    func stubApiDiscoveryWithInsecureRoot(siteHost: String) {
+        stub(condition: isHost(siteHost) && isPath("/")) { _ in
+            HTTPStubsResponse(
+                data: "<html>homepage</html>".data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Link": "<http://\(siteHost)/wp-json/>; rel=\"https://api.w.org/\""]
+            )
+        }
+        stub(condition: isHost(siteHost) && isPath("/wp-json")) { _ in
+            let json = """
+                {
+                  "name": "Site",
+                  "description": "",
+                  "url": "http://\(siteHost)",
+                  "home": "http://\(siteHost)",
+                  "gmt_offset": "0",
+                  "timezone_string": "",
+                  "namespaces": ["wp/v2"],
+                  "authentication": {
+                    "application-passwords": {
+                      "endpoints": {
+                        "authorization": "http://\(siteHost)/wp-admin/authorize-application.php"
+                      }
+                    }
+                  },
+                  "routes": {},
+                  "_links": {}
                 }
                 """
             return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
