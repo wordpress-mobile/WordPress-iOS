@@ -365,10 +365,9 @@ public extension CoreDataStack {
     }
 
     private func migrateDatabaseIfNecessary(at databaseLocation: URL) throws {
-        guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd"),
-              let objectModel = NSManagedObjectModel(contentsOf: modelFileURL) else {
-            return
-        }
-        try ContextManager.migrateDataModelsIfNecessary(storeURL: databaseLocation, objectModel: objectModel)
+        try ContextManager.migrateDataModelsIfNecessary(
+            storeURL: databaseLocation,
+            objectModel: ContextManager.currentObjectModel
+        )
     }
 }
