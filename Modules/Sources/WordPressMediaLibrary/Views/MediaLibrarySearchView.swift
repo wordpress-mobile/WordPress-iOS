@@ -94,12 +94,18 @@ private struct MediaSearchResultsView: View {
     }
 
     var body: some View {
-        MediaGridView(
-            items: viewModel.displayItems,
-            isAspectRatioMode: isAspectRatioMode,
-            canSelect: { viewModel.canOpenDetail(for: $0) },
-            onSelect: { pushDetail(for: $0) }
-        )
+        MediaGridView(items: viewModel.displayItems, isAspectRatioMode: isAspectRatioMode) { item in
+            if viewModel.canOpenDetail(for: item) {
+                Button {
+                    pushDetail(for: item)
+                } label: {
+                    MediaGridCell(item: item, isAspectRatioMode: isAspectRatioMode)
+                }
+                .buttonStyle(.plain)
+            } else {
+                MediaGridCell(item: item, isAspectRatioMode: isAspectRatioMode)
+            }
+        }
         .refreshable { await viewModel.refresh() }
         .task {
             tracker.track(.mediaLibrarySearched(queryLength: query.count))
