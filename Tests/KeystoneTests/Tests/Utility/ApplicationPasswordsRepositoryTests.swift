@@ -13,6 +13,28 @@ class ApplicationPasswordsRepositoryTests {
     let coreDataStack = ContextManager.forTesting()
     let keychain = TestKeychain()
 
+    /// Stubs registered by this test instance. Other Swift Testing suites run concurrently
+    /// and share the process-wide `HTTPStubs` registry, so tests must only remove their own
+    /// stubs instead of calling `HTTPStubs.removeAllStubs()`.
+    private var stubs: [HTTPStubsDescriptor] = []
+
+    @discardableResult
+    private func stub(
+        condition: @escaping HTTPStubsTestBlock,
+        response: @escaping HTTPStubsResponseBlock
+    ) -> HTTPStubsDescriptor {
+        let descriptor = OHHTTPStubsSwift.stub(condition: condition, response: response)
+        stubs.append(descriptor)
+        return descriptor
+    }
+
+    private func removeStubs() {
+        for descriptor in stubs {
+            HTTPStubs.removeStub(descriptor)
+        }
+        stubs.removeAll()
+    }
+
     func password(of blog: TaggedManagedObjectID<Blog>) async -> String? {
         await coreDataStack.performQuery { [keychain] context in
             try? context.existingObject(with: blog).getApplicationToken(using: keychain)
@@ -21,7 +43,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func simpleSite() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         try await signInWPComAccount()
         let blog = try await createSimpleSite()
@@ -38,7 +60,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func atomicSite() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         try await signInWPComAccount()
         let blog = try await createAtomicSite()
@@ -56,7 +78,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func atomicSiteWithExistingApplicationPassword() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         try await signInWPComAccount()
         let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
@@ -77,7 +99,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func staleRestApiRootUrlIsRediscovered() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         try await signInWPComAccount()
         let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
@@ -97,7 +119,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func matchingRestApiRootUrlSkipsRediscovery() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         try await signInWPComAccount()
         let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
@@ -118,7 +140,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func staleRestApiRootUrlKeptWhenRediscoveryFails() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let staleRootURL = "https://public-api.wordpress.com/wp-json/?rest_route=/sites/atomic.com"
 
@@ -139,7 +161,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func cancelDuringStaleRestApiRootUrlRediscovery() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let staleRootURL = "https://public-api.wordpress.com/wp-json/?rest_route=/sites/atomic.com"
 
@@ -185,7 +207,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func selfHostedSite() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -204,7 +226,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func selfHostedSiteWithInaccessibleRestApi() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let host = "2.example.com"
         let blog = try await createSelfHostedSite(host: host)
@@ -238,7 +260,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func concurrentCalls() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let host = "3.example.com"
         let blog = try await createSelfHostedSite(host: host)
@@ -272,7 +294,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func cancel() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -300,7 +322,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func cancelFirstCall() async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -334,7 +356,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test(arguments: [1, 2, 3, 4])
     func cancelConcurrentCall(nthTaskToBeCancelled: Int) async throws {
-        defer { HTTPStubs.removeAllStubs() }
+        defer { removeStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
