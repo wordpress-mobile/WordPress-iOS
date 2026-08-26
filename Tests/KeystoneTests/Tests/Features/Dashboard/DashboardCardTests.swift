@@ -15,12 +15,17 @@ class DashboardCardTests: CoreDataTestCase {
         blog.isAdmin = true
         featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
+        // These cases assert on the legacy `.todaysStats` card, which is only
+        // shown when new Stats is off (the new card is otherwise mutually
+        // exclusive). Pin the flag so a stale simulator override can't flip it.
+        featureFlags.override(FeatureFlag.newStats, withValue: false)
     }
 
     override func tearDown() {
         blog = nil
         featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
+        featureFlags.override(FeatureFlag.newStats, withValue: FeatureFlag.newStats.originalValue)
         super.tearDown()
     }
 

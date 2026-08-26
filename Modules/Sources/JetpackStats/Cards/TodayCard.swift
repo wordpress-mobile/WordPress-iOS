@@ -2,14 +2,20 @@ import SwiftUI
 import Charts
 import WordPressUI
 
-struct TodayCard: View {
+struct TodayCard<MenuContent: View>: View {
     @ObservedObject private var viewModel: TodayCardViewModel
+
+    /// When non-nil, replaces the card's built-in more-menu items so an
+    /// embedding host (the My Site dashboard) can supply its own. The card keeps
+    /// rendering the ellipsis button itself, so only the items differ.
+    private let menuContent: (() -> MenuContent)?
 
     @ScaledMetric(relativeTo: .title)
     private var sparklineHeight: CGFloat = 52
 
-    init(viewModel: TodayCardViewModel) {
+    init(viewModel: TodayCardViewModel, @ViewBuilder menuContent: @escaping () -> MenuContent) {
         self.viewModel = viewModel
+        self.menuContent = menuContent
     }
 
     var body: some View {
@@ -180,7 +186,11 @@ struct TodayCard: View {
 
     private var moreMenu: some View {
         Menu {
-            moreMenuContent
+            if let menuContent {
+                menuContent()
+            } else {
+                moreMenuContent
+            }
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 15))
@@ -198,6 +208,14 @@ struct TodayCard: View {
             }
         }
         EditCardMenuContent(cardViewModel: viewModel)
+    }
+}
+
+extension TodayCard where MenuContent == EmptyView {
+    /// Uses the card's built-in more-menu (the Stats screen's behavior).
+    init(viewModel: TodayCardViewModel) {
+        self.viewModel = viewModel
+        self.menuContent = nil
     }
 }
 
