@@ -53,8 +53,8 @@ public final class WordPressClientFactory: Sendable {
     }
 
     public func evictInstance(for blogID: TaggedManagedObjectID<Blog>) {
-        instances.withLock { instances in
-            instances.removeValue(forKey: blogID)
+        instances.withLock { dict in
+            dict = dict.filter { $0.key.blogId != blogID }
         }
     }
 
