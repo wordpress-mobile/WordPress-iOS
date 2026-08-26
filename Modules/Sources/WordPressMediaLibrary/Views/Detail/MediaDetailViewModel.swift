@@ -18,9 +18,10 @@ final class MediaDetailViewModel: ObservableObject {
     @Published var shareErrorMessage: String?
     /// Cleanup chokepoint: whatever payload leaves this slot gets its temp
     /// files released. Every dismissal path nils (or replaces) the property,
-    /// including the one that bypasses the activity controller entirely: an
-    /// interactive swipe-dismiss tears down the SwiftUI sheet without firing
-    /// `completionWithItemsHandler`, so no completion-side cleanup can run.
+    /// including the one that bypasses the activity controller entirely:
+    /// `ShareSheetPresenter` dismisses the sheet without firing
+    /// `completionWithItemsHandler` when the payload is cleared, so no
+    /// completion-side cleanup can run.
     @Published var sharePayload: SharePayload? {
         didSet {
             if let oldValue, oldValue.id != sharePayload?.id {

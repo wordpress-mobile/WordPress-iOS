@@ -109,12 +109,12 @@ final class MediaLibraryViewModel: ObservableObject {
     var isPreparingBulkShare: Bool { bulkShareRequest != nil }
 
     /// Activity-sheet payload. Set by `performBulkShare` on success;
-    /// presented via `.sheet(item:)`. Nilled in `reportShareDismissed` or
+    /// presented by `ShareSheetPresenter`. Nilled in `reportShareDismissed` or
     /// `exitSelectionMode`. Cleanup chokepoint: whatever payload leaves this
     /// slot gets its temp files released. Every dismissal path nils (or
     /// replaces) the property, including the one that bypasses the activity
-    /// controller entirely: an interactive swipe-dismiss tears down the
-    /// SwiftUI sheet without firing `completionWithItemsHandler`, so no
+    /// controller entirely: `ShareSheetPresenter` dismisses the sheet without
+    /// firing `completionWithItemsHandler` when the payload is cleared, so no
     /// completion-side cleanup can run.
     @Published var sharePayload: MediaDetailViewModel.SharePayload? {
         didSet {
