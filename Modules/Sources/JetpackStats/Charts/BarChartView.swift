@@ -21,6 +21,7 @@ struct BarChartView: View {
     @Environment(\.context) var context
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.showComparison) private var showComparison
+    @Environment(\.isPlaceholder) private var isPlaceholder
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -33,14 +34,16 @@ struct BarChartView: View {
 
     var body: some View {
         Chart {
-            if showComparison {
+            if showComparison, !isPlaceholder {
                 previousPeriodBars
             }
             currentPeriodBars
-            averageLine
-            significantPointAnnotations
-            tappedBarAnnotation
-            selectionIndicatorMarks
+            if !isPlaceholder {
+                averageLine
+                significantPointAnnotations
+                tappedBarAnnotation
+                selectionIndicatorMarks
+            }
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
@@ -48,10 +51,12 @@ struct BarChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .animation(.spring, value: ObjectIdentifier(data))
-        .animation(.snappy, value: selectedBarDate)
+        .animation(isPlaceholder ? nil : .spring, value: ObjectIdentifier(data))
+        .animation(isPlaceholder ? nil : .snappy, value: selectedBarDate)
         .chartOverlay { proxy in
-            makeGesturesOverlayView(proxy: proxy)
+            if !isPlaceholder {
+                makeGesturesOverlayView(proxy: proxy)
+            }
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement()
@@ -64,16 +69,23 @@ struct BarChartView: View {
     @ChartContentBuilder
     private var currentPeriodBars: some ChartContent {
         ForEach(data.currentData) { point in
-            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic
             )
-            .foregroundStyle(isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient))
+            .foregroundStyle(barStyle(for: point))
             .cornerRadius(5)
             .opacity(getOpacityForPeriodBar(for: point))
         }
+    }
+
+    private func barStyle(for point: DataPoint) -> AnyShapeStyle {
+        if isPlaceholder {
+            return AnyShapeStyle(data.metric.primaryColor)
+        }
+        let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
+        return isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient)
     }
 
     private var barGradient: LinearGradient {
