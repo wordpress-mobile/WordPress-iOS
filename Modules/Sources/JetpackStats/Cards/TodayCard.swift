@@ -76,7 +76,7 @@ struct TodayCard: View {
         if let data = viewModel.data {
             makeMetricsView(with: data.metrics)
         } else if viewModel.isLoading {
-            makeMetricsView(with: placeholderData.metrics)
+            makeMetricsView(with: Self.placeholderData.metrics)
                 .redacted(reason: .placeholder)
                 .opacity(0.66)
                 .pulsating()
@@ -106,7 +106,7 @@ struct TodayCard: View {
         if let data = viewModel.data {
             makeSparklineView(data)
         } else {
-            let placeholder = makeSparklineView(placeholderData)
+            let placeholder = makeSparklineView(Self.placeholderData)
                 .redacted(reason: .placeholder)
             if viewModel.isLoading {
                 placeholder.pulsating().opacity(0.33)
@@ -131,7 +131,10 @@ struct TodayCard: View {
 
     // MARK: - Placeholder Data
 
-    private var placeholderData: TodayCardData {
+    /// Generated once so re-renders keep the same random noise instead of redrawing the sparkline.
+    private static let placeholderData: TodayCardData = makePlaceholderData()
+
+    private static func makePlaceholderData() -> TodayCardData {
         // Generate hourly data points with a realistic curve peaking mid-day
         let hourlyViews = (0..<12).map { hour in
             let normalizedHour = Double(hour)
