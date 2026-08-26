@@ -16,7 +16,24 @@ final class MediaDetailViewModel: ObservableObject {
     @Published var saveErrorMessage: String?
     @Published var deleteErrorMessage: String?
     @Published var shareErrorMessage: String?
-    @Published var sharePayload: SharePayload?
+    /// Cleanup chokepoint: whatever payload leaves this slot gets its temp
+    /// files released. Every dismissal path nils (or replaces) the property,
+    /// including the one that bypasses the activity controller entirely: an
+    /// interactive swipe-dismiss tears down the SwiftUI sheet without firing
+    /// `completionWithItemsHandler`, so no completion-side cleanup can run.
+    @Published var sharePayload: SharePayload? {
+        didSet {
+            if let oldValue, oldValue.id != sharePayload?.id {
+                oldValue.cleanupTemporaryFiles()
+            }
+            isSharePayloadPresented = false
+        }
+    }
+    /// True once the activity sheet for the current `sharePayload` has
+    /// actually appeared. Any reassignment of `sharePayload` resets it.
+    /// `viewDidDisappear()` uses it to tell an un-presented payload (safe
+    /// to release) from one an active activity sheet is still using.
+    private var isSharePayloadPresented = false
     @Published private(set) var shouldPop: Bool = false
 
     let capabilities: MediaLibraryCapabilities
@@ -31,9 +48,25 @@ final class MediaDetailViewModel: ObservableObject {
     private var inFlightSaveTask: [MediaEditableField: Task<Void, Never>] = [:]
     private var shareTask: Task<Void, Never>?
 
+    /// Payload presented in `UIActivityViewController`. `cleanup` is the
+    /// service-supplied closure that removes the temp scope owning `urls`;
+    /// `cleanupTemporaryFiles()` invokes it iff non-nil. Ownership is
+    /// explicit — never inferred from URL paths — so a custom share service
+    /// that returns URLs from outside its own scope cannot accidentally
+    /// trigger deletion.
     struct SharePayload: Identifiable {
         let id = UUID()
         let urls: [URL]
+        private let cleanup: (@Sendable () -> Void)?
+
+        init(urls: [URL], cleanup: (@Sendable () -> Void)? = nil) {
+            self.urls = urls
+            self.cleanup = cleanup
+        }
+
+        func cleanupTemporaryFiles() {
+            cleanup?()
+        }
     }
 
     init(
@@ -199,14 +232,41 @@ final class MediaDetailViewModel: ObservableObject {
         shareTask?.cancel()
     }
 
+    /// Marks the current `sharePayload` as presented. Wired to the activity
+    /// sheet content's appearance.
+    func shareSheetDidPresent() {
+        isSharePayloadPresented = true
+    }
+
+    /// Screen-teardown hook. Cancels an in-flight download, and releases a
+    /// payload whose activity sheet never presented: when the download
+    /// finishes just as the screen pops, `performShare` assigns
+    /// `sharePayload` before `onDisappear` fires, and without this pass no
+    /// code path would ever invoke that payload's cleanup closure. A payload
+    /// whose sheet is up (e.g. the screen left the window because of a tab
+    /// switch) is left alone; the sheet's completion handler owns it.
+    func viewDidDisappear() {
+        cancelShare()
+        if sharePayload != nil, !isSharePayloadPresented {
+            sharePayload = nil
+        }
+    }
+
     private func performShare(item: DownloadableMediaItem) async {
         do {
-            let urls = try await shareService.downloadForSharing(items: [item])
-            try Task.checkCancellation()
+            let result = try await shareService.downloadForSharing(items: [item])
+            if Task.isCancelled {
+                // Cancelled between the download finishing and this hop; the
+                // payload will never present, so release its files here.
+                result.cleanup?()
+                isSharing = false
+                return
+            }
             isSharing = false
-            sharePayload = SharePayload(urls: urls)
+            sharePayload = SharePayload(urls: result.urls, cleanup: result.cleanup)
         } catch is CancellationError {
-            // User-initiated cancellation is not an error.
+            // User-initiated cancellation is not an error. The adapter
+            // removes its batch directory when the download throws.
             isSharing = false
         } catch let error as URLError where error.code == .cancelled {
             // URLSession surfaces task cancellation as URLError(.cancelled).
@@ -218,8 +278,15 @@ final class MediaDetailViewModel: ObservableObject {
         }
     }
 
-    func reportShareDismissed(completed: Bool) {
-        sharePayload = nil
+    /// Called from the activity controller's `completionWithItemsHandler`.
+    /// Takes the payload the sheet actually presented (captured by the sheet
+    /// content closure) so a swipe-dismiss that nils the published binding
+    /// first can't make the identity check match a different payload. The
+    /// actual temp-file release happens in `sharePayload`'s `didSet`.
+    func reportShareDismissed(_ payload: SharePayload, completed: Bool) {
+        if sharePayload?.id == payload.id {
+            sharePayload = nil
+        }
         if completed {
             tracker.track(.mediaLibrarySharedItemLink)
         }
