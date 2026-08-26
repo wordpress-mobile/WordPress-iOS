@@ -123,12 +123,19 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             // Deliberately narrower than `MediaURLExporter.exportURL`, which
             // also rejects extensions outside the site's allowed list. That
             // check belongs to the legacy picker, which hands over arbitrary
-            // files with nothing having vetted them. Here the editor has already
-            // validated the file against the site's real `allowedMimeTypes` from
-            // `/wp-block-editor/v1/settings` before the upload reaches us, so
-            // re-checking against `Blog.allowedFileTypes` — a cached option that
-            // can lag the server — could only ever reject a file the server
-            // would have accepted.
+            // files with nothing having vetted them.
+            //
+            // Nothing vets the file here either — the editor validates uploads
+            // against `allowedMimeTypes`, but that value reaches it only from
+            // `/wp-block-editor/v1/settings`, a route the Gutenberg plugin
+            // provides and WordPress core does not. Without it the setting stays
+            // nil and the check passes everything through.
+            //
+            // Re-checking here would not recover it. `Blog.allowedFileTypes` is
+            // a cached option that can lag the server, so rejecting from it
+            // could only ever refuse a file the server would have accepted. The
+            // server is the authority, and it rejects with a message the native
+            // upload relay passes back to the editor verbatim.
             return .original
         case .image:
             // SVG conforms to `UTType.image`, so it lands here, but ImageIO
