@@ -448,6 +448,38 @@ struct GBKMediaUploadProcessorTests {
 
     // MARK: - Videos
 
+    /// WebM and WMV conform to `UTType.movie`, so they classify as video, but
+    /// AVFoundation cannot open either — `MediaVideoExporter` fails them on
+    /// `AVURLAsset.isExportable`. Exporting them anyway would turn uploads
+    /// WordPress accepts into errors, so they pass through instead.
+    @Test(arguments: [("clip.webm", "video/webm"), ("clip.wmv", "video/x-ms-wmv")])
+    func videoAVFoundationCannotReadPassesThroughUntouched(
+        filename: String,
+        mimeType: String
+    ) async throws {
+        let processor = makeProcessor(settings: makeSettings())
+        // Contents are never read: the type alone decides, before any export.
+        let url = try copyFixture("test-video-device-gps.m4v", as: filename)
+        defer { cleanUp(url) }
+
+        let result = try await processor.processFile(at: url, mimeType: mimeType, filename: filename)
+
+        guard case .original = result else {
+            Issue.record("Expected \(filename) to pass through unprocessed")
+            return
+        }
+        // And it is declined up front, so the temp copy is skipped entirely.
+        #expect(!processor.handlesFile(ofType: mimeType, named: filename))
+    }
+
+    /// The formats AVFoundation does read must still be claimed and exported,
+    /// or the preset and duration limit stop being applied to real video.
+    @Test(arguments: ["clip.mp4", "clip.mov", "clip.m4v", "clip.avi"])
+    func readableVideoIsStillClaimed(filename: String) {
+        let processor = makeProcessor(settings: makeSettings())
+        #expect(processor.handlesFile(ofType: "video/mp4", named: filename))
+    }
+
     @Test func videoExceedingDurationLimitThrows() async throws {
         let processor = GBKMediaUploadProcessor(
             videoDurationLimit: 1,

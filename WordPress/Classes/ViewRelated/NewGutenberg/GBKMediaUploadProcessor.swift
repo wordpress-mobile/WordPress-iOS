@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 import GutenbergKit
 import UniformTypeIdentifiers
@@ -100,8 +101,10 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
             // `processFile`.
             return type != .svg
         case .video:
-            // Always exported, to apply the preset and duration limit.
-            return true
+            // Exported to apply the preset and duration limit — except for the
+            // containers AVFoundation cannot read, which `processFile` returns
+            // unchanged for any settings (see there).
+            return Self.isExportableVideoType(type)
         }
     }
 
@@ -163,9 +166,16 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
                 return .original
             }
         case .video:
-            // Always process video to apply the export preset, duration
-            // limit, and location stripping.
-            break
+            // AVFoundation cannot open every container that conforms to
+            // `.movie`, and `MediaVideoExporter` rejects the ones it cannot
+            // read rather than passing them along. Upload those unchanged: the
+            // preset, duration limit, and location stripping are all
+            // unavailable for them, and failing the upload to say so would
+            // reject files WordPress accepts (`wmv` is even in the app's own
+            // `MediaImportService.defaultAllowableFileExtensions`).
+            if let sourceType, !Self.isExportableVideoType(sourceType) {
+                return .original
+            }
         }
 
         let exportImageType = Self.exportImageType(for: expected, sourceType: sourceType)
@@ -289,6 +299,25 @@ final class GBKMediaUploadProcessor: MediaUploadDelegate, Sendable {
         type == .data || type.isDynamic
     }
 
+    /// Whether AVFoundation can read the container, and so whether
+    /// `MediaVideoExporter` can export it at all.
+    ///
+    /// `expectedExport` routes anything conforming to `.video` or `.movie` to
+    /// the video branch, which is broader than what AVFoundation opens: WebM
+    /// and WMV both conform to `.movie` but are absent from
+    /// `audiovisualTypes()`, and `MediaVideoExporter` fails them on
+    /// `AVURLAsset.isExportable`.
+    ///
+    /// Matched by conformance rather than identity, because a file can be a
+    /// subtype of a listed format without appearing in the list itself:
+    /// DRM-wrapped MPEG-4 conforms to `public.mpeg-4` but is absent.
+    private static func isExportableVideoType(_ type: UTType) -> Bool {
+        exportableVideoTypes.contains { type.conforms(to: $0) }
+    }
+
+    private static let exportableVideoTypes: Set<UTType> = Set(
+        AVURLAsset.audiovisualTypes().compactMap { UTType($0.rawValue) }
+    )
 
     /// The type a reported MIME type names, or `nil` when it names nothing
     /// usable.
