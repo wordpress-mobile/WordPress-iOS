@@ -230,17 +230,13 @@ final class MediaDetailViewModel: ObservableObject {
         return DownloadableMediaItem(
             sourceUrl: url,
             mimeType: display.mimeType,
-            suggestedFilename: Self.suggestedFilename(for: display)
+            suggestedFilename: MediaShareFilename.suggested(
+                title: display.title,
+                slug: display.slug,
+                sourceUrl: display.sourceUrl,
+                id: display.id
+            )
         )
-    }
-
-    private static func suggestedFilename(for display: MediaDetailDisplayModel) -> String? {
-        let title = (display.title ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        if !title.isEmpty { return title }
-        let slug = display.slug.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !slug.isEmpty { return slug }
-        if let last = URL(string: display.sourceUrl)?.lastPathComponent, !last.isEmpty { return last }
-        return "media-\(display.id)"
     }
 
     func delete() async {
