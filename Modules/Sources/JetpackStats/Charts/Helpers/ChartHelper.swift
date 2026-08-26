@@ -67,14 +67,49 @@ struct ChartHelper {
         )
     }
 
+    /// Creates a placeholder x-axis: a single blank label keeps the axis height without
+    /// formatting a date per tick.
+    @AxisContentBuilder
+    private static func makePlaceholderXAxis(domain: ClosedRange<Date>) -> some AxisContent {
+        AxisMarks(values: [domain.lowerBound]) { _ in
+            AxisValueLabel(centered: true) {
+                Text(verbatim: " ")
+                    .font(.caption2.weight(.medium))
+            }
+        }
+    }
+
+    /// Creates a placeholder y-axis: every tick shows the domain's widest label, which
+    /// keeps the gutter width without formatting a value per tick.
+    @AxisContentBuilder
+    static func makePlaceholderYAxis(
+        domain: ClosedRange<Int>,
+        formatter: StatsValueFormatter,
+        gridLineColor: Color
+    ) -> some AxisContent {
+        let label = formatter.format(value: domain.upperBound, context: .compact)
+        AxisMarks(values: .automatic) { _ in
+            AxisGridLine()
+                .foregroundStyle(gridLineColor)
+            AxisValueLabel {
+                Text(verbatim: label)
+                    .font(.caption2.weight(.medium))
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+
     /// Creates an x-axis with marks at unit boundaries aligned with the chart granularity.
     @AxisContentBuilder
     static func makeXAxis(
         domain: ClosedRange<Date>,
         granularity: DateRangeGranularity,
-        calendar: Calendar
+        calendar: Calendar,
+        isPlaceholder: Bool = false
     ) -> some AxisContent {
-        if granularity == .hour {
+        if isPlaceholder {
+            makePlaceholderXAxis(domain: domain)
+        } else if granularity == .hour {
             AxisMarks(preset: .automatic) { value in
                 if let date = value.as(Date.self) {
                     AxisValueLabel(centered: true) {
