@@ -93,16 +93,8 @@ public actor WordPressClient {
     /// The underlying API executor used for making network requests.
     public let api: any WordPressClientAPI
 
-    private var _cache: WordPressApiCache?
     public var cache: WordPressApiCache {
-        get {
-            if let _cache {
-                return _cache
-            }
-            let cache = WordPressApiCache.bootstrap()
-            _cache = cache
-            return cache
-        }
+        WordPressApiCache.shared
     }
 
     private var _service: WpService?
