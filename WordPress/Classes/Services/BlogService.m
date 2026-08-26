@@ -307,6 +307,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [blog.xmlrpcApi invalidateAndCancelTasks];
     [self unscheduleBloggingRemindersFor:blog];
     [self removeWordPressApiCachedDataForBlog:blog];
+    [self evictWordPressClientForBlog:blog];
 
     WPAccount *account = blog.account;
 
@@ -374,6 +375,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         for (Blog *blog in account.blogs) {
             if ([toDelete containsObject:blog.dotComID]) {
                 [self unscheduleBloggingRemindersFor:blog];
+                [self evictWordPressClientForBlog:blog];
                 // Consider switching this to a call to removeBlog in the future
                 // to consolidate behaviour @frosty
                 [context deleteObject:blog];

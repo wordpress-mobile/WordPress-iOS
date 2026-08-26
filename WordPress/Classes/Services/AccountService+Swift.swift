@@ -18,7 +18,8 @@ extension AccountService {
             return
         }
 
-        UserPersistentStoreFactory.instance().set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
+        UserPersistentStoreFactory.instance()
+            .set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
 
         let objectID = TaggedManagedObjectID(account)
         let notifyAccountChange = {
@@ -51,6 +52,11 @@ extension AccountService {
         }
 
         WordPressApiCache.shared.removeCachedData(for: account.blogs ?? [])
+
+        account.blogs?
+            .forEach {
+                WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID($0))
+            }
 
         let objectID = TaggedManagedObjectID(account)
         coreDataStack.performAndSave { context in
