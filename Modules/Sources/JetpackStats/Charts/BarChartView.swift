@@ -249,20 +249,34 @@ struct BarChartView: View {
         ChartHelper.makeXAxis(
             domain: xAxisDomain,
             granularity: data.granularity,
-            calendar: context.calendar
+            calendar: context.calendar,
+            isPlaceholder: isPlaceholder
         )
     }
 
+    private var yAxisGridLineColor: Color {
+        Color.secondary.opacity(0.33)
+    }
+
+    @AxisContentBuilder
     private var yAxis: some AxisContent {
-        AxisMarks(values: .automatic) { value in
-            if let value = value.as(Int.self) {
-                AxisGridLine()
-                    .foregroundStyle(Color.secondary.opacity(0.33))
-                AxisValueLabel {
-                    if value > 0 {
-                        Text(valueFormatter.format(value: value, context: .compact))
-                            .font(.caption2.weight(.medium))
-                            .foregroundColor(.secondary)
+        if isPlaceholder {
+            ChartHelper.makePlaceholderYAxis(
+                domain: yAxisDomain,
+                formatter: valueFormatter,
+                gridLineColor: yAxisGridLineColor
+            )
+        } else {
+            AxisMarks(values: .automatic) { value in
+                if let value = value.as(Int.self) {
+                    AxisGridLine()
+                        .foregroundStyle(yAxisGridLineColor)
+                    AxisValueLabel {
+                        if value > 0 {
+                            Text(valueFormatter.format(value: value, context: .compact))
+                                .font(.caption2.weight(.medium))
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
             }

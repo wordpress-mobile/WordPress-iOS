@@ -235,20 +235,34 @@ struct LineChartView: View {
         ChartHelper.makeXAxis(
             domain: xAxisDomain,
             granularity: data.granularity,
-            calendar: context.calendar
+            calendar: context.calendar,
+            isPlaceholder: isPlaceholder
         )
     }
 
-    private var yAxis: some AxisContent {
-        AxisMarks { value in
-            if let value = value.as(Int.self) {
-                AxisGridLine()
-                    .foregroundStyle(Color(.opaqueSeparator).opacity(0.5))
+    private var yAxisGridLineColor: Color {
+        Color(.opaqueSeparator).opacity(0.5)
+    }
 
-                AxisValueLabel {
-                    Text(valueFormatter.format(value: value, context: .compact))
-                        .font(.caption2.weight(.medium)).tracking(-0.1)
-                        .foregroundColor(.secondary)
+    @AxisContentBuilder
+    private var yAxis: some AxisContent {
+        if isPlaceholder {
+            ChartHelper.makePlaceholderYAxis(
+                domain: yAxisDomain,
+                formatter: valueFormatter,
+                gridLineColor: yAxisGridLineColor
+            )
+        } else {
+            AxisMarks { value in
+                if let value = value.as(Int.self) {
+                    AxisGridLine()
+                        .foregroundStyle(yAxisGridLineColor)
+
+                    AxisValueLabel {
+                        Text(valueFormatter.format(value: value, context: .compact))
+                            .font(.caption2.weight(.medium)).tracking(-0.1)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
         }
