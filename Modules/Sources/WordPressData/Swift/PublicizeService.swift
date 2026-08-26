@@ -4,7 +4,6 @@ import WordPressShared
 
 @objc(PublicizeService)
 open class PublicizeService: NSManagedObject {
-    @objc public static let googlePlusServiceID = "google_plus"
     @objc public static let facebookServiceID = "facebook"
     @objc public static let defaultStatus = "ok"
     @objc public static let unsupportedStatus = "unsupported"

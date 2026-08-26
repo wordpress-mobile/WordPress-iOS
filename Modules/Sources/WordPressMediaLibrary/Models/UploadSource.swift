@@ -75,14 +75,24 @@ extension UploadSource {
         case .cameraVideo:
             return .video
         case .file(let url):
-            let contentType =
-                (try? url.resourceValues(forKeys: [.contentTypeKey]))?.contentType
-                ?? UTType(filenameExtension: url.pathExtension)
-            return contentType.map { MediaKind(estimating: $0) } ?? .document
+            return url.resolvedContentType.map { MediaKind(estimating: $0) } ?? .document
         case .remoteURL(let remote):
             return MediaKind(estimating: remote.contentType)
         case .imagePlayground:
             return .image
         }
+    }
+}
+
+extension URL {
+    /// The URL's content type from the file system's `.contentTypeKey`
+    /// resource, falling back to the path extension. `nil` when neither
+    /// resolves. The single URL→UTType resolution rule shared by
+    /// `estimatedKind` and the materializer.
+    var resolvedContentType: UTType? {
+        if let type = try? resourceValues(forKeys: [.contentTypeKey]).contentType {
+            return type
+        }
+        return UTType(filenameExtension: pathExtension)
     }
 }

@@ -1,0 +1,96 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Create a new post in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new post in ${applicationName}"
+          }
+        }
+      }
+    },
+    "New ${applicationName} post" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New ${applicationName} post"
+          }
+        }
+      }
+    },
+    "Open my ${applicationName} notifications" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open my ${applicationName} notifications"
+          }
+        }
+      }
+    },
+    "Open my ${applicationName} stats" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open my ${applicationName} stats"
+          }
+        }
+      }
+    },
+    "Open Reader in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Reader in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Open the ${applicationName} Reader" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the ${applicationName} Reader"
+          }
+        }
+      }
+    },
+    "Show my ${applicationName} notifications" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show my ${applicationName} notifications"
+          }
+        }
+      }
+    },
+    "Show my site stats in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show my site stats in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Write a new post in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a new post in ${applicationName}"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

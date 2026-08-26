@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-29 09:55:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: it */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3078,7 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Gestisci";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Gestisci la connessione";
 
@@ -7736,14 +7735,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Basta acquistare un dominio";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Scaduto";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nessuna scadenza";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Rinnovi";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Trova un dominio";
@@ -9750,21 +9743,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Grazie per aver scelto di passare a Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Sembra che tu abbia installato la app WordPress.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Apri WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "No grazie";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Vuoi trasferire i tuoi dati dall'app WordPress e accedere automaticamente?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Jetpack ti dà il benvenuto!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decidi più tardi";
 
@@ -9776,9 +9754,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Riceverai tutte le stesse notifiche, ma ora arriveranno dall'app Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Disabiliteremo le notifiche per l'app WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Consenti alle notifiche per stare al passo con il tuo sito";
@@ -11357,9 +11332,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Abbonati";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Visualizza originale";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Altre azioni";
 
@@ -12234,14 +12206,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Il tuo sito non utilizza un tema a blocchi, quindi l'editor potrebbe non corrispondere correttamente ai tuoi contenuti. Se le cose non vanno, puoi disattivare gli stili dell'editor.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Rendi l'editor a blocchi simile al tuo tema.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Installa il plugin Gutenberg sul tuo sito per attivare il supporto dello stile del tema.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Aggiungi %1$@";

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-29 09:55:34+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3078,7 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "관리하기";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "연결 관리";
 
@@ -7763,14 +7762,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "도메인만 구매";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "만료됨";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "만료 기간 없음";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "갱신";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "도메인 찾기";
@@ -9822,21 +9815,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "젯팩으로 전환해 주셔서 감사합니다!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "워드프레스 앱이 설치되어 있는 것 같습니다.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "워드프레스 열기";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "괜찮습니다";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "워드프레스 앱의 데이터를 이전하고 자동으로 로그인하시겠나요?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "젯팩에 오신 것을 환영합니다!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "나중에 결정";
 
@@ -9848,9 +9826,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "동일한 알림을 모두 받겠지만, 이제는 젯팩 앱에서 알림을 보냅니다.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "워드프레스 앱에 대한 알림을 비활성화하겠습니다.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "알림이 사이트에 계속 표시되도록 허용";
@@ -11411,9 +11386,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "구독";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "원본 보기";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "추가 작업";
 
@@ -12288,14 +12260,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "사이트에서 블록 테마를 사용하고 있지 않으므로 편집기가 콘텐츠와 올바르게 일치하지 않을 수 있습니다. 문제가 해결되지 않으면 편집기 스타일을 비활성화할 수 있습니다.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "블록 편집기를 테마와 비슷하게 만듭니다.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "사이트에 Gutenberg 플러그인을 설치하여 테마 스타일 지원을 활성화하세요.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ 추가";

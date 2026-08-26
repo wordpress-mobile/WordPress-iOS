@@ -42,8 +42,10 @@ public struct MediaUploadPolicy: Sendable {
     /// file and the effective MIME type the validator checks against.
     let videoOutputContentType: UTType
 
-    /// If true, strip GPS EXIF before upload.
-    let stripImageLocation: Bool
+    /// The "Remove Location" setting. If true, GPS EXIF is stripped from
+    /// images and identifying metadata (via `AVMetadataItemFilter.forSharing()`)
+    /// is filtered from re-exported videos before upload.
+    let stripGPSLocation: Bool
 
     public init(
         filePickerContentTypes: [UTType],
@@ -54,7 +56,7 @@ public struct MediaUploadPolicy: Sendable {
         videoMaxDurationSeconds: TimeInterval?,
         videoExportPreset: String,
         videoOutputContentType: UTType,
-        stripImageLocation: Bool
+        stripGPSLocation: Bool
     ) {
         self.filePickerContentTypes = filePickerContentTypes
         self.isAllowedForUpload = isAllowedForUpload
@@ -64,6 +66,6 @@ public struct MediaUploadPolicy: Sendable {
         self.videoMaxDurationSeconds = videoMaxDurationSeconds
         self.videoExportPreset = videoExportPreset
         self.videoOutputContentType = videoOutputContentType
-        self.stripImageLocation = stripImageLocation
+        self.stripGPSLocation = stripGPSLocation
     }
 }

@@ -337,7 +337,7 @@ class ContextManagerTests: XCTestCase {
     /// This function ensures created Core Data stack is cleaned up properly, so that the database file
     /// is ready to be used by `ContextManager` to perform migration.
     private func prepareForMigration(withModelName modelName: String, block: (NSManagedObjectContext) throws -> Void) throws {
-        let model = try XCTUnwrap(NSManagedObjectModel(contentsOf: XCTUnwrap(urlForModelName(modelName))))
+        let model = try XCTUnwrap(NSManagedObjectModel(contentsOf: XCTUnwrap(urlForModelName(modelName)))).neutralizingEntityClasses()
         let container = NSPersistentContainer(name: "WordPress", managedObjectModel: model)
         let storeDesc = NSPersistentStoreDescription(url: storeURL)
         storeDesc.type = NSSQLiteStoreType

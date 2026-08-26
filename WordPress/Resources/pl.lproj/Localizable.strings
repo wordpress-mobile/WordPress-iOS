@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-31 05:03:13+0000 */
+/* Translation-Revision-Date: 2026-08-19 04:37:16+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: pl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3081,7 +3081,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Zarządzaj";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Zarządzaj połączeniem";
 
@@ -7766,14 +7765,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Po prostu kup domenę";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Przedawniło się";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nigdy nie wygasa";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Odnawia";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Znajdź domenę";
@@ -7995,7 +7988,7 @@ Example: Reply to Pamela Nguyen */
 "emptyStateView.noSearchResult.title" = "Brak wyników";
 
 /* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
-"entityMetadataFooterView.id" = "ID";
+"entityMetadataFooterView.id" = "Identyfikator";
 
 /* Accept button title for the alert asking for feedback */
 "experimentalFeatures.editorFeedbackAccept" = "Wyślij uwagi";
@@ -9834,21 +9827,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "Dziękujemy za przejście na Jetpacka!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Aplikacja WordPressa została już zainstalowana.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Otwórz WordPressa";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "Nie, dziękuję";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "Czy chcesz przenieść swoje dane z aplikacji WordPress i zalogować się automatycznie?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "Witamy w Jetpacku!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";
 
@@ -9860,9 +9838,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Otrzymasz te same powiadomienia, ale teraz będą one pochodzić z aplikacji Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Wyłączymy powiadomienia dla aplikacji WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Zezwalaj na powiadomienia, aby nadążać za twoją witryną";
@@ -10795,7 +10770,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.lastEdited.label" = "Ostatnia edycja";
 
 /* Section header for Info in Post Settings */
-"postSettings.metadata.header" = "Info";
+"postSettings.metadata.header" = "Informacja";
 
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Więcej opcji";
@@ -10855,7 +10830,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.postFormat.label" = "Format wpisu";
 
 /* Label for the post ID field in Post Settings */
-"postSettings.postID.label" = "ID";
+"postSettings.postID.label" = "Identyfikator";
 
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Data";
@@ -11440,9 +11415,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Subskrybuj";
-
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Zobacz oryginał";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Więcej działań";
@@ -12318,14 +12290,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Prywatność";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Twoja witryna nie używa motywu blokowego, więc wygląd edytora może nie odpowiadać treści, jeśli coś wygląda nietypowo, możesz wyłączyć style edytora.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Dopasuj wygląd edytora blokowego do twojego motywu.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "Zainstaluj wtyczkę Gutenberg na twojej witrynie, aby aktywować wspieranie stylu motywu.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Dodaj %1$@";

@@ -205,7 +205,14 @@ private extension BlogDashboardViewModel {
 
     func applySnapshot(for cards: [DashboardCardModel], animated: Bool = false) {
         let snapshot = createSnapshot(from: cards)
-        dataSource?.apply(snapshot, animatingDifferences: animated)
+        dataSource?
+            .apply(snapshot, animatingDifferences: animated) { [weak viewController] in
+                // Self-sizing cells (e.g. the quick actions card) can have their cached measured
+                // height reset by this update even when their own content didn't change, since any
+                // snapshot change forces the compositional layout to recompute. Invalidating here
+                // ensures they always get re-measured after any dashboard content change.
+                viewController?.collectionView.collectionViewLayout.invalidateLayout()
+            }
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {

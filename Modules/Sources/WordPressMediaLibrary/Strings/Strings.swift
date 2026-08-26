@@ -140,10 +140,21 @@ enum Strings {
         value: "This file type isn't allowed for upload on your site.",
         comment: "Error shown when a picked file's type is not in the blog's allowed list."
     )
-    static let uploadErrorHEICConversion = NSLocalizedString(
-        "mediaLibrary.upload.error.heicConversion",
+    static let uploadErrorInvalidImage = NSLocalizedString(
+        "mediaLibrary.upload.error.invalidImage",
+        value: "The selected file isn't a valid image.",
+        comment: "Error shown when picked or downloaded bytes do not decode as an image."
+    )
+    static let uploadErrorImageEncode = NSLocalizedString(
+        "mediaLibrary.upload.error.imageEncode",
         value: "Couldn't convert the photo for upload.",
-        comment: "Error shown when HEIC-to-JPEG conversion fails before upload."
+        comment: "Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload."
+    )
+    static let uploadErrorLocationStripFailed = NSLocalizedString(
+        "mediaLibrary.upload.error.locationStrip",
+        value: "Couldn't remove the location from the photo for upload.",
+        comment:
+            "Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on."
     )
     static let uploadErrorVideoExport = NSLocalizedString(
         "mediaLibrary.upload.error.videoExport",

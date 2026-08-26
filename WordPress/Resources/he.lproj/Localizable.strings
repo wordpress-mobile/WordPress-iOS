@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-29 09:55:26+0000 */
+/* Translation-Revision-Date: 2026-08-14 14:28:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3078,7 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "ניהול";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "ניהול החיבור";
 
@@ -7751,14 +7750,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "עליך רק לרכוש דומיין";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "התוקף פג";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "ללא תאריך תפוגה";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "מתחדש";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "למצוא דומיין";
@@ -9816,21 +9809,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "תודה שעברת אל Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "נראה שהאפליקציה של WordPress מותקנת אצלך.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "לפתוח את WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "לא תודה";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "רוצה להעביר את הנתונים שלך מאפליקציית WordPress ולהתחבר אוטומטית?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "ברוך בואך אל Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "אני אחליט מאוחר יותר";
 
@@ -9842,9 +9820,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "אותן הודעות ימשיכו להישלח אליך אבל כעת הן יגיעו מהאפליקציה של Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "אנחנו נשבית את ההודעות מאפליקציה של WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "לאפשר להודעות להתעדכן מול האתר שלך";
@@ -9921,6 +9896,9 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "גיבוי";
 
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "תגובות";
 
@@ -9938,6 +9916,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Noun. Links to a blog's dashboard screen. */
 "mySite.menu.home" = "עמוד הבית";
+
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.jetpackSettings" = "הגדרות Jetpack";
@@ -9995,6 +9976,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Action title. Opens the user's site in an in-app browser */
 "mySite.menu.viewSite" = "צפייה באתר";
+
+/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
+"mySite.menu.wpAdmin" = "WP Admin";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "חשבון והגדרות";
@@ -11390,9 +11374,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "הרשמה לעדכונים";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "הצגת מקור";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "פעולות נוספות";
 
@@ -12255,14 +12236,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "פרטיות";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "האתר אינו משתמש בערכת עיצוב של בלוק, לכן ייתכן שהעורך לא יתאים את התוכן שלך. אם דברים לא נראים כמו שצריך, אפשר להשבית את סגנונות העורך.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "גרמו לעורך הבלוקים להיראות כמו ערכת הנושא שלכם.";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "יש להתקין את התוסף של Gutenberg באתר כדי להפעיל תמיכה בסגנון ערכת עיצוב.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "להוסיף %1$@";

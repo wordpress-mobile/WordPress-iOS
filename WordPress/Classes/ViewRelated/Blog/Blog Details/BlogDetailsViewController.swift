@@ -118,7 +118,7 @@ public class BlogDetailsViewController: UIViewController {
         }
 
         if shouldShowBlaze() {
-            BlazeEventsTracker.trackEntryPointDisplayed(for: .menuItem)
+            BlazeEventsTracker.trackEntryPointDisplayed(for: .menuItem, blogProperties: blog.analyticsProperties)
         }
     }
 

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2026-07-29 09:58:58+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -3075,7 +3075,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "管理";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "管理連線狀態";
 
@@ -7742,14 +7741,8 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "單純購買網域";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "已到期";
-
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "永不過期";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "續訂";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "尋找網域";
@@ -9804,21 +9797,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "感謝改用 Jetpack！";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "你似乎安裝了 WordPress 應用程式。";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "開啟 WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "不用了，謝謝";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "你想要從 WordPress 應用程式轉移資料並自動登入嗎？";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "歡迎使用 Jetpack！";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍後決定";
 
@@ -9830,9 +9808,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "你將收到所有相同的通知，但來源為 Jetpack 應用程式。";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "我們即將停用 WordPress 應用程式的通知。";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "允許通知以掌握你的網站動態";
@@ -11384,9 +11359,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "訂閱";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "檢視原始內容";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "更多動作";
 
@@ -12249,14 +12221,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隱私權";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "網站並未使用區塊佈景主題，因此編輯器可能未與你的內容正確相符。 如果顯示效果不理想，你可以停用編輯器樣式。";
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "讓區塊編輯器的外觀與佈景主題相配。";
-
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
-"siteSettings.themeStyles.footer.gutenbergRequired" = "在網站安裝 Gutenberg 外掛程式，以啟用佈景主題樣式支援。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "新增「%1$@」";

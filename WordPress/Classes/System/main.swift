@@ -1,9 +1,11 @@
 import BuildSettingsKit
 import Foundation
+import SwiftUI
 import UIKit
 
 let isRunningTests = NSClassFromString("XCTestCase") != nil
-let appDelegateClass = isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
+let appDelegateClass =
+    isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
 
 // The secrets MUST be configured before the app launches.
 //
@@ -20,11 +22,42 @@ UIApplicationMain(
 )
 
 final class TestingAppDelegate: NSObject, UIApplicationDelegate {
+    /// Opt the unit test host into the UIScene life cycle. iOS 27 removed the legacy
+    /// window life cycle, so a plain `UIWindow()` created here crashes the host at launch.
+    /// Mirrors `WordPressAppDelegate`'s programmatic scene opt-in.
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        if connectingSceneSession.role == .windowApplication {
+            configuration.delegateClass = TestingSceneDelegate.self
+        }
+        return configuration
+    }
+}
+
+final class TestingSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    func applicationDidFinishLaunching(_ application: UIApplication) {
-        window = UIWindow()
-        window?.rootViewController = UIViewController()
-        window?.makeKeyAndVisible()
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
+        guard let windowScene = scene as? UIWindowScene else {
+            return
+        }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = UIHostingController(rootView: TestingRootView())
+        window.makeKeyAndVisible()
+        self.window = window
+    }
+}
+
+private struct TestingRootView: View {
+    var body: some View {
+        Text("Running unit tests")
     }
 }
