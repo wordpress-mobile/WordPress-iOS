@@ -274,6 +274,10 @@ private actor ControllableStatsService: StatsServiceProtocol {
         throw TestError.unused
     }
 
+    func invalidateTopListData(for item: TopListItemType) async {
+        // No-op; the Today card does not use top-list data.
+    }
+
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws {
         throw TestError.unused
     }
