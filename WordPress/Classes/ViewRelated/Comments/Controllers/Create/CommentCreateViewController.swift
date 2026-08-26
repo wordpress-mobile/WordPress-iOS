@@ -67,7 +67,14 @@ final class CommentCreateViewController: UIViewController {
                 try await viewModel.save(content: text)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
-                presentingViewController?.dismiss(animated: true)
+                presentingViewController?.dismiss(animated: true) {
+                        Notice(title: Strings.commentHeldForModeration,
+                               style: InAppUpdateNoticeStyle(
+                                icon: UIImage(systemName: "checkmark.seal.fill"),
+                                iconColor: UIAppColor.success, title: Strings.commentHeldForModeration
+                            ))
+                        .post()
+                    }
             } catch {
                 setLoading(false)
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -147,6 +154,7 @@ extension CommentCreateViewController: CommentEditorViewControllerDelegate {
 private enum Strings {
     static let send = NSLocalizedString("commentCreate.send", value: "Send", comment: "Navigation bar button title")
     static let failedToSend = NSLocalizedString("commentCreate.failedToSentComment", value: "Failed to send comment", comment: "Error title")
+    static let commentHeldForModeration = NSLocalizedString("commentCreate.commentHeldForModeration", value: "Comment is awaiting review", comment: "Toast title shown after successfully submitting a comment")
     static let closeConfirmationAlertCancel = NSLocalizedString("commentCreate.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
     static let closeConfirmationAlertDelete = NSLocalizedString("commentCreate.closeConfirmationAlert.deleteDraft", value: "Delete Draft", comment: "Button in an alert confirming discaring a new draft")
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("commentCreate.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
