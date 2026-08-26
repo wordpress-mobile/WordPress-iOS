@@ -49,6 +49,24 @@ struct ChartHelper {
         return periodStart...periodEnd
     }
 
+    /// The fill under a line chart's current-period line. Flat while rendering a
+    /// placeholder, where the gradient is invisible.
+    static func areaStyle(color: Color, colorScheme: ColorScheme, isPlaceholder: Bool) -> AnyShapeStyle {
+        if isPlaceholder {
+            return AnyShapeStyle(color.opacity(0.15))
+        }
+        return AnyShapeStyle(
+            LinearGradient(
+                colors: [
+                    color.opacity(colorScheme == .light ? 0.15 : 0.25),
+                    color.opacity(0.0)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
+    }
+
     /// Creates an x-axis with marks at unit boundaries aligned with the chart granularity.
     @AxisContentBuilder
     static func makeXAxis(
