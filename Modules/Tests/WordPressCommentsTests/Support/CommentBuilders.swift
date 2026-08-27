@@ -33,10 +33,13 @@ func makeComment(
 func makeItem(
     id: Int64 = 1,
     authorName: String = "Author",
+    content: String = "<p>Hello <strong>world</strong></p>",
     post: Int64 = 10,
     status: CommentStatus = .approved
 ) -> CommentListItem {
-    CommentListItem(comment: makeComment(id: id, authorName: authorName, post: post, status: status))
+    CommentListItem(
+        comment: makeComment(id: id, authorName: authorName, content: content, post: post, status: status)
+    )
 }
 
 extension CommentWithViewContext {

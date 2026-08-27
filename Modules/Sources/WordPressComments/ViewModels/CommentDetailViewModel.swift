@@ -165,6 +165,11 @@ final class CommentDetailViewModel: ObservableObject {
     private var isLoading = false
 
     private var eventSubscription: AnyCancellable?
+    /// Follows the parent comment's events, so an edit made on the parent's
+    /// own detail screen refreshes the "In reply to" strip in place. Only set
+    /// for a reply (`detail.parentID != nil`); a top-level comment never
+    /// subscribes.
+    private var parentEventSubscription: AnyCancellable?
 
     init(
         commentID: Int64,
@@ -292,6 +297,15 @@ final class CommentDetailViewModel: ObservableObject {
             return
         }
         parentPreview = CommentListItem(detail: parent)
+        // Also hear the parent's own content edits, so an edit made on the
+        // parent's detail screen refreshes this strip on return, instead of
+        // showing a stale snippet until the next full fetch. The parent id is
+        // fixed for a given comment, so re-subscribing on a later reload would
+        // just duplicate the same subscription; guard against that.
+        guard parentEventSubscription == nil else { return }
+        parentEventSubscription = coordinator.events
+            .filter { $0.commentID == parentID }
+            .sink { [weak self] in self?.handleParentEvent($0) }
     }
 
     // MARK: - Coordinator events
@@ -313,6 +327,12 @@ final class CommentDetailViewModel: ObservableObject {
             // The comment is gone: a terminal state that turns the toolbar off
             // and dismisses the screen.
             isDeleted = true
+        case .contentChanged(_, let contentHTML, let contentRaw):
+            if var detail = loadedDetail {
+                detail.contentHTML = contentHTML
+                detail.contentRaw = contentRaw
+                content = .loaded(detail)
+            }
         case .replyCreated:
             // The reply is a different comment; this screen's own status is
             // corrected by the approve step's statusChanged event when
@@ -324,6 +344,15 @@ final class CommentDetailViewModel: ObservableObject {
                 numberOfReplies = count + 1
             }
         }
+    }
+
+    /// Reacts only to the parent's content changing, refreshing the "In reply
+    /// to" strip's snippet in place. Every other event case is irrelevant here
+    /// (this screen's own status/content stays owned by `handle(_:)`), so it's
+    /// ignored.
+    private func handleParentEvent(_ event: CommentChangeEvent) {
+        guard case .contentChanged(_, let contentHTML, _) = event else { return }
+        parentPreview?.snippet = CommentListItem.snippet(fromHTML: contentHTML)
     }
 }
 
