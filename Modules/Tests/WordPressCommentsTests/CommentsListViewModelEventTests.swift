@@ -523,4 +523,102 @@ struct CommentsListViewModelEventTests {
 
         #expect(viewModel.state == .idle)
     }
+
+    // MARK: - Content changed: update the row's snippet in place
+
+    @Test func contentChangedUpdatesSnippetInPlace() async {
+        let service = FakeCommentsService()
+        let itemFour = makeItem(id: 4)
+        let itemFive = makeItem(id: 5, content: "<p>old</p>")
+        let itemSix = makeItem(id: 6)
+        service.queuedResults = [.success(makePage(items: [itemFour, itemFive, itemSix], hasNext: false))]
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+        await viewModel.onAppear()
+
+        viewModel.apply(.contentChanged(id: 5, contentHTML: "<p>new\nline</p>", contentRaw: "new"))
+
+        #expect(viewModel.items.map(\.id) == [4, 5, 6])
+        #expect(viewModel.items[1].snippet == "new line")
+        #expect(viewModel.items[0] == itemFour)
+        #expect(viewModel.items[2] == itemSix)
+        #expect(viewModel.state == .loaded)
+    }
+
+    @Test func inFlightPageOneDoesNotOverwriteInPlaceContentUpdate() async {
+        let service = BlockingCommentsService()
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+
+        // First load (call 0): row 5 with the original snippet.
+        async let firstLoad: Void = viewModel.onAppear()
+        await waitUntil { service.callCount >= 1 }
+        service.resolve(callIndex: 0, with: makePage(items: [makeItem(id: 5, content: "<p>old</p>")], hasNext: false))
+        await firstLoad
+        #expect(viewModel.items.first?.snippet == "old")
+
+        // Mark the tab stale (a pending comment that belongs here but is absent
+        // can't be placed in a paged list); the tab schedules its own page-one
+        // reload (call 1), which suspends.
+        viewModel.apply(.statusChanged(id: 99, to: .pending))
+        await waitUntil { service.callCount >= 2 }
+
+        // An edit corrects the row's snippet in place while the reload is in
+        // flight, invalidating the in-flight page.
+        viewModel.apply(.contentChanged(id: 5, contentHTML: "<p>new</p>", contentRaw: "new"))
+        #expect(viewModel.items.first?.snippet == "new")
+
+        // The invalidated page must NOT overwrite the edited snippet. Instead
+        // the reload refetches (exactly one more request) and converges on
+        // fresh authoritative data, without a manual refresh.
+        service.resolve(callIndex: 1, with: makePage(items: [makeItem(id: 5, content: "<p>old</p>")], hasNext: false))
+        await waitUntil { service.callCount >= 3 }
+        service.resolve(callIndex: 2, with: makePage(items: [makeItem(id: 5, content: "<p>new</p>")], hasNext: false))
+        await waitUntil { viewModel.state == .loaded }
+        #expect(viewModel.items.first?.snippet == "new")
+        #expect(viewModel.state == .loaded)
+        #expect(service.callCount == 3)
+    }
+
+    @Test func contentChangedForAbsentIDIsNoOp() async {
+        let service = FakeCommentsService()
+        let item = makeItem(id: 1)
+        service.queuedResults = [.success(makePage(items: [item], hasNext: false))]
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+        await viewModel.onAppear()
+
+        viewModel.apply(.contentChanged(id: 999, contentHTML: "<p>new</p>", contentRaw: "new"))
+
+        #expect(viewModel.items == [item])
+    }
+
+    @Test func inFlightLoadMoreDiscardsStaleContentForAbsentID() async {
+        let service = BlockingCommentsService()
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+
+        // First load (call 0): row 1.
+        async let firstLoad: Void = viewModel.onAppear()
+        await waitUntil { service.callCount >= 1 }
+        service.resolve(callIndex: 0, with: makePage(items: [makeItem(id: 1)], hasNext: true))
+        await firstLoad
+        #expect(viewModel.items.map(\.id) == [1])
+
+        // Start load-more (call 1); it suspends before appending. Row 5 is not
+        // yet in `items` for this tab.
+        async let more: Void = viewModel.loadMore()
+        await waitUntil { service.callCount >= 2 }
+
+        // Row 5 is edited elsewhere while this fetch is in flight. There's no
+        // row to correct in place, but the fetch must still be invalidated:
+        // it was captured before the edit and could still deliver row 5 with
+        // its old snippet.
+        viewModel.apply(.contentChanged(id: 5, contentHTML: "<p>new</p>", contentRaw: "new"))
+
+        // The in-flight page carries row 5's OLD snippet (fetched before the
+        // edit). It must be discarded rather than appended with stale content.
+        service.resolve(
+            callIndex: 1,
+            with: makePage(items: [makeItem(id: 5, content: "<p>old</p>")], hasNext: false)
+        )
+        await more
+        #expect(viewModel.items.map(\.id) == [1])
+    }
 }

@@ -11,6 +11,10 @@ enum CommentChangeEvent: Equatable, Sendable {
     /// them; stales rather than inserts because a paged list cannot know the
     /// reply's correct position.
     case replyCreated(parentID: Int64, replyStatus: CommentListItem.Status)
+    /// A comment's content was edited. Carries `contentRaw` so an open detail
+    /// screen keeps a fresh raw value for a subsequent edit; list rows only
+    /// need `contentHTML` to refresh their snippet.
+    case contentChanged(id: Int64, contentHTML: String, contentRaw: String?)
 }
 
 extension CommentChangeEvent {
@@ -21,6 +25,7 @@ extension CommentChangeEvent {
         case .statusChanged(let id, _): id
         case .deleted(let id): id
         case .replyCreated(let parentID, _): parentID
+        case .contentChanged(let id, _, _): id
         }
     }
 }

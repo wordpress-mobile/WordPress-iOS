@@ -253,6 +253,27 @@ struct CommentDetailViewModelTests {
         #expect(vm.header?.status == .spam)
     }
 
+    @Test func contentChangedEventUpdatesLoadedDetail() async {
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        let headerBeforeEvent = vm.header
+
+        coordinator.events.send(.contentChanged(id: vm.commentID, contentHTML: "<p>edited</p>", contentRaw: "edited"))
+
+        guard case .loaded(let detail) = vm.content else {
+            Issue.record("Expected loaded content")
+            return
+        }
+        #expect(detail.contentHTML == "<p>edited</p>")
+        #expect(detail.contentRaw == "edited")
+        #expect(vm.header == headerBeforeEvent)
+        #expect(!vm.isDeleted)
+    }
+
     @Test func replyCreatedEventLeavesDetailUntouched() async {
         let service = FakeCommentsService()
         service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
@@ -367,6 +388,73 @@ struct CommentDetailViewModelTests {
         let vm = makeVM(service: service)
 
         await vm.onAppear()
+
+        #expect(vm.parentPreview == nil)
+    }
+
+    @Test func parentContentEditRefreshesInReplyToStrip() async {
+        let service = FakeCommentsService()
+        service.numberOfRepliesResult = .success(0)
+        service.fetchCommentResultsByID = [
+            1: .success(makeDetail(id: 1, parent: 5)),
+            5: .success(makeDetail(id: 5, status: .approved))
+        ]
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        #expect(vm.parentPreview?.id == 5)
+
+        // The parent's own detail screen edits its content; this screen never
+        // subscribed to the child's id for that event, so it must also react
+        // to the parent's id to keep the "In reply to" strip fresh.
+        coordinator.events.send(
+            .contentChanged(id: 5, contentHTML: "<p>edited parent</p>", contentRaw: "edited parent")
+        )
+
+        #expect(vm.parentPreview?.snippet == "edited parent")
+    }
+
+    @Test func contentChangedForOwnIDStillUpdatesOwnContentWithParentSubscribed() async {
+        // Guards against the parent-content fix accidentally routing the
+        // child's own contentChanged event through the parent handler (or vice
+        // versa): both must keep working independently.
+        let service = FakeCommentsService()
+        service.numberOfRepliesResult = .success(0)
+        service.fetchCommentResultsByID = [
+            1: .success(makeDetail(id: 1, parent: 5, status: .approved, editContext: true)),
+            5: .success(makeDetail(id: 5, status: .approved))
+        ]
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        let parentPreviewBeforeEvent = vm.parentPreview
+
+        coordinator.events.send(.contentChanged(id: vm.commentID, contentHTML: "<p>edited</p>", contentRaw: "edited"))
+
+        guard case .loaded(let detail) = vm.content else {
+            Issue.record("Expected loaded content")
+            return
+        }
+        #expect(detail.contentHTML == "<p>edited</p>")
+        #expect(vm.parentPreview == parentPreviewBeforeEvent)
+    }
+
+    @Test func topLevelCommentHasNoParentSubscriptionAndDoesNotCrash() async {
+        // parent: 0 in makeDetail means no parentID (top-level comment).
+        let service = FakeCommentsService()
+        service.numberOfRepliesResult = .success(0)
+        service.fetchCommentResultsByID = [1: .success(makeDetail(id: 1, status: .approved))]
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        #expect(vm.parentPreview == nil)
+
+        // No parent subscription should exist; broadcasting a contentChanged
+        // for some other id must not affect (or crash) this screen.
+        coordinator.events.send(.contentChanged(id: 999, contentHTML: "<p>irrelevant</p>", contentRaw: "irrelevant"))
 
         #expect(vm.parentPreview == nil)
     }
