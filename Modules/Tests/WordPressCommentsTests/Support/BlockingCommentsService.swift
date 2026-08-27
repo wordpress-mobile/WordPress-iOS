@@ -21,6 +21,9 @@ final class BlockingCommentsService: CommentsServiceProtocol {
 
     private var createReplyContinuations: [CheckedContinuation<CommentDetail, Error>] = []
     private(set) var createReplyInvocations: [(postID: Int64, parentID: Int64, content: String)] = []
+    /// When set, `createReply` returns immediately instead of blocking, for
+    /// tests that only need the call's timing relative to a blocked `setStatus`.
+    var createReplyResult: Result<CommentDetail, Error>?
 
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         callCount += 1
@@ -81,6 +84,7 @@ final class BlockingCommentsService: CommentsServiceProtocol {
 
     func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail {
         createReplyInvocations.append((postID, parentID, content))
+        if let createReplyResult { return try createReplyResult.get() }
         return try await withCheckedThrowingContinuation { createReplyContinuations.append($0) }
     }
 
