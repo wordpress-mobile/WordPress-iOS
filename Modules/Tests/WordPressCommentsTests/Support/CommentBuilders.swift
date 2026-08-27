@@ -10,7 +10,8 @@ func makeComment(
     content: String = "<p>Hello <strong>world</strong></p>",
     post: Int64 = 10,
     status: CommentStatus = .approved,
-    date: Date = Date(timeIntervalSince1970: 1_700_000_000)
+    date: Date = Date(timeIntervalSince1970: 1_700_000_000),
+    link: String? = nil
 ) -> CommentWithViewContext {
     CommentWithViewContext(
         id: id,
@@ -20,7 +21,7 @@ func makeComment(
         content: CommentContentWithViewContext(rendered: content),
         date: "2023-11-14T22:13:20",
         dateGmt: date,
-        link: "https://example.com/?p=\(post)#comment-\(id)",
+        link: link ?? "https://example.com/?p=\(post)#comment-\(id)",
         parent: 0,
         post: post,
         status: status,

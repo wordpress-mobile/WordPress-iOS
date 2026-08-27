@@ -6,8 +6,9 @@ import SwiftUI
 /// offers to keep or discard its draft; an edit only offers to discard).
 struct CommentComposerView: View {
     @ObservedObject var viewModel: CommentComposerViewModel
-    let onFinished: (CommentComposerViewModel.Outcome) -> Void
-    let onDismiss: () -> Void
+    /// Called once when the sheet should close: with the outcome after a
+    /// successful send, nil when the user cancelled.
+    let onClose: (CommentComposerViewModel.Outcome?) -> Void
 
     @FocusState private var editorFocused: Bool
     @State private var isCancelConfirmationPresented = false
@@ -99,7 +100,7 @@ struct CommentComposerView: View {
                 Button(viewModel.sendButtonTitle) {
                     Task {
                         if let outcome = await viewModel.send() {
-                            onFinished(outcome)
+                            onClose(outcome)
                         }
                     }
                 }
@@ -116,21 +117,21 @@ struct CommentComposerView: View {
         case .reply:
             Button(Strings.composerSaveDraft) {
                 viewModel.saveDraft()
-                onDismiss()
+                onClose(nil)
             }
             Button(Strings.composerDeleteDraft, role: .destructive) {
                 viewModel.deleteDraft()
-                onDismiss()
+                onClose(nil)
             }
         case .edit:
-            Button(Strings.composerDiscardChanges, role: .destructive) { onDismiss() }
+            Button(Strings.composerDiscardChanges, role: .destructive) { onClose(nil) }
         }
         Button(Strings.composerKeepEditing, role: .cancel) {}
     }
 
     private func handleCancel() {
         guard viewModel.isDirty else {
-            onDismiss()
+            onClose(nil)
             return
         }
         isCancelConfirmationPresented = true
@@ -145,7 +146,7 @@ struct CommentComposerView: View {
         coordinator: coordinator,
         draftStore: PreviewCommentDraftStore()
     )
-    return CommentComposerView(viewModel: viewModel, onFinished: { _ in }, onDismiss: {})
+    return CommentComposerView(viewModel: viewModel, onClose: { _ in })
 }
 
 #Preview("Edit") {
@@ -155,6 +156,6 @@ struct CommentComposerView: View {
         coordinator: coordinator,
         draftStore: PreviewCommentDraftStore()
     )
-    return CommentComposerView(viewModel: viewModel, onFinished: { _ in }, onDismiss: {})
+    return CommentComposerView(viewModel: viewModel, onClose: { _ in })
 }
 #endif

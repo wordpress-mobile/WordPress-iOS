@@ -92,7 +92,8 @@ extension CommentListItem {
             postID: 1,
             snippet: "Really appreciate the detailed writeup, this is exactly the kind of review I was hoping to find.",
             date: Date(timeIntervalSince1970: 1_700_000_000),
-            status: status
+            status: status,
+            link: nil
         )
     }
 }
