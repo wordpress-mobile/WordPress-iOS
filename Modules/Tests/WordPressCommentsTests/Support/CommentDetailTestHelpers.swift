@@ -23,6 +23,15 @@ func makeDetail(
     return CommentDetail(comment: .detailBuilder(id: id, post: post, parent: parent, status: status))
 }
 
+/// A detail whose content differs from `makeDetail`'s defaults, standing in for
+/// the server's response to an edit.
+func makeEditedDetail(id: Int64 = 1, contentHTML: String, contentRaw: String?) -> CommentDetail {
+    var detail = makeDetail(id: id)
+    detail.contentHTML = contentHTML
+    detail.contentRaw = contentRaw
+    return detail
+}
+
 @MainActor
 func makeVM(
     commentID: Int64 = 1,
@@ -64,7 +73,7 @@ func makeResolvedCapabilities(canModerate: Bool) async -> CommentsCapabilityReso
 @MainActor
 func makeLoadedVM(
     status: CommentStatus = .hold,
-    coordinator: CommentsModerationCoordinator,
+    coordinator: CommentsModerationCoordinator? = nil,
     noticePresenter: (any NoticePresenting)? = nil
 ) async -> CommentDetailViewModel {
     let service = FakeCommentsService()

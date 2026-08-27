@@ -146,6 +146,15 @@ final class CommentsListViewModel: ObservableObject {
             // right away would cost one fetch per reply while the list is
             // hidden instead of one on return.
             markStale(reloadNow: false)
+        case .contentChanged(let id, let contentHTML, _):
+            if seenIDs.contains(id), let index = items.firstIndex(where: { $0.id == id }) {
+                items[index].snippet = CommentListItem.snippet(fromHTML: contentHTML)
+            }
+            // Invalidate in-flight fetches even when the row is absent: a
+            // page-one or load-more fetch captured before this edit could
+            // still deliver the row with its pre-edit snippet, and would
+            // otherwise pass its generation guard and land the stale data.
+            invalidateInFlightFetches()
         }
     }
 

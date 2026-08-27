@@ -18,7 +18,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     let authorName: String
     let avatarURL: URL?
     let postID: Int64
-    let snippet: String
+    var snippet: String
     let date: Date
     var status: Status
 
