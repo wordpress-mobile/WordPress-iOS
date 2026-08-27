@@ -12,10 +12,13 @@ func makeDetail(
     parent: Int64 = 0,
     post: Int64 = 10,
     status: CommentStatus = .approved,
-    editContext: Bool = false
+    editContext: Bool = false,
+    content: String = "raw"
 ) -> CommentDetail {
     if editContext {
-        return CommentDetail(comment: .editDetailBuilder(id: id, post: post, parent: parent, status: status))
+        return CommentDetail(
+            comment: .editDetailBuilder(id: id, content: content, post: post, parent: parent, status: status)
+        )
     }
     return CommentDetail(comment: .detailBuilder(id: id, post: post, parent: parent, status: status))
 }
