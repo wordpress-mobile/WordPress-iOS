@@ -96,4 +96,70 @@ enum Strings {
         value: "Pending",
         comment: "Accessibility value announced for a comment row that is awaiting moderation"
     )
+
+    static let statusApproved = NSLocalizedString(
+        "commentDetail.status.approved",
+        value: "Approved",
+        comment: "Status pill label on the comment detail screen for an approved comment"
+    )
+
+    static let statusPending = NSLocalizedString(
+        "commentDetail.status.pending",
+        value: "Pending",
+        comment: "Status pill label on the comment detail screen for a comment awaiting moderation"
+    )
+
+    static let statusSpam = NSLocalizedString(
+        "commentDetail.status.spam",
+        value: "Spam",
+        comment: "Status pill label on the comment detail screen for a comment marked as spam"
+    )
+
+    static let statusTrash = NSLocalizedString(
+        "commentDetail.status.trash",
+        value: "Trash",
+        comment: "Status pill label on the comment detail screen for a trashed comment"
+    )
+
+    static let authorHeaderOnPost = NSLocalizedString(
+        "commentDetail.header.onPost",
+        value: "on %@",
+        comment: "Secondary line under the comment author. %@ is the post title the comment was left on."
+    )
+
+    static let infoDateLabel = NSLocalizedString(
+        "commentDetail.info.date",
+        value: "Date",
+        comment: "Label for the full comment date row in the author info sheet"
+    )
+
+    static let infoWebsiteLabel = NSLocalizedString(
+        "commentDetail.info.website",
+        value: "Website",
+        comment: "Label for the author website row in the author info sheet"
+    )
+
+    static let infoEmailLabel = NSLocalizedString(
+        "commentDetail.info.email",
+        value: "Email",
+        comment: "Label for the author email row in the author info sheet"
+    )
+
+    static let infoIPLabel = NSLocalizedString(
+        "commentDetail.info.ipAddress",
+        value: "IP address",
+        comment: "Label for the author IP address row in the author info sheet"
+    )
+
+    static let inReplyToFormat = NSLocalizedString(
+        "commentDetail.parent.inReplyTo",
+        value: "In reply to %@",
+        comment: "Prefix of the parent-comment strip. %@ is the parent comment's author name."
+    )
+
+    static let detailErrorTitle = NSLocalizedString(
+        "commentDetail.error.title",
+        value: "Couldn't load this comment",
+        comment: "Error state title when the comment detail fails to load"
+    )
 }
