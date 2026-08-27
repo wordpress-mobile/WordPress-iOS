@@ -712,7 +712,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Replies
 - (void)replyToPost:(ReaderPost *)post
             content:(NSString *)content
-            success:(void (^)(void))success
+            success:(void (^)(Comment * _Nullable comment))success
             failure:(void (^)(NSError *error))failure
 {
     // Create and optimistically save a comment, based on the current wpcom acct
@@ -737,7 +737,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 remoteComment.content = [self sanitizeCommentContent:remoteComment.content isPrivateSite:isPrivateSite];
 
                 [self updateHierarchicalComment:comment withRemoteComment:remoteComment];
-            } completion:success onQueue:dispatch_get_main_queue()];
+            } completion:^{
+                if (success) {
+                    success([self.coreDataStack.mainContext existingObjectWithID:commentID error:nil]);
+                }
+            } onQueue:dispatch_get_main_queue()];
         };
 
         void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -765,7 +769,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
                                   post:(ReaderPost *)post
                                  content:(NSString *)content
-                                 success:(void (^)(void))success
+                                 success:(void (^)(Comment * _Nullable comment))success
                                  failure:(void (^)(NSError *error))failure
 {
     // Create and optimistically save a comment, based on the current wpcom acct
@@ -791,7 +795,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 remoteComment.content = [self sanitizeCommentContent:remoteComment.content isPrivateSite:isPrivateSite];
 
                 [self updateHierarchicalComment:comment withRemoteComment:remoteComment];
-            } completion:success onQueue:dispatch_get_main_queue()];
+            } completion:^{
+                if (success) {
+                    success([self.coreDataStack.mainContext existingObjectWithID:commentObjectID error:nil]);
+                }
+            } onQueue:dispatch_get_main_queue()];
         };
 
         void (^failureBlock)(NSError *error) = ^void(NSError *error) {

@@ -64,15 +64,20 @@ final class CommentCreateViewController: UIViewController {
         Task { @MainActor in
             do {
                 let text = await editorVC.text
-                try await viewModel.save(content: text)
+                let isPendingModeration = try await viewModel.save(content: text)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
-                presentingViewController?.dismiss(animated: true) {
-                        Notice(title: Strings.commentHeldForModeration,
-                               style: InAppUpdateNoticeStyle(
+                presentingViewController?
+                    .dismiss(animated: true) {
+                        guard isPendingModeration else { return }
+                        Notice(
+                            title: Strings.commentHeldForModeration,
+                            style: InAppUpdateNoticeStyle(
                                 icon: UIImage(systemName: "checkmark.seal.fill"),
-                                iconColor: UIAppColor.success, title: Strings.commentHeldForModeration
-                            ))
+                                iconColor: UIAppColor.success,
+                                title: Strings.commentHeldForModeration
+                            )
+                        )
                         .post()
                     }
             } catch {
@@ -112,9 +117,10 @@ final class CommentCreateViewController: UIViewController {
         if viewModel.canSaveDraft {
             alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { [weak self] _ in
                 self?.viewModel.saveDraft(content)
-                self?.presentingViewController?.dismiss(animated: true) {
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                }
+                self?.presentingViewController?
+                    .dismiss(animated: true) {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
             }
         }
         alert.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem

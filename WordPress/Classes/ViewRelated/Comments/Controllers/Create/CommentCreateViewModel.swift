@@ -23,8 +23,10 @@ final class CommentCreateViewModel {
 
     /// - note: It's a temporary solution until the respective save logic
     /// can be moved from the view controllers.
-    private var _save: (String) async throws -> Void = { _ in
+    /// - returns: `true` if the comment is pending moderation (not immediately approved).
+    private var _save: (String) async throws -> Bool = { _ in
         wpAssertionFailure("Not implemented")
+        return false
     }
 
     var isGutenbergEnabled: Bool {
@@ -49,12 +51,12 @@ final class CommentCreateViewModel {
         }
 
         self._save = { [weak self] in
-            try await self?.sendComment($0, post: post, replyingTo: comment)
+            try await self?.sendComment($0, post: post, replyingTo: comment) ?? false
         }
     }
 
     /// Create a reply to the given comment (from notifications)
-    init(replyingTo comment: Comment, save: @escaping (String) async throws -> Void) {
+    init(replyingTo comment: Comment, save: @escaping (String) async throws -> Bool) {
         let siteID = comment.associatedSiteID ?? 0
 
         self.siteID = siteID
@@ -72,27 +74,37 @@ final class CommentCreateViewModel {
         Strings.leaveComment
     }
 
-    func save(content: String) async throws {
-        try await _save(content)
+    /// - returns: `true` if the comment is pending moderation (not immediately approved).
+    func save(content: String) async throws -> Bool {
+        let isPendingModeration = try await _save(content)
         deleteDraft()
+        return isPendingModeration
     }
 
     // MARK: Reader
 
-    private func sendComment(_ content: String, post: ReaderPost, replyingTo comment: Comment? = nil) async throws {
+    private func sendComment(
+        _ content: String,
+        post: ReaderPost,
+        replyingTo comment: Comment? = nil
+    ) async throws -> Bool {
         try await withUnsafeThrowingContinuation { [weak self] continuation in
             let service = CommentService(coreDataStack: ContextManager.shared)
             if let comment {
-                service.replyToHierarchicalComment(withID: comment.commentID as NSNumber, post: post, content: content) {
+                service.replyToHierarchicalComment(
+                    withID: comment.commentID as NSNumber,
+                    post: post,
+                    content: content
+                ) { newComment in
                     self?.trackReply(isReplyingToComment: true, post: post)
-                    continuation.resume()
+                    continuation.resume(returning: newComment?.isApproved() == false)
                 } failure: {
                     continuation.resume(throwing: $0 ?? URLError(.unknown))
                 }
             } else {
-                service.reply(to: post, content: content) {
+                service.reply(to: post, content: content) { newComment in
                     self?.trackReply(isReplyingToComment: true, post: post)
-                    continuation.resume()
+                    continuation.resume(returning: newComment?.isApproved() == false)
                 } failure: {
                     continuation.resume(throwing: $0 ?? URLError(.unknown))
                 }

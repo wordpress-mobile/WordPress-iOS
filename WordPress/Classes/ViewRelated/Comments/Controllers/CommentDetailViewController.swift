@@ -993,53 +993,62 @@ private extension CommentDetailViewController {
 
     @objc func buttonAddCommentTapped() {
         let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
-            try await self?.createReply(content: $0)
+            try await self?.createReply(content: $0) ?? false
         }
         let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }
 
+    /// - returns: `true` if the comment is pending moderation (not immediately approved).
     @MainActor
-    func createReply(content: String) async throws {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
-                                CommentAnalytics.trackCommentRepliedTo(comment: comment)
+    func createReply(content: String) async throws -> Bool {
+        isNotificationComment
+            ? WPAppAnalytics.track(.notificationsCommentRepliedTo)
+            : CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
         // If there is no Blog, try with the Post.
         guard comment.blog != nil else {
-            try await createPostCommentReply(content: content)
-            return
+            return try await createPostCommentReply(content: content)
         }
 
-        try await withUnsafeThrowingContinuation { continuation in
+        return try await withUnsafeThrowingContinuation { continuation in
             commentService.createReply(for: comment, content: content) { reply in
-                self.commentService.uploadComment(reply, success: { [weak self] in
-                    self?.refreshCommentReplyIfNeeded()
-                    continuation.resume()
-                }, failure: { error in
-                    DDLogError("Failed uploading comment reply: \(String(describing: error))")
-                    continuation.resume(throwing: error ?? URLError(.unknown))
-                })
+                self.commentService.uploadComment(
+                    reply,
+                    success: { [weak self] in
+                        self?.refreshCommentReplyIfNeeded()
+                        continuation.resume(returning: reply.isApproved() == false)
+                    },
+                    failure: { error in
+                        DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                        continuation.resume(throwing: error ?? URLError(.unknown))
+                    }
+                )
             }
         }
     }
 
+    /// - returns: `true` if the comment is pending moderation (not immediately approved).
     @MainActor
-    func createPostCommentReply(content: String) async throws {
+    func createPostCommentReply(content: String) async throws -> Bool {
         guard let post = comment.post as? ReaderPost else {
-            return
+            return false
         }
-        try await withUnsafeThrowingContinuation { continuation in
-            commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
-                                                      post: post,
-                                                      content: content,
-                                                      success: { [weak self] in
-                self?.refreshCommentReplyIfNeeded()
-                continuation.resume()
-            }, failure: { error in
-                DDLogError("Failed creating post comment reply: \(String(describing: error))")
-                continuation.resume(throwing: error ?? URLError(.unknown))
-            })
+        return try await withUnsafeThrowingContinuation { continuation in
+            commentService.replyToHierarchicalComment(
+                withID: NSNumber(value: comment.commentID),
+                post: post,
+                content: content,
+                success: { [weak self] newComment in
+                    self?.refreshCommentReplyIfNeeded()
+                    continuation.resume(returning: newComment?.isApproved() == false)
+                },
+                failure: { error in
+                    DDLogError("Failed creating post comment reply: \(String(describing: error))")
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                }
+            )
         }
     }
 }
