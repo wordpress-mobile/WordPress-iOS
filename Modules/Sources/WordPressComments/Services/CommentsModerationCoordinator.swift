@@ -26,6 +26,15 @@ enum CommentModerationAction: Hashable, Sendable {
     }
 }
 
+/// The outcome of a successful `reply(to:content:)` call.
+struct ReplyOutcome: Equatable, Sendable {
+    let replyStatus: CommentListItem.Status
+    /// True when create returned comment_duplicate: the content already
+    /// existed server-side (an earlier send landed), so the composer words
+    /// its notice differently.
+    let alreadyPosted: Bool
+}
+
 /// Owns every comment mutation for the feature. All state changes flow through
 /// here so the coordinator can enforce two ordering rules the design requires:
 ///   1. One mutation in flight per comment.
@@ -67,6 +76,56 @@ final class CommentsModerationCoordinator {
         await inFlight[id]?.value
     }
 
+    /// Creates a reply to `parent` and, for a pending parent, approves it
+    /// afterwards, all inside one owning task holding the parent's in-flight
+    /// slot. Pessimistic: nothing is emitted until the create outcome is
+    /// known; a failure throws back to the composer.
+    func reply(to parent: CommentDetail, content: String) async throws -> ReplyOutcome {
+        try await holdingSlot(for: parent.id, waitingForSlot: true) { [weak self] in
+            guard let self else { throw CancellationError() }
+            let created: CommentDetail?
+            do {
+                created = try await self.service.createReply(
+                    postID: parent.postID,
+                    parentID: parent.id,
+                    content: content
+                )
+            } catch {
+                // comment_duplicate proves this author already has this exact
+                // content on this post (core never accepts it twice), so an
+                // earlier send landed (timeout-after-commit). Continue the
+                // chain rather than failing, or the promised parent approval
+                // would be silently dropped on the retry path.
+                guard (error as? WpApiError)?.wpErrorCode == .CommentDuplicate else { throw error }
+                created = nil
+            }
+            self.tracker?.track(.repliedTo(commentID: parent.id, postID: parent.postID))
+            // The composer is only reachable by moderators, so a pending
+            // parent always means "approve on send" (no separate consent
+            // step). The approve runs pessimistically: its statusChanged
+            // event is emitted only after the request succeeds, so there is no
+            // optimistic emit to undo. It's possible the reply lands but the
+            // parent approval fails; the parent then remains Pending in list
+            // and detail, which is the true server state. We consider that an
+            // edge case and accept the risk; the user can approve manually.
+            if parent.status == .pending {
+                try? await self.runModeration(.approve, on: parent)
+            }
+            // Reply is moderator-gated, so core auto-approves our replies; a
+            // duplicate (unknown landed status) assumes approved on the same
+            // basis. A plugin forcing moderation is corrected by the next
+            // list refetch (the event only marks tabs stale).
+            //
+            // Emitted after the approve so its statusChanged lands first: a
+            // loaded list tab then updates the parent row in place with
+            // nothing in flight, instead of invalidating the page-one fetch
+            // that replyCreated's stale mark would already have started.
+            let replyStatus = created?.status ?? .approved
+            self.events.send(.replyCreated(parentID: parent.id, replyStatus: replyStatus))
+            return ReplyOutcome(replyStatus: replyStatus, alreadyPosted: created == nil)
+        }
+    }
+
     /// Broadcasts a status change the detail screen observed on load (its seed
     /// status disagreed with the fetched truth) without running a mutation, so
     /// loaded list tabs reconcile the corrected status in place.
@@ -90,10 +149,20 @@ final class CommentsModerationCoordinator {
     /// slot, so the mutation outlives a popped screen while the caller can
     /// still await its outcome. The slot claim happens synchronously before any
     /// suspension, so no second claimant can interleave.
+    ///
+    /// With `waitingForSlot`, a busy slot is awaited instead of being the
+    /// caller's problem. The check repeats after every wait rather than
+    /// awaiting once: two callers can both be suspended on the same in-flight
+    /// task and both resume once it completes. Looping lets only the first
+    /// claimant proceed; the second waits on that new claim instead.
     private func holdingSlot<T: Sendable>(
         for id: Int64,
+        waitingForSlot: Bool = false,
         _ body: @escaping @MainActor () async throws -> T
     ) async throws -> T {
+        while waitingForSlot, isMutating(id: id) {
+            await waitForPendingMutation(id: id)
+        }
         let chain = Task { try await body() }
         let slot = Task { [weak self] in
             _ = try? await chain.value
