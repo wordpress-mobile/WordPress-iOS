@@ -42,16 +42,26 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
 
     init(comment: CommentWithViewContext) {
         id = comment.id
-        authorName = comment.authorName.isEmpty ? Strings.anonymousAuthor : comment.authorName
-        // The avatar subscript yields a double optional (missing key vs. a
-        // stored nil); flatten it before building the URL.
-        avatarURL = comment.authorAvatarUrls[.size96].flatMap { $0 }.flatMap(URL.init(string:))
+        authorName = comment.authorName.nonEmptyString() ?? Strings.anonymousAuthor
+        avatarURL = comment.authorAvatarUrls.avatarURL
         postID = comment.post
-        snippet = comment.content.rendered
-            .makePlainText()
-            .replacingOccurrences(of: "\n", with: " ")
+        snippet = Self.snippet(fromHTML: comment.content.rendered)
         date = comment.dateGmt
         status = Status(comment.status)
+    }
+
+
+    /// Single-line plain-text preview of comment HTML.
+    static func snippet(fromHTML html: String) -> String {
+        html.makePlainText().replacingOccurrences(of: "\n", with: " ")
+    }
+}
+
+extension Dictionary where Key == UserAvatarSize, Value == String? {
+    /// The 96pt avatar URL. The subscript yields a double optional (missing
+    /// key vs. a stored nil); flatten it before building the URL.
+    var avatarURL: URL? {
+        self[.size96].flatMap { $0 }.flatMap(URL.init(string:))
     }
 }
 
