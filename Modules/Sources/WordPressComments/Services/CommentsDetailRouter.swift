@@ -14,6 +14,7 @@ final class CommentsDetailRouter {
     /// while the list loads and later screens read it synchronously.
     private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
+    private let draftStore: any CommentDraftStoring
     private let titleResolver: PostTitleResolver
     private let tracker: (any CommentsTracker)?
     private let noticePresenter: any NoticePresenting
@@ -23,6 +24,7 @@ final class CommentsDetailRouter {
         service: any CommentsServiceProtocol,
         capabilities: any CommentsCapabilitiesProtocol,
         coordinator: CommentsModerationCoordinator,
+        draftStore: any CommentDraftStoring,
         titleResolver: PostTitleResolver,
         tracker: (any CommentsTracker)?,
         noticePresenter: any NoticePresenting,
@@ -31,6 +33,7 @@ final class CommentsDetailRouter {
         self.service = service
         self.capabilities = CommentsCapabilityResolver(capabilities: capabilities)
         self.coordinator = coordinator
+        self.draftStore = draftStore
         self.titleResolver = titleResolver
         self.tracker = tracker
         self.noticePresenter = noticePresenter
@@ -48,6 +51,7 @@ final class CommentsDetailRouter {
             service: service,
             capabilities: capabilities,
             coordinator: coordinator,
+            draftStore: draftStore,
             titleResolver: titleResolver,
             tracker: tracker,
             noticePresenter: noticePresenter

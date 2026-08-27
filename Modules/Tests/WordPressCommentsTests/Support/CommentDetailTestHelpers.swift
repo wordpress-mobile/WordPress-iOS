@@ -31,6 +31,7 @@ func makeVM(
     capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities(),
     resolver: CommentsCapabilityResolver? = nil,
     coordinator: CommentsModerationCoordinator? = nil,
+    draftStore: any CommentDraftStoring = FakeCommentDraftStore(),
     tracker: (any CommentsTracker)? = nil,
     noticePresenter: (any NoticePresenting)? = nil
 ) -> CommentDetailViewModel {
@@ -40,6 +41,7 @@ func makeVM(
         service: service,
         capabilities: resolver ?? CommentsCapabilityResolver(capabilities: capabilities),
         coordinator: coordinator ?? CommentsModerationCoordinator(service: FakeCommentsService()),
+        draftStore: draftStore,
         titleResolver: makeResolver(),
         tracker: tracker,
         noticePresenter: noticePresenter
