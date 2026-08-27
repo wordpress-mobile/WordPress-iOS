@@ -22,6 +22,8 @@ struct CommentsTrackerAdapter: CommentsTracker {
             case .spammed(let c, let p): (.commentSpammed, c, p)
             case .trashed(let c, let p): (.commentTrashed, c, p)
             case .repliedTo(let c, let p): (.commentRepliedTo, c, p)
+            case .editorOpened(let c, let p): (.commentEditorOpened, c, p)
+            case .edited(let c, let p): (.commentEdited, c, p)
             }
         WPAnalytics.track(
             analyticsEvent,

@@ -414,6 +414,150 @@ struct CommentsModerationCoordinatorTests {
         #expect(service.createReplyInvocations.count == 1)
     }
 
+    // MARK: - Edit content
+
+    @Test func editContentEmitsContentChangedAndReturnsDetail() async throws {
+        let service = FakeCommentsService()
+        service.updateContentResult = .success(makeEditedDetail(id: 1, contentHTML: "<p>x</p>", contentRaw: "x"))
+        let spy = SpyCommentsTracker()
+        let coordinator = CommentsModerationCoordinator(service: service, tracker: spy)
+        let recorder = EventRecorder(coordinator)
+        let comment = makeDetail(id: 1, status: .approved)
+
+        let detail = try await coordinator.editContent(on: comment, newContent: "x")
+
+        #expect(detail.contentHTML == "<p>x</p>")
+        #expect(detail.contentRaw == "x")
+        #expect(recorder.events == [.contentChanged(id: 1, contentHTML: "<p>x</p>", contentRaw: "x")])
+        #expect(spy.trackedEvents == [.edited(commentID: 1, postID: 10)])
+        #expect(!coordinator.isMutating(id: 1))
+    }
+
+    @Test func editContentFailureThrowsWithoutEventOrReconcile() async {
+        let service = FakeCommentsService()
+        service.updateContentResult = .failure(FakeServiceError())
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let comment = makeDetail(id: 1, status: .approved)
+
+        await #expect(throws: (any Error).self) {
+            try await coordinator.editContent(on: comment, newContent: "x")
+        }
+
+        #expect(recorder.events.isEmpty)
+        // No reconcile: a failed edit is last-writer-wins, not refetched.
+        #expect(service.fetchStatusInvocations.isEmpty)
+    }
+
+    @Test func editContentEmitsStatusCorrectionWhenServerStatusDiffers() async throws {
+        let service = FakeCommentsService()
+        // A concurrent moderator (or plugin) marked the comment as spam while
+        // the editor was open; the edit response carries that landed status.
+        var edited = makeEditedDetail(id: 1, contentHTML: "<p>x</p>", contentRaw: "x")
+        edited.status = .spam
+        service.updateContentResult = .success(edited)
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let comment = makeDetail(id: 1, status: .approved)
+
+        let detail = try await coordinator.editContent(on: comment, newContent: "x")
+
+        #expect(detail.status == .spam)
+        #expect(
+            recorder.events == [
+                .contentChanged(id: 1, contentHTML: "<p>x</p>", contentRaw: "x"),
+                .statusChanged(id: 1, to: .spam)
+            ]
+        )
+    }
+
+    @Test func editContentEmitsOnlyContentChangedWhenServerStatusMatches() async throws {
+        let service = FakeCommentsService()
+        service.updateContentResult = .success(makeEditedDetail(id: 1, contentHTML: "<p>x</p>", contentRaw: "x"))
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let comment = makeDetail(id: 1, status: .approved)
+
+        _ = try await coordinator.editContent(on: comment, newContent: "x")
+
+        #expect(recorder.events == [.contentChanged(id: 1, contentHTML: "<p>x</p>", contentRaw: "x")])
+    }
+
+    @Test func editSerializesWithStatusMutations() async throws {
+        let service = BlockingCommentsService()
+        service.updateContentResult = .success(makeEditedDetail(id: 5, contentHTML: "<p>y</p>", contentRaw: "y"))
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let comment = makeDetail(id: 5, status: .approved)
+
+        let spam = Task { try? await coordinator.perform(.spam, on: comment) }
+        await waitUntil { !service.setStatusInvocations.isEmpty }
+
+        async let editOutcome = coordinator.editContent(on: comment, newContent: "y")
+        await Task.yield()
+        #expect(service.updateContentInvocations.isEmpty)
+
+        service.resolveSetStatus(callIndex: 0, with: makeDetail(id: 5, status: .spam))
+        let detail = try await editOutcome
+        _ = await spam.value
+
+        #expect(detail.contentHTML == "<p>y</p>")
+        #expect(service.updateContentInvocations.count == 1)
+    }
+
+    // Regression test for the atomic-slot-claim fix: two callers awaiting the
+    // SAME in-flight mutation must not both resume and claim the slot. Three
+    // overlapping `editContent` calls on one comment expose this precisely,
+    // because with only two calls the single-waiter case behaves identically
+    // whether or not the claim is atomic.
+    @Test func secondAndThirdEditsWaitForSlotClaimAtomically() async throws {
+        let service = BlockingCommentsService()
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let comment = makeDetail(id: 7, status: .approved)
+
+        async let first = coordinator.editContent(on: comment, newContent: "one")
+        await waitUntil { !service.updateContentInvocations.isEmpty }
+
+        async let second = coordinator.editContent(on: comment, newContent: "two")
+        async let third = coordinator.editContent(on: comment, newContent: "three")
+        // Let both late callers reach their re-checking wait loop. Neither can
+        // have claimed the slot yet, so the invocation count must still be 1.
+        for _ in 0..<5 { await Task.yield() }
+        #expect(service.updateContentInvocations.count == 1)
+
+        service.resolveUpdateContent(
+            callIndex: 0,
+            with: makeEditedDetail(id: 7, contentHTML: "<p>one</p>", contentRaw: "one")
+        )
+
+        // Exactly one of the two waiters claims the slot next. Under the bug,
+        // both would resume and claim, jumping straight to 3; the fix must
+        // land on 2 and hold there until that second mutation settles.
+        await waitUntil { service.updateContentInvocations.count >= 2 }
+        for _ in 0..<5 { await Task.yield() }
+        #expect(service.updateContentInvocations.count == 2)
+
+        service.resolveUpdateContent(
+            callIndex: 1,
+            with: makeEditedDetail(id: 7, contentHTML: "<p>two</p>", contentRaw: "two")
+        )
+
+        await waitUntil { service.updateContentInvocations.count >= 3 }
+        service.resolveUpdateContent(
+            callIndex: 2,
+            with: makeEditedDetail(id: 7, contentHTML: "<p>three</p>", contentRaw: "three")
+        )
+
+        let firstResult = try await first
+        let secondResult = try await second
+        let thirdResult = try await third
+
+        #expect(
+            Set([firstResult.contentHTML, secondResult.contentHTML, thirdResult.contentHTML]) == [
+                "<p>one</p>", "<p>two</p>", "<p>three</p>"
+            ]
+        )
+    }
+
     @Test func reentryFetchAwaitsReplyChain() async throws {
         let service = BlockingCommentsService()
         let coordinator = CommentsModerationCoordinator(service: service)
