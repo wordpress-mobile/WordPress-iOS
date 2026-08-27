@@ -268,6 +268,16 @@ final class CommentDetailViewModel: ObservableObject {
             // The comment is gone: a terminal state that turns the toolbar off
             // and dismisses the screen.
             isDeleted = true
+        case .replyCreated:
+            // The reply is a different comment; this screen's own status is
+            // corrected by the approve step's statusChanged event when
+            // relevant. Not a pure no-op, though: the cached reply count feeds
+            // `trashConfirmation`, so it must be bumped when known, or a parent
+            // that just gained its first reply could be trashed with no
+            // confirmation.
+            if let count = numberOfReplies {
+                numberOfReplies = count + 1
+            }
         }
     }
 }
