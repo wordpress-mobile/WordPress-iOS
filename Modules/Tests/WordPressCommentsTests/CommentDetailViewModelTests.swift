@@ -253,6 +253,23 @@ struct CommentDetailViewModelTests {
         #expect(vm.header?.status == .spam)
     }
 
+    @Test func replyCreatedEventLeavesDetailUntouched() async {
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        let contentBeforeEvent = vm.content
+        let headerBeforeEvent = vm.header
+
+        coordinator.events.send(.replyCreated(parentID: vm.commentID, replyStatus: .approved))
+
+        #expect(vm.content == contentBeforeEvent)
+        #expect(vm.header == headerBeforeEvent)
+        #expect(vm.isTerminated == false)
+    }
+
     @Test func trashConfirmationVariants() async {
         // nil replies -> generic confirmation.
         let unknownService = FakeCommentsService()
@@ -302,6 +319,28 @@ struct CommentDetailViewModelTests {
 
         #expect(vm.isToolbarEnabled)
         #expect(vm.numberOfReplies == 3)
+        #expect(vm.trashConfirmation == .withReplies)
+    }
+
+    @Test func replyCreatedIncrementsKnownReplyCountAndUpdatesTrashConfirmation() async {
+        // Seed a zero known reply count via the load path's count fetch, so
+        // trashConfirmation starts at .none.
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        service.numberOfRepliesResult = .success(0)
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        #expect(vm.numberOfReplies == 0)
+        #expect(vm.trashConfirmation == .none)
+
+        // This screen's own comment just gained a reply: the cached count must
+        // be bumped, or a parent that just went from 0 to 1 replies could be
+        // trashed with no confirmation.
+        coordinator.events.send(.replyCreated(parentID: vm.commentID, replyStatus: .approved))
+
+        #expect(vm.numberOfReplies == 1)
         #expect(vm.trashConfirmation == .withReplies)
     }
 
