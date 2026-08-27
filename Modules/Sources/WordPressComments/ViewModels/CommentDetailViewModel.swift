@@ -49,6 +49,7 @@ final class CommentDetailViewModel: ObservableObject {
     /// spinner and gates the toolbar synchronously (the coordinator's
     /// `isMutating` only flips after the first suspension).
     @Published private(set) var pendingAction: CommentModerationAction?
+    @Published var composer: CommentComposerViewModel? // non-nil = the composer sheet is presented
     /// Set by a `.deleted` event (a confirmed delete), which turns the toolbar
     /// off and makes the view dismiss itself. Cleared by a successful
     /// authoritative fetch or a later status change proving the comment exists
@@ -91,6 +92,25 @@ final class CommentDetailViewModel: ObservableObject {
         actionableDetail != nil && pendingAction == nil
     }
 
+    /// Whether the Reply button renders. Reads the same seed-or-fetched status
+    /// the toolbar does, so the button appears as soon as the capability
+    /// resolves instead of after the whole load; `canReply` enables it.
+    var showsReply: Bool {
+        switch toolbarModel {
+        case .approved, .pending: true
+        case .inBin, .hidden: false
+        }
+    }
+
+    /// Reply is reachable only for an active (approved/pending) comment, and
+    /// only behind the moderation toolbar gate: the reply chain assumes a
+    /// moderator (core auto-approves the reply; a pending parent is approved
+    /// alongside it). Non-moderator reply is a follow-up that needs its own
+    /// capability check and a chain that doesn't assume auto-approval.
+    var canReply: Bool {
+        showsReply && isToolbarEnabled
+    }
+
     var trashConfirmation: TrashConfirmation {
         switch numberOfReplies {
         case .none: .generic
@@ -109,10 +129,33 @@ final class CommentDetailViewModel: ObservableObject {
         return loadedDetail
     }
 
+    /// Presents the composer in reply mode. A no-op unless `canReply` (which
+    /// already covers "no mutation in flight" and "no composer already
+    /// presented").
+    func replyTapped() {
+        guard canReply, composer == nil, let detail = loadedDetail else { return }
+        composer = CommentComposerViewModel(
+            mode: .reply(parent: detail),
+            coordinator: coordinator,
+            draftStore: draftStore,
+            tracker: tracker
+        )
+    }
+
+    /// Dismisses the composer sheet. A successful reply also posts its
+    /// notice.
+    func composerFinished(_ outcome: CommentComposerViewModel.Outcome) {
+        composer = nil
+        if case .replied(let replyNotice) = outcome {
+            noticePresenter?.present(title: replyNotice)
+        }
+    }
+
     private let seed: CommentListItem?
     private let service: any CommentsServiceProtocol
     private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
+    private let draftStore: any CommentDraftStoring
     private let titleResolver: PostTitleResolver
     /// Fires `.detailViewed` once per screen, on the first successful fetch.
     private let tracker: (any CommentsTracker)?
@@ -129,6 +172,7 @@ final class CommentDetailViewModel: ObservableObject {
         service: any CommentsServiceProtocol,
         capabilities: CommentsCapabilityResolver,
         coordinator: CommentsModerationCoordinator,
+        draftStore: any CommentDraftStoring,
         titleResolver: PostTitleResolver,
         tracker: (any CommentsTracker)? = nil,
         noticePresenter: (any NoticePresenting)? = nil
@@ -139,6 +183,7 @@ final class CommentDetailViewModel: ObservableObject {
         self.capabilities = capabilities
         canModerate = capabilities.canModerate
         self.coordinator = coordinator
+        self.draftStore = draftStore
         self.titleResolver = titleResolver
         self.tracker = tracker
         self.noticePresenter = noticePresenter

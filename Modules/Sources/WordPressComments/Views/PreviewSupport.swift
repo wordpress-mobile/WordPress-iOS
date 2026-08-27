@@ -34,4 +34,11 @@ final class PreviewCommentsService: CommentsServiceProtocol {
 struct PreviewCapabilities: CommentsCapabilitiesProtocol {
     func canModerateComments() async throws -> Bool { true }
 }
+
+@MainActor
+final class PreviewCommentDraftStore: CommentDraftStoring {
+    func loadDraft(commentID: Int64) -> String? { nil }
+    func saveDraft(_ text: String, commentID: Int64) {}
+    func deleteDraft(commentID: Int64) {}
+}
 #endif

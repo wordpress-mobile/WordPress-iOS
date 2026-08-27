@@ -114,6 +114,14 @@ final class CommentComposerViewModel: ObservableObject {
         draftStore.deleteDraft(commentID: parent.id)
     }
 
+    /// Runs when the sheet closes. The blank exits (Cancel, swipe-down) skip
+    /// the draft prompt, so a restored draft the user cleared is dropped here
+    /// instead of coming back on the next open.
+    func deleteDraftIfBlank() {
+        guard case .reply(let parent) = mode, trimmedText.isEmpty else { return }
+        draftStore.deleteDraft(commentID: parent.id)
+    }
+
     /// Words the post-send notice: a duplicate confirms an earlier send
     /// already landed, a pending status means the reply itself needs
     /// moderation, otherwise it posted straight away.

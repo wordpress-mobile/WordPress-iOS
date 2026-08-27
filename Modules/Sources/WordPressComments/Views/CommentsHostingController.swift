@@ -11,7 +11,8 @@ public enum CommentsHostingController {
         client: WordPressClient,
         makeContentRenderer: @escaping @MainActor () -> any CommentContentRendering,
         tracker: any CommentsTracker,
-        noticePresenter: any NoticePresenting
+        noticePresenter: any NoticePresenting,
+        draftStore: any CommentDraftStoring
     ) -> UIViewController {
         let service = CommentsService(client: client)
         let titleResolver = PostTitleResolver(fetcher: PostTitleResolver.liveFetcher(client: client))
@@ -24,6 +25,7 @@ public enum CommentsHostingController {
             service: service,
             capabilities: CommentsCapabilities(client: client),
             coordinator: coordinator,
+            draftStore: draftStore,
             titleResolver: titleResolver,
             tracker: tracker,
             noticePresenter: noticePresenter,

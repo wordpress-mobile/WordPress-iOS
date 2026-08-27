@@ -220,4 +220,20 @@ struct CommentComposerViewModelTests {
         #expect(store.deleted.contains(1))
     }
 
+    @Test func deleteDraftIfBlankDeletesOnlyWhenTextIsBlank() {
+        let store = FakeCommentDraftStore()
+        store.preloadDraft("draft", commentID: 1)
+        let vm = CommentComposerViewModel(
+            mode: .reply(parent: makeDetail(id: 1)),
+            coordinator: makeCoordinator(),
+            draftStore: store
+        )
+
+        vm.deleteDraftIfBlank()
+        #expect(store.deleted.isEmpty)
+
+        vm.text = " \n"
+        vm.deleteDraftIfBlank()
+        #expect(store.deleted == [1])
+    }
 }

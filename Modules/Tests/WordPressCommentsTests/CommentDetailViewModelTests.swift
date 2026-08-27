@@ -267,7 +267,7 @@ struct CommentDetailViewModelTests {
 
         #expect(vm.content == contentBeforeEvent)
         #expect(vm.header == headerBeforeEvent)
-        #expect(vm.isTerminated == false)
+        #expect(!vm.isDeleted)
     }
 
     @Test func trashConfirmationVariants() async {
@@ -439,7 +439,11 @@ struct CommentDetailViewModelTests {
         let noticePresenter = FakeNoticePresenter()
         let coordinatorService = BlockingCommentsService()
         let coordinator = CommentsModerationCoordinator(service: coordinatorService)
-        var vm: CommentDetailViewModel? = await makeLoadedVM(status: .hold, coordinator: coordinator, noticePresenter: noticePresenter)
+        var vm: CommentDetailViewModel? = await makeLoadedVM(
+            status: .hold,
+            coordinator: coordinator,
+            noticePresenter: noticePresenter
+        )
         vm!.perform(.approve)
         await waitUntil { !coordinatorService.setStatusInvocations.isEmpty }
 
@@ -451,5 +455,168 @@ struct CommentDetailViewModelTests {
         coordinatorService.failSetStatus(callIndex: 0, with: FakeServiceError())
         await waitUntil { !noticePresenter.presented.isEmpty }
         #expect(noticePresenter.presented == ["That action couldn't be completed. Please try again."])
+    }
+
+    // MARK: - Reply/edit composer gating and presentation
+
+    @Test func canReplyRequiresModerationAndActiveStatus() async {
+        func makeLoadedVM(status: CommentStatus) async -> CommentDetailViewModel {
+            let service = FakeCommentsService()
+            service.fetchCommentResult = .success(makeDetail(id: 1, status: status, editContext: true))
+            let vm = makeVM(service: service)
+            await vm.onAppear()
+            return vm
+        }
+
+        let approvedVM = await makeLoadedVM(status: .approved)
+        #expect(approvedVM.canReply == true)
+
+        let pendingVM = await makeLoadedVM(status: .hold)
+        #expect(pendingVM.canReply == true)
+
+        let spamVM = await makeLoadedVM(status: .spam)
+        #expect(spamVM.canReply == false)
+
+        let trashVM = await makeLoadedVM(status: .trash)
+        #expect(trashVM.canReply == false)
+
+        let otherVM = await makeLoadedVM(status: .custom("draft"))
+        #expect(otherVM.canReply == false)
+
+        // A demoted capability hides the toolbar (and so blocks reply)
+        // regardless of the loaded status.
+        let cannotModerateCapabilities = FakeCommentsCapabilities()
+        cannotModerateCapabilities.canModerate = false
+        let cannotModerateService = FakeCommentsService()
+        cannotModerateService.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: false))
+        let cannotModerateVM = makeVM(service: cannotModerateService, capabilities: cannotModerateCapabilities)
+        await cannotModerateVM.onAppear()
+        #expect(cannotModerateVM.canReply == false)
+
+        // Before the authoritative fetch lands (seed only), canReply is false.
+        let seed = makeItem(id: 1, status: .approved)
+        let unfetchedVM = makeVM(seed: seed, service: FakeCommentsService())
+        #expect(unfetchedVM.canReply == false)
+    }
+
+    @Test func showsReplyRendersDisabledButtonBeforeFetchCompletes() async {
+        let service = BlockingCommentsService()
+        let vm = makeVM(seed: makeItem(id: 1, status: .approved), service: service)
+        // Capability unresolved: nothing renders yet.
+        #expect(!vm.showsReply)
+
+        async let appear: Void = vm.onAppear()
+        await waitUntil { !service.fetchCommentInvocations.isEmpty }
+
+        // Capability resolved, fetch in flight: the button renders from the
+        // seed status but stays disabled, like the toolbar.
+        #expect(vm.showsReply)
+        #expect(!vm.canReply)
+
+        service.resolveFetch(callIndex: 0, with: makeDetail(id: 1, editContext: true))
+        await appear
+
+        #expect(vm.showsReply)
+        #expect(vm.canReply)
+    }
+
+    @Test func showsReplyHiddenForBinnedAndCustomStatuses() async {
+        for status in [CommentStatus.spam, .trash, .custom("draft")] {
+            let service = FakeCommentsService()
+            service.fetchCommentResult = .success(makeDetail(id: 1, status: status, editContext: true))
+            let vm = makeVM(seed: makeItem(id: 1, status: status), service: service)
+            await vm.onAppear()
+            #expect(!vm.showsReply, "\(status)")
+        }
+    }
+
+    // MARK: - Status change refreshes the loaded detail (not just the header)
+
+    @Test(arguments: [CommentListItem.Status.spam, .trash])
+    func statusChangeToSpamOrTrashRefreshesCanReplyGating(_ to: CommentListItem.Status) async {
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        #expect(vm.canReply == true)
+
+        coordinator.noteExternalStatus(id: 1, to: to)
+
+        // The header (the screen's display source of truth) still tracks the
+        // new status, matching the existing header-tracking behavior.
+        #expect(vm.header?.status == to)
+        // canReply reads loadedDetail.status directly and excludes spam/trash;
+        // it must follow moderation instead of staying stuck on the
+        // pre-moderation status (Reply no longer shown for a spam/trash
+        // comment).
+        #expect(vm.canReply == false)
+    }
+
+    @Test func statusChangeToPendingKeepsCanReplyTrue() async {
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        #expect(vm.canReply == true)
+
+        coordinator.noteExternalStatus(id: 1, to: .pending)
+
+        #expect(vm.header?.status == .pending)
+        #expect(vm.canReply == true)
+    }
+
+    @Test func replyTappedPresentsReplyComposer() async {
+        let service = FakeCommentsService()
+        let detail = makeDetail(id: 1, status: .approved, editContext: true)
+        service.fetchCommentResult = .success(detail)
+        let vm = makeVM(service: service)
+        await vm.onAppear()
+        #expect(vm.canReply == true)
+
+        vm.replyTapped()
+
+        #expect(vm.composer != nil)
+        #expect(vm.composer?.mode == .reply(parent: detail))
+    }
+
+    @Test func replyTappedIgnoredWhileMutating() async {
+        let coordinatorService = BlockingCommentsService()
+        let coordinator = CommentsModerationCoordinator(service: coordinatorService)
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        let spam = Task {
+            try? await coordinator.perform(.spam, on: makeDetail(id: 1, status: .approved, editContext: true))
+        }
+        await waitUntil { !coordinatorService.setStatusInvocations.isEmpty }
+        #expect(coordinator.isMutating(id: 1))
+
+        vm.replyTapped()
+
+        #expect(vm.composer == nil)
+
+        coordinatorService.resolveSetStatus(callIndex: 0, with: makeDetail(id: 1, status: .spam, editContext: true))
+        _ = await spam.value
+    }
+
+    @Test func composerFinishedRepliedPresentsNoticeAndDismisses() async {
+        let noticePresenter = FakeNoticePresenter()
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        let vm = makeVM(service: service, noticePresenter: noticePresenter)
+        await vm.onAppear()
+        vm.replyTapped()
+        #expect(vm.composer != nil)
+
+        vm.composerFinished(.replied(notice: "Reply sent."))
+
+        #expect(vm.composer == nil)
+        #expect(noticePresenter.presented == ["Reply sent."])
     }
 }
