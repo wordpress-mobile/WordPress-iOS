@@ -28,4 +28,14 @@ struct CommentDetailTests {
         let detail = CommentDetail(comment: .detailBuilder(authorName: ""))
         #expect(detail.authorName == Strings.anonymousAuthor)
     }
+
+    @Test func contentRawIsNilFromViewContext() {
+        let detail = CommentDetail(comment: .detailBuilder(id: 1))
+        #expect(detail.contentRaw == nil)
+    }
+
+    @Test func contentRawIsMappedFromEditContext() {
+        let detail = CommentDetail(comment: .editDetailBuilder(id: 1, content: "Raw <em>text</em>"))
+        #expect(detail.contentRaw == "Raw <em>text</em>")
+    }
 }
