@@ -11,7 +11,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         case approved
         case spam
         case trash
-        case other
+        case other(String)
     }
 
     let id: Int64
@@ -55,14 +55,14 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     }
 }
 
-private extension CommentListItem.Status {
+extension CommentListItem.Status {
     init(_ status: CommentStatus) {
         switch status {
         case .hold: self = .pending
         case .approved: self = .approved
         case .spam: self = .spam
         case .trash: self = .trash
-        case .custom: self = .other
+        case .custom(let raw): self = .other(raw)
         }
     }
 }
