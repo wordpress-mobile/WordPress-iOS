@@ -85,6 +85,28 @@ extension StatsContext {
         self.upgradeURL = Self.makeUpgradeURL(for: blog)
     }
 
+    /// A context for embedding the Today card on the My Site dashboard: the same
+    /// as the Stats-screen context but with NO analytics tracker, so the
+    /// embedded card never feeds the Stats-screen funnels (the dashboard fires
+    /// its own card-shown/tapped events, matching the legacy card).
+    ///
+    /// It reuses `StatsContext(blog:)`, which asserts on failure. That is an
+    /// accepted, deliberate trade-off: `DashboardCard.newStatsActive` only
+    /// selects this card for WP.com-connected sites with a non-empty auth token,
+    /// and `WPAccount.wordPressComRestApi` is non-nil whenever the token is
+    /// non-empty, so construction succeeds in practice. The assertion is
+    /// reachable only if a logout races the synchronous, main-thread
+    /// parse -> configure path, which is effectively unreachable. On that
+    /// theoretical failure the cell renders the empty state and falls back to
+    /// the legacy card. See the cross-agent code review discussion.
+    static func dashboard(blog: Blog) -> StatsContext? {
+        guard var context = StatsContext(blog: blog) else {
+            return nil
+        }
+        context.tracker = nil
+        return context
+    }
+
     private static func makeUpgradeURL(for blog: Blog) -> URL {
         if blog.isHostedAtWPcom {
             return URL(string: "https://wordpress.com/pricing/")!
