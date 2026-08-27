@@ -50,6 +50,19 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         status = Status(comment.status)
     }
 
+    /// Row-shaped projection of a fetched detail (used for the parent preview
+    /// strip), so the snippet rule stays in one place.
+    init(detail: CommentDetail) {
+        self.init(
+            id: detail.id,
+            authorName: detail.authorName,
+            avatarURL: detail.avatarURL,
+            postID: detail.postID,
+            snippet: Self.snippet(fromHTML: detail.contentHTML),
+            date: detail.date,
+            status: detail.status
+        )
+    }
 
     /// Single-line plain-text preview of comment HTML.
     static func snippet(fromHTML html: String) -> String {
