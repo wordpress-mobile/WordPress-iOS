@@ -126,6 +126,32 @@ final class CommentsModerationCoordinator {
         }
     }
 
+    /// Replaces the comment's content. Pessimistic and reconcile-free: a
+    /// thrown edit may still have landed (timeout-after-commit), but a retry
+    /// re-sends this user's content and comment edits are last-writer-wins,
+    /// matching wp-admin (which locks posts but not comments). Accepted
+    /// limitation; see the design doc. The response also carries the
+    /// authoritative server status; a status correction is emitted alongside
+    /// the content change when it disagrees with `comment.status`.
+    func editContent(on comment: CommentDetail, newContent: String) async throws -> CommentDetail {
+        try await holdingSlot(for: comment.id, waitingForSlot: true) { [weak self] in
+            guard let self else { throw CancellationError() }
+            let updated = try await self.service.updateContent(id: comment.id, content: newContent)
+            self.events.send(
+                .contentChanged(id: comment.id, contentHTML: updated.contentHTML, contentRaw: updated.contentRaw)
+            )
+            // Editing content never changes status server-side, so this only
+            // fires when a concurrent moderator or plugin changed it while the
+            // editor was open; the correction keeps Reply gating and list-tab
+            // membership from going stale.
+            if updated.status != comment.status {
+                self.events.send(.statusChanged(id: comment.id, to: updated.status))
+            }
+            self.tracker?.track(.edited(commentID: comment.id, postID: comment.postID))
+            return updated
+        }
+    }
+
     /// Broadcasts a status change the detail screen observed on load (its seed
     /// status disagreed with the fetched truth) without running a mutation, so
     /// loaded list tabs reconcile the corrected status in place.
