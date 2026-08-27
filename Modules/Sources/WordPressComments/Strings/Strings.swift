@@ -242,4 +242,88 @@ enum Strings {
         value: "Couldn't load this comment",
         comment: "Error state title when the comment detail fails to load"
     )
+
+    static let composerReplyTitle = NSLocalizedString(
+        "commentComposer.title.reply",
+        value: "Reply",
+        comment: "Title of the compose screen for replying to a comment"
+    )
+
+    static let composerPlaceholder = NSLocalizedString(
+        "commentComposer.placeholder",
+        value: "Leave a reply…",
+        comment: "Placeholder text in the composer text input field"
+    )
+
+    static let composerSend = NSLocalizedString(
+        "commentComposer.action.send",
+        value: "Send",
+        comment: "Button label to send a new reply"
+    )
+
+    static let composerCancel = NSLocalizedString(
+        "commentComposer.action.cancel",
+        value: "Cancel",
+        comment: "Button label to cancel composing or editing a comment"
+    )
+
+    static let composerApproveNote = NSLocalizedString(
+        "commentComposer.approveNote",
+        value: "Sending will also approve this comment.",
+        comment: "Note explaining that sending a reply will also approve the pending comment"
+    )
+
+    static let composerSaveDraft = NSLocalizedString(
+        "commentComposer.action.saveDraft",
+        value: "Save Draft",
+        comment: "Button label to save the current text as a draft"
+    )
+
+    static let composerDeleteDraft = NSLocalizedString(
+        "commentComposer.action.deleteDraft",
+        value: "Delete Draft",
+        comment: "Button label to delete a saved draft"
+    )
+
+    static let composerKeepEditing = NSLocalizedString(
+        "commentComposer.action.keepEditing",
+        value: "Keep Editing",
+        comment: "Button label to continue editing instead of discarding changes"
+    )
+
+    static let composerErrorClosed = NSLocalizedString(
+        "commentComposer.error.closed",
+        value: "Comments are closed for this post.",
+        comment: "Error message shown when comments are disabled for the post"
+    )
+
+    static let composerErrorReplyFailed = NSLocalizedString(
+        "commentComposer.error.replyFailed",
+        value: "Failed to send reply.",
+        comment: "Error message shown when sending a reply fails"
+    )
+
+    static let noticeReplySent = NSLocalizedString(
+        "commentComposer.notice.replySent",
+        value: "Reply sent.",
+        comment: "Notice shown after a reply is successfully sent"
+    )
+
+    static let noticeReplyPending = NSLocalizedString(
+        "commentComposer.notice.replyPending",
+        value: "Reply submitted for moderation.",
+        comment: "Notice shown when a reply is submitted and awaiting moderation"
+    )
+
+    static let noticeReplyAlreadyPosted = NSLocalizedString(
+        "commentComposer.notice.replyAlreadyPosted",
+        value: "This reply has already been posted.",
+        comment: "Notice shown when attempting to post a reply that was already submitted"
+    )
+
+    static let detailReply = NSLocalizedString(
+        "commentDetail.action.reply",
+        value: "Reply",
+        comment: "Button label to reply to a comment on the detail screen"
+    )
 }
