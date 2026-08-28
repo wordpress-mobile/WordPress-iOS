@@ -73,7 +73,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
     func test_getReplies_givenFailureResult_callsFailureBlock() {
         let expectation = expectation(description: "Fetch latest reply ID should fail")
         stub(condition: isMethodGET()) { _ in
-            return HTTPStubsResponse(data: Data(), statusCode: 500, headers: nil)
+            HTTPStubsResponse(data: Data(), statusCode: 500, headers: nil)
         }
 
         commentService.getLatestReplyID(for: commentID, siteID: siteID, accountService: accountService) { _ in
@@ -122,7 +122,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
                     "post": 2,
                     "status": "approved",
                     "type": "comment",
-                    "content": "<p>test comment</p>\n",
+                    "content": "<p>test comment</p>\n"
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
@@ -193,7 +193,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
                     "post": 2,
                     "status": "approved",
                     "type": "comment",
-                    "content": "<p>test comment</p>\n",
+                    "content": "<p>test comment</p>\n"
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
@@ -257,7 +257,10 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         post.postID = 51399
         contextManager.saveContextAndWait(mainContext)
 
-        HTTPStubs.stubRequest(forEndpoint: "rest/v1.1/sites/3584907/posts/51399/replies", withFileAtPath: stubFilePath("reader-post-comments-success.json"))
+        HTTPStubs.stubRequest(
+            forEndpoint: "rest/v1.1/sites/3584907/posts/51399/replies",
+            withFileAtPath: stubFilePath("reader-post-comments-success.json")
+        )
         let syncExp = expectation(description: "Sync comments should complete")
         self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
             syncExp.fulfill()
@@ -286,6 +289,41 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         XCTAssertEqual(post.comments?.count, 24)
         XCTAssertEqual(post.comments?.filter({ ($0 as! Comment).visibleOnReader }).count, 21)
     }
+
+    /// A sync that only fetches a small page (e.g. the Post Detail comments preview) must
+    /// still update `post.commentCount` to the server's authoritative total, not just the
+    /// number of comments included in that one page/response.
+    func test_syncHierarchicalComments_updatesPostCommentCountFromServerTotal() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 3584907
+        post.postID = 51399
+        post.commentCount = 2
+        contextManager.saveContextAndWait(mainContext)
+
+        let fixtureURL = URL(fileURLWithPath: stubFilePath("reader-post-comments-success.json"))
+        var json = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtureURL)) as! [String: Any]
+        let allComments = json["comments"] as! [[String: Any]]
+        json["comments"] = Array(allComments.prefix(1))
+        json["found"] = 42
+
+        stub(condition: isPath("/rest/v1.1/sites/3584907/posts/51399/replies")) { _ in
+            HTTPStubsResponse(jsonObject: json, statusCode: 200, headers: nil)
+        }
+
+        let syncExp = expectation(description: "Sync comments should complete")
+        self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
+            syncExp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            syncExp.fulfill()
+        }
+        wait(for: [syncExp], timeout: 5)
+
+        // Only 1 comment was merged from this page, but the post's total comment count
+        // should reflect the server's `found` total, not the page's local tally.
+        XCTAssertEqual(post.comments?.count, 1)
+        XCTAssertEqual(post.commentCount, 42)
+    }
 }
 
 // MARK: - Test Helpers
@@ -310,7 +348,7 @@ private extension CommentService_RepliesTests {
     }
 
     func stubFilePath(_ filename: String) -> String {
-        return OHPathForFile(filename, type(of: self))!
+        OHPathForFile(filename, type(of: self))!
     }
 }
 
@@ -322,6 +360,6 @@ private class CommentServiceRemoteFactoryMock: CommentServiceRemoteFactory {
     }
 
     override func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
-        return CommentServiceRemoteREST(wordPressComRestApi: restApi, siteID: siteID)
+        CommentServiceRemoteREST(wordPressComRestApi: restApi, siteID: siteID)
     }
 }
