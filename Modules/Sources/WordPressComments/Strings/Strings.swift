@@ -97,6 +97,13 @@ enum Strings {
         comment: "Accessibility value announced for a comment row that is awaiting moderation"
     )
 
+    static let moderationFailed = NSLocalizedString(
+        "commentDetail.moderation.failed",
+        value: "That action couldn't be completed. Please try again.",
+        comment:
+            "Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry"
+    )
+
     static let statusApproved = NSLocalizedString(
         "commentDetail.status.approved",
         value: "Approved",
