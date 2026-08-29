@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-12 09:57:08+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:57:04+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ar */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "تعذر الاتصال. يحظر مضيفك طلبات POST، ويحتاج التطبيق إلى ذلك للاتصال بموقعك. يرجى الاتصال بمزوِّد خدمة الاستضافة لديك لحل هذه المشكلة.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "تعذَّر إنشاء اتصال آمن بنقطة نهاية XML-RPC لموقعك.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "تعذّر تحميل البيانات. يرجى إعادة التحديث لاحقًا.";
@@ -5899,6 +5902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "استخدام أنماط القالب";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "استخدام المكوِّنات التابعة لجهات خارجية (النسخة التجريبية)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7756,6 +7762,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "شراء نطاق فقط";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "انتهت الصلاحية في %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "تنتهي الصلاحية في %1$@";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "لا تنتهي الصلاحية أبدًا";
 
@@ -7932,6 +7944,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "الكل";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "⁦%1$d⁩ من الأنماط";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "نمط واحد";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "إدراج النمط";
@@ -10468,6 +10486,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "تحديث";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "تعذَّرت إضافة الوسائط المحددة.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "لم يتم تكوين تنسيقات التدوينة لهذا الموقع.";
 
@@ -11377,8 +11398,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "لفتح تفاصيل الموقع";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "يعرض الملف الشخصي للمؤلف";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "يعرض تدوينات الموقع";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "اشتراك";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "مشترك";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u⁦{2026}⁩عرض المزيد";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "مزيد من الإجراءات";
@@ -12250,6 +12283,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "اجعل محرر المكوّن يبدو مثل قالبك.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "تثبيت الإضافة Gutenberg على موقعك لتفعيل دعم استخدام أنماط القالب.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "تحميل مكوِّنات تابعة لجهات خارجية من الإضافات المثبَّتة على موقعك.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "تثبيت الإضافة Jetpack على موقعك لتفعيل دعم استخدام المكوِّنات التابعة لجهات خارجية.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "إضافة %1$@";

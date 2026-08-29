@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-19 13:59:22+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:57:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: sv_SE */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Det gick inte att ansluta. Din webbserver blockerar POST-transaktioner, vilket appen behöver för att kommunicera med webbplatsen. Kontakta ditt webbhotell för att lösa problemet.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Det gick inte att upprätta en säker anslutning till webbplatsens XML-RPC-ändpunkt.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Det gick inte att ladda data. Uppdatera igen senare.";
@@ -5898,6 +5901,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Använd temastilar";
+
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Använd tredjepartsblock (beta)";
 
 /* A placeholder for the twitter username
    Account Settings Username label
@@ -10516,6 +10522,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Uppdatera";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "Det gick inte att lägga till vald media.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Inläggsformat har inte konfigurerats för denna webbplats.";
 
@@ -11434,6 +11443,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Prenumerera";
 
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Prenumererar";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "{2026}visa mer";
+
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Fler åtgärder";
 
@@ -12313,6 +12328,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Få blockredigeraren att se ut som ditt tema.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Installera Gutenberg-tillägget på din webbplats för att aktivera stöd för temastilar.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Hämta tredjepartsblock från tillägg som är installerade på din webbplats.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Installera Jetpack-tillägget på din webbplats för att aktivera blocksupport från tredje part.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Lägg till %1$@";
