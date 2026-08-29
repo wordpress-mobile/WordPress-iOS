@@ -31,6 +31,38 @@ protocol CommentsServiceProtocol: Sendable {
     /// edit context first (adds author email/IP) and falls back to view
     /// context on a 401/403 (stale cached capability after a demotion).
     func fetchComment(id: Int64, allowsEditContext: Bool) async throws -> CommentDetail
+
+    /// Fetches only the comment's current status. Used for the same-status
+    /// probe, where the caller only needs "where is this comment now" rather
+    /// than the full comment payload.
+    func fetchStatus(id: Int64) async throws -> CommentListItem.Status
+
+    /// Writes `status` and returns the updated detail. Restoring from spam or
+    /// trash goes through `restore(id:from:)` instead: core uses dedicated
+    /// operations for that, not a plain status write.
+    func setStatus(id: Int64, _ status: CommentListItem.Status) async throws -> CommentDetail
+
+    /// Restores a comment from `bin` (`.spam` or `.trash`) via core's dedicated
+    /// unspam/untrash operations, which reapply the saved pre-bin status and
+    /// fire the matching hooks. Returns the updated detail.
+    func restore(id: Int64, from bin: CommentListItem.Status) async throws -> CommentDetail
+
+    /// Soft-deletes the comment (moves it to trash; recoverable).
+    func trash(id: Int64) async throws
+
+    /// Permanently deletes the comment.
+    func delete(id: Int64) async throws
+
+    /// Total number of replies to `id`, read from the list response's
+    /// `X-WP-Total` header rather than the (unused) page of results.
+    func numberOfReplies(for id: Int64) async throws -> Int
+}
+
+/// Errors raised by `CommentsService` that don't originate from wordpress-rs.
+enum CommentsServiceError: Error {
+    /// A sparse field the caller asked for was absent from the response.
+    /// Should not happen: the server always returns requested fields.
+    case missingField
 }
 
 final class CommentsService: CommentsServiceProtocol {
@@ -73,6 +105,67 @@ final class CommentsService: CommentsServiceProtocol {
         )
         return CommentDetail(comment: response.data)
     }
+
+    func fetchStatus(id: Int64) async throws -> CommentListItem.Status {
+        let response = try await client.api.comments.filterRetrieveWithViewContext(
+            commentId: id,
+            params: .init(),
+            fields: [.status]
+        )
+        guard let status = response.data.status else { throw CommentsServiceError.missingField }
+        return CommentListItem.Status(status)
+    }
+
+    func setStatus(id: Int64, _ status: CommentListItem.Status) async throws -> CommentDetail {
+        try await update(id: id, status: Self.updateStatus(for: status))
+    }
+
+    func restore(id: Int64, from bin: CommentListItem.Status) async throws -> CommentDetail {
+        try await update(id: id, status: Self.restoreStatus(from: bin))
+    }
+
+    private func update(id: Int64, status: CommentStatus) async throws -> CommentDetail {
+        let response = try await client.api.comments.update(
+            commentId: id,
+            params: CommentUpdateParams(status: status)
+        )
+        return CommentDetail(comment: response.data)
+    }
+
+    /// The update-body spelling of a status (the body accepts `approved` but
+    /// spells pending as `hold`).
+    static func updateStatus(for status: CommentListItem.Status) -> CommentStatus {
+        switch status {
+        case .approved: .approved
+        case .pending: .hold
+        case .spam: .spam
+        case .trash: .trash
+        case .other(let raw): .custom(raw)
+        }
+    }
+
+    /// Core's dedicated restore operations: they reapply the saved
+    /// pre-spam/pre-trash status (not a plain hold write) and fire the
+    /// unspam_comment/untrash_comment hooks.
+    /// TODO: replace with typed wordpress-rs values when upstreamed.
+    static func restoreStatus(from bin: CommentListItem.Status) -> CommentStatus {
+        bin == .spam ? .custom("unspam") : .custom("untrash")
+    }
+
+    func trash(id: Int64) async throws {
+        _ = try await client.api.comments.trash(commentId: id, params: .init())
+    }
+
+    func delete(id: Int64) async throws {
+        _ = try await client.api.comments.delete(commentId: id, params: .init())
+    }
+
+    func numberOfReplies(for id: Int64) async throws -> Int {
+        let response = try await client.api.comments.listWithViewContext(
+            params: CommentListParams(perPage: 1, parent: [.init(id)], status: .all)
+        )
+        return Int(response.headerMap.wpTotal() ?? 0)
+    }
 }
 
 extension WpApiError {
@@ -83,6 +176,14 @@ extension WpApiError {
         case .RequestExecutionFailed(let statusCode, _, _, _, _): return statusCode
         default: return nil
         }
+    }
+
+    /// The WP REST error code carried by the error, when it has one. Used to
+    /// map the bounded moderation failures (`rest_comment_failed_edit`,
+    /// `rest_already_trashed`) to their real outcomes.
+    var wpErrorCode: WpErrorCode? {
+        if case .WpError(let errorCode, _, _, _, _, _) = self { return errorCode }
+        return nil
     }
 }
 

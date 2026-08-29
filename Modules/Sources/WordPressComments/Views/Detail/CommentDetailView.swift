@@ -137,6 +137,13 @@ private final class PreviewCommentsService: CommentsServiceProtocol {
     func fetchComment(id: Int64, allowsEditContext: Bool) async throws -> CommentDetail {
         .preview(id: id, status: .pending)
     }
+
+    func fetchStatus(id: Int64) async throws -> CommentListItem.Status { .pending }
+    func setStatus(id: Int64, _ status: CommentListItem.Status) async throws -> CommentDetail { .preview() }
+    func restore(id: Int64, from bin: CommentListItem.Status) async throws -> CommentDetail { .preview() }
+    func trash(id: Int64) async throws {}
+    func delete(id: Int64) async throws {}
+    func numberOfReplies(for id: Int64) async throws -> Int { 2 }
 }
 
 private struct PreviewCapabilities: CommentsCapabilitiesProtocol {
