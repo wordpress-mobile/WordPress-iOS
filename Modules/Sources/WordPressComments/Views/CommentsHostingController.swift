@@ -10,10 +10,12 @@ public enum CommentsHostingController {
     public static func make(
         client: WordPressClient,
         makeContentRenderer: @escaping @MainActor () -> any CommentContentRendering,
-        tracker: any CommentsTracker
+        tracker: any CommentsTracker,
+        noticePresenter: any NoticePresenting
     ) -> UIViewController {
         let service = CommentsService(client: client)
         let titleResolver = PostTitleResolver(fetcher: PostTitleResolver.liveFetcher(client: client))
+        let coordinator = CommentsModerationCoordinator(service: service, tracker: tracker)
 
         // The router builds each detail screen (recursively, so a parent comment
         // pushes onto the same stack). The tab view retains it for the
@@ -21,8 +23,10 @@ public enum CommentsHostingController {
         let router = CommentsDetailRouter(
             service: service,
             capabilities: CommentsCapabilities(client: client),
+            coordinator: coordinator,
             titleResolver: titleResolver,
             tracker: tracker,
+            noticePresenter: noticePresenter,
             makeContentRenderer: makeContentRenderer
         )
 

@@ -30,7 +30,8 @@ enum CommentsRouting {
         return CommentsHostingController.make(
             client: client,
             makeContentRenderer: { CommentsWebContentRendererAdapter() },
-            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties)
+            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
+            noticePresenter: NoticePresenterAdapter()
         )
     }
 }

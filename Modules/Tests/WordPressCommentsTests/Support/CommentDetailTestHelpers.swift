@@ -26,14 +26,33 @@ func makeVM(
     seed: CommentListItem? = nil,
     service: any CommentsServiceProtocol,
     capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities(),
-    tracker: (any CommentsTracker)? = nil
+    coordinator: CommentsModerationCoordinator? = nil,
+    tracker: (any CommentsTracker)? = nil,
+    noticePresenter: (any NoticePresenting)? = nil
 ) -> CommentDetailViewModel {
     CommentDetailViewModel(
         commentID: commentID,
         seed: seed,
         service: service,
         capabilities: capabilities,
+        coordinator: coordinator ?? CommentsModerationCoordinator(service: FakeCommentsService()),
         titleResolver: makeResolver(),
-        tracker: tracker
+        tracker: tracker,
+        noticePresenter: noticePresenter
     )
+}
+
+/// A view model whose authoritative fetch has landed with edit context at
+/// `status`, so the toolbar is enabled and actions run through `coordinator`.
+@MainActor
+func makeLoadedVM(
+    status: CommentStatus = .hold,
+    coordinator: CommentsModerationCoordinator,
+    noticePresenter: (any NoticePresenting)? = nil
+) async -> CommentDetailViewModel {
+    let service = FakeCommentsService()
+    service.fetchCommentResult = .success(makeDetail(id: 1, status: status, editContext: true))
+    let vm = makeVM(service: service, coordinator: coordinator, noticePresenter: noticePresenter)
+    await vm.onAppear()
+    return vm
 }
