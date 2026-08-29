@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-20 15:38:06+0000 */
+/* Translation-Revision-Date: 2026-08-28 23:43:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: de */
@@ -47,11 +47,11 @@
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d Like";
 
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d Likes";
 
 /* Singular format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answer" = "%1$d Antwort";
@@ -198,7 +198,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "%s block options" = "Blockoptionen für %s";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s Block, neu verfügbar";
+"%s block, newly available" = "%s-Block, neu verfügbar";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s-Block. Leer";
@@ -636,7 +636,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
-"Answer Prompt" = "Auf Themenvorschlag antworten";
+"Answer Prompt" = "Auf Schreibanregung antworten";
 
 /* Title of answered Blogging Prompts filter. */
 "Answered" = "Beantwortet";
@@ -697,7 +697,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Möchtest du deine Website wirklich auf %1$@ zurücksetzen? Damit werden Inhalte und Optionen, die seit diesem Zeitpunkt erstellt oder geändert wurden, entfernt.";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
-"Are you trying to log in to %1$@ near %2$@?" = "Versuchst du dich in der Nähe von %2$@ in %1$@ anzumelden?";
+"Are you trying to log in to %1$@ near %2$@?" = "Versuchst du dich bei %1$@ in der Nähe von %2$@ anzumelden?";
 
 /* Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location */
 "Are you trying to log in to your web browser near %1$@?" = "Versuchst du dich in der Nähe von %1$@ in deinem Webbrowser anzumelden?";
@@ -824,7 +824,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Bar Chart depicting visitors for this post" = "Balkendiagramm, das die Besucher dieses Beitrags anzeigt";
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
-"Bar Chart depicting visitors for your latest post" = "Balkendiagramm, das die Besucher deines letzten Beitrags anzeigt";
+"Bar Chart depicting visitors for your latest post" = "Balkendiagramm, das die Besucher deines neuesten Beitrags anzeigt";
 
 /* Title for button on the post details page when there are no comments. */
 "Be the first to comment" = "Schreibe den ersten Kommentar";
@@ -1044,7 +1044,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Careful!" = "Vorsicht!";
 
 /* Example prompt for the Prompts card in Feature Introduction. */
-"Cast the movie of your life." = "Dreh einen Film über dein Leben.";
+"Cast the movie of your life." = "Besetze die Rollen für den Film deines Lebens.";
 
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
@@ -1532,7 +1532,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Creating dashboard" = "Das Dashboard wird erstellt";
 
 /* No comment provided by engineer. */
-"Crosspost" = "Mehrfach veröffentlichen";
+"Crosspost" = "Crosspost";
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Aktuelles Theme";
@@ -2321,7 +2321,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Free" = "Kostenlos";
 
 /* One of the options when selecting More in the Post Editor's format bar */
-"Free Photo Library" = "Kostenlose Fotobibliothek";
+"Free Photo Library" = "Kostenlose Fotomediathek";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Gib Speicherplatz auf diesem Gerät frei, indem du temporäre Mediendateien löschst. Dies hat keine Auswirkung auf die Medien auf deiner Website.";
@@ -2805,7 +2805,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Jetpack installed" = "Jetpack installiert";
 
 /* No comment provided by engineer. */
-"Jetpack powered" = "Angetrieben von Jetpack";
+"Jetpack powered" = "Bereitgestellt von Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack wird alle erkannten aktiven Bedrohungen beheben.";
@@ -2854,7 +2854,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Last week you had %1$@ views and %2$@ comments." = "Letzte Woche hattest du %1$@ Aufrufe und %2$@ Kommentare.";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
-"Last week you had %1$@ views and %2$@ likes." = "Letzte Woche hattest du %1$@ Aufrufe und %2$@ Likes.";
+"Last week you had %1$@ views and %2$@ likes." = "Letzte Woche hattest du %1$@ Aufrufe und %2$@ Likes.";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
 "Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "Letzte Woche hattest du %1$@ Aufrufe, %2$@ Kommentare und %3$@ Likes.";
@@ -2863,7 +2863,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Last week you had %@ views." = "Letzte Woche hattest du %@ Aufrufe.";
 
 /* Insights latest post summary header */
-"Latest Post Summary" = "Zusammenfassung der neuesten Beiträge";
+"Latest Post Summary" = "Übersicht des neuesten Beitrags";
 
 /* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
@@ -2920,7 +2920,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Like" = "Like";
 
 /* A comment is marked as liked */
-"Liked" = "Gefällt mir";
+"Liked" = "Geliked";
 
 /* Filters Likes Notifications
    Label for Period Overview likes
@@ -3733,10 +3733,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Opportunities to participate in WordPress.com research & surveys." = "Gelegenheiten, an Marktforschung und Befragungen von WordPress.com teilzunehmen.";
 
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
-"Optional message up to %1$d characters to be included in the invitation." = "Optionale Nachricht mit bis zu %1$d Zeichen, die in der Einladung enthalten sein soll.";
+"Optional message up to %1$d characters to be included in the invitation." = "Optionale Nachricht mit bis zu %1$d Zeichen, die in der Einladung enthalten sein soll.";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
-"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Gib eine individuelle Nachricht mit bis zu %1$d Zeichen ein, die zusammen mit deiner Einladung gesendet wird.";
+"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Gib eine individuelle Nachricht mit bis zu %1$d Zeichen ein, die zusammen mit deiner Einladung gesendet wird.";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Nummerierte Liste";
@@ -3851,7 +3851,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Personal" = "Persönlich";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
-"Photo Library" = "Foto-Bibliothek";
+"Photo Library" = "Fotomediathek";
 
 /* Photography site intent topic */
 "Photography" = "Fotografie";
@@ -5250,7 +5250,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Das Zertifikat für diesen Server ist ungültig. Möglicherweise stellst du eine Verbindung zu einem Server her, der vorgibt, „%@“ zu sein, wodurch deine vertraulichen Daten gefährdet werden könnten.\n\nMöchtest du dem Zertifikat trotzdem vertrauen?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "Der Inhalt der Seite mit deinen letzten Beiträgen wird automatisch generiert und kann nicht bearbeitet werden.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "Der Inhalt der Seite mit deinen neuesten Beiträgen wird automatisch generiert und kann nicht bearbeitet werden.";
 
 /* No comment provided by engineer. */
 "The editor has encountered an unexpected error" = "Im Editor ist ein unerwarteter Fehler aufgetreten";
@@ -6426,7 +6426,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You must be signed in to a WordPress.com account to perform this action." = "Du musst bei einem WordPress.com-Konto angemeldet sein, um diese Aktion ausführen zu können.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "Du hast heute *50 Likes* für deine Website erhalten";
+"You received *50 likes* on your site today" = "Du hast heute *50 Likes* für deine Website erhalten";
 
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail */
@@ -6539,7 +6539,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "accountSettings.closeAccount.error.atomicSite" = "Dieses Benutzerkonto kann nicht sofort geschlossen werden, da es aktive Käufe hat. Wende dich bitte an das Support-Team, um das Konto zu löschen.";
 
 /* The file with the acknowledgements is missing */
-"acknowledgements.manifest_not_found" = "Bestätigungen können nicht geladen werden";
+"acknowledgements.manifest_not_found" = "Danksagungen können nicht geladen werden";
 
 /* The title for the list of third-party software we use */
 "acknowledgements.title" = "Danksagungen";
@@ -6633,7 +6633,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "addSite.selfHosted.title" = "Selbstgehostete Website hinzufügen";
 
 /* Notice message shown when a user tries to add a WordPress.com site as self-hosted */
-"addSite.selfHosted.wpcomSiteRedirect" = "Diese Website wird auf WordPress.com gehostet. Melde dich in deinem WordPress.com-Konto an.";
+"addSite.selfHosted.wpcomSiteRedirect" = "Diese Website wird auf WordPress.com gehostet. Melde dich bei deinem WordPress.com-Konto an.";
 
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Es konnte keine Verbindung zur WordPress-Website hergestellt werden. XML-RPC wurde möglicherweise auf dem Server deaktiviert. Bitte wende dich an deinen Hosting-Anbieter, um dieses Problem zu beheben.";
@@ -7393,7 +7393,7 @@ Example: Reply to Pamela Nguyen */
 "compliance.analytics.popover.title" = "Datenschutzeinstellungen verwalten";
 
 /* Toggle Title for the privacy compliance popover. */
-"compliance.analytics.popover.toggle" = "Statistiken";
+"compliance.analytics.popover.toggle" = "Analysen";
 
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Seite oder Beitrag erstellen";
@@ -7432,7 +7432,7 @@ Example: Reply to Pamela Nguyen */
 "customPostList.action.duplicate" = "Duplizieren";
 
 /* Menu action to change a post's status to draft */
-"customPostList.action.moveToDraft" = "In Entwurf verschieben";
+"customPostList.action.moveToDraft" = "In Entwürfe verschieben";
 
 /* Menu action to move a post to trash */
 "customPostList.action.moveToTrash" = "In den Papierkorb verschieben";
@@ -7769,7 +7769,7 @@ Example: Reply to Pamela Nguyen */
 "domain.management.buy.card.subtitle" = "Füge später eine Website hinzu.";
 
 /* Domain management buy domain card title */
-"domain.management.buy.card.title" = "Kaufe lediglich eine Domain";
+"domain.management.buy.card.title" = "Einfach eine Domain kaufen";
 
 /* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
 "domain.management.card.expiredDate.label" = "Abgelaufen am %1$@";
@@ -8282,7 +8282,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.branding.badge_banner.moving_soon.singular" = "%@ wird demnächst verschoben";
 
 /* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title" = "Angetrieben von Jetpack";
+"jetpack.branding.badge_banner.title" = "Bereitgestellt von Jetpack";
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title.phase2" = "Jetpack-App sichern";
@@ -8291,7 +8291,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.branding.overlay.button.title" = "Die neue Jetpack-App ausprobieren";
 
 /* Description of the Jetpack powered overlay. */
-"jetpack.branding.overlay.description" = "Die neue Jetpack-App hat Statistiken, Reader, Benachrichtigungen und mehr, was dein WordPress verbessert.";
+"jetpack.branding.overlay.description" = "Die neue Jetpack-App bietet Statistiken, den Reader, Benachrichtigungen und mehr, um dein WordPress zu verbessern.";
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress ist mit Jetpack noch besser";
@@ -9165,10 +9165,10 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.postDetails.less" = "Weniger";
 
 /* Singular like count. %1$d is the number. */
-"jetpackStats.postDetails.like" = "%1$d Like";
+"jetpackStats.postDetails.like" = "%1$d Like";
 
 /* Plural likes count. %1$d is the number. */
-"jetpackStats.postDetails.likes" = "%1$d Likes";
+"jetpackStats.postDetails.likes" = "%1$d Likes";
 
 /* Title for monthly activity heatmap */
 "jetpackStats.postDetails.monthsAndYears" = "Letzte Monate";
@@ -9507,7 +9507,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.addMenu.chooseFile" = "Datei auswählen";
 
 /* Add-menu item that opens the system photo library picker. */
-"mediaLibrary.addMenu.photoLibrary" = "Foto-Bibliothek";
+"mediaLibrary.addMenu.photoLibrary" = "Fotomediathek";
 
 /* Add-menu item that opens the camera in photo mode. */
 "mediaLibrary.addMenu.takePhoto" = "Foto aufnehmen";
@@ -9657,7 +9657,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.storageDetails.mediaType.video" = "Videos";
 
 /* Success message shown after upgrading plan */
-"mediaLibrary.storageDetails.purchase.plan.success" = "Dein Website-Tarif wurde aktualisiert!";
+"mediaLibrary.storageDetails.purchase.plan.success" = "Dein Website-Tarif wurde hochgestuft!";
 
 /* Success message shown after purchasing storage add-on */
 "mediaLibrary.storageDetails.purchase.storage.success" = "Der Speicherplatz deiner Website-Mediathek wurde erhöht!";
@@ -9684,7 +9684,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.toolbarSelectImagesMany" = "%d Bilder ausgewählt";
 
 /* Bottom toolbar title in the selection mode */
-"mediaLibrary.toolbarSelectImagesOne" = "1 Bild ausgewählt";
+"mediaLibrary.toolbarSelectImagesOne" = "1 Bild ausgewählt";
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsMany" = "%d Elemente ausgewählt";
@@ -9702,7 +9702,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.upload.banner.failedOnly.single" = "%1$d Upload fehlgeschlagen";
 
 /* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
-"mediaLibrary.upload.banner.mixed" = "%1$d wird hochgeladen · %2$d fehlgeschlagen";
+"mediaLibrary.upload.banner.mixed" = "%1$d werden hochgeladen · %2$d fehlgeschlagen";
 
 /* Banner shown above the grid while uploads are in flight. %1$d is the count. */
 "mediaLibrary.upload.banner.uploadingOnly" = "%1$d Elemente werden hochgeladen";
@@ -9777,7 +9777,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.uploads.title" = "Uploads";
 
 /* A name of the action in the context menu */
-"mediaPicker.imagePlayground" = "Playground für Bilder";
+"mediaPicker.imagePlayground" = "Image Playground";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Diese App benötigt das Recht, auf die Kamera zuzugreifen, um neue Medien aufzunehmen. Wenn du dies zulassen möchtest, ändere bitte die Datenschutzeinstellungen.";
@@ -9798,7 +9798,7 @@ Example: Reply to Pamela Nguyen */
 "mediaPicker.pickFromPhotosLibrary" = "Vom Gerät auswählen";
 
 /* The name of the action in the context menu for selecting photos from free stock photos */
-"mediaPicker.pickFromStockPhotos" = "Kostenlose Fotobibliothek";
+"mediaPicker.pickFromStockPhotos" = "Kostenlose Fotomediathek";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Foto aufnehmen";
@@ -10716,7 +10716,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.emailToSubscribers.label" = "E-Mail an Abonnenten";
 
 /* Character count for excerpt. %1$d is the number of characters. */
-"postSettings.excerpt.characterCount" = "%1$d Zeichen";
+"postSettings.excerpt.characterCount" = "%1$d Zeichen";
 
 /* Button to generate an excerpt using AI */
 "postSettings.excerpt.generateButton" = "Generieren";
@@ -10767,7 +10767,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.excerpt.placeholder" = "Schreibe eine kurze Zusammenfassung deines Beitrags, die im Blogindex, in Archiven und Suchergebnissen angezeigt werden soll.";
 
 /* Word count for excerpt. %1$d is the number of words. */
-"postSettings.excerpt.wordCount" = "%1$d Wörter";
+"postSettings.excerpt.wordCount" = "%1$d Wörter";
 
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "Upload abbrechen";
@@ -11028,7 +11028,7 @@ Example: Reply to Pamela Nguyen */
 "posts.delete.actionTitle" = "Endgültig löschen";
 
 /* Label for an option that moves a post to the draft folder */
-"posts.draft.actionTitle" = "In Entwurf verschieben";
+"posts.draft.actionTitle" = "In Entwürfe verschieben";
 
 /* Label for post duplicate option. Tapping creates a copy of the post. */
 "posts.duplicate.actionTitle" = "Duplizieren";
@@ -11268,7 +11268,7 @@ Note: Since the display space is limited, a short or concise translation is pref
 /* Title for the Like button in the Reader Detail toolbar.
 This is shown when the user has not liked the post yet.
 Note: Since the display space is limited, a short or concise translation is preferred. */
-"reader.detail.toolbar.like.button" = "Gefällt mir";
+"reader.detail.toolbar.like.button" = "Like";
 
 /* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
 but tapping on this button will add a Like to the post. */
@@ -11277,7 +11277,7 @@ but tapping on this button will add a Like to the post. */
 /* Title for the Like button in the Reader Detail toolbar.
 This is shown when the user has already liked the post.
 Note: Since the display space is limited, a short or concise translation is preferred. */
-"reader.detail.toolbar.liked.button" = "Mit einem „Like“ markiert";
+"reader.detail.toolbar.liked.button" = "Geliked";
 
 /* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
 but tapping on this button will remove their like from the post. */
@@ -11374,7 +11374,7 @@ but tapping on this button will remove their like from the post. */
 "reader.notice.blog.blocked.failure" = "Der Blog kann nicht blockiert werden";
 
 /* Notice title when blocking a site succeeds. */
-"reader.notice.blog.blocked.success" = "Blockierter Blog";
+"reader.notice.blog.blocked.success" = "Blog blockiert";
 
 /* Title of a prompt. */
 "reader.notice.blog.unsubscribed.error" = "Der Blog konnte nicht deabonniert werden";
@@ -11621,7 +11621,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.savedPosts.settings.exportingStatus" = "Export wird vorbereitet …";
 
 /* Footer text explaining the saved posts export and import feature */
-"reader.savedPosts.settings.footer" = "Exportiere gespeicherte Beiträge als JSON-Datei zur Sicherung oder importiere eine vormals exportierte Datei. Doppelte Beiträge werden automatisch übersprungen.";
+"reader.savedPosts.settings.footer" = "Exportiere gespeicherte Beiträge als JSON-Datei zur Sicherung oder importiere eine zuvor exportierte Datei. Doppelte Beiträge werden automatisch übersprungen.";
 
 /* Button to import saved Reader posts from a JSON file */
 "reader.savedPosts.settings.import" = "Gespeicherte Beiträge importieren";
@@ -12036,7 +12036,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "site.creation.domain.tooltip.site.name" = "DeineWebsite.com";
 
 /* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
-"site.domains.domainSection.title" = "Andere Domains für %1$@";
+"site.domains.domainSection.title" = "Weitere Domains für %1$@";
 
 /* A section title which displays a row with a free WP.com domain */
 "site.domains.freeDomainSection.title" = "Deine kostenlose WordPress.com-Domain";
@@ -12384,13 +12384,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Vorherige 7 Tage";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* mehr als in den vorherigen 7 Tagen";
+"stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* mehr als in den vorherigen 7 Tagen";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* weniger als in den vorherigen 7 Tagen";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
-"stats.insights.label.totalLikes.same" = "Keine Veränderung gegenüber den vorherigen 7 Tagen";
+"stats.insights.label.totalLikes.same" = "Keine Veränderung gegenüber den vorherigen 7 Tagen";
 
 /* Stats insights views higher than previous 7 days */
 "stats.insights.label.views.sevenDays.higher" = "Deine Aufrufe in den letzten 7 Tagen sind %@ höher als in den vorherigen 7 Tagen.\n";
@@ -12771,7 +12771,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Support kontaktieren";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Hallo, ich bin der Jetpack AI Assistant.\\n\\nWobei kann ich dir behilflich sein?\\n\\nFalls ich deine Frage nicht beantworten kann, helfe ich dir dabei, ein Support-Ticket bei unserem Team zu öffnen!";
+"support.chatBot.firstMessage" = "Hallo, ich bin der Jetpack-KI-Assistent.\\n\\nWobei kann ich dir behilflich sein?\\n\\nFalls ich deine Frage nicht beantworten kann, helfe ich dir dabei, ein Support-Ticket bei unserem Team zu öffnen!";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Sende eine Nachricht …";
@@ -12822,7 +12822,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.zendesk.question" = "Frage";
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
-"support.chatBot.zendesk.transcript" = "Jetpack-Mobile-Bot-Transkript:";
+"support.chatBot.zendesk.transcript" = "Jetpack-Mobile-Bot-Transkript";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Stell eine Frage im Community-Forum und lass dir von unserer Gruppe Freiwilliger helfen.";
@@ -13064,7 +13064,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "webServerLogs.filterStatus" = "Status";
 
 /* Preview title of all-time posts and most views widget */
-"widget.allTimePostViews.previewTitle" = "Beiträge im gesamten Zeitraum und häufigste Aufrufe";
+"widget.allTimePostViews.previewTitle" = "Beiträge im gesamten Zeitraum und meiste Aufrufe";
 
 /* Preview title of all-time views widget */
 "widget.allTimeViews.previewTitle" = "Aufrufe im gesamten Zeitraum";
@@ -13076,7 +13076,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "widget.alltime.bestviews.label" = "Bisher bestes Aufrufergebnis";
 
 /* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
-"widget.alltime.bestviewsshort.label" = "Häufigste Aufrufe";
+"widget.alltime.bestviewsshort.label" = "Meiste Aufrufe";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Die Gesamtstatistiken konnten nicht geladen werden.";
