@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-29 09:55:46+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:57:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: it */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Impossibile connettersi. L'host sta bloccando le richieste POST, ma queste sono necessarie per la corretta comunicazione dell'app con il sito. Contatta il fornitore del servizio di hosting per risolvere questo problema.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Impossibile stabilire una connessione sicura con l'endpoint XML-RPC del tuo sito.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Impossibile caricare i dati. Aggiorna nuovamente la pagina più tardi.";
@@ -5896,6 +5899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Usa gli stili del tema";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Usa blocchi di terze parti (beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7735,6 +7741,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Basta acquistare un dominio";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Scaduto il giorno %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Scade il giorno %1$@";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nessuna scadenza";
 
@@ -7908,6 +7920,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Tutti";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d pattern";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 pattern";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Inserisci pattern";
@@ -10420,6 +10438,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Aggiorna";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "Non è stato possibile aggiungere i media selezionati.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "I formati articolo non sono stati configurati per questo sito.";
 
@@ -11329,8 +11350,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Apre i dettagli del sito";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Visualizza il profilo dell'autore";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Visualizza articoli dal sito";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Abbonati";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Abbonato";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}visualizza altro";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Altre azioni";
@@ -12211,6 +12244,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Rendi l'editor a blocchi simile al tuo tema.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Carica blocchi di terze parti dai plugin installati sul tuo sito.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Installa il plugin Jetpack sul tuo sito per attivare il supporto del blocco di terze parti.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Aggiungi %1$@";
