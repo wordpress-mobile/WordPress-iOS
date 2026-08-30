@@ -10,11 +10,13 @@ import WordPressData
 /// M1 supports; WP.com and Jetpack sites are a follow-up project), so the
 /// caller's legacy fall-through is a one-liner.
 ///
-/// Known M1 limitation: users without the edit_posts capability get a 401
-/// from the list's status queries and see the screen's error state. The
-/// legacy screen is equally broken for them (XML-RPC requires
-/// moderate_comments), so this is not a regression; capability handling
-/// arrives with M2's /users/me fetch.
+/// Deferred M1 limitation: users without the edit_posts capability get a 401
+/// from the list's Pending/Spam/Trash status queries and see the screen's error
+/// state. The legacy screen is equally broken for them (XML-RPC requires
+/// moderate_comments), so this is not a regression. M2 adds capability handling
+/// only for the DETAIL screen (a /users/me fetch degrades it to a view-context,
+/// read-only screen); the list's low-capability query handling stays a deferred
+/// M1 limitation to revisit at rollout.
 @MainActor
 enum CommentsRouting {
     static func makeViewController(for blog: Blog) -> UIViewController? {
@@ -25,6 +27,10 @@ enum CommentsRouting {
             return nil
         }
         let client = WordPressClientFactory.shared.instance(for: site)
-        return CommentsHostingController.make(client: client)
+        return CommentsHostingController.make(
+            client: client,
+            makeContentRenderer: { CommentsWebContentRendererAdapter() },
+            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties)
+        )
     }
 }

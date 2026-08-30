@@ -7,7 +7,16 @@ struct CommentsTabView: View {
     @State private var viewModels: [CommentsListFilter: CommentsListViewModel]
     @State private var titleResolver: PostTitleResolver
 
-    init(service: any CommentsServiceProtocol, titleResolver: PostTitleResolver) {
+    /// A tapped row (and, recursively, a parent comment) pushes a detail screen
+    /// through it.
+    private let router: CommentsDetailRouter
+
+    init(
+        service: any CommentsServiceProtocol,
+        titleResolver: PostTitleResolver,
+        router: CommentsDetailRouter
+    ) {
+        self.router = router
         _titleResolver = State(initialValue: titleResolver)
 
         // The All view model is built first so Pending and Approved can seed
@@ -51,7 +60,11 @@ struct CommentsTabView: View {
         VStack(spacing: 0) {
             tabBar
             if let viewModel = viewModels[selectedFilter] {
-                CommentsListView(viewModel: viewModel, titleResolver: titleResolver)
+                CommentsListView(
+                    viewModel: viewModel,
+                    titleResolver: titleResolver,
+                    openComment: { router.open(id: $0, seed: $1) }
+                )
             }
         }
         .navigationTitle(Strings.title)
