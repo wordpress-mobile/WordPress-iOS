@@ -4,7 +4,6 @@ import WordPressUI
 import WordPressReader
 import Gravatar
 import Combine
-import SwiftUI
 
 final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
@@ -575,16 +574,10 @@ private extension CommentContentTableViewCell {
             return
         }
         let viewModel = ReaderUserProfileViewModel(comment: comment)
-        let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
-        let navigationVC = UINavigationController(rootViewController: profileVC)
-        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .close,
-            primaryAction: .init { [weak profileVC] _ in
-                profileVC?.presentingViewController?.dismiss(animated: true)
-            }
-        )
-        navigationVC.sheetPresentationController?.detents = [.medium()]
-        window?.topmostPresentedViewController?.present(navigationVC, animated: true)
+        guard let presentingViewController = window?.topmostPresentedViewController else {
+            return
+        }
+        ReaderUserProfilePresenter.present(viewModel, from: presentingViewController)
     }
 
     @objc func accessoryButtonTapped() {

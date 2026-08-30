@@ -4,6 +4,12 @@ import SwiftSoup
 public enum ReaderPostParser {
     public enum InteractiveElement: Sendable {
         case gallery(Gallery)
+        case mention(Mention)
+    }
+
+    public struct Mention: Sendable {
+        public let handle: String
+        public let url: URL
     }
 
     public struct Gallery: Sendable {
@@ -53,13 +59,17 @@ public enum ReaderPostParser {
         public let width: Int
     }
 
-    /// Parses post HTML and returns interactive elements (galleries).
+    /// Parses post HTML and returns interactive elements.
     public static func parse(_ html: String) -> [InteractiveElement] {
         guard let document = try? SwiftSoup.parse(html) else {
             return []
         }
 
         var elements: [InteractiveElement] = []
+
+        if let anchors = try? document.select("a[data-type=fragment-mention][data-username][href]") {
+            elements.append(contentsOf: anchors.compactMap(parseMention(from:)).map(InteractiveElement.mention))
+        }
 
         // Supported gallery selectors (order matters for specificity)
         let selectors = [
@@ -86,6 +96,21 @@ public enum ReaderPostParser {
         return elements
     }
 
+    private static func parseMention(from anchor: Element) -> Mention? {
+        guard let handle = try? anchor.attr("data-username").trimmingCharacters(in: .whitespacesAndNewlines),
+            !handle.isEmpty,
+            let href = try? anchor.attr("href"),
+            !href.isEmpty,
+            let url = URL(string: href),
+            let scheme = url.scheme?.lowercased(),
+            scheme == "http" || scheme == "https"
+        else {
+            return nil
+        }
+
+        return Mention(handle: handle, url: url)
+    }
+
     private static func parseImages(from container: Element) -> [GalleryImage] {
         guard let imgElements = try? container.select("img") else {
             return []
@@ -95,8 +120,9 @@ public enum ReaderPostParser {
 
     private static func parseImage(from img: Element) -> GalleryImage? {
         guard let srcString = try? img.attr("src"),
-              !srcString.isEmpty,
-              let src = URL(string: srcString) else {
+            !srcString.isEmpty,
+            let src = URL(string: srcString)
+        else {
             return nil
         }
 
@@ -141,8 +167,9 @@ public enum ReaderPostParser {
     private static func parseSize(_ value: String) -> CGSize? {
         let parts = value.split(separator: ",")
         guard parts.count == 2,
-              let width = Double(parts[0].trimmingCharacters(in: .whitespaces)),
-              let height = Double(parts[1].trimmingCharacters(in: .whitespaces)) else {
+            let width = Double(parts[0].trimmingCharacters(in: .whitespaces)),
+            let height = Double(parts[1].trimmingCharacters(in: .whitespaces))
+        else {
             return nil
         }
         return CGSize(width: width, height: height)
@@ -150,16 +177,18 @@ public enum ReaderPostParser {
 
     /// Parses srcset string (e.g. "url1 300w, url2 600w") into entries.
     private static func parseSrcset(_ value: String) -> [SrcsetEntry] {
-        value.split(separator: ",").compactMap { entry in
-            let parts = entry.trimmingCharacters(in: .whitespaces).split(separator: " ")
-            guard parts.count == 2,
-                  let url = URL(string: String(parts[0])),
-                  let widthStr = parts[1].dropLast().description.nilIfEmpty,
-                  let width = Int(widthStr) else {
-                return nil
+        value.split(separator: ",")
+            .compactMap { entry in
+                let parts = entry.trimmingCharacters(in: .whitespaces).split(separator: " ")
+                guard parts.count == 2,
+                    let url = URL(string: String(parts[0])),
+                    let widthStr = parts[1].dropLast().description.nilIfEmpty,
+                    let width = Int(widthStr)
+                else {
+                    return nil
+                }
+                return SrcsetEntry(url: url, width: width)
             }
-            return SrcsetEntry(url: url, width: width)
-        }
     }
 }
 
