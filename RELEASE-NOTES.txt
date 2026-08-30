@@ -1,5 +1,6 @@
 27.3
 -----
+* [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]
 * [*] Stats: Improve performance when opening the Stats screen [#25938]
 
 27.2
