@@ -345,7 +345,6 @@ import WordPressShared
     case appSettingsImageQualityChanged
     case appSettingsClearMediaCacheTapped
     case appSettingsClearSpotlightIndexTapped
-    case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
     case experimentalFeatureToggled
 
@@ -1298,8 +1297,6 @@ import WordPressShared
             return "app_settings_clear_media_cache_tapped"
         case .appSettingsClearSpotlightIndexTapped:
             return "app_settings_clear_spotlight_index_tapped"
-        case .appSettingsClearSiriSuggestionsTapped:
-            return "app_settings_clear_siri_suggestions_tapped"
         case .appSettingsOpenDeviceSettingsTapped:
             return "app_settings_open_device_settings_tapped"
         case .appSettingsOptimizeImagesChanged:
