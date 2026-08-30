@@ -8,6 +8,14 @@
 
 @import OCMock;
 
+@interface BlogService (Testing)
+
+- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs
+      withAccountID:(NSManagedObjectID *)accountID
+          inContext:(NSManagedObjectContext *)context;
+
+@end
+
 @interface BlogServiceTest : XCTestCase
 
 @property (nonatomic, strong) BlogService *blogService;
@@ -67,6 +75,21 @@
 - (void)cleanUpNSUserDefaultValues
 {
     [UserSettings setDefaultDotComUUID:nil];
+}
+
+- (void)testMergeBlogsEvictsClientForDeletedBlog
+{
+    self.blog.dotComID = @1;
+    WPAccount *account = self.blog.account;
+
+    OCMExpect([self.blogServiceMock evictWordPressClientForBlog:self.blog]);
+
+    [self.blogServiceMock mergeBlogs:@[]
+                       withAccountID:account.objectID
+                           inContext:self.coreDataStack.mainContext];
+
+    OCMVerifyAll(self.blogServiceMock);
+    XCTAssertTrue(self.blog.isDeleted);
 }
 
 - (void)testUpdateSettingsAppliesPresentValuesIncludingFalse

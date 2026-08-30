@@ -121,7 +121,11 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         loadData()
     }
 
-    private func loadData() {
+    func refresh() {
+        loadData(invalidatingCache: true)
+    }
+
+    private func loadData(invalidatingCache: Bool = false) {
         loadingTask?.cancel()
         staleTimer?.cancel()
 
@@ -150,6 +154,9 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             }
 
             guard !Task.isCancelled else { return }
+            if invalidatingCache {
+                await service.invalidateTopListData(for: selection.item)
+            }
             await self.actuallyLoadData(for: selection, dateRange: effectiveDateRange)
         }
     }

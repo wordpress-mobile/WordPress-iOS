@@ -116,7 +116,10 @@ private extension DashboardCard {
             .failure, .personalize, .jetpackBadge,
             .jetpackInstall, .empty, .freeToPaidPlansDashboardCard,
             .domainRegistration,
-            .googleDomains, .extensiveLogging:
+            .googleDomains, .extensiveLogging,
+            // The new Stats card shares the legacy card's personalization entry,
+            // so only `.todaysStats` appears in the personalization menu.
+            .todaysStatsNew:
             assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus
         }

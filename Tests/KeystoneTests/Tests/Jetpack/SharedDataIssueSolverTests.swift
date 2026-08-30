@@ -5,8 +5,7 @@ import XCTest
 
 class SharedDataIssueSolverTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
-    private var contextManager: CoreDataStackMock!
+    private var contextManager: ContextManager!
     private var appKeychain: KeychainUtilsMock!
     private var sharedKeychain: KeychainUtilsMock!
     private var sharedUserDefaults: InMemoryUserDefaults!
@@ -16,8 +15,7 @@ class SharedDataIssueSolverTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        context = try! createInMemoryContext()
-        contextManager = CoreDataStackMock(mainContext: context)
+        contextManager = ContextManager.forTesting()
         appKeychain = KeychainUtilsMock()
         sharedKeychain = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
@@ -115,50 +113,6 @@ class SharedDataIssueSolverTests: XCTestCase {
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionMaximumMediaDimensionKey"), "test5")
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionRecentSitesKey"), "test6")
     }
-}
-
-// MARK: - Helpers
-
-private extension SharedDataIssueSolverTests {
-    func createInMemoryContext() throws -> NSManagedObjectContext {
-        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        try persistentStoreCoordinator.addPersistentStore(
-            ofType: NSInMemoryStoreType,
-            configurationName: nil,
-            at: nil,
-            options: nil
-        )
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-        return managedObjectContext
-    }
-}
-
-// MARK: - CoreDataStackMock
-
-private final class CoreDataStackMock: CoreDataStack {
-    var mainContext: NSManagedObjectContext
-
-    init(mainContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-    }
-
-    func newDerivedContext() -> NSManagedObjectContext {
-        mainContext
-    }
-
-    func saveContextAndWait(_ context: NSManagedObjectContext) {}
-    func save(_ context: NSManagedObjectContext) {}
-    func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
-
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(
-        _ aBlock: @escaping (NSManagedObjectContext) -> Void,
-        completion: (() -> Void)?,
-        on queue: DispatchQueue
-    ) {}
 }
 
 // MARK: - Mock Local File Store

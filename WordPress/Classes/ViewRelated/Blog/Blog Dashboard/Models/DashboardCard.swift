@@ -18,6 +18,10 @@ enum DashboardCard: String, CaseIterable, Sendable {
     case freeToPaidPlansDashboardCard
     case domainRegistration
     case todaysStats = "todays_stats"
+    /// The new Stats "Today" card (matches the new Stats screen). Declared
+    /// adjacent to `todaysStats` so it occupies the same dashboard position;
+    /// the two are mutually exclusive (see `shouldShow`).
+    case todaysStatsNew = "todays_stats_new"
     case draftPosts
     case scheduledPosts
     case pages
@@ -45,6 +49,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return DashboardScheduledPostsCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
+        case .todaysStatsNew:
+            return DashboardTodayStatsNewCardCell.self
         case .prompts:
             return DashboardPromptsCardCell.self
         case .ghost:
@@ -103,7 +109,13 @@ enum DashboardCard: String, CaseIterable, Sendable {
         case .draftPosts, .scheduledPosts:
             return shouldShowRemoteCard(apiResponse: apiResponse)
         case .todaysStats:
-            return DashboardStatsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+            return DashboardStatsCardCell.shouldShowCard(for: blog)
+                && shouldShowRemoteCard(apiResponse: apiResponse)
+                && !DashboardCard.newStatsActive(for: blog)
+        case .todaysStatsNew:
+            return DashboardCard.newStatsActive(for: blog)
+                && DashboardStatsCardCell.shouldShowCard(for: blog)
+                && shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .extensiveLogging:
@@ -145,6 +157,27 @@ enum DashboardCard: String, CaseIterable, Sendable {
         isJetpack && RemoteDashboardCard.dynamic.supported(by: blog)
     }
 
+    /// Whether the new Stats "Today" card is eligible for `blog`.
+    ///
+    /// This is intentionally a side-effect-free predicate over stored properties
+    /// only. It must NOT construct `StatsContext` or read
+    /// `WPAccount.wordPressComRestApi`: that getter posts the
+    /// sign-in-presenting `.wpAccountRequiresShowingSigninForWPComFixingAuthToken`
+    /// notification when the token is missing, and the `StatsContext(blog:)`
+    /// factory calls `wpAssertionFailure` on its failure path. Both are
+    /// unacceptable during routine dashboard parsing, where failing this check is
+    /// the normal legacy-fallback signal, not a bug. The stored `authToken` is
+    /// read directly precisely because it has no such side effects.
+    static func newStatsActive(for blog: Blog) -> Bool {
+        guard FeatureFlag.newStats.enabled,
+              blog.dotComID != nil,
+              let authToken = blog.account?.authToken,
+              !authToken.isEmpty else {
+            return false
+        }
+        return true
+    }
+
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
         guard let apiResponse else {
             return false
@@ -154,7 +187,7 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return apiResponse.hasDrafts
         case .scheduledPosts:
             return apiResponse.hasScheduled
-        case .todaysStats:
+        case .todaysStats, .todaysStatsNew:
             return apiResponse.hasStats
         case .pages:
             return apiResponse.hasPages
@@ -229,6 +262,13 @@ private extension BlogDashboardRemoteEntity {
 extension DashboardCard: BlogDashboardAnalyticPropertiesProviding {
 
     var analyticProperties: [AnyHashable: Any] {
-        ["card": rawValue]
+        switch self {
+        case .todaysStatsNew:
+            // Report the same card identity as the legacy card so existing
+            // card-shown/tapped funnels stay comparable across the flag.
+            return ["card": DashboardCard.todaysStats.rawValue]
+        default:
+            return ["card": rawValue]
+        }
     }
 }

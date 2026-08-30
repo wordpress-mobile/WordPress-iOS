@@ -391,7 +391,7 @@ private extension DataMigratorTests {
     }
 
     func createContext(
-        for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
+        for model: NSManagedObjectModel = ContextManager.currentObjectModel,
         type: String = NSInMemoryStoreType,
         at location: URL? = nil
     ) throws -> NSManagedObjectContext {
@@ -440,7 +440,7 @@ private extension DataMigratorTests {
         guard let url = urlForModel(name: modelName) else {
             return nil
         }
-        return NSManagedObjectModel(contentsOf: url)
+        return NSManagedObjectModel(contentsOf: url)?.neutralizingEntityClasses()
     }
 
     func urlForModel(name: String) -> URL? {
@@ -506,5 +506,22 @@ private extension DataMigratorTests {
 
         // Return the temporary file URL for use in a test method.
         return fileURL
+    }
+}
+
+private extension NSManagedObjectModel {
+    /// Resets every entity's managed object class to the generic `NSManagedObject`.
+    ///
+    /// The unit tests all run in one process, and Core Data registers each loaded model's entities
+    /// in a single process-global class-to-entity table. Historical schema versions (and a second
+    /// copy of the current one) all claim the same `NSManagedObject` subclasses, which leaves
+    /// `+[NSManagedObject entity]` unable to resolve a unique match and crashes unrelated Core Data
+    /// tests depending on execution order. `DataMigrator` only copies the store at the file level,
+    /// so it never needs the concrete classes.
+    func neutralizingEntityClasses() -> NSManagedObjectModel {
+        for entity in entities {
+            entity.managedObjectClassName = NSStringFromClass(NSManagedObject.self)
+        }
+        return self
     }
 }

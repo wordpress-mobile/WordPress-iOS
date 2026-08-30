@@ -3,6 +3,8 @@ import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import WebKit
+import WordPressApiCache
+import WordPressCore
 
 extension AccountService {
     // MARK: - Current Account
@@ -16,7 +18,8 @@ extension AccountService {
             return
         }
 
-        UserPersistentStoreFactory.instance().set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
+        UserPersistentStoreFactory.instance()
+            .set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
 
         let objectID = TaggedManagedObjectID(account)
         let notifyAccountChange = {
@@ -47,6 +50,13 @@ extension AccountService {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext) else {
             return
         }
+
+        WordPressApiCache.shared.removeCachedData(for: account.blogs ?? [])
+
+        account.blogs?
+            .forEach {
+                WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID($0))
+            }
 
         let objectID = TaggedManagedObjectID(account)
         coreDataStack.performAndSave { context in

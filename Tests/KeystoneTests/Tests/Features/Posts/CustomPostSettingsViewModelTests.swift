@@ -309,7 +309,7 @@ private func makeServiceDependencies() throws -> (client: WordPressClient, wpSer
         api: api,
         siteURL: URL(string: "https://example.com")!
     )
-    let wpService = try api.createService(cache: .bootstrap())
+    let wpService = try api.createService(cache: .forTesting())
 
     return (client, wpService)
 }

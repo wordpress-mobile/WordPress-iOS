@@ -27,19 +27,7 @@ public struct GutenbergExcerptGenerator {
         }
 
         let paragraph = String(content[paragraphTag.upperBound..<pEnd.lowerBound])
-
-        // Convert `<br>` runs to spaces so words don't run together, then remove
-        // any remaining tags and shortcodes.
-        let withoutBreaks = replacingMatches(of: lineBreakRegex, in: paragraph, withTemplate: " ")
-        let stripped = replacingMatches(of: tagOrShortcodeRegex, in: withoutBreaks, withTemplate: "")
-
-        // Decode entities and collapse every whitespace run into a single space,
-        // yielding single-line plain text.
-        let text = stripped
-            .stringByDecodingXMLCharacters()
-            .components(separatedBy: collapsibleWhitespace)
-            .filter { !$0.isEmpty }
-            .joined(separator: " ")
+        let text = singleLinePlainText(from: paragraph)
 
         // Truncate if needed.
         if text.count <= maxLength {
@@ -51,6 +39,25 @@ public struct GutenbergExcerptGenerator {
             return String(truncated[..<lastSpace]) + "…"
         }
         return truncated + "…"
+    }
+
+    /// Converts HTML into single-line plain text. Unlike a plain tag stripper,
+    /// `<br>` runs become spaces so adjacent words don't run together.
+    /// Remaining tags and shortcodes are removed, entities are decoded, and
+    /// whitespace runs collapse into single spaces.
+    public static func singleLinePlainText(from html: String) -> String {
+        // Convert `<br>` runs to spaces so words don't run together, then remove
+        // any remaining tags and shortcodes.
+        let withoutBreaks = replacingMatches(of: lineBreakRegex, in: html, withTemplate: " ")
+        let stripped = replacingMatches(of: tagOrShortcodeRegex, in: withoutBreaks, withTemplate: "")
+
+        // Decode entities and collapse every whitespace run into a single space,
+        // yielding single-line plain text.
+        return stripped
+            .stringByDecodingXMLCharacters()
+            .components(separatedBy: collapsibleWhitespace)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
     }
 
     /// Returns the range of the first match of `regex` in `string`, or `nil`.

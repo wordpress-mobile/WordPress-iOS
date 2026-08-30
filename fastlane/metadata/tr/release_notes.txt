@@ -1,5 +1,0 @@
-Birkaç hatayı giderdik.
-
-- Kategoriler ve etiketler artık kendi barındırdığı sitelerde düzgün çalışıyor.
-- Blog Hatırlatıcıları ekranındaki metin karanlık modda görünür. Artık saklambaç yok.
-- Siteleriniz hala yüklenirken bir paylaşım sayfası işleminden site seçerken artık bir hata görmeyeceksiniz. Ayrıca site seçici tasarımını uygulamanın diğer alanlarıyla eşleşecek şekilde güncelledik, çünkü bu geceleri bizi uyanık tutuyordu.

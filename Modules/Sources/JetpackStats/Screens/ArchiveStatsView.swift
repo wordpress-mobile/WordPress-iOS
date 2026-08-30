@@ -45,7 +45,7 @@ struct ArchiveStatsView: View {
                 Spacer()
 
                 if let totalViews = archiveSection.metrics.views {
-                    StandaloneMetricView(metric: .views, value: totalViews)
+                    StandaloneMetricView(metric: .views, value: totalViews, dateInterval: dateRange.dateInterval)
                 }
             }
         }
@@ -75,7 +75,7 @@ struct ArchiveStatsView: View {
     }
 
     private var itemsChartData: TopListData {
-        return TopListData(
+        TopListData(
             item: .archive,
             metric: .views,
             items: archiveSection.items

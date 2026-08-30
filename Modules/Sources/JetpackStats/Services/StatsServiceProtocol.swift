@@ -15,5 +15,6 @@ protocol StatsServiceProtocol: AnyObject, Sendable {
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData
     func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData
+    func invalidateTopListData(for item: TopListItemType) async
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws
 }

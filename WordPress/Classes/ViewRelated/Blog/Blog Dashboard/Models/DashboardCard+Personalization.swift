@@ -4,7 +4,9 @@ extension DashboardCard: BlogDashboardPersonalizable {
 
     var blogDashboardPersonalizationKey: String? {
         switch self {
-        case .todaysStats:
+        case .todaysStats, .todaysStatsNew:
+            // Both renderings share one key, so the single Personalize Home Tab
+            // toggle and either card's "Hide this" control both of them.
             return "todays-stats-card-enabled-site-settings"
         case .draftPosts:
             return "draft-posts-card-enabled-site-settings"

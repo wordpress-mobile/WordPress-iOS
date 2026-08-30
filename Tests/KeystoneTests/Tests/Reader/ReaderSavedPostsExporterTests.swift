@@ -3,6 +3,7 @@ import WordPressData
 
 @testable import WordPress
 
+@MainActor
 class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
     private let exporter = ReaderSavedPostsExporter()

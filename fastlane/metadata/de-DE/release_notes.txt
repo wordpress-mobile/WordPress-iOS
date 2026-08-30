@@ -1,5 +1,3 @@
-Wir haben einige Bugs zerquetscht.
+Einige individuelle Inhaltstypen sind jetzt verfügbar. Du kannst sie unter „Meine Website“ verwalten, wenn deine Website mit WP.com erstellt wurde, oder auf der Ansicht „Start“, wenn deine Website selbst gehostet ist. Wir wissen, wir sind großartig. Aber wir bleiben dabei ganz bescheiden.)
 
-- Kategorien und Schlagwörter funktionieren auf selbst gehosteten Websites jetzt richtig.
-- Der Text in der Ansicht „Blog-Erinnerungen“ ist im Dark Mode sichtbar. Schluss mit dem Versteckspielen.
-- Es wird nun kein Fehler mehr angezeigt, wenn du eine Website über eine Teilen-Aktion auswählst, während deine Websites noch geladen werden. Außerdem haben wir das Design der Website-Auswahl an andere Bereiche der App angepasst – weil es uns einfach keine Ruhe gelassen hat.
+Während wir deinen Tag verschönert haben, haben wir einen Fehler behoben, bei dem das Abbrechen der Medienauswahl im experimentellen Block-Editor Bilder aus Galerien entfernt hat. Backup-Protokolle bleiben nun ebenfalls dort, wo sie hingehören, und werden nicht mehr versehentlich auf Websites mit dem Tarif „Persönlich“ angezeigt.

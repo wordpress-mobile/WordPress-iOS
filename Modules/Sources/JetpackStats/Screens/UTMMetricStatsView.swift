@@ -106,16 +106,10 @@ struct UTMMetricStatsView: View {
 
     private func makeViewsView(current: Int, previous: Int?) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 4) {
-                Image(systemName: SiteMetric.views.systemImage)
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
-
-                Text(SiteMetric.views.localizedTitle)
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
-                    .textCase(.uppercase)
-            }
+            Text(SiteMetric.views.localizedTitle)
+                .font(.caption.weight(.medium))
+                .foregroundColor(.secondary)
+                .textCase(.uppercase)
 
             HStack(spacing: Constants.step2) {
                 Text(StatsValueFormatter.formatNumber(current, onlyLarge: true))

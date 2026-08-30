@@ -1,5 +1,0 @@
-Vi har åtgärdat ett antal buggar.
-
-- Kategorier och taggar fungerar nu korrekt på webbplatser som drivs på en egen server.
-- Texten på skärmen för bloggpåminnelser visas i mörkt läge. Nu är det slut med kurragömma.
-– Du kommer inte längre att se ett felmeddelande när du väljer en webbplats från en åtgärd på ett delningsark medan dina webbplatser fortfarande laddas in. Vi uppdaterade även designen på webbplatsväljaren så att den matchar andra delar av appen, eftersom den höll oss vakna på natten.

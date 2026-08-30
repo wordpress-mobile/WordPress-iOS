@@ -105,6 +105,21 @@
     XCTAssertTrue([str isEqualToString:sanatizedStr], @"The post summary was not plain text.");
 }
 
+- (void)testSummaryConvertsLineBreaksToSpaces {
+    RemoteReaderPost *remoteReaderPost = [RemoteReaderPost alloc];
+    NSDictionary *dict = @{@"excerpt": @"<p>Yes,<br>look behind</p>"};
+    NSString *summary = [remoteReaderPost postSummaryFromPostDictionary:dict orPostContent:@""];
+    XCTAssertEqualObjects(summary, @"Yes, look behind", @"A <br> in the API excerpt should become a space instead of running words together.");
+}
+
+- (void)testSummaryFallsBackToContentWhenExcerptIsEmpty {
+    RemoteReaderPost *remoteReaderPost = [RemoteReaderPost alloc];
+    NSDictionary *dict = @{@"excerpt": @""};
+    NSString *content = @"<p>Generated from the post content.</p>";
+    NSString *summary = [remoteReaderPost postSummaryFromPostDictionary:dict orPostContent:content];
+    XCTAssertEqualObjects(summary, @"Generated from the post content.", @"An empty API excerpt should fall back to a summary generated from the post content.");
+}
+
 - (void)testSiteIsAtomic {
     NSString *key = @"site_is_atomic";
 

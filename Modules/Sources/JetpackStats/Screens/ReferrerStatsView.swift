@@ -5,6 +5,7 @@ import DesignSystem
 struct ReferrerStatsView: View {
     let referrer: TopListItem.Referrer
     let dateRange: StatsDateRange
+    var onMarkedAsSpam: () -> Void = {}
 
     private let imageSize: CGFloat = 28
 
@@ -20,8 +21,16 @@ struct ReferrerStatsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step3) {
-                headerCard
-                    .dynamicTypeSize(...DynamicTypeSize.xLarge)
+                VStack(alignment: .leading, spacing: Constants.step1) {
+                    headerCard
+                        .dynamicTypeSize(...DynamicTypeSize.xLarge)
+                    if referrer.canMarkAsSpam && !isMarkedAsSpam {
+                        Text(Strings.ReferrerDetails.markAsSpamExplanation)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, Constants.step2)
+                    }
+                }
                 if !referrer.children.isEmpty {
                     childrenCard
                 }
@@ -39,7 +48,7 @@ struct ReferrerStatsView: View {
         .navigationTitle(Strings.ReferrerDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .alert(Strings.ReferrerDetails.errorAlertTitle, isPresented: $showErrorAlert) {
-            Button(Strings.Buttons.ok, role: .cancel) { }
+            Button(Strings.Buttons.ok, role: .cancel) {}
         } message: {
             Text(errorMessage)
         }
@@ -55,21 +64,23 @@ struct ReferrerStatsView: View {
     var headerCard: some View {
         VStack(spacing: Constants.step2) {
             referrerInfoRow
-            Divider()
-            markAsSpamButton
-                .confirmationDialog(
-                    Strings.ReferrerDetails.markAsSpam,
-                    isPresented: $showConfirmationDialog
-                ) {
-                    Button(Strings.ReferrerDetails.markAsSpam, role: .destructive) {
-                        Task {
-                            await markAsSpam()
+            if referrer.canMarkAsSpam {
+                Divider()
+                markAsSpamButton
+                    .confirmationDialog(
+                        Strings.ReferrerDetails.markAsSpam,
+                        isPresented: $showConfirmationDialog
+                    ) {
+                        Button(Strings.ReferrerDetails.markAsSpam, role: .destructive) {
+                            Task {
+                                await markAsSpam()
+                            }
                         }
+                        Button(Strings.Buttons.cancel, role: .cancel) {}
+                    } message: {
+                        Text(Strings.ReferrerDetails.confirmAsSpamMessage(domain: referrer.spamDomain ?? ""))
                     }
-                    Button(Strings.Buttons.cancel, role: .cancel) { }
-                } message: {
-                    Text(Strings.ReferrerDetails.confirmAsSpamMessage(domain: referrer.domain ?? ""))
-                }
+            }
         }
         .padding(Constants.step2)
         .cardStyle()
@@ -122,7 +133,7 @@ struct ReferrerStatsView: View {
     @ViewBuilder
     var viewsCount: some View {
         if let views = referrer.metrics.views {
-            StandaloneMetricView(metric: .views, value: views)
+            StandaloneMetricView(metric: .views, value: views, dateInterval: dateRange.dateInterval)
         }
     }
 
@@ -162,7 +173,8 @@ struct ReferrerStatsView: View {
             TopListItemsView(
                 data: childrenChartData,
                 itemLimit: referrer.children.count,
-                dateRange: dateRange
+                dateRange: dateRange,
+                onReferrerMarkedAsSpam: onMarkedAsSpam
             )
         }
         .padding(.vertical, Constants.step2)
@@ -170,7 +182,7 @@ struct ReferrerStatsView: View {
     }
 
     private var childrenChartData: TopListData {
-        return TopListData(
+        TopListData(
             item: .referrers,
             metric: .views,
             items: referrer.children
@@ -178,7 +190,7 @@ struct ReferrerStatsView: View {
     }
 
     private func markAsSpam() async {
-        guard let domain = referrer.domain else { return }
+        guard let domain = referrer.spamDomain else { return }
 
         isMarkingAsSpam = true
 
@@ -186,8 +198,11 @@ struct ReferrerStatsView: View {
             try await context.service.toggleSpamState(for: domain, currentValue: isMarkedAsSpam)
             // Update local state to reflect the change
             isMarkedAsSpam = true
+            onMarkedAsSpam()
         } catch {
-            errorMessage = error.localizedDescription.isEmpty ? Strings.ReferrerDetails.markAsSpamError : error.localizedDescription
+            errorMessage =
+                error.localizedDescription.isEmpty
+                ? Strings.ReferrerDetails.markAsSpamError : error.localizedDescription
             showErrorAlert = true
         }
 
@@ -197,10 +212,21 @@ struct ReferrerStatsView: View {
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Without Spam Button") {
     NavigationView {
         ReferrerStatsView(
             referrer: .mock,
+            dateRange: Calendar.demo.makeDateRange(for: .last7Days)
+        )
+    }
+    .navigationViewStyle(.stack)
+    .tint(Constants.Colors.jetpack)
+}
+
+#Preview("With Spam Button") {
+    NavigationView {
+        ReferrerStatsView(
+            referrer: .spamEligibleMock,
             dateRange: Calendar.demo.makeDateRange(for: .thisYear)
         )
     }
@@ -212,11 +238,13 @@ private extension TopListItem.Referrer {
     static let mock = TopListItem.Referrer(
         name: "Google Search",
         domain: "google.com",
+        url: nil,
         iconURL: URL(string: "https://www.google.com/favicon.ico"),
         children: [
             TopListItem.Referrer(
                 name: "wordpress development tutorial",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 850)
@@ -224,6 +252,7 @@ private extension TopListItem.Referrer {
             TopListItem.Referrer(
                 name: "swift programming blog",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 750)
@@ -231,11 +260,21 @@ private extension TopListItem.Referrer {
             TopListItem.Referrer(
                 name: "ios app development best practices",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 600)
             )
         ],
         metrics: SiteMetricsSet(views: 2200)
+    )
+
+    static let spamEligibleMock = TopListItem.Referrer(
+        name: "google.com",
+        domain: mock.domain,
+        url: mock.url,
+        iconURL: mock.iconURL,
+        children: mock.children,
+        metrics: mock.metrics
     )
 }

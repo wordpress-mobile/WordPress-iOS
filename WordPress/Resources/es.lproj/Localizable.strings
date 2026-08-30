@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2026-07-23 13:22:33+0000 */
+/* Translation-Revision-Date: 2026-08-21 10:03:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.3 */
+/* Generator: GlotPress/4.1.0 */
 /* Language: es */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "No se pudo conectar. Tu alojamiento está bloqueando peticiones POST, y la aplicación lo necesita para poder comunicar con tu sitio. Contacta con tu proveedor de alojamiento para resolver este problema.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "No se ha podido establecer una conexión segura con el punto final XML-RPC de tu sitio web.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "No se han podido cargar los datos. Vuelve a cargar más tarde.";
@@ -3081,7 +3084,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Manage" = "Gestionar";
 
 /* Jetpack Settings: Manage Connection
-   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Gestionar conexión";
 
@@ -5900,6 +5902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Usar estilos de tema";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Usar bloques de terceros (beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7766,14 +7771,14 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Solo tienes que comprar un dominio.";
 
-/* The expired label of the domain card in All Domains screen. */
-"domain.management.card.expired.label" = "Caducado";
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Caducado el %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Caduca el %1$@";
 
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nunca caduca";
-
-/* The renews label of the domain card in All Domains screen. */
-"domain.management.card.renews.label" = "Se renueva";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Buscar un dominio";
@@ -7948,6 +7953,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Todos";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d patrones";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 patrón";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Insertar patrón";
@@ -9834,21 +9845,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of the migration done screen. */
 "migration.done.title" = "¡Gracias por cambiar a Jetpack!";
 
-/* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Parece que tienes la aplicación de WordPress instalada.";
-
-/* The primary button title in the Load WordPress screen */
-"migration.loadWordpress.primaryButton" = "Abrir WordPress";
-
-/* The secondary button title in the Load WordPress screen */
-"migration.loadWordpress.secondaryButton" = "No, gracias";
-
-/* The secondary description in the Load WordPress screen */
-"migration.loadWordpress.secondaryDescription" = "¿Te gustaría transferir tus datos desde la aplicación de WordPress y acceder automáticamente?";
-
-/* The title in the Load WordPress screen */
-"migration.loadWordpress.title" = "¡Te damos la bienvenida a Jetpack!";
-
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decidir más tarde";
 
@@ -9860,9 +9856,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Recibirás las mismas notificaciones, pero ahora te llegarán desde la aplicación de Jetpack.";
-
-/* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Desactivaremos los avisos de la aplicación de WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Activa las notificaciones para estar al tanto de lo que sucede en tu sitio";
@@ -10528,6 +10521,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Actualizar";
+
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "No se ha podido añadir el contenido multimedia seleccionado.";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Los formatos de publicación no se han configurado para este sitio.";
@@ -11438,11 +11434,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Abre los detalles del sitio";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Ver el perfil del autor";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Ver las entradas del sitio";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Suscribirse";
 
-/* Button in the reader post header to view the original post in a browser */
-"reader.post.header.viewOriginal" = "Ver original";
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Suscrito";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}ver más";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Más acciones";
@@ -12318,7 +12323,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacidad";
 
-/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+/* Caveat shown under the 'Use theme styles' toggle when the site doesn't have a block theme. The toggle still works; the styles may just not match the content. */
 "siteSettings.themeStyles.footer.blockThemeSuggested" = "Tu sitio no utiliza un tema de bloques, por lo que es posible que el editor no se adapte correctamente a tu contenido. Si algo no se ve bien, puedes desactivar los estilos del editor.";
 
 /* Explanation for the option to enable theme styles when the feature is available */
@@ -12326,6 +12331,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
 "siteSettings.themeStyles.footer.gutenbergRequired" = "Instala el plugin Gutenberg en tu sitio web para activar la compatibilidad con el estilo del tema.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Carga bloques de terceros desde los plugins instalados en tu sitio web.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Instala el plugin Jetpack en tu sitio web para activar la compatibilidad con bloques de terceros.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Añadir %1$@";

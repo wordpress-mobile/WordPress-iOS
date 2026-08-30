@@ -91,19 +91,6 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    # Copy the branch protection settings from the default branch to the new release branch
-    copy_branch_protection(
-      repository: GITHUB_REPO,
-      from_branch: DEFAULT_BRANCH,
-      to_branch: release_branch_name
-    )
-    # But allow admins to bypass restrictions, so that wpmobilebot can push to the release branch directly
-    set_branch_protection(
-      repository: GITHUB_REPO,
-      branch: release_branch_name,
-      enforce_admins: false
-    )
-
     begin
       # Move PRs to next milestone
       moved_prs = update_assigned_milestone(
@@ -630,8 +617,6 @@ end
 # Delete a branch remotely, after having removed any GitHub branch protection
 #
 def delete_remote_git_branch!(branch_name)
-  remove_branch_protection(repository: GITHUB_REPO, branch: branch_name)
-
   Git.open(Dir.pwd).push('origin', branch_name, delete: true)
 end
 

@@ -9,7 +9,11 @@ import BuildSettingsKit
 
 /// A UIViewController wrapper for the new SwiftUI StatsMainView
 class StatsHostingViewController: UIViewController {
-    static func makeNewTrafficViewController(blog: Blog? = nil, parentViewController: UIViewController, isDemo: Bool = false) -> UIViewController? {
+    static func makeNewTrafficViewController(
+        blog: Blog? = nil,
+        parentViewController: UIViewController,
+        isDemo: Bool = false
+    ) -> UIViewController? {
         let context: StatsContext
         if isDemo {
             context = StatsContext.demo
@@ -54,14 +58,16 @@ class StatsHostingViewController: UIViewController {
 extension StatsContext {
     init?(blog: Blog) {
         guard let siteID = blog.dotComID?.intValue,
-              let api = blog.account?.wordPressComRestApi else {
+            let api = blog.account?.wordPressComRestApi
+        else {
             wpAssertionFailure("required context missing")
             return nil
         }
         self.init(
             timeZone: blog.timeZone ?? .current,
             siteID: siteID,
-            api: api
+            api: api,
+            postLikesStore: StatsPostLikesStore(siteID: Int64(siteID))
         )
 
         // Configure avatar preprocessing using Gravatar
@@ -74,9 +80,31 @@ extension StatsContext {
             return avatarURL.replacing(options: options)?.url ?? url
         }
 
-        self.tracker = WPAnalyticsStatsTracker()
+        self.tracker = WPAnalyticsStatsTracker(blogProperties: blog.analyticsProperties)
 
         self.upgradeURL = Self.makeUpgradeURL(for: blog)
+    }
+
+    /// A context for embedding the Today card on the My Site dashboard: the same
+    /// as the Stats-screen context but with NO analytics tracker, so the
+    /// embedded card never feeds the Stats-screen funnels (the dashboard fires
+    /// its own card-shown/tapped events, matching the legacy card).
+    ///
+    /// It reuses `StatsContext(blog:)`, which asserts on failure. That is an
+    /// accepted, deliberate trade-off: `DashboardCard.newStatsActive` only
+    /// selects this card for WP.com-connected sites with a non-empty auth token,
+    /// and `WPAccount.wordPressComRestApi` is non-nil whenever the token is
+    /// non-empty, so construction succeeds in practice. The assertion is
+    /// reachable only if a logout races the synchronous, main-thread
+    /// parse -> configure path, which is effectively unreachable. On that
+    /// theoretical failure the cell renders the empty state and falls back to
+    /// the legacy card. See the cross-agent code review discussion.
+    static func dashboard(blog: Blog) -> StatsContext? {
+        guard var context = StatsContext(blog: blog) else {
+            return nil
+        }
+        context.tracker = nil
+        return context
     }
 
     private static func makeUpgradeURL(for blog: Blog) -> URL {
@@ -101,7 +129,7 @@ extension StatsRouter {
 /// Shared router implementation for Jetpack app stats navigation
 private final class JetpackAppStatsRouterScreenFactory: StatsRouterScreenFactory {
     func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController {
-        StatsLikesListViewController(
+        LikesListHostViewController(
             siteID: siteID as NSNumber,
             postID: NSNumber(value: postID),
             totalLikes: totalLikes
@@ -120,12 +148,19 @@ private final class JetpackAppStatsRouterScreenFactory: StatsRouterScreenFactory
 
 /// A StatsTracker implementation that bridges JetpackStats analytics to WPAnalytics
 private final class WPAnalyticsStatsTracker: StatsTracker {
+    private let blogProperties: BlogAnalyticsProperties
+
+    init(blogProperties: BlogAnalyticsProperties) {
+        self.blogProperties = blogProperties
+    }
+
     func send(_ event: StatsEvent, properties: [String: String]) {
         // Convert String properties to [AnyHashable: Any]
         let wpProperties: [AnyHashable: Any] = properties.reduce(into: [:]) { result, pair in
             result[pair.key] = pair.value
         }
 
-        WPAnalytics.track(event.wpEvent, properties: wpProperties)
+        // Every Stats event is scoped to the site being viewed, so attach its blog_id and site_type.
+        WPAnalytics.track(event.wpEvent, properties: wpProperties, blogProperties: blogProperties)
     }
 }

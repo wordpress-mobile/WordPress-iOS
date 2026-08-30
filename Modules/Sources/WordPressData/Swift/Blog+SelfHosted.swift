@@ -343,7 +343,7 @@ extension WordPressSite {
     /// access. The two don't always line up: a WordPress.com Atomic site
     /// presents as `.dotCom` but is accessed directly when application
     /// password credentials are available.
-    public enum Transport {
+    public enum Transport: Hashable {
         /// Requests go to the site's own REST API root, authenticated with
         /// an application password.
         case direct(ApplicationPasswordCredentials)

@@ -2,14 +2,20 @@ import SwiftUI
 import Charts
 import WordPressUI
 
-struct TodayCard: View {
+struct TodayCard<MenuContent: View>: View {
     @ObservedObject private var viewModel: TodayCardViewModel
+
+    /// When non-nil, replaces the card's built-in more-menu items so an
+    /// embedding host (the My Site dashboard) can supply its own. The card keeps
+    /// rendering the ellipsis button itself, so only the items differ.
+    private let menuContent: (() -> MenuContent)?
 
     @ScaledMetric(relativeTo: .title)
     private var sparklineHeight: CGFloat = 52
 
-    init(viewModel: TodayCardViewModel) {
+    init(viewModel: TodayCardViewModel, @ViewBuilder menuContent: @escaping () -> MenuContent) {
         self.viewModel = viewModel
+        self.menuContent = menuContent
     }
 
     var body: some View {
@@ -56,16 +62,11 @@ struct TodayCard: View {
     }
 
     private var prominentMetricLabel: some View {
-        HStack(spacing: 2) {
-            Image(systemName: SiteMetric.views.systemImage)
-                .font(.caption2.weight(.medium))
-                .scaleEffect(x: 0.9, y: 0.9)
-            Text(SiteMetric.views.localizedTitle.uppercased())
-                .font(.caption.weight(.medium))
-        }
-        .foregroundStyle(Color.secondary)
-        .offset(y: 3) // Get it close to the value
-        .dynamicTypeSize(...DynamicTypeSize.large)
+        Text(SiteMetric.views.localizedTitle.uppercased())
+            .font(.caption.weight(.medium))
+            .foregroundStyle(Color.secondary)
+            .offset(y: 3) // Get it close to the value
+            .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
     private var currentDateText: String {
@@ -185,7 +186,11 @@ struct TodayCard: View {
 
     private var moreMenu: some View {
         Menu {
-            moreMenuContent
+            if let menuContent {
+                menuContent()
+            } else {
+                moreMenuContent
+            }
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 15))
@@ -203,6 +208,14 @@ struct TodayCard: View {
             }
         }
         EditCardMenuContent(cardViewModel: viewModel)
+    }
+}
+
+extension TodayCard where MenuContent == EmptyView {
+    /// Uses the card's built-in more-menu (the Stats screen's behavior).
+    init(viewModel: TodayCardViewModel) {
+        self.viewModel = viewModel
+        self.menuContent = nil
     }
 }
 

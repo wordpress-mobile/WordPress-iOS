@@ -11,6 +11,7 @@ struct TopListItemView: View {
     let maxValue: Int
     let dateRange: StatsDateRange
     var totalValue: Int?
+    var onReferrerMarkedAsSpam: () -> Void = {}
 
     @State private var isPressed = false
 
@@ -170,7 +171,11 @@ private extension TopListItemView {
                 .environment(\.router, router)
             router.navigate(to: detailsView, title: Strings.AuthorDetails.title)
         case let referrer as TopListItem.Referrer:
-            let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
+            let detailsView = ReferrerStatsView(
+                referrer: referrer,
+                dateRange: dateRange,
+                onMarkedAsSpam: onReferrerMarkedAsSpam
+            )
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView, title: Strings.ReferrerDetails.title)
@@ -270,6 +275,7 @@ private func makePreviewItems() -> some View {
             TopListItem.Referrer(
                 name: "Google Search",
                 domain: "google.com",
+                url: nil,
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 50000)
@@ -281,6 +287,7 @@ private func makePreviewItems() -> some View {
             TopListItem.Referrer(
                 name: "Direct Traffic",
                 domain: nil,
+                url: nil,
                 iconURL: nil,
                 children: [],
                 metrics: SiteMetricsSet(views: 12300)

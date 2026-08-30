@@ -368,6 +368,83 @@ final class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         wait(for: [failure], timeout: 0.3)
     }
 
+    func testItWillNotGuessXMLRPCOnHTTPForHTTPSInput() {
+        // Given
+        var schemes = Set<String>()
+        // Stub all, we only care about the URL schemes that are being tested.
+        stub(condition: { request -> Bool in
+            if let scheme = request.url?.scheme {
+                schemes.insert(scheme)
+            }
+            return true
+        }, response: { _ in
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil)
+            return HTTPStubsResponse(error: error)
+        })
+
+        // Unsecured ATS settings armed the http fallback before the fix (GHSA-qxpr-7v78-mh5g).
+        let validator = WordPressOrgXMLRPCValidator(makeUnsecuredAppTransportSecuritySettings())
+
+        // When
+        let expectation = self.expectation(description: "Wait for failure")
+        validator.guessXMLRPCURLForSite("https://example.com", userAgent: "", success: {
+            XCTFail("Unexpected result: \($0)")
+            expectation.fulfill()
+        }, failure: { _ in
+            expectation.fulfill()
+        })
+
+        wait(for: [expectation], timeout: 2.0)
+
+        // Then
+        XCTAssertEqual(schemes, ["https"])
+    }
+
+    func testItRejectsInsecureEndpointDiscoveredViaRSDForHTTPSInput() throws {
+        let responseInvalidPath = try XCTUnwrap(xmlrpcResponseInvalidPath)
+        stub(condition: isScheme("https") && isHost("www.apple.com") && isPath("/blog/xmlrpc.php")) { _ in
+            fixture(filePath: responseInvalidPath, status: 403, headers: nil)
+        }
+
+        stub(condition: isScheme("https") && isHost("www.apple.com") && isPath("/blog")) { _ in
+            let html = """
+                <!DOCTYPE html>
+                <html>
+                    <head>
+                        <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.apple.com/xmlrpc.php?rsd" />
+                        <title>test site</title>
+                    </head>
+                    <body>hello world</body>
+                </html>
+                """
+            return HTTPStubsResponse(data: html.data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+
+        // The plaintext endpoint answers with a valid methods list, but it must not be returned.
+        let responseListPath = try XCTUnwrap(
+            OHPathForFileInBundle("xmlrpc-response-list-methods.xml", Bundle.coreAPITestsBundle)
+        )
+        stub(condition: isScheme("http") && isHost("www.apple.com") && isPath("/xmlrpc.php")) { _ in
+            fixture(
+                filePath: responseListPath,
+                status: 200,
+                headers: [
+                    "Content-Type": "application/xml"
+                ]
+            )
+        }
+
+        let failure = self.expectation(description: "returns error")
+        let validator = WordPressOrgXMLRPCValidator(makeUnsecuredAppTransportSecuritySettings())
+        validator.guessXMLRPCURLForSite("https://www.apple.com/blog", userAgent: "test/1.0", success: {
+            XCTFail("Unexpected result: \($0)")
+        }) { error in
+            XCTAssertEqual(error as? WordPressOrgXMLRPCValidatorError, .insecureEndpoint)
+            failure.fulfill()
+        }
+        wait(for: [failure], timeout: 0.3)
+    }
+
     let xmlrpcResponseInvalidPath = OHPathForFileInBundle(
         "xmlrpc-response-invalid.html",
         Bundle.coreAPITestsBundle
