@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'json'
+require 'fileutils'
+require 'net/http'
+require 'tmpdir'
+
 # The names for WordPress and Jetpack are currently set but unused.
 # They will be once we'll the split build step from the upload step in CI.
 APP_STORE_CONNECT_BUILD_NAME_WORDPRESS = 'WordPress'
@@ -9,6 +14,13 @@ APP_STORE_CONNECT_BUILD_NAME_READER = 'Reader'
 SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
+
+# GutenbergKit ships its editor JS as a prebuilt SwiftPM binary target and
+# publishes the matching JS source maps as a separate object under the same
+# versioned CDN prefix. We fetch them by the resolved GutenbergKit version and
+# upload them to Sentry so editor exceptions symbolicate.
+GUTENBERG_KIT_SOURCEMAPS_CDN_BASE = 'https://cdn.a8c-ci.services/gutenbergkit'
+GUTENBERG_KIT_PACKAGE_RESOLVED_PATH = File.join('Modules', 'Package.resolved')
 
 # Prototype Builds in Firebase App Distribution
 PROTOTYPE_BUILD_XCODE_CONFIGURATION = 'Release-Alpha'
@@ -189,6 +201,13 @@ platform :ios do
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
     )
 
+    upload_gutenberg_kit_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      release_version: release_version_current,
+      build_version: build_code_current,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
+    )
+
     next unless create_release
 
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
@@ -255,6 +274,13 @@ platform :ios do
     build_code = build_code_current
 
     upload_gutenberg_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+      release_version: release_version,
+      build_version: build_code,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER
+    )
+
+    upload_gutenberg_kit_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       release_version: release_version,
       build_version: build_code,
@@ -395,6 +421,13 @@ platform :ios do
       build_version: build_code,
       app_identifier: app_identifier
     )
+
+    upload_gutenberg_kit_sourcemaps(
+      sentry_project_slug: sentry_project_slug,
+      release_version: release_version_current,
+      build_version: build_code,
+      app_identifier: app_identifier
+    )
   end
 
   # Convenience wrapper that builds and uploads each app to TestFlight, one after
@@ -499,9 +532,22 @@ platform :ios do
       path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    # Source maps must be uploaded under the SAME release the app embeds at
+    # runtime. Prototype builds set `VERSION_SHORT` to `pr_or_branch` (not the
+    # marketing version), so the Sentry release is
+    # `<app_identifier>@<pr_or_branch>+<build_number>`. Uploading under
+    # `release_version_current` here would not match the runtime event, leaving
+    # frames unsymbolicated.
     upload_gutenberg_sourcemaps(
       sentry_project_slug: sentry_project_slug,
-      release_version: release_version_current,
+      release_version: pr_or_branch,
+      build_version: build_number,
+      app_identifier: app_identifier
+    )
+
+    upload_gutenberg_kit_sourcemaps(
+      sentry_project_slug: sentry_project_slug,
+      release_version: pr_or_branch,
       build_version: build_number,
       app_identifier: app_identifier
     )
@@ -629,5 +675,118 @@ platform :ios do
       strip_common_prefix: true,
       sourcemap: gutenberg_bundle_source_map_folder
     )
+  end
+
+  # Fetch GutenbergKit's JS source maps (for the version this build resolved) and
+  # upload them to Sentry. GutenbergKit's editor JS runs inside the host app, so
+  # its exceptions carry the host app's release/dist — hence the same
+  # <app_identifier>@<release_version>+<build_version> coordinates as
+  # `upload_gutenberg_sourcemaps`.
+  #
+  # Maps ship as a separate CDN object (not inside the XCFramework, whose SwiftPM
+  # binary-target contents aren't surfaced to this build). The upload is
+  # best-effort: a GutenbergKit version published before this feature existed has
+  # no maps to fetch, so a missing artifact is logged and skipped rather than
+  # failing the build.
+  def upload_gutenberg_kit_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
+    path_segment = gutenberg_kit_sourcemaps_path_segment
+    if path_segment.nil?
+      UI.important('Could not determine the resolved GutenbergKit version; skipping GutenbergKit source-map upload.')
+      return
+    end
+
+    Dir.mktmpdir('gutenberg-kit-sourcemaps') do |sourcemaps_folder|
+      unless download_gutenberg_kit_sourcemaps(path_segment: path_segment, destination: sourcemaps_folder)
+        UI.important("No GutenbergKit source maps published for '#{path_segment}'; skipping upload.")
+        next
+      end
+
+      sentry_upload_sourcemap(
+        auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+        org_slug: SENTRY_ORG_SLUG,
+        project_slug: sentry_project_slug,
+        version: release_version,
+        dist: build_version,
+        build: build_version,
+        app_identifier: app_identifier,
+        # The maps carry GutenbergKit's build-machine paths; `rewrite` and
+        # `strip_common_prefix` normalize them so they line up with the
+        # on-device frame paths, mirroring `upload_gutenberg_sourcemaps`.
+        rewrite: true,
+        strip_common_prefix: true,
+        sourcemap: sourcemaps_folder
+      )
+    end
+  end
+
+  # Derive the CDN path segment under which GutenbergKit published its source
+  # maps for the version SwiftPM resolved in `Modules/Package.resolved`. Returns:
+  # - `<version>` for a release pin (e.g. `0.18.0`), matching `gutenbergkit/0.18.0/`
+  # - `pr-builds/<N>` for a `pr-build/<N>` branch pin, matching `gutenbergkit/pr-builds/<N>/`
+  # - nil if the file or GutenbergKit pin can't be found.
+  def gutenberg_kit_sourcemaps_path_segment
+    resolved_path = File.join(PROJECT_ROOT_FOLDER, GUTENBERG_KIT_PACKAGE_RESOLVED_PATH)
+    unless File.exist?(resolved_path)
+      UI.important("#{GUTENBERG_KIT_PACKAGE_RESOLVED_PATH} not found; cannot resolve GutenbergKit version.")
+      return nil
+    end
+
+    pins = JSON.parse(File.read(resolved_path)).fetch('pins', [])
+    state = pins.find { |pin| pin['identity'] == 'gutenbergkit' }&.fetch('state', nil)
+    sourcemaps_path_segment_for_pin_state(state)
+  rescue JSON::ParserError => e
+    UI.important("Failed to parse #{GUTENBERG_KIT_PACKAGE_RESOLVED_PATH}: #{e.message}")
+    nil
+  end
+
+  # Map a resolved SwiftPM pin `state` to its published source-map path segment:
+  # a released `version` verbatim, or `pr-builds/<N>` for a `pr-build/<N>` branch
+  # pin (see GutenbergKit's `publish_pr_xcframework`). Returns nil for anything
+  # else (a bare revision or an unrelated branch has no published maps).
+  def sourcemaps_path_segment_for_pin_state(state)
+    return nil if state.nil?
+    return state['version'] unless state['version'].nil?
+
+    match = state['branch']&.match(%r{\Apr-build/(\d+)\z})
+    match ? "pr-builds/#{match[1]}" : nil
+  end
+
+  # Download and unzip the GutenbergKit source maps for `path_segment` (a version
+  # or `pr-builds/<N>`) into `destination`. Returns true on success, false if the
+  # artifact doesn't exist (e.g. a version published before this feature) or the
+  # download/unzip fails.
+  def download_gutenberg_kit_sourcemaps(path_segment:, destination:)
+    url = "#{GUTENBERG_KIT_SOURCEMAPS_CDN_BASE}/#{path_segment}/GutenbergKitSourceMaps.zip"
+    zip_path = File.join(destination, 'GutenbergKitSourceMaps.zip')
+
+    UI.message("Downloading GutenbergKit source maps: #{url}")
+    response = http_get_following_redirects(url)
+    unless response.is_a?(Net::HTTPSuccess)
+      UI.important("GutenbergKit source maps request returned #{response.code} for #{url}.")
+      return false
+    end
+
+    File.binwrite(zip_path, response.body)
+    # `-o` overwrite, `-q` quiet; unzip into the destination folder.
+    sh('unzip', '-o', '-q', zip_path, '-d', destination)
+    FileUtils.rm_f(zip_path)
+    true
+  rescue StandardError => e
+    UI.important("Failed to download or unzip GutenbergKit source maps for '#{path_segment}': #{e.message}")
+    false
+  end
+
+  # GET `url`, following up to `limit` redirects. The CDN normally serves the
+  # object directly, but tolerate a redirect to a signed URL just in case.
+  def http_get_following_redirects(url, limit: 5)
+    raise ArgumentError, 'Too many HTTP redirects' if limit.zero?
+
+    response = Net::HTTP.get_response(URI(url))
+    case response
+    when Net::HTTPRedirection
+      http_get_following_redirects(response['location'], limit: limit - 1)
+    else
+      response
+    end
   end
 end
