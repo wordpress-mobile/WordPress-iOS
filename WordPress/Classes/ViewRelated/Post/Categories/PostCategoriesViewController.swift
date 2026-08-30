@@ -167,11 +167,15 @@ import WordPressUI
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
         cell.textLabel?.textAlignment = .natural
         cell.textLabel?.text = Strings.noCategoryText
-        if selectedCategories.isEmpty {
-            cell.accessoryType = selectedCategories.isEmpty ? .checkmark : .none
-        }  else {
-            cell.accessoryType = .none
-        }
+
+        // Cells are reused with the category rows, which show their selected state
+        // using `accessoryView`. It takes precedence over `accessoryType`, so it has
+        // to be cleared for the checkmark to show.
+        cell.accessoryView = nil
+
+        let isSelected = selectedCategories.isEmpty
+        cell.accessoryType = isSelected ? .checkmark : .none
+        configureAccessibility(for: cell, title: Strings.noCategoryText, isSelected: isSelected)
     }
 
     private func configureRow(for category: PostCategory, cell: WPTableViewCell) {
@@ -183,12 +187,16 @@ import WordPressUI
         WPStyleGuide.configureTableViewCell(cell)
 
         let isSelected = selectedCategories.contains(category)
+        cell.accessoryType = .none
         cell.accessoryView = makeAccessoryView(isSelected: isSelected)
+        configureAccessibility(for: cell, title: title, isSelected: isSelected)
+    }
 
-        // The checkmark is drawn in an image view, which carries no accessibility
-        // information, so selected and unselected rows were indistinguishable.
-        // Make the cell a single element and let the trait carry the state, rather
-        // than appending "selected" to the label.
+    /// The selected state is conveyed by a checkmark image, which carries no
+    /// accessibility information, so selected and unselected rows were
+    /// indistinguishable. Make the cell a single element and let the trait carry
+    /// the state, rather than appending "selected" to the label.
+    private func configureAccessibility(for cell: UITableViewCell, title: String, isSelected: Bool) {
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = title
         cell.accessibilityTraits = isSelected ? [.selected] : []
@@ -265,10 +273,14 @@ import WordPressUI
                 if selectedCategories.contains(category),
                     let index = selectedCategories.firstIndex(of: category) {
                     selectedCategories.remove(at: index)
-                    tableView.cellForRow(at: indexPath)?.accessoryView = makeAccessoryView(isSelected: false)
                 } else {
                     selectedCategories.append(category)
-                    tableView.cellForRow(at: indexPath)?.accessoryView = makeAccessoryView(isSelected: true)
+                }
+
+                // Re-run the row configuration so the accessory view and the
+                // accessibility data can never get out of sync.
+                if let cell = tableView.cellForRow(at: indexPath) as? WPTableViewCell {
+                    configureRow(for: category, cell: cell)
                 }
 
                 delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
