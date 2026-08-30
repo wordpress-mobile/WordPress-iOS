@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-19 12:26:53+0000 */
+/* Translation-Revision-Date: 2026-08-21 12:36:27+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ro */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nu am putut face conexiunea. Gazda ta blochează cererile POST, dar aplicația are nevoie de ele pentru a comunica cu site-ul tău. Te rog să contactezi serviciul tău de găzduire pentru a rezolva această problemă.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Nu am putut să stabilesc o conexiune securizată la punctul-final XML-RPC al site-ului tău.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Nu am putut să încarc datele. Te rog să reîmprospătezi mai târziu.";

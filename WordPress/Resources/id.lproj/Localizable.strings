@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-29 09:56:16+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:56:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: id */
@@ -1448,6 +1448,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Tidak dapat terhubung. Host Anda memblokir permintaan POST, padahal aplikasi memerlukannya untuk berkomunikasi dengan situs Anda. Hubungi penyedia hosting Anda untuk mengatasi kendala ini.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Tidak dapat membuat koneksi aman ke titik akhir XML-RPC situs Anda.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Tidak dapat memuat data. Muat ulang lagi nanti.";
@@ -5896,6 +5899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Gunakan gaya tema";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Gunakan blok pihak ketiga (beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7753,6 +7759,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Beli domain saja";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Kedaluwarsa %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Kedaluwarsa pada %1$@";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Tidak akan kedaluwarsa";
 
@@ -7929,6 +7941,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Semua";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d pola";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 pola";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Sisipkan Pola";
@@ -10459,6 +10477,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Perbarui";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "Media yang dipilih tidak dapat ditambahkan.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Format pos belum dikonfigurasi untuk situs ini.";
 
@@ -11350,8 +11371,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Membuka detail situs";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Melihat profil penulis";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Melihat pos dari situs";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Berlangganan";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Berlangganan";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}lihat selengkapnya";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Tindakan lainnya";
@@ -12229,6 +12262,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Jadikan editor blok terlihat seperti tema Anda.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Instal plugin Gutenberg di situs Anda untuk mengaktifkan dukungan gaya tema.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Muat blok pihak ketiga dari plugin yang terinstal di situs Anda.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Instal plugin Jetpack di situs Anda untuk mengaktifkan dukungan blok pihak ketiga.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Tambahkan %1$@";

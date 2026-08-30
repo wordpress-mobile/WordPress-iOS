@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-29 09:55:34+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:54:41+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ko_KR */
@@ -1448,6 +1448,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "연결할 수 없습니다. 호스트에서 POST 요청을 차단하고 있으나 앱에서 회원님의 사이트와 통신하려면 이 요청이 필요합니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "사이트의 XML-RPC 엔드포인트에 보안 연결을 설정할 수 없습니다.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "데이터를 로드할 수 없습니다. 나중에 다시 새로 고침을 해보세요.";
@@ -5896,6 +5899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "테마 스타일 사용";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "서드파티 블록(베타) 사용";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7762,6 +7768,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "도메인만 구매";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "%1$@ 만료됨";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "%1$@에 만료";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "만료 기간 없음";
 
@@ -7938,6 +7950,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "모두";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d개의 패턴";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1개의 패턴";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "패턴 삽입";
@@ -10474,6 +10492,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "업데이트";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "선택한 미디어를 추가할 수 없습니다.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "이 사이트의 글 형식이 구성되지 않았습니다.";
 
@@ -11383,8 +11404,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "사이트 상세 정보가 열립니다.";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "글쓴이의 프로필 보기";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "사이트의 글 보기";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "구독";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "구독됨";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}더 보기";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "추가 작업";
@@ -12265,6 +12298,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "블록 편집기를 테마와 비슷하게 만듭니다.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "사이트에 설치된 플러그인에서 서드파티 블록을 로드합니다.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "사이트에 젯팩 플러그인을 설치하여 서드파티 블록 지원을 활성화하세요.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ 추가";

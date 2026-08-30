@@ -1,0 +1,3 @@
+Einige individuelle Inhaltstypen sind jetzt verfügbar. Du kannst sie unter „Meine Website“ verwalten, wenn deine Website mit WP.com erstellt wurde, oder auf der Ansicht „Start“, wenn deine Website selbst gehostet ist. Wir wissen, wir sind großartig. Aber wir bleiben dabei ganz bescheiden.)
+
+Während wir deinen Tag verschönert haben, haben wir einen Fehler behoben, bei dem das Abbrechen der Medienauswahl im experimentellen Block-Editor Bilder aus Galerien entfernt hat. Backup-Protokolle bleiben nun ebenfalls dort, wo sie hingehören, und werden nicht mehr versehentlich auf Websites mit dem Tarif „Persönlich“ angezeigt.

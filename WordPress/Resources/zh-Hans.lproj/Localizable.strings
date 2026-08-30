@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-12 09:54:20+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:57:40+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: zh_CN */
@@ -1448,6 +1448,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "无法连接。 您的主机会阻止 POST 请求，而应用程序需要通过该请求与您的站点通信。 请联系您的托管服务提供商以解决此问题。";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "无法与您站点的 XML-RPC 端点建立安全连接。";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "无法加载数据。 请稍后再次刷新。";
@@ -5896,6 +5899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "使用主题样式";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "使用第三方区块（测试版）";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7756,6 +7762,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "直接购买域名";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "已于 %1$@ 到期";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "将于 %1$@ 到期";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "永不过期";
 
@@ -7932,6 +7944,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "全部";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d 个样板";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 个样板";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "插入样板";
@@ -10480,6 +10498,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "更新";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "无法添加所选媒体。";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "此站点尚未配置文章格式。";
 
@@ -11386,8 +11407,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "打开站点详细信息";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "查看作者的个人资料";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "订阅";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "{2026}查看更多信息";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "更多操作";
@@ -12268,6 +12295,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "让区块编辑器的外观与您的主题风格保持一致。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "在您的站点上安装古腾堡插件，以启用主题样式支持。";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "从您站点上已安装的插件中加载第三方区块。";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "在您的站点上安装 Jetpack 插件，以启用第三方区块支持。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "添加 %1$@";

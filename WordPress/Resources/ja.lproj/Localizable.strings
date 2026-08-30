@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-29 09:55:34+0000 */
+/* Translation-Revision-Date: 2026-08-27 19:13:41+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ja_JP */
@@ -1448,6 +1448,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "接続できませんでした。 ご利用のホスティングサービスは POST 要求をブロックしていますが、アプリはあなたのサイトとの通信に POST 要求を必要としています。 この問題を解決するには、ホスティングサービスに連絡してください。";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "サイトの XML-RPC エンドポイントへの安全な接続を確立できませんでした。";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "データを読み込めませんでした。 後ほど、再読み込みしてください。";
@@ -5893,6 +5896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "テーマスタイルを使用";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "サードパーティのブロックを使用 (ベータ)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7738,6 +7744,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "ドメインだけを購入";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "%1$@に期限が切れました";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "%1$@に期限切れ";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "期限なし";
 
@@ -7914,6 +7926,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "すべて";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d個のパターン";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1個のパターン";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "パターンを挿入";
@@ -9008,6 +9026,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "カスタム範囲...";
 
+/* From date label */
+"jetpackStats.datePicker.from" = "開始日";
+
 /* Compare with same period last year option */
 "jetpackStats.datePicker.lastYear" = "去年";
 
@@ -9029,6 +9050,9 @@ Example: Reply to Pamela Nguyen */
 /* Explanation of how stats are reported in site time zone */
 "jetpackStats.datePicker.siteTimeZoneDescription" = "統計はサイトのタイムゾーンで報告および表示されます。 訪問者が自身のタイムゾーンで火曜日にサイトを訪れても、サイトのタイムゾーンでは月曜日であれば、その訪問は月曜日として記録されます。";
 
+/* To date label */
+"jetpackStats.datePicker.to" = "終了日";
+
 /* Message explaining how to use the date range control */
 "jetpackStats.dateRangeTip.message" = "最近の日、週、月、年を表示するか、カスタムの日付範囲を選択します。";
 
@@ -9040,6 +9064,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Device breakdown by platform/OS */
 "jetpackStats.deviceBreakdowns.operatingSystem" = "オペレーティングシステム";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "画面サイズ";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "サブリンク";
@@ -10423,6 +10450,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "更新";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "選択したメディアを追加できませんでした。";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "このサイトには投稿フォーマットが設定されていません。";
 
@@ -11317,8 +11347,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "サイト詳細を開く";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "投稿者のプロフィールを表示します";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "サイトからの投稿を表示します";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "購読";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "購読済み";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}詳細を表示";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "その他の操作";
@@ -12187,6 +12229,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "ブロックエディターをテーマと同じ外観にします。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "サイトに Gutenberg プラグインをインストールして、テーマスタイル対応を有効化します。";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "サイトにインストールされているプラグインからサードパーティのブロックを読み込みます。";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "サイトに Jetpack プラグインをインストールして、サードパーティのブロック対応を有効化します。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@を追加";
