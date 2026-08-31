@@ -30,6 +30,7 @@ struct TopListScreenView: View {
         self._viewModel = StateObject(
             wrappedValue: TopListViewModel(
                 configuration: configuration,
+                options: selection.options,
                 dateRange: dateRange,
                 service: service,
                 tracker: context.tracker,

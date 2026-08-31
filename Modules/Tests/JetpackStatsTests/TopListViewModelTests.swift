@@ -40,6 +40,32 @@ struct TopListViewModelTests {
         try await waitUntil { viewModel.data?.items.isEmpty == true && !viewModel.isLoading }
     }
 
+    @Test("Loads data with the item options provided at initialization")
+    func loadsDataWithProvidedItemOptions() async throws {
+        let service = RecordingStatsService()
+        let calendar = Calendar.mock()
+        let dateRange = StatsDateRange(
+            interval: calendar.makeDateInterval(for: .today),
+            component: .day,
+            comparison: .off,
+            calendar: calendar
+        )
+        let viewModel = TopListViewModel(
+            configuration: TopListCardConfiguration(item: .locations, metric: .views),
+            options: TopListItemOptions(locationLevel: .regions),
+            dateRange: dateRange,
+            service: service
+        )
+
+        viewModel.onAppear()
+        try await waitUntil { viewModel.data != nil && !viewModel.isLoading }
+
+        #expect(viewModel.selection.options.locationLevel == .regions)
+        // The first fetch is the list itself; a second country-level fetch
+        // follows for the map.
+        #expect(await service.requestedLocationLevels.first == .regions)
+    }
+
     private func waitUntil(_ condition: () -> Bool) async throws {
         let clock = ContinuousClock()
         let deadline = clock.now + .seconds(2)
@@ -54,6 +80,65 @@ struct TopListViewModelTests {
 
 private enum TestError: Error {
     case timedOut
+}
+
+private actor RecordingStatsService: StatsServiceProtocol {
+    nonisolated let supportedMetrics: [SiteMetric] = [.views]
+    nonisolated let supportedItems: [TopListItemType] = [.locations]
+
+    private(set) var requestedLocationLevels: [LocationLevel] = []
+
+    nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
+        [.views]
+    }
+
+    func invalidateTopListData(for item: TopListItemType) async {
+        // Do nothing
+    }
+
+    func getTopListData(
+        _ item: TopListItemType,
+        metric: SiteMetric,
+        interval: DateInterval,
+        granularity: DateRangeGranularity,
+        limit: Int?,
+        options: TopListItemOptions
+    ) async throws -> TopListResponse {
+        requestedLocationLevels.append(options.locationLevel)
+        return TopListResponse(items: [])
+    }
+
+    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
+        fatalError("Unused")
+    }
+
+    func getWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse {
+        fatalError("Unused")
+    }
+
+    func getWordAdsEarnings() async throws -> WordPressKit.StatsWordAdsEarningsResponse {
+        fatalError("Unused")
+    }
+
+    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListResponse {
+        fatalError("Unused")
+    }
+
+    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
+        fatalError("Unused")
+    }
+
+    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
+        fatalError("Unused")
+    }
+
+    func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
+        fatalError("Unused")
+    }
+
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws {
+        fatalError("Unused")
+    }
 }
 
 private actor CachingStatsService: StatsServiceProtocol {
