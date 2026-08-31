@@ -70,7 +70,6 @@ struct CommentDetailView: View {
             failureView
         case .loaded(let detail):
             CommentContentRegion(renderer: renderer, html: detail.contentHTML)
-                .padding(.horizontal)
         }
     }
 
