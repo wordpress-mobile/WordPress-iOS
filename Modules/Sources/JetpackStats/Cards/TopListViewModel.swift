@@ -54,6 +54,15 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         var item: TopListItemType
         var metric: SiteMetric
         var options = TopListItemOptions()
+
+        /// Title of the screen listing every item in this selection.
+        var localizedScreenTitle: String {
+            if item == .locations {
+                options.locationLevel.localizedTitle
+            } else {
+                item.localizedTitle
+            }
+        }
     }
 
     enum Filter: Equatable {

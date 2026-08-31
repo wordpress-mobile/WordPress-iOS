@@ -78,7 +78,7 @@ struct TopListScreenView: View {
         .animation(.default, value: viewModel.data.map(ObjectIdentifier.init))
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 1)
-        .navigationTitle(viewModel.selection.item.localizedTitle)
+        .navigationTitle(viewModel.selection.localizedScreenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -329,7 +329,7 @@ struct TopListScreenView: View {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
 
-        let itemName = viewModel.selection.item.localizedTitle
+        let itemName = viewModel.selection.localizedScreenTitle
             .replacingOccurrences(of: " ", with: "_")
             .replacingOccurrences(of: "&", with: "and")
 
