@@ -67,6 +67,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
     init(
         configuration: TopListCardConfiguration,
+        options: TopListItemOptions = TopListItemOptions(),
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
         tracker: (any StatsTracker)? = nil,
@@ -76,7 +77,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         initialData: TopListData? = nil
     ) {
         self.configuration = configuration
-        self.selection = Selection(item: configuration.item, metric: configuration.metric)
+        self.selection = Selection(item: configuration.item, metric: configuration.metric, options: options)
         self.items = items ?? service.supportedItems
         self.dateRange = StatsDateRangeSelection(range: dateRange)
         self.service = service
