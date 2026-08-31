@@ -33,6 +33,10 @@ public enum CommentsHostingController {
         )
         let host = UIHostingController(rootView: view)
         host.navigationItem.largeTitleDisplayMode = .never
+        // Hides the app tab bar for the list and everything pushed above it
+        // (detail, parent comments): the list has its own status tabs, and the
+        // detail's pinned moderation bar belongs at the screen bottom.
+        host.hidesBottomBarWhenPushed = true
         router.host = host
         return host
     }
