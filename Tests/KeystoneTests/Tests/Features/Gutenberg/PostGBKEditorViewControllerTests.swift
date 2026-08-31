@@ -6,14 +6,36 @@ import UIKit
 @testable import WordPress
 @testable import WordPressData
 
+/// Keeps every editor these tests build alive for the lifetime of the process.
+///
+/// `viewDidLoad` starts the editor's load on a `Task` that reaches
+/// `startUploadServer()` after the test method returns, where GutenbergKit
+/// asserts an assigned `mediaUploadDelegate` is still alive. Tripping that
+/// precondition crashes the test host, killing every concurrently running suite
+/// — so the damage is not contained to this file.
+///
+/// Only a test can reach that state. `PostGBKEditorViewController` holds the
+/// editor and its `GBKMediaUploadProcessor` as strong `let`s on one object, so
+/// in the app they always die together and the load's `[weak self]` is already
+/// nil. Here a window is the controller's only owner, so releasing it mid-load
+/// leaves the editor reachable with a dead delegate.
+///
+/// Retention must outlive the *suite instance*: Swift Testing builds a fresh
+/// one per test, so an instance property dies at the very deadline being
+/// missed. The race is timing-dependent, so a green run does not prove the
+/// hazard is gone.
+@MainActor
+private enum RetainedEditors {
+    static var windows: [UIWindow] = []
+}
+
 @MainActor
 @Suite(.serialized)
 struct PostGBKEditorViewControllerTests {
 
-    @Test("presents the site media library for GutenbergKit requests")
-    func presentsSiteMediaLibrary() throws {
-        let context = ContextManager.forTesting().mainContext
-        let blog = BlogBuilder(context).build()
+    /// Builds an editor, retaining it for the process's lifetime so the load it
+    /// starts cannot outlive its delegate. See ``RetainedEditors``.
+    private func makeEditor(blog: Blog) -> PostGBKEditorViewController {
         let viewController = PostGBKEditorViewController(
             postId: nil,
             postType: .post,
@@ -26,6 +48,15 @@ struct PostGBKEditorViewControllerTests {
         window.rootViewController = viewController
         window.makeKeyAndVisible()
         viewController.loadViewIfNeeded()
+        RetainedEditors.windows.append(window)
+        return viewController
+    }
+
+    @Test("presents the site media library for GutenbergKit requests")
+    func presentsSiteMediaLibrary() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let viewController = makeEditor(blog: blog)
 
         let data = Data(
             #"{"allowedTypes":["image"],"multiple":true,"value":[],"contextId":"test"}"#.utf8
@@ -108,18 +139,7 @@ struct PostGBKEditorViewControllerTests {
         for blog: Blog,
         requesting mediaIds: [Int]
     ) throws -> SiteMediaPickerViewController {
-        let viewController = PostGBKEditorViewController(
-            postId: nil,
-            postType: .post,
-            title: "",
-            content: "",
-            status: "draft",
-            blog: blog
-        )
-        let window = UIWindow()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.loadViewIfNeeded()
+        let viewController = makeEditor(blog: blog)
 
         let value = mediaIds.map(String.init).joined(separator: ",")
         let data = Data(
