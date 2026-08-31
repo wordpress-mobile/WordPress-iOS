@@ -66,6 +66,19 @@ struct TopListViewModelTests {
         #expect(await service.requestedLocationLevels.first == .regions)
     }
 
+    @Test("Screen title names the location level for locations and the item otherwise")
+    func screenTitleReflectsLocationLevel() {
+        let locations = TopListViewModel.Selection(
+            item: .locations,
+            metric: .views,
+            options: TopListItemOptions(locationLevel: .regions)
+        )
+        #expect(locations.localizedScreenTitle == "Regions")
+
+        let referrers = TopListViewModel.Selection(item: .referrers, metric: .views)
+        #expect(referrers.localizedScreenTitle == "Referrers")
+    }
+
     private func waitUntil(_ condition: () -> Bool) async throws {
         let clock = ContinuousClock()
         let deadline = clock.now + .seconds(2)
