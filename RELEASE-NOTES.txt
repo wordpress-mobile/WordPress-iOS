@@ -1,6 +1,8 @@
 27.3
 -----
+* [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]
 * [*] Stats: Improve performance when opening the Stats screen [#25938]
+* [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]
 
 27.2
 -----

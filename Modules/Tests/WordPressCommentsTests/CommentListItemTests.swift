@@ -34,6 +34,11 @@ struct CommentListItemTests {
         #expect(CommentListItem(comment: makeComment(status: .approved)).status == .approved)
         #expect(CommentListItem(comment: makeComment(status: .spam)).status == .spam)
         #expect(CommentListItem(comment: makeComment(status: .trash)).status == .trash)
-        #expect(CommentListItem(comment: makeComment(status: .custom("weird"))).status == .other)
+        #expect(CommentListItem(comment: makeComment(status: .custom("weird"))).status == .other("weird"))
+    }
+
+    @Test func customStatusPreservesRawValue() {
+        let status = CommentListItem.Status(CommentStatus.custom("post-trashed"))
+        #expect(status == .other("post-trashed"))
     }
 }

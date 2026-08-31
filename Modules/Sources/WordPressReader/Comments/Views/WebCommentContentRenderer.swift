@@ -48,7 +48,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     private var isReloadNeeded = false
 
     // MARK: Methods
-    public override init() {
+    public init(isScrollEnabled: Bool = false) {
         super.init()
 
         webView.isInspectable = true
@@ -56,10 +56,19 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
-        webView.scrollView.bounces = false
-        webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
-        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.isScrollEnabled = isScrollEnabled
+        webView.scrollView.bounces = isScrollEnabled
+        // WebKit turns this on for its scroll view; off so a comment that
+        // fits its region stays still.
+        webView.scrollView.alwaysBounceVertical = false
+        if isScrollEnabled {
+            // A scrolling host owns the layout. Without this, the safe-area
+            // inset UIKit adds gives a viewport-tall document a scrollable
+            // range, so even a one-line comment rubber-bands.
+            webView.scrollView.contentInsetAdjustmentBehavior = .never
+        }
+        webView.scrollView.showsVerticalScrollIndicator = isScrollEnabled
 
         NotificationCenter.default.addObserver(
             self,
@@ -67,6 +76,10 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+    }
+
+    public override convenience init() {
+        self.init(isScrollEnabled: false)
     }
 
     public func render(comment: String) {
