@@ -993,16 +993,17 @@ private extension CommentDetailViewController {
 
     @objc func buttonAddCommentTapped() {
         let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
-            try await self?.createReply(content: $0) ?? false
+            guard let self else { throw URLError(.unknown) }
+            return try await self.createReply(content: $0)
         }
         let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }
 
-    /// - returns: `true` if the comment is pending moderation (not immediately approved).
+    /// - returns: The object ID of the newly created reply.
     @MainActor
-    func createReply(content: String) async throws -> Bool {
+    func createReply(content: String) async throws -> TaggedManagedObjectID<Comment> {
         isNotificationComment
             ? WPAppAnalytics.track(.notificationsCommentRepliedTo)
             : CommentAnalytics.trackCommentRepliedTo(comment: comment)
@@ -1018,7 +1019,7 @@ private extension CommentDetailViewController {
                     reply,
                     success: { [weak self] in
                         self?.refreshCommentReplyIfNeeded()
-                        continuation.resume(returning: reply.isApproved() == false)
+                        continuation.resume(returning: TaggedManagedObjectID(reply))
                     },
                     failure: { error in
                         DDLogError("Failed uploading comment reply: \(String(describing: error))")
@@ -1029,11 +1030,11 @@ private extension CommentDetailViewController {
         }
     }
 
-    /// - returns: `true` if the comment is pending moderation (not immediately approved).
+    /// - returns: The object ID of the newly created reply.
     @MainActor
-    func createPostCommentReply(content: String) async throws -> Bool {
+    func createPostCommentReply(content: String) async throws -> TaggedManagedObjectID<Comment> {
         guard let post = comment.post as? ReaderPost else {
-            return false
+            throw URLError(.unknown)
         }
         return try await withUnsafeThrowingContinuation { continuation in
             commentService.replyToHierarchicalComment(
@@ -1042,7 +1043,11 @@ private extension CommentDetailViewController {
                 content: content,
                 success: { [weak self] newComment in
                     self?.refreshCommentReplyIfNeeded()
-                    continuation.resume(returning: newComment?.isApproved() == false)
+                    guard let newComment else {
+                        continuation.resume(throwing: URLError(.unknown))
+                        return
+                    }
+                    continuation.resume(returning: TaggedManagedObjectID(newComment))
                 },
                 failure: { error in
                     DDLogError("Failed creating post comment reply: \(String(describing: error))")

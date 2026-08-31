@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressUI
 
 final class CommentCreateViewController: UIViewController {
@@ -64,21 +65,12 @@ final class CommentCreateViewController: UIViewController {
         Task { @MainActor in
             do {
                 let text = await editorVC.text
-                let isPendingModeration = try await viewModel.save(content: text)
+                let commentID = try await viewModel.save(content: text)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
                 presentingViewController?
-                    .dismiss(animated: true) {
-                        guard isPendingModeration else { return }
-                        Notice(
-                            title: Strings.commentHeldForModeration,
-                            style: InAppUpdateNoticeStyle(
-                                icon: UIImage(systemName: "checkmark.seal.fill"),
-                                iconColor: UIAppColor.success,
-                                title: Strings.commentHeldForModeration
-                            )
-                        )
-                        .post()
+                    .dismiss(animated: true) { [weak self] in
+                        self?.showModerationNoticeIfNeeded(for: commentID)
                     }
             } catch {
                 setLoading(false)
@@ -92,6 +84,23 @@ final class CommentCreateViewController: UIViewController {
         navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : makeSendButton()
         navigationItem.leftBarButtonItem?.isEnabled = !isLoading
         editorVC.isEnabled = !isLoading
+    }
+
+    private func showModerationNoticeIfNeeded(for commentID: TaggedManagedObjectID<Comment>) {
+        guard let comment = try? ContextManager.shared.mainContext.existingObject(with: commentID),
+            !comment.isApproved()
+        else {
+            return
+        }
+        Notice(
+            title: Strings.commentHeldForModeration,
+            style: InAppUpdateNoticeStyle(
+                icon: UIImage(systemName: "checkmark.seal.fill"),
+                iconColor: UIAppColor.success,
+                title: Strings.commentHeldForModeration
+            )
+        )
+        .post()
     }
 
     @objc private func buttonCancelTapped() {
