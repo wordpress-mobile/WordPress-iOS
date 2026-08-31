@@ -14,7 +14,10 @@ final class BlockingCommentsService: CommentsServiceProtocol {
     private(set) var setStatusInvocations: [(id: Int64, status: CommentListItem.Status)] = []
     private(set) var callCount = 0
     private(set) var fetchCommentInvocations: [(id: Int64, allowsEditContext: Bool)] = []
-    var numberOfRepliesResult: Result<Int, Error> = .success(0)
+    /// When nil, `numberOfReplies` blocks like the other calls.
+    var numberOfRepliesResult: Result<Int, Error>? = .success(0)
+    private var numberOfRepliesContinuations: [CheckedContinuation<Int, Error>] = []
+    private(set) var numberOfRepliesInvocations: [Int64] = []
 
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         callCount += 1
@@ -60,7 +63,13 @@ final class BlockingCommentsService: CommentsServiceProtocol {
     }
 
     func numberOfReplies(for id: Int64) async throws -> Int {
-        try numberOfRepliesResult.get()
+        numberOfRepliesInvocations.append(id)
+        if let numberOfRepliesResult { return try numberOfRepliesResult.get() }
+        return try await withCheckedThrowingContinuation { numberOfRepliesContinuations.append($0) }
+    }
+
+    func resolveNumberOfReplies(callIndex: Int, with count: Int) {
+        numberOfRepliesContinuations[callIndex].resume(returning: count)
     }
 
     func resolveFetch(callIndex: Int, with detail: CommentDetail) {

@@ -96,10 +96,13 @@ final class CommentDetailViewModel: ObservableObject {
         }
     }
 
-    /// The fetched detail when the user may act on it: the toolbar shows and no
-    /// mutation is in flight for this comment.
+    /// The fetched detail when the user may act on it: the toolbar shows, the
+    /// load has finished, and no mutation is in flight for this comment. The
+    /// load gate matters because the reply count lands after the comment: a
+    /// reply sent before it could be missed by the landed count and let the
+    /// parent be trashed without a warning.
     private var actionableDetail: CommentDetail? {
-        guard showsToolbar, !coordinator.isMutating(id: commentID) else { return nil }
+        guard showsToolbar, !isLoading, !coordinator.isMutating(id: commentID) else { return nil }
         return loadedDetail
     }
 
@@ -192,19 +195,18 @@ final class CommentDetailViewModel: ObservableObject {
         guard let canModerate else { return }
         await coordinator.waitForPendingMutation(id: commentID)
 
-        async let detail = try? service.fetchComment(id: commentID, allowsEditContext: canModerate)
-        // The reply count only feeds the trash confirmation, so skip the
-        // request when the toolbar can never show.
-        async let replies = canModerate ? try? service.numberOfReplies(for: commentID) : nil
-        let (detailResult, repliesResult) = await (detail, replies)
-
-        numberOfReplies = repliesResult
-        if let detail = detailResult {
-            applyLoaded(detail)
-            await loadParentPreview(for: detail)
-        } else {
+        // The reply count only feeds the trash confirmation, so it runs
+        // alongside the comment fetch (`.generic` covers the gap), is applied
+        // last, and is skipped when the toolbar can never show.
+        async let replies: Int? = canModerate ? (try? await service.numberOfReplies(for: commentID)) : nil
+        guard let detail = try? await service.fetchComment(id: commentID, allowsEditContext: canModerate) else {
+            _ = await replies
             content = .failed
+            return
         }
+        applyLoaded(detail)
+        await loadParentPreview(for: detail)
+        numberOfReplies = await replies
     }
 
     private func applyLoaded(_ detail: CommentDetail) {

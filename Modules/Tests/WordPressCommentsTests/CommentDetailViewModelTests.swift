@@ -280,6 +280,31 @@ struct CommentDetailViewModelTests {
         #expect(manyVM.trashConfirmation == .withReplies)
     }
 
+    @Test func actionsWaitForReplyCountAfterDetailRenders() async {
+        let service = BlockingCommentsService()
+        service.numberOfRepliesResult = nil
+        let vm = makeVM(service: service)
+        let detail = makeDetail(id: 1, editContext: true)
+
+        async let appear: Void = vm.onAppear()
+        await waitUntil { !service.fetchCommentInvocations.isEmpty }
+        service.resolveFetch(callIndex: 0, with: detail)
+        await waitUntil { !service.numberOfRepliesInvocations.isEmpty }
+
+        // The comment is on screen while the count is still in flight, but
+        // actions wait for it so a reply can't race a stale count.
+        #expect(vm.content == .loaded(detail))
+        #expect(!vm.isToolbarEnabled)
+        #expect(vm.trashConfirmation == .generic)
+
+        service.resolveNumberOfReplies(callIndex: 0, with: 3)
+        await appear
+
+        #expect(vm.isToolbarEnabled)
+        #expect(vm.numberOfReplies == 3)
+        #expect(vm.trashConfirmation == .withReplies)
+    }
+
     @Test func parentPreviewLoadedForReply() async {
         let service = FakeCommentsService()
         service.fetchCommentResultsByID = [
