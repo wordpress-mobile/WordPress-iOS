@@ -32,7 +32,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (instancetype)init NS_UNAVAILABLE;
 
 // Create reply
-- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment *reply))completion;
+- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment * _Nullable reply))completion;
 
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
