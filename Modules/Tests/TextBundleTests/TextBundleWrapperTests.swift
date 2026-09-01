@@ -123,4 +123,15 @@ struct TextBundleWrapperTests {
             _ = try TextBundleWrapper(contentsOf: url, options: .immediate)
         }
     }
+
+    @Test func nonDictionaryInfoJSONThrows() throws {
+        // Valid JSON but a top-level array (not an object): must fail the read
+        // instead of crashing on -[NSArray objectForKeyedSubscript:].
+        let url = try makeBundle(info: Data("[1,2,3]".utf8), textFileName: "text.markdown", textData: Data("hi".utf8))
+        defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+
+        #expect(throws: (any Error).self) {
+            _ = try TextBundleWrapper(contentsOf: url, options: .immediate)
+        }
+    }
 }
