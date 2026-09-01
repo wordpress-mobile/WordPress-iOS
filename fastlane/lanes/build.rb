@@ -313,11 +313,14 @@ platform :ios do
   # Builds a single app and uploads it to TestFlight for *internal* testers,
   # stamping the build code with the Buildkite build number.
   #
-  # The marketing version (`VERSION_SHORT`) is read from `Version.public.xcconfig`
-  # as-is. The build code is `<marketing version>.0.<buildkite build number>`
-  # (e.g. `27.0.0.4567`). Buildkite build numbers increase monotonically, so each
-  # build for a given marketing version gets a unique, higher build code — which
-  # is all App Store Connect requires.
+  # The marketing version (`VERSION_SHORT`) is resolved from App Store Connect at
+  # build time by `testflight_marketing_version` — the open (editable) version if
+  # there is one, otherwise the next version after the newest released/approved one.
+  # This keeps trunk off a marketing version App Store Connect has already approved
+  # and locked (error 90062), without depending on the checked-in `VERSION_SHORT`.
+  # The build code is `<marketing version>.0.<buildkite build number>` (e.g.
+  # `27.3.0.4567`). Buildkite build numbers increase monotonically, so each build
+  # for a given marketing version gets a unique, higher build code.
   #
   # @param [String] app One of `wordpress`, `jetpack`, or `reader`.
   #
@@ -357,8 +360,12 @@ platform :ios do
       UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
     end
 
-    build_code = "#{release_version_current}.0.#{build_number}"
-    UI.important("Building #{scheme} #{release_version_current} (#{build_code}) for internal TestFlight distribution")
+    # Resolve the marketing version from App Store Connect so we never re-upload a
+    # version it has already approved. Reader has no App Store Connect app wired up
+    # yet (nil identifier), so it falls back to the checked-in version.
+    marketing_version = app_identifier ? testflight_marketing_version(app_identifier: app_identifier) : release_version_current
+    build_code = "#{marketing_version}.0.#{build_number}"
+    UI.important("Building #{scheme} #{marketing_version} (#{build_code}) for internal TestFlight distribution")
 
     sentry_check_cli_installed
 
@@ -370,7 +377,7 @@ platform :ios do
       output_name: output_name,
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: EXTERNAL_TEAM_ID,
-      xcargs: { VERSION_LONG: build_code },
+      xcargs: { VERSION_SHORT: marketing_version, VERSION_LONG: build_code },
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
@@ -391,7 +398,7 @@ platform :ios do
 
     upload_gutenberg_sourcemaps(
       sentry_project_slug: sentry_project_slug,
-      release_version: release_version_current,
+      release_version: marketing_version,
       build_version: build_code,
       app_identifier: app_identifier
     )
@@ -505,6 +512,63 @@ platform :ios do
       build_version: build_number,
       app_identifier: app_identifier
     )
+  end
+
+  # Resolves the marketing version (`CFBundleShortVersionString`) for a per-commit
+  # TestFlight build from live App Store Connect state, so trunk never re-uploads a
+  # version App Store Connect has already approved.
+  #
+  # App Store Connect locks a marketing version once a build for it has been
+  # *approved*: every later upload must use a strictly higher version or it's
+  # rejected with error 90062 — regardless of build code. Trunk shares its version
+  # with the release in flight, so the moment that release is approved every trunk
+  # upload fails. Rather than trust the checked-in `VERSION_SHORT`, resolve it here:
+  #
+  #   • If there's an open (editable, pre-approval) App Store version, build into it
+  #     — trunk builds keep flowing to the version currently being prepared.
+  #   • Otherwise the newest version is released or awaiting release, so start the
+  #     next one. `next_release_version` bumps the minor and wraps 27.9 → 28.0.
+  #
+  # Resolved per app, so WordPress and Jetpack each read their own state (they
+  # normally move in lockstep).
+  #
+  # @param [String] app_identifier The app's bundle identifier.
+  # @return [String] The marketing version to stamp on the build (e.g. "27.3").
+  def testflight_marketing_version(app_identifier:)
+    app = app_store_connect_app(app_identifier)
+
+    open_version = open_app_store_version(app)
+    if open_version
+      UI.message("#{app_identifier}: building into open App Store version #{open_version.version_string} (#{open_version.app_version_state})")
+      return open_version.version_string
+    end
+
+    locked_version = locked_app_store_version(app)
+    UI.user_error!("No live or pending App Store version found for #{app_identifier}; cannot resolve a TestFlight marketing version") if locked_version.nil?
+
+    # Bump the minor version, wrapping 27.9 → 28.0.
+    next_version = VERSION_FORMATTER.release_version(
+      VERSION_CALCULATOR.next_release_version(version: VERSION_FORMATTER.parse(locked_version.version_string))
+    )
+    UI.message("#{app_identifier}: no open App Store version — incrementing #{locked_version.version_string} → #{next_version}")
+    next_version
+  end
+
+  # The newest version App Store Connect hasn't approved yet — in preparation,
+  # rejected, or under review — or nil. Trunk builds flow into it, matching the
+  # release currently being prepared, and none of these states trip 90062.
+  # `get_edit_app_store_version` deliberately excludes `IN_REVIEW`, so it's checked
+  # separately or we'd bump the version out from under a release that's in review.
+  def open_app_store_version(app)
+    [app.get_edit_app_store_version, app.get_in_review_app_store_version]
+      .compact.max_by { |version| Gem::Version.new(version.version_string) }
+  end
+
+  # The newest live or approved-and-awaiting-release version — the one App Store
+  # Connect has locked, which a new upload must clear — or nil.
+  def locked_app_store_version(app)
+    [app.get_live_app_store_version, app.get_pending_release_app_store_version]
+      .compact.max_by { |version| Gem::Version.new(version.version_string) }
   end
 
   def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)
