@@ -1,5 +1,4 @@
 import UIKit
-import WebKit
 import WordPressComments
 import WordPressReader
 
@@ -10,9 +9,11 @@ import WordPressReader
 final class CommentsWebContentRendererAdapter: NSObject, CommentContentRendering {
     private let renderer: WebCommentContentRenderer = {
         let renderer = WebCommentContentRenderer(isScrollEnabled: true)
-        // Breathing room above and below the body; content still scrolls
-        // under the region's edges. Horizontal padding is the module's job.
-        (renderer.view as? WKWebView)?.scrollView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 16, right: 0)
+        // The web view fills the region so its scroll indicator sits at the
+        // screen edge; the document insets the text instead. Scroll view
+        // content insets would not work horizontally: the document keeps the
+        // frame width and pans sideways.
+        renderer.contentPadding = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
         return renderer
     }()
 

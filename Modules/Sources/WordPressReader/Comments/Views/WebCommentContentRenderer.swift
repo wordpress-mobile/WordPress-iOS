@@ -34,6 +34,18 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         }
     }
 
+    /// Padding applied to the document body, in CSS pixels (equal to points
+    /// at the standard display size). Use this when the web view fills its
+    /// region and scrolls on its own: the text is inset while the scroll
+    /// indicator stays at the view's edge, and the padding scrolls with the
+    /// content. Hosts that inset the web view themselves should leave it at
+    /// zero. The height reported through the delegate includes the padding.
+    ///
+    /// - warning: This has to be configured _before_ you render.
+    public var contentPadding: UIEdgeInsets = .zero {
+        didSet { cachedHead = nil }
+    }
+
     /// Google requires an HTTP referrer for YouTube embeds, otherwise the player shows an error
     /// instead of the video. Matches the referrer `ReaderWebView` uses for post content so that
     /// embeds behave the same way in comments.
@@ -62,12 +74,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         // WebKit turns this on for its scroll view; off so a comment that
         // fits its region stays still.
         webView.scrollView.alwaysBounceVertical = false
-        if isScrollEnabled {
-            // A scrolling host owns the layout. Without this, the safe-area
-            // inset UIKit adds gives a viewport-tall document a scrollable
-            // range, so even a one-line comment rubber-bands.
-            webView.scrollView.contentInsetAdjustmentBehavior = .never
-        }
         webView.scrollView.showsVerticalScrollIndicator = isScrollEnabled
 
         NotificationCenter.default.addObserver(
@@ -210,7 +216,11 @@ private extension WebCommentContentRenderer {
     private func actuallyMakeHead() -> String {
         let meta =
             "width=device-width,initial-scale=\(displaySettings.size.scale),maximum-scale=\(displaySettings.size.scale),user-scalable=no,shrink-to-fit=no"
-        let styles = displaySettings.makeStyles(tintColor: webView.tintColor)
+        var styles = displaySettings.makeStyles(tintColor: webView.tintColor)
+        if contentPadding != .zero {
+            let p = contentPadding
+            styles += "\nbody { padding: \(p.top)px \(p.right)px \(p.bottom)px \(p.left)px; }"
+        }
         return String(format: Self.headTemplate, meta, styles)
     }
 

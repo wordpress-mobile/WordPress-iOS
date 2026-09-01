@@ -639,6 +639,8 @@ private extension SelfHostedSiteAuthenticator {
             logRequestExecutionFailure(statusCode: statusCode, reason: reason)
         case .MediaFileNotFound:
             Loggers.login.error("The requested media file was not found.")
+        case .MediaFileUnreadable:
+            Loggers.login.error("The requested media file could not be read.")
         case .ResponseParsingError:
             Loggers.login.error("The WordPress REST API response could not be decoded.")
         case .SiteUrlParsingError:
@@ -660,6 +662,8 @@ private extension SelfHostedSiteAuthenticator {
             logRequestExecutionFailure(statusCode: statusCode, reason: reason)
         case .MediaFileNotFound:
             Loggers.login.error("The requested media file was not found.")
+        case .MediaFileUnreadable:
+            Loggers.login.error("The requested media file could not be read.")
         }
     }
 
