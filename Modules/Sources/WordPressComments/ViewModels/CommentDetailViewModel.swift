@@ -48,8 +48,9 @@ final class CommentDetailViewModel: ObservableObject {
     /// `isMutating` only flips after the first suspension).
     @Published private(set) var pendingAction: CommentModerationAction?
     /// Set by a `.deleted` event (a confirmed delete), which turns the toolbar
-    /// off. Cleared by a successful authoritative fetch or a later status
-    /// change proving the comment exists again.
+    /// off and makes the view dismiss itself. Cleared by a successful
+    /// authoritative fetch or a later status change proving the comment exists
+    /// again.
     @Published private(set) var isDeleted = false
 
     let commentID: Int64
@@ -259,7 +260,8 @@ final class CommentDetailViewModel: ObservableObject {
                 content = .loaded(detail)
             }
         case .deleted:
-            // The comment is gone: a terminal state that turns the toolbar off.
+            // The comment is gone: a terminal state that turns the toolbar off
+            // and dismisses the screen.
             isDeleted = true
         }
     }

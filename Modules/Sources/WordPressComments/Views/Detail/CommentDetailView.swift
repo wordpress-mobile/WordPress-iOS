@@ -17,6 +17,8 @@ struct CommentDetailView: View {
     /// the screen's lifetime.
     private let renderer: any CommentContentRendering
 
+    @Environment(\.dismiss) private var dismiss
+
     init(
         viewModel: CommentDetailViewModel,
         titleResolver: PostTitleResolver,
@@ -35,6 +37,11 @@ struct CommentDetailView: View {
             .toolbar { trailingToolbarItems }
             .navigationBarTitleDisplayMode(.inline)
             .task { await viewModel.onAppear() }
+            // The comment no longer exists, so there is nothing left to show.
+            // `dismiss` pops this screen off the UIKit navigation stack.
+            .onChange(of: viewModel.isDeleted) { _, isDeleted in
+                if isDeleted { dismiss() }
+            }
     }
 
     private var fixedRegions: some View {
