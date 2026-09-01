@@ -64,6 +64,24 @@ struct ExtractedImage {
     var insertionState: InsertionState
 }
 
+/// The outcome of loading shared content: the assembled share, any per-attachment
+/// failures that were skipped, and whether any usable content was extracted at all.
+struct ShareLoadOutcome {
+    let share: ExtractedShare
+    let failures: [Error]
+
+    /// `true` when at least one attachment yielded content (text or an image).
+    let didExtractContent: Bool
+
+    /// `true` only when nothing usable was extracted *and* at least one attachment errored.
+    ///
+    /// A share that was simply empty — an empty text selection, say — has no content and no
+    /// failures. That is not a failure: it should still open the editor, as it did before.
+    var extractionDidFail: Bool {
+        !didExtractContent && !failures.isEmpty
+    }
+}
+
 /// Extracts valid information from an extension context.
 ///
 struct ShareExtractor {
@@ -73,15 +91,17 @@ struct ShareExtractor {
         self.extensionContext = extensionContext
     }
 
-    /// Loads the content asynchronously.
+    /// Loads the shared content asynchronously.
     ///
-    /// - Important: This method will only call completion if it can successfully extract content.
-    /// - Parameters:
-    ///   - completion: the block to be called when the extractor has obtained content.
+    /// Unlike the extractors it drives, this always calls `completion` — even when nothing
+    /// could be read. Inspect `ShareLoadOutcome.didExtractContent` to decide whether there's
+    /// anything to present, and `failures` for the attachments that were skipped.
     ///
-    func loadShare(completion: @escaping (ExtractedShare) -> Void) {
-        extractText { extractedTextResults in
-            self.extractImages { extractedImages in
+    /// - Parameter completion: called with the assembled `ShareLoadOutcome`.
+    ///
+    func loadShare(completion: @escaping (ShareLoadOutcome) -> Void) {
+        extractText { extractedTextResults, textFailures in
+            self.extractImages { extractedImages, imageFailures in
                 let title = extractedTextResults?.title ?? ""
                 let description = extractedTextResults?.description ?? ""
                 let selectedText = extractedTextResults?.selectedText ?? ""
@@ -92,12 +112,20 @@ struct ShareExtractor {
                     returnedImages.append(contentsOf: extractedImageURLs)
                 }
 
-                completion(ExtractedShare(title: title,
-                                          description: description,
-                                          url: url,
-                                          selectedText: selectedText,
-                                          importedText: importedText,
-                                          images: returnedImages))
+                let share = ExtractedShare(
+                    title: title,
+                    description: description,
+                    url: url,
+                    selectedText: selectedText,
+                    importedText: importedText,
+                    images: returnedImages
+                )
+                let didExtractContent = extractedTextResults != nil || !returnedImages.isEmpty
+                completion(ShareLoadOutcome(
+                    share: share,
+                    failures: textFailures + imageFailures,
+                    didExtractContent: didExtractContent
+                ))
             }
         }
     }
@@ -165,14 +193,14 @@ private extension ShareExtractor {
         })
     }
 
-    func extractText(completion: @escaping (ExtractedItem?) -> Void) {
+    func extractText(completion: @escaping (ExtractedItem?, [Error]) -> Void) {
         guard let textExtractor else {
-            completion(nil)
+            completion(nil, [])
             return
         }
-        textExtractor.extract(context: extensionContext) { extractedItems in
+        textExtractor.extract(context: extensionContext) { extractedItems, failures in
             guard !extractedItems.isEmpty else {
-            	completion(nil)
+                completion(nil, failures)
                 return
             }
 
@@ -189,23 +217,28 @@ private extension ShareExtractor {
 
             let urls = extractedItems.compactMap({ $0.url })
 
-            completion(ExtractedItem(selectedText: combinedSelectedText,
-                                     importedText: combinedImportedText,
-                                     description: combinedDescription,
-                                     url: urls.first,
-                                     title: combinedTitle,
-                                     images: extractedImages))
+            completion(
+                ExtractedItem(
+                    selectedText: combinedSelectedText,
+                    importedText: combinedImportedText,
+                    description: combinedDescription,
+                    url: urls.first,
+                    title: combinedTitle,
+                    images: extractedImages
+                ),
+                failures
+            )
         }
     }
 
-    func extractImages(completion: @escaping ([ExtractedImage]) -> Void) {
+    func extractImages(completion: @escaping ([ExtractedImage], [Error]) -> Void) {
         guard let imageExtractor else {
-            completion([])
+            completion([], [])
             return
         }
-        imageExtractor.extract(context: extensionContext) { extractedItems in
+        imageExtractor.extract(context: extensionContext) { extractedItems, failures in
             guard !extractedItems.isEmpty else {
-                completion([])
+                completion([], failures)
                 return
             }
             var extractedImages = [ExtractedImage]()
@@ -215,14 +248,14 @@ private extension ShareExtractor {
                 })
             })
 
-            completion(extractedImages)
+            completion(extractedImages, failures)
         }
     }
 }
 
 private protocol ExtensionContentExtractor {
     func canHandle(context: NSExtensionContext) -> Bool
-    func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void)
+    func extract(context: NSExtensionContext, completion: @escaping (_ items: [ExtractedItem], _ failures: [Error]) -> Void)
     func saveToSharedContainer(image: UIImage) -> URL?
     func saveToSharedContainer(wrapper: FileWrapper) -> URL?
     func copyToSharedContainer(url: URL) -> URL?
@@ -247,18 +280,20 @@ private extension TypeBasedExtensionContentExtractor {
         return !context.itemProviders(ofType: acceptedType).isEmpty
     }
 
-    func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
+    func extract(context: NSExtensionContext, completion: @escaping (_ items: [ExtractedItem], _ failures: [Error]) -> Void) {
         let itemProviders = context.itemProviders(ofType: acceptedType)
-        print(acceptedType)
         var results = [ExtractedItem]()
+        var failures = [Error]()
         guard !itemProviders.isEmpty else {
             DispatchQueue.main.async {
-                completion(results)
+                completion(results, failures)
             }
             return
         }
 
-        // There 1 or more valid item providers here, lets work through them
+        // `loadItem` calls back on arbitrary queues and can run concurrently, so guard the
+        // accumulators with a lock.
+        let lock = NSLock()
         let syncGroup = DispatchGroup()
         for provider in itemProviders {
             syncGroup.enter()
@@ -267,6 +302,9 @@ private extension TypeBasedExtensionContentExtractor {
                 defer { syncGroup.leave() }
                 if let error {
                     DDLogError("Failed to load shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                    lock.lock()
+                    failures.append(error)
+                    lock.unlock()
                     return
                 }
                 guard let payload = payload as? Payload else {
@@ -274,17 +312,22 @@ private extension TypeBasedExtensionContentExtractor {
                 }
                 do {
                     if let result = try self.convert(payload: payload) {
+                        lock.lock()
                         results.append(result)
+                        lock.unlock()
                     }
                 } catch {
                     DDLogError("Failed to extract shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                    lock.lock()
+                    failures.append(error)
+                    lock.unlock()
                 }
             }
         }
 
         // Call the completion handler after all of the provider items are loaded
         syncGroup.notify(queue: DispatchQueue.main) {
-            completion(results)
+            completion(results, failures)
         }
     }
 
