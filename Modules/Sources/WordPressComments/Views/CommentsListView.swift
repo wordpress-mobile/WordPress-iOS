@@ -39,9 +39,9 @@ struct CommentsListView: View {
             await viewModel.refresh()
         }
         .overlay {
-            if viewModel.isLoadingFirstPage && viewModel.items.isEmpty {
+            if viewModel.state == .loading, viewModel.items.isEmpty {
                 ProgressView()
-            } else if viewModel.firstPageFailed {
+            } else if case .failed = viewModel.state {
                 ContentUnavailableView {
                     Label(Strings.errorTitle, systemImage: "exclamationmark.triangle")
                 } actions: {
