@@ -83,4 +83,44 @@ struct TextBundleWrapperTests {
             _ = try TextBundleWrapper(contentsOf: url, options: .immediate)
         }
     }
+
+    // MARK: Assets
+
+    @Test func assetsAreLoadedAndLookedUpByFilename() throws {
+        let url = try makeBundle(info: validInfoJSON, textFileName: "text.markdown", textData: Data("# Hi".utf8))
+        defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+        let assets = url.appendingPathComponent("assets", isDirectory: true)
+        try FileManager.default.createDirectory(at: assets, withIntermediateDirectories: true)
+        try Data([0x89, 0x50, 0x4E, 0x47]).write(to: assets.appendingPathComponent("foo.png"))
+
+        let wrapper = try TextBundleWrapper(contentsOf: url, options: .immediate)
+        #expect(wrapper.assetsFileWrapper.fileWrappers?["foo.png"] != nil)
+        #expect(wrapper.fileWrapper(forAssetFilename: "foo.png") != nil)
+        #expect(wrapper.fileWrapper(forAssetFilename: "missing.png") == nil)
+    }
+
+    // MARK: Metadata
+
+    @Test func nonMarkdownTypeIsReported() throws {
+        let info = Data(#"{"version":2,"type":"public.plain-text"}"#.utf8)
+        let url = try makeBundle(info: info, textFileName: "text.txt", textData: Data("hi".utf8))
+        defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+
+        let wrapper = try TextBundleWrapper(contentsOf: url, options: .immediate)
+        #expect(wrapper.type == "public.plain-text")
+        #expect(wrapper.type != kUTTypeMarkdown)
+    }
+
+    @Test func invalidInfoJSONThrows() throws {
+        let url = try makeBundle(
+            info: Data("{ not valid json".utf8),
+            textFileName: "text.markdown",
+            textData: Data("hi".utf8)
+        )
+        defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+
+        #expect(throws: (any Error).self) {
+            _ = try TextBundleWrapper(contentsOf: url, options: .immediate)
+        }
+    }
 }
