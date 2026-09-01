@@ -91,9 +91,11 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             TopListItemType.contentItems,
             TopListItemType.trafficSourceItems,
             TopListItemType.audienceEngagementItems
-        ].map {
+        ]
+        .map {
             $0.filter(supportedItems.contains)
-        }.filter {
+        }
+        .filter {
             !$0.isEmpty
         }
     }
@@ -111,12 +113,16 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         isFirstAppear = false
 
         // Track card shown event
-        tracker?.send(.cardShown, properties: [
-            "card_type": CardType.topList.rawValue,
-            "configuration": "\(selection.item.analyticsName)_\(selection.metric.analyticsName)",
-            "item_type": selection.item.analyticsName,
-            "metric": selection.metric.analyticsName
-        ])
+        tracker?
+            .send(
+                .cardShown,
+                properties: [
+                    "card_type": CardType.topList.rawValue,
+                    "configuration": "\(selection.item.analyticsName)_\(selection.metric.analyticsName)",
+                    "item_type": selection.item.analyticsName,
+                    "metric": selection.metric.analyticsName
+                ]
+            )
 
         loadData()
     }
@@ -291,14 +297,16 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         case .author(let userId):
             let authors = items.lazy.compactMap { $0 as? TopListItem.Author }
             if let author = authors.first(where: { $0.userId == userId }),
-               let posts = author.posts {
+                let posts = author.posts
+            {
                 return posts
             }
             return []
         case .utmMetric(let values):
             let utmMetrics = items.lazy.compactMap { $0 as? TopListItem.UTMMetric }
             if let metric = utmMetrics.first(where: { $0.values == values }),
-               let posts = metric.posts {
+                let posts = metric.posts
+            {
                 return posts
             }
             return []
@@ -315,4 +323,4 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             previousLocations: previousLocations
         )
     }
- }
+}
