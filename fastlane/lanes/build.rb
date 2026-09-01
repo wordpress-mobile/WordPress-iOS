@@ -313,11 +313,14 @@ platform :ios do
   # Builds a single app and uploads it to TestFlight for *internal* testers,
   # stamping the build code with the Buildkite build number.
   #
-  # The marketing version (`VERSION_SHORT`) is read from `Version.public.xcconfig`
-  # as-is. The build code is `<marketing version>.0.<buildkite build number>`
-  # (e.g. `27.0.0.4567`). Buildkite build numbers increase monotonically, so each
-  # build for a given marketing version gets a unique, higher build code — which
-  # is all App Store Connect requires.
+  # The marketing version (`VERSION_SHORT`) is resolved from App Store Connect at
+  # build time by `testflight_marketing_version` — the open (editable) version if
+  # there is one, otherwise the next version after the newest released/approved one.
+  # This keeps trunk off a marketing version App Store Connect has already approved
+  # and locked (error 90062), without depending on the checked-in `VERSION_SHORT`.
+  # The build code is `<marketing version>.0.<buildkite build number>` (e.g.
+  # `27.3.0.4567`). Buildkite build numbers increase monotonically, so each build
+  # for a given marketing version gets a unique, higher build code.
   #
   # @param [String] app One of `wordpress`, `jetpack`, or `reader`.
   #
@@ -325,7 +328,9 @@ platform :ios do
   #
   desc 'Builds one app and uploads it to TestFlight for internal testers'
   lane :build_and_upload_app_for_testflight do |app:|
-    # Fail before any cert/profile work if the build code can't be computed.
+    # Resolve everything the build code depends on — the Buildkite build number and the
+    # marketing version — before any cert/profile work, so a resolution failure fails
+    # fast instead of after provisioning. This lane only runs on CI.
     build_number = ENV.fetch('BUILDKITE_BUILD_NUMBER', nil)
     UI.user_error!('BUILDKITE_BUILD_NUMBER is not set — this lane is meant to run on CI') if build_number.nil?
 
@@ -338,27 +343,44 @@ platform :ios do
       beta_app_description_path = WORDPRESS_BETA_APP_DESCRIPTION_PATH
       sentry_project_slug = SENTRY_PROJECT_SLUG_WORDPRESS
       app_identifier = WORDPRESS_BUNDLE_IDENTIFIER
-      update_certs_and_profiles_wordpress_app_store
     when 'jetpack'
       scheme = 'Jetpack'
       output_name = APP_STORE_CONNECT_BUILD_NAME_JETPACK
       beta_app_description_path = JETPACK_BETA_APP_DESCRIPTION_PATH
       sentry_project_slug = SENTRY_PROJECT_SLUG_JETPACK
       app_identifier = JETPACK_BUNDLE_IDENTIFIER
-      update_certs_and_profiles_jetpack_app_store
     when 'reader'
       scheme = 'Reader'
       output_name = APP_STORE_CONNECT_BUILD_NAME_READER
       beta_app_description_path = BETA_APP_DESCRIPTION_PATH_READER
       sentry_project_slug = nil # Reader does not have a Sentry project yet
       app_identifier = nil
-      update_certs_and_profiles_app_store_reader
     else
       UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
     end
 
-    build_code = "#{release_version_current}.0.#{build_number}"
-    UI.important("Building #{scheme} #{release_version_current} (#{build_code}) for internal TestFlight distribution")
+    # Resolve the marketing version from App Store Connect so we never re-upload a
+    # version it has already approved. WordPress and Jetpack ship in lockstep and share a
+    # build code (see promote.rb / docs/testflight-promotion.md), so resolve the version
+    # JOINTLY across both apps rather than from each app's own state alone — otherwise
+    # Apple approving one before the other would drift their build codes apart and break
+    # promotion. Reader has no App Store Connect app wired up yet (nil identifier), so it
+    # falls back to the checked-in version.
+    marketing_version =
+      if app_identifier.nil?
+        release_version_current
+      else
+        shared_testflight_marketing_version(app_identifiers: [WORDPRESS_BUNDLE_IDENTIFIER, JETPACK_BUNDLE_IDENTIFIER])
+      end
+    build_code = "#{marketing_version}.0.#{build_number}"
+    UI.important("Building #{scheme} #{marketing_version} (#{build_code}) for internal TestFlight distribution")
+
+    # Provision signing assets only once the version resolves (see the fail-fast note above).
+    case app
+    when 'wordpress' then update_certs_and_profiles_wordpress_app_store
+    when 'jetpack' then update_certs_and_profiles_jetpack_app_store
+    when 'reader' then update_certs_and_profiles_app_store_reader
+    end
 
     sentry_check_cli_installed
 
@@ -370,7 +392,7 @@ platform :ios do
       output_name: output_name,
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: EXTERNAL_TEAM_ID,
-      xcargs: { VERSION_LONG: build_code },
+      xcargs: { VERSION_SHORT: marketing_version, VERSION_LONG: build_code },
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
@@ -391,7 +413,7 @@ platform :ios do
 
     upload_gutenberg_sourcemaps(
       sentry_project_slug: sentry_project_slug,
-      release_version: release_version_current,
+      release_version: marketing_version,
       build_version: build_code,
       app_identifier: app_identifier
     )
@@ -505,6 +527,119 @@ platform :ios do
       build_version: build_number,
       app_identifier: app_identifier
     )
+  end
+
+  # The marketing version to stamp on WordPress AND Jetpack. They ship in lockstep and
+  # share a build code (promote.rb distributes one build code to both — see
+  # docs/testflight-promotion.md), but they're separate App Store Connect records Apple
+  # can approve minutes-to-days apart. Resolving from each app's own state alone would
+  # drift their build codes during that skew and break promotion; instead resolve BOTH
+  # and take the higher. The max is >= each app's own 90062-safe version (so it's still
+  # safe to upload for both) and identical across the two matrix jobs, so WordPress and
+  # Jetpack always stamp the same version.
+  #
+  # @param [Array<String>] app_identifiers The bundle identifiers that share a build code.
+  # @return [String] The marketing version to stamp on every one of them (e.g. "27.3").
+  def shared_testflight_marketing_version(app_identifiers:)
+    app_identifiers
+      .map { |identifier| testflight_marketing_version(app_identifier: identifier) }
+      .max_by { |version| Gem::Version.new(version) }
+  end
+
+  # Resolves the marketing version (`CFBundleShortVersionString`) for a per-commit
+  # TestFlight build from live App Store Connect state, so trunk never re-uploads a
+  # version App Store Connect has already approved.
+  #
+  # App Store Connect locks a marketing version once a build for it has been
+  # *approved*: every later upload must use a strictly higher version or it's
+  # rejected with error 90062 — regardless of build code. Trunk shares its version
+  # with the release in flight, so the moment that release is approved every trunk
+  # upload fails. Rather than trust the checked-in `VERSION_SHORT`, resolve it here:
+  #
+  #   • If there's an open (editable, pre-approval) App Store version newer than the
+  #     latest approved one, build into it — trunk keeps flowing to the version being
+  #     prepared. Hotfix versions are ignored (see `open_app_store_version`).
+  #   • Otherwise the newest version is released or awaiting release, so start the
+  #     next one. `next_release_version` bumps the minor and wraps 27.9 → 28.0.
+  #
+  # Resolves ONE app's version. WordPress and Jetpack must never drift apart, so the lane
+  # combines both apps' results via `shared_testflight_marketing_version` rather than
+  # calling this per app in isolation.
+  #
+  # @param [String] app_identifier The app's bundle identifier.
+  # @return [String] The marketing version to stamp on the build (e.g. "27.3").
+  def testflight_marketing_version(app_identifier:)
+    resolve_testflight_marketing_version(app_identifier: app_identifier)
+  rescue FastlaneCore::Interface::FastlaneError
+    # Our own (and the toolkit's) UI.user_error! messages are already actionable — don't
+    # re-wrap them as a generic App Store Connect failure.
+    raise
+  rescue ArgumentError => e
+    UI.user_error!("App Store Connect returned a non-numeric marketing version for #{app_identifier} (#{e.message}); cannot resolve a TestFlight marketing version.")
+  rescue StandardError => e
+    UI.user_error!("Could not reach App Store Connect to resolve a TestFlight marketing version for #{app_identifier}: #{e.message}")
+  end
+
+  def resolve_testflight_marketing_version(app_identifier:)
+    app = app_store_connect_app(app_identifier)
+    open_version = open_app_store_version(app)
+    locked_version = locked_app_store_version(app)
+
+    if open_clears_locked?(open_version, locked_version)
+      UI.message("#{app_identifier}: building into open App Store version #{open_version.version_string} (#{open_version.app_version_state})")
+      return open_version.version_string
+    end
+
+    UI.user_error!("No live or pending App Store version found for #{app_identifier}; cannot resolve a TestFlight marketing version") if locked_version.nil?
+
+    next_version = increment_release_version(locked_version.version_string)
+    UI.message("#{app_identifier}: no usable open App Store version — incrementing #{locked_version.version_string} → #{next_version}")
+    next_version
+  end
+
+  # True when there is an open (pre-approval) version strictly newer than everything
+  # App Store Connect has already locked (live or pending release) — the only case where
+  # building into `open` can't re-upload an already-approved version. ASC won't hold an
+  # editable version at or below the live one, so this normally always holds; asserting
+  # it here makes "never re-upload an approved version" true by construction.
+  def open_clears_locked?(open_version, locked_version)
+    return false if open_version.nil?
+    return true if locked_version.nil?
+
+    Gem::Version.new(open_version.version_string) > Gem::Version.new(locked_version.version_string)
+  end
+
+  # The next marketing version after `version_string`; bumps the minor and wraps
+  # 27.9 → 28.0 (e.g. "27.2" or the hotfix "27.2.1" → "27.3").
+  def increment_release_version(version_string)
+    VERSION_FORMATTER.release_version(
+      VERSION_CALCULATOR.next_release_version(version: VERSION_FORMATTER.parse(version_string))
+    )
+  end
+
+  # The newest version App Store Connect hasn't approved yet — in preparation,
+  # rejected, or under review — or nil. Trunk builds flow into it, matching the
+  # release currently being prepared, and none of these states trip 90062.
+  # `get_edit_app_store_version` deliberately excludes `IN_REVIEW`, so it's checked
+  # separately or we'd bump the version out from under a release that's in review.
+  #
+  # Hotfix versions (patch > 0, e.g. `27.2.1`) are ignored: a hotfix line is
+  # orthogonal to trunk, so trunk falls through to incrementing past the newest
+  # live/pending version and builds the next feature version instead of stamping
+  # itself into the hotfix's train — which would also produce a malformed five-part
+  # build code like `27.2.1.0.<buildkite#>`.
+  def open_app_store_version(app)
+    [app.get_edit_app_store_version, app.get_in_review_app_store_version]
+      .compact
+      .reject { |version| VERSION_CALCULATOR.release_is_hotfix?(version: VERSION_FORMATTER.parse(version.version_string)) }
+      .max_by { |version| Gem::Version.new(version.version_string) }
+  end
+
+  # The newest live or approved-and-awaiting-release version — the one App Store
+  # Connect has locked, which a new upload must clear — or nil.
+  def locked_app_store_version(app)
+    [app.get_live_app_store_version, app.get_pending_release_app_store_version]
+      .compact.max_by { |version| Gem::Version.new(version.version_string) }
   end
 
   def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)
