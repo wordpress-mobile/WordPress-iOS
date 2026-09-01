@@ -133,7 +133,9 @@ NS_ASSUME_NONNULL_BEGIN
                                PostCategory *newCategory = [PostCategory lookupWithBlogObjectID:blogObjectID
                                                                            categoryID:receivedCategory.categoryID
                                                                             inContext:[self.coreDataStack mainContext]];
-                               success(newCategory);
+                               if (newCategory) {
+                                   success(newCategory);
+                               }
                            }
                            if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
