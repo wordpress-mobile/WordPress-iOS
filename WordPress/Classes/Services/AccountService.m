@@ -180,7 +180,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 }
 
 - (void)createOrUpdateAccountWithAuthToken:(NSString *)authToken
-                                   success:(void (^)(WPAccount * _Nonnull))success
+                                   success:(void (^)(WPAccount * _Nullable))success
                                    failure:(void (^)(NSError * _Nonnull))failure
 {
     WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:authToken userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
