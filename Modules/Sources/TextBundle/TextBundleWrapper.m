@@ -134,7 +134,14 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
             if (error) { *error = jsonReadError; }
             return NO;
         }
-        
+
+        if (![jsonObject isKindOfClass:[NSDictionary class]]) {
+            if (error) {
+                *error = [NSError errorWithDomain:TextBundleErrorDomain code:TextBundleErrorInvalidFormat userInfo:nil];
+            }
+            return NO;
+        }
+
         self.metadata          = [jsonObject mutableCopy];
         self.version           = self.metadata[kTextBundleVersion];
         self.type              = self.metadata[kTextBundleType];
