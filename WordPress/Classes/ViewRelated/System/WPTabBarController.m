@@ -330,12 +330,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
-    if (notification.object == nil) {
-        [self.readerNavigationController popToRootViewControllerAnimated:NO];
-        [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
-    }
+    // Discard the Reader tab so `readerNavigationController` rebuilds it for the
+    // new account state. Login rebuilds every tab in `signinDidFinish:`.
+    _readerPresenter = nil;
+    _readerNavigationController = nil;
 
-    self.readerNavigationController = nil;
+    if (notification.object == nil) {
+        [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+        // Reinstall the tabs. The app UI stays up after logging out when a
+        // self-hosted site remains, so the rebuilt Reader tab has to replace the
+        // stale one here. The other tabs are the same instances, which keeps the
+        // selected tab.
+        [self setViewControllers:[self tabViewControllers]];
+    }
 }
 
 - (void)signinDidFinish:(NSNotification *)notification

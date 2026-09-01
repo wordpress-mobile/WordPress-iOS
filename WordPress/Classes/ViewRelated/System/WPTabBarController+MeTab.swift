@@ -22,6 +22,7 @@ extension WPTabBarController {
 
     @objc public func configureMeTabImage(placeholderImage: UIImage?) {
         meNavigationController.tabBarItem.image = placeholderImage
+        meNavigationController.tabBarItem.selectedImage = nil
         downloadImage()
     }
 

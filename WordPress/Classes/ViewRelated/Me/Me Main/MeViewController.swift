@@ -102,8 +102,10 @@ public class MeViewController: UITableViewController {
         // based on if there's a header or not.
         if let account {
             headerView.update(with: MeHeaderViewModel(account: account))
+            tableView.tableHeaderView = headerView
+        } else {
+            tableView.tableHeaderView = nil
         }
-        tableView.tableHeaderView = headerView
 
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(with: account)
