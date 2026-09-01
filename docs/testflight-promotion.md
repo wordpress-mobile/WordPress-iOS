@@ -22,7 +22,7 @@ Each promotion is a metadata-only App Store Connect call that adds an existing b
 2. **Choose** — the Slack message links to the block step's unblock dialog, where a developer picks a build.
 3. **Promote** (`promote_build`) distributes the chosen build to the public beta group for both apps.
 
-Both apps share a build code, so one selection promotes both.
+Both apps share a build code, so one selection promotes both. That's guaranteed, not incidental: the per-commit build (`build_and_upload_app_for_testflight`) resolves the marketing version jointly across WordPress and Jetpack — the higher of the two apps' App Store Connect states — so an approval landing on one app before the other can't drift their build codes apart.
 
 ## Safety
 

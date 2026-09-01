@@ -13,7 +13,9 @@ require 'yaml'
 #   daily 00:00 → `promote_nightly_build`: last build of the day → nightly group
 #   weekly      → `promote_build`: a developer picks from the nightly group → public group
 #
-# WordPress and Jetpack share a build code (same CI run), so one build promotes both.
+# WordPress and Jetpack share a build code — same CI run (build number) and a marketing
+# version resolved jointly across both apps (see `shared_testflight_marketing_version` in
+# build.rb) — so one build promotes both and they never drift apart.
 
 PROMOTION_CANDIDATE_LIMIT = 12
 PROMOTION_MAX_AGE_DAYS = 7
