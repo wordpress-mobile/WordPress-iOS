@@ -177,6 +177,8 @@
                                 success:^(PostCategory * _Nonnull __unused category) {
         [successNotCalled fulfill];
     } failure:^(NSError * _Nonnull __unused error) {
+        // Failure is delivered from the main-queue completion, not the background save context.
+        XCTAssertTrue([NSThread isMainThread]);
         [failed fulfill];
     }];
 

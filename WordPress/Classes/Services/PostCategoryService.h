@@ -8,7 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol CoreDataStack;
 
 typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
-    PostCategoryServiceErrorsBlogNotFound
+    PostCategoryServiceErrorsBlogNotFound,
+    PostCategoryServiceErrorsCategoryNotFound
 };
 
 @interface PostCategoryService : NSObject
