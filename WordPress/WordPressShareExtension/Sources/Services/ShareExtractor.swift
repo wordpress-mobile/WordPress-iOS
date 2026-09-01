@@ -231,7 +231,7 @@ private protocol ExtensionContentExtractor {
 private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor, Sendable {
     associatedtype Payload
     var acceptedType: String { get }
-    func convert(payload: Payload) -> ExtractedItem?
+    func convert(payload: Payload) throws -> ExtractedItem?
 }
 
 private extension TypeBasedExtensionContentExtractor {
@@ -263,13 +263,22 @@ private extension TypeBasedExtensionContentExtractor {
         for provider in itemProviders {
             syncGroup.enter()
             // Remember, this is an async call....
-            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { payload, _ in
-                let payload = payload as? Payload
-                let result = payload.flatMap(self.convert(payload:))
-                if let result {
-                    results.append(result)
+            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { payload, error in
+                defer { syncGroup.leave() }
+                if let error {
+                    DDLogError("Failed to load shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                    return
                 }
-                syncGroup.leave()
+                guard let payload = payload as? Payload else {
+                    return
+                }
+                do {
+                    if let result = try self.convert(payload: payload) {
+                        results.append(result)
+                    }
+                } catch {
+                    DDLogError("Failed to extract shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                }
             }
         }
 
@@ -340,9 +349,9 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = URL
     let acceptedType = UTType.url.identifier
 
-    func convert(payload: URL) -> ExtractedItem? {
+    func convert(payload: URL) throws -> ExtractedItem? {
         guard !payload.isFileURL else {
-            return processLocalFile(url: payload)
+            return try processLocalFile(url: payload)
         }
 
         var returnedItem = ExtractedItem()
@@ -351,12 +360,12 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         return returnedItem
     }
 
-    private func processLocalFile(url: URL) -> ExtractedItem? {
+    private func processLocalFile(url: URL) throws -> ExtractedItem? {
         switch url.pathExtension {
         case "textbundle":
-            return handleTextBundle(url: url)
+            return try handleTextBundle(url: url)
         case "textpack":
-            return handleTextPack(url: url)
+            return try handleTextPack(url: url)
         case "text", "txt":
             return handlePlainTextFile(url: url)
         case "md", "markdown":
@@ -366,7 +375,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         }
     }
 
-    private func handleTextPack(url: URL) -> ExtractedItem? {
+    private func handleTextPack(url: URL) throws -> ExtractedItem? {
         let fileManager = FileManager()
         guard let temporaryDirectoryURL = try? FileManager.default.url(for: .itemReplacementDirectory,
                                                                 in: .userDomainMask,
@@ -394,13 +403,11 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             return nil
         }
 
-        return handleTextBundle(url: textBundleURL)
+        return try handleTextBundle(url: textBundleURL)
     }
 
-    private func handleTextBundle(url: URL) -> ExtractedItem? {
-        guard let bundleWrapper = try? TextBundleWrapper(contentsOf: url, options: .immediate) else {
-            return nil
-        }
+    private func handleTextBundle(url: URL) throws -> ExtractedItem? {
+        let bundleWrapper = try TextBundleWrapper(contentsOf: url, options: .immediate)
         var returnedItem = ExtractedItem()
 
         var cachedImages = [String: ExtractedImage]()
