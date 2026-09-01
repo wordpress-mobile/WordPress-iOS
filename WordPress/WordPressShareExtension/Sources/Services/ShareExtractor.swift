@@ -398,8 +398,9 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     }
 
     private func handleTextBundle(url: URL) -> ExtractedItem? {
-        var error: NSError?
-        let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
+        guard let bundleWrapper = try? TextBundleWrapper(contentsOf: url, options: .immediate) else {
+            return nil
+        }
         var returnedItem = ExtractedItem()
 
         var cachedImages = [String: ExtractedImage]()

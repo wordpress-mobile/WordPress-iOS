@@ -50,7 +50,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
     return self;
 }
 
-- (instancetype)initWithContentsOfURL:(NSURL *)url options:(NSFileWrapperReadingOptions)options error:(NSError **)error
+- (nullable instancetype)initWithContentsOfURL:(NSURL *)url options:(NSFileWrapperReadingOptions)options error:(NSError **)error
 {
     self = [self init];
     if (self) {
@@ -63,7 +63,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
     return self;
 }
 
-- (instancetype)initWithFileWrapper:(NSFileWrapper *)fileWrapper error:(NSError **)error
+- (nullable instancetype)initWithFileWrapper:(NSFileWrapper *)fileWrapper error:(NSError **)error
 {
     self = [self init];
     if (self) {
@@ -158,6 +158,12 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
     NSFileWrapper *textFileWrapper = [[textBundleFileWrapper fileWrappers] objectForKey:[self textFileNameInFileWrapper:textBundleFileWrapper]];
     if (textFileWrapper) {
         self.text = [[NSString alloc] initWithData:textFileWrapper.regularFileContents encoding:NSUTF8StringEncoding];
+        if (self.text == nil) {
+            if (error) {
+                *error = [NSError errorWithDomain:TextBundleErrorDomain code:TextBundleErrorInvalidFormat userInfo:nil];
+            }
+            return NO;
+        }
     }
     else {
         if (error) {
@@ -201,7 +207,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 #pragma mark - Assets
 
-- (NSFileWrapper *)fileWrapperForAssetFilename:(NSString *)filename
+- (nullable NSFileWrapper *)fileWrapperForAssetFilename:(NSString *)filename
 {
     __block NSFileWrapper *fileWrapper = nil;
     [[self.assetsFileWrapper fileWrappers] enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull __unused key, NSFileWrapper * _Nonnull __unused obj, BOOL * _Nonnull __unused stop) {
