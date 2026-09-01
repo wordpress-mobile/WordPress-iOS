@@ -85,7 +85,7 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param failure A failure block.
  */
 - (void)createOrUpdateAccountWithAuthToken:(NSString *)authToken
-                                   success:(void (^)(WPAccount * _Nonnull))success
+                                   success:(void (^)(WPAccount * _Nullable))success
                                    failure:(void (^)(NSError * _Nonnull))failure;
 
 - (NSManagedObjectID *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken;
