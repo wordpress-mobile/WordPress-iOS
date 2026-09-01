@@ -11,21 +11,27 @@ final class CommentsDetailRouter {
 
     private let service: any CommentsServiceProtocol
     private let capabilities: any CommentsCapabilitiesProtocol
+    private let coordinator: CommentsModerationCoordinator
     private let titleResolver: PostTitleResolver
     private let tracker: (any CommentsTracker)?
+    private let noticePresenter: any NoticePresenting
     private let makeContentRenderer: @MainActor () -> any CommentContentRendering
 
     init(
         service: any CommentsServiceProtocol,
         capabilities: any CommentsCapabilitiesProtocol,
+        coordinator: CommentsModerationCoordinator,
         titleResolver: PostTitleResolver,
         tracker: (any CommentsTracker)?,
+        noticePresenter: any NoticePresenting,
         makeContentRenderer: @escaping @MainActor () -> any CommentContentRendering
     ) {
         self.service = service
         self.capabilities = capabilities
+        self.coordinator = coordinator
         self.titleResolver = titleResolver
         self.tracker = tracker
+        self.noticePresenter = noticePresenter
         self.makeContentRenderer = makeContentRenderer
     }
 
@@ -37,8 +43,10 @@ final class CommentsDetailRouter {
             seed: seed,
             service: service,
             capabilities: capabilities,
+            coordinator: coordinator,
             titleResolver: titleResolver,
-            tracker: tracker
+            tracker: tracker,
+            noticePresenter: noticePresenter
         )
         let renderer = makeContentRenderer()
         renderer.onLinkTapped = { url in

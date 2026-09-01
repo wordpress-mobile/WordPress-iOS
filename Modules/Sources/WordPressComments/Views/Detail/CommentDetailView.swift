@@ -1,9 +1,11 @@
 import SwiftUI
 import UIKit
 
-/// The fixed-region comment detail screen: a pinned status pill
+/// The fixed-region comment detail and moderation screen: a pinned status pill
 /// and author header, an optional "In reply to" strip, the internally
-/// scrolling content region, and the navigation-bar share action.
+/// scrolling content region, and a pinned bottom moderation toolbar hosted via
+/// `.safeAreaInset(edge: .bottom)` (never `.toolbar(placement: .bottomBar)`,
+/// which does not render in a UIKit-hosted `UIHostingController`).
 struct CommentDetailView: View {
     @StateObject private var viewModel: CommentDetailViewModel
     @ObservedObject private var titleResolver: PostTitleResolver
@@ -14,6 +16,8 @@ struct CommentDetailView: View {
     /// Built by the router once per screen; the content region keeps it for
     /// the screen's lifetime.
     private let renderer: any CommentContentRendering
+
+    @Environment(\.dismiss) private var dismiss
 
     init(
         viewModel: CommentDetailViewModel,
@@ -29,9 +33,15 @@ struct CommentDetailView: View {
 
     var body: some View {
         fixedRegions
-            .toolbar { shareToolbarItem }
+            .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
+            .toolbar { trailingToolbarItems }
             .navigationBarTitleDisplayMode(.inline)
             .task { await viewModel.onAppear() }
+            // The comment no longer exists, so there is nothing left to show.
+            // `dismiss` pops this screen off the UIKit navigation stack.
+            .onChange(of: viewModel.isDeleted) { _, isDeleted in
+                if isDeleted { dismiss() }
+            }
     }
 
     private var fixedRegions: some View {
@@ -42,7 +52,7 @@ struct CommentDetailView: View {
                     CommentAuthorHeader(
                         header: header,
                         titleState: titleResolver.titleState(for: header.postID),
-                        detail: loadedDetail
+                        detail: viewModel.loadedDetail
                     )
                 }
                 .padding(.horizontal)
@@ -84,18 +94,48 @@ struct CommentDetailView: View {
         }
     }
 
-    @ToolbarContentBuilder
-    private var shareToolbarItem: some ToolbarContent {
-        if let link = loadedDetail?.link {
-            ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(item: link)
+    @ViewBuilder
+    private var bottomToolbar: some View {
+        let model = viewModel.toolbarModel
+        if model != .hidden {
+            CommentModerationToolbar(
+                model: model,
+                isEnabled: viewModel.isToolbarEnabled,
+                pendingAction: viewModel.pendingAction,
+                trashConfirmation: viewModel.trashConfirmation
+            ) { action in
+                viewModel.perform(action)
             }
         }
     }
 
-    private var loadedDetail: CommentDetail? {
-        if case .loaded(let detail) = viewModel.content { return detail }
-        return nil
+    @ToolbarContentBuilder
+    private var trailingToolbarItems: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            let link = viewModel.loadedDetail?.link
+            let menuAction = viewModel.toolbarModel.menuAction
+            if link != nil || menuAction != nil {
+                Menu {
+                    if let link {
+                        ShareLink(item: link)
+                    }
+                    // The secondary moderation move shares the toolbar's
+                    // enablement so it can't fire on seed data or during a
+                    // mutation.
+                    if let menuAction {
+                        Section {
+                            Button(menuAction.title, systemImage: menuAction.systemImage, role: menuAction.role) {
+                                viewModel.perform(menuAction)
+                            }
+                            .disabled(!viewModel.isToolbarEnabled)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+                .accessibilityLabel(Strings.detailMoreActions)
+            }
+        }
     }
 }
 
@@ -128,23 +168,9 @@ private final class StubContentRenderer: NSObject, CommentContentRendering {
     }
 }
 
-@MainActor
-private final class PreviewCommentsService: CommentsServiceProtocol {
-    func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
-        CommentsPage(items: [], nextPage: nil)
-    }
-
-    func fetchComment(id: Int64, allowsEditContext: Bool) async throws -> CommentDetail {
-        .preview(id: id, status: .pending)
-    }
-}
-
-private struct PreviewCapabilities: CommentsCapabilitiesProtocol {
-    func canModerateComments() async -> Bool { true }
-}
-
 #Preview {
-    let service = PreviewCommentsService()
+    let service = PreviewCommentsService(fetchedStatus: .pending, numberOfReplies: 2)
+    let coordinator = CommentsModerationCoordinator(service: service)
     let titleResolver = PostTitleResolver(fetcher: { _ in
         PostTitleResolver.FetchResult(titles: [10: "Reviewing the 2027 Upgrade"])
     })
@@ -153,6 +179,7 @@ private struct PreviewCapabilities: CommentsCapabilitiesProtocol {
         seed: nil,
         service: service,
         capabilities: PreviewCapabilities(),
+        coordinator: coordinator,
         titleResolver: titleResolver
     )
     return NavigationStack {

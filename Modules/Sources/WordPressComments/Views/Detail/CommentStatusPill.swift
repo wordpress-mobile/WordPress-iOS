@@ -1,12 +1,13 @@
-import DesignSystem
 import SwiftUI
 
-/// The pinned status pill above the author header.
+/// The pinned status pill above the author header. Reads the live header
+/// status (the screen's status source of truth), so it stays in sync while a
+/// moderation action settles.
 struct CommentStatusPill: View {
     let status: CommentListItem.Status
 
     var body: some View {
-        Text(label)
+        Label(label, systemImage: symbol)
             .font(.footnote.weight(.semibold))
             .foregroundStyle(tint)
             .padding(.horizontal, 10)
@@ -17,11 +18,20 @@ struct CommentStatusPill: View {
 
     private var tint: Color {
         switch status {
-        case .approved: Color(UIAppColor.green(.shade40))
-        case .pending: Color(UIAppColor.yellow(.shade20))
-        case .spam: Color(UIAppColor.orange(.shade40))
-        case .trash: Color(UIAppColor.red(.shade40))
-        case .other: Color(UIAppColor.gray(.shade30))
+        case .approved: .green
+        case .pending: .orange
+        case .spam, .trash: .red
+        case .other: .gray
+        }
+    }
+
+    private var symbol: String {
+        switch status {
+        case .approved: "checkmark.circle"
+        case .pending: "clock"
+        case .spam: "nosign"
+        case .trash: "trash"
+        case .other: "questionmark.circle"
         }
     }
 
