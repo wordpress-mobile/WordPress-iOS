@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 extension NSAttributedString {
     /// Creates an `NSAttributedString` with the styles defined in `attributes` applied.
@@ -43,9 +44,7 @@ extension NSAttributedString {
         paragraphStyle.paragraphSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
 
-        attributedString.addAttribute(.paragraphStyle,
-                                      value: paragraphStyle,
-                                      range: NSMakeRange(0, attributedString.string.count - 1))
+        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle)
 
         return NSAttributedString(attributedString: attributedString)
     }

@@ -39,7 +39,7 @@ extension Array where Element == DiffAbstractValue {
 
         let attribute = NSMutableAttributedString(string: value)
         if let attributes = right.attributes {
-            attribute.addAttributes(attributes, range: NSRange(location: 0, length: value.count))
+            attribute.addAttributes(attributes)
         }
         left.append(attribute)
         return left

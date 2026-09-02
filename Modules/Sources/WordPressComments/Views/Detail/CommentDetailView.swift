@@ -178,7 +178,7 @@ private final class StubContentRenderer: NSObject, CommentContentRendering {
         commentID: 1,
         seed: nil,
         service: service,
-        capabilities: PreviewCapabilities(),
+        capabilities: CommentsCapabilityResolver(capabilities: PreviewCapabilities()),
         coordinator: coordinator,
         titleResolver: titleResolver
     )

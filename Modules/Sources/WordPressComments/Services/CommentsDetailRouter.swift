@@ -10,7 +10,9 @@ final class CommentsDetailRouter {
     weak var host: UIViewController?
 
     private let service: any CommentsServiceProtocol
-    private let capabilities: any CommentsCapabilitiesProtocol
+    /// Shared by every detail view model, so the capability resolves once
+    /// while the list loads and later screens read it synchronously.
+    private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
     private let titleResolver: PostTitleResolver
     private let tracker: (any CommentsTracker)?
@@ -27,17 +29,19 @@ final class CommentsDetailRouter {
         makeContentRenderer: @escaping @MainActor () -> any CommentContentRendering
     ) {
         self.service = service
-        self.capabilities = capabilities
+        self.capabilities = CommentsCapabilityResolver(capabilities: capabilities)
         self.coordinator = coordinator
         self.titleResolver = titleResolver
         self.tracker = tracker
         self.noticePresenter = noticePresenter
         self.makeContentRenderer = makeContentRenderer
+        self.capabilities.prefetch()
     }
 
     /// Builds the detail view model and screen for `id` (seeded from the list
     /// row when available) and pushes it onto the shared navigation stack.
     func open(id: Int64, seed: CommentListItem?) {
+        capabilities.prefetch()
         let viewModel = CommentDetailViewModel(
             commentID: id,
             seed: seed,

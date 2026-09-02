@@ -2,8 +2,10 @@ import Combine
 import Foundation
 import WordPressShared
 
-/// Drives the comment detail and moderation screen. Resolves the moderation
-/// capability once, runs the authoritative detail/parent/reply-count fetches,
+/// Drives the comment detail and moderation screen. Reads the moderation
+/// capability from the shared resolver when already known (so the toolbar and
+/// nav bar items render on the first frame), else awaits it once; runs the
+/// authoritative detail/parent/reply-count fetches,
 /// and enforces the ordering rules the design requires: no action lands before
 /// the authoritative fetch, the toolbar is disabled while a mutation is in
 /// flight, and an open screen still hears late status changes by subscribing to
@@ -109,7 +111,7 @@ final class CommentDetailViewModel: ObservableObject {
 
     private let seed: CommentListItem?
     private let service: any CommentsServiceProtocol
-    private let capabilities: any CommentsCapabilitiesProtocol
+    private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
     private let titleResolver: PostTitleResolver
     /// Fires `.detailViewed` once per screen, on the first successful fetch.
@@ -125,7 +127,7 @@ final class CommentDetailViewModel: ObservableObject {
         commentID: Int64,
         seed: CommentListItem?,
         service: any CommentsServiceProtocol,
-        capabilities: any CommentsCapabilitiesProtocol,
+        capabilities: CommentsCapabilityResolver,
         coordinator: CommentsModerationCoordinator,
         titleResolver: PostTitleResolver,
         tracker: (any CommentsTracker)? = nil,
@@ -135,6 +137,7 @@ final class CommentDetailViewModel: ObservableObject {
         self.seed = seed
         self.service = service
         self.capabilities = capabilities
+        canModerate = capabilities.canModerate
         self.coordinator = coordinator
         self.titleResolver = titleResolver
         self.tracker = tracker
@@ -183,7 +186,9 @@ final class CommentDetailViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         if canModerate == nil {
-            canModerate = await capabilities.canModerateComments()
+            // A failed lookup degrades this screen to read-only (view-context
+            // fetch, no author email or IP) without blocking it.
+            canModerate = await capabilities.resolve() ?? false
         }
         await runFetch()
     }

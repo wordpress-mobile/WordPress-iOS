@@ -8,6 +8,8 @@ env:
 agents:
   queue: mac
 
+priority: 1
+
 steps:
   - label: Finalize Release
     plugins:

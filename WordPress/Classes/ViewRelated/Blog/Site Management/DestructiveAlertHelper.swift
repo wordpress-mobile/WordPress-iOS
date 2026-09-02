@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol DestructiveAlertHelperLogic {
     var valueToConfirm: String? { get }
@@ -18,7 +19,7 @@ class DestructiveAlertHelper: DestructiveAlertHelperLogic {
         let attributedValue = NSMutableAttributedString(string: valueToConfirm)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byCharWrapping
-        attributedValue.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedValue.string.count - 1))
+        attributedValue.addAttribute(.paragraphStyle, value: paragraphStyle)
         attributedMessage.append(attributedValue)
 
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)

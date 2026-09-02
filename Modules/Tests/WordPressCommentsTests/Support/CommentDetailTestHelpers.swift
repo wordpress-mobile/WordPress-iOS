@@ -26,6 +26,7 @@ func makeVM(
     seed: CommentListItem? = nil,
     service: any CommentsServiceProtocol,
     capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities(),
+    resolver: CommentsCapabilityResolver? = nil,
     coordinator: CommentsModerationCoordinator? = nil,
     tracker: (any CommentsTracker)? = nil,
     noticePresenter: (any NoticePresenting)? = nil
@@ -34,12 +35,23 @@ func makeVM(
         commentID: commentID,
         seed: seed,
         service: service,
-        capabilities: capabilities,
+        capabilities: resolver ?? CommentsCapabilityResolver(capabilities: capabilities),
         coordinator: coordinator ?? CommentsModerationCoordinator(service: FakeCommentsService()),
         titleResolver: makeResolver(),
         tracker: tracker,
         noticePresenter: noticePresenter
     )
+}
+
+/// A resolver whose lookup has already landed with `canModerate`, standing in
+/// for the router's prefetch finishing before a detail screen opens.
+@MainActor
+func makeResolvedCapabilities(canModerate: Bool) async -> CommentsCapabilityResolver {
+    let capabilities = FakeCommentsCapabilities()
+    capabilities.canModerate = canModerate
+    let resolver = CommentsCapabilityResolver(capabilities: capabilities)
+    _ = await resolver.resolve()
+    return resolver
 }
 
 /// A view model whose authoritative fetch has landed with edit context at

@@ -409,7 +409,7 @@ struct JetpackScanThreatViewModel {
     }
 }
 
-private extension JetpackThreatContext {
+extension JetpackThreatContext {
 
     struct JetpackThreatContextRendererConfig {
         let numberAttributes: [NSAttributedString.Key: Any]
@@ -461,25 +461,21 @@ private extension JetpackThreatContext {
 
             if let highlights = line.highlights {
 
-                numberAttr.setAttributes(config.highlightedNumberAttributes,
-                                         range: NSRange(location: 0, length: numberStr.count))
+                numberAttr.addAttributes(config.highlightedNumberAttributes)
 
-                contentsAttr.addAttributes(config.highlightedContentsAttributes,
-                                           range: NSRange(location: 0, length: contentsStr.count))
+                contentsAttr.addAttributes(config.highlightedContentsAttributes)
 
                 for highlight in highlights {
                     let location = highlight.location
-                    let length = highlight.length + Constants.columnSpacer.count
+                    let length = highlight.length + Constants.columnSpacer.utf16.count
                     let range = NSRange(location: location, length: length)
 
                     contentsAttr.addAttributes(config.highlightedSectionAttributes, range: range)
                 }
             } else {
-                numberAttr.setAttributes(config.numberAttributes,
-                                         range: NSRange(location: 0, length: numberStr.count))
+                numberAttr.addAttributes(config.numberAttributes)
 
-                contentsAttr.setAttributes(config.contentsAttributes,
-                                           range: NSRange(location: 0, length: contentsStr.count))
+                contentsAttr.addAttributes(config.contentsAttributes)
             }
 
             attrString.append(numberAttr)

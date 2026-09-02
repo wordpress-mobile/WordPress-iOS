@@ -50,7 +50,7 @@ extension CommentModerationAction {
         switch self {
         case .approve: "checkmark"
         case .unapprove: "clock"
-        case .spam: "exclamationmark.bubble"
+        case .spam: "exclamationmark.octagon"
         case .trash: "trash"
         case .restore: "arrow.uturn.backward"
         case .delete: "trash"

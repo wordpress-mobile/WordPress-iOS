@@ -84,7 +84,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         let attributedString = NSMutableAttributedString()
         attributedString.append(NSAttributedString(attachment: iconAttachment))
         attributedString.append(.init(string: " " + .replyIndicatorLabelText))
-        attributedString.addAttributes(Style.ReplyIndicator.textAttributes, range: NSMakeRange(0, attributedString.length))
+        attributedString.addAttributes(Style.ReplyIndicator.textAttributes)
 
         // reverse the attributed strings in RTL direction.
         if view.effectiveUserInterfaceLayoutDirection == .rightToLeft {

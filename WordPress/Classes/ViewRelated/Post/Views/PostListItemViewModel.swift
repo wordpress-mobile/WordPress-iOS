@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 final class PostListItemViewModel {
     let post: Post
@@ -76,7 +77,7 @@ private func makeTitleString(for post: Post, isDisabled: Bool) -> NSAttributedSt
     paragraphStyle.lineBreakMode = .byTruncatingTail
 
     let string = NSMutableAttributedString(string: title, attributes: attributes)
-    string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
+    string.addAttribute(.paragraphStyle, value: paragraphStyle)
 
     return string
 }
@@ -95,7 +96,7 @@ private func makeExcerptString(for post: Post, isDisabled: Bool) -> NSAttributed
     paragraphStyle.lineBreakMode = .byTruncatingTail
 
     let string = NSMutableAttributedString(string: excerpt, attributes: attributes)
-    string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
+    string.addAttribute(.paragraphStyle, value: paragraphStyle)
 
     return string
 }
