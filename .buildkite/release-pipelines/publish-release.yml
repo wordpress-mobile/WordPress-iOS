@@ -7,6 +7,8 @@ env:
 agents:
   queue: mac
 
+priority: 1
+
 steps:
   - label: Publish Release
     plugins: [$CI_TOOLKIT_PLUGIN]

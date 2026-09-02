@@ -56,6 +56,15 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
          success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure
 {
+    if (!blog) {
+        // Reuse an existing error type. This branch is an edge case and no caller inspects the error.
+        NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
+                                             code:WordPressComRestApiErrorCodeInvalidInput
+                                         userInfo:@{NSDebugDescriptionErrorKey: @"Cannot sync a nil blog"}];
+        failure(error);
+        return;
+    }
+
     if ([blog supports:BlogFeatureWpComRESTAPI]) {
         id<BlogServiceRemote> remote = [self remoteForBlog:blog];
         if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {

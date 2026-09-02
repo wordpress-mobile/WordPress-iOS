@@ -513,7 +513,7 @@ private extension BloggingRemindersFlowSettingsViewController {
 
         let frequencyDescription = scheduleFormatter.shortScheduleDescription(for: .weekdays(weekdays))
         let attributedText = NSMutableAttributedString(attributedString: frequencyDescription)
-        attributedText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedText.length))
+        attributedText.addAttributes(defaultAttributes)
 
         frequencyLabel.attributedText = attributedText
         frequencyLabel.sizeToFit()

@@ -1,18 +1,15 @@
 import WordPressCore
 
 protocol CommentsCapabilitiesProtocol: Sendable {
-    /// Whether the current user can moderate comments. Resolved once per
-    /// detail screen; false also when the lookup fails, which degrades the
-    /// screen to read-only (view-context fetch, no author email or IP).
-    func canModerateComments() async -> Bool
+    /// Whether the current user can moderate comments. Throws when the lookup
+    /// fails, so a caller can decide whether to cache the answer.
+    func canModerateComments() async throws -> Bool
 }
 
 struct CommentsCapabilities: CommentsCapabilitiesProtocol {
     let client: WordPressClient
 
-    func canModerateComments() async -> Bool {
-        // A failed current-user request must not block a readable
-        // view-context detail screen.
-        (try? await client.currentUserCan(.moderateComments)) ?? false
+    func canModerateComments() async throws -> Bool {
+        try await client.currentUserCan(.moderateComments)
     }
 }

@@ -31,6 +31,6 @@ final class PreviewCommentsService: CommentsServiceProtocol {
 }
 
 struct PreviewCapabilities: CommentsCapabilitiesProtocol {
-    func canModerateComments() async -> Bool { true }
+    func canModerateComments() async throws -> Bool { true }
 }
 #endif

@@ -577,7 +577,7 @@ private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
         // the selected text — we just want to make sure shared URLs are handled).
         let types: NSTextCheckingResult.CheckingType = [.link]
         let detector = try? NSDataDetector(types: types.rawValue)
-        if let match = detector?.firstMatch(in: payload, options: [], range: NSMakeRange(0, payload.count)),
+        if let match = detector?.firstMatch(in: payload, options: [], range: NSMakeRange(0, payload.utf16.count)),
             match.resultType == .link,
             let url = match.url,
             url.absoluteString.count == payload.count {
