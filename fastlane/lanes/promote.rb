@@ -186,9 +186,11 @@ def distribute_build_to_apps(build_code:, app_version:, app_groups:, changelog:)
           # Apple allows only one build per train (marketing version) in beta review at a
           # time, and we deliberately don't expire the in-flight submission to jump the
           # queue (see `reject_build_waiting_for_review` in `promote_existing_build_to_groups`).
-          # So a build already in review isn't a failure — a build is already on its way to
-          # these testers, and the newest build is picked up on a later run once the train
-          # clears review. Record a non-fatal skip rather than turning the unattended job red.
+          # So a build blocked by one already in review isn't a failure — record a non-fatal
+          # skip rather than turning the job red. Reconciliation differs by lane: the nightly
+          # job re-promotes the newest build automatically on a later run; the human-picked
+          # weekly promotion is not auto-reconciled and must be re-triggered by hand (the
+          # result header names any skipped app so a green run isn't mistaken for a full one).
           UI.important("Skipping #{app[:name]} (#{build_code}): #{e.message}")
           { ok: true, skipped: true, reason: e.message }
         else
@@ -635,12 +637,27 @@ def slack_candidate_line(candidate)
   "• `#{candidate[:build_code]}` — #{slack_escape(candidate[:subject])}#{pr_part}#{age_part}"
 end
 
+# Classifies one app's promotion result: :failed on a real error, :skipped when there was
+# nothing new to submit (a build in the train is already in review), or :promoted on success.
+# The single source of truth for what a result means, shared by every render site below.
+def promotion_state(result)
+  return :failed unless result[:ok]
+  return :skipped if result[:skipped]
+
+  :promoted
+end
+
+# The app names whose promotion ended in the given state (see promotion_state).
+def promotion_apps_in_state(results, state)
+  results.select { |_, result| promotion_state(result) == state }.keys
+end
+
 # A concise end-of-lane success log reflecting what actually happened per app: which apps
 # were promoted, and which were skipped because a build in the train is already in review.
 # Only reached once real failures have been ruled out, so every result is one or the other.
 def promotion_outcome_summary(results, tier:, build_code:)
-  promoted = results.select { |_, result| result[:ok] && !result[:skipped] }.keys
-  skipped = results.select { |_, result| result[:skipped] }.keys
+  promoted = promotion_apps_in_state(results, :promoted)
+  skipped = promotion_apps_in_state(results, :skipped)
 
   parts = []
   parts << "promoted to #{tier}: #{promoted.join(', ')}" unless promoted.empty?
@@ -663,21 +680,27 @@ end
 
 # One Slack bullet for a single app's promotion outcome.
 def promotion_status_line(app:, result:, tier:)
-  if !result[:ok]
-    "• #{app}: :x: #{result[:error]}"
-  elsif result[:skipped]
-    "• #{app}: :fast_forward: skipped — #{result[:reason]}"
-  else
-    "• #{app}: :white_check_mark: submitted to #{tier}"
+  case promotion_state(result)
+  when :failed then "• #{app}: :x: #{result[:error]}"
+  when :skipped then "• #{app}: :fast_forward: skipped — #{result[:reason]}"
+  else "• #{app}: :white_check_mark: submitted to #{tier}"
   end
 end
 
-# The header for the result post: an error if any app failed, a "nothing new" note if every
-# app was skipped (all already in review), otherwise a success.
+# The header for the result post: an error if any app failed; a success that names any apps
+# skipped (a build in the train is already in review) when some promoted and some didn't — so a
+# partial result isn't dressed as a clean success on the human-picked weekly lane, which has no
+# auto-retry; a plain success when every app promoted; or a "nothing new" note when every app
+# was skipped.
 def promotion_result_header(results:, tier:)
-  if results.values.any? { |result| !result[:ok] }
+  states = results.values.map { |result| promotion_state(result) }
+
+  if states.include?(:failed)
     ":warning: *#{tier.capitalize} promotion finished with errors*"
-  elsif results.values.any? { |result| result[:ok] && !result[:skipped] }
+  elsif states.include?(:promoted) && states.include?(:skipped)
+    skipped = promotion_apps_in_state(results, :skipped).join(', ')
+    ":rocket: *Promoted to #{tier} — skipped #{skipped} (already in review)*"
+  elsif states.include?(:promoted)
     ":rocket: *Promoted to #{tier}*"
   else
     ":fast_forward: *#{tier.capitalize} promotion — nothing new to submit*"
