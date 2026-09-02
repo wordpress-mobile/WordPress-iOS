@@ -4,7 +4,7 @@
 
 @interface StatsViewController : UIViewController
 
-@property (nonatomic, weak, nullable) Blog *blog;
+@property (nonatomic, strong, nullable) Blog *blog;
 @property (nonatomic, copy, nullable) void (^dismissBlock)(void);
 
 @end
