@@ -112,7 +112,7 @@ platform :ios do
     failed = results.reject { |_, result| result[:ok] }.keys
     UI.user_error!("Promotion failed for: #{failed.join(', ')}") unless failed.empty?
 
-    UI.success("Promoted #{build_code} to public beta for: #{results.keys.join(', ')}")
+    UI.success(promotion_outcome_summary(results, tier: 'public beta', build_code: build_code))
   rescue StandardError => e
     # A failure before the result post (bad build code, App Store Connect outage, off-trunk)
     # would otherwise be a silent red job — surface it to Slack the way gather does. Skip
@@ -157,7 +157,7 @@ platform :ios do
     failed = results.reject { |_, result| result[:ok] }.keys
     UI.user_error!("Nightly promotion failed for: #{failed.join(', ')}") unless failed.empty?
 
-    UI.success("Promoted #{build_code} to nightly for: #{results.keys.join(', ')}")
+    UI.success(promotion_outcome_summary(results, tier: 'nightly', build_code: build_code))
   rescue StandardError => e
     # The nightly job runs unattended, so a failure before the result post (App Store
     # Connect outage, off-trunk) must not be a silent red job — surface it to Slack. Skip
@@ -171,8 +171,10 @@ end
 # Helper Functions
 #################################################
 
-# Distributes a build to each app's groups, returning a per-app `{ ok:, error: }`
-# result. A failure for one app doesn't stop the other.
+# Distributes a build to each app's groups, returning a per-app result: `{ ok: true }` on
+# success, `{ ok: true, skipped: true, reason: }` when there's nothing new to submit (another
+# build in the train is already in review), or `{ ok: false, error: }` on a real failure. A
+# failure for one app doesn't stop the other.
 def distribute_build_to_apps(build_code:, app_version:, app_groups:, changelog:)
   app_groups.to_h do |app|
     result =
@@ -180,11 +182,34 @@ def distribute_build_to_apps(build_code:, app_version:, app_groups:, changelog:)
         promote_existing_build_to_groups(app: app, app_version: app_version, build_code: build_code, changelog: changelog)
         { ok: true }
       rescue StandardError => e
-        UI.error("Failed to promote #{app[:name]} (#{build_code}): #{e.message}")
-        { ok: false, error: e.message }
+        if beta_review_in_progress_error?(e)
+          # Apple allows only one build per train (marketing version) in beta review at a
+          # time, and we deliberately don't expire the in-flight submission to jump the
+          # queue (see `reject_build_waiting_for_review` in `promote_existing_build_to_groups`).
+          # So a build already in review isn't a failure — a build is already on its way to
+          # these testers, and the newest build is picked up on a later run once the train
+          # clears review. Record a non-fatal skip rather than turning the unattended job red.
+          UI.important("Skipping #{app[:name]} (#{build_code}): #{e.message}")
+          { ok: true, skipped: true, reason: e.message }
+        else
+          UI.error("Failed to promote #{app[:name]} (#{build_code}): #{e.message}")
+          { ok: false, error: e.message }
+        end
       end
     [app[:name], result]
   end
+end
+
+# True when App Store Connect refused the beta-review submission because another build in the
+# same train (marketing version) is already waiting for or in review. Apple permits only one
+# build per train in review at a time; since the promotion lanes don't expire the in-flight
+# submission, this is an expected, transient condition — not a promotion failure. Matched on
+# the App Store Connect error text surfaced through Spaceship ("Another build is in review. -
+# Another build in the same train is already in beta review. …"); a wording change would only
+# revert to the previous behavior (a red job), never cause a wrong promotion.
+def beta_review_in_progress_error?(error)
+  message = error.message.to_s
+  message.match?(/already in beta review/i) || message.match?(/another build is in review/i)
 end
 
 def public_beta_app_groups
@@ -610,28 +635,53 @@ def slack_candidate_line(candidate)
   "• `#{candidate[:build_code]}` — #{slack_escape(candidate[:subject])}#{pr_part}#{age_part}"
 end
 
-# Posts the per-app outcome of a promotion.
+# A concise end-of-lane success log reflecting what actually happened per app: which apps
+# were promoted, and which were skipped because a build in the train is already in review.
+# Only reached once real failures have been ruled out, so every result is one or the other.
+def promotion_outcome_summary(results, tier:, build_code:)
+  promoted = results.select { |_, result| result[:ok] && !result[:skipped] }.keys
+  skipped = results.select { |_, result| result[:skipped] }.keys
+
+  parts = []
+  parts << "promoted to #{tier}: #{promoted.join(', ')}" unless promoted.empty?
+  parts << "skipped (already in review): #{skipped.join(', ')}" unless skipped.empty?
+  "#{build_code} — #{parts.join('; ')}"
+end
+
+# Posts the per-app outcome of a promotion — submitted, skipped (nothing new to submit), or failed.
 def post_promotion_result_to_slack(build_code:, app_version:, results:, tier: 'public beta')
-  status_lines = results.map do |app, result|
-    next "• #{app}: :x: #{result[:error]}" unless result[:ok]
-
-    "• #{app}: :white_check_mark: submitted to #{tier}"
-  end
-
-  all_ok = results.values.all? { |result| result[:ok] }
-  header = if all_ok
-             ":rocket: *Promoted to #{tier}*"
-           else
-             ":warning: *#{tier.capitalize} promotion finished with errors*"
-           end
+  status_lines = results.map { |app, result| promotion_status_line(app: app, result: result, tier: tier) }
 
   notify_slack(
     <<~MSG
-      #{header} — `#{build_code}` (#{app_version})
+      #{promotion_result_header(results: results, tier: tier)} — `#{build_code}` (#{app_version})
 
       #{status_lines.join("\n")}
     MSG
   )
+end
+
+# One Slack bullet for a single app's promotion outcome.
+def promotion_status_line(app:, result:, tier:)
+  if !result[:ok]
+    "• #{app}: :x: #{result[:error]}"
+  elsif result[:skipped]
+    "• #{app}: :fast_forward: skipped — #{result[:reason]}"
+  else
+    "• #{app}: :white_check_mark: submitted to #{tier}"
+  end
+end
+
+# The header for the result post: an error if any app failed, a "nothing new" note if every
+# app was skipped (all already in review), otherwise a success.
+def promotion_result_header(results:, tier:)
+  if results.values.any? { |result| !result[:ok] }
+    ":warning: *#{tier.capitalize} promotion finished with errors*"
+  elsif results.values.any? { |result| result[:ok] && !result[:skipped] }
+    ":rocket: *Promoted to #{tier}*"
+  else
+    ":fast_forward: *#{tier.capitalize} promotion — nothing new to submit*"
+  end
 end
 
 # Parses an ISO-8601 timestamp, returning nil instead of raising.
