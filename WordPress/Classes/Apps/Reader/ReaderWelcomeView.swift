@@ -1,5 +1,5 @@
 import ColorStudio
-import UIKit
+import Foundation
 import SwiftUI
 import WordPressUI
 

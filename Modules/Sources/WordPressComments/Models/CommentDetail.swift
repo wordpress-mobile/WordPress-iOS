@@ -2,7 +2,7 @@ import Foundation
 import WordPressAPI
 import WordPressShared
 
-/// Value type consumed by the detail screen, mapped from either
+/// Value type consumed by the detail/moderation screen, mapped from either
 /// wordpress-rs view- or edit-context wire types. Edit context adds the
 /// author's email and IP address, which view context omits.
 struct CommentDetail: Equatable, Sendable {
@@ -17,7 +17,7 @@ struct CommentDetail: Equatable, Sendable {
     let contentHTML: String
     let link: URL?
     let date: Date
-    let status: CommentListItem.Status
+    var status: CommentListItem.Status
     /// False when the fetch fell back to view context (no email/IP; M3 edit
     /// needs content.raw, also unavailable).
     let hasEditContext: Bool

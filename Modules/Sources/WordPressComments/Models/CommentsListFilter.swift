@@ -44,4 +44,17 @@ enum CommentsListFilter: Int, CaseIterable, AdaptiveTabBarItem, Sendable {
         case .trash: Strings.emptyTrash
         }
     }
+
+    /// Whether a comment with this status belongs in this tab's result set.
+    /// Mirrors core's query semantics: `all` is pending + approved only
+    /// (comment_approved IN ('0','1')); custom statuses match no tab.
+    func matches(_ status: CommentListItem.Status) -> Bool {
+        switch self {
+        case .all: status == .pending || status == .approved
+        case .pending: status == .pending
+        case .approved: status == .approved
+        case .spam: status == .spam
+        case .trash: status == .trash
+        }
+    }
 }

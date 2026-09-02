@@ -200,6 +200,32 @@
                                    failure:^(NSError * __unused error) {}];
 }
 
+/// A response missing the `categories` key must yield an empty array, not `nil`
+/// (a `nil` `NSArray` traps when bridged to a non-optional Swift array).
+- (void)testThatGetCategoriesWithMissingCategoriesKeyReturnsEmptyArray
+{
+    NSString *url = [self GETtaxonomyURLWithType:@"categories"];
+
+    id<WordPressComRESTAPIInterfacing> api = self.service.wordPressComRESTAPI;
+    NSDictionary *json = @{ @"found": @0 };
+    NSHTTPURLResponse *response = OCMStrictClassMock([NSHTTPURLResponse class]);
+    OCMStub([api get:[OCMArg isEqual:url]
+          parameters:[OCMArg any]
+             success:([OCMArg invokeBlockWithArgs:json, response, nil])
+             failure:[OCMArg isNotNil]]);
+
+    XCTestExpectation *gotEmptyArray = [self expectationWithDescription:@"categories should be empty"];
+    id success = ^(NSArray<RemotePostCategory *> * _Nonnull categories) {
+        XCTAssertNotNil(categories);
+        XCTAssertEqualObjects(categories, @[]);
+        [gotEmptyArray fulfill];
+    };
+    [self.service getCategoriesWithSuccess:success
+                                   failure:^(NSError * __unused error) { XCTFail(@"should not fail"); }];
+
+    [self waitForExpectations:@[gotEmptyArray] timeout:0.1];
+}
+
 #pragma mark - Tags
 
 - (void)testThatCreateTagWorks
@@ -313,6 +339,32 @@
     [self.service searchTagsWithName:searchName
                              success:^(NSArray<RemotePostTag *> * __unused tags) {}
                              failure:^(NSError * __unused error) {}];
+}
+
+/// A response missing the `tags` key must yield an empty array, not `nil`
+/// (a `nil` `NSArray` traps when bridged to a non-optional Swift array).
+- (void)testThatGetTagsWithMissingTagsKeyReturnsEmptyArray
+{
+    NSString *url = [self GETtaxonomyURLWithType:@"tags"];
+
+    id<WordPressComRESTAPIInterfacing> api = self.service.wordPressComRESTAPI;
+    NSDictionary *json = @{ @"found": @0 };
+    NSHTTPURLResponse *response = OCMStrictClassMock([NSHTTPURLResponse class]);
+    OCMStub([api get:[OCMArg isEqual:url]
+          parameters:[OCMArg any]
+             success:([OCMArg invokeBlockWithArgs:json, response, nil])
+             failure:[OCMArg isNotNil]]);
+
+    XCTestExpectation *gotEmptyArray = [self expectationWithDescription:@"tags should be empty"];
+    id success = ^(NSArray<RemotePostTag *> * _Nonnull tags) {
+        XCTAssertNotNil(tags);
+        XCTAssertEqualObjects(tags, @[]);
+        [gotEmptyArray fulfill];
+    };
+    [self.service getTagsWithSuccess:success
+                            failure:^(NSError * __unused error) { XCTFail(@"should not fail"); }];
+
+    [self waitForExpectations:@[gotEmptyArray] timeout:0.1];
 }
 
 @end

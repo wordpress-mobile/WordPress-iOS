@@ -12,18 +12,34 @@ struct CommentsTabView: View {
     private let router: CommentsDetailRouter
 
     init(
-        service: any CommentsServiceProtocol,
+        viewModels: [CommentsListFilter: CommentsListViewModel],
         titleResolver: PostTitleResolver,
         router: CommentsDetailRouter
     ) {
         self.router = router
         _titleResolver = State(initialValue: titleResolver)
+        _viewModels = State(initialValue: viewModels)
+    }
 
-        // The All view model is built first so Pending and Approved can seed
-        // their first appearance from its loaded items. All is a strict
-        // superset of both under the same sort key, so the filtered items are
-        // a true prefix of each tab's list. Spam and Trash can't seed: core's
-        // status=all excludes them.
+    /// Builds one view model per filter tab, all alive for the screen's
+    /// lifetime. The hosting controller keeps the same instances so it can
+    /// retry stale reloads on appearance.
+    ///
+    /// The All view model is built first so Pending and Approved can seed
+    /// their first appearance from its loaded items. All is a strict
+    /// superset of both under the same sort key, so the filtered items are
+    /// a true prefix of each tab's list. Spam and Trash can't seed: core's
+    /// status=all excludes them.
+    /// Every tab subscribes to the coordinator's events so a change made on
+    /// the detail screen reconciles each loaded list in place without a
+    /// refetch.
+    @MainActor
+    static func makeViewModels(
+        service: any CommentsServiceProtocol,
+        titleResolver: PostTitleResolver,
+        coordinator: CommentsModerationCoordinator
+    ) -> [CommentsListFilter: CommentsListViewModel] {
+        let changeEvents = coordinator.events.eraseToAnyPublisher()
         var models: [CommentsListFilter: CommentsListViewModel] = [:]
         let resolve: @MainActor ([CommentListItem]) -> Void = { [titleResolver] items in
             titleResolver.resolve(ids: items.map(\.postID))
@@ -31,29 +47,31 @@ struct CommentsTabView: View {
         let allViewModel = CommentsListViewModel(
             filter: .all,
             service: service,
-            onItemsAppended: resolve
+            onItemsAppended: resolve,
+            changeEvents: changeEvents
         )
         models[.all] = allViewModel
         for filter in [CommentsListFilter.pending, .approved] {
-            let status: CommentListItem.Status = filter == .pending ? .pending : .approved
             models[filter] = CommentsListViewModel(
                 filter: filter,
                 service: service,
                 seedItems: { [weak allViewModel] in
                     guard let allViewModel, allViewModel.hasLoaded else { return [] }
-                    return allViewModel.items.filter { $0.status == status }
+                    return allViewModel.items.filter { filter.matches($0.status) }
                 },
-                onItemsAppended: resolve
+                onItemsAppended: resolve,
+                changeEvents: changeEvents
             )
         }
         for filter in [CommentsListFilter.spam, .trash] {
             models[filter] = CommentsListViewModel(
                 filter: filter,
                 service: service,
-                onItemsAppended: resolve
+                onItemsAppended: resolve,
+                changeEvents: changeEvents
             )
         }
-        _viewModels = State(initialValue: models)
+        return models
     }
 
     var body: some View {

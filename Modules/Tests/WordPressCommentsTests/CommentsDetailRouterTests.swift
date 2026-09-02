@@ -11,8 +11,10 @@ struct CommentsDetailRouterTests {
         let router = CommentsDetailRouter(
             service: FakeCommentsService(),
             capabilities: FakeCommentsCapabilities(),
+            coordinator: CommentsModerationCoordinator(service: FakeCommentsService()),
             titleResolver: PostTitleResolver(fetcher: { _ in .init(titles: [:]) }),
             tracker: nil,
+            noticePresenter: FakeNoticePresenter(),
             makeContentRenderer: { FakeContentRenderer() }
         )
         router.host = host

@@ -5,7 +5,7 @@ GEM
     abbrev (0.1.2)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    anthropic (1.65.0)
+    anthropic (1.67.0)
       base64 (~> 0.1)
       cgi (~> 0.1)
       connection_pool (>= 2, < 4)
@@ -336,8 +336,8 @@ GEM
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
-    rubocop (1.89.0)
-      json (~> 2.3)
+    rubocop (1.90.0)
+      json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
       parallel (>= 1.10)
@@ -402,7 +402,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anthropic (~> 1.65)
+  anthropic (~> 1.67)
   danger-dangermattic (~> 1.4)
   dotenv
   fastlane (~> 2.238)
@@ -411,7 +411,7 @@ DEPENDENCIES
   fastlane-plugin-wpmreleasetoolkit (~> 14.11)
   rake
   rmagick (~> 7.1.1)
-  rubocop (~> 1.89)
+  rubocop (~> 1.90)
   rubocop-rake (~> 0.7)
 
 BUNDLED WITH

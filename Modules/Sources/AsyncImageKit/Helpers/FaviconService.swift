@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 /// Fetches URLs for favicons for sites.
 public actor FaviconService {
