@@ -287,7 +287,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 {
     return [jsonArray wp_map:^id(NSDictionary *jsonCategory) {
         return [self remoteCategoryWithJSONDictionary:jsonCategory];
-    }];
+    }] ?: @[];
 }
 
 - (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
@@ -303,7 +303,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 {
     return [jsonArray wp_map:^id(NSDictionary *jsonTag) {
         return [self remoteTagWithJSONDictionary:jsonTag];
-    }];
+    }] ?: @[];
 }
 
 - (RemotePostTag *)remoteTagWithJSONDictionary:(NSDictionary *)jsonTag
