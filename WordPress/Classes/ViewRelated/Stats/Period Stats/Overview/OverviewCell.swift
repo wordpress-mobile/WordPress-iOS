@@ -38,8 +38,7 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
     var attributedTitle: NSAttributedString? {
 
         let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
-        attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
-                                      range: NSMakeRange(0, attributedTitle.string.count))
+        attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont])
 
         let dataString: String = {
             if let tabDataStub {
@@ -49,8 +48,7 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
         }()
 
         let attributedData = NSMutableAttributedString(string: dataString)
-        attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
-                                     range: NSMakeRange(0, attributedData.string.count))
+        attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont])
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)

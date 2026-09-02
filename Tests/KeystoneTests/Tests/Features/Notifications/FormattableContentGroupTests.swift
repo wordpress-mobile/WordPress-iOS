@@ -50,6 +50,23 @@ final class FormattableContentGroupTests: CoreDataTestCase {
         XCTAssertNil(obtainedBlock)
     }
 
+    // MARK: - pingbackReadMoreGroup
+
+    func testPingbackReadMoreGroupLinkRangeCoversFullText() {
+        let url = URL(string: "https://example.com")!
+        let group = BodyContentGroup.pingbackReadMoreGroup(for: url)
+        let block = group.blocks.first as! FormattableTextContent
+        let text = block.text!
+
+        // Find the link range (the NotificationContentRange with kind .link)
+        let linkRange = block.ranges.first { $0.kind == .link }!
+
+        // The range must cover the full string using UTF-16 counts,
+        // which is what NSAttributedString expects.
+        XCTAssertEqual(linkRange.range.location, 0)
+        XCTAssertEqual(linkRange.range.length, text.utf16.count)
+    }
+
     private func mockContent() throws -> FormattableTextContent {
         let text = try mockActivity()["text"] as? String ?? ""
         return FormattableTextContent(text: text, ranges: [], actions: [])

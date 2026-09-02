@@ -445,6 +445,76 @@ final class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         wait(for: [failure], timeout: 0.3)
     }
 
+    // Regression test: emoji in HTML before the RSD link caused the regex
+    // range to be too short because `String.count` (grapheme clusters) was
+    // used instead of `String.utf16.count` (UTF-16 code units for NSRange).
+    func testSuccessWithRSDLinkAfterEmoji() throws {
+        let responseInvalidPath = try XCTUnwrap(xmlrpcResponseInvalidPath)
+        stub(condition: isHost("www.apple.com") && isPath("/blog/xmlrpc.php")) { _ in
+            return fixture(filePath: responseInvalidPath, status: 403, headers: nil)
+        }
+
+        stub(condition: isHost("www.apple.com") && isPath("/blog")) { _ in
+            // The family emoji 👨‍👩‍👧‍👦 is 1 grapheme cluster but 11 UTF-16 code units.
+            // Placing many of them *before* the RSD link tag means the gap between
+            // String.count and utf16.count is large enough that an NSRange built
+            // with String.count will be too short to cover the link tag.
+            let emoji = String(repeating: "👨‍👩‍👧‍👦", count: 50)
+            let html = """
+                <!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>\(emoji)</title>
+                        <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.apple.com/blog/rsd" />
+                    </head>
+                    <body>hello world</body>
+                </html>
+                """
+            return HTTPStubsResponse(data: html.data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+
+        stub(condition: isAbsoluteURLString("https://www.apple.com/blog/rsd")) { _ in
+            let xml = """
+                <?xml version="1.0" encoding="UTF-8"?><rsd version="1.0" xmlns="http://archipelago.phrasewise.com/rsd">
+                    <service>
+                        <engineName>WordPress</engineName>
+                        <engineLink>https://wordpress.org/</engineLink>
+                        <homePageLink>https://developer.wordpress.org</homePageLink>
+                        <apis>
+                            <api name="WordPress" blogID="1" preferred="true" apiLink="https://www.apple.com/blog-xmlrpc.php" />
+                        </apis>
+                    </service>
+                </rsd>
+                """
+            return HTTPStubsResponse(
+                data: xml.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/xml"]
+            )
+        }
+
+        let responseList = try XCTUnwrap(
+            OHPathForFileInBundle("xmlrpc-response-list-methods.xml", Bundle.coreAPITestsBundle)
+        )
+        stub(condition: isHost("www.apple.com") && isPath("/blog-xmlrpc.php")) { _ in
+            fixture(
+                filePath: responseList,
+                status: 200,
+                headers: ["Content-Type": "application/xml"]
+            )
+        }
+
+        let success = self.expectation(description: "success result")
+        let validator = WordPressOrgXMLRPCValidator()
+        validator.guessXMLRPCURLForSite("https://www.apple.com/blog", userAgent: "test/1.0", success: {
+            XCTAssertEqual($0.absoluteString, "https://www.apple.com/blog-xmlrpc.php")
+            success.fulfill()
+        }) {
+            XCTFail("Unexpected result: \($0)")
+        }
+        wait(for: [success], timeout: 0.3)
+    }
+
     let xmlrpcResponseInvalidPath = OHPathForFileInBundle(
         "xmlrpc-response-invalid.html",
         Bundle.coreAPITestsBundle

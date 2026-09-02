@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// Filter Tab Bar is a tabbed control (much like a segmented control), but
 /// has an appearance similar to Android tabs.
@@ -344,7 +345,7 @@ public class FilterTabBar: UIControl {
         }
 
         let mutableString = NSMutableAttributedString(attributedString: attributedString)
-        mutableString.addAttributes([.foregroundColor: color], range: NSMakeRange(0, mutableString.string.count))
+        mutableString.addAttributes([.foregroundColor: color])
 
         return mutableString
     }

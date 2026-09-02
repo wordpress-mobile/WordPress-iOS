@@ -21,10 +21,10 @@ public class FormattableNoticonRange: FormattableContentRange {
         let shiftedRange = rangeShifted(by: shift)
         insertIcon(to: string, at: shiftedRange)
 
-        let longerRange = NSMakeRange(shiftedRange.location, shiftedRange.length + noticon.count)
+        let longerRange = NSMakeRange(shiftedRange.location, shiftedRange.length + noticon.utf16.count)
         apply(styles, to: string, at: longerRange)
 
-        return noticon.count
+        return noticon.utf16.count
     }
 
     func insertIcon(to string: NSMutableAttributedString, at shiftedRange: NSRange) {

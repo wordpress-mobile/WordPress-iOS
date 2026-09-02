@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 final class JetpackLandingScreenView: UIView {
 
@@ -72,7 +73,7 @@ final class JetpackLandingScreenView: UIView {
             return nil
         }
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttributes(attributesForLabel(atIndex: index, traits: traits), range: NSMakeRange(0, text.utf16.count))
+        attributedString.addAttributes(attributesForLabel(atIndex: index, traits: traits))
         return attributedString
     }
 
