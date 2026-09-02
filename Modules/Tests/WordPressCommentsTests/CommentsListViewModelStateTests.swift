@@ -11,7 +11,7 @@ struct CommentsListViewModelStateTests {
 
         await viewModel.onAppear()
 
-        #expect(viewModel.firstPageFailed)
+        #expect(viewModel.state == .failed)
         #expect(!viewModel.showsEmptyState)
         #expect(viewModel.items.isEmpty)
     }
@@ -27,9 +27,8 @@ struct CommentsListViewModelStateTests {
         await viewModel.onAppear()
         await viewModel.retryFirstPage()
 
-        #expect(!viewModel.firstPageFailed)
+        #expect(viewModel.state == .loaded)
         #expect(viewModel.items.map(\.id) == [1])
-        #expect(viewModel.hasLoaded)
     }
 
     @Test func emptyResultShowsEmptyState() async {
@@ -88,7 +87,7 @@ struct CommentsListViewModelStateTests {
         await viewModel.refresh()
 
         #expect(viewModel.items.map(\.id) == [1])
-        #expect(!viewModel.firstPageFailed)
+        #expect(viewModel.state == .loaded)
     }
 
     @Test func seededItemsShowWhilePlaceholderThenReplaced() async {
@@ -102,7 +101,7 @@ struct CommentsListViewModelStateTests {
         // transition through a mid-flight check below.
         await viewModel.onAppear()
 
-        #expect(!viewModel.isShowingSeededPlaceholder)
+        #expect(viewModel.state == .loaded)
         #expect(viewModel.items.map(\.id) == [3, 4])
     }
 
@@ -113,9 +112,9 @@ struct CommentsListViewModelStateTests {
 
         await viewModel.onAppear()
 
-        #expect(viewModel.isShowingSeededPlaceholder)
+        #expect(viewModel.state == .failed)
+        #expect(viewModel.items.map(\.id) == [3])
         #expect(!viewModel.canLoadMore)
-        #expect(viewModel.firstPageFailed)
     }
 
     @Test func emptySeedDoesNotEnablePlaceholder() async {

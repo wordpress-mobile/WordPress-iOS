@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-29 09:59:07+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:56:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: tr */
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Sunucunuz POST isteklerini engelliyor ve uygulama sitenizle iletişim kurmak için buna gerek duyuyor. Sorunu çözmek için barındırma hizmeti sağlayıcınızla görüşün.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Sitenizin XML-RPC uç noktasıyla güvenli bir bağlantı kurulamadı.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Veri yüklenemedi. Lütfen daha sonra tekrar yenileyin.";
@@ -5899,6 +5902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Tema stillerini kullan";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Üçüncü taraf blokları kullanın (beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7765,6 +7771,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Yalnızca etki alanı satın alın";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Süre sonu: %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Süre sonu: %1$@";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Süresi asla bitmez";
 
@@ -7941,6 +7953,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Tümü";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d desen";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 desen";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Model Ekle";
@@ -10504,6 +10522,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Güncelle";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "Seçilen ortam eklenemedi.";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Gönderi biçimleri bu site için yapılandırılmamış.";
 
@@ -11413,8 +11434,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Site ayrıntılarını açar";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Yazarın profilini görüntüler";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Sitedeki gönderileri gösterir";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Abone Ol";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Abone olundu";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}daha fazlasını görüntüle";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Daha fazla işlem";
@@ -12295,6 +12328,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Blok düzenleyiciyi temanız gibi gösterin.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Tema stili desteğini etkinleştirmek için sitenize Gutenberg eklentisini yükleyin.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Sitenize kurulu eklentilerden üçüncü taraf bloklar yükleyin.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Üçüncü taraf blok desteğini etkinleştirmek için sitenize Jetpack eklentisini yükleyin.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ ekle";

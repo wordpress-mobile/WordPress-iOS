@@ -2,7 +2,7 @@ import SwiftUI
 import AsyncImageKit
 import WordPressData
 import WordPressUI
-import UIKit
+import Foundation
 
 struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel

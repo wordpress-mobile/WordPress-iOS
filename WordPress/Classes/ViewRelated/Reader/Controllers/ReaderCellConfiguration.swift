@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import WordPressData
 
 /// Configuration and population of cells in Reader

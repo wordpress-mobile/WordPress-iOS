@@ -24,6 +24,10 @@ class WordPressComSyncService {
     func syncWPCom(authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
         let accountService = AccountService(coreDataStack: coreDataStack)
         accountService.createOrUpdateAccount(withAuthToken: authToken, success: { account in
+            guard let account else {
+                onFailure(URLError(.unknown))
+                return
+            }
             self.syncOrAssociateBlogs(account: account, isJetpackLogin: isJetpackLogin, onSuccess: onSuccess, onFailure: onFailure)
         }, failure: { error in
             onFailure(error)

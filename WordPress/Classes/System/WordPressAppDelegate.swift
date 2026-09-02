@@ -110,6 +110,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
+        purgeLegacySiriDonationsIfNeeded()
         PostCoordinator.shared.delegate = self
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
@@ -413,6 +414,19 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private func mergeDuplicateAccountsIfNeeded() {
         AccountService(coreDataStack: ContextManager.shared).mergeDuplicatesIfNecessary()
+    }
+
+    /// Deletes the user activities donated as Siri predictions by earlier app versions,
+    /// because the app no longer donates predictions and the system keeps the old
+    /// suggestions until they are explicitly deleted.
+    // TODO: Remove this cleanup after a few releases.
+    private func purgeLegacySiriDonationsIfNeeded() {
+        let didPurgeKey = "did-purge-legacy-siri-donations"
+        guard !UserDefaults.standard.bool(forKey: didPurgeKey) else {
+            return
+        }
+        UserDefaults.standard.set(true, forKey: didPurgeKey)
+        NSUserActivity.deleteAllSavedUserActivities {}
     }
 
     private func setupPingHub() {

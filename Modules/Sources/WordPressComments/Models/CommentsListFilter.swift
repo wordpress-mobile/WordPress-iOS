@@ -23,19 +23,13 @@ enum CommentsListFilter: Int, CaseIterable, AdaptiveTabBarItem, Sendable {
 
     /// The `status` query param for `/wp/v2/comments`.
     ///
-    /// `.custom` is used where wordpress-rs's `CommentStatus` cannot express the
-    /// query vocabulary: `WP_Comment_Query` only recognizes the literal values
-    /// `approve` and `all`, while the enum models the response spelling
-    /// (`approved`) and has no `all` case. `all` means pending + approved;
-    /// spam and trash are excluded by core, matching wp-admin's All tab.
-    /// Same workaround as Android (`CommentsRsListTab.kt`).
-    /// TODO: Replace both `.custom` values with typed cases once wordpress-rs
-    /// separates query values from response values (tracked outside this app).
-    var queryStatus: CommentStatus {
+    /// `all` means pending + approved; spam and trash are excluded by core,
+    /// matching wp-admin's All tab.
+    var queryStatus: WpApiParamCommentsStatus {
         switch self {
-        case .all: .custom("all")
+        case .all: .all
         case .pending: .hold
-        case .approved: .custom("approve")
+        case .approved: .approve
         case .spam: .spam
         case .trash: .trash
         }
@@ -48,6 +42,19 @@ enum CommentsListFilter: Int, CaseIterable, AdaptiveTabBarItem, Sendable {
         case .approved: Strings.emptyApproved
         case .spam: Strings.emptySpam
         case .trash: Strings.emptyTrash
+        }
+    }
+
+    /// Whether a comment with this status belongs in this tab's result set.
+    /// Mirrors core's query semantics: `all` is pending + approved only
+    /// (comment_approved IN ('0','1')); custom statuses match no tab.
+    func matches(_ status: CommentListItem.Status) -> Bool {
+        switch self {
+        case .all: status == .pending || status == .approved
+        case .pending: status == .pending
+        case .approved: status == .approved
+        case .spam: status == .spam
+        case .trash: status == .trash
         }
     }
 }

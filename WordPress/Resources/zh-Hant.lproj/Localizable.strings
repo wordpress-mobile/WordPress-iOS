@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-07-29 09:58:58+0000 */
+/* Translation-Revision-Date: 2026-08-26 09:58:49+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: zh_TW */
@@ -1448,6 +1448,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "無法連線。 你的主機服務提供者封鎖了 POST 請求，但此應用程式需要使用 POST 請求才能與你的網站通訊。 請聯絡主機服務提供者解決此問題。";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "無法建立連至網站 XML-RPC 端點的安全連線。";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "無法載入資料。 請稍後再重新整理。";
@@ -5890,6 +5893,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "使用佈景主題樣式";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "使用第三方區塊 (測試功能)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -7741,6 +7747,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "單純購買網域";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "於 %1$@到期";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "於 %1$@到期";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "永不過期";
 
@@ -7917,6 +7929,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "全部";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d 個版面配置";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 個版面配置";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "插入版面配置";
@@ -10459,6 +10477,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "更新";
 
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "無法新增所選媒體。";
+
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "網站未設定文章格式。";
 
@@ -11356,8 +11377,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "開啟網站詳細資料";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "檢視作者的個人檔案";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "檢視網站的文章";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "訂閱";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "已訂閱";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}檢視更多內容";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "更多動作";
@@ -12226,6 +12259,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "讓區塊編輯器的外觀與佈景主題相配。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "在網站上安裝 Gutenberg 外掛程式，以啟用佈景主題樣式支援。";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "從網站上安裝的外掛程式，載入第三方區塊。";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "在網站上安裝 Jetpack 外掛程式，以啟用第三方區塊支援。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "新增「%1$@」";

@@ -1,4 +1,3 @@
-import AsyncImageKit
 import DesignSystem
 import SwiftUI
 
@@ -38,13 +37,7 @@ struct CommentRowView: View {
     }
 
     private var avatar: some View {
-        CachedAsyncImage(url: item.avatarURL) { image in
-            image.resizable()
-        } placeholder: {
-            Color(.secondarySystemBackground)
-        }
-        .frame(width: 40, height: 40)
-        .clipShape(Circle())
+        CommentAvatarView(url: item.avatarURL)
     }
 
     @ViewBuilder

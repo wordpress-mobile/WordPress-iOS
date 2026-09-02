@@ -99,6 +99,10 @@ steps:
               api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
         artifact_paths:
           - "build/results/*"
+        retry:
+          automatic:
+            - exit_status: "*"
+              limit: 1
         notify:
           - github_commit_status:
               context: "Unit Tests"

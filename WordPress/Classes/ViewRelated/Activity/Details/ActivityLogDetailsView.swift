@@ -4,7 +4,7 @@ import WordPressUI
 import WordPressShared
 import WordPressData
 import Gridicons
-import UIKit
+import Foundation
 
 struct ActivityLogDetailsView: View {
     let activity: Activity

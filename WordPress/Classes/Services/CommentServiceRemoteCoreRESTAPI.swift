@@ -131,6 +131,36 @@ final class CommentServiceRemoteCoreRESTAPI: NSObject, CommentServiceRemote {
 }
 
 private extension RemoteComment {
+    /// Core returns the create response in view context unless the caller has
+    /// `moderate_comments`, so it never carries the author's email or IP, and
+    /// only the rendered content.
+    convenience init(comment: CommentWithViewContext) {
+        self.init()
+
+        self.commentID = NSNumber(value: comment.id)
+        self.authorID = NSNumber(value: comment.author)
+        self.author = comment.authorName
+        self.authorUrl = comment.authorUrl
+        self.authorAvatarURL = comment.authorAvatarUrls.avatarURL()?.absoluteString
+        self.content = comment.content.rendered
+        self.date = comment.dateGmt
+        self.link = comment.link
+        self.parentID = NSNumber(value: comment.parent)
+        self.postID = NSNumber(value: comment.post)
+
+        self.status = comment.status.commentStatusType?.description
+        self.type = comment.commentType.rawValue
+
+        if let ext = try? comment.additionalFields.parseWpcomCommentsExtension() {
+            self.postTitle = ext.post?.title
+            self.isLiked = ext.iLike
+            self.likeCount = NSNumber(value: ext.likeCount)
+        }
+
+        // The following properties are not available in .org REST API.
+        self.canModerate = false
+    }
+
     convenience init(comment: CommentWithEditContext) {
         self.init()
 
@@ -252,19 +282,19 @@ private extension CommentListParams {
         // - order: "desc"
         // - offset: NSUInteger
 
-        var status: CommentStatus?
+        var status: WpApiParamCommentsStatus?
         if let value = options.removeValue(forKey: "status") as? NSNumber {
             switch CommentStatusFilter(rawValue: value.uint32Value) {
             case CommentStatusFilterUnapproved:
                 status = .hold
             case CommentStatusFilterApproved:
-                status = .approved
+                status = .approve
             case CommentStatusFilterTrash:
                 status = .trash
             case CommentStatusFilterSpam:
                 status = .spam
             default:
-                status = .custom("all")
+                status = .all
             }
         }
 
