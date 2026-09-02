@@ -60,7 +60,7 @@ final class CommentsModerationCoordinator {
 
     /// The in-flight mutation task per comment ID. Presence means "mutating";
     /// `waitForPendingMutation` awaits the stored task's value.
-    private var inFlight: [Int64: Task<Void, Never>] = [:]
+    private var inFlightMutations: [Int64: Task<Void, Never>] = [:]
 
     init(service: any CommentsServiceProtocol, tracker: (any CommentsTracker)? = nil) {
         self.service = service
@@ -68,12 +68,12 @@ final class CommentsModerationCoordinator {
     }
 
     func isMutating(id: Int64) -> Bool {
-        inFlight[id] != nil
+        inFlightMutations[id] != nil
     }
 
     /// Awaits any in-flight mutation for the comment (re-entry race guard).
     func waitForPendingMutation(id: Int64) async {
-        await inFlight[id]?.value
+        await inFlightMutations[id]?.value
     }
 
     /// Creates a reply to `parent` and, for a pending parent, approves it
@@ -166,9 +166,9 @@ final class CommentsModerationCoordinator {
         let chain = Task { try await body() }
         let slot = Task { [weak self] in
             _ = try? await chain.value
-            self?.inFlight[id] = nil
+            self?.inFlightMutations[id] = nil
         }
-        inFlight[id] = slot
+        inFlightMutations[id] = slot
         // Await the slot first so `isMutating` is false by the time the caller
         // resumes; the chain has already settled when the slot clears.
         await slot.value
