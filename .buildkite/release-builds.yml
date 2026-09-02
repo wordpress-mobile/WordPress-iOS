@@ -5,6 +5,8 @@ agents:
 env:
   IMAGE_ID: $IMAGE_ID
 
+priority: 1
+
 steps:
 
   - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
