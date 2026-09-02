@@ -106,6 +106,9 @@ final class BlogBuilder {
         // Add Account
         let account =
             NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        // Isolate the keychain before writing `username`/`authToken`: both route through
+        // the real, process-global keychain otherwise, which leaks state across tests.
+        account.mockKeychain()
         account.displayName = "displayName"
         account.username = username
         account.authToken = authToken
