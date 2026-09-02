@@ -28,6 +28,7 @@
 * [*] Share extensions: Fix the site picker showing an error while sites are still loading [#25798]
 * [*] Share Extension: Fix a crash after uploading a post to WordPress.com [#25773]
 * [*] Add App Shortcuts for creating a post and opening Notifications, Stats, and the Reader from Siri, Spotlight, and the Shortcuts app [#25754]
+* [*] Posts and Reader posts can now be found and opened from Siri and the Shortcuts app [#25755]
 
 
 27.0
