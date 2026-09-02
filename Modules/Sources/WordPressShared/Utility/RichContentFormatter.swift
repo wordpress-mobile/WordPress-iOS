@@ -187,7 +187,9 @@ import Foundation
             let location = attrRange.location + attrRange.length
             let length = elementStr.length - location
             let ending = elementStr.range(of: "\"", options: .caseInsensitive, range: NSRange(location: location, length: length))
-            value = elementStr.substring(with: NSRange(location: location, length: ending.location - location))
+            if ending.location != NSNotFound {
+                value = elementStr.substring(with: NSRange(location: location, length: ending.location - location))
+            }
         }
 
         return value

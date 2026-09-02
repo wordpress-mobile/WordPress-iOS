@@ -179,4 +179,23 @@ struct RichContentFormatterTests {
         let out = RichContentFormatter.removeInlineStyles("<a style=\"one\">👨‍👩‍👧‍👦<b style=\"two\">")
         #expect(out == "<a>👨‍👩‍👧‍👦<b>")
     }
+
+    // MARK: - parseValueForAttribute robustness
+
+    @Test func testParseValueForAttributeReturnsValue() {
+        let value = RichContentFormatter.parseValueForAttribute("src", inElement: "<img src=\"http://x/a.jpg\">")
+        #expect(value == "http://x/a.jpg")
+    }
+
+    @Test func testParseValueForAttributeMissingClosingQuoteReturnsEmpty() {
+        // Opening quote but no closing quote: the closing-quote search returns NSNotFound, so the
+        // range length would underflow to a huge value and crash substring(with:). Return "" instead.
+        let value = RichContentFormatter.parseValueForAttribute("src", inElement: "<img src=\"http://x/a.jpg>")
+        #expect(value.isEmpty)
+    }
+
+    @Test func testParseValueForAttributeAbsentReturnsEmpty() {
+        let value = RichContentFormatter.parseValueForAttribute("src", inElement: "<img alt=\"x\">")
+        #expect(value.isEmpty)
+    }
 }
