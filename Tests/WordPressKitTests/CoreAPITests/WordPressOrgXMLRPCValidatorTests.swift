@@ -515,7 +515,6 @@ final class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         wait(for: [success], timeout: 0.3)
     }
 
-
     let xmlrpcResponseInvalidPath = OHPathForFileInBundle(
         "xmlrpc-response-invalid.html",
         Bundle.coreAPITestsBundle
