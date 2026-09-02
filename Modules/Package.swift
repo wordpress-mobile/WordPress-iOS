@@ -20,6 +20,7 @@ let package = Package(
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
         .library(name: "Support", targets: ["Support"]),
+        .library(name: "TextBundle", targets: ["TextBundle"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
