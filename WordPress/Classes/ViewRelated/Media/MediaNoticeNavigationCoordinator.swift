@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import WordPressData
 
 /// This class simply exists to coordinate the display of various sections of

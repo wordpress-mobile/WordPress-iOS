@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import WordPressFlux
 import WordPressKit
 import WordPressShared

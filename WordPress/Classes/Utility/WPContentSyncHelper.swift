@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 @objc public protocol WPContentSyncHelperDelegate: NSObjectProtocol {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)

@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import AsyncImageKit
 import WordPressData
 import WordPressKit

@@ -1,5 +1,3 @@
-import UIKit
-
 protocol DynamicMockProvider {
     static func randomString(length: Int) -> String
     static func randomInt(limit: Int) -> Int
