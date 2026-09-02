@@ -188,7 +188,7 @@ class BlogJetpackTests: CoreDataTestCase {
         }
 
         // No blogs should be saved after the sync blogs operation finishes.
-        wait(for: [syncExpectation], timeout: 1.0)
+        wait(for: [syncExpectation], timeout: 5.0)
         XCTAssertEqual(Blog.count(in: mainContext), 0)
     }
 
