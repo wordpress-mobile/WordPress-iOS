@@ -27,6 +27,10 @@ class WindowManager: NSObject {
         window.rootViewController
     }
 
+    var topmostPresentedViewController: UIViewController? {
+        window.topmostPresentedViewController
+    }
+
     init(window: UIWindow) {
         self.window = window
     }
@@ -85,12 +89,19 @@ class WindowManager: NSObject {
 
     /// Shows the specified VC as the root VC for the managed window. Takes care of animating the transition whenever the existing
     /// root VC isn't `nil` (this is because a `nil` VC means we're showing the initial VC on a call to this method).
+    /// Once the new root is on screen, runs the one-shot age requirement check after `completion`.
     ///
     func show(_ viewController: UIViewController, animated: Bool = true, completion: Completion? = nil) {
+        let completion = { [weak self] in
+            completion?()
+            self?.runAgeRequirementCheckIfNeeded()
+        }
+
         // When the App is launched, the root VC will be `nil`.
         // When this is the case we'll simply show the VC without any type of animation.
         guard window.rootViewController != nil, animated else {
             window.rootViewController = viewController
+            completion()
             return
         }
 
@@ -102,9 +113,16 @@ class WindowManager: NSObject {
             options: .transitionCrossDissolve,
             animations: nil,
             completion: { _ in
-                completion?()
+                completion()
             }
         )
+    }
+
+    private func runAgeRequirementCheckIfNeeded() {
+        let anchor = topmostPresentedViewController
+        Task { @MainActor in
+            await AgeRequirementCoordinator.shared.checkIfNeeded(anchor: anchor)
+        }
     }
 
     // MARK: Temporary Overlaying Window
