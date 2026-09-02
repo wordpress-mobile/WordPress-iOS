@@ -100,7 +100,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 // Create reply
-- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment *reply))completion
+- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment * _Nullable reply))completion
 {
     NSManagedObjectID *parentCommentID = comment.objectID;
     NSManagedObjectID * __block replyID = nil;
