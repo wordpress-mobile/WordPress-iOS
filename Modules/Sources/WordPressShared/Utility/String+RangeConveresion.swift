@@ -8,52 +8,6 @@ extension String {
         String(self[range])
     }
 
-    /// Converts a UTF16 NSRange into a Swift String NSRange for this string.
-    ///
-    /// - Parameters:
-    ///     - nsRange: the UTF16 NSRange to convert.
-    ///
-    /// - Returns: the requested `Swift String NSRange`
-    ///
-    func nsRange(fromUTF16NSRange nsRange: NSRange) -> NSRange {
-
-        let utf16Range = utf16.range(from: nsRange)
-        let range = self.range(from: utf16Range)
-
-        let location = distance(from: startIndex, to: range.lowerBound)
-        let length = distance(from: range.lowerBound, to: range.upperBound)
-
-        return NSRange(location: location, length: length)
-    }
-
-    /// Converts a Swift String NSRange into a UTF16 NSRange for this string.
-    ///
-    /// - Parameters:
-    ///     - nsRange: the Swift String NSRange to convert.
-    ///
-    /// - Returns: the requested `UTF16 NSRange`
-    ///
-    func utf16NSRange(from nsRange: NSRange) -> NSRange {
-        let swiftRange = range(from: nsRange)
-        let utf16NSRange = self.utf16NSRange(from: swiftRange)
-
-        return utf16NSRange
-    }
-
-    /// Converts an NSRange into a `Range<String.Index>` for this string.
-    ///
-    /// - Parameters:
-    ///     - nsRange: the NSRange to convert.
-    ///
-    /// - Returns: the requested `Range<String.Index>`
-    ///
-    func range(from nsRange: NSRange) -> Range<String.Index> {
-        guard let range = Range(nsRange, in: self) else {
-            preconditionFailure("Invalid NSRange \(nsRange) for string of UTF-16 length \(utf16.count)")
-        }
-        return range
-    }
-
     func range(fromUTF16NSRange utf16NSRange: NSRange) -> Range<String.Index> {
         let swiftUTF16Range = utf16.range(from: utf16NSRange)
         return range(from: swiftUTF16Range)
@@ -181,12 +135,6 @@ extension String {
         let length = utf16.distance(from: lowerBound, to: upperBound)
 
         return NSRange(location: location, length: length)
-    }
-
-    /// Returns a NSRange with a starting location at the very end of the string
-    ///
-    func endOfStringNSRange() -> NSRange {
-        return NSRange(location: utf16.count, length: 0)
     }
 
     func indexFromLocation(_ location: Int) -> String.Index? {
