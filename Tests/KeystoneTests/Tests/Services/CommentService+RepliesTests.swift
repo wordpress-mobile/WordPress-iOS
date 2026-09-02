@@ -73,7 +73,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
     func test_getReplies_givenFailureResult_callsFailureBlock() {
         let expectation = expectation(description: "Fetch latest reply ID should fail")
         stub(condition: isMethodGET()) { _ in
-            HTTPStubsResponse(data: Data(), statusCode: 500, headers: nil)
+            return HTTPStubsResponse(data: Data(), statusCode: 500, headers: nil)
         }
 
         commentService.getLatestReplyID(for: commentID, siteID: siteID, accountService: accountService) { _ in
@@ -257,10 +257,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         post.postID = 51399
         contextManager.saveContextAndWait(mainContext)
 
-        HTTPStubs.stubRequest(
-            forEndpoint: "rest/v1.1/sites/3584907/posts/51399/replies",
-            withFileAtPath: stubFilePath("reader-post-comments-success.json")
-        )
+        HTTPStubs.stubRequest(forEndpoint: "rest/v1.1/sites/3584907/posts/51399/replies", withFileAtPath: stubFilePath("reader-post-comments-success.json"))
         let syncExp = expectation(description: "Sync comments should complete")
         self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
             syncExp.fulfill()
@@ -348,7 +345,7 @@ private extension CommentService_RepliesTests {
     }
 
     func stubFilePath(_ filename: String) -> String {
-        OHPathForFile(filename, type(of: self))!
+        return OHPathForFile(filename, type(of: self))!
     }
 }
 
@@ -360,6 +357,6 @@ private class CommentServiceRemoteFactoryMock: CommentServiceRemoteFactory {
     }
 
     override func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
-        CommentServiceRemoteREST(wordPressComRestApi: restApi, siteID: siteID)
+        return CommentServiceRemoteREST(wordPressComRestApi: restApi, siteID: siteID)
     }
 }
