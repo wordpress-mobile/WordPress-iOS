@@ -60,5 +60,33 @@ struct JetpackAppShortcuts: AppShortcutsProvider {
             ),
             systemImageName: "book"
         )
+        AppShortcut(
+            intent: PublishPostIntent(),
+            phrases: [
+                "Publish a post in \(.applicationName)",
+                "Publish a draft in \(.applicationName)"
+            ],
+            shortTitle: LocalizedStringResource(
+                "ios-appintents.publishPost.shortTitle",
+                defaultValue: "Publish Post",
+                table: "AppIntents",
+                comment: "Short title of the Publish Post shortcut tile in Spotlight and the Shortcuts app."
+            ),
+            systemImageName: "paperplane"
+        )
+        AppShortcut(
+            intent: SchedulePostIntent(),
+            phrases: [
+                "Schedule a post in \(.applicationName)",
+                "Schedule a draft in \(.applicationName)"
+            ],
+            shortTitle: LocalizedStringResource(
+                "ios-appintents.schedulePost.shortTitle",
+                defaultValue: "Schedule Post",
+                table: "AppIntents",
+                comment: "Short title of the Schedule Post shortcut tile in Spotlight and the Shortcuts app."
+            ),
+            systemImageName: "calendar.badge.clock"
+        )
     }
 }
