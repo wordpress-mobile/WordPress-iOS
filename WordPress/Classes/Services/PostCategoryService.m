@@ -22,6 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
                            userInfo:nil];
 }
 
+- (NSError *)serviceErrorCategoryNotFound
+{
+    return [NSError errorWithDomain:NSStringFromClass([self class])
+                               code:PostCategoryServiceErrorsCategoryNotFound
+                           userInfo:nil];
+}
+
 - (void)syncCategoriesForBlog:(Blog *)blog
                       success:(nullable void (^)(void))success
                       failure:(nullable void (^)(NSError *error))failure
@@ -88,8 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createCategoryWithName:(NSString *)name
         parentCategoryObjectID:(nullable NSManagedObjectID *)parentCategoryObjectID
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
-                       success:(nullable void (^)(PostCategory *category))success
-                       failure:(nullable void (^)(NSError *error))failure
+                       success:(void (^)(PostCategory *category))success
+                       failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(name != nil);
     Blog * __block blog = nil;
@@ -108,12 +115,11 @@ NS_ASSUME_NONNULL_BEGIN
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
                    success:^(RemotePostCategory *receivedCategory) {
+                       NSError * __block error = nil;
                        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                            Blog *blog = [context existingObjectWithID:blogObjectID error:nil];
                            if (!blog) {
-                               if (failure) {
-                                   failure([self serviceErrorNoBlog]);
-                               }
+                               error = [self serviceErrorNoBlog];
                                return;
                            }
                            PostCategory *newCategory = [PostCategory createWithBlogObjectID:blogObjectID inContext:context];
@@ -129,11 +135,23 @@ NS_ASSUME_NONNULL_BEGIN
                                newCategory.parentID = @0;
                            }
                        } completion:^{
-                           if (success) {
+                           // Deliver exactly one callback. `failure` is invoked from the
+                           // main-queue completion (not the background save block) so the
+                           // no-blog path matches the threading of the success path.
+                           if (error) {
+                               failure(error);
+                           } else {
                                PostCategory *newCategory = [PostCategory lookupWithBlogObjectID:blogObjectID
                                                                            categoryID:receivedCategory.categoryID
                                                                             inContext:[self.coreDataStack mainContext]];
-                               success(newCategory);
+                               if (newCategory) {
+                                   success(newCategory);
+                               } else {
+                                   // The category was created remotely but couldn't be
+                                   // resolved locally (e.g. the response had no usable ID).
+                                   // Report failure rather than dropping the callback.
+                                   failure([self serviceErrorCategoryNotFound]);
+                               }
                            }
                            if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
