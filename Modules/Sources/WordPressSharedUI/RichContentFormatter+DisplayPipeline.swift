@@ -83,8 +83,8 @@ extension RichContentFormatter {
 
             let mImageStr = NSMutableString(string: imgElementStr)
             mImageStr.replaceOccurrences(
-                of: srcImgURLStr,
-                with: modifiedURL.absoluteString,
+                of: "src=\"\(srcImgURLStr)\"",
+                with: "src=\"\(modifiedURL.absoluteString)\"",
                 options: .literal,
                 range: NSRange(location: 0, length: imgElementStr.utf16.count)
             )
