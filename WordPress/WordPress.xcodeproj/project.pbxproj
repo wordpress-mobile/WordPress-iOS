@@ -1695,6 +1695,7 @@
 				93E5284E19A7741A003A1A9C /* Embed Foundation Extensions */,
 				E1C5456F219F10E000896227 /* Copy Gutenberg JS */,
 				4AD953C92C21451800D0EEFA /* Embed Frameworks */,
+				D4763E29E7E134859E3D695B /* Strip Gutenberg App.js */,
 			);
 			buildRules = (
 			);
@@ -1924,6 +1925,7 @@
 				FABB26402602FC2C00C8785C /* Embed Foundation Extensions */,
 				FABB264C2602FC2C00C8785C /* Copy Gutenberg JS */,
 				4AD9555E2C21716A00D0EEFA /* Embed Frameworks */,
+				6D291D5EC84CEC03C7D2E920 /* Strip Gutenberg App.js */,
 			);
 			buildRules = (
 			);
@@ -2581,6 +2583,46 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.sh\"\n";
+		};
+		D4763E29E7E134859E3D695B /* Strip Gutenberg App.js */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Gutenberg App.js";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/bash -eu";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/StripGutenbergAppJS.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6D291D5EC84CEC03C7D2E920 /* Strip Gutenberg App.js */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Gutenberg App.js";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/bash -eu";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/StripGutenbergAppJS.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		FFA8E2301F94E3EF0002170F /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
