@@ -26,14 +26,45 @@ func makeVM(
     seed: CommentListItem? = nil,
     service: any CommentsServiceProtocol,
     capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities(),
-    tracker: (any CommentsTracker)? = nil
+    resolver: CommentsCapabilityResolver? = nil,
+    coordinator: CommentsModerationCoordinator? = nil,
+    tracker: (any CommentsTracker)? = nil,
+    noticePresenter: (any NoticePresenting)? = nil
 ) -> CommentDetailViewModel {
     CommentDetailViewModel(
         commentID: commentID,
         seed: seed,
         service: service,
-        capabilities: capabilities,
+        capabilities: resolver ?? CommentsCapabilityResolver(capabilities: capabilities),
+        coordinator: coordinator ?? CommentsModerationCoordinator(service: FakeCommentsService()),
         titleResolver: makeResolver(),
-        tracker: tracker
+        tracker: tracker,
+        noticePresenter: noticePresenter
     )
+}
+
+/// A resolver whose lookup has already landed with `canModerate`, standing in
+/// for the router's prefetch finishing before a detail screen opens.
+@MainActor
+func makeResolvedCapabilities(canModerate: Bool) async -> CommentsCapabilityResolver {
+    let capabilities = FakeCommentsCapabilities()
+    capabilities.canModerate = canModerate
+    let resolver = CommentsCapabilityResolver(capabilities: capabilities)
+    _ = await resolver.resolve()
+    return resolver
+}
+
+/// A view model whose authoritative fetch has landed with edit context at
+/// `status`, so the toolbar is enabled and actions run through `coordinator`.
+@MainActor
+func makeLoadedVM(
+    status: CommentStatus = .hold,
+    coordinator: CommentsModerationCoordinator,
+    noticePresenter: (any NoticePresenting)? = nil
+) async -> CommentDetailViewModel {
+    let service = FakeCommentsService()
+    service.fetchCommentResult = .success(makeDetail(id: 1, status: status, editContext: true))
+    let vm = makeVM(service: service, coordinator: coordinator, noticePresenter: noticePresenter)
+    await vm.onAppear()
+    return vm
 }

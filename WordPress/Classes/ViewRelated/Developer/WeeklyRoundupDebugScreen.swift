@@ -88,37 +88,7 @@ struct WeeklyRoundupDebugScreen: View {
                     Spacer()
 
                     Button("Schedule in 10 sec") {
-                        self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 5 * 60)
-                    }
-                    .buttonStyle(BlueButton())
-                    .frame(width: 350)
-
-                    Spacer()
-                }
-
-                Spacer()
-                    .frame(height: settings.spacerHeight)
-
-                HStack {
-                    Spacer()
-
-                    Button("Schedule in 10 sec") {
-                        self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 30 * 60)
-                    }
-                    .buttonStyle(BlueButton())
-                    .frame(width: 350)
-
-                    Spacer()
-                }
-
-                Spacer()
-                    .frame(height: settings.spacerHeight)
-
-                HStack {
-                    Spacer()
-
-                    Button("Schedule in 10 sec") {
-                        self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 60 * 60)
+                        self.scheduleDelayed(taskRunDelay: 10)
                     }
                     .buttonStyle(BlueButton())
                     .frame(width: 350)
@@ -130,7 +100,7 @@ struct WeeklyRoundupDebugScreen: View {
                     .frame(height: settings.spacerHeight)
             }
 
-            Text(verbatim: "The values represent when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.")
+            Text(verbatim: "The value represents when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.")
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(settings.defaultPadding)
 
@@ -195,22 +165,18 @@ struct WeeklyRoundupDebugScreen: View {
         }
     }
 
-    func scheduleDelayed(taskRunDelay: TimeInterval, staticNotificationDelay: TimeInterval) {
+    func scheduleDelayed(taskRunDelay: TimeInterval) {
         updateBackgroundTaskDate()
 
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
             if authorized {
                 DispatchQueue.main.async {
                     let taskRunDate = Date(timeIntervalSinceNow: taskRunDelay)
-                    let staticNotificationDate = Date(timeIntervalSinceNow: staticNotificationDelay)
                     let calendar = Calendar.current
 
                     let runDateComponents = calendar.dateComponents([.hour, .minute, .second], from: taskRunDate)
-                    let staticNotificationDateComponents = calendar.dateComponents([.hour, .minute, .second], from: staticNotificationDate)
 
-                    let backgroundTask = WeeklyRoundupBackgroundTask(
-                        runDateComponents: runDateComponents,
-                        staticNotificationDateComponents: staticNotificationDateComponents)
+                    let backgroundTask = WeeklyRoundupBackgroundTask(runDateComponents: runDateComponents)
 
                     WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { result in
                         switch result {

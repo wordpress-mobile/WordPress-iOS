@@ -193,8 +193,10 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
         siteStatsInsightsDelegate = delegate
         statSection = .insightsLatestPostSummary
+        selectionStyle = lastPostInsight == nil ? .none : .default
 
         guard let lastPostInsight else {
+            isAccessibilityElement = false
             toggleNoData(show: true)
             return
         }
@@ -210,6 +212,23 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         viewCountLabel.text = lastPostInsight.viewsCount.abbreviatedString()
         likeCountLabel.text = lastPostInsight.likesCount.abbreviatedString()
         commentCountLabel.text = lastPostInsight.commentsCount.abbreviatedString()
+
+        configureAccessibility(with: lastPostInsight)
+    }
+
+    // Present the card as a single button so VoiceOver announces the whole card
+    // and its tap action.
+    private func configureAccessibility(with lastPostInsight: StatsLastPostInsight) {
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+        accessibilityLabel = [
+            postTitleLabel.text,
+            postTimestampLabel.text,
+            "\(lastPostInsight.viewsCount.abbreviatedString()) \(TextContent.views)",
+            "\(lastPostInsight.likesCount.abbreviatedString()) \(TextContent.likes)",
+            "\(lastPostInsight.commentsCount.abbreviatedString()) \(TextContent.comments)"
+        ].compactMap { $0 }.joined(separator: ", ")
+        accessibilityHint = TextContent.cardAccessibilityHint
     }
 
     // Switches out the no data views into the main stack view if we have no data.
@@ -267,5 +286,6 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         static let views = NSLocalizedString("stats.insights.latestPostSummary.views", value: "Views", comment: "Title for Views count in Latest Post Summary stats card.")
         static let likes = NSLocalizedString("stats.insights.latestPostSummary.likes", value: "Likes", comment: "Title for Likes count in Latest Post Summary stats card.")
         static let comments = NSLocalizedString("stats.insights.latestPostSummary.comments", value: "Comments", comment: "Title for Comments count in Latest Post Summary stats card.")
+        static let cardAccessibilityHint = NSLocalizedString("stats.insights.latestPostSummary.card.accessibilityHint", value: "Opens the post", comment: "VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post.")
     }
 }

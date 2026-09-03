@@ -337,13 +337,12 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
         runDateComponents: DateComponents? = nil,
-        staticNotificationDateComponents: DateComponents? = nil,
         store: Store = Store(),
         coreDataStack: ContextManager = .shared
     ) {
         self.coreDataStack = coreDataStack
         self.eventTracker = eventTracker
-        self.notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
+        self.notificationScheduler = WeeklyRoundupNotificationScheduler()
         self.store = store
         self.runDateComponents = runDateComponents ?? {
             var dateComponents = DateComponents()
@@ -436,7 +435,6 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         // This can be removed once Jetpack migration is complete.
         guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
             notificationScheduler.cancellAll()
-            notificationScheduler.cancelStaticNotification()
             return
         }
 
@@ -569,61 +567,22 @@ class WeeklyRoundupNotificationScheduler {
     static let notificationIdentifier = "org.wordpress.notification.identifier.weeklyRoundup"
     static let threadIdentifier = "org.wordpress.notification.threadIdentifier.weeklyRoundup"
 
-    private lazy var staticNotificationIdentifier: String = {
-        "\(Self.notificationIdentifier).static"
-    }()
-
     func dynamicNotificationIdentifier(for blogID: Int) -> String {
         "\(Self.notificationIdentifier).\(blogID)"
     }
 
     // MARK: - Initialization
 
-    init(
-        staticNotificationDateComponents: DateComponents? = nil,
-        userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
-
+    init(userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         self.userNotificationCenter = userNotificationCenter
-        self.staticNotificationDateComponents = staticNotificationDateComponents ?? {
-            var dateComponents = DateComponents()
-
-            dateComponents.calendar = Calendar.current
-
-            // `DateComponent`'s weekday uses a 1-based index.
-            dateComponents.weekday = 2
-            dateComponents.hour = 18
-
-            return dateComponents
-        }()
     }
 
     // MARK: - Scheduling Notifications
 
-    let staticNotificationDateComponents: DateComponents
     let userNotificationCenter: UNUserNotificationCenter
 
     enum NotificationSchedulingError: Error {
-        case staticNotificationSchedulingError(error: Error)
         case dynamicNotificationSchedulingError(error: Error)
-    }
-
-    func scheduleStaticNotification(completion: @escaping (Result<Void, Error>) -> Void) {
-        let title = TextContent.staticNotificationTitle
-        let body = TextContent.staticNotificationBody
-
-        scheduleNotification(
-            identifier: staticNotificationIdentifier,
-            title: title,
-            body: body,
-            dateComponents: staticNotificationDateComponents) { result in
-
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(NotificationSchedulingError.staticNotificationSchedulingError(error: error)))
-            }
-        }
     }
 
     func scheduleDynamicNotification(
@@ -737,12 +696,6 @@ class WeeklyRoundupNotificationScheduler {
         }
     }
 
-    func cancelStaticNotification(completion: @escaping (Bool) -> Void = { _ in }) {
-        userNotificationCenter.getPendingNotificationRequests { _ in
-            completion(true)
-        }
-    }
-
     func notificationTitle(_ siteTitle: String?) -> String {
         if let siteTitle {
             return String(format: TextContent.dynamicNotificationTitle, siteTitle)
@@ -754,7 +707,6 @@ class WeeklyRoundupNotificationScheduler {
     enum TextContent {
         static let staticNotificationTitle = NSLocalizedString("Weekly Roundup", comment: "Title of Weekly Roundup push notification")
         static let dynamicNotificationTitle = NSLocalizedString("Weekly Roundup: %@", comment: "Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites.")
-        static let staticNotificationBody = NSLocalizedString("Your weekly roundup is ready, tap here to see the details!", comment: "Prompt displayed as part of the stats Weekly Roundup push notification.")
         static let dynamicNotificationBodyViewsOnly = NSLocalizedString("Last week you had %@ views.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views")
         static let dynamicNotificationBodyViewsAndLikes = NSLocalizedString("Last week you had %1$@ views and %2$@ likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes.")
         static let dynamicNotificationBodyViewsAndComments = NSLocalizedString("Last week you had %1$@ views and %2$@ comments.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments.")

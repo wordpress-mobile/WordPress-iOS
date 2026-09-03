@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 enum RegisterDomainDetails {
     enum Localized {

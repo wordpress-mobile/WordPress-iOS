@@ -149,4 +149,81 @@
     [self waitForExpectations:@[completion] timeout:1];
 }
 
+/// Regression: when the save context can't resolve the blog, `success` must not
+/// also fire. Previously the completion called `success(nil)` alongside `failure`
+/// (a double callback that passed nil into the non-null `PostCategory` block).
+/// The blog is intentionally left unsaved (see `setUp`), so its temporary
+/// objectID doesn't resolve in the background save context — the "no blog" path.
+- (void)testThatCreateCategoryDoesNotAlsoCallSuccessWhenBlogIsMissing
+{
+    TaxonomyServiceRemoteREST *remote = self.service.remoteForStubbing;
+
+    RemotePostCategory *received = [RemotePostCategory new];
+    received.categoryID = @123;
+    received.name = @"category name";
+    received.parentID = @0;
+
+    OCMStub([remote createCategory:[OCMArg any]
+                           success:([OCMArg invokeBlockWithArgs:received, nil])
+                           failure:[OCMArg any]]);
+
+    XCTestExpectation *failed = [self expectationWithDescription:@"failure is called"];
+    XCTestExpectation *successNotCalled = [self expectationWithDescription:@"success is not called"];
+    successNotCalled.inverted = YES;
+
+    [self.service createCategoryWithName:@"category name"
+                 parentCategoryObjectID:nil
+                        forBlogObjectID:self.blog.objectID
+                                success:^(PostCategory * _Nonnull __unused category) {
+        [successNotCalled fulfill];
+    } failure:^(NSError * _Nonnull __unused error) {
+        // Failure is delivered from the main-queue completion, not the background save context.
+        XCTAssertTrue([NSThread isMainThread]);
+        [failed fulfill];
+    }];
+
+    [self waitForExpectations:@[failed, successNotCalled] timeout:1];
+}
+
+/// Happy path: when the blog resolves in the save context, the created category
+/// is looked up and handed to `success` exactly once (on the main queue) and
+/// `failure` is not called. The blog is saved first — unlike the no-blog test
+/// above — so its permanent objectID resolves in the background save context.
+- (void)testThatCreateCategoryCallsSuccessWithTheCreatedCategory
+{
+    [self.manager saveContextAndWait:self.manager.mainContext];
+
+    TaxonomyServiceRemoteREST *remote = self.service.remoteForStubbing;
+
+    RemotePostCategory *received = [RemotePostCategory new];
+    received.categoryID = @123;
+    received.name = @"category name";
+    received.parentID = @0;
+
+    OCMStub([remote createCategory:[OCMArg any]
+                           success:([OCMArg invokeBlockWithArgs:received, nil])
+                           failure:[OCMArg any]]);
+
+    XCTestExpectation *succeeded = [self expectationWithDescription:@"success is called with the created category"];
+    XCTestExpectation *failureNotCalled = [self expectationWithDescription:@"failure is not called"];
+    failureNotCalled.inverted = YES;
+
+    [self.service createCategoryWithName:@"category name"
+                 parentCategoryObjectID:nil
+                        forBlogObjectID:self.blog.objectID
+                                success:^(PostCategory * _Nonnull category) {
+        // Success is delivered from the main-queue completion.
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertNotNil(category);
+        XCTAssertEqualObjects(category.categoryID, @123);
+        XCTAssertEqualObjects(category.categoryName, @"category name");
+        XCTAssertEqualObjects(category.parentID, @0);
+        [succeeded fulfill];
+    } failure:^(NSError * _Nonnull __unused error) {
+        [failureNotCalled fulfill];
+    }];
+
+    [self waitForExpectations:@[succeeded, failureNotCalled] timeout:1];
+}
+
 @end

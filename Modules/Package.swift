@@ -640,8 +640,7 @@ enum XcodeSupport {
                     //  "_OBJC_CLASS_$_DDLog", referenced from:
                     //       in AppExtensionsService.o
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
-                    .product(name: "WordPressAPI", package: "wordpress-rs")
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
                 ]
             )
         ]

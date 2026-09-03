@@ -258,6 +258,6 @@ private extension String {
         guard let expression = try? NSRegularExpression(pattern: "</?strong>", options: .caseInsensitive) else {
             return self
         }
-        return expression.stringByReplacingMatches(in: self, range: NSMakeRange(0, self.count), withTemplate: String())
+        return expression.stringByReplacingMatches(in: self, range: NSMakeRange(0, self.utf16.count), withTemplate: String())
     }
 }

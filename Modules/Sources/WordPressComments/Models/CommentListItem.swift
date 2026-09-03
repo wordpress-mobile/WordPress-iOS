@@ -20,7 +20,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     let postID: Int64
     let snippet: String
     let date: Date
-    let status: Status
+    var status: Status
 
     init(
         id: Int64,

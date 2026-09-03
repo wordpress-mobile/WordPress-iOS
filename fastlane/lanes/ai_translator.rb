@@ -120,11 +120,10 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
   # The drift-free path is `translate_plural` — the whole form-set in one request. Because it is a
   # per-(key, locale) call, wiring it upgrades the consumer's `ai_translator` seam to take the form-set
   # (`ai_translator.call(english_forms:, categories:, locale:, note:, anchors:)`); it is not a one-line swap here.
-  # rubocop:disable Lint/UnusedMethodArgument -- keyword names are the documented call contract
+  # rubocop:disable-next Lint/UnusedMethodArgument -- keyword names are the documented call contract
   def for_plural(id:, source:, category:, note:, locale:)
     translate(source: source, locale: locale, context: plural_context(note, category))
   end
-  # rubocop:enable Lint/UnusedMethodArgument
 
   # Translates a whole plural form-set for one key in a SINGLE request, so the model keeps one consistent
   # word/stem across the forms (the fix for per-cell lemma drift). Returns { category => translation } for the

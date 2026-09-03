@@ -1,5 +1,5 @@
 import SwiftUI
-import UIKit
+import Foundation
 import WordPressData
 import WordPressUI
 

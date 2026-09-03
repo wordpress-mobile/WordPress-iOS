@@ -84,7 +84,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         let attributedString = NSMutableAttributedString()
         attributedString.append(NSAttributedString(attachment: iconAttachment))
         attributedString.append(.init(string: " " + .replyIndicatorLabelText))
-        attributedString.addAttributes(Style.ReplyIndicator.textAttributes, range: NSMakeRange(0, attributedString.length))
+        attributedString.addAttributes(Style.ReplyIndicator.textAttributes)
 
         // reverse the attributed strings in RTL direction.
         if view.effectiveUserInterfaceLayoutDirection == .rightToLeft {
@@ -1011,8 +1011,13 @@ private extension CommentDetailViewController {
             return
         }
 
-        try await withUnsafeThrowingContinuation { continuation in
+        try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<Void, Error>) in
             commentService.createReply(for: comment, content: content) { reply in
+                guard let reply else {
+                    DDLogError("Failed creating comment reply: reply was nil after save")
+                    continuation.resume(throwing: URLError(.unknown))
+                    return
+                }
                 self.commentService.uploadComment(reply, success: { [weak self] in
                     self?.refreshCommentReplyIfNeeded()
                     continuation.resume()

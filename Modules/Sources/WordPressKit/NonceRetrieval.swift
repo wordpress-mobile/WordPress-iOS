@@ -48,7 +48,7 @@ enum NonceRetrievalMethod {
 
     private func scrapNonceFromNewPost(html: String) -> String? {
         guard let regex = try? NSRegularExpression(pattern: "apiFetch.createNonceMiddleware\\(\\s*['\"](?<nonce>\\w+)['\"]\\s*\\)", options: []),
-            let match = regex.firstMatch(in: html, options: [], range: NSRange(location: 0, length: html.count)) else {
+            let match = regex.firstMatch(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count)) else {
                 return nil
         }
         let nsrange = match.range(withName: "nonce")

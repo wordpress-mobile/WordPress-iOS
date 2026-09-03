@@ -12,8 +12,7 @@ struct CommentsListViewModelTests {
         await viewModel.onAppear()
 
         #expect(viewModel.items.map(\.id) == [1, 2])
-        #expect(viewModel.hasLoaded)
-        #expect(!viewModel.isLoadingFirstPage)
+        #expect(viewModel.state == .loaded)
         #expect(viewModel.canLoadMore)
     }
 

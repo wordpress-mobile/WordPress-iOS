@@ -97,6 +97,13 @@ enum Strings {
         comment: "Accessibility value announced for a comment row that is awaiting moderation"
     )
 
+    static let moderationFailed = NSLocalizedString(
+        "commentDetail.moderation.failed",
+        value: "That action couldn't be completed. Please try again.",
+        comment:
+            "Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry"
+    )
+
     static let statusApproved = NSLocalizedString(
         "commentDetail.status.approved",
         value: "Approved",
@@ -155,6 +162,79 @@ enum Strings {
         "commentDetail.parent.inReplyTo",
         value: "In reply to %@",
         comment: "Prefix of the parent-comment strip. %@ is the parent comment's author name."
+    )
+
+    static let approve = NSLocalizedString(
+        "commentDetail.action.approve",
+        value: "Approve",
+        comment: "Moderation toolbar button that approves a pending comment"
+    )
+
+    static let spam = NSLocalizedString(
+        "commentDetail.action.spam",
+        value: "Spam",
+        comment: "Moderation toolbar button that marks a comment as spam"
+    )
+
+    static let trash = NSLocalizedString(
+        "commentDetail.action.trash",
+        value: "Trash",
+        comment: "Moderation toolbar button that moves a comment to the trash"
+    )
+
+    static let moveToPending = NSLocalizedString(
+        "commentDetail.action.moveToPending",
+        value: "Move to Pending",
+        comment: "Moderation menu item that returns an approved comment to the pending state"
+    )
+
+    static let restore = NSLocalizedString(
+        "commentDetail.action.restore",
+        value: "Restore",
+        comment: "Moderation toolbar button that restores a comment from spam or trash"
+    )
+
+    static let deletePermanently = NSLocalizedString(
+        "commentDetail.action.deletePermanently",
+        value: "Delete Permanently",
+        comment: "Moderation toolbar button that permanently deletes a comment"
+    )
+
+    static let detailMoreActions = NSLocalizedString(
+        "commentDetail.action.moreActions",
+        value: "More",
+        comment: "Accessibility label for the overflow menu button on the comment detail screen"
+    )
+
+    static let trashConfirmButton = NSLocalizedString(
+        "commentDetail.confirm.trashButton",
+        value: "Move to Trash",
+        comment: "Confirmation button that trashes a comment"
+    )
+
+    static let trashConfirmGenericTitle = NSLocalizedString(
+        "commentDetail.confirm.trashGeneric",
+        value: "Move this comment to the trash?",
+        comment: "Confirmation title shown before trashing a comment whose reply count is unknown"
+    )
+
+    static let trashHasReplies = NSLocalizedString(
+        "commentDetail.confirm.trashHasReplies",
+        value: "This comment has replies. Trash it anyway?",
+        comment:
+            "Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies."
+    )
+
+    static let deleteConfirmTitle = NSLocalizedString(
+        "commentDetail.confirm.deleteTitle",
+        value: "Delete this comment permanently?",
+        comment: "Confirmation title shown before permanently deleting a comment"
+    )
+
+    static let deleteConfirmMessage = NSLocalizedString(
+        "commentDetail.confirm.deleteMessage",
+        value: "This can't be undone.",
+        comment: "Confirmation message shown before permanently deleting a comment"
     )
 
     static let detailErrorTitle = NSLocalizedString(

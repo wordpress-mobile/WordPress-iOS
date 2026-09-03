@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import SwiftUI
 import WordPressShared
 import WordPressUI
