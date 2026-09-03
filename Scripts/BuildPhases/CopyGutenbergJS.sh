@@ -5,19 +5,16 @@ DEST="$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"
 
 # Update the matching .inputs.xcfilelist when changing these
 #
-# The React Native runtime loads the JS bundle from main.jsbundle at the app
-# bundle root, so we copy the prebuilt bundle there. We read it from the
-# standalone copy that ships alongside the XCFramework rather than from
-# Gutenberg.framework/App.js: that in-framework copy is byte-identical and is
-# stripped by download-gutenberg-xcframeworks.sh so it isn't embedded twice.
-DOWNLOADED_JS_BUNDLE="$SRCROOT/Frameworks/react-native-bundle-source-map/main.jsbundle"
+# Notice we read from the ios-arm64 build, but given what we are after are JS
+# files and assets, any architecture would do because they are always the same.
+XCFRAMEWORK_BUNDLE_ROOT="$SRCROOT/Frameworks/Gutenberg.xcframework/ios-arm64/Gutenberg.framework"
 LOCAL_BUNDLE="$SRCROOT/../gutenberg-mobile/bundle/ios"
 
 BUNDLE_FILE="$DEST/main.jsbundle"
 BUNDLE_ASSETS="$DEST/assets/"
 
-if [[ -f $DOWNLOADED_JS_BUNDLE ]]; then
-  cp "$DOWNLOADED_JS_BUNDLE" "$BUNDLE_FILE"
+if [[ -d $XCFRAMEWORK_BUNDLE_ROOT ]]; then
+  cp "$XCFRAMEWORK_BUNDLE_ROOT/App.js" "$BUNDLE_FILE"
   # It appears we don't need to copy the assets when working with the XCFramework
 elif [[ -d $LOCAL_BUNDLE ]]; then
   echo "warning: Using local bundle."

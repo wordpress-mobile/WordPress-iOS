@@ -55,10 +55,4 @@ fi
 mkdir -p "${FRAMEWORKS_DIR}"
 cp -a "${CACHE_DIR}/." "${FRAMEWORKS_DIR}/"
 
-# The React Native runtime loads the JS bundle from main.jsbundle at the app
-# bundle root (copied in by the CopyGutenbergJS build phase). The identical
-# copy inside Gutenberg.framework/App.js is never loaded at runtime and only
-# adds ~7.7MB of dead weight to the embedded framework, so drop it.
-find "${FRAMEWORKS_DIR}/Gutenberg.xcframework" -path '*/Gutenberg.framework/App.js' -delete
-
 echo "Gutenberg ${VERSION} setup complete."
