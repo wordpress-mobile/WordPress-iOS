@@ -320,6 +320,13 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     /// Scenario: syncing changes to an existing draft that was permanently deleted.
     func testSyncPermanentlyDeletedPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
         // GIVEN a draft post that needs sync
         let post = PostBuilder(mainContext, blog: blog).build()
         post.postID = 974
@@ -330,6 +337,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         let revision1 = post.createRevision()
         revision1.content = "content-b"
+        let searchableIdentifier = try XCTUnwrap(post.uniqueIdentifier)
 
         // GIVEN a server where the post was deleted
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
@@ -357,6 +365,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // THEN post got deleted from the database
         XCTAssertNil(post.managedObjectContext)
+        XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
     }
 
     func testPauseSyncing() async throws {
@@ -612,6 +621,18 @@ class PostCoordinatorTests: CoreDataTestCase {
         XCTAssertTrue(revision1.isSyncNeeded)
         XCTAssertEqual(revision1.revision, revision2)
         XCTAssertFalse(revision2.isSyncNeeded)
+    }
+}
+
+private final class SearchManagerSpy: SearchManaging {
+    private(set) var deletedIdentifiers: [String] = []
+
+    func indexItem(_ item: SearchableItemConvertable) {}
+
+    func deleteSearchableItem(_ item: SearchableItemConvertable) {}
+
+    func deleteSearchableItems(withIdentifiers identifiers: [String]) {
+        deletedIdentifiers.append(contentsOf: identifiers)
     }
 }
 
