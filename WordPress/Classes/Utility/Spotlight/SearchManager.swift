@@ -82,6 +82,20 @@ import WordPressUI
         })
     }
 
+    /// Removes every item indexed for a site. Call it before the site is
+    /// deleted from Core Data, while its domain is still available.
+    ///
+    /// - Parameters:
+    ///   - blog: the site being removed
+    ///
+    @objc(deleteSearchableItemsForBlog:)
+    func deleteSearchableItems(for blog: Blog) {
+        guard let domain = blog.searchDomain else {
+            return
+        }
+        deleteAllSearchableItemsFromDomain(domain)
+    }
+
     /// Removes all items with the given domain identifier from the on-device index
     ///
     /// - Parameters:
