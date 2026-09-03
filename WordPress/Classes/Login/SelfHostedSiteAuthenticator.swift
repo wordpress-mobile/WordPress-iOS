@@ -73,6 +73,7 @@ struct SelfHostedSiteAuthenticator {
         case savingSiteFailure
         case mismatchedUser(expectedUsername: String)
         case cancelled
+        case ageRestricted
 
         var errorDescription: String? {
             switch self {
@@ -111,6 +112,8 @@ struct SelfHostedSiteAuthenticator {
                     value: "Login has been cancelled",
                     comment: "Error message when user cancels login"
                 )
+            case .ageRestricted:
+                return nil
             case let .xmlrpcDisabled(underlying):
                 if let reason = underlying as? WordPressOrgXMLRPCValidatorError {
                     return reason.localizedDescription
@@ -128,10 +131,12 @@ struct SelfHostedSiteAuthenticator {
     }
 
     private let internalClient: WordPressLoginClient
+    private let ageRequirementController: AgeRequirementAccessControlling?
 
-    init() {
+    init(ageRequirementController: AgeRequirementAccessControlling? = nil) {
         let session = URLSession(configuration: .ephemeral)
         self.internalClient = WordPressLoginClient(urlSession: session)
+        self.ageRequirementController = ageRequirementController
     }
 
     private func trackSuccess(url: String) {
@@ -163,6 +168,7 @@ struct SelfHostedSiteAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        try refuseIfAgeRestricted(from: viewController)
         let details: AutoDiscoveryAttemptSuccess
         do {
             details = try await internalClient.details(ofSite: site)
@@ -186,6 +192,7 @@ struct SelfHostedSiteAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        try refuseIfAgeRestricted(from: viewController)
         do {
             let credentials: WpApiApplicationPasswordDetails
             if let parsed = parseCredentialsFromLaunchArguments(),
@@ -195,6 +202,9 @@ struct SelfHostedSiteAuthenticator {
             } else {
                 credentials = try await authenticate(details: details, from: viewController)
             }
+
+            // Re-check after authentication: the restriction can arrive while the sign-in flow is in progress.
+            try refuseIfAgeRestricted(from: viewController)
 
             let apiRootURL = details.apiRootUrl.asURL()
             let result = try await handle(
@@ -476,6 +486,14 @@ struct SelfHostedSiteAuthenticator {
         }
 
         return blog
+    }
+
+    @MainActor
+    private func refuseIfAgeRestricted(from viewController: UIViewController) throws(SignInError) {
+        let controller = ageRequirementController ?? AgeRequirementCoordinator.shared
+        guard !controller.refuseSignInIfRestricted(from: viewController) else {
+            throw .ageRestricted
+        }
     }
 
     private func fetchJetpackSite(apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) async -> RemoteBlog? {
