@@ -19,7 +19,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     let avatarURL: URL?
     let postID: Int64
     let snippet: String
-    let date: Date
+    let date: Date?
     var status: Status
 
     init(
@@ -28,7 +28,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         avatarURL: URL?,
         postID: Int64,
         snippet: String,
-        date: Date,
+        date: Date?,
         status: Status
     ) {
         self.id = id
@@ -46,9 +46,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         avatarURL = comment.authorAvatarUrls.avatarURL
         postID = comment.post
         snippet = Self.snippet(fromHTML: comment.content.rendered)
-        // `dateGmt` became optional in wordpress-rs 0.8.0 (nil only for a
-        // never-published comment, which the moderation list never shows).
-        date = comment.dateGmt ?? .distantPast
+        date = comment.dateGmt
         status = Status(comment.status)
     }
 

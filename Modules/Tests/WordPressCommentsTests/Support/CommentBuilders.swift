@@ -10,7 +10,7 @@ func makeComment(
     content: String = "<p>Hello <strong>world</strong></p>",
     post: Int64 = 10,
     status: CommentStatus = .approved,
-    date: Date = Date(timeIntervalSince1970: 1_700_000_000)
+    date: Date? = Date(timeIntervalSince1970: 1_700_000_000)
 ) -> CommentWithViewContext {
     CommentWithViewContext(
         id: id,
@@ -49,7 +49,7 @@ extension CommentWithViewContext {
         post: Int64 = 10,
         parent: Int64 = 0,
         status: CommentStatus = .approved,
-        date: Date = Date(timeIntervalSince1970: 1_700_000_000)
+        date: Date? = Date(timeIntervalSince1970: 1_700_000_000)
     ) -> CommentWithViewContext {
         CommentWithViewContext(
             id: id,
@@ -82,7 +82,7 @@ extension CommentWithEditContext {
         post: Int64 = 10,
         parent: Int64 = 0,
         status: CommentStatus = .approved,
-        date: Date = Date(timeIntervalSince1970: 1_700_000_000)
+        date: Date? = Date(timeIntervalSince1970: 1_700_000_000)
     ) -> CommentWithEditContext {
         CommentWithEditContext(
             id: id,

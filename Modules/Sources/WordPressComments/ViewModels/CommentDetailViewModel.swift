@@ -28,7 +28,7 @@ final class CommentDetailViewModel: ObservableObject {
         let authorName: String
         let avatarURL: URL?
         let postID: Int64
-        let date: Date
+        let date: Date?
         let status: CommentListItem.Status
     }
 

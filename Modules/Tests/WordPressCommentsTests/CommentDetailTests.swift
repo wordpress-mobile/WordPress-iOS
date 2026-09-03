@@ -28,4 +28,9 @@ struct CommentDetailTests {
         let detail = CommentDetail(comment: .detailBuilder(authorName: ""))
         #expect(detail.authorName == Strings.anonymousAuthor)
     }
+
+    @Test func missingDateMapsToNil() {
+        let detail = CommentDetail(comment: .detailBuilder(date: nil))
+        #expect(detail.date == nil)
+    }
 }
