@@ -1008,7 +1008,10 @@ extension ShareExtensionEditorViewController {
     }
 
     func insertImageAttachment(with url: URL) {
-        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
+        // `setHTML` leaves the caret at the start of the document, so append instead of inserting
+        // there, which would put shared images above the text they arrived with.
+        let endOfDocument = NSRange(location: richTextView.textStorage.length, length: 0)
+        let attachment = richTextView.replaceWithImage(at: endOfDocument, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
 
         attachment.size = .full
         attachment.uploadID = url.lastPathComponent // Use the filename as the uploadID here.
@@ -1265,7 +1268,8 @@ private extension ShareExtensionEditorViewController {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
                 self?.setTitleText(share.title)
-                self?.richTextView.setHTML(share.combinedContentHTML)
+                // The trailing paragraph keeps appended images off the end of the last sentence.
+                self?.richTextView.setHTML(share.combinedContentHTML + "<p></p>")
 
                 share.images.forEach({ extractedImage in
                     if extractedImage.insertionState == .requiresInsertion {
