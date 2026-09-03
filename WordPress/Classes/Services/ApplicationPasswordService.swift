@@ -29,7 +29,8 @@ extension ApplicationPasswordService: ApplicationTokenListDataProvider {
         }
 
         if self.currentApplicationPasswordUUID == nil {
-            self.currentApplicationPasswordUUID = try? await apiClient.api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid
+            self.currentApplicationPasswordUUID = try? await apiClient.api.applicationPasswords
+                .retrieveCurrentWithViewContext().data.uuid.uuid
         }
 
         return try await fetchTokens(forUserId: userId)
@@ -47,21 +48,17 @@ extension ApplicationPasswordService: ApplicationTokenListDataProvider {
 
 extension ApplicationTokenItem {
     init?(_ rawToken: ApplicationPasswordWithEditContext) {
-        guard
-            let uuid = UUID(uuidString: rawToken.uuid.uuid),
-            let createdAt = Date.fromWordPressDate(rawToken.created)
-        else {
+        guard let uuid = UUID(uuidString: rawToken.uuid.uuid) else {
             return nil
         }
 
-        let lastUsed = rawToken.lastUsed.flatMap(Date.fromWordPressDate(_:))
-
+        // wordpress-rs 0.8.0 delivers these as parsed `Date`s, not strings.
         self = ApplicationTokenItem(
             name: rawToken.name,
             uuid: uuid,
             appId: rawToken.appId.appId,
-            createdAt: createdAt,
-            lastUsed: lastUsed,
+            createdAt: rawToken.created,
+            lastUsed: rawToken.lastUsed,
             lastIpAddress: rawToken.lastIp?.value
         )
     }
