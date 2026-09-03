@@ -1,6 +1,5 @@
 import XCTest
 @testable import WordPressShared
-@testable import WordPressSharedUI
 
 class RichContentFormatterTests: XCTestCase {
 
@@ -30,10 +29,6 @@ class RichContentFormatterTests: XCTestCase {
         let styleStr = "<div><p>test</p></div><pre>\n\ntest\n\n</pre>\n<p><div>test</div></p>\n"
         let sanitizedStr = RichContentFormatter.filterNewLines(styleStr)
         XCTAssertTrue(str == sanitizedStr, "Not all paragraphs were normalized.")
-    }
-
-    func testResizeGalleryImageURLsForContentEmptyString() {
-        XCTAssertTrue("" == RichContentFormatter.resizeGalleryImageURL("", isPrivateSite: false))
     }
 
     func testRemoveTrailingBRTags() {

@@ -1,7 +1,4 @@
 import Foundation
-import UIKit
-import WordPressShared
-import WordPressSharedObjCUI
 
 /// Contains methods for formatting post or comment content for display.
 ///
@@ -28,7 +25,7 @@ import WordPressSharedObjCUI
         static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .caseInsensitive)
 
         // Gallery Images
-        static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
+        public static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
 
         // Trailing BR Tags
         static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
@@ -36,31 +33,6 @@ import WordPressSharedObjCUI
         // Gutenberg Galleries
         static let gutenbergGalleryList = try! NSRegularExpression(pattern: "(<ul[^>]+>)<li[^>]+gallery-item[^>]+><figure><img .+?</figure></li>", options: .caseInsensitive)
         static let gutenbergGalleryListItem = try! NSRegularExpression(pattern: "<li[^>]+gallery-item[^>]+>(<figure><img .+?</figure>)</li>", options: .caseInsensitive)
-    }
-
-    /// Formats the specified content string for display. Forbidden HTML tags are
-    /// removed, paragraphs are normalized, etc.
-    ///
-    /// - Parameters:
-    ///     - string: The content string to format.
-    ///     - isPrivate: Whether the content is from a private blog.
-    ///
-    /// - Returns: The formatted string.
-    ///
-    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard !string.isEmpty else {
-            return string
-        }
-
-        var content = string
-        content = removeForbiddenTags(content)
-        content = normalizeParagraphs(content)
-        content = removeInlineStyles(content)
-        content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
-        content = formatGutenbergGallery(content)
-        content = resizeGalleryImageURL(content, isPrivateSite: isPrivate)
-        content = formatVideoTags(content)
-        return content
     }
 
     /// Removes forbidden HTML tags from the specified string.
@@ -195,59 +167,6 @@ import WordPressSharedObjCUI
                                                            withTemplate: "")
 
         return content
-    }
-
-    /// Mutates gallery image URLs to be correctly sized.
-    ///
-    /// - Parameters:
-    ///     - string: The content string to format.
-    ///     - isPrivate: Whether the content is from a private blog.
-    ///
-    /// - Returns: The formatted string.
-    ///
-    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard !string.isEmpty else {
-            return string
-        }
-
-        let imageSize = UIScreen.main.bounds.size
-        let scale = UIScreen.main.scale
-        let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
-
-        let mContent = NSMutableString(string: string)
-
-        let matches = RegEx.galleryImgTags.matches(in: mContent as String, options: [], range: NSRange(location: 0, length: mContent.length))
-
-        for match in matches.reversed() {
-            let imgElementStr = mContent.substring(with: match.range)
-            let srcImgURLStr = parseValueForAttribute("src", inElement: imgElementStr)
-            let originalImgURLStr = parseValueForAttribute("data-orig-file", inElement: imgElementStr)
-
-            guard let originalURL = URL(string: originalImgURLStr) else {
-                continue
-            }
-
-            var modifiedURL: URL
-            if isPrivate {
-                modifiedURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: originalURL)
-            } else {
-                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL)
-            }
-
-            guard modifiedURL.absoluteString.isEmpty() == false else {
-                continue
-            }
-
-            let mImageStr = NSMutableString(string: imgElementStr)
-            mImageStr.replaceOccurrences(of: srcImgURLStr,
-                                         with: modifiedURL.absoluteString,
-                                         options: .literal,
-                                         range: NSRange(location: 0, length: imgElementStr.count))
-
-            mContent.replaceCharacters(in: match.range, with: mImageStr as String)
-        }
-
-        return mContent as String
     }
 
     /// Parses the specified string for the value of the specified attribute.
