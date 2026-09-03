@@ -122,7 +122,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
                     "post": 2,
                     "status": "approved",
                     "type": "comment",
-                    "content": "<p>test comment</p>\n",
+                    "content": "<p>test comment</p>\n"
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
@@ -193,7 +193,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
                     "post": 2,
                     "status": "approved",
                     "type": "comment",
-                    "content": "<p>test comment</p>\n",
+                    "content": "<p>test comment</p>\n"
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
@@ -285,6 +285,41 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         // The spam comment and its two replies are no longer visible
         XCTAssertEqual(post.comments?.count, 24)
         XCTAssertEqual(post.comments?.filter({ ($0 as! Comment).visibleOnReader }).count, 21)
+    }
+
+    /// A sync that only fetches a small page (e.g. the Post Detail comments preview) must
+    /// still update `post.commentCount` to the server's authoritative total, not just the
+    /// number of comments included in that one page/response.
+    func test_syncHierarchicalComments_updatesPostCommentCountFromServerTotal() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 3584907
+        post.postID = 51399
+        post.commentCount = 2
+        contextManager.saveContextAndWait(mainContext)
+
+        let fixtureURL = URL(fileURLWithPath: stubFilePath("reader-post-comments-success.json"))
+        var json = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtureURL)) as! [String: Any]
+        let allComments = json["comments"] as! [[String: Any]]
+        json["comments"] = Array(allComments.prefix(1))
+        json["found"] = 42
+
+        stub(condition: isPath("/rest/v1.1/sites/3584907/posts/51399/replies")) { _ in
+            HTTPStubsResponse(jsonObject: json, statusCode: 200, headers: nil)
+        }
+
+        let syncExp = expectation(description: "Sync comments should complete")
+        self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
+            syncExp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            syncExp.fulfill()
+        }
+        wait(for: [syncExp], timeout: 5)
+
+        // Only 1 comment was merged from this page, but the post's total comment count
+        // should reflect the server's `found` total, not the page's local tally.
+        XCTAssertEqual(post.comments?.count, 1)
+        XCTAssertEqual(post.commentCount, 42)
     }
 }
 
