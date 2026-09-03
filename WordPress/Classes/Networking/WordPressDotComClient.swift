@@ -175,15 +175,18 @@ extension RequestMethod: @retroactive CustomStringConvertible {
     }
 }
 
-/// Asks WordPress.com to localize responses to the user's preferred language.
+/// Asks WordPress.com to localize responses to the first of the user's preferred languages that
+/// WordPress.com supports.
 ///
-/// Reads the same source as `WordPressComRestApi` but maps it through the wordpress-rs language
-/// table, so regional variants such as `en-gb` resolve and unsupported languages send no locale.
+/// Maps through the wordpress-rs language table, so regional variants such as `en-gb` resolve.
+/// Sends no locale when none of the preferred languages is supported.
 final class WPComDeviceLanguageProvider: WpComLanguageProvider {
     func currentLanguage() -> WpComLanguage? {
-        guard let identifier = Locale.preferredLanguages.first else {
-            return nil
+        for identifier in Locale.preferredLanguages {
+            if let language = WpComLanguage(locale: Locale(identifier: identifier)) {
+                return language
+            }
         }
-        return WpComLanguage(locale: Locale(identifier: identifier))
+        return nil
     }
 }
