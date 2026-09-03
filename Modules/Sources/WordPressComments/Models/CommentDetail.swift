@@ -34,7 +34,7 @@ struct CommentDetail: Equatable, Sendable {
             parentID: comment.parent,
             contentHTML: comment.content.rendered,
             link: comment.link,
-            date: comment.dateGmt,
+            date: comment.dateGmt ?? .distantPast,
             status: CommentListItem.Status(comment.status),
             hasEditContext: false
         )
@@ -52,7 +52,7 @@ struct CommentDetail: Equatable, Sendable {
             parentID: comment.parent,
             contentHTML: comment.content.rendered,
             link: comment.link,
-            date: comment.dateGmt,
+            date: comment.dateGmt ?? .distantPast,
             status: CommentListItem.Status(comment.status),
             hasEditContext: true
         )

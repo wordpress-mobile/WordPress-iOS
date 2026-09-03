@@ -46,7 +46,9 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         avatarURL = comment.authorAvatarUrls.avatarURL
         postID = comment.post
         snippet = Self.snippet(fromHTML: comment.content.rendered)
-        date = comment.dateGmt
+        // `dateGmt` became optional in wordpress-rs 0.8.0 (nil only for a
+        // never-published comment, which the moderation list never shows).
+        date = comment.dateGmt ?? .distantPast
         status = Status(comment.status)
     }
 
