@@ -30,6 +30,11 @@ struct CommentListItemTests {
         #expect(item.avatarURL == nil)
     }
 
+    @Test func missingDateMapsToNil() {
+        let item = CommentListItem(comment: makeComment(date: nil))
+        #expect(item.date == nil)
+    }
+
     @Test func statusMapping() {
         #expect(CommentListItem(comment: makeComment(status: .approved)).status == .approved)
         #expect(CommentListItem(comment: makeComment(status: .spam)).status == .spam)

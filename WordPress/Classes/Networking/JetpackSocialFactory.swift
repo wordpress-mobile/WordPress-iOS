@@ -34,8 +34,13 @@ public final class JetpackSocialFactory: Sendable {
         }
         let service = SiteSocialConnectionsService(
             client: WPComApiClient(
-                urlSession: URLSession(configuration: .ephemeral),
-                authentication: configuration.authentication
+                delegate: WpApiClientDelegate(
+                    authProvider: .staticWithAuth(auth: configuration.authentication),
+                    requestExecutor: WpRequestExecutor(urlSession: URLSession(configuration: .ephemeral)),
+                    middlewarePipeline: .default,
+                    appNotifier: EmptyAppNotifier(),
+                    languageProvider: WPComDeviceLanguageProvider()
+                )
             ),
             siteId: configuration.siteId,
             canMarkAsShared: canMarkAsShared

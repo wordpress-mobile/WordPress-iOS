@@ -137,7 +137,8 @@ final class MockUsersRequestExecutor: UsersRequestExecutor, @unchecked Sendable 
             locale: "en_US",
             nickname: "testuser",
             slug: "testuser",
-            registeredDate: "2024-01-01T00:00:00",
+            registeredDate: Date(timeIntervalSince1970: 1_704_067_200), // 2024-01-01
+
             roles: [],
             capabilities: UserCapabilitiesMap(map: [:]),
             extraCapabilities: UserCapabilitiesMap(map: [:]),
