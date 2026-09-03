@@ -35,12 +35,16 @@ import WordPressUI
             return
         }
 
-        CSSearchableIndex.default().indexSearchableItems(items, completionHandler: { (error: Error?) -> Void in
-            guard let error else {
-                return
-            }
-            DDLogError("Could not index post. Error: \(error.localizedDescription)")
-        })
+        CSSearchableIndex.default()
+            .indexSearchableItems(
+                items,
+                completionHandler: { (error: Error?) -> Void in
+                    guard let error else {
+                        return
+                    }
+                    DDLogError("Could not index post. Error: \(error.localizedDescription)")
+                }
+            )
     }
 
     // MARK: - Removal
@@ -74,12 +78,16 @@ import WordPressUI
             return
         }
 
-        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: ids, completionHandler: { (error: Error?) -> Void in
-            guard let error else {
-                return
-            }
-            DDLogError("Could not delete CSSearchableItem item. Error: \(error.localizedDescription)")
-        })
+        CSSearchableIndex.default()
+            .deleteSearchableItems(
+                withIdentifiers: ids,
+                completionHandler: { (error: Error?) -> Void in
+                    guard let error else {
+                        return
+                    }
+                    DDLogError("Could not delete CSSearchableItem item. Error: \(error.localizedDescription)")
+                }
+            )
     }
 
     /// Removes every item indexed for a site. Call it before the site is
@@ -115,12 +123,18 @@ import WordPressUI
             return
         }
 
-        CSSearchableIndex.default().deleteSearchableItems(withDomainIdentifiers: domains, completionHandler: { (error: Error?) -> Void in
-            guard let error else {
-                return
-            }
-            DDLogError("Could not delete CSSearchableItem items for domains: \(domains.joined(separator: ", ")). Error: \(error.localizedDescription)")
-        })
+        CSSearchableIndex.default()
+            .deleteSearchableItems(
+                withDomainIdentifiers: domains,
+                completionHandler: { (error: Error?) -> Void in
+                    guard let error else {
+                        return
+                    }
+                    DDLogError(
+                        "Could not delete CSSearchableItem items for domains: \(domains.joined(separator: ", ")). Error: \(error.localizedDescription)"
+                    )
+                }
+            )
     }
 
     /// Removes *all* items from the on-device, CoreSpotlight index.
@@ -129,12 +143,13 @@ import WordPressUI
     /// if this function is called (each indexed activity item will expire automatically based on the original expiration date).
     ///
     @objc func deleteAllSearchableItems() {
-        CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: { (error: Error?) -> Void in
-            guard let error else {
-                return
-            }
-            DDLogError("Could not delete all CSSearchableItem items. Error: \(error.localizedDescription)")
-        })
+        CSSearchableIndex.default()
+            .deleteAllSearchableItems(completionHandler: { (error: Error?) -> Void in
+                guard let error else {
+                    return
+                }
+                DDLogError("Could not delete all CSSearchableItem items. Error: \(error.localizedDescription)")
+            })
     }
 
     // MARK: - NSUserActivity Handling
@@ -158,7 +173,10 @@ import WordPressUI
             WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.siteList.rawValue])
             return openMySitesTab()
         case WPActivityType.siteDetails.rawValue:
-            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.siteDetails.rawValue])
+            WPAppAnalytics.track(
+                .spotlightSearchOpenedApp,
+                withProperties: ["via": WPActivityType.siteDetails.rawValue]
+            )
             return handleSite(activity: activity)
         case WPActivityType.reader.rawValue:
             WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.reader.rawValue])
@@ -167,16 +185,25 @@ import WordPressUI
             WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.me.rawValue])
             return openMeTab()
         case WPActivityType.appSettings.rawValue:
-            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.appSettings.rawValue])
+            WPAppAnalytics.track(
+                .spotlightSearchOpenedApp,
+                withProperties: ["via": WPActivityType.appSettings.rawValue]
+            )
             return openAppSettingsScreen()
         case WPActivityType.notificationSettings.rawValue:
-            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.notificationSettings.rawValue])
+            WPAppAnalytics.track(
+                .spotlightSearchOpenedApp,
+                withProperties: ["via": WPActivityType.notificationSettings.rawValue]
+            )
             return openNotificationSettingsScreen()
         case WPActivityType.support.rawValue:
             WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.support.rawValue])
             return openSupportScreen()
         case WPActivityType.notifications.rawValue:
-            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.notifications.rawValue])
+            WPAppAnalytics.track(
+                .spotlightSearchOpenedApp,
+                withProperties: ["via": WPActivityType.notifications.rawValue]
+            )
             return openNotificationsTab()
         default:
             return false
@@ -185,11 +212,14 @@ import WordPressUI
 
     fileprivate func handleCoreSpotlightSearchableActivityType(activity: NSUserActivity) -> Bool {
         guard activity.activityType == CSSearchableItemActionType,
-            let compositeIdentifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            let compositeIdentifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
+        else {
             return false
         }
 
-        let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
+        let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(
+            compositeIdentifier
+        )
         switch itemType {
         case .abstractPost:
             return handleAbstractPost(domainString: domainString, identifier: identifier)
@@ -202,22 +232,36 @@ import WordPressUI
 
     fileprivate func handleAbstractPost(domainString: String, identifier: String) -> Bool {
         guard let postID = NumberFormatter().number(from: identifier) else {
-            DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
+            DDLogError(
+                "Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)"
+            )
             return false
         }
 
         if let siteID = validWPComSiteID(with: domainString) {
-            fetchPost(postID, blogID: siteID, onSuccess: { [weak self] apost in
-                self?.navigateToScreen(for: apost)
-                }, onFailure: {
+            fetchPost(
+                postID,
+                blogID: siteID,
+                onSuccess: { [weak self] apost in
+                    self?.navigateToScreen(for: apost)
+                },
+                onFailure: {
                     DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
-            })
+                }
+            )
         } else {
-            fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] apost in
-                self?.navigateToScreen(for: apost, isDotCom: false)
-                }, onFailure: {
-                    DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
-            })
+            fetchSelfHostedPost(
+                postID,
+                blogXMLRpcString: domainString,
+                onSuccess: { [weak self] apost in
+                    self?.navigateToScreen(for: apost, isDotCom: false)
+                },
+                onFailure: {
+                    DDLogError(
+                        "Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)"
+                    )
+                }
+            )
         }
 
         return true
@@ -225,39 +269,55 @@ import WordPressUI
 
     fileprivate func handleReaderPost(domainString: String, identifier: String) -> Bool {
         guard let siteID = validWPComSiteID(with: domainString),
-            let readerPostID = NumberFormatter().number(from: identifier) else {
-                DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
-                return false
+            let readerPostID = NumberFormatter().number(from: identifier)
+        else {
+            DDLogError(
+                "Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)"
+            )
+            return false
         }
         var properties = [AnyHashable: Any]()
         properties[WPAppAnalyticsKeyBlogID] = siteID
         properties[WPAppAnalyticsKeyPostID] = readerPostID
         WPAppAnalytics.track(.spotlightSearchOpenedReaderPost, withProperties: properties)
-        openReader(for: readerPostID, siteID: siteID, onFailure: {
-            DDLogError("Search manager unable to open reader for readerPostID:\(readerPostID) siteID:\(siteID)")
-        })
+        openReader(
+            for: readerPostID,
+            siteID: siteID,
+            onFailure: {
+                DDLogError("Search manager unable to open reader for readerPostID:\(readerPostID) siteID:\(siteID)")
+            }
+        )
 
         return true
     }
 
     fileprivate func handleSite(activity: NSUserActivity) -> Bool {
         guard let userInfo = activity.userInfo as? [String: Any],
-            let siteID = userInfo.valueAsString(forKey: WPActivityUserInfoKeys.siteId.rawValue) else {
+            let siteID = userInfo.valueAsString(forKey: WPActivityUserInfoKeys.siteId.rawValue)
+        else {
             return false
         }
 
         if let siteID = validWPComSiteID(with: siteID) {
-            fetchBlog(siteID, onSuccess: { [weak self] blog in
-                self?.openSiteDetailsScreen(for: blog)
-                }, onFailure: {
+            fetchBlog(
+                siteID,
+                onSuccess: { [weak self] blog in
+                    self?.openSiteDetailsScreen(for: blog)
+                },
+                onFailure: {
                     DDLogError("Search manager unable to open site - siteID:\(siteID)")
-            })
+                }
+            )
         } else {
-            fetchSelfHostedBlog(siteID, onSuccess: { [weak self] blog in
-                self?.openSiteDetailsScreen(for: blog)
-                }, onFailure: {
+            fetchSelfHostedBlog(
+                siteID,
+                onSuccess: { [weak self] blog in
+                    self?.openSiteDetailsScreen(for: blog)
+                },
+                onFailure: {
                     DDLogError("Search manager unable to open self hosted site - xmlrpc:\(siteID)")
-            })
+                }
+            )
         }
         return true
     }
@@ -267,40 +327,20 @@ import WordPressUI
 
 fileprivate extension SearchManager {
     func validWPComSiteID(with domainString: String) -> NSNumber? {
-        return NumberFormatter().number(from: domainString)
+        NumberFormatter().number(from: domainString)
     }
 
     // MARK: Fetching
 
-    func fetchPost(_ postID: NSNumber,
-                   blogID: NSNumber,
-                   onSuccess: @escaping (_ post: AbstractPost) -> Void,
-                   onFailure: @escaping () -> Void) {
+    func fetchPost(
+        _ postID: NSNumber,
+        blogID: NSNumber,
+        onSuccess: @escaping (_ post: AbstractPost) -> Void,
+        onFailure: @escaping () -> Void
+    ) {
         let coreDataStack = ContextManager.shared
 
         guard let blog = Blog.lookup(withID: blogID, in: coreDataStack.mainContext) else {
-                onFailure()
-                return
-        }
-
-        let postRepository = PostRepository(coreDataStack: coreDataStack)
-        Task { @MainActor in
-            do {
-                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(blog))
-                let post = try coreDataStack.mainContext.existingObject(with: postObjectID)
-                onSuccess(post)
-            } catch {
-                onFailure()
-            }
-        }
-    }
-
-    func fetchSelfHostedPost(_ postID: NSNumber,
-                             blogXMLRpcString: String,
-                             onSuccess: @escaping (_ post: AbstractPost) -> Void,
-                             onFailure: @escaping () -> Void) {
-        let coreDataStack = ContextManager.shared
-        guard let blog = Blog.selfHosted(in: coreDataStack.mainContext).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
             onFailure()
             return
         }
@@ -317,9 +357,36 @@ fileprivate extension SearchManager {
         }
     }
 
-    func fetchBlog(_ blogID: NSNumber,
-                   onSuccess: @escaping (_ blog: Blog) -> Void,
-                   onFailure: @escaping () -> Void) {
+    func fetchSelfHostedPost(
+        _ postID: NSNumber,
+        blogXMLRpcString: String,
+        onSuccess: @escaping (_ post: AbstractPost) -> Void,
+        onFailure: @escaping () -> Void
+    ) {
+        let coreDataStack = ContextManager.shared
+        guard let blog = Blog.selfHosted(in: coreDataStack.mainContext).first(where: { $0.xmlrpc == blogXMLRpcString })
+        else {
+            onFailure()
+            return
+        }
+
+        let postRepository = PostRepository(coreDataStack: coreDataStack)
+        Task { @MainActor in
+            do {
+                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(blog))
+                let post = try coreDataStack.mainContext.existingObject(with: postObjectID)
+                onSuccess(post)
+            } catch {
+                onFailure()
+            }
+        }
+    }
+
+    func fetchBlog(
+        _ blogID: NSNumber,
+        onSuccess: @escaping (_ blog: Blog) -> Void,
+        onFailure: @escaping () -> Void
+    ) {
         let context = ContextManager.shared.mainContext
 
         guard let blog = Blog.lookup(withID: blogID, in: context) else {
@@ -329,9 +396,11 @@ fileprivate extension SearchManager {
         onSuccess(blog)
     }
 
-    func fetchSelfHostedBlog(_ blogXMLRpcString: String,
-                             onSuccess: @escaping (_ blog: Blog) -> Void,
-                             onFailure: @escaping () -> Void) {
+    func fetchSelfHostedBlog(
+        _ blogXMLRpcString: String,
+        onSuccess: @escaping (_ blog: Blog) -> Void,
+        onFailure: @escaping () -> Void
+    ) {
         let context = ContextManager.shared.mainContext
         guard let blog = Blog.selfHosted(in: context).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
             onFailure()
@@ -401,10 +470,13 @@ fileprivate extension SearchManager {
         WPAppAnalytics.track(.spotlightSearchOpenedPost, post: post)
         let postIsPublishedOrScheduled = (post.status == .publish || post.status == .scheduled)
         if postIsPublishedOrScheduled && isDotCom {
-            openReader(for: post, onFailure: {
-                // If opening the reader fails, just open preview.
-                openPreview(for: post)
-            })
+            openReader(
+                for: post,
+                onFailure: {
+                    // If opening the reader fails, just open preview.
+                    openPreview(for: post)
+                }
+            )
         } else if postIsPublishedOrScheduled {
             openPreview(for: post)
         } else {
@@ -416,10 +488,13 @@ fileprivate extension SearchManager {
         WPAppAnalytics.track(.spotlightSearchOpenedPage, post: page)
         let pageIsPublishedOrScheduled = (page.status == .publish || page.status == .scheduled)
         if pageIsPublishedOrScheduled && isDotCom {
-            openReader(for: page, onFailure: {
-                // If opening the reader fails, just open preview.
-                openPreview(for: page)
-            })
+            openReader(
+                for: page,
+                onFailure: {
+                    // If opening the reader fails, just open preview.
+                    openPreview(for: page)
+                }
+            )
         } else if pageIsPublishedOrScheduled {
             openPreview(for: page)
         } else {
@@ -440,9 +515,10 @@ fileprivate extension SearchManager {
         closePreviewIfNeeded(for: apost)
         guard let postID = apost.postID,
             postID.intValue > 0,
-            let blogID = apost.blog.dotComID else {
-                onFailure()
-                return
+            let blogID = apost.blog.dotComID
+        else {
+            onFailure()
+            return
         }
         RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postID.intValue, siteID: blogID.intValue))
     }
@@ -498,9 +574,10 @@ fileprivate extension SearchManager {
         }
 
         guard let previewVC = navController.topViewController as? PreviewWebKitViewController,
-            previewVC.post != apost else {
-                // Do nothing — post is already loaded or the post preview view controller isn't visible
-                return
+            previewVC.post != apost
+        else {
+            // Do nothing — post is already loaded or the post preview view controller isn't visible
+            return
         }
 
         navController.dismiss(animated: true)
@@ -511,8 +588,9 @@ fileprivate extension SearchManager {
     func closeAnyOpenPreview() {
         let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         guard let navController = rootViewController.presentedViewController as? UINavigationController,
-            navController.topViewController is PreviewWebKitViewController else {
-                return
+            navController.topViewController is PreviewWebKitViewController
+        else {
+            return
         }
         navController.dismiss(animated: true)
     }
