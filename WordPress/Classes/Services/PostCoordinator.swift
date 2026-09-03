@@ -127,13 +127,17 @@ class PostCoordinator: NSObject {
             let repository = PostRepository(coreDataStack: coreDataStack)
             try await repository.save(post, changes: changes)
 
+            // Keep Spotlight current for every save, not only for the
+            // transition to scheduled or published, so edits to the title
+            // or content of an existing post reach the index.
+            SearchManager.shared.indexItem(post)
+
             if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
                 if post.status == .scheduled {
                     notifyNewPostScheduled()
                 } else if post.status == .publish {
                     notifyNewPostPublished()
                 }
-                SearchManager.shared.indexItem(post)
                 AppRatingUtility.shared.incrementSignificantEvent()
             }
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
