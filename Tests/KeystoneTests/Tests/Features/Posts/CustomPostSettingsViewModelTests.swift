@@ -247,11 +247,11 @@ private func makePostWithDisabledConnection(
     let additionalFields = try WpAdditionalFields.fromJsonString(json: json)
     return AnyPostWithEditContext(
         id: PostId(1),
-        date: "2025-01-01T00:00:00",
+        date: WpDateString(value: "2025-01-01T00:00:00"),
         dateGmt: Date(timeIntervalSince1970: 0),
         guid: PostGuidWithEditContext(raw: nil, rendered: ""),
         link: "https://example.com",
-        modified: "2025-01-01T00:00:00",
+        modified: WpDateString(value: "2025-01-01T00:00:00"),
         modifiedGmt: Date(timeIntervalSince1970: 0),
         slug: "test-post",
         status: status,
