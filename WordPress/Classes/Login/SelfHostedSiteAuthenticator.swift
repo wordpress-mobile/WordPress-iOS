@@ -678,7 +678,7 @@ private extension SelfHostedSiteAuthenticator {
     }
 }
 
-private final class EmptyAppNotifier: WpAppNotifier {
+final class EmptyAppNotifier: WpAppNotifier {
     func requestedWithInvalidAuthentication(requestUrl: String) async {
         // Do nothing.
     }
