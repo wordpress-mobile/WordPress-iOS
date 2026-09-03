@@ -59,7 +59,16 @@ import WordPressData
     ///   - items: items to remove
     ///
     @objc func deleteSearchableItems(_ items: [SearchableItemConvertable]) {
-        let ids = items.map({ $0.uniqueIdentifier }).compactMap({ $0 })
+        deleteSearchableItems(withIdentifiers: items.compactMap { $0.uniqueIdentifier })
+    }
+
+    /// Remove items from the on-device index by their unique identifiers.
+    /// Use this when the item's managed object is already gone.
+    ///
+    /// - Parameters:
+    ///   - ids: unique identifiers of the items to remove
+    ///
+    @objc func deleteSearchableItems(withIdentifiers ids: [String]) {
         guard !ids.isEmpty else {
             return
         }
