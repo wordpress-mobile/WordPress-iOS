@@ -18,9 +18,11 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     let authorName: String
     let avatarURL: URL?
     let postID: Int64
-    let snippet: String
+    var snippet: String
     let date: Date
     var status: Status
+    /// The comment's permalink; nil when the server sends none.
+    let link: URL?
 
     init(
         id: Int64,
@@ -29,7 +31,8 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         postID: Int64,
         snippet: String,
         date: Date,
-        status: Status
+        status: Status,
+        link: URL?
     ) {
         self.id = id
         self.authorName = authorName
@@ -38,6 +41,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         self.snippet = snippet
         self.date = date
         self.status = status
+        self.link = link
     }
 
     init(comment: CommentWithViewContext) {
@@ -48,6 +52,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         snippet = Self.snippet(fromHTML: comment.content.rendered)
         date = comment.dateGmt
         status = Status(comment.status)
+        link = comment.link.nonEmptyString().flatMap { URL(string: $0) }
     }
 
     /// Row-shaped projection of a fetched detail (used for the parent preview
@@ -60,7 +65,8 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
             postID: detail.postID,
             snippet: Self.snippet(fromHTML: detail.contentHTML),
             date: detail.date,
-            status: detail.status
+            status: detail.status,
+            link: detail.link
         )
     }
 

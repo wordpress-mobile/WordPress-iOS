@@ -42,17 +42,9 @@ struct CommentDetailView: View {
             .onChange(of: viewModel.isDeleted) { _, isDeleted in
                 if isDeleted { dismiss() }
             }
-            .sheet(
-                isPresented: Binding(get: { viewModel.composer != nil }, set: { if !$0 { viewModel.composer = nil } })
-            ) {
-                if let composer = viewModel.composer {
-                    CommentComposerView(
-                        viewModel: composer,
-                        onFinished: { viewModel.composerFinished($0) },
-                        onDismiss: { viewModel.composer = nil }
-                    )
+            .sheet(item: $viewModel.composer) { composer in
+                CommentComposerView(viewModel: composer) { viewModel.composerClosed($0) }
                     .presentationDetents([.large])
-                }
             }
     }
 
@@ -132,12 +124,16 @@ struct CommentDetailView: View {
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
-            let link = viewModel.loadedDetail?.link
+            let shareLink = viewModel.shareLink
             let menuAction = viewModel.toolbarModel.menuAction
-            if link != nil || menuAction != nil {
+            if viewModel.showsEdit || shareLink != nil || menuAction != nil {
                 Menu {
-                    if let link {
-                        ShareLink(item: link)
+                    if viewModel.showsEdit {
+                        Button(Strings.detailEdit, systemImage: "pencil") { viewModel.editTapped() }
+                            .disabled(!viewModel.canEdit)
+                    }
+                    if let shareLink {
+                        ShareLink(item: shareLink)
                     }
                     // The secondary moderation move shares the toolbar's
                     // enablement so it can't fire on seed data or during a
