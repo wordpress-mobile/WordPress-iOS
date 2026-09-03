@@ -27,4 +27,13 @@ struct RichContentFormatterUITests {
         // ...and the emoji cluster survived byte-for-byte.
         #expect(output.contains("😀😀😀😀😀"))
     }
+
+    @Test func testResizeGalleryImageURLLeavesSrcsetIntact() {
+        // The src value also appears in srcset; only the src attribute should be rewritten.
+        let srcset = "srcset=\"https://example.com/a.jpg 1x, https://example.com/b.jpg 2x\""
+        let input =
+            "<img src=\"https://example.com/a.jpg\" \(srcset) data-orig-file=\"https://example.com/orig.jpg\" />"
+        let output = RichContentFormatter.resizeGalleryImageURL(input, isPrivateSite: false)
+        #expect(output.contains(srcset), "srcset must be left intact when the src is resized")
+    }
 }

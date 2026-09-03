@@ -8,8 +8,8 @@ import Foundation
     ///
     public struct RegEx {
         // Forbidden tags
-        static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .caseInsensitive)
-        static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .caseInsensitive)
+        static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?(?:</style>|$)", options: .caseInsensitive)
+        static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?(?:</script>|$)", options: .caseInsensitive)
         static let gutenbergComments = try! NSRegularExpression(pattern: "<p><!-- /?wp:.+? /?--></p>[\\n]?", options: .caseInsensitive)
 
         // Normalizaing Paragraphs
@@ -19,10 +19,10 @@ import Foundation
         static let pTagsEnd = try! NSRegularExpression(pattern: "</p>\\s*</p>", options: .caseInsensitive)
         static let newLines = try! NSRegularExpression(pattern: "\\n", options: .caseInsensitive)
         static let preTags = try! NSRegularExpression(pattern: "<pre[^>]*>[\\s\\S]*?</pre>", options: .caseInsensitive)
-        static let videoTags = try! NSRegularExpression(pattern: "<video[^>]*>", options: .caseInsensitive)
+        static let videoTags = try! NSRegularExpression(pattern: "<video(\\s[^>]*)?>", options: .caseInsensitive)
 
         // Inline Styles
-        static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .caseInsensitive)
+        static let styleAttr = try! NSRegularExpression(pattern: "\\s+style=(?:\"[^\"]*\"|'[^']*')", options: .caseInsensitive)
 
         // Gallery Images
         public static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
@@ -178,21 +178,20 @@ import Foundation
     /// - Returns: The value for the attribute or an empty string..
     ///
     @objc public class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
-        let elementStr = element as NSString
-        var value = ""
-        let attrStr = "\(attribute)=\""
-        let attrRange = elementStr.range(of: attrStr)
-
-        if attrRange.location != NSNotFound {
-            let location = attrRange.location + attrRange.length
-            let length = elementStr.length - location
-            let ending = elementStr.range(of: "\"", options: .caseInsensitive, range: NSRange(location: location, length: length))
-            if ending.location != NSNotFound {
-                value = elementStr.substring(with: NSRange(location: location, length: ending.location - location))
-            }
+        // Match the attribute name on a word boundary (so "rc" does not match inside "src")
+        // and capture its double-quoted value. A missing closing quote fails to match, so there
+        // is no out-of-bounds range to crash on.
+        let escaped = NSRegularExpression.escapedPattern(for: attribute)
+        guard let regex = try? NSRegularExpression(pattern: "(?<![\\w-])\(escaped)=\"([^\"]*)\"") else {
+            return ""
         }
-
-        return value
+        let range = NSRange(element.startIndex..., in: element)
+        guard let match = regex.firstMatch(in: element, range: range),
+            let valueRange = Range(match.range(at: 1), in: element)
+        else {
+            return ""
+        }
+        return String(element[valueRange])
     }
 
     /// Removes any trailing BR tags from the end of the specified string.
@@ -264,10 +263,10 @@ import Foundation
         // For each video tag, check for controls attribute
         for match in matches.reversed() {
             let tag = mString.substring(with: match.range) as NSString
-            if !tag.contains("controls") {
-                // Add the controls attribute.
-                let range = NSRange(location: match.range.location, length: 6)
-                mString.replaceCharacters(in: range, with: "<video controls")
+            let controls = "\\scontrols(?![\\w-])"
+            if tag.range(of: controls, options: [.regularExpression, .caseInsensitive]).location == NSNotFound {
+                // Insert `controls` after the `<video` opening, preserving the tag's casing.
+                mString.insert(" controls", at: match.range.location + 6)
             }
         }
 
