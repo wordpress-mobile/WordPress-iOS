@@ -86,7 +86,7 @@ extension RichContentFormatter {
                 of: srcImgURLStr,
                 with: modifiedURL.absoluteString,
                 options: .literal,
-                range: NSRange(location: 0, length: imgElementStr.count)
+                range: NSRange(location: 0, length: imgElementStr.utf16.count)
             )
 
             mContent.replaceCharacters(in: match.range, with: mImageStr as String)
