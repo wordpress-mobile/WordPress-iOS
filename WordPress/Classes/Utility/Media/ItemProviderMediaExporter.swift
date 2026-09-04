@@ -85,7 +85,7 @@ final class ItemProviderMediaExporter: MediaExporter {
         let loadProgress = provider.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, error in
             guard let url else {
                 DDLogError("Failed to load file representation for provider: \(ObjectIdentifier(self.provider)), error: \(String(describing: error))")
-                onError(ExportError.cannotLoadItem)
+                self.handleLoadFailure(error, onError: onError)
                 return
             }
             let diff = CFAbsoluteTimeGetCurrent() - start
@@ -136,10 +136,75 @@ final class ItemProviderMediaExporter: MediaExporter {
         provider.hasItemConformingToTypeIdentifier(type.identifier)
     }
 
+    /// Surfaces a failure to load the picked file from the `NSItemProvider`.
+    ///
+    /// When the provider's connection died (an XPC failure — typically the provider
+    /// process being killed while materializing an image too large for its memory
+    /// limit), the app shows a friendly message and tracks the event so this case can
+    /// be told apart from ordinary load failures. Any other error is surfaced as-is.
+    private func handleLoadFailure(_ error: Error?, onError: (MediaExportError) -> Void) {
+        guard let error else {
+            onError(ExportError.unknown)
+            return
+        }
+        if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
+            WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError))
+            onError(ExportError.cannotLoadItem)
+        } else {
+            onError(ExportError.underlyingError(error))
+        }
+    }
+
+    private func providerErrorProperties(for error: Error, connectionError: NSError) -> [AnyHashable: Any] {
+        let error = error as NSError
+        return [
+            "error_domain": error.domain,
+            "error_code": error.code,
+            "underlying_error_domain": connectionError.domain,
+            "underlying_error_code": connectionError.code,
+            "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", ")
+        ]
+    }
+
+    /// The XPC connection error codes (in `NSCocoaErrorDomain`) that signal the item
+    /// provider's process died while producing the file.
+    private static let xpcConnectionErrorCodes: Set<Int> = [
+        CocoaError.Code.xpcConnectionInterrupted.rawValue,
+        CocoaError.Code.xpcConnectionInvalid.rawValue,
+        CocoaError.Code.xpcConnectionReplyInvalid.rawValue
+    ]
+
+    /// Returns the first XPC connection error found in `error` or any of its
+    /// underlying errors, or `nil` if there is none.
+    static func providerConnectionError(in error: Error) -> NSError? {
+        errorChain(from: error)
+            .map { $0 as NSError }
+            .first { $0.domain == NSCocoaErrorDomain && xpcConnectionErrorCodes.contains($0.code) }
+    }
+
+    /// Flattens `error` and its underlying errors (both the `underlyingErrors` array
+    /// and the legacy `NSUnderlyingErrorKey`) into a single list, bounded to guard
+    /// against pathological cycles.
+    private static func errorChain(from error: Error) -> [Error] {
+        var result: [Error] = []
+        var queue: [Error] = [error]
+        while let next = queue.first, result.count < 16 {
+            queue.removeFirst()
+            result.append(next)
+            let nsError = next as NSError
+            queue.append(contentsOf: nsError.underlyingErrors)
+            if let underlying = nsError.userInfo[NSUnderlyingErrorKey] as? Error {
+                queue.append(underlying)
+            }
+        }
+        return result
+    }
+
     enum ExportError: MediaExportError {
         case unsupportedContentType
         case cannotLoadItem
-        case underlyingError(Error?)
+        case underlyingError(Error)
+        case unknown
 
         public var errorDescription: String? { description }
 
@@ -150,7 +215,9 @@ final class ItemProviderMediaExporter: MediaExporter {
             case .cannotLoadItem:
                 return NSLocalizedString("mediaExporter.error.cannotLoadItem", value: "This item could not be added to the Media library. It may be too large to import.", comment: "Error shown when a selected photo or video can't be loaded from the device for upload.")
             case .underlyingError(let error):
-                return error?.localizedDescription ?? NSLocalizedString("mediaExporter.error.unknown", value: "The item could not be added to the Media library", comment: "An error message the app shows if media import fails")
+                return error.localizedDescription
+            case .unknown:
+                return NSLocalizedString("mediaExporter.error.unknown", value: "The item could not be added to the Media library", comment: "An error message the app shows if media import fails")
             }
         }
     }
