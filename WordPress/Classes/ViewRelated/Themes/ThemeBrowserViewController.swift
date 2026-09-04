@@ -252,6 +252,9 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
     fileprivate var presentingTheme: Theme?
 
+    /// The theme whose activation request is in flight. Drives the grid cell spinner across cell reuse and reloads.
+    private var activatingThemeId: String?
+
     private var noResultsViewController: NoResultsViewController?
 
     private struct NoResultsTitles {
@@ -620,6 +623,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
         cell.presenter = self
         cell.theme = themeAtIndexPath(indexPath)
+        cell.isActivating = activatingThemeId != nil && cell.theme?.themeId == activatingThemeId
 
         if sections[indexPath.section] == .themes {
             syncMoreThemesIfNeeded(indexPath)
@@ -939,10 +943,12 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
     @objc var onWebkitViewControllerClose: (() -> Void)?
 
     @objc open func activateTheme(_ theme: Theme?) {
-        guard let theme, !theme.isCurrentTheme() else {
+        guard let theme, !theme.isCurrentTheme(), activatingThemeId == nil else {
             return
         }
 
+        activatingThemeId = theme.themeId
+        collectionView?.reloadData()
         updateActivateButton(isLoading: true)
 
         _ = themeService.activate(
@@ -955,6 +961,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     blog: self?.blog
                 )
 
+                self?.activatingThemeId = nil
                 self?.collectionView?.reloadData()
 
                 let successTitle = NSLocalizedString(
@@ -998,6 +1005,8 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     comment: "Title of alert when theme activation fails"
                 )
 
+                self?.activatingThemeId = nil
+                self?.collectionView?.reloadData()
                 self?.activityIndicator.stopAnimating()
                 self?.activateButton?.customView = nil
 

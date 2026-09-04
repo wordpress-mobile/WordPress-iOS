@@ -100,6 +100,29 @@ open class ThemeBrowserCell: UICollectionViewCell {
     @objc open var showPriceInformation: Bool = false
     open weak var presenter: ThemePresenter?
 
+    /// Replaces the action button with a spinner while the theme is being activated.
+    var isActivating: Bool = false {
+        didSet {
+            actionButton.isHidden = isActivating
+            if isActivating {
+                activatingIndicator.startAnimating()
+            } else {
+                activatingIndicator.stopAnimating()
+            }
+        }
+    }
+
+    private lazy var activatingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.accessibilityLabel = NSLocalizedString(
+            "themeBrowser.cell.activating",
+            value: "Activating",
+            comment: "Accessibility label for the spinner shown while a theme is being activated"
+        )
+        return indicator
+    }()
+
     fileprivate var placeholderImage = UIImage(named: "theme-loading")
     fileprivate var activeEllipsisImage = UIImage(named: "icon-menu-ellipsis-white")
     fileprivate var inactiveEllipsisImage = UIImage(named: "icon-menu-ellipsis")
@@ -123,6 +146,13 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         actionButton.isExclusiveTouch = true
 
+        infoBar.addSubview(activatingIndicator)
+        activatingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activatingIndicator.centerXAnchor.constraint(equalTo: actionButton.centerXAnchor),
+            activatingIndicator.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor)
+        ])
+
         layer.cornerRadius = 12
         layer.cornerCurve = .continuous
         layer.borderColor = UIColor.separator.cgColor
@@ -138,6 +168,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
         theme = nil
         presenter = nil
         showPriceInformation = false
+        isActivating = false
     }
 
     fileprivate func refreshGUI() {
