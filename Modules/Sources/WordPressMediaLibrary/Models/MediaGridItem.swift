@@ -38,7 +38,7 @@ struct MediaGridItem: Identifiable, Equatable {
     }
 
     /// Designated initializer for data-bearing states. Initializes every
-    /// stored property exactly once.
+    /// stored property exactly once. Reached only via `init(item:)`.
     private init(media: MediaWithEditContext, id: Int64, state: State) {
         let payload = media.mediaDetails.parseAsMimeType(mimeType: media.mimeType)
         let kind = payload.flatMap(MediaKind.init(payload:)) ?? .document
