@@ -139,8 +139,9 @@ final class ItemProviderMediaExporter: MediaExporter {
     /// Surfaces a failure to load the picked file from the `NSItemProvider`.
     ///
     /// When the provider's connection died (an XPC failure), the app shows a friendly
-    /// message and tracks the event so this case can be told apart from ordinary load
-    /// failures. Any other error is surfaced as-is.
+    /// message — specific to Lockdown Mode when it's enabled — and tracks the event so
+    /// this case can be told apart from ordinary load failures. Any other error is
+    /// surfaced as-is.
     ///
     /// Observed only with iOS Lockdown Mode enabled: materializing a large photo
     /// (e.g. 36 MP) fails and the `PhotosFileProvider` process is killed, giving
@@ -151,14 +152,15 @@ final class ItemProviderMediaExporter: MediaExporter {
             return
         }
         if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
-            WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError))
-            onError(ExportError.cannotLoadItem)
+            let isLockdownModeEnabled = ItemProviderMediaExporter.isLockdownModeEnabled
+            WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError, isLockdownModeEnabled: isLockdownModeEnabled))
+            onError(isLockdownModeEnabled ? ExportError.lockdownModeRestricted : ExportError.cannotLoadItem)
         } else {
             onError(ExportError.underlyingError(error))
         }
     }
 
-    private func providerErrorProperties(for error: Error, connectionError: NSError) -> [AnyHashable: Any] {
+    private func providerErrorProperties(for error: Error, connectionError: NSError, isLockdownModeEnabled: Bool) -> [AnyHashable: Any] {
         let error = error as NSError
         return [
             "error_domain": error.domain,
@@ -166,7 +168,7 @@ final class ItemProviderMediaExporter: MediaExporter {
             "underlying_error_domain": connectionError.domain,
             "underlying_error_code": connectionError.code,
             "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", "),
-            "lockdown_mode": ItemProviderMediaExporter.isLockdownModeEnabled
+            "lockdown_mode": isLockdownModeEnabled
         ]
     }
 
@@ -214,6 +216,7 @@ final class ItemProviderMediaExporter: MediaExporter {
     enum ExportError: MediaExportError {
         case unsupportedContentType
         case cannotLoadItem
+        case lockdownModeRestricted
         case underlyingError(Error)
         case unknown
 
@@ -225,6 +228,8 @@ final class ItemProviderMediaExporter: MediaExporter {
                 return NSLocalizedString("mediaExporter.error.unsupportedContentType", value: "Unsupported content type", comment: "An error message the app shows if media import fails")
             case .cannotLoadItem:
                 return NSLocalizedString("mediaExporter.error.cannotLoadItem", value: "This item could not be added to the Media library. It may be too large to import.", comment: "Error shown when a selected photo or video can't be loaded from the device for upload.")
+            case .lockdownModeRestricted:
+                return NSLocalizedString("mediaExporter.error.lockdownMode", value: "This item can’t be added to the Media library while Lockdown Mode is on.", comment: "Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled.")
             case .underlyingError(let error):
                 return error.localizedDescription
             case .unknown:
