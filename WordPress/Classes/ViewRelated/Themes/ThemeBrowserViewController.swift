@@ -971,10 +971,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     comment: "Message of alert when theme activation succeeds"
                 )
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
-                let manageTitle = NSLocalizedString(
-                    "Manage site",
-                    comment: "Return to blog screen action when theme activation succeeds"
-                )
 
                 self?.updateActivateButton(isLoading: false)
 
@@ -982,13 +978,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     title: successTitle,
                     message: successMessage,
                     preferredStyle: .alert
-                )
-                alertController.addActionWithTitle(
-                    manageTitle,
-                    style: .default,
-                    handler: { [weak self] (_: UIAlertAction) in
-                        _ = self?.navigationController?.popViewController(animated: true)
-                    }
                 )
                 alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
