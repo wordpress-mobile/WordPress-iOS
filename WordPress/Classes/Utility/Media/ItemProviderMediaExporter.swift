@@ -84,7 +84,8 @@ final class ItemProviderMediaExporter: MediaExporter {
 
         let loadProgress = provider.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, error in
             guard let url else {
-                DDLogDebug("Loaded file representation for provider: \(ObjectIdentifier(self.provider)), error: \(String(describing: error)))")
+                DDLogError("Failed to load file representation for provider: \(ObjectIdentifier(self.provider)), error: \(String(describing: error))")
+                onError(ExportError.cannotLoadItem)
                 return
             }
             let diff = CFAbsoluteTimeGetCurrent() - start
@@ -137,6 +138,7 @@ final class ItemProviderMediaExporter: MediaExporter {
 
     enum ExportError: MediaExportError {
         case unsupportedContentType
+        case cannotLoadItem
         case underlyingError(Error?)
 
         public var errorDescription: String? { description }
@@ -145,6 +147,8 @@ final class ItemProviderMediaExporter: MediaExporter {
             switch self {
             case .unsupportedContentType:
                 return NSLocalizedString("mediaExporter.error.unsupportedContentType", value: "Unsupported content type", comment: "An error message the app shows if media import fails")
+            case .cannotLoadItem:
+                return NSLocalizedString("mediaExporter.error.cannotLoadItem", value: "This item could not be added to the Media library. It may be too large to import.", comment: "Error shown when a selected photo or video can't be loaded from the device for upload.")
             case .underlyingError(let error):
                 return error?.localizedDescription ?? NSLocalizedString("mediaExporter.error.unknown", value: "The item could not be added to the Media library", comment: "An error message the app shows if media import fails")
             }
