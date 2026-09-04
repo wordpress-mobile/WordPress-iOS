@@ -13,7 +13,7 @@ public enum ThemeAction {
     case tryCustomize
     case view
 
-    static func activeActionsForTheme(_ theme: Theme) ->[ThemeAction] {
+    static func activeActionsForTheme(_ theme: Theme) -> [ThemeAction] {
         if theme.custom {
             if theme.hasDetailsURL() {
                 return [customize, details]
@@ -23,7 +23,7 @@ public enum ThemeAction {
         return [customize, details, support]
     }
 
-    static func inactiveActionsForTheme(_ theme: Theme) ->[ThemeAction] {
+    static func inactiveActionsForTheme(_ theme: Theme) -> [ThemeAction] {
         if theme.custom {
             if theme.hasDetailsURL() {
                 return [tryCustomize, activate, details]
@@ -109,9 +109,12 @@ open class ThemeBrowserCell: UICollectionViewCell {
     override open var isHighlighted: Bool {
         didSet {
             let alphaFinal: CGFloat = isHighlighted ? 0.3 : 0
-            UIView.animate(withDuration: 0.2, animations: { [weak self] in
-                self?.highlightView.alpha = alphaFinal
-            })
+            UIView.animate(
+                withDuration: 0.2,
+                animations: { [weak self] in
+                    self?.highlightView.alpha = alphaFinal
+                }
+            )
         }
     }
 
@@ -220,20 +223,25 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
-        let imageUrlWithWidth = imageUrlForWidth( imageUrl: imageUrl )
+        let imageUrlWithWidth = imageUrlForWidth(imageUrl: imageUrl)
         let screenshotUrl = URL(string: imageUrlWithWidth)
 
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
-        imageView.downloadImage(from: screenshotUrl, success: { [weak self] _ in
-            self?.showScreenshot()
-        }, failure: { [weak self] error in
-                if let error = error as NSError?, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+        imageView.downloadImage(
+            from: screenshotUrl,
+            success: { [weak self] _ in
+                self?.showScreenshot()
+            },
+            failure: { [weak self] error in
+                let nsError = error as NSError?
+                if nsError?.domain == NSURLErrorDomain && nsError?.code == NSURLErrorCancelled {
                     return
                 }
                 DDLogError("Error loading theme screenshot: \(String(describing: error?.localizedDescription))")
                 self?.showPlaceholder()
-        })
+            }
+        )
     }
 
     // MARK: - Actions
@@ -245,13 +253,17 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let themeActions = theme.isCurrentTheme() ? ThemeAction.activeActionsForTheme(theme) : ThemeAction.inactiveActionsForTheme(theme)
+        let themeActions =
+            theme.isCurrentTheme()
+            ? ThemeAction.activeActionsForTheme(theme) : ThemeAction.inactiveActionsForTheme(theme)
         themeActions.forEach { themeAction in
-            alertController.addActionWithTitle(themeAction.title,
-                                               style: .default,
-                                               handler: { (_: UIAlertAction) in
-                                                themeAction.present(theme, presenter)
-            })
+            alertController.addActionWithTitle(
+                themeAction.title,
+                style: .default,
+                handler: { (_: UIAlertAction) in
+                    themeAction.present(theme, presenter)
+                }
+            )
         }
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action title")
@@ -290,7 +302,10 @@ extension ThemeBrowserCell: Accessible {
 
     private func prepareActionButtonForVoiceOver() {
         actionButton.isAccessibilityElement = true
-        actionButton.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        actionButton.accessibilityLabel = NSLocalizedString(
+            "More",
+            comment: "Action button to display more available options"
+        )
         actionButton.accessibilityTraits = .button
     }
 
