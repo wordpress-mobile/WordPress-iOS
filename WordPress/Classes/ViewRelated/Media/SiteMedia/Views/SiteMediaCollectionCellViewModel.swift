@@ -1,3 +1,4 @@
+import Logging
 import UIKit
 import WordPressData
 
@@ -16,6 +17,7 @@ final class SiteMediaCollectionCellViewModel {
     private let mediaType: MediaType
     private let service: MediaImageService
     private let coordinator: MediaCoordinator
+    private let retryCount: Int
 
     private var isVisible = false
     private var isPrefetchingNeeded = false
@@ -25,7 +27,8 @@ final class SiteMediaCollectionCellViewModel {
 
     var aspectRatio: CGFloat? {
         guard let width = media.width?.floatValue, width > 0,
-              let height = media.height?.floatValue, height > 0 else {
+            let height = media.height?.floatValue, height > 0
+        else {
             return nil
         }
         return CGFloat(width / height)
@@ -40,36 +43,54 @@ final class SiteMediaCollectionCellViewModel {
         imageTask?.cancel()
     }
 
-    init(media: Media,
-         service: MediaImageService = .shared,
-         coordinator: MediaCoordinator = .shared) {
+    /// - parameter retryCount: The number of times to retry loading the
+    ///   thumbnail after a failure (not counting the initial attempt) before
+    ///   giving up. Transient failures — network blips, a CDN 5xx, a truncated
+    ///   response that fails to decode — are common, and without a retry a
+    ///   single failure leaves the cell showing a blank placeholder until it's
+    ///   scrolled off-screen and reconfigured.
+    init(
+        media: Media,
+        service: MediaImageService = .shared,
+        coordinator: MediaCoordinator = .shared,
+        retryCount: Int = 3
+    ) {
         self.mediaID = TaggedManagedObjectID(media)
         self.media = media
         self.mediaType = media.mediaType
         self.service = service
         self.coordinator = coordinator
+        self.retryCount = retryCount
 
-        observations.append(media.observe(\.remoteStatusNumber, options: [.initial, .new]) { [weak self] _, _ in
-            self?.updateOverlayState()
-        })
+        observations.append(
+            media.observe(\.remoteStatusNumber, options: [.initial, .new]) { [weak self] _, _ in
+                self?.updateOverlayState()
+            }
+        )
 
-        observations.append(media.observe(\.localURL, options: [.new]) { [weak self] _, _ in
-            self?.didUpdateLocalThumbnail()
-        })
+        observations.append(
+            media.observe(\.localURL, options: [.new]) { [weak self] _, _ in
+                self?.didUpdateLocalThumbnail()
+            }
+        )
 
         switch mediaType {
         case .document, .powerpoint, .audio:
-            observations.append(media.observe(\.filename, options: [.initial, .new]) { [weak self] media, _ in
-                self?.documentInfo = SiteMediaDocumentInfoViewModel.make(with: media)
-            })
+            observations.append(
+                media.observe(\.filename, options: [.initial, .new]) { [weak self] media, _ in
+                    self?.documentInfo = SiteMediaDocumentInfoViewModel.make(with: media)
+                }
+            )
         default: break
         }
 
         if mediaType == .video {
-            observations.append(media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
-                // Using `rounded()` to match the behavior of the Photos app
-                self?.durationText = makeString(forDuration: media.duration().rounded())
-            })
+            observations.append(
+                media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
+                    // Using `rounded()` to match the behavior of the Photos app
+                    self?.durationText = makeString(forDuration: media.duration().rounded())
+                }
+            )
         }
     }
 
@@ -118,12 +139,41 @@ final class SiteMediaCollectionCellViewModel {
         guard getCachedThubmnail() == nil else {
             return // Already cached  in memory
         }
-        imageTask = Task { @MainActor [service, media, weak self] in
-            do {
-                let image = try await service.image(for: media, size: .small)
-                self?.didFinishLoading(with: image)
-            } catch {
-                self?.didFinishLoading(with: nil)
+        imageTask = Task { @MainActor [service, media, retryCount, weak self] in
+            var attempt = 0
+            while true {
+                do {
+                    let image = try await service.image(for: media, size: .small)
+                    self?.didFinishLoading(with: image)
+                    return
+                } catch {
+                    // A cancelled request (e.g. the cell scrolled off-screen)
+                    // must neither retry nor report a failure.
+                    if Task.isCancelled {
+                        return
+                    }
+                    attempt += 1
+                    // A fatal client error (e.g. 403 or 404) won't recover, so stop
+                    // retrying it — but 408 (timeout) and 429 (rate limited) are
+                    // transient, so let those keep retrying with backoff.
+                    let statusCode = (error as? MediaImageService.Error)?.httpStatusCode
+                    let isFatalClientError =
+                        statusCode.map { (400..<500).contains($0) && $0 != 408 && $0 != 429 } ?? false
+                    guard !isFatalClientError, attempt <= retryCount else {
+                        Loggers.networking.error(
+                            "Failed to load media thumbnail for '\(media.filename ?? "unknown")' after \(attempt - 1) retries: \(error)"
+                        )
+                        self?.didFinishLoading(with: nil)
+                        return
+                    }
+                    // Exponential backoff (0.5s, 1s, 2s, …, capped at 8s) so a
+                    // transient failure has time to clear before we try again.
+                    let backoff = min(0.5 * Double(1 << min(attempt - 1, 6)), 8)
+                    try? await Task.sleep(for: .seconds(backoff))
+                    if Task.isCancelled {
+                        return
+                    }
+                }
             }
         }
     }
@@ -165,7 +215,8 @@ final class SiteMediaCollectionCellViewModel {
         switch media.remoteStatus {
         case .pushing, .processing:
             if let progress = coordinator.progress(for: media) {
-                progressObserver = progress.observe(\Progress.fractionCompleted, options: [.initial, .new]) { [weak self] progress, _ in
+                progressObserver = progress.observe(\Progress.fractionCompleted, options: [.initial, .new]) {
+                    [weak self] progress, _ in
                     self?.didUpdateProgress(progress)
                 }
             } else {
@@ -184,8 +235,8 @@ final class SiteMediaCollectionCellViewModel {
         guard media.remoteStatus == .processing || media.remoteStatus == .pushing else { return }
 
         // It takes a second or two (or more, depending on the file size) to
-            // process the uploaded file after the progress stop reporting updates,
-            // so the app switches to the indeterminate progress indicator.
+        // process the uploaded file after the progress stop reporting updates,
+        // so the app switches to the indeterminate progress indicator.
         if progress.fractionCompleted > 0.99 {
             overlayState = .indeterminate
         } else {
@@ -196,7 +247,8 @@ final class SiteMediaCollectionCellViewModel {
     // MARK: - Accessibility
 
     var accessibilityLabel: String? {
-        let formattedDate = media.creationDate.map(accessibilityDateFormatter.string) ?? Strings.accessibilityUnknownCreationDate
+        let formattedDate =
+            media.creationDate.map(accessibilityDateFormatter.string) ?? Strings.accessibilityUnknownCreationDate
 
         switch mediaType {
         case .image:
@@ -218,12 +270,40 @@ final class SiteMediaCollectionCellViewModel {
 // MARK: - Helpers
 
 private enum Strings {
-    static let accessibilityUnknownCreationDate = NSLocalizedString("siteMedia.accessibilityUnknownCreationDate", value: "Unknown creation date", comment: "Accessibility label to use when creation date from media asset is not know.")
-    static let accessibilityLabelImage = NSLocalizedString("siteMedia.accessibilityLabelImage", value: "Image, %@", comment: "Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image.")
-    static let accessibilityLabelVideo = NSLocalizedString("siteMedia.accessibilityLabelVideo", value: "Video, %@", comment: "Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video.")
-    static let accessibilityLabelAudio = NSLocalizedString("siteMedia.accessibilityLabelAudio", value: "Audio, %@", comment: "Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio.")
-    static let accessibilityLabelDocument = NSLocalizedString("siteMedia.accessibilityLabelDocument", value: "Document, %@", comment: "Accessibility label for other media items in the media collection view. The parameter is the filename file.")
-    static let accessibilityHint = NSLocalizedString("siteMedia.cellAccessibilityHint", value: "Select media.", comment: "Accessibility hint for actions when displaying media items.")
+    static let accessibilityUnknownCreationDate = NSLocalizedString(
+        "siteMedia.accessibilityUnknownCreationDate",
+        value: "Unknown creation date",
+        comment: "Accessibility label to use when creation date from media asset is not know."
+    )
+    static let accessibilityLabelImage = NSLocalizedString(
+        "siteMedia.accessibilityLabelImage",
+        value: "Image, %@",
+        comment:
+            "Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image."
+    )
+    static let accessibilityLabelVideo = NSLocalizedString(
+        "siteMedia.accessibilityLabelVideo",
+        value: "Video, %@",
+        comment:
+            "Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video."
+    )
+    static let accessibilityLabelAudio = NSLocalizedString(
+        "siteMedia.accessibilityLabelAudio",
+        value: "Audio, %@",
+        comment:
+            "Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio."
+    )
+    static let accessibilityLabelDocument = NSLocalizedString(
+        "siteMedia.accessibilityLabelDocument",
+        value: "Document, %@",
+        comment:
+            "Accessibility label for other media items in the media collection view. The parameter is the filename file."
+    )
+    static let accessibilityHint = NSLocalizedString(
+        "siteMedia.cellAccessibilityHint",
+        value: "Select media.",
+        comment: "Accessibility hint for actions when displaying media items."
+    )
 }
 
 private let accessibilityDateFormatter: DateFormatter = {
