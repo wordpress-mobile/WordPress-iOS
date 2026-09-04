@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 import WordPressKit
-import WordPressUI
 import Gravatar
 
 public typealias Person = RemotePerson

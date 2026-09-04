@@ -639,7 +639,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                  return;
                                              }
 
-                                             includesNewComments = [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
+                                             includesNewComments = [self mergeHierarchicalComments:comments forPage:pageNumber totalComments:totalComments forPost:aPost];
                                          } completion:^{
                                              if (!success) {
                                                  return;
@@ -1199,7 +1199,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [self setHierarchyAndDepthOnComment:comment withParentComment:parentComment];
 }
 
-- (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
+- (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page totalComments:(NSNumber *)totalComments forPost:(ReaderPost *)post
 {
     NSParameterAssert(post.managedObjectContext != nil);
 
@@ -1247,8 +1247,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         [self deleteUnownedCommentsInContext:post.managedObjectContext];
     }
 
-    // Make sure the post's comment count is at least the number of comments merged.
-    if ([post.commentCount integerValue] < [commentsToKeep count]) {
+    // Prefer the authoritative total the server just returned. Fall back to a floor of the
+    // number of comments merged only if the server didn't provide a total.
+    if (totalComments && ([totalComments integerValue] > 0)) {
+        post.commentCount = totalComments;
+    } else if ([post.commentCount integerValue] < [commentsToKeep count]) {
         post.commentCount = @([commentsToKeep count]);
     }
 

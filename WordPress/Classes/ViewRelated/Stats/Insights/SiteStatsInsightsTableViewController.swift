@@ -62,6 +62,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableHandler.automaticallyDeselectCells = true
         loadPinnedCards()
         initViewModel()
         sendScrollEventsToBanner()

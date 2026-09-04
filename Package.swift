@@ -43,7 +43,7 @@ let package = Package(
             path: "Modules/Tests/WordPressSharedTests",
             exclude: [
                 "WordPressShared.xctestplan",
-                "RichContentFormatterTests.swift",
+                "RichContentFormatterUITests.swift",
                 "WPUserAgentTests.swift"
             ],
             swiftSettings: [.swiftLanguageMode(.v5)]

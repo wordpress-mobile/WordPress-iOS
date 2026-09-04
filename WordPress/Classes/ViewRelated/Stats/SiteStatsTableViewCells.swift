@@ -217,7 +217,17 @@ struct LatestPostSummaryRow: StatsHashableImmuTableRow {
     let summaryData: StatsLastPostInsight?
     let chartData: StatsPostDetails?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    let action: ImmuTableAction? = nil
+    var action: ImmuTableAction? {
+        guard let url = summaryData?.url else {
+            return nil
+        }
+
+        let delegate = siteStatsInsightsDelegate
+        return { [weak delegate] _ in
+            WPAppAnalytics.track(.statsItemTappedLatestPostSummaryPost)
+            delegate?.displayWebViewWithURL?(url)
+        }
+    }
     let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
