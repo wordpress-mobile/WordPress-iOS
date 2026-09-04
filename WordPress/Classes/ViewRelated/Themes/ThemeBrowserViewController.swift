@@ -205,8 +205,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
     fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
         indicatorView.frame = themesLoaderFrame
-        //TODO update color with white headers
-        indicatorView.color = .white
         indicatorView.startAnimating()
         return indicatorView
     }()
