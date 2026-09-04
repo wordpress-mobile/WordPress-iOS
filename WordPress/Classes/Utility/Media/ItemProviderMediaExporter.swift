@@ -165,8 +165,16 @@ final class ItemProviderMediaExporter: MediaExporter {
             "error_code": error.code,
             "underlying_error_domain": connectionError.domain,
             "underlying_error_code": connectionError.code,
-            "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", ")
+            "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", "),
+            "lockdown_mode": ItemProviderMediaExporter.isLockdownModeEnabled
         ]
+    }
+
+    /// Whether iOS Lockdown Mode is enabled, read from the system's global
+    /// `LDMGlobalEnabled` user-defaults flag. Recorded on the failure event to
+    /// confirm the correlation — this failure is only expected under Lockdown Mode.
+    private static var isLockdownModeEnabled: Bool {
+        UserDefaults.standard.bool(forKey: "LDMGlobalEnabled")
     }
 
     /// The XPC connection error codes (in `NSCocoaErrorDomain`) that signal the item
