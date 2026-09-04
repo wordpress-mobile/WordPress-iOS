@@ -25,9 +25,11 @@ struct CommentRowView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
-                Text(item.date, format: .relative(presentation: .named))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if let date = item.date {
+                    Text(date, format: .relative(presentation: .named))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .accessibilityElement(children: .combine)

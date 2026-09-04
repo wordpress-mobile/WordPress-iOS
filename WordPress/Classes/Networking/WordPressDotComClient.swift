@@ -21,7 +21,8 @@ actor WordPressDotComClient: MediaHostProtocol {
             middlewarePipeline: WpApiMiddlewarePipeline(middlewares: [
                 WpComTrafficDebugger()
             ]),
-            appNotifier: WpComNotifier()
+            appNotifier: WpComNotifier(),
+            languageProvider: WPComDeviceLanguageProvider()
         )
 
         self.api = WPComApiClient(delegate: delegate)
@@ -171,5 +172,21 @@ extension RequestMethod: @retroactive CustomStringConvertible {
         case .delete: "DELETE"
         case .head: "HEAD"
         }
+    }
+}
+
+/// Asks WordPress.com to localize responses to the first of the user's preferred languages that
+/// WordPress.com supports.
+///
+/// Maps through the wordpress-rs language table, so regional variants such as `en-gb` resolve.
+/// Sends no locale when none of the preferred languages is supported.
+final class WPComDeviceLanguageProvider: WpComLanguageProvider {
+    func currentLanguage() -> WpComLanguage? {
+        for identifier in Locale.preferredLanguages {
+            if let language = WpComLanguage(locale: Locale(identifier: identifier)) {
+                return language
+            }
+        }
+        return nil
     }
 }

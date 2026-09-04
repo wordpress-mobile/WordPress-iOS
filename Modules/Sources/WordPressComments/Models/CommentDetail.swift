@@ -16,7 +16,7 @@ struct CommentDetail: Equatable, Sendable {
     let parentID: Int64? // nil when the wire value is 0 (top-level)
     let contentHTML: String
     let link: URL?
-    let date: Date
+    let date: Date?
     var status: CommentListItem.Status
     /// False when the fetch fell back to view context (no email/IP; M3 edit
     /// needs content.raw, also unavailable).
@@ -69,7 +69,7 @@ struct CommentDetail: Equatable, Sendable {
         parentID: Int64,
         contentHTML: String,
         link: String,
-        date: Date,
+        date: Date?,
         status: CommentListItem.Status,
         hasEditContext: Bool
     ) {

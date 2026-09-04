@@ -1,7 +1,4 @@
 import Foundation
-import UIKit
-import WordPressShared
-import WordPressSharedObjCUI
 
 /// Contains methods for formatting post or comment content for display.
 ///
@@ -11,8 +8,8 @@ import WordPressSharedObjCUI
     ///
     public struct RegEx {
         // Forbidden tags
-        static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .caseInsensitive)
-        static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .caseInsensitive)
+        static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?(?:</style>|$)", options: .caseInsensitive)
+        static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?(?:</script>|$)", options: .caseInsensitive)
         static let gutenbergComments = try! NSRegularExpression(pattern: "<p><!-- /?wp:.+? /?--></p>[\\n]?", options: .caseInsensitive)
 
         // Normalizaing Paragraphs
@@ -22,13 +19,13 @@ import WordPressSharedObjCUI
         static let pTagsEnd = try! NSRegularExpression(pattern: "</p>\\s*</p>", options: .caseInsensitive)
         static let newLines = try! NSRegularExpression(pattern: "\\n", options: .caseInsensitive)
         static let preTags = try! NSRegularExpression(pattern: "<pre[^>]*>[\\s\\S]*?</pre>", options: .caseInsensitive)
-        static let videoTags = try! NSRegularExpression(pattern: "<video[^>]*>", options: .caseInsensitive)
+        static let videoTags = try! NSRegularExpression(pattern: "<video(\\s[^>]*)?>", options: .caseInsensitive)
 
         // Inline Styles
-        static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .caseInsensitive)
+        static let styleAttr = try! NSRegularExpression(pattern: "\\s+style=(?:\"[^\"]*\"|'[^']*')", options: .caseInsensitive)
 
         // Gallery Images
-        static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
+        public static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
 
         // Trailing BR Tags
         static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
@@ -36,31 +33,6 @@ import WordPressSharedObjCUI
         // Gutenberg Galleries
         static let gutenbergGalleryList = try! NSRegularExpression(pattern: "(<ul[^>]+>)<li[^>]+gallery-item[^>]+><figure><img .+?</figure></li>", options: .caseInsensitive)
         static let gutenbergGalleryListItem = try! NSRegularExpression(pattern: "<li[^>]+gallery-item[^>]+>(<figure><img .+?</figure>)</li>", options: .caseInsensitive)
-    }
-
-    /// Formats the specified content string for display. Forbidden HTML tags are
-    /// removed, paragraphs are normalized, etc.
-    ///
-    /// - Parameters:
-    ///     - string: The content string to format.
-    ///     - isPrivate: Whether the content is from a private blog.
-    ///
-    /// - Returns: The formatted string.
-    ///
-    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard !string.isEmpty else {
-            return string
-        }
-
-        var content = string
-        content = removeForbiddenTags(content)
-        content = normalizeParagraphs(content)
-        content = removeInlineStyles(content)
-        content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
-        content = formatGutenbergGallery(content)
-        content = resizeGalleryImageURL(content, isPrivateSite: isPrivate)
-        content = formatVideoTags(content)
-        return content
     }
 
     /// Removes forbidden HTML tags from the specified string.
@@ -78,17 +50,17 @@ import WordPressSharedObjCUI
 
         content = RegEx.styleTags.stringByReplacingMatches(in: content,
                                                            options: .reportCompletion,
-                                                           range: NSRange(location: 0, length: content.count),
+                                                           range: NSRange(location: 0, length: content.utf16.count),
                                                            withTemplate: "")
 
         content = RegEx.scriptTags.stringByReplacingMatches(in: content,
                                                             options: .reportCompletion,
-                                                            range: NSRange(location: 0, length: content.count),
+                                                            range: NSRange(location: 0, length: content.utf16.count),
                                                             withTemplate: "")
 
         content = RegEx.gutenbergComments.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.count),
+                                                                   range: NSRange(location: 0, length: content.utf16.count),
                                                                    withTemplate: "")
 
         return content
@@ -112,23 +84,23 @@ import WordPressSharedObjCUI
         // Convert div tags to p tags
         content = RegEx.divTagsStart.stringByReplacingMatches(in: content,
                                                               options: .reportCompletion,
-                                                              range: NSRange(location: 0, length: content.count),
+                                                              range: NSRange(location: 0, length: content.utf16.count),
                                                               withTemplate: openPTag)
 
         content = RegEx.divTagsEnd.stringByReplacingMatches(in: content,
                                                             options: .reportCompletion,
-                                                            range: NSRange(location: 0, length: content.count),
+                                                            range: NSRange(location: 0, length: content.utf16.count),
                                                             withTemplate: closePTag)
 
         // Remove duplicate/redundant p tags.
         content = RegEx.pTagsStart.stringByReplacingMatches(in: content,
                                                             options: .reportCompletion,
-                                                            range: NSRange(location: 0, length: content.count),
+                                                            range: NSRange(location: 0, length: content.utf16.count),
                                                             withTemplate: openPTag)
 
         content = RegEx.pTagsEnd.stringByReplacingMatches(in: content,
                                                           options: .reportCompletion,
-                                                          range: NSRange(location: 0, length: content.count),
+                                                          range: NSRange(location: 0, length: content.utf16.count),
                                                           withTemplate: closePTag)
 
         content = filterNewLines(content)
@@ -142,11 +114,11 @@ import WordPressSharedObjCUI
         var ranges = [NSRange]()
         // We don't want to remove new lines from preformatted tag blocks,
         // so get the ranges of such blocks.
-        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
+        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.utf16.count))
         if matches.isEmpty {
 
             // No blocks found, so we'll parse the whole string.
-            ranges.append(NSRange(location: 0, length: content.count))
+            ranges.append(NSRange(location: 0, length: content.utf16.count))
         } else {
 
             // One or more preformatted blocks found, we don't want to remove new lines
@@ -161,7 +133,7 @@ import WordPressSharedObjCUI
                 location = match.range.location + match.range.length
             }
 
-            length = content.count - location
+            length = content.utf16.count - location
             ranges.append(NSRange(location: location, length: length))
         }
 
@@ -191,63 +163,10 @@ import WordPressSharedObjCUI
 
         content = RegEx.styleAttr.stringByReplacingMatches(in: content,
                                                            options: .reportCompletion,
-                                                           range: NSRange(location: 0, length: content.count),
+                                                           range: NSRange(location: 0, length: content.utf16.count),
                                                            withTemplate: "")
 
         return content
-    }
-
-    /// Mutates gallery image URLs to be correctly sized.
-    ///
-    /// - Parameters:
-    ///     - string: The content string to format.
-    ///     - isPrivate: Whether the content is from a private blog.
-    ///
-    /// - Returns: The formatted string.
-    ///
-    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard !string.isEmpty else {
-            return string
-        }
-
-        let imageSize = UIScreen.main.bounds.size
-        let scale = UIScreen.main.scale
-        let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
-
-        let mContent = NSMutableString(string: string)
-
-        let matches = RegEx.galleryImgTags.matches(in: mContent as String, options: [], range: NSRange(location: 0, length: mContent.length))
-
-        for match in matches.reversed() {
-            let imgElementStr = mContent.substring(with: match.range)
-            let srcImgURLStr = parseValueForAttribute("src", inElement: imgElementStr)
-            let originalImgURLStr = parseValueForAttribute("data-orig-file", inElement: imgElementStr)
-
-            guard let originalURL = URL(string: originalImgURLStr) else {
-                continue
-            }
-
-            var modifiedURL: URL
-            if isPrivate {
-                modifiedURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: originalURL)
-            } else {
-                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL)
-            }
-
-            guard modifiedURL.absoluteString.isEmpty() == false else {
-                continue
-            }
-
-            let mImageStr = NSMutableString(string: imgElementStr)
-            mImageStr.replaceOccurrences(of: srcImgURLStr,
-                                         with: modifiedURL.absoluteString,
-                                         options: .literal,
-                                         range: NSRange(location: 0, length: imgElementStr.count))
-
-            mContent.replaceCharacters(in: match.range, with: mImageStr as String)
-        }
-
-        return mContent as String
     }
 
     /// Parses the specified string for the value of the specified attribute.
@@ -259,19 +178,20 @@ import WordPressSharedObjCUI
     /// - Returns: The value for the attribute or an empty string..
     ///
     @objc public class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
-        let elementStr = element as NSString
-        var value = ""
-        let attrStr = "\(attribute)=\""
-        let attrRange = elementStr.range(of: attrStr)
-
-        if attrRange.location != NSNotFound {
-            let location = attrRange.location + attrRange.length
-            let length = elementStr.length - location
-            let ending = elementStr.range(of: "\"", options: .caseInsensitive, range: NSRange(location: location, length: length))
-            value = elementStr.substring(with: NSRange(location: location, length: ending.location - location))
+        // Match the attribute name on a word boundary (so "rc" does not match inside "src")
+        // and capture its double-quoted value. A missing closing quote fails to match, so there
+        // is no out-of-bounds range to crash on.
+        let escaped = NSRegularExpression.escapedPattern(for: attribute)
+        guard let regex = try? NSRegularExpression(pattern: "(?<![\\w-])\(escaped)=\"([^\"]*)\"") else {
+            return ""
         }
-
-        return value
+        let range = NSRange(element.startIndex..., in: element)
+        guard let match = regex.firstMatch(in: element, range: range),
+            let valueRange = Range(match.range(at: 1), in: element)
+        else {
+            return ""
+        }
+        return String(element[valueRange])
     }
 
     /// Removes any trailing BR tags from the end of the specified string.
@@ -287,10 +207,9 @@ import WordPressSharedObjCUI
         }
 
         var content = string.trim()
-        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
-        if let match = matches.first {
-            let index = content.index(content.startIndex, offsetBy: match.range.location)
-            content = String(content.prefix(upTo: index))
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.utf16.count))
+        if let match = matches.first, let matchRange = Range(match.range, in: content) {
+            content = String(content[..<matchRange.lowerBound])
         }
 
         return content
@@ -344,10 +263,10 @@ import WordPressSharedObjCUI
         // For each video tag, check for controls attribute
         for match in matches.reversed() {
             let tag = mString.substring(with: match.range) as NSString
-            if !tag.contains("controls") {
-                // Add the controls attribute.
-                let range = NSRange(location: match.range.location, length: 6)
-                mString.replaceCharacters(in: range, with: "<video controls")
+            let controls = "\\scontrols(?![\\w-])"
+            if tag.range(of: controls, options: [.regularExpression, .caseInsensitive]).location == NSNotFound {
+                // Insert `controls` after the `<video` opening, preserving the tag's casing.
+                mString.insert(" controls", at: match.range.location + 6)
             }
         }
 

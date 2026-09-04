@@ -19,7 +19,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     let avatarURL: URL?
     let postID: Int64
     let snippet: String
-    let date: Date
+    let date: Date?
     var status: Status
 
     init(
@@ -28,7 +28,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         avatarURL: URL?,
         postID: Int64,
         snippet: String,
-        date: Date,
+        date: Date?,
         status: Status
     ) {
         self.id = id

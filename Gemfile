@@ -21,5 +21,5 @@ gem 'rake'
 gem 'rubocop', '~> 1.90'
 gem 'rubocop-rake', '~> 0.7'
 group :screenshots, optional: true do
-  gem 'rmagick', '~> 7.1.2'
+  gem 'rmagick', '~> 7.1.3'
 end

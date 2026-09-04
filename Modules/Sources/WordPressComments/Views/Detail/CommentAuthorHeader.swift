@@ -31,9 +31,11 @@ struct CommentAuthorHeader: View {
                 Text(header.authorName)
                     .font(.subheadline.weight(.semibold))
                 postLine
-                Text(header.date, format: .relative(presentation: .named))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if let date = header.date {
+                    Text(date, format: .relative(presentation: .named))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
             Spacer(minLength: 0)
             Image(systemName: "info.circle")
@@ -73,7 +75,9 @@ private struct CommentAuthorInfoSheet: View {
     var body: some View {
         NavigationStack {
             List {
-                LabeledContent(Strings.infoDateLabel, value: header.date.formatted(.dateTime))
+                if let date = header.date {
+                    LabeledContent(Strings.infoDateLabel, value: date.formatted(.dateTime))
+                }
                 if let url = detail?.authorURL {
                     Link(destination: url) {
                         LabeledContent(Strings.infoWebsiteLabel, value: url.absoluteString)

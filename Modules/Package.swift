@@ -66,7 +66,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.7.0"
+            exact: "0.8.0"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
@@ -338,9 +338,7 @@ let package = Package(
                 "FormattableContentKit",
                 "SFHFKeychainUtils",
                 "WordPressShared",
-                "WordPressSharedUI",
                 "WordPressKit",
-                "WordPressUI",
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
