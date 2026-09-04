@@ -138,10 +138,13 @@ final class ItemProviderMediaExporter: MediaExporter {
 
     /// Surfaces a failure to load the picked file from the `NSItemProvider`.
     ///
-    /// When the provider's connection died (an XPC failure — typically the provider
-    /// process being killed while materializing an image too large for its memory
-    /// limit), the app shows a friendly message and tracks the event so this case can
-    /// be told apart from ordinary load failures. Any other error is surfaced as-is.
+    /// When the provider's connection died (an XPC failure), the app shows a friendly
+    /// message and tracks the event so this case can be told apart from ordinary load
+    /// failures. Any other error is surfaced as-is.
+    ///
+    /// Observed only with iOS Lockdown Mode enabled: materializing a large photo
+    /// (e.g. 36 MP) fails and the `PhotosFileProvider` process is killed, giving
+    /// `NSItemProviderError -1000` over `NSCocoaErrorDomain 4099`.
     private func handleLoadFailure(_ error: Error?, onError: (MediaExportError) -> Void) {
         guard let error else {
             onError(ExportError.unknown)

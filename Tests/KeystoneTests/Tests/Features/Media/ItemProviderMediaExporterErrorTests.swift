@@ -5,8 +5,8 @@ import Testing
 
 struct ItemProviderMediaExporterErrorTests {
 
-    /// The exact error shape observed on device when the Photos provider is killed
-    /// while materializing an image too large for its memory limit:
+    /// The exact error shape observed on device (under iOS Lockdown Mode) when the
+    /// Photos provider is killed while materializing a large image:
     /// `NSItemProviderErrorDomain -1000` wrapping `NSCocoaErrorDomain 4099`.
     @Test func detectsProviderProcessDeathFromNestedXPCError() {
         let xpcError = NSError(domain: NSCocoaErrorDomain, code: CocoaError.Code.xpcConnectionInvalid.rawValue)
