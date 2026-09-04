@@ -10,6 +10,13 @@ env:
 # This is the default pipeline – it will build and test the app
 steps:
   #################
+  # [DO NOT MERGE] Validation for #25994 - remove with this branch
+  #################
+  - label: "🔐 Validate Enterprise Code Signing"
+    command: ".buildkite/commands/validate-enterprise-codesign.sh"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+  #################
   # Create Prototype Builds for WP and JP
   #################
   - group: "🛠 Prototype Builds"
