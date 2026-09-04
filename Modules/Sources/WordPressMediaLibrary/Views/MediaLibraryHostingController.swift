@@ -14,12 +14,20 @@ public enum MediaLibraryHostingController {
         client: WordPressClient,
         tracker: any MediaTracker,
         uploader: MediaUploader,
+        urlOpener: any MediaDetailURLOpener,
+        shareService: any MediaDetailShareService,
+        navigator: any MediaDetailNavigator,
+        capabilities: MediaLibraryCapabilities,
         externalPickerOptions: [ExternalMediaPickerOption] = []
     ) -> UIViewController {
         let view = MediaLibraryContainerView(
             client: client,
             tracker: tracker,
             uploader: uploader,
+            urlOpener: urlOpener,
+            shareService: shareService,
+            navigator: navigator,
+            capabilities: capabilities,
             externalPickerOptions: externalPickerOptions
         )
         let host = UIHostingController(rootView: view)
@@ -38,6 +46,10 @@ private struct MediaLibraryContainerView: View {
     let client: WordPressClient
     let tracker: any MediaTracker
     let uploader: MediaUploader
+    let urlOpener: any MediaDetailURLOpener
+    let shareService: any MediaDetailShareService
+    let navigator: any MediaDetailNavigator
+    let capabilities: MediaLibraryCapabilities
     let externalPickerOptions: [ExternalMediaPickerOption]
 
     @State private var resolved: Resolved?
@@ -77,7 +89,11 @@ private struct MediaLibraryContainerView: View {
                         service: service,
                         client: client,
                         tracker: tracker,
-                        uploader: uploader
+                        uploader: uploader,
+                        urlOpener: urlOpener,
+                        shareService: shareService,
+                        navigator: navigator,
+                        capabilities: capabilities
                     ),
                     service: service
                 )
