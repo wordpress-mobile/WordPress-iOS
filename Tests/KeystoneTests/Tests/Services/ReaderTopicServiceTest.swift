@@ -439,7 +439,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     /**
         Ensure that pre-existing site topic is not deleted when fetching siteTopicForSiteWithID
      */
-    func testReaderSiteTopicUpdated() async throws {
+    @MainActor func testReaderSiteTopicUpdated() async throws {
         // GIVEN:
         let service = ReaderTopicService(coreDataStack: contextManager)
         let siteID = 1
