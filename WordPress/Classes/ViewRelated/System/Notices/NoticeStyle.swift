@@ -74,46 +74,9 @@ public struct NormalNoticeStyle: NoticeStyle {
 
 public struct InAppUpdateNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString?
-    public let isDismissable: Bool
 
-    /// - Parameters:
-    ///   - icon: An optional SF Symbol rendered inline before `title`, e.g. a checkmark seal to indicate success.
-    ///   - iconColor: The tint color applied to `icon`.
-    ///   - title: When provided (with or without `icon`), builds `attributedMessage` from it and makes the
-    ///     Notice auto-dismiss after a few seconds. When `nil`, the Notice falls back to its own `title`/`message`
-    ///     and stays on screen until the user dismisses it, matching the original in-app-update banner behavior.
-    init(icon: UIImage? = nil, iconColor: UIColor = .invertedLabel, title: String? = nil) {
-        guard let title else {
-            self.attributedMessage = nil
-            self.isDismissable = false
-            return
-        }
-
-        self.isDismissable = true
-
-        let font = UIFont.boldSystemFont(ofSize: 14.0)
-        let message = NSMutableAttributedString()
-
-        if let icon = icon?.withTintColor(iconColor, renderingMode: .alwaysOriginal) {
-            let attachment = NSTextAttachment(image: icon)
-            attachment.accessibilityLabel = "" // Decorative; the title text conveys the meaning.
-            let iconHeight = font.lineHeight
-            let ratio = icon.size.width / icon.size.height
-            attachment.bounds = CGRect(
-                x: 0,
-                y: (font.capHeight - iconHeight) / 2,
-                width: iconHeight * ratio,
-                height: iconHeight
-            )
-            message.append(NSAttributedString(attachment: attachment))
-            message.append(NSAttributedString(string: "  "))
-        }
-
-        message.append(
-            NSAttributedString(string: title, attributes: [.font: font, .foregroundColor: UIColor.invertedLabel])
-        )
-
-        self.attributedMessage = message
+    init(attributedMessage: NSAttributedString? = nil) {
+        self.attributedMessage = attributedMessage
     }
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
@@ -123,6 +86,7 @@ public struct InAppUpdateNoticeStyle: NoticeStyle {
 
     public let directionalLayoutMargins = NSDirectionalEdgeInsets(top: 13.0, leading: 16.0, bottom: 13.0, trailing: 16.0)
 
+    public var isDismissable = false
     public let showNextArrow = false
 
     public let animationStyle = NoticeAnimationStyle.moveIn

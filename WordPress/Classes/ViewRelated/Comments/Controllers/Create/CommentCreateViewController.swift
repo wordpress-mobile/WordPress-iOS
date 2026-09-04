@@ -92,15 +92,7 @@ final class CommentCreateViewController: UIViewController {
         else {
             return
         }
-        Notice(
-            title: Strings.commentHeldForModeration,
-            style: InAppUpdateNoticeStyle(
-                icon: UIImage(systemName: "checkmark.seal.fill"),
-                iconColor: UIAppColor.success,
-                title: Strings.commentHeldForModeration
-            )
-        )
-        .post()
+        Notice(title: Strings.commentHeldForModeration).post()
     }
 
     @objc private func buttonCancelTapped() {
