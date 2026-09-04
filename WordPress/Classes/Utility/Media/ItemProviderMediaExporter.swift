@@ -152,7 +152,7 @@ final class ItemProviderMediaExporter: MediaExporter {
             return
         }
         if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
-            let isLockdownModeEnabled = ItemProviderMediaExporter.isLockdownModeEnabled
+            let isLockdownModeEnabled = LockdownHelper.isLockdownModeEnabled
             WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError, isLockdownModeEnabled: isLockdownModeEnabled))
             onError(isLockdownModeEnabled ? ExportError.lockdownModeRestricted : ExportError.cannotLoadItem)
         } else {
@@ -170,13 +170,6 @@ final class ItemProviderMediaExporter: MediaExporter {
             "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", "),
             "lockdown_mode": isLockdownModeEnabled
         ]
-    }
-
-    /// Whether iOS Lockdown Mode is enabled, read from the system's global
-    /// `LDMGlobalEnabled` user-defaults flag. Recorded on the failure event to
-    /// confirm the correlation — this failure is only expected under Lockdown Mode.
-    private static var isLockdownModeEnabled: Bool {
-        UserDefaults.standard.bool(forKey: "LDMGlobalEnabled")
     }
 
     /// The XPC connection error codes (in `NSCocoaErrorDomain`) that signal the item
