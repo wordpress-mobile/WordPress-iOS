@@ -5,7 +5,7 @@ GEM
     abbrev (0.1.2)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    anthropic (1.67.0)
+    anthropic (1.68.0)
       base64 (~> 0.1)
       cgi (~> 0.1)
       connection_pool (>= 2, < 4)
@@ -402,7 +402,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anthropic (~> 1.67)
+  anthropic (~> 1.68)
   danger-dangermattic (~> 1.4)
   dotenv
   fastlane (~> 2.238)
