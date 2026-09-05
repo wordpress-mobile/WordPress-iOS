@@ -85,7 +85,6 @@ final class ItemProviderMediaExporter: MediaExporter {
 
         let loadProgress = provider.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, error in
             guard let url else {
-                DDLogError("Failed to load file representation for provider: \(ObjectIdentifier(self.provider)), error: \(String(describing: error))")
                 self.handleLoadFailure(error, onError: onError)
                 return
             }
@@ -144,14 +143,29 @@ final class ItemProviderMediaExporter: MediaExporter {
     /// this case can be told apart from ordinary load failures. Any other error is
     /// surfaced as-is.
     ///
+    /// A cancelled load (the user cancelled the upload, or the system cancelled the
+    /// request) is *not* surfaced — cancellation is reported separately by the upload
+    /// coordinator, so calling `onError` here would show a spurious failure.
+    ///
     /// Observed only with iOS Lockdown Mode enabled: materializing a large photo
     /// (e.g. 36 MP) fails and the `PhotosFileProvider` process is killed, giving
     /// `NSItemProviderError -1000` over `NSCocoaErrorDomain 4099`.
     private func handleLoadFailure(_ error: Error?, onError: (MediaExportError) -> Void) {
+        let providerID = ObjectIdentifier(provider)
         guard let error else {
+            DDLogError("Failed to load file representation for provider: \(providerID), error: nil")
             onError(ExportError.unknown)
             return
         }
+        // A cancelled load isn't a failure to report: the upload coordinator cancels
+        // this request's `Progress` (which fires this completion with a cancellation
+        // error) and surfaces the cancellation itself. Bail out without calling
+        // `onError` so we don't show a spurious "failed" message.
+        if ItemProviderMediaExporter.isCancellation(error) {
+            DDLogInfo("Cancelled loading file representation for provider: \(providerID)")
+            return
+        }
+        DDLogError("Failed to load file representation for provider: \(providerID), error: \(error)")
         if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
             let isLockdownModeEnabled = LockdownHelper.isLockdownModeEnabled
             WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError, isLockdownModeEnabled: isLockdownModeEnabled))
@@ -189,20 +203,39 @@ final class ItemProviderMediaExporter: MediaExporter {
             .first { $0.domain == NSCocoaErrorDomain && xpcConnectionErrorCodes.contains($0.code) }
     }
 
-    /// Flattens `error` and its underlying errors (both the `underlyingErrors` array
-    /// and the legacy `NSUnderlyingErrorKey`) into a single list, bounded to guard
+    /// Returns `true` when `error`, or any error it wraps, represents a cancellation
+    /// rather than a genuine failure — a `CancellationError`, `NSUserCancelledError`,
+    /// or `NSURLErrorCancelled`.
+    static func isCancellation(_ error: Error) -> Bool {
+        errorChain(from: error).contains { element in
+            if element is CancellationError {
+                return true
+            }
+            let nsError = element as NSError
+            switch (nsError.domain, nsError.code) {
+            case (NSCocoaErrorDomain, NSUserCancelledError),
+                 (NSURLErrorDomain, NSURLErrorCancelled):
+                return true
+            default:
+                return false
+            }
+        }
+    }
+
+    /// Flattens `error` and its underlying errors into a single list, bounded to guard
     /// against pathological cycles.
+    ///
+    /// `NSError.underlyingErrors` already surfaces the value stored under the legacy
+    /// `NSUnderlyingErrorKey` (along with `NSMultipleUnderlyingErrorsKey`), so it is the
+    /// only source we enqueue. Reading `NSUnderlyingErrorKey` separately as well would
+    /// visit every wrapped error twice and halve the depth reachable before the bound.
     private static func errorChain(from error: Error) -> [Error] {
         var result: [Error] = []
         var queue: [Error] = [error]
         while let next = queue.first, result.count < 16 {
             queue.removeFirst()
             result.append(next)
-            let nsError = next as NSError
-            queue.append(contentsOf: nsError.underlyingErrors)
-            if let underlying = nsError.userInfo[NSUnderlyingErrorKey] as? Error {
-                queue.append(underlying)
-            }
+            queue.append(contentsOf: (next as NSError).underlyingErrors)
         }
         return result
     }
