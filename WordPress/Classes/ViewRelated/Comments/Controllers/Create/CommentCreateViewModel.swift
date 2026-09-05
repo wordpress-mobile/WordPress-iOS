@@ -23,8 +23,9 @@ final class CommentCreateViewModel {
 
     /// - note: It's a temporary solution until the respective save logic
     /// can be moved from the view controllers.
-    private var _save: (String) async throws -> Void = { _ in
+    private var _save: (String) async throws -> TaggedManagedObjectID<Comment> = { _ in
         wpAssertionFailure("Not implemented")
+        throw URLError(.unknown)
     }
 
     var isGutenbergEnabled: Bool {
@@ -49,12 +50,13 @@ final class CommentCreateViewModel {
         }
 
         self._save = { [weak self] in
-            try await self?.sendComment($0, post: post, replyingTo: comment)
+            guard let self else { throw URLError(.unknown) }
+            return try await self.sendComment($0, post: post, replyingTo: comment)
         }
     }
 
     /// Create a reply to the given comment (from notifications)
-    init(replyingTo comment: Comment, save: @escaping (String) async throws -> Void) {
+    init(replyingTo comment: Comment, save: @escaping (String) async throws -> TaggedManagedObjectID<Comment>) {
         let siteID = comment.associatedSiteID ?? 0
 
         self.siteID = siteID
@@ -72,27 +74,46 @@ final class CommentCreateViewModel {
         Strings.leaveComment
     }
 
-    func save(content: String) async throws {
-        try await _save(content)
+    /// - returns: The object ID of the newly created comment. Callers can resolve it against
+    /// a context to inspect the comment's current state (e.g. its moderation status).
+    func save(content: String) async throws -> TaggedManagedObjectID<Comment> {
+        let commentID = try await _save(content)
         deleteDraft()
+        return commentID
     }
 
     // MARK: Reader
 
-    private func sendComment(_ content: String, post: ReaderPost, replyingTo comment: Comment? = nil) async throws {
+    private func sendComment(
+        _ content: String,
+        post: ReaderPost,
+        replyingTo comment: Comment? = nil
+    ) async throws -> TaggedManagedObjectID<Comment> {
         try await withUnsafeThrowingContinuation { [weak self] continuation in
             let service = CommentService(coreDataStack: ContextManager.shared)
             if let comment {
-                service.replyToHierarchicalComment(withID: comment.commentID as NSNumber, post: post, content: content) {
+                service.replyToHierarchicalComment(
+                    withID: comment.commentID as NSNumber,
+                    post: post,
+                    content: content
+                ) { newComment in
                     self?.trackReply(isReplyingToComment: true, post: post)
-                    continuation.resume()
+                    guard let newComment else {
+                        continuation.resume(throwing: URLError(.unknown))
+                        return
+                    }
+                    continuation.resume(returning: TaggedManagedObjectID(newComment))
                 } failure: {
                     continuation.resume(throwing: $0 ?? URLError(.unknown))
                 }
             } else {
-                service.reply(to: post, content: content) {
+                service.reply(to: post, content: content) { newComment in
                     self?.trackReply(isReplyingToComment: true, post: post)
-                    continuation.resume()
+                    guard let newComment else {
+                        continuation.resume(throwing: URLError(.unknown))
+                        return
+                    }
+                    continuation.resume(returning: TaggedManagedObjectID(newComment))
                 } failure: {
                     continuation.resume(throwing: $0 ?? URLError(.unknown))
                 }

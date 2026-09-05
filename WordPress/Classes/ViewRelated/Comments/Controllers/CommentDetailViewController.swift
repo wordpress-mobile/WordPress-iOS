@@ -993,58 +993,72 @@ private extension CommentDetailViewController {
 
     @objc func buttonAddCommentTapped() {
         let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
-            try await self?.createReply(content: $0)
+            guard let self else { throw URLError(.unknown) }
+            return try await self.createReply(content: $0)
         }
         let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }
 
+    /// - returns: The object ID of the newly created reply.
     @MainActor
-    func createReply(content: String) async throws {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
-                                CommentAnalytics.trackCommentRepliedTo(comment: comment)
+    func createReply(content: String) async throws -> TaggedManagedObjectID<Comment> {
+        isNotificationComment
+            ? WPAppAnalytics.track(.notificationsCommentRepliedTo)
+            : CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
         // If there is no Blog, try with the Post.
         guard comment.blog != nil else {
-            try await createPostCommentReply(content: content)
-            return
+            return try await createPostCommentReply(content: content)
         }
 
-        try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<Void, Error>) in
+        return try await withUnsafeThrowingContinuation { continuation in
             commentService.createReply(for: comment, content: content) { reply in
                 guard let reply else {
                     DDLogError("Failed creating comment reply: reply was nil after save")
                     continuation.resume(throwing: URLError(.unknown))
                     return
                 }
-                self.commentService.uploadComment(reply, success: { [weak self] in
-                    self?.refreshCommentReplyIfNeeded()
-                    continuation.resume()
-                }, failure: { error in
-                    DDLogError("Failed uploading comment reply: \(String(describing: error))")
-                    continuation.resume(throwing: error ?? URLError(.unknown))
-                })
+                self.commentService.uploadComment(
+                    reply,
+                    success: { [weak self] in
+                        self?.refreshCommentReplyIfNeeded()
+                        continuation.resume(returning: TaggedManagedObjectID(reply))
+                    },
+                    failure: { error in
+                        DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                        continuation.resume(throwing: error ?? URLError(.unknown))
+                    }
+                )
             }
         }
     }
 
+    /// - returns: The object ID of the newly created reply.
     @MainActor
-    func createPostCommentReply(content: String) async throws {
+    func createPostCommentReply(content: String) async throws -> TaggedManagedObjectID<Comment> {
         guard let post = comment.post as? ReaderPost else {
-            return
+            throw URLError(.unknown)
         }
-        try await withUnsafeThrowingContinuation { continuation in
-            commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
-                                                      post: post,
-                                                      content: content,
-                                                      success: { [weak self] in
-                self?.refreshCommentReplyIfNeeded()
-                continuation.resume()
-            }, failure: { error in
-                DDLogError("Failed creating post comment reply: \(String(describing: error))")
-                continuation.resume(throwing: error ?? URLError(.unknown))
-            })
+        return try await withUnsafeThrowingContinuation { continuation in
+            commentService.replyToHierarchicalComment(
+                withID: NSNumber(value: comment.commentID),
+                post: post,
+                content: content,
+                success: { [weak self] newComment in
+                    self?.refreshCommentReplyIfNeeded()
+                    guard let newComment else {
+                        continuation.resume(throwing: URLError(.unknown))
+                        return
+                    }
+                    continuation.resume(returning: TaggedManagedObjectID(newComment))
+                },
+                failure: { error in
+                    DDLogError("Failed creating post comment reply: \(String(describing: error))")
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                }
+            )
         }
     }
 }

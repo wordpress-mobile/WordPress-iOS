@@ -134,7 +134,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
 
         // Call the reply function and wait for the HTTP API to complete
         let exp = expectation(description: "Reply should complete")
-        self.commentService.reply(to: post, content: "test comment") {
+        self.commentService.reply(to: post, content: "test comment") { _ in
             exp.fulfill()
         } failure: { error in
             XCTFail("Unexpected error: \(String(describing: error))")
@@ -165,7 +165,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
 
         // Call the reply function and wait for the HTTP API to complete
         let exp = expectation(description: "Reply should fail")
-        self.commentService.reply(to: post, content: "test comment") {
+        self.commentService.reply(to: post, content: "test comment") { _ in
             XCTFail("The failure should be called instead")
             exp.fulfill()
         } failure: { _ in
@@ -205,7 +205,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
 
         // Call the reply function and wait for the HTTP API to complete
         let exp = expectation(description: "Reply to comment should complete")
-        self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
+        self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") { _ in
             exp.fulfill()
         } failure: { error in
             XCTFail("Unexpected error: \(String(describing: error))")
@@ -239,7 +239,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
 
         // Call the reply function and wait for the HTTP API to complete
         let exp = expectation(description: "Reply to comment should fail")
-        self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
+        self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") { _ in
             XCTFail("The failure should be called instead")
             exp.fulfill()
         } failure: { _ in
