@@ -1,6 +1,7 @@
 import Foundation
 import PhotosUI
 import WordPressData
+import WordPressShared
 
 /// Manages export of media assets: images and video.
 final class ItemProviderMediaExporter: MediaExporter {
@@ -84,7 +85,7 @@ final class ItemProviderMediaExporter: MediaExporter {
 
         let loadProgress = provider.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, error in
             guard let url else {
-                DDLogDebug("Loaded file representation for provider: \(ObjectIdentifier(self.provider)), error: \(String(describing: error)))")
+                self.handleLoadFailure(error, onError: onError)
                 return
             }
             let diff = CFAbsoluteTimeGetCurrent() - start
@@ -135,9 +136,116 @@ final class ItemProviderMediaExporter: MediaExporter {
         provider.hasItemConformingToTypeIdentifier(type.identifier)
     }
 
+    /// Surfaces a failure to load the picked file from the `NSItemProvider`.
+    ///
+    /// When the provider's connection died (an XPC failure), the app shows a friendly
+    /// message — specific to Lockdown Mode when it's enabled — and tracks the event so
+    /// this case can be told apart from ordinary load failures. Any other error is
+    /// surfaced as-is.
+    ///
+    /// A cancelled load (the user cancelled the upload, or the system cancelled the
+    /// request) is *not* surfaced — cancellation is reported separately by the upload
+    /// coordinator, so calling `onError` here would show a spurious failure.
+    ///
+    /// Observed only with iOS Lockdown Mode enabled: materializing a large photo
+    /// (e.g. 36 MP) fails and the `PhotosFileProvider` process is killed, giving
+    /// `NSItemProviderError -1000` over `NSCocoaErrorDomain 4099`.
+    private func handleLoadFailure(_ error: Error?, onError: (MediaExportError) -> Void) {
+        let providerID = ObjectIdentifier(provider)
+        guard let error else {
+            DDLogError("Failed to load file representation for provider: \(providerID), error: nil")
+            onError(ExportError.unknown)
+            return
+        }
+        // A cancelled load isn't a failure to report: the upload coordinator cancels
+        // this request's `Progress` (which fires this completion with a cancellation
+        // error) and surfaces the cancellation itself. Bail out without calling
+        // `onError` so we don't show a spurious "failed" message.
+        if ItemProviderMediaExporter.isCancellation(error) {
+            DDLogInfo("Cancelled loading file representation for provider: \(providerID)")
+            return
+        }
+        DDLogError("Failed to load file representation for provider: \(providerID), error: \(error)")
+        if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
+            let isLockdownModeEnabled = LockdownHelper.isLockdownModeEnabled
+            WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError, isLockdownModeEnabled: isLockdownModeEnabled))
+            onError(isLockdownModeEnabled ? ExportError.lockdownModeRestricted : ExportError.cannotLoadItem)
+        } else {
+            onError(ExportError.underlyingError(error))
+        }
+    }
+
+    private func providerErrorProperties(for error: Error, connectionError: NSError, isLockdownModeEnabled: Bool) -> [AnyHashable: Any] {
+        let error = error as NSError
+        return [
+            "error_domain": error.domain,
+            "error_code": error.code,
+            "underlying_error_domain": connectionError.domain,
+            "underlying_error_code": connectionError.code,
+            "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", "),
+            "lockdown_mode": isLockdownModeEnabled
+        ]
+    }
+
+    /// The XPC connection error codes (in `NSCocoaErrorDomain`) that signal the item
+    /// provider's process died while producing the file.
+    private static let xpcConnectionErrorCodes: Set<Int> = [
+        CocoaError.Code.xpcConnectionInterrupted.rawValue,
+        CocoaError.Code.xpcConnectionInvalid.rawValue,
+        CocoaError.Code.xpcConnectionReplyInvalid.rawValue
+    ]
+
+    /// Returns the first XPC connection error found in `error` or any of its
+    /// underlying errors, or `nil` if there is none.
+    static func providerConnectionError(in error: Error) -> NSError? {
+        errorChain(from: error)
+            .map { $0 as NSError }
+            .first { $0.domain == NSCocoaErrorDomain && xpcConnectionErrorCodes.contains($0.code) }
+    }
+
+    /// Returns `true` when `error`, or any error it wraps, represents a cancellation
+    /// rather than a genuine failure — a `CancellationError`, `NSUserCancelledError`,
+    /// or `NSURLErrorCancelled`.
+    static func isCancellation(_ error: Error) -> Bool {
+        errorChain(from: error).contains { element in
+            if element is CancellationError {
+                return true
+            }
+            let nsError = element as NSError
+            switch (nsError.domain, nsError.code) {
+            case (NSCocoaErrorDomain, NSUserCancelledError),
+                 (NSURLErrorDomain, NSURLErrorCancelled):
+                return true
+            default:
+                return false
+            }
+        }
+    }
+
+    /// Flattens `error` and its underlying errors into a single list, bounded to guard
+    /// against pathological cycles.
+    ///
+    /// `NSError.underlyingErrors` already surfaces the value stored under the legacy
+    /// `NSUnderlyingErrorKey` (along with `NSMultipleUnderlyingErrorsKey`), so it is the
+    /// only source we enqueue. Reading `NSUnderlyingErrorKey` separately as well would
+    /// visit every wrapped error twice and halve the depth reachable before the bound.
+    private static func errorChain(from error: Error) -> [Error] {
+        var result: [Error] = []
+        var queue: [Error] = [error]
+        while let next = queue.first, result.count < 16 {
+            queue.removeFirst()
+            result.append(next)
+            queue.append(contentsOf: (next as NSError).underlyingErrors)
+        }
+        return result
+    }
+
     enum ExportError: MediaExportError {
         case unsupportedContentType
-        case underlyingError(Error?)
+        case cannotLoadItem
+        case lockdownModeRestricted
+        case underlyingError(Error)
+        case unknown
 
         public var errorDescription: String? { description }
 
@@ -145,8 +253,14 @@ final class ItemProviderMediaExporter: MediaExporter {
             switch self {
             case .unsupportedContentType:
                 return NSLocalizedString("mediaExporter.error.unsupportedContentType", value: "Unsupported content type", comment: "An error message the app shows if media import fails")
+            case .cannotLoadItem:
+                return NSLocalizedString("mediaExporter.error.cannotLoadItem", value: "This item could not be added to the Media library. It may be too large to import.", comment: "Error shown when a selected photo or video can't be loaded from the device for upload.")
+            case .lockdownModeRestricted:
+                return NSLocalizedString("mediaExporter.error.lockdownMode", value: "This item can’t be added to the Media library while Lockdown Mode is on.", comment: "Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled.")
             case .underlyingError(let error):
-                return error?.localizedDescription ?? NSLocalizedString("mediaExporter.error.unknown", value: "The item could not be added to the Media library", comment: "An error message the app shows if media import fails")
+                return error.localizedDescription
+            case .unknown:
+                return NSLocalizedString("mediaExporter.error.unknown", value: "The item could not be added to the Media library", comment: "An error message the app shows if media import fails")
             }
         }
     }
