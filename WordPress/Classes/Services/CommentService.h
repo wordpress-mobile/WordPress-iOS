@@ -138,13 +138,13 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 // Replies
 - (void)replyToPost:(ReaderPost *)post
             content:(NSString *)content
-            success:(void (^ _Nullable)(void))success
+            success:(void (^ _Nullable)(Comment * _Nullable comment))success
             failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 - (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
                                   post:(ReaderPost *)post
                                  content:(NSString *)content
-                                 success:(void (^ _Nullable)(void))success
+                                 success:(void (^ _Nullable)(Comment * _Nullable comment))success
                                  failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 - (void)replyToCommentWithID:(NSNumber *)commentID

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressUI
 
 final class CommentCreateViewController: UIViewController {
@@ -64,10 +65,13 @@ final class CommentCreateViewController: UIViewController {
         Task { @MainActor in
             do {
                 let text = await editorVC.text
-                try await viewModel.save(content: text)
+                let commentID = try await viewModel.save(content: text)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
-                presentingViewController?.dismiss(animated: true)
+                presentingViewController?
+                    .dismiss(animated: true) { [weak self] in
+                        self?.showModerationNoticeIfNeeded(for: commentID)
+                    }
             } catch {
                 setLoading(false)
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -80,6 +84,15 @@ final class CommentCreateViewController: UIViewController {
         navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : makeSendButton()
         navigationItem.leftBarButtonItem?.isEnabled = !isLoading
         editorVC.isEnabled = !isLoading
+    }
+
+    private func showModerationNoticeIfNeeded(for commentID: TaggedManagedObjectID<Comment>) {
+        guard let comment = try? ContextManager.shared.mainContext.existingObject(with: commentID),
+            !comment.isApproved()
+        else {
+            return
+        }
+        Notice(title: Strings.commentHeldForModeration).post()
     }
 
     @objc private func buttonCancelTapped() {
@@ -105,9 +118,10 @@ final class CommentCreateViewController: UIViewController {
         if viewModel.canSaveDraft {
             alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { [weak self] _ in
                 self?.viewModel.saveDraft(content)
-                self?.presentingViewController?.dismiss(animated: true) {
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                }
+                self?.presentingViewController?
+                    .dismiss(animated: true) {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
             }
         }
         alert.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
@@ -147,6 +161,7 @@ extension CommentCreateViewController: CommentEditorViewControllerDelegate {
 private enum Strings {
     static let send = NSLocalizedString("commentCreate.send", value: "Send", comment: "Navigation bar button title")
     static let failedToSend = NSLocalizedString("commentCreate.failedToSentComment", value: "Failed to send comment", comment: "Error title")
+    static let commentHeldForModeration = NSLocalizedString("commentCreate.commentHeldForModeration", value: "Comment is awaiting review", comment: "Toast title shown after successfully submitting a comment")
     static let closeConfirmationAlertCancel = NSLocalizedString("commentCreate.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
     static let closeConfirmationAlertDelete = NSLocalizedString("commentCreate.closeConfirmationAlert.deleteDraft", value: "Delete Draft", comment: "Button in an alert confirming discaring a new draft")
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("commentCreate.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
