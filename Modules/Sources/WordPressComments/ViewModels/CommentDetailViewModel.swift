@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import WordPressAPIInternal
 import WordPressShared
 
 /// Drives the comment detail and moderation screen. Reads the moderation
@@ -55,6 +56,7 @@ final class CommentDetailViewModel: ObservableObject {
     /// authoritative fetch or a later status change proving the comment exists
     /// again.
     @Published private(set) var isDeleted = false
+    @Published private(set) var isMissing = false
 
     let commentID: Int64
 
@@ -194,7 +196,7 @@ final class CommentDetailViewModel: ObservableObject {
     private let noticePresenter: (any NoticePresenting)?
 
     /// A load (capability + fetch) is currently running; guards re-entry.
-    private var isLoading = false
+    @Published private var isLoading = false
 
     private var eventSubscription: AnyCancellable?
 
@@ -280,8 +282,13 @@ final class CommentDetailViewModel: ObservableObject {
         // alongside the comment fetch (`.generic` covers the gap), is applied
         // last, and is skipped when the toolbar can never show.
         async let replies: Int? = canModerate ? (try? await service.numberOfReplies(for: commentID)) : nil
-        guard let detail = try? await service.fetchComment(id: commentID, allowsEditContext: canModerate) else {
+        let detail: CommentDetail
+        do {
+            detail = try await service.fetchComment(id: commentID, allowsEditContext: canModerate)
+            isMissing = false
+        } catch {
             _ = await replies
+            isMissing = (error as? WpApiError)?.httpStatusCode == 404
             content = .failed
             return
         }
