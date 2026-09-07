@@ -5,6 +5,8 @@ struct CommentsListView: View {
     @ObservedObject var titleResolver: PostTitleResolver
     /// Pushes the detail screen for a tapped row.
     let openComment: (Int64, CommentListItem?) -> Void
+    /// Starts a review session over the loaded pending comments.
+    let review: ([CommentListItem]) -> Void
 
     var body: some View {
         List {
@@ -35,6 +37,14 @@ struct CommentsListView: View {
             }
         }
         .listStyle(.plain)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if viewModel.canReview {
+                    Button(Strings.Review.review) { review(viewModel.reviewBatch) }
+                        .accessibilityLabel(Strings.Review.reviewAccessibility)
+                }
+            }
+        }
         .refreshable {
             await viewModel.refresh()
         }
