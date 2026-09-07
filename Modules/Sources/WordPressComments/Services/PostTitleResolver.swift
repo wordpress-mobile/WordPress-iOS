@@ -90,17 +90,24 @@ final class PostTitleResolver: ObservableObject {
         }
     }
 
-    /// Fetches id + title for regular posts, then retries the remainder
-    /// against pages. Custom post types are not covered in M1 and resolve to
-    /// unavailable.
-    /// TODO: Read the wordpress-rs cache as a first tier once it exposes a
-    /// public by-post-ID lookup; today only cache-internal EntityId reads
-    /// exist, and direct sqlite access is off limits.
+    /// Reads the wordpress-rs post cache first, then falls back to REST for
+    /// cache misses: regular posts, then the remainder against pages. Custom
+    /// post types are not covered in M1 and resolve to unavailable.
     /// TODO: Consider making this a plain nonisolated async function
     /// (`liveFetch(ids:client:)`) wrapped in a `Fetcher` closure at the call
     /// site, instead of a factory that returns a closure. Deferred for now.
     static func liveFetcher(client: WordPressClient) -> Fetcher {
-        { ids in
+        // `rendered` is HTML; strip it to plain text so entities and markup
+        // don't leak into the row. An empty title is dropped so the row falls
+        // back to author-only instead of showing a dangling "Author on "
+        // headline.
+        @Sendable func normalized(_ rendered: String) -> String? {
+            let title = rendered.makePlainText()
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return title.isEmpty ? nil : title
+        }
+
+        return { ids in
             func fetch(_ ids: [Int64], from endpoint: PostEndpointType) async throws -> [Int64: String] {
                 let response = try await client.api.posts.filterListWithViewContext(
                     postEndpointType: endpoint,
@@ -109,38 +116,52 @@ final class PostTitleResolver: ObservableObject {
                 )
                 var titles: [Int64: String] = [:]
                 for post in response.data {
-                    guard let id = post.id, let rendered = post.title?.rendered else {
+                    guard let id = post.id, let rendered = post.title?.rendered,
+                        let title = normalized(rendered)
+                    else {
                         continue
                     }
-                    // `rendered` is HTML; strip it to plain text so entities and
-                    // markup don't leak into the row. Skip an empty title so the
-                    // row falls back to author-only instead of showing a
-                    // dangling "Author on " headline.
-                    let title = rendered.makePlainText()
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !title.isEmpty {
-                        titles[id] = title
-                    }
+                    titles[id] = title
                 }
                 return titles
             }
 
-            var titles = try await fetch(ids, from: .posts)
+            // First tier: the wordpress-rs post cache. Cache-only (no network),
+            // so titles for posts already cached paint without a REST round
+            // trip. Best-effort: any cache error just falls through to REST.
+            var titles: [Int64: String] = [:]
+            let cached = (try? await client.service.posts().readPostsByIdsFromDb(postIds: ids)) ?? []
+            for post in cached {
+                guard let rendered = post.title?.rendered,
+                    let title = normalized(rendered)
+                else {
+                    continue
+                }
+                titles[post.id] = title
+            }
+
             let remainder = ids.filter { titles[$0] == nil }
             guard !remainder.isEmpty else {
                 return FetchResult(titles: titles)
             }
+
+            let postTitles = try await fetch(remainder, from: .posts)
+            titles.merge(postTitles) { _, new in new }
+            let pageRemainder = remainder.filter { titles[$0] == nil }
+            guard !pageRemainder.isEmpty else {
+                return FetchResult(titles: titles)
+            }
             // A comment on a page is as common as one on a post, so the
             // remainder must be looked up rather than assumed absent. If the
-            // pages lookup fails, keep the post titles already resolved and
-            // report only the remainder as retryable, so a transient failure
-            // never discards good titles or permanently hides those IDs.
+            // pages lookup fails, keep the titles already resolved and report
+            // only the remainder as retryable, so a transient failure never
+            // discards good titles or permanently hides those IDs.
             do {
-                let pageTitles = try await fetch(remainder, from: .pages)
+                let pageTitles = try await fetch(pageRemainder, from: .pages)
                 titles.merge(pageTitles) { _, new in new }
                 return FetchResult(titles: titles)
             } catch {
-                return FetchResult(titles: titles, retryable: Set(remainder))
+                return FetchResult(titles: titles, retryable: Set(pageRemainder))
             }
         }
     }
