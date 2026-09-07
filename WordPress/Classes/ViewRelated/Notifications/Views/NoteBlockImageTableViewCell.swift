@@ -38,6 +38,7 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
                 self.imageURL = nil
             }
         )
+        print("Vivek we are retrying")
     }
 
     // MARK: - View Methods
