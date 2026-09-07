@@ -3,6 +3,7 @@
   "strings" : {
     "ios-appintents.newPost.description" : {
       "comment" : "Description of the App Intent that opens the post editor. Shown in the Shortcuts app.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -14,6 +15,7 @@
     },
     "ios-appintents.openError.notLoggedIn" : {
       "comment" : "Error shown by Siri or the Shortcuts app when an App Intent runs while no account is signed in.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -25,6 +27,7 @@
     },
     "ios-appintents.openError.siteNotFound" : {
       "comment" : "Error shown by Siri or the Shortcuts app when the site an App Intent should act on no longer exists.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -36,6 +39,7 @@
     },
     "ios-appintents.openNotifications.description" : {
       "comment" : "Description of the App Intent that opens the Notifications tab. Shown in the Shortcuts app.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -47,6 +51,7 @@
     },
     "ios-appintents.openNotifications.title" : {
       "comment" : "Title of the App Intent that opens the Notifications tab. Shown in the Shortcuts app and Spotlight.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -58,6 +63,7 @@
     },
     "ios-appintents.openReader.description" : {
       "comment" : "Description of the App Intent that opens the Reader tab. Shown in the Shortcuts app.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -69,6 +75,7 @@
     },
     "ios-appintents.openStats.description" : {
       "comment" : "Description of the App Intent that opens Stats for a site. Shown in the Shortcuts app.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -80,6 +87,7 @@
     },
     "ios-appintents.openStats.title" : {
       "comment" : "Title of the App Intent that opens Stats for a site. Shown in the Shortcuts app and Spotlight.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
