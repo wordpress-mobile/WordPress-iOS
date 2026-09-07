@@ -61,6 +61,46 @@
         }
       }
     },
+    "Publish a draft in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish a draft in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Publish a post in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish a post in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Schedule a draft in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule a draft in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Schedule a post in ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule a post in ${applicationName}"
+          }
+        }
+      }
+    },
     "Show my ${applicationName} notifications" : {
       "localizations" : {
         "en" : {
