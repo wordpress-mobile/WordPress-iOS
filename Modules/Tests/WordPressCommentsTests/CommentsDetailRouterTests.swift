@@ -5,6 +5,26 @@ import UIKit
 
 @MainActor
 struct CommentsDetailRouterTests {
+    @Test func reviewSessionsAreIndependentOfHostAndPreviousSession() throws {
+        let router = makeRouter(capabilities: FakeCommentsCapabilities())
+        let batch = [makeItem(status: .hold)]
+        let first = try #require(router.makeReviewSession(batch: batch))
+        first.skip(id: batch[0].id)
+        first.close()
+
+        let second = try #require(router.makeReviewSession(batch: batch))
+        #expect(first.id != second.id)
+        #expect(second.batch.map(\.id) == batch.map(\.id))
+        #expect(second.position == 0)
+        #expect(second.outcomes.isEmpty)
+        #expect(!second.isDismissed)
+    }
+
+    @Test func emptyReviewDoesNotCreateSession() {
+        let router = makeRouter(capabilities: FakeCommentsCapabilities())
+        #expect(router.makeReviewSession(batch: []) == nil)
+    }
+
     @Test func openPushesDetailOntoHostNavigationStack() {
         let host = UIViewController()
         let navigation = UINavigationController(rootViewController: host)
