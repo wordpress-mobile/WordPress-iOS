@@ -50,14 +50,15 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             return UINavigationController(rootViewController: ReaderLoggedOutViewController())
         }
 
-        sidebar.onViewDidLoad = { [weak self] in
-            self?.showInitialSelection()
-        }
         sidebarViewModel.isCompact = true
         sidebarViewModel.restoreSelection(defaultValue: nil)
         mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         mainNavigationController.navigationBar.prefersLargeTitles = true
         sidebar.navigationItem.backButtonDisplayMode = .minimal
+        if let selection = sidebarViewModel.selection {
+            mainNavigationController.setViewControllers([sidebar, makeViewController(for: selection)], animated: false)
+        }
+        observeSelection(skipInitialSelection: true)
         return mainNavigationController
     }
 
@@ -67,7 +68,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     func prepareForLibraryPresentation() -> UIViewController {
         sidebarViewModel.isCompact = true
         sidebar.onViewDidLoad = { [weak self] in
-            self?.showInitialSelection()
+            self?.observeSelection()
         }
         mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         mainNavigationController.navigationBar.prefersLargeTitles = true
@@ -81,14 +82,16 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // MARK: - Navigation
 
-    func showInitialSelection() {
+    private func observeSelection(skipInitialSelection: Bool = false) {
         // The initial screen is part of setting up the stack, so it isn't animated.
         // The publisher emits the current selection synchronously on subscription.
         isNavigationAnimated = false
         defer { isNavigationAnimated = true }
 
         // -warning: List occasionally sets the selection to `nil` when switching items.
-        selectionObserver = sidebarViewModel.$selection.compactMap { $0 }
+        selectionObserver = sidebarViewModel.$selection
+            .dropFirst(skipInitialSelection ? 1 : 0)
+            .compactMap { $0 }
             .removeDuplicates { [weak self] in
                 guard $0 == $1, let self, let splitViewController else { return false }
                 self.popMainNavigationController(in: splitViewController)
@@ -98,6 +101,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func configure(for selection: ReaderSidebarItem) {
+        show(makeViewController(for: selection))
+        hideSupplementaryColumnIfNeeded()
+    }
+
+    private func makeViewController(for selection: ReaderSidebarItem) -> UIViewController {
         let source = ScreenTrackingSource(ScreenID.Reader.sidebar)
 
         let vc: UIViewController =
@@ -118,8 +126,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
         vc.trackingContext.source = source
 
-        show(vc)
-        hideSupplementaryColumnIfNeeded()
+        return vc
     }
 
     private func popMainNavigationController(in splitViewController: UISplitViewController) {
@@ -346,7 +353,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     func displayed(in splitVC: UISplitViewController) {
         if secondary.viewControllers.isEmpty {
-            showInitialSelection()
+            observeSelection()
         }
     }
 }
