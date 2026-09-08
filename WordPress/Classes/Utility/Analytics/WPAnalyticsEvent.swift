@@ -18,6 +18,7 @@ import WordPressShared
     case mediaStorageDetailsViewed
     case mediaStorageDetailsActionTapped
     case mediaStorageDetailsPurchaseCompleted
+    case mediaImportItemUnavailable
 
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
@@ -732,6 +733,8 @@ import WordPressShared
             return "media_storage_details_action_tapped"
         case .mediaStorageDetailsPurchaseCompleted:
             return "media_storage_details_purchase_completed"
+        case .mediaImportItemUnavailable:
+            return "media_import_item_unavailable"
         // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"

@@ -218,6 +218,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         Loggers.app.info("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
+        LockdownHelper.primeAppLockdownState()
+
         ABTest.start()
 
         Media.removeTemporaryData()
