@@ -254,7 +254,7 @@ final class ItemProviderMediaExporter: MediaExporter {
             case .unsupportedContentType:
                 return NSLocalizedString("mediaExporter.error.unsupportedContentType", value: "Unsupported content type", comment: "An error message the app shows if media import fails")
             case .cannotLoadItem:
-                return NSLocalizedString("mediaExporter.error.cannotLoadItem", value: "This item could not be added to the Media library. It may be too large to import.", comment: "Error shown when a selected photo or video can't be loaded from the device for upload.")
+                return NSLocalizedString("mediaExporter.error.cannotLoadItem", value: "This item could not be added to the Media library. It may be too large to import. Please try again or resize the media.", comment: "Error shown when a selected photo or video can't be loaded from the device for upload.")
             case .lockdownModeRestricted:
                 return NSLocalizedString("mediaExporter.error.lockdownMode", value: "This item can’t be added to the Media library while Lockdown Mode is on.", comment: "Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled.")
             case .underlyingError(let error):

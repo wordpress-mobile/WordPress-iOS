@@ -34,10 +34,8 @@ struct ItemProviderMediaExporterErrorTests {
         #expect(ItemProviderMediaExporter.providerConnectionError(in: outer) != nil)
     }
 
-    /// A provider-death XPC error can be buried several layers down a wrapped chain.
-    /// The classifier must still find it: the chain-walk previously enqueued every
-    /// wrapped error twice (`underlyingErrors` *and* `NSUnderlyingErrorKey`), exhausting
-    /// its traversal budget long before reaching errors this deep.
+    /// A provider-death XPC error can be buried deeper than the shallow nesting
+    /// above. The classifier must still walk the whole chain to find it.
     @Test func findsXPCErrorFiveLevelsDeep() {
         let xpcError = NSError(domain: NSCocoaErrorDomain, code: CocoaError.Code.xpcConnectionInvalid.rawValue)
         // Bury the XPC error five `NSUnderlyingErrorKey` levels down.
