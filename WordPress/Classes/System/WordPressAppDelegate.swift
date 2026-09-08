@@ -63,6 +63,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
     private let remoteConfigStore = RemoteConfigStore()
 
+    /// Limits the `-wpcom-token` launch-argument sign-in to a single attempt per process,
+    /// so signing out (which returns to the login screen) doesn't immediately re-sign in.
+    private var didAttemptLaunchArgumentSignIn = false
+
     private var mainContext: NSManagedObjectContext {
         ContextManager.shared.mainContext
     }
@@ -912,5 +916,37 @@ extension WordPressAppDelegate {
                 fatalError("Can't sync blogs: \($0)")
             }
         )
+    }
+
+    /// Completes WordPress.com sign-in automatically when a bearer token is supplied via the
+    /// `-wpcom-token` launch argument, so a Simulator can be signed in with a single
+    /// `simctl launch` and no taps on the login screen.
+    ///
+    /// No-op when the argument is absent, a WordPress.com account is already signed in, or a
+    /// launch-argument sign-in was already attempted this process. The last case matters because
+    /// signing out returns to the login screen — without it, the still-present token would
+    /// immediately sign the account back in.
+    func autoSignInWPComAccountFromLaunchArgumentIfNeeded() {
+        guard WordPressDotComAuthenticator.launchArgumentToken != nil else {
+            return
+        }
+        guard !didAttemptLaunchArgumentSignIn else {
+            return
+        }
+        guard (try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)) == nil else {
+            return
+        }
+        guard let presenter = window?.topmostPresentedViewController else {
+            return
+        }
+        didAttemptLaunchArgumentSignIn = true
+        Task { @MainActor in
+            guard await WordPressDotComAuthenticator().signIn(from: presenter, context: .default) != nil else {
+                return
+            }
+            // Creating the account isn't enough on its own — without this the app stays on the
+            // login screen. Swap the window root to the signed-in app (no epilogue, so no taps).
+            windowManager.showUI()
+        }
     }
 }
