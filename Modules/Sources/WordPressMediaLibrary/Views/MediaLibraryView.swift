@@ -43,9 +43,20 @@ struct MediaLibraryView: View {
                             isPresentingUploads = true
                         }
                     }
-                    MediaGridView(items: viewModel.displayItems, isAspectRatioMode: isAspectRatioMode)
-                        .refreshable { await viewModel.refresh() }
-                        .overlay { libraryOverlay }
+                    // Tapping a cell pushes the detail screen through the
+                    // app-injected UIKit navigator. The grid is hosted in a
+                    // UIKit `UINavigationController` (no SwiftUI
+                    // `NavigationStack` ancestor), so `pushDetail` wraps the
+                    // SwiftUI screen in a `UIHostingController` and pushes it
+                    // onto the outer nav controller at tap time.
+                    MediaGridView(
+                        items: viewModel.displayItems,
+                        isAspectRatioMode: isAspectRatioMode,
+                        canSelect: { viewModel.canOpenDetail(for: $0) },
+                        onSelect: { pushDetail(for: $0) }
+                    )
+                    .refreshable { await viewModel.refresh() }
+                    .overlay { libraryOverlay }
                 }
             } else {
                 MediaLibrarySearchView(
@@ -53,7 +64,11 @@ struct MediaLibraryView: View {
                     client: client,
                     tracker: tracker,
                     searchText: $searchText,
-                    isAspectRatioMode: isAspectRatioMode
+                    isAspectRatioMode: isAspectRatioMode,
+                    urlOpener: viewModel.urlOpener,
+                    shareService: viewModel.shareService,
+                    navigator: viewModel.detailNavigator,
+                    capabilities: viewModel.detailCapabilities
                 )
             }
         }
@@ -76,12 +91,11 @@ struct MediaLibraryView: View {
             filterMenu
             addMenu
         }
-        // `MediaLibraryView` is hosted in a UIKit `UINavigationController`
-        // via `UIHostingController`, so there's no SwiftUI `NavigationStack`
-        // ancestor for `.navigationDestination` to push into. Present the
-        // Uploads queue as a sheet instead — it's a self-contained
-        // management surface (its own toolbar + bulk menu) and survives
-        // the SwiftUI/UIKit boundary cleanly.
+        // Present the Uploads queue as a sheet rather than a push. It's a
+        // self-contained management surface (its own toolbar + bulk menu), and
+        // modal presentation keeps it reachable from any point in the detail
+        // navigation stack without the cell-tap push and the Uploads push
+        // fighting over the same back stack.
         .sheet(isPresented: $isPresentingUploads) {
             NavigationStack {
                 UploadsView(viewModel: viewModel)
@@ -151,6 +165,16 @@ struct MediaLibraryView: View {
                 }
             }
         )
+    }
+
+    private func pushDetail(for item: MediaGridItem) {
+        // Re-resolve the detail VM at push time so we don't capture a stale
+        // snapshot if the underlying cache row was refreshed between the
+        // cell rendering and the user's tap.
+        guard let detailVM = viewModel.makeDetailVM(for: item) else { return }
+        let host = UIHostingController(rootView: MediaDetailView(viewModel: detailVM))
+        host.navigationItem.largeTitleDisplayMode = .never
+        viewModel.detailNavigator?.push(host)
     }
 
     @ToolbarContentBuilder private var filterMenu: some ToolbarContent {

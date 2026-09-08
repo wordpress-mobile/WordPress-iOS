@@ -38,12 +38,28 @@ enum MediaLibraryRouting {
             return nil
         }
 
-        return MediaLibraryHostingController.make(
+        let urlOpener = MediaDetailURLOpenerAdapter(blog: blog)
+        let shareService = MediaDetailShareServiceAdapter(blog: blog)
+        let navigator = MediaDetailNavigatorAdapter()
+        let capabilities = MediaLibraryCapabilities(
+            supportsAltEditing: blog.supports(.mediaAltEditing),
+            supportsMetadataEditing: blog.supports(.mediaMetadataEditing),
+            supportsDeletion: blog.supports(.mediaDeletion)
+        )
+
+        let hostingController = MediaLibraryHostingController.make(
             client: client,
             tracker: tracker,
             uploader: uploader,
+            urlOpener: urlOpener,
+            shareService: shareService,
+            navigator: navigator,
+            capabilities: capabilities,
             externalPickerOptions: externalPickerOptions(for: blog)
         )
+        urlOpener.attach(host: hostingController)
+        navigator.attach(host: hostingController)
+        return hostingController
     }
 
     /// Internal helper so tests can assert the option array without UI introspection.
