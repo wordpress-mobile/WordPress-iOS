@@ -33,7 +33,7 @@ struct ExtractedShare {
 
         // Build the returned string by doing the following:
         //   * 1: Look for imported text.
-        //   * 2: Look for selected text, if it exists put it into a blockquote.
+        //   * 2: Look for selected text, quoting it only when there is a source to attribute.
         //   * 3: No selected text, but we have a page description...use that.
         //   * 4: No selected text, but we have a page title...use that.
         //   * Finally, default to a simple link if nothing else is found
@@ -42,7 +42,13 @@ struct ExtractedShare {
         }
 
         guard selectedText.isEmpty else {
-            return "<blockquote><p>\(selectedText.escapeHtmlNamedEntities())\(readOnText)</p></blockquote>"
+            let paragraphs = ExtractedShare.paragraphsHTML(from: selectedText, appending: readOnText)
+
+            // Only quote text that arrived with a source to attribute.
+            guard url != nil else {
+                return paragraphs
+            }
+            return "<blockquote>\(paragraphs)</blockquote>"
         }
 
         if !description.isEmpty {
@@ -52,6 +58,38 @@ struct ExtractedShare {
         } else {
             return "<p>\(rawLink)</p>"
         }
+    }
+
+    /// Converts plain text to paragraphs, treating a blank line as a paragraph break and a single
+    /// line break as a `<br>`. `suffix` is appended to the last paragraph.
+    private static func paragraphsHTML(from text: String, appending suffix: String) -> String {
+        var paragraphs = [[String]]()
+        var current = [String]()
+
+        for line in text.replacingOccurrences(of: "\r\n", with: "\n").components(separatedBy: "\n") {
+            if line.trimmingCharacters(in: .whitespaces).isEmpty {
+                if !current.isEmpty {
+                    paragraphs.append(current)
+                    current = []
+                }
+            } else {
+                current.append(line)
+            }
+        }
+
+        if !current.isEmpty {
+            paragraphs.append(current)
+        }
+
+        guard !paragraphs.isEmpty else {
+            return "<p>\(text.escapeHtmlNamedEntities())\(suffix)</p>"
+        }
+
+        return paragraphs.enumerated().map { index, lines in
+            let body = lines.map { $0.escapeHtmlNamedEntities() }.joined(separator: "<br>")
+            let tail = index == paragraphs.count - 1 ? suffix : ""
+            return "<p>\(body)\(tail)</p>"
+        }.joined()
     }
 }
 
@@ -231,6 +269,10 @@ private protocol ExtensionContentExtractor {
 private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor, Sendable {
     associatedtype Payload
     var acceptedType: String { get }
+
+    /// The attachments this extractor will read. Defaults to everything matching `acceptedType`.
+    func itemProviders(in context: NSExtensionContext) -> [NSItemProvider]
+
     func convert(payload: Payload) -> ExtractedItem?
 }
 
@@ -243,12 +285,16 @@ private extension TypeBasedExtensionContentExtractor {
         return CGSize(width: dimension, height: dimension)
     }
 
+    func itemProviders(in context: NSExtensionContext) -> [NSItemProvider] {
+        return context.itemProviders(ofType: acceptedType)
+    }
+
     func canHandle(context: NSExtensionContext) -> Bool {
-        return !context.itemProviders(ofType: acceptedType).isEmpty
+        return !itemProviders(in: context).isEmpty
     }
 
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
-        let itemProviders = context.itemProviders(ofType: acceptedType)
+        let itemProviders = self.itemProviders(in: context)
         print(acceptedType)
         var results = [ExtractedItem]()
         guard !itemProviders.isEmpty else {
@@ -339,6 +385,14 @@ private extension TypeBasedExtensionContentExtractor {
 private struct URLExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = URL
     let acceptedType = UTType.url.identifier
+
+    /// An image shared as a file also declares `public.url`, but `processLocalFile(url:)` cannot
+    /// convert it. Claiming it here would stop `PlainTextExtractor` reading the text beside it.
+    func itemProviders(in context: NSExtensionContext) -> [NSItemProvider] {
+        return context.itemProviders(ofType: acceptedType).filter { provider in
+            !provider.hasItemConformingToTypeIdentifier(UTType.image.identifier)
+        }
+    }
 
     func convert(payload: URL) -> ExtractedItem? {
         guard !payload.isFileURL else {
