@@ -16,38 +16,80 @@ final class MediaDetailShareServiceAdapter: MediaDetailShareService {
         self.authenticator = authenticator
     }
 
-    func downloadForSharing(items: [DownloadableMediaItem]) async throws -> [URL] {
-        var result: [URL] = []
-        for item in items {
-            let request = try await authenticator.authenticatedRequest(for: item.sourceUrl, host: MediaHost(blog))
-            let (downloadedURL, response) = try await URLSession.shared.download(for: request)
-            guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
-                // URLSession.download wrote a temp file before we knew the
-                // response code. Clean it up so we don't leak.
-                try? FileManager.default.removeItem(at: downloadedURL)
-                throw URLError(.badServerResponse)
-            }
-            let url = try moveDownloadedFile(at: downloadedURL, item: item)
-            result.append(url)
+    func downloadForSharing(items: [DownloadableMediaItem]) async throws -> BulkShareDownloadResult {
+        guard !items.isEmpty else {
+            return BulkShareDownloadResult(urls: [], cleanup: nil)
         }
-        return result
+
+        let batchDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("media-share-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: batchDir, withIntermediateDirectories: true)
+
+        var usedNames: Set<String> = []
+        var result: [URL] = []
+        do {
+            for item in items {
+                try Task.checkCancellation()
+                let request = try await authenticator.authenticatedRequest(for: item.sourceUrl, host: MediaHost(blog))
+                try Task.checkCancellation()
+                let (downloadedURL, response) = try await URLSession.shared.download(for: request)
+                guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+                    // URLSession.download wrote a temp file before we knew the
+                    // response code. Clean it up so we don't leak.
+                    try? FileManager.default.removeItem(at: downloadedURL)
+                    throw URLError(.badServerResponse)
+                }
+
+                let filename = Self.uniqueFilename(for: item, against: usedNames)
+                usedNames.insert(filename)
+                let destination = batchDir.appendingPathComponent(filename)
+                do {
+                    try FileManager.default.moveItem(at: downloadedURL, to: destination)
+                } catch {
+                    try? FileManager.default.removeItem(at: downloadedURL)
+                    throw error
+                }
+                result.append(destination)
+            }
+        } catch {
+            try? FileManager.default.removeItem(at: batchDir)
+            throw error
+        }
+        // Cleanup ownership is explicit: the closure captures the batch
+        // directory the adapter just created. SharePayload invokes it on
+        // activity-sheet dismissal or selection-mode exit; no caller infers
+        // ownership from URL paths.
+        return BulkShareDownloadResult(
+            urls: result,
+            cleanup: { try? FileManager.default.removeItem(at: batchDir) }
+        )
     }
 
-    private func moveDownloadedFile(at source: URL, item: DownloadableMediaItem) throws -> URL {
-        let dir = FileManager.default.temporaryDirectory
-        let filename = Self.resolveFilename(for: item)
-        let destination = dir.appendingPathComponent(filename)
-        // Replace any prior temp file at the destination so the share path
-        // is idempotent within a session.
-        try? FileManager.default.removeItem(at: destination)
-        try FileManager.default.moveItem(at: source, to: destination)
-        return destination
+    static func uniqueFilename(for item: DownloadableMediaItem, against used: Set<String>) -> String {
+        let base = resolveFilename(for: item)
+        let usedNames = Set(used.map { $0.lowercased() })
+        if !usedNames.contains(base.lowercased()) {
+            return base
+        }
+
+        let stem = (base as NSString).deletingPathExtension
+        let ext = (base as NSString).pathExtension
+        var counter = 2
+        while true {
+            let candidate = ext.isEmpty ? "\(stem)-\(counter)" : "\(stem)-\(counter).\(ext)"
+            if !usedNames.contains(candidate.lowercased()) {
+                return candidate
+            }
+            counter += 1
+        }
     }
 
     /// Filename derivation (design § Filename derivation):
     /// 1. Start with `suggestedFilename ?? sourceUrl.lastPathComponent`,
     ///    trimmed, with `/` replaced by `-`; empty or dot-only names fall
-    ///    back to "media".
+    ///    back to "media". The module-level helper already screens
+    ///    user-controlled title/slug, but this is the final filesystem
+    ///    boundary so it screens the URL-last-component fallback path too.
     /// 2. Validate any apparent extension against `mimeType`. A dot segment
     ///    in a human title ("Logo v2.0") is not an extension; only a known
     ///    UTType that agrees with the MIME type counts.
