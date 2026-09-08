@@ -13,4 +13,7 @@ struct FailedUpload: Identifiable, Sendable {
     /// `MediaCreateParams` / temp file were never produced — the
     /// Uploads-screen row should offer Dismiss only.
     let isRetryable: Bool
+    /// Materialized temp file on disk; non-nil exactly when `isRetryable`
+    /// (both derive from the materialized payload surviving the failure).
+    let localFileURL: URL?
 }

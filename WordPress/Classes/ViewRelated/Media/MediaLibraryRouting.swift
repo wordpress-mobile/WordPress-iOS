@@ -29,6 +29,18 @@ enum MediaLibraryRouting {
         properties["is_v2"] = "1"
         let tracker = MediaTrackerAdapter(blog: blog, baseProperties: properties)
 
-        return MediaLibraryHostingController.make(client: client, tracker: tracker)
+        let uploader: MediaUploader
+        do {
+            uploader = try MediaUploaderRegistry.shared.uploader(for: blog)
+        } catch {
+            Loggers.app.error("Failed to vend uploader: \(error)")
+            return nil
+        }
+
+        return MediaLibraryHostingController.make(
+            client: client,
+            tracker: tracker,
+            uploader: uploader
+        )
     }
 }
