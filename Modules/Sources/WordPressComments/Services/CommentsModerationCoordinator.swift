@@ -24,6 +24,20 @@ enum CommentModerationAction: Hashable, Sendable {
         case .restore, .delete: nil
         }
     }
+
+    /// Whether a confirmed status proves this action's goal holds. Any active
+    /// status confirms a restore, because untrash/unspam reapply the saved
+    /// pre-bin status (approved or pending). Delete leaves no status behind.
+    func isConfirmed(by status: CommentListItem.Status) -> Bool {
+        switch self {
+        case .approve: status == .approved
+        case .unapprove: status == .pending
+        case .spam: status == .spam
+        case .trash: status == .trash
+        case .restore: status == .approved || status == .pending
+        case .delete: false
+        }
+    }
 }
 
 /// The outcome of a successful `reply(to:content:)` call.
@@ -109,7 +123,7 @@ final class CommentsModerationCoordinator {
             // and detail, which is the true server state. We consider that an
             // edge case and accept the risk; the user can approve manually.
             if parent.status == .pending {
-                try? await self.runModeration(.approve, on: parent)
+                _ = try? await self.runModeration(.approve, on: parent)
             }
             // Reply is moderator-gated, so core auto-approves our replies; a
             // duplicate (unknown landed status) assumes approved on the same
@@ -152,22 +166,26 @@ final class CommentsModerationCoordinator {
         }
     }
 
-    /// Broadcasts a status change the detail screen observed on load (its seed
-    /// status disagreed with the fetched truth) without running a mutation, so
-    /// loaded list tabs reconcile the corrected status in place.
+    /// Broadcasts a confirmed status without crediting a moderation action,
+    /// so detail screens and loaded list tabs reconcile the server state.
     func noteExternalStatus(id: Int64, to: CommentListItem.Status) {
         events.send(.statusChanged(id: id, to: to))
     }
 
-    /// Runs `action` pessimistically: the request is issued first and the change
-    /// event is emitted only after it succeeds (or maps to a success). Throws
-    /// the mutation error when the action genuinely failed, leaving the UI on
-    /// the true pre-action state; the caller shows the error.
-    func perform(_ action: CommentModerationAction, on comment: CommentDetail) async throws {
-        guard !isMutating(id: comment.id) else { return } // one mutation per comment; UI already gates
-        try await holdingSlot(for: comment.id) { [weak self] in
+    /// Runs `action` pessimistically, emitting changes only after server
+    /// confirmation. Returns this submission's confirmed event, or nil if the
+    /// comment's slot was busy and no request ran. Throws the original error
+    /// if the action failed, after broadcasting any status confirmed by a
+    /// reconciliation probe.
+    @discardableResult
+    func perform(
+        _ action: CommentModerationAction,
+        on comment: CommentDetail
+    ) async throws -> CommentChangeEvent? {
+        guard !isMutating(id: comment.id) else { return nil } // no submitted operation
+        return try await holdingSlot(for: comment.id) { [weak self] in
             guard let self else { throw CancellationError() }
-            try await self.runModeration(action, on: comment)
+            return try await self.runModeration(action, on: comment)
         }
     }
 
@@ -204,12 +222,16 @@ final class CommentsModerationCoordinator {
     /// Runs one moderation request. The change event is emitted only after the
     /// server confirms, so every event describes committed state and list
     /// fetches never race an unconfirmed change.
-    private func runModeration(_ action: CommentModerationAction, on comment: CommentDetail) async throws {
+    private func runModeration(
+        _ action: CommentModerationAction,
+        on comment: CommentDetail
+    ) async throws -> CommentChangeEvent {
         do {
             let event = try await execute(action, id: comment.id)
             succeed(action, on: comment, event: event)
+            return event
         } catch {
-            try await mapFailure(error, action: action, on: comment)
+            return try await mapFailure(error, action: action, on: comment)
         }
     }
 
@@ -279,9 +301,8 @@ final class CommentsModerationCoordinator {
         }
     }
 
-    /// Maps the failures whose desired outcome nevertheless holds; rethrows
-    /// everything else as a genuine failure (the UI kept the pre-action state,
-    /// so no correction is needed).
+    /// Maps failures whose desired outcome nevertheless holds. Other failures
+    /// broadcast any status learned by the existing probe before throwing.
     ///
     /// It's possible that a request fails after the server already committed the
     /// change (client timeout, a proxy 502/504 while PHP finishes, a corrupted
@@ -293,46 +314,40 @@ final class CommentsModerationCoordinator {
         _ error: Error,
         action: CommentModerationAction,
         on comment: CommentDetail
-    ) async throws {
+    ) async throws -> CommentChangeEvent {
         let apiError = error as? WpApiError
         // Core returns 500 rest_comment_failed_edit when the requested status
         // equals the current one, i.e. the comment is already where the user
         // wants it (an earlier timed-out attempt landed, or another moderator
         // made the same change). One sparse status probe confirms; on match
         // this is a success, not a failure.
-        if apiError?.wpErrorCode == .CommentFailedEdit,
-            let actual = try? await service.fetchStatus(id: comment.id),
-            probeConfirmsSuccess(action, actual: actual)
-        {
-            succeed(action, on: comment, event: .statusChanged(id: comment.id, to: actual))
-            return
+        let probedStatus: CommentListItem.Status? =
+            if apiError?.wpErrorCode == .CommentFailedEdit {
+                try? await service.fetchStatus(id: comment.id)
+            } else {
+                nil
+            }
+        if let actual = probedStatus, action.isConfirmed(by: actual) {
+            let event = CommentChangeEvent.statusChanged(id: comment.id, to: actual)
+            succeed(action, on: comment, event: event)
+            return event
         }
         // Trash of an already-trashed comment: the goal state holds.
         if action == .trash, apiError?.wpErrorCode == .AlreadyTrashed {
-            succeed(action, on: comment, event: .statusChanged(id: comment.id, to: .trash))
-            return
+            let event = CommentChangeEvent.statusChanged(id: comment.id, to: .trash)
+            succeed(action, on: comment, event: event)
+            return event
         }
         // The comment is gone regardless of which action ran; remove it
         // everywhere. For delete that IS the goal; for anything else the action
         // still failed.
         if apiError?.httpStatusCode == 404 {
             events.send(.deleted(id: comment.id))
-            if action == .delete { return }
+            if action == .delete { return .deleted(id: comment.id) }
+        }
+        if let probedStatus {
+            noteExternalStatus(id: comment.id, to: probedStatus)
         }
         throw error
-    }
-
-    /// Whether the probed status proves the action's goal holds. Any active
-    /// status confirms a restore, because untrash/unspam reapply the saved
-    /// pre-bin status (approved or pending).
-    private func probeConfirmsSuccess(_ action: CommentModerationAction, actual: CommentListItem.Status) -> Bool {
-        switch action {
-        case .approve: actual == .approved
-        case .unapprove: actual == .pending
-        case .spam: actual == .spam
-        case .trash: actual == .trash
-        case .restore: actual == .approved || actual == .pending
-        case .delete: false
-        }
     }
 }

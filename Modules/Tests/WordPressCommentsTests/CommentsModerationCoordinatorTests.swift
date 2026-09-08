@@ -11,7 +11,7 @@ struct CommentsModerationCoordinatorTests {
         let coordinator = CommentsModerationCoordinator(service: service)
         let recorder = EventRecorder(coordinator)
 
-        async let performed: Void = coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
+        async let performed: CommentChangeEvent? = coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
         await waitUntil { !service.setStatusInvocations.isEmpty }
 
         // Still blocked on the continuation: nothing emitted until it resolves.
@@ -85,7 +85,7 @@ struct CommentsModerationCoordinatorTests {
         #expect(recorder.events == [.statusChanged(id: 1, to: .approved)])
     }
 
-    @Test func commentFailedEditProbeMismatchThrowsWithoutEvent() async {
+    @Test func commentFailedEditProbeMismatchEmitsConfirmedStatusAndThrowsOriginalError() async {
         let service = FakeCommentsService()
         service.setStatusResult = .failure(WpApiError.stub(code: .CommentFailedEdit))
         // The probe finds a different status: the action genuinely failed.
@@ -93,10 +93,10 @@ struct CommentsModerationCoordinatorTests {
         let coordinator = CommentsModerationCoordinator(service: service)
         let recorder = EventRecorder(coordinator)
 
-        await #expect(throws: (any Error).self) {
+        await #expect(throws: WpApiError.self) {
             try await coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
         }
-        #expect(recorder.events.isEmpty)
+        #expect(recorder.events == [.statusChanged(id: 1, to: .spam)])
     }
 
     @Test func commentFailedEditProbeFailureThrowsOriginalError() async {
@@ -223,7 +223,7 @@ struct CommentsModerationCoordinatorTests {
         let coordinator = CommentsModerationCoordinator(service: service)
         let recorder = EventRecorder(coordinator)
 
-        async let first: Void = coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
+        async let first: CommentChangeEvent? = coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
         await waitUntil { !service.setStatusInvocations.isEmpty }
 
         // A second action while the first is in flight returns without a request.
@@ -239,7 +239,7 @@ struct CommentsModerationCoordinatorTests {
         let service = BlockingCommentsService()
         let coordinator = CommentsModerationCoordinator(service: service)
 
-        async let performed: Void = coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
+        async let performed: CommentChangeEvent? = coordinator.perform(.approve, on: makeDetail(id: 1, status: .hold))
         await waitUntil { !service.setStatusInvocations.isEmpty }
 
         async let waiterResumed: Bool = {
