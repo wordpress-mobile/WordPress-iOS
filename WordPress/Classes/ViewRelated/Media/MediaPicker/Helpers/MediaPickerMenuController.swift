@@ -14,11 +14,10 @@ final class MediaPickerMenuController: NSObject {
     }
 }
 
-extension MediaPickerMenuController: PHPickerViewControllerDelegate {
-    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.presentingViewController?.dismiss(animated: true)
-        if !results.isEmpty {
-            self.didSelect(results.map(MediaPickerItem.pickerResult), source: .applePhotos)
+extension MediaPickerMenuController: DevicePhotosPickerDelegate {
+    func devicePhotosPicker(didPick assets: [PhotosPickerAsset]) {
+        if !assets.isEmpty {
+            self.didSelect(assets.map(MediaPickerItem.deviceAsset), source: .applePhotos)
         }
     }
 }

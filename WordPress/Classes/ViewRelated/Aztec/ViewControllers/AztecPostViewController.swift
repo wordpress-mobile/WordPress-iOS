@@ -413,7 +413,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     private var mediaPickerInputViewController: PHPickerViewController?
-    private var selectedPickerResults: [PHPickerResult] = []
+    private var selectedPickerAssets: [PhotosPickerAsset] = []
 
     fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
 
@@ -1919,6 +1919,10 @@ extension AztecPostViewController {
 
         richTextView.autocorrectionType = .no
 
+        // This picker is embedded as an input view with continuous selection, which only
+        // `PHPickerViewController` provides — so it stays as-is in Lockdown Mode, where
+        // large photos will still fail through the item provider. The full-screen "Device
+        // Photos" action is the route that gets the Lockdown-aware picker.
         var configuration = PHPickerConfiguration()
         configuration.filter = .any(of: [.images, .videos])
         configuration.preferredAssetRepresentationMode = .current
@@ -2424,9 +2428,10 @@ extension AztecPostViewController {
 
     /// Sets the badge title of `attachment` to "GIF".
     private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset) {
-        if let asset = (asset as? NSItemProvider),
-            asset.hasItemConformingToTypeIdentifier(UTType.gif.identifier)
-        {
+        // A picked Photos item carries its provider inside a `PhotosPickerAsset` rather
+        // than being one, so unwrap both shapes.
+        let provider = (asset as? NSItemProvider) ?? (asset as? PhotosPickerAsset)?.itemProvider
+        if provider?.hasItemConformingToTypeIdentifier(UTType.gif.identifier) == true {
             attachment.badgeTitle = Constants.mediaGIFBadgeTitle
         }
     }
@@ -3141,7 +3146,7 @@ extension AztecPostViewController {
     }
 
     func closeMediaPickerInputViewController() {
-        selectedPickerResults = []
+        selectedPickerAssets = []
         mediaPickerInputViewController = nil
         changeRichTextInputView(to: nil)
         updateToolbar(formatBar, forMode: .text)
@@ -3329,9 +3334,18 @@ extension AztecPostViewController: VideoLimitsAlertPresenter {}
 
 // MARK: - MediaPickerViewController (PHPickerViewControllerDelegate)
 
+extension AztecPostViewController: DevicePhotosPickerDelegate {
+    /// The full-screen "Device Photos" action, which routes through `MediaPickerMenu` and
+    /// so gets the Lockdown-aware picker.
+    func devicePhotosPicker(didPick assets: [PhotosPickerAsset]) {
+        selectedPickerAssets = assets
+        insertPickerResults()
+    }
+}
+
 extension AztecPostViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        selectedPickerResults = results
+        selectedPickerAssets = results.map(PhotosPickerAsset.init)
 
         // The delegate is configured to get called continuously
         if picker == mediaPickerInputViewController {
@@ -3343,17 +3357,17 @@ extension AztecPostViewController: PHPickerViewControllerDelegate {
     }
 
     private func insertPickerResults() {
-        guard !selectedPickerResults.isEmpty else {
+        guard !selectedPickerAssets.isEmpty else {
             return
         }
-        for result in selectedPickerResults {
-            insert(exportableAsset: result.itemProvider, source: .deviceLibrary)
+        for asset in selectedPickerAssets {
+            insert(exportableAsset: asset, source: .deviceLibrary)
         }
         closeMediaPickerInputViewController()
     }
 
     private func updateFormatBarInsertAssetCount() {
-        let assetCount = selectedPickerResults.count
+        let assetCount = selectedPickerAssets.count
 
         if assetCount == 0 {
             insertToolbarItem.isEnabled = false

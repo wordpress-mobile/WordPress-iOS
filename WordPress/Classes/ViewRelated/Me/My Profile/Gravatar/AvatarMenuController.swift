@@ -3,7 +3,7 @@ import UIKit
 import PhotosUI
 import SVProgressHUD
 
-final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate {
+final class AvatarMenuController: DevicePhotosPickerDelegate, ImagePickerControllerDelegate {
     private weak var presentingViewController: UIViewController?
 
     var onAvatarSelected: ((UIImage) -> Void)?
@@ -24,14 +24,13 @@ final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerCon
         ])
     }
 
-    // MARK: - PHPickerViewControllerDelegate
+    // MARK: - DevicePhotosPickerDelegate
 
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        guard let result = results.first else {
-            presentingViewController?.dismiss(animated: true)
+    func devicePhotosPicker(didPick assets: [PhotosPickerAsset]) {
+        guard let asset = assets.first else {
             return
         }
-        PHPickerResult.loadImage(for: result) { [weak self] image, _ in
+        asset.loadImage { [weak self] image, _ in
             if let image {
                 self?.showCropViewController(with: image)
             } else {

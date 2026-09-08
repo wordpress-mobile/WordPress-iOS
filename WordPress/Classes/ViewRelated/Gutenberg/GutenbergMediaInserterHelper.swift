@@ -38,15 +38,15 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(_ selection: [Any], callback: @escaping MediaPickerDidPickMediaCallback) {
-        if let providers = selection as? [NSItemProvider] {
-            insertItemProviders(providers, callback: callback)
+        if let assets = selection as? [ExportableAsset] {
+            insertExportableAssets(assets, callback: callback)
         } else {
             callback(nil)
         }
     }
 
-    private func insertItemProviders(_ providers: [NSItemProvider], callback: @escaping MediaPickerDidPickMediaCallback) {
-        let media: [MediaInfo] = providers.compactMap {
+    private func insertExportableAssets(_ assets: [ExportableAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
+        let media: [MediaInfo] = assets.compactMap {
             // WARNING: Media is a CoreData entity and has to be thread-confined
             guard let media = insert(exportableAsset: $0, source: .deviceLibrary) else {
                 return nil
