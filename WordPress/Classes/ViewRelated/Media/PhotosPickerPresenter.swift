@@ -60,21 +60,13 @@ enum PhotosPickerPresenter {
                         delegate: delegate,
                         photoLibrary: .shared()
                     )
-                case .limited:
-                    // Limited access isn't enough here: the picker shows the whole library
-                    // whatever the app has been granted, so letting it open would mostly
-                    // offer items that can't then be read. Ask for full access instead.
-                    showFullAccessRequiredAlert(from: viewController)
                 default:
-                    // Without authorization there's no library to read from, so fall back
-                    // to the permission-free picker. A file too large to materialize then
-                    // surfaces a Lockdown-specific error rather than hanging.
-                    presentSystemPicker(
-                        from: viewController,
-                        filter: filter,
-                        isMultipleSelectionEnabled: isMultipleSelectionEnabled,
-                        delegate: delegate
-                    )
+                    // Anything short of full access can't work here. Limited access is no
+                    // help because the picker shows the whole library whatever the app has
+                    // been granted, so it would offer items that can't then be read; with
+                    // no access there's no library to read from at all. Both get the same
+                    // answer, so that granting *some* access isn't worse than granting none.
+                    showFullAccessRequiredAlert(from: viewController)
                 }
             }
         }
@@ -126,8 +118,8 @@ enum PhotosPickerPresenter {
     // MARK: - Limited access
 
     /// Explains that full access is required under Lockdown Mode and offers to open
-    /// Settings. There's no "continue anyway": with limited access the picker would offer
-    /// items the app can't read, which is the failure this whole path exists to avoid.
+    /// Settings. There's no "continue anyway": the picker would offer items the app can't
+    /// read, which is the failure this whole path exists to avoid.
     private static func showFullAccessRequiredAlert(from viewController: UIViewController) {
         let alert = UIAlertController(
             title: Strings.limitedAccessTitle,
