@@ -42,6 +42,18 @@ struct CommentDetailView: View {
             .onChange(of: viewModel.isDeleted) { _, isDeleted in
                 if isDeleted { dismiss() }
             }
+            .sheet(
+                isPresented: Binding(get: { viewModel.composer != nil }, set: { if !$0 { viewModel.composer = nil } })
+            ) {
+                if let composer = viewModel.composer {
+                    CommentComposerView(
+                        viewModel: composer,
+                        onFinished: { viewModel.composerFinished($0) },
+                        onDismiss: { viewModel.composer = nil }
+                    )
+                    .presentationDetents([.large])
+                }
+            }
     }
 
     private var fixedRegions: some View {
@@ -112,6 +124,14 @@ struct CommentDetailView: View {
     @ToolbarContentBuilder
     private var trailingToolbarItems: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
+            if viewModel.showsReply {
+                Button(Strings.detailReply, systemImage: "arrowshape.turn.up.left") {
+                    viewModel.replyTapped()
+                }
+                .disabled(!viewModel.canReply)
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
             let link = viewModel.loadedDetail?.link
             let menuAction = viewModel.toolbarModel.menuAction
             if link != nil || menuAction != nil {
@@ -180,6 +200,7 @@ private final class StubContentRenderer: NSObject, CommentContentRendering {
         service: service,
         capabilities: CommentsCapabilityResolver(capabilities: PreviewCapabilities()),
         coordinator: coordinator,
+        draftStore: PreviewCommentDraftStore(),
         titleResolver: titleResolver
     )
     return NavigationStack {
