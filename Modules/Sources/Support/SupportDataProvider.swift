@@ -258,9 +258,12 @@ public extension ApplicationLogDataProvider {
     }
 
     func readFiles(in directory: URL) async throws -> [ApplicationLog] {
-        try FileManager.default.contentsOfDirectory(atPath: directory.path).compactMap { filePath in
-            try ApplicationLog(filePath: filePath)
-        }
+        // `contentsOfDirectory(atPath:)` yields bare filenames, not paths, so each one has to be
+        // resolved against `directory` before the filesystem can be asked about it.
+        try FileManager.default.contentsOfDirectory(atPath: directory.path)
+            .compactMap { filename in
+                try ApplicationLog(filePath: directory.appendingPathComponent(filename).path)
+            }
     }
 }
 
