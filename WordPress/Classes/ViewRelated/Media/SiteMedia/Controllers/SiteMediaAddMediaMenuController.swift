@@ -5,7 +5,7 @@ import PhotosUI
 import WordPressData
 import WordPressShared
 
-final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate,
+final class SiteMediaAddMediaMenuController: NSObject, DevicePhotosPickerDelegate, ImagePickerControllerDelegate,
     ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate, ImagePlaygroundPickerDelegate
 { // swiftlint:disable:this opening_brace
     let blog: Blog
@@ -70,18 +70,12 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         viewController.present(UIHostingController(rootView: rootView), animated: true)
     }
 
-    // MARK: - PHPickerViewControllerDelegate
+    // MARK: - DevicePhotosPickerDelegate
 
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.presentingViewController?.dismiss(animated: true)
-
-        guard !results.isEmpty else {
-            return
-        }
-
-        for result in results {
+    func devicePhotosPicker(didPick assets: [PhotosPickerAsset]) {
+        for asset in assets {
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
         }
     }
 
