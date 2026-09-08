@@ -305,7 +305,7 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
             subject: subject,
             message: message,
             application: "jetpack",
-            attachments: attachments.map { $0.path() }
+            attachmentURLs: attachments
         )
 
         return try await self.wpcomClient.api
@@ -323,7 +323,7 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
     ) async throws -> Conversation {
         let params = AddMessageToSupportConversationParams(
             message: message,
-            attachments: attachments.map { $0.path() }
+            attachmentURLs: attachments
         )
 
         let conversation = try await self.wpcomClient.api
@@ -333,6 +333,33 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
             .asConversation()
 
         return conversation
+    }
+}
+
+// Not `private`: the file-path handling below is covered by `SupportAttachmentFilePathTests`.
+//
+// Both params types carry `attachments` as filesystem paths, which `wordpress-rs` turns into
+// `MultipartFormFile.file_path` and opens directly. `URL.path()` percent-encodes by default, so a
+// filename with a space — a macOS screenshot, say — becomes a path that doesn't exist on disk and
+// the whole request fails with `MediaFileNotFound`. These initializers own that conversion so the
+// call sites can pass URLs.
+extension CreateSupportTicketParams {
+    init(subject: String, message: String, application: String, attachmentURLs: [URL]) {
+        self.init(
+            subject: subject,
+            message: message,
+            application: application,
+            attachments: attachmentURLs.map { $0.path(percentEncoded: false) }
+        )
+    }
+}
+
+extension AddMessageToSupportConversationParams {
+    init(message: String, attachmentURLs: [URL]) {
+        self.init(
+            message: message,
+            attachments: attachmentURLs.map { $0.path(percentEncoded: false) }
+        )
     }
 }
 
