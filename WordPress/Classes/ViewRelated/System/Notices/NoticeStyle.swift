@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import DesignSystem
 
 public enum NoticeAnimationStyle {
     case moveIn

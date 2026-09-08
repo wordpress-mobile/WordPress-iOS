@@ -30,7 +30,14 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
         imageURL = url
 
-        blockImageView.downloadImage(from: url)
+        blockImageView.downloadImage(from: url, success: nil, failure: { [weak self] _ in
+                // Only reset if we're still pointing at the failed URL — the cell may have been reused for another notification in the meantime.
+                guard let self, self.imageURL == url else {
+                    return
+                }
+                self.imageURL = nil
+            }
+        )
     }
 
     // MARK: - View Methods

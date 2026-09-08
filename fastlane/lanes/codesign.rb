@@ -122,19 +122,23 @@ platform :ios do
 end
 
 def update_code_signing_enterprise(readonly:, app_identifiers:)
-  unless readonly
-    # The Enterprise account APIs do not support authentication via API key.
-    # If we want to modify data (readonly = false) we need to authenticate manually.
-    prompt_user_for_app_store_connect_credentials
-  end
-
   update_code_signing(
     type: 'enterprise',
     # Enterprise builds belong to the "internal" team
     team_id: INTERNAL_TEAM_ID,
     readonly: readonly,
     app_identifiers: app_identifiers,
-    api_key: nil
+    # `match` only authenticates when it has to generate something, so readonly runs need no key.
+    api_key: readonly ? nil : enterprise_app_store_connect_api_key
+  )
+end
+
+def enterprise_app_store_connect_api_key
+  app_store_connect_api_key(
+    key_id: get_required_env('APP_STORE_CONNECT_API_KEY_KEY_ID_ENTERPRISE'),
+    issuer_id: get_required_env('APP_STORE_CONNECT_API_KEY_ISSUER_ID_ENTERPRISE'),
+    key_content: get_required_env('APP_STORE_CONNECT_API_KEY_KEY_ENTERPRISE'),
+    in_house: true
   )
 end
 
@@ -160,13 +164,4 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key:)
     api_key: api_key,
     **CODE_SIGNING_STORAGE_OPTIONS
   )
-end
-
-def prompt_user_for_app_store_connect_credentials
-  require 'credentials_manager'
-
-  # If Fastlane cannot instantiate a user, it will ask the caller for the email.
-  # Once we have it, we can set it as `FASTLANE_USER` in the environment (which has lifecycle limited to this call) so that the next commands will already have access to it.
-  # Note that if the user is already available to `AccountManager`, setting it in the environment is redundant, but Fastlane doesn't provide a way to check it so we have to do it anyway.
-  ENV['FASTLANE_USER'] = CredentialsManager::AccountManager.new.user
 end
