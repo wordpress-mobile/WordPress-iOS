@@ -165,8 +165,9 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
         static var unsupported: String {
             NSLocalizedString(
                 "applicationPasswordMigration.error.unsupported",
-                value: "This site does not support Application Passwords.",
-                comment: "Error message shown when the site doesn't support Application Passwords feature"
+                value:
+                    "WordPress.com sites are managed through your WordPress.com account, so application passwords aren't available.",
+                comment: "Message shown when a WordPress.com site can't use Application Passwords"
             )
         }
     }

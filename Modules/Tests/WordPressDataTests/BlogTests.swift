@@ -347,6 +347,46 @@ struct BlogTests {
         #expect(!blog.supports(.shareButtons))
     }
 
+    // MARK: - Blog Feature: Application Passwords
+
+    @Test func applicationPasswordsNotSupportedForSimpleSites() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(atomic: false)
+            .build()
+
+        #expect(!blog.supports(.applicationPasswords))
+    }
+
+    @Test func applicationPasswordsSupportedForAtomicSites() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(atomic: true)
+            .build()
+
+        #expect(blog.supports(.applicationPasswords))
+    }
+
+    @Test func applicationPasswordsSupportedForJetpackSites() {
+        let blog = BlogBuilder(mainContext)
+            .withAccount()
+            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com")
+            .with(isHostedAtWPCom: false)
+            .build()
+
+        #expect(blog.supports(.applicationPasswords))
+    }
+
+    @Test func applicationPasswordsSupportedForSelfHostedSites() {
+        let blog = BlogBuilder(mainContext)
+            .isNotHostedAtWPcom()
+            .with(username: "test_username")
+            .with(password: "test_password")
+            .build()
+
+        #expect(blog.supports(.applicationPasswords))
+    }
+
     // MARK: - Blog Feature: Domains
 
     @Test func blogSupportsDomainsHostedAtWPcom() {
