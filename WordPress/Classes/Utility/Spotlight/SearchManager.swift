@@ -59,7 +59,16 @@ import WordPressData
     ///   - items: items to remove
     ///
     @objc func deleteSearchableItems(_ items: [SearchableItemConvertable]) {
-        let ids = items.map({ $0.uniqueIdentifier }).compactMap({ $0 })
+        deleteSearchableItems(withIdentifiers: items.compactMap { $0.uniqueIdentifier })
+    }
+
+    /// Remove items from the on-device index by their unique identifiers.
+    /// Use this when the item's managed object is already gone.
+    ///
+    /// - Parameters:
+    ///   - ids: unique identifiers of the items to remove
+    ///
+    @objc func deleteSearchableItems(withIdentifiers ids: [String]) {
         guard !ids.isEmpty else {
             return
         }
@@ -70,6 +79,20 @@ import WordPressData
             }
             DDLogError("Could not delete CSSearchableItem item. Error: \(error.localizedDescription)")
         })
+    }
+
+    /// Removes every item indexed for a site. Call it before the site is
+    /// deleted from Core Data, while its domain is still available.
+    ///
+    /// - Parameters:
+    ///   - blog: the site being removed
+    ///
+    @objc(deleteSearchableItemsForBlog:)
+    func deleteSearchableItems(for blog: Blog) {
+        guard let domain = blog.searchDomain else {
+            return
+        }
+        deleteAllSearchableItemsFromDomain(domain)
     }
 
     /// Removes all items with the given domain identifier from the on-device index
