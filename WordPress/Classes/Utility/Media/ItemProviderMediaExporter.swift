@@ -167,15 +167,22 @@ final class ItemProviderMediaExporter: MediaExporter {
         }
         DDLogError("Failed to load file representation for provider: \(providerID), error: \(error)")
         if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
-            let isLockdownModeEnabled = LockdownHelper.isLockdownModeEnabled
-            WPAnalytics.track(.mediaImportItemUnavailable, properties: providerErrorProperties(for: error, connectionError: connectionError, isLockdownModeEnabled: isLockdownModeEnabled))
-            onError(isLockdownModeEnabled ? ExportError.lockdownModeRestricted : ExportError.cannotLoadItem)
+            let device = LockdownHelper.isDeviceLockdownModeEnabled
+            let appExcluded = device && !LockdownHelper.isAppLockdownModeEnabled
+            let properties = providerErrorProperties(
+                for: error,
+                connectionError: connectionError,
+                deviceLockdown: device,
+                appExcluded: appExcluded
+            )
+            WPAnalytics.track(.mediaImportItemUnavailable, properties: properties)
+            onError(device ? ExportError.lockdownModeRestricted : ExportError.cannotLoadItem)
         } else {
             onError(ExportError.underlyingError(error))
         }
     }
 
-    private func providerErrorProperties(for error: Error, connectionError: NSError, isLockdownModeEnabled: Bool) -> [AnyHashable: Any] {
+    private func providerErrorProperties(for error: Error, connectionError: NSError, deviceLockdown: Bool, appExcluded: Bool) -> [AnyHashable: Any] {
         let error = error as NSError
         return [
             "error_domain": error.domain,
@@ -183,7 +190,8 @@ final class ItemProviderMediaExporter: MediaExporter {
             "underlying_error_domain": connectionError.domain,
             "underlying_error_code": connectionError.code,
             "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", "),
-            "lockdown_mode": isLockdownModeEnabled
+            "lockdown_mode": deviceLockdown,
+            "lockdown_mode_app_excluded": appExcluded
         ]
     }
 
