@@ -239,7 +239,7 @@ final class PostRepository {
 
     @MainActor
     private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
-        let service = try getRemoteService(for: post.blog)
+        let service = try getRemoteService(for: post)
         var parameters = RemotePostCreateParameters(post: post)
         if let changes {
             parameters.apply(changes)
@@ -255,7 +255,7 @@ final class PostRepository {
         overwrite: Bool
     ) async throws -> RemotePost {
         WPAnalytics.track(.postRepositoryPatchStarted)
-        let service = try getRemoteService(for: post.blog)
+        let service = try getRemoteService(for: post)
         let original = post.getOriginal()
         var changes = changes
 
@@ -319,10 +319,10 @@ final class PostRepository {
             return
         }
 
+        let remote = try getRemoteService(for: post)
         post.deleteAllRevisions()
         ContextManager.shared.saveContextAndWait(context)
 
-        let remote = try getRemoteService(for: post.blog)
         var remotePost: RemotePost
         do {
             remotePost = try await remote.post(withID: postID)
@@ -359,7 +359,7 @@ final class PostRepository {
 
             return wpAssertionFailure("Trying to patch a non-existent post")
         }
-        try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
+        try await getRemoteService(for: post).deletePost(withID: postID.intValue)
 
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
@@ -368,10 +368,10 @@ final class PostRepository {
     /// Creates an autosave with the changes in the given revision.
     @MainActor
     func autosave(_ revision: AbstractPost) async throws -> RemotePostAutosaveResponse {
-        assert(revision.isRevision())
-        guard let remote = try getRemoteService(for: revision.blog) as? PostServiceRemoteREST else {
+        guard let remote = try getRemoteService(for: revision) as? PostServiceRemoteREST else {
             throw Error.remoteAPIUnavailable
         }
+        assert(revision.isRevision())
         guard let postID = revision.postID?.intValue, postID > 0 else {
             wpAssertionFailure("missing post ID – programmer error")
             throw PostRepository.Error.missingPostID
@@ -419,9 +419,16 @@ private extension PostRepository {
         return remote
     }
 
-    func getRemoteService(for blog: Blog) throws -> PostServiceRemoteExtended {
-        guard let remote = remoteFactory.forBlog(blog) else {
-            throw PostRepository.Error.remoteAPIUnavailable
+    @MainActor
+    func getRemoteService(for post: AbstractPost) throws -> PostServiceRemoteExtended {
+        // A list refresh can delete a retained post while leaving its ID readable.
+        // Read the relationship through KVC because its Swift declaration is nonoptional.
+        guard !post.isDeleted, post.managedObjectContext != nil,
+            let blog = post.value(forKey: "blog") as? Blog,
+            !blog.isDeleted, blog.managedObjectContext != nil,
+            let remote = remoteFactory.forBlog(blog)
+        else {
+            throw Error.remoteAPIUnavailable
         }
         guard let remote = remote as? PostServiceRemoteExtended else {
             wpAssertionFailure("Expected the extended service to be available")
