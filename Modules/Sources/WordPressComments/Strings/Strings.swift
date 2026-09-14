@@ -107,25 +107,25 @@ enum Strings {
     static let statusApproved = NSLocalizedString(
         "commentDetail.status.approved",
         value: "Approved",
-        comment: "Status pill label on the comment detail screen for an approved comment"
+        comment: "Status label on the comment detail screen for an approved comment"
     )
 
     static let statusPending = NSLocalizedString(
         "commentDetail.status.pending",
         value: "Pending",
-        comment: "Status pill label on the comment detail screen for a comment awaiting moderation"
+        comment: "Status label on the comment detail screen for a comment awaiting moderation"
     )
 
     static let statusSpam = NSLocalizedString(
         "commentDetail.status.spam",
         value: "Spam",
-        comment: "Status pill label on the comment detail screen for a comment marked as spam"
+        comment: "Status label on the comment detail screen for a comment marked as spam"
     )
 
     static let statusTrash = NSLocalizedString(
         "commentDetail.status.trash",
         value: "Trash",
-        comment: "Status pill label on the comment detail screen for a trashed comment"
+        comment: "Status label on the comment detail screen for a trashed comment"
     )
 
     static let authorHeaderOnPost = NSLocalizedString(
