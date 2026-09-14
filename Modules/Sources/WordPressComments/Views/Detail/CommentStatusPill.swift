@@ -9,6 +9,7 @@ struct CommentStatusPill: View {
 
     var body: some View {
         Label(label, systemImage: symbol)
+            .labelStyle(CompactLabelStyle())
             .font(.footnote)
             .foregroundStyle(tint)
             .accessibilityLabel(label)
@@ -42,6 +43,17 @@ struct CommentStatusPill: View {
         // A custom/unknown status is shown verbatim: the app can't localize a
         // value it doesn't model.
         case .other(let raw): raw
+        }
+    }
+}
+
+/// Keeps the icon snug against the text. The automatic style inside a `List`
+/// reserves a wide icon column, which pushes the text away from the icon.
+private struct CompactLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 5) {
+            configuration.icon
+            configuration.title
         }
     }
 }

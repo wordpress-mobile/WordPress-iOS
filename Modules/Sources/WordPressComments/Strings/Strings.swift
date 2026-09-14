@@ -91,12 +91,6 @@ enum Strings {
         comment: "Comment row headline. %1$@ is the comment author, %2$@ is the post title."
     )
 
-    static let pendingAccessibilityValue = NSLocalizedString(
-        "commentsList.row.pendingAccessibilityValue",
-        value: "Pending",
-        comment: "Accessibility value announced for a comment row that is awaiting moderation"
-    )
-
     static let moderationFailed = NSLocalizedString(
         "commentDetail.moderation.failed",
         value: "That action couldn't be completed. Please try again.",
@@ -113,7 +107,7 @@ enum Strings {
     static let statusPending = NSLocalizedString(
         "commentDetail.status.pending",
         value: "Pending",
-        comment: "Status label on the comment detail screen for a comment awaiting moderation"
+        comment: "Status label for a comment awaiting moderation, on the comment detail screen and in the list"
     )
 
     static let statusSpam = NSLocalizedString(
