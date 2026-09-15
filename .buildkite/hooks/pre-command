@@ -1,0 +1,15 @@
+#!/bin/bash -eu
+
+if [[ "${BUILDKITE_AGENT_META_DATA_QUEUE:-}" != "mac" ]]; then
+  exit 0
+fi
+
+# Homebrew 6 ask-mode prompts before installing dependencies and hangs on the CI PTY.
+export HOMEBREW_NO_ASK=1
+
+echo "--- :beer: Ensuring sentry-cli is available via Homebrew"
+if brew list sentry-cli >/dev/null 2>&1; then
+  brew upgrade sentry-cli
+else
+  brew install sentry-cli
+fi
