@@ -1,10 +1,12 @@
 import SwiftUI
 
 public struct FAB: View {
+    let title: String?
     let image: Image
     let action: (() -> Void)?
 
-    public init(image: Image = Image(systemName: "plus"), action: (() -> Void)? = nil) {
+    public init(title: String? = nil, image: Image = Image(systemName: "plus"), action: (() -> Void)? = nil) {
+        self.title = title
         self.image = image
         self.action = action
     }
@@ -12,13 +14,20 @@ public struct FAB: View {
     public var body: some View {
         if #available(iOS 26, *) {
             Button(action: action ?? {}) {
-                Image(systemName: "plus")
-                    .font(.system(size: 24, weight: .semibold))
-                    .frame(width: 38, height: 38)
-                    .foregroundStyle(Color(.systemBackground))
+                HStack(spacing: 6) {
+                    image
+                        .font(.system(size: 24, weight: .semibold))
+                    if let title {
+                        Text(title)
+                            .font(.headline)
+                    }
+                }
+                .frame(minWidth: 38, minHeight: 38)
+                .padding(.horizontal, title == nil ? 0 : 8)
+                .foregroundStyle(Color(.systemBackground))
             }
             .buttonStyle(.glassProminent)
-            .buttonBorderShape(.circle)
+            .buttonBorderShape(title == nil ? .circle : .capsule)
             .tint(Color(.label).opacity(0.8))
         } else {
             legacy
@@ -30,10 +39,10 @@ public struct FAB: View {
         Group {
             if let action {
                 Button(action: action) {
-                    FABContentView(image: image)
+                    FABContentView(title: title, image: image)
                 }
             } else {
-                FABContentView(image: image)
+                FABContentView(title: title, image: image)
             }
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility1) // important to be attached from the outside
@@ -41,6 +50,7 @@ public struct FAB: View {
 }
 
 private struct FABContentView: View {
+    let title: String?
     let image: Image
 
     @ScaledMetric(relativeTo: .title2) private var size = 54.0
@@ -48,16 +58,27 @@ private struct FABContentView: View {
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        image
-            .font(.title2)
-            .foregroundStyle(Color.white)
-            .frame(width: size, height: size)
-            .background(colorScheme == .light ? Color(.label) : Color(.systemGray2))
-            .cornerRadius(size / 2)
-            .shadow(radius: shadowRadios)
+        HStack(spacing: 6) {
+            image
+                .font(.title2)
+            if let title {
+                Text(title)
+                    .font(.headline)
+            }
+        }
+        .foregroundStyle(Color.white)
+        .frame(minWidth: size, minHeight: size)
+        .padding(.horizontal, title == nil ? 0 : 16)
+        .background(colorScheme == .light ? Color(.label) : Color(.systemGray2))
+        .cornerRadius(size / 2)
+        .shadow(radius: shadowRadios)
     }
 }
 
 #Preview(traits: .fixedLayout(width: 200, height: 200)) {
     FAB(action: {})
+}
+
+#Preview("With title", traits: .fixedLayout(width: 200, height: 200)) {
+    FAB(title: "Write", action: {})
 }

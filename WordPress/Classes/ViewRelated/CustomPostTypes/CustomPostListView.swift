@@ -18,6 +18,8 @@ struct CustomPostListView<Header: View>: View {
     let selectedPostID: Int64?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let onDuplicate: (AnyPostWithEditContext) -> Void
+    /// When set, rows are drawn as the redesigned cards instead of the classic rows.
+    let cardConfiguration: CustomPostCardConfiguration?
     @ViewBuilder let header: () -> Header
 
     init(
@@ -27,6 +29,7 @@ struct CustomPostListView<Header: View>: View {
         mediaHost: MediaHost? = nil,
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
+        cardConfiguration: CustomPostCardConfiguration? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in }
     ) where Header == EmptyView {
@@ -36,6 +39,7 @@ struct CustomPostListView<Header: View>: View {
         self.mediaHost = mediaHost
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
+        self.cardConfiguration = cardConfiguration
         self.onSelectPost = onSelectPost
         self.onDuplicate = onDuplicate
         self.header = { EmptyView() }
@@ -48,6 +52,7 @@ struct CustomPostListView<Header: View>: View {
         mediaHost: MediaHost? = nil,
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
+        cardConfiguration: CustomPostCardConfiguration? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         @ViewBuilder header: @escaping () -> Header
@@ -58,6 +63,7 @@ struct CustomPostListView<Header: View>: View {
         self.mediaHost = mediaHost
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
+        self.cardConfiguration = cardConfiguration
         self.onSelectPost = onSelectPost
         self.onDuplicate = onDuplicate
         self.header = header
@@ -75,6 +81,7 @@ struct CustomPostListView<Header: View>: View {
             showsPostActions: showsPostActions,
             selectedPostID: selectedPostID,
             indentationMap: viewModel.indentationMap,
+            cardConfiguration: cardConfiguration,
             header: header
         )
         .overlay {
@@ -84,14 +91,19 @@ struct CustomPostListView<Header: View>: View {
                     ? String.localizedStringWithFormat(Strings.emptyStateMessage, details.name)
                     : details.labels.notFound
                 EmptyStateView(emptyText, systemImage: "doc.text")
-            } else if viewModel.shouldDisplayInitialLoading {
+                    .transition(.opacity)
+            } else if viewModel.shouldDisplayInitialLoading, cardConfiguration == nil {
                 ProgressView()
             } else if let error = viewModel.errorToDisplay() {
                 EmptyStateView.failure(error: error)
+                    .transition(.opacity)
             }
         }
+        .animation(.easeIn(duration: 0.25), value: viewModel.shouldDisplayEmptyView)
         .refreshable {
             await viewModel.pullToRefresh()
+            cardConfiguration?.metricsStore?.retryFailures()
+            cardConfiguration?.mediaCache.retryFailures()
         }
         .task(id: viewModel.filter) {
             await viewModel.refresh()
@@ -143,6 +155,7 @@ private struct PaginatedList<Header: View>: View {
     let showsPostActions: Bool
     let selectedPostID: Int64?
     let indentationMap: CustomPostListViewModel.IndentationMap
+    let cardConfiguration: CustomPostCardConfiguration?
     @ViewBuilder let header: () -> Header
 
     @State var isLoadingMore = false
@@ -158,7 +171,8 @@ private struct PaginatedList<Header: View>: View {
         mediaHost: MediaHost? = nil,
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
-        indentationMap: CustomPostListViewModel.IndentationMap = [:]
+        indentationMap: CustomPostListViewModel.IndentationMap = [:],
+        cardConfiguration: CustomPostCardConfiguration? = nil
     ) where Header == EmptyView {
         self.viewModel = viewModel
         self.items = items
@@ -170,6 +184,7 @@ private struct PaginatedList<Header: View>: View {
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
         self.indentationMap = indentationMap
+        self.cardConfiguration = cardConfiguration
         self.header = { EmptyView() }
     }
 
@@ -184,6 +199,7 @@ private struct PaginatedList<Header: View>: View {
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
         indentationMap: CustomPostListViewModel.IndentationMap = [:],
+        cardConfiguration: CustomPostCardConfiguration? = nil,
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.viewModel = viewModel
@@ -196,6 +212,7 @@ private struct PaginatedList<Header: View>: View {
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
         self.indentationMap = indentationMap
+        self.cardConfiguration = cardConfiguration
         self.header = header
     }
 
@@ -204,11 +221,14 @@ private struct PaginatedList<Header: View>: View {
             Section {
                 header()
                     .listRowInsets(.zero)
+                    .listRowBackground(Color.clear)
             }
             .listSectionSpacing(0)
             .listSectionSeparator(.hidden)
 
-            if indentationMap.isEmpty {
+            if let cardConfiguration {
+                cardList(cardConfiguration)
+            } else if indentationMap.isEmpty {
                 flatList
             } else {
                 hierarchicalList
@@ -216,10 +236,52 @@ private struct PaginatedList<Header: View>: View {
 
             Section {
                 makeFooterView()
+                    .cardListRow(isEnabled: cardConfiguration != nil)
             }
             .listSectionSeparator(.hidden)
         }
         .listStyle(.plain)
+        .modifier(CardListBackground(isEnabled: cardConfiguration != nil))
+    }
+
+    /// The redesigned rows: cards with date-group headers interleaved.
+    private func cardList(_ configuration: CustomPostCardConfiguration) -> some View {
+        let entries = CustomPostListEntryBuilder.entries(
+            from: items,
+            showsDateGroups: configuration.showsDateGroups,
+            orderby: viewModel.filter.orderby,
+            grouper: configuration.grouper
+        )
+        return Group {
+            if items.isEmpty, viewModel.shouldDisplayInitialLoading {
+                // Placeholders live in the list rather than an overlay so the
+                // filter chips above them stay visible while the first page loads.
+                ForEach(0..<6, id: \.self) { _ in
+                    CustomPostCardPlaceholder(density: configuration.density)
+                        .cardListRow(isEnabled: true)
+                }
+            }
+            ForEach(entries) { entry in
+                switch entry {
+                case .header(let group, _):
+                    CustomPostDateGroupHeader(group: group)
+                        .cardListRow(isEnabled: true)
+                case .post(let item):
+                    CustomPostCardRow(
+                        item: item,
+                        configuration: configuration,
+                        mediaHost: mediaHost,
+                        viewModel: viewModel,
+                        onSelectPost: onSelectPost,
+                        onDuplicate: onDuplicate
+                    )
+                    .cardListRow(isEnabled: true)
+                    .task {
+                        await onRowAppear(item: item)
+                    }
+                }
+            }
+        }
     }
 
     private var flatList: some View {
@@ -354,49 +416,12 @@ private struct ForEachContent: View {
                         .disabled(true)
                 } else if showsPostActions {
                     button
-                        .contextMenu {
-                            PostActionMenuContent(
-                                post: fullPost,
-                                pageRole: item.pageRole,
-                                viewModel: viewModel,
-                                onDuplicate: onDuplicate
-                            )
-                        }
-                        .swipeActions(edge: .leading) {
-                            if fullPost.status == .publish {
-                                Button {
-                                    viewModel.viewPost(fullPost)
-                                } label: {
-                                    Label(SharedStrings.Button.view, systemImage: "safari")
-                                }
-                                .tint(.blue)
-                            }
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            if fullPost.status != .trash {
-                                Button(role: .destructive) {
-                                    if fullPost.status == .publish {
-                                        viewModel.confirmTrash(fullPost)
-                                    } else {
-                                        Task { await viewModel.trashPost(fullPost) }
-                                    }
-                                } label: {
-                                    Label(Strings.swipeTrash, systemImage: "trash")
-                                }
-                            } else {
-                                Button(role: .destructive) {
-                                    viewModel.confirmDelete(fullPost)
-                                } label: {
-                                    Label(Strings.swipeDelete, systemImage: "trash.fill")
-                                }
-                            }
-
-                            if fullPost.status == .publish, let url = URL(string: fullPost.link) {
-                                ShareLink(item: url, subject: Text(fullPost.title?.raw ?? "")) {
-                                    Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
-                                }
-                            }
-                        }
+                        .postRowActions(
+                            post: fullPost,
+                            pageRole: item.pageRole,
+                            viewModel: viewModel,
+                            onDuplicate: onDuplicate
+                        )
                         .overlay(alignment: .topTrailing) {
                             PostActionMenu(
                                 post: fullPost,
@@ -404,7 +429,7 @@ private struct ForEachContent: View {
                                 viewModel: viewModel,
                                 onDuplicate: onDuplicate
                             )
-                                .offset(y: -6)
+                            .offset(y: -6)
                         }
                 } else {
                     button
@@ -428,6 +453,101 @@ private struct ForEachContent: View {
             } else {
                 ErrorRow(message: message)
             }
+        }
+    }
+}
+
+/// The context menu and swipe actions shared by the classic row and the
+/// redesigned card.
+struct PostRowActionsModifier: ViewModifier {
+    let post: AnyPostWithEditContext
+    let pageRole: PageRole?
+    let viewModel: CustomPostListViewModel
+    let onDuplicate: (AnyPostWithEditContext) -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .contextMenu {
+                PostActionMenuContent(
+                    post: post,
+                    pageRole: pageRole,
+                    viewModel: viewModel,
+                    onDuplicate: onDuplicate
+                )
+            }
+            .swipeActions(edge: .leading) {
+                if post.status == .publish {
+                    Button {
+                        viewModel.viewPost(post)
+                    } label: {
+                        Label(SharedStrings.Button.view, systemImage: "safari")
+                    }
+                    .tint(.blue)
+                }
+            }
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                if post.status != .trash {
+                    Button(role: .destructive) {
+                        if post.status == .publish {
+                            viewModel.confirmTrash(post)
+                        } else {
+                            Task { await viewModel.trashPost(post) }
+                        }
+                    } label: {
+                        Label(Strings.swipeTrash, systemImage: "trash")
+                    }
+                } else {
+                    Button(role: .destructive) {
+                        viewModel.confirmDelete(post)
+                    } label: {
+                        Label(Strings.swipeDelete, systemImage: "trash.fill")
+                    }
+                }
+
+                if post.status == .publish, let url = URL(string: post.link) {
+                    ShareLink(item: url, subject: Text(post.title?.raw ?? "")) {
+                        Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
+                    }
+                }
+            }
+    }
+}
+
+extension View {
+    func postRowActions(
+        post: AnyPostWithEditContext,
+        pageRole: PageRole?,
+        viewModel: CustomPostListViewModel,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void
+    ) -> some View {
+        modifier(PostRowActionsModifier(post: post, pageRole: pageRole, viewModel: viewModel, onDuplicate: onDuplicate))
+    }
+
+    /// Cards draw their own chrome, so in card mode the list row supplies none.
+    @ViewBuilder
+    fileprivate func cardListRow(isEnabled: Bool) -> some View {
+        if isEnabled {
+            self
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 1, leading: 8, bottom: 1, trailing: 8))
+                .listRowBackground(Color.clear)
+        } else {
+            self
+        }
+    }
+}
+
+/// Cards sit on a recessed page so they read as cards rather than a flat sheet.
+private struct CardListBackground: ViewModifier {
+    let isEnabled: Bool
+
+    func body(content: Content) -> some View {
+        if isEnabled {
+            content
+                .scrollContentBackground(.hidden)
+                .background(Color(.systemGroupedBackground))
+        } else {
+            content
         }
     }
 }
@@ -468,7 +588,7 @@ private struct ForEachContentWithIndentation: View {
     }
 }
 
-private struct PostActionMenu: View {
+struct PostActionMenu: View {
     let post: AnyPostWithEditContext
     let pageRole: PageRole?
     let viewModel: CustomPostListViewModel
@@ -487,7 +607,7 @@ private struct PostActionMenu: View {
     }
 }
 
-private struct PostActionMenuContent: View {
+struct PostActionMenuContent: View {
     let post: AnyPostWithEditContext
     let pageRole: PageRole?
     let viewModel: CustomPostListViewModel
@@ -585,7 +705,7 @@ private struct PostActionMenuContent: View {
     }
 }
 
-private struct PageAttributeMenuSection: View {
+struct PageAttributeMenuSection: View {
     let pageRole: PageRole?
     let onSetHomepage: () -> Void
     let onSetPostsPage: () -> Void
@@ -696,7 +816,7 @@ private struct PostContent: View {
     }
 }
 
-private struct ErrorRow: View {
+struct ErrorRow: View {
     let message: String
 
     var body: some View {

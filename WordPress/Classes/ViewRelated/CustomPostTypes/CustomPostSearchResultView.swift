@@ -15,6 +15,7 @@ struct CustomPostSearchResultView: View {
     weak var presentingViewController: UIViewController?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     var onDuplicate: (AnyPostWithEditContext) -> Void = { _ in }
+    var cardConfiguration: CustomPostCardConfiguration?
 
     @State private var finalSearchText = ""
 
@@ -31,6 +32,7 @@ struct CustomPostSearchResultView: View {
             details: details,
             client: client,
             mediaHost: MediaHost(blog),
+            cardConfiguration: cardConfiguration,
             onSelectPost: onSelectPost,
             onDuplicate: onDuplicate
         )

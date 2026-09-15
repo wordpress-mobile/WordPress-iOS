@@ -10,6 +10,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.newStats,
         RemoteFeatureFlag.newGutenberg,
         FeatureFlag.newSupport,
+        FeatureFlag.postsListRedesign,
     ]
 
     private let flagStore = FeatureFlagOverrideStore()

@@ -24,8 +24,17 @@ struct CustomPostTabView: View {
     @State private var trashViewModel: CustomPostListViewModel
     @State private var editorPresentation: EditorPresentation?
     @State private var isShowingFeedback = false
+    @State private var mediaCache: FeaturedMediaURLCache
+    @State private var metricsStore: CustomPostMetricsStore?
 
     @SiteStorage private var authorFilter: CustomPostAuthorFilter
+    /// Global rather than per site: a user who wants a dense list wants it everywhere.
+    @AppStorage("custom_post_list_density") private var density: CustomPostListDensity = .comfortable
+
+    /// The redesign is gated to posts: pages keep their hierarchy, which the cards do not draw.
+    private var isRedesignEnabled: Bool {
+        FeatureFlag.postsListRedesign.enabled && details.slug == "post"
+    }
 
     private var activeViewModel: CustomPostListViewModel {
         switch selectedTab {
@@ -109,7 +118,29 @@ struct CustomPostTabView: View {
         )
 
         _authorFilter = .authorFilter(for: TaggedManagedObjectID(blog))
+        _mediaCache = State(initialValue: FeaturedMediaURLCache(client: client))
+        if FeatureFlag.postsListRedesign.enabled, details.slug == "post" {
+            let store = CustomPostMetricsStore(
+                commentFetcher: CustomPostCommentCountFetcher(client: client),
+                viewFetcher: StatsViewCountFetcher(blog: blog)
+            )
+            store.isEnabled = !density.isCondensed
+            _metricsStore = State(initialValue: store)
+        }
         self.applyAuthorFilter()
+    }
+
+    private func cardConfiguration(for tab: CustomPostTab?) -> CustomPostCardConfiguration? {
+        guard isRedesignEnabled else { return nil }
+        return CustomPostCardConfiguration(
+            density: density,
+            // Date buckets are computed against "now", so a list of future-dated
+            // posts would land under "This week" wholesale. Search mixes statuses.
+            showsDateGroups: tab != nil && tab != .scheduled,
+            mediaCache: mediaCache,
+            // Drafts have neither a view history nor comments.
+            metricsStore: tab == .published ? metricsStore : nil
+        )
     }
 
     var body: some View {
@@ -120,9 +151,10 @@ struct CustomPostTabView: View {
                     details: details,
                     client: client,
                     mediaHost: MediaHost(blog),
+                    cardConfiguration: cardConfiguration(for: selectedTab),
                     onSelectPost: { editorPresentation = .editPost($0) },
                     onDuplicate: { duplicatePost($0) },
-                    header: { tabBar }
+                    header: { listHeader }
                 )
             } else {
                 CustomPostSearchResultView(
@@ -133,7 +165,8 @@ struct CustomPostTabView: View {
                     searchText: $searchText,
                     presentingViewController: presentingViewController,
                     onSelectPost: { editorPresentation = .editPost($0) },
-                    onDuplicate: { duplicatePost($0) }
+                    onDuplicate: { duplicatePost($0) },
+                    cardConfiguration: cardConfiguration(for: nil)
                 )
             }
         }
@@ -158,6 +191,16 @@ struct CustomPostTabView: View {
             }
         }
         .toolbar {
+            if isRedesignEnabled {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        density = density.toggled
+                    } label: {
+                        Image(systemName: density.toggleSystemImage)
+                    }
+                    .accessibilityLabel(density.toggleAccessibilityLabel)
+                }
+            }
             if canFilterByAuthor {
                 ToolbarItem(placement: .topBarTrailing) {
                     AuthorFilterToolbarButton(
@@ -191,6 +234,11 @@ struct CustomPostTabView: View {
             )
         }
         .onChange(of: authorFilter, applyAuthorFilter)
+        .onChange(of: density) {
+            // Condensed rows show no metrics, so none are fetched; switching
+            // back has to ask for the rows already on screen.
+            metricsStore?.isEnabled = !density.isCondensed
+        }
         .task {
             EditorDependencyManager.shared
                 .prefetchDependencies(
@@ -203,7 +251,7 @@ struct CustomPostTabView: View {
                 )
         }
         .overlay(alignment: .bottomTrailing) {
-            FAB {
+            FAB(title: isRedesignEnabled ? Strings.write : nil) {
                 editorPresentation = .newPost
             }
             .padding()
@@ -264,6 +312,16 @@ struct CustomPostTabView: View {
         editorPresentation = .duplicatePost(settings: settings, content: content)
 
         WPAnalytics.track(.postListDuplicateAction, withProperties: ["post_type": details.slug])
+    }
+
+    @ViewBuilder
+    private var listHeader: some View {
+        if isRedesignEnabled {
+            // Chips replace the tab bar's appearance, not its tabs.
+            CustomPostFilterChips(items: CustomPostTab.allCases, selection: $selectedTab)
+        } else {
+            tabBar
+        }
     }
 
     private var tabBar: some View {
@@ -432,6 +490,11 @@ private enum Strings {
         "customPostTab.trash",
         value: "Trash",
         comment: "Tab title for trashed posts"
+    )
+    static let write = NSLocalizedString(
+        "customPostTab.write",
+        value: "Write",
+        comment: "Title of the floating button that starts a new post in the redesigned posts list"
     )
     static let sendFeedback = NSLocalizedString(
         "customPostTab.sendFeedback",

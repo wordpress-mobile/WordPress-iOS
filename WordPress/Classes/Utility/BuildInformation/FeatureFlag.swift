@@ -26,6 +26,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case statsAds
     case mediaLibraryV2
     case commentsV2
+    case postsListRedesign
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -83,6 +84,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .commentsV2:
             return BuildConfiguration.current == .debug
+        case .postsListRedesign:
+            return false
         }
     }
 
@@ -125,6 +128,7 @@ extension FeatureFlag {
         case .statsAds: "Stats Ads Tab"
         case .mediaLibraryV2: "Media Library v2"
         case .commentsV2: "Comments v2"
+        case .postsListRedesign: "Posts List Redesign"
         }
     }
 }

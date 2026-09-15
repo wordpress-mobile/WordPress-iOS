@@ -747,6 +747,12 @@ struct CustomPostCollectionDisplayPost: Equatable {
     /// Combined status badges (e.g. "Private · Sticky") matching the regular
     /// posts list. Returns nil when there is nothing to display.
     var statusBadges: String? {
+        let badges = statusBadgeItems
+        return badges.isEmpty ? nil : badges.joined(separator: " · ")
+    }
+
+    /// The individual status badges, for layouts that draw each as its own chip.
+    var statusBadgeItems: [String] {
         var badges: [String] = []
 
         // Show a status badge when the post's status isn't one of the filter's
@@ -758,8 +764,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         if sticky {
             badges.append(Strings.sticky)
         }
-
-        return badges.isEmpty ? nil : badges.joined(separator: " · ")
+        return badges
     }
 
     var statusColor: Color {
