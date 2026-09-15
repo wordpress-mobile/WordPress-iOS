@@ -1,6 +1,7 @@
+import DesignSystem
 import SwiftUI
 
-/// The pinned status pill above the author header. Reads the live header
+/// The pinned status label above the author header. Reads the live header
 /// status (the screen's status source of truth), so it stays in sync while a
 /// moderation action settles.
 struct CommentStatusPill: View {
@@ -8,20 +9,18 @@ struct CommentStatusPill: View {
 
     var body: some View {
         Label(label, systemImage: symbol)
-            .font(.footnote.weight(.semibold))
+            .labelStyle(CompactLabelStyle())
+            .font(.footnote)
             .foregroundStyle(tint)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 4)
-            .background(tint.opacity(0.15), in: Capsule())
             .accessibilityLabel(label)
     }
 
     private var tint: Color {
         switch status {
-        case .approved: .green
-        case .pending: .orange
-        case .spam, .trash: .red
-        case .other: .gray
+        case .approved: Color(UIAppColor.success)
+        case .pending: Color(UIAppColor.warning)
+        case .spam, .trash: Color(UIAppColor.error)
+        case .other: .secondary
         }
     }
 
@@ -47,3 +46,28 @@ struct CommentStatusPill: View {
         }
     }
 }
+
+/// Keeps the icon snug against the text. The automatic style inside a `List`
+/// reserves a wide icon column, which pushes the text away from the icon.
+private struct CompactLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 5) {
+            configuration.icon
+            configuration.title
+        }
+    }
+}
+
+#if DEBUG
+#Preview {
+    VStack(alignment: .leading, spacing: 16) {
+        CommentStatusPill(status: .approved)
+        CommentStatusPill(status: .pending)
+        CommentStatusPill(status: .spam)
+        CommentStatusPill(status: .trash)
+        CommentStatusPill(status: .other("hold"))
+    }
+    .padding()
+    .frame(maxWidth: .infinity, alignment: .leading)
+}
+#endif
