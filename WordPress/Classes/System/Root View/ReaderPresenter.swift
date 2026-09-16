@@ -46,14 +46,15 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             return UINavigationController(rootViewController: ReaderLoggedOutViewController())
         }
 
-        sidebar.onViewDidLoad = { [weak self] in
-            self?.showInitialSelection()
-        }
         sidebarViewModel.isCompact = true
         sidebarViewModel.restoreSelection(defaultValue: nil)
         mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         mainNavigationController.navigationBar.prefersLargeTitles = true
         sidebar.navigationItem.backButtonDisplayMode = .minimal
+        if let selection = sidebarViewModel.selection {
+            mainNavigationController.setViewControllers([sidebar, makeViewController(for: selection)], animated: false)
+        }
+        observeSelection(skipInitialSelection: true)
         return mainNavigationController
     }
 
@@ -63,7 +64,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     func prepareForLibraryPresentation() -> UIViewController {
         sidebarViewModel.isCompact = true
         sidebar.onViewDidLoad = { [weak self] in
-            self?.showInitialSelection()
+            self?.observeSelection()
         }
         mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         mainNavigationController.navigationBar.prefersLargeTitles = true
@@ -77,9 +78,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // MARK: - Navigation
 
-    func showInitialSelection() {
+    private func observeSelection(skipInitialSelection: Bool = false) {
         // -warning: List occasionally sets the selection to `nil` when switching items.
-        selectionObserver = sidebarViewModel.$selection.compactMap { $0 }
+        selectionObserver = sidebarViewModel.$selection
+            .dropFirst(skipInitialSelection ? 1 : 0)
+            .compactMap { $0 }
             .removeDuplicates { [weak self] in
                 guard $0 == $1, let self, let splitViewController else { return false }
                 self.popMainNavigationController(in: splitViewController)
@@ -89,27 +92,32 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func configure(for selection: ReaderSidebarItem) {
+        show(makeViewController(for: selection))
+        hideSupplementaryColumnIfNeeded()
+    }
+
+    private func makeViewController(for selection: ReaderSidebarItem) -> UIViewController {
         let source = ScreenTrackingSource(ScreenID.Reader.sidebar)
 
-        let vc: UIViewController = switch selection {
-        case .main(let screen):
-            makeViewController(for: screen)
-        case .allSubscriptions:
-            makeAllSubscriptionsViewController(source: source)
-        case .subscription(let objectID):
-            makeViewController(withTopicID: objectID)
-        case .list(let objectID):
-            makeViewController(withTopicID: objectID)
-        case .tag(let objectID):
-            makeViewController(withTopicID: objectID)
-        case .organization(let objectID):
-             makeViewController(withTopicID: objectID)
-        }
+        let vc: UIViewController =
+            switch selection {
+            case .main(let screen):
+                makeViewController(for: screen)
+            case .allSubscriptions:
+                makeAllSubscriptionsViewController(source: source)
+            case .subscription(let objectID):
+                makeViewController(withTopicID: objectID)
+            case .list(let objectID):
+                makeViewController(withTopicID: objectID)
+            case .tag(let objectID):
+                makeViewController(withTopicID: objectID)
+            case .organization(let objectID):
+                makeViewController(withTopicID: objectID)
+            }
 
         vc.trackingContext.source = source
 
-        show(vc)
-        hideSupplementaryColumnIfNeeded()
+        return vc
     }
 
     private func popMainNavigationController(in splitViewController: UISplitViewController) {
@@ -126,7 +134,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
     }
 
-    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
+    private func makeViewController<T: ReaderAbstractTopic>(
+        withTopicID objectID: TaggedManagedObjectID<T>
+    ) -> UIViewController {
         do {
             let topic = try viewContext.existingObject(with: objectID)
             return ReaderStreamViewController.controllerWithTopic(topic)
@@ -164,12 +174,17 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private func makeAllSubscriptionsViewController(source: ScreenTrackingSource? = nil) -> UIViewController {
         let view = ReaderSubscriptionsView { [weak self] selection in
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
-            streamVC.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.subscriptions, component: ElementID.Reader.subscriptionCell)
+            streamVC.trackingContext.source = ScreenTrackingSource(
+                ScreenID.Reader.subscriptions,
+                component: ElementID.Reader.subscriptionCell
+            )
             self?.push(streamVC)
         }
-        let hostVC = UIHostingController(rootView: view
-            .environment(\.managedObjectContext, viewContext)
-            .environment(\.trackingContext, ScreenTrackingContext(source: source))
+        let hostVC = UIHostingController(
+            rootView:
+                view
+                .environment(\.managedObjectContext, viewContext)
+                .environment(\.trackingContext, ScreenTrackingContext(source: source))
         )
         hostVC.title = SharedStrings.Reader.subscriptions
         if sidebarViewModel.isCompact {
@@ -191,7 +206,8 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         let view = ReaderListsView() { [weak self] selection in
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
             self?.push(streamVC)
-        }.environment(\.managedObjectContext, viewContext)
+        }
+        .environment(\.managedObjectContext, viewContext)
         let hostVC = UIHostingController(rootView: view)
         hostVC.title = SharedStrings.Reader.lists
         if sidebarViewModel.isCompact {
@@ -201,7 +217,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func makeErrorViewController() -> UIViewController {
-        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
+        UIHostingController(
+            rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle")
+        )
     }
 
     /// Shows the given view controller by either displaying it in the `.secondary`
@@ -298,7 +316,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .subscriptions:
             viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
-            push(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+            push(
+                ReaderDetailViewController.controllerWithPostID(
+                    NSNumber(value: postID),
+                    siteID: NSNumber(value: siteID),
+                    isFeed: isFeed
+                )
+            )
         case let .postURL(url):
             push(ReaderDetailViewController.controllerWithPostURL(url))
         case let .topic(topic):
@@ -317,7 +341,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     func displayed(in splitVC: UISplitViewController) {
         if secondary.viewControllers.isEmpty {
-            showInitialSelection()
+            observeSelection()
         }
     }
 }
@@ -327,7 +351,10 @@ private extension UINavigationController {
     // A workaround for https://a8c.sentry.io/issues/3140539221.
     func safePushViewController(_ viewController: UIViewController, animated: Bool) {
         guard !children.contains(viewController) else {
-            return wpAssertionFailure("pushing the same view controller more than once", userInfo: ["viewController": "\(viewController)"])
+            return wpAssertionFailure(
+                "pushing the same view controller more than once",
+                userInfo: ["viewController": "\(viewController)"]
+            )
         }
         pushViewController(viewController, animated: animated)
     }
