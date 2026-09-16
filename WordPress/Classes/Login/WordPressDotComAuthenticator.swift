@@ -51,6 +51,7 @@ struct WordPressDotComAuthenticator {
         case mismatchedEmail(expectedEmail: String)
         case alreadySignedIn(signedInAccountEmail: String)
         case loadingSites(Error)
+        case ageRestricted
     }
 
     private static let callbackNotification = Foundation.Notification.Name(
@@ -74,14 +75,21 @@ struct WordPressDotComAuthenticator {
     private let coreDataStack: CoreDataStackSwift
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
+    private let ageRequirementController: AgeRequirementAccessControlling?
 
     private let clientId: String
     private let clientSecret: String
+
+    @MainActor
+    private var ageRequirement: AgeRequirementAccessControlling {
+        ageRequirementController ?? AgeRequirementCoordinator.shared
+    }
 
     init(
         coreDataStack: CoreDataStackSwift = ContextManager.shared,
         showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
+        ageRequirementController: AgeRequirementAccessControlling? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
         clientId: String = BuildSettings.current.secrets.oauth.client,
         clientSecret: String = BuildSettings.current.secrets.oauth.secret
@@ -89,6 +97,7 @@ struct WordPressDotComAuthenticator {
         self.coreDataStack = coreDataStack
         self.showProgressHUD = showProgressHUD
         self.authenticator = authenticator
+        self.ageRequirementController = ageRequirementController
         self.redirectURIScheme = redirectURIScheme
         self.clientId = clientId
         self.clientSecret = clientSecret
@@ -103,6 +112,9 @@ struct WordPressDotComAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async -> TaggedManagedObjectID<WPAccount>? {
+        guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
+            return nil
+        }
         WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
         do {
             let account = try await attemptSignIn(from: viewController, context: context)
@@ -179,6 +191,11 @@ struct WordPressDotComAuthenticator {
 
         if let defaultAccountEmail = defaultAccount?.email, defaultAccountEmail != user.email {
             throw .alreadySignedIn(signedInAccountEmail: defaultAccountEmail)
+        }
+
+        // Re-check right before persisting: the restriction can arrive while the sign-in flow is in progress.
+        guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
+            throw .ageRestricted
         }
 
         // Save the signed-in account details (and sites) into Core Data.
@@ -482,6 +499,8 @@ private extension WordPressDotComAuthenticator.SignInError {
             return Strings.alreadySignedIn(signedInAccountEmail)
         case .loadingSites:
             return Strings.loadingSitesError
+        case .ageRestricted:
+            return nil
         }
     }
 }
