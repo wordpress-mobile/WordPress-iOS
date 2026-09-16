@@ -82,7 +82,7 @@ struct TodayCard<MenuContent: View>: View {
         if let data = viewModel.data {
             makeMetricsView(with: data.metrics)
         } else if viewModel.isLoading {
-            makeMetricsView(with: placeholderData.metrics)
+            makeMetricsView(with: Self.placeholderData.metrics)
                 .redacted(reason: .placeholder)
                 .opacity(0.66)
                 .pulsating()
@@ -112,7 +112,7 @@ struct TodayCard<MenuContent: View>: View {
         if let data = viewModel.data {
             makeSparklineView(data)
         } else {
-            let placeholder = makeSparklineView(placeholderData)
+            let placeholder = makeSparklineView(Self.placeholderData)
                 .redacted(reason: .placeholder)
             if viewModel.isLoading {
                 placeholder.pulsating().opacity(0.33)
@@ -137,7 +137,10 @@ struct TodayCard<MenuContent: View>: View {
 
     // MARK: - Placeholder Data
 
-    private var placeholderData: TodayCardData {
+    /// Generated once so re-renders keep the same random noise instead of redrawing the sparkline.
+    private static let placeholderData: TodayCardData = makePlaceholderData()
+
+    private static func makePlaceholderData() -> TodayCardData {
         // Generate hourly data points with a realistic curve peaking mid-day
         let hourlyViews = (0..<12).map { hour in
             let normalizedHour = Double(hour)
@@ -225,11 +228,14 @@ private struct SparklineChart: View {
     let metric: SiteMetric
 
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.isPlaceholder) private var isPlaceholder
 
     var body: some View {
         Chart {
             current
-            previous
+            if !isPlaceholder {
+                previous
+            }
         }
         .chartXAxis(.hidden)
         .chartYAxis(.hidden)
@@ -237,22 +243,18 @@ private struct SparklineChart: View {
 
     // Current day's data (colored area + line)
     private var current: some ChartContent {
-        ForEach(dataPoints, id: \.hour) { hour, value in
+        let areaStyle = ChartHelper.areaStyle(
+            color: metric.primaryColor,
+            colorScheme: colorScheme,
+            isPlaceholder: isPlaceholder
+        )
+        return ForEach(dataPoints, id: \.hour) { hour, value in
             AreaMark(
                 x: .value("Hour", hour),
                 y: .value("Current", value),
                 series: .value("Series", "Current")
             )
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [
-                        metric.primaryColor.opacity(colorScheme == .light ? 0.15 : 0.25),
-                        metric.primaryColor.opacity(0.0)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .foregroundStyle(areaStyle)
             .interpolationMethod(.linear)
 
             LineMark(
