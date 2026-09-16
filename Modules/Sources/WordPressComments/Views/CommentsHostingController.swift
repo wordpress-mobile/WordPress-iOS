@@ -50,7 +50,11 @@ public struct CommentsView: View {
     }
 
     public var body: some View {
-        CommentsTabView(viewModels: context.listViewModels, context: context.detailContext)
+        CommentsSearchContainer(
+            search: context.searchViewModel,
+            listViewModels: context.listViewModels,
+            context: context.detailContext
+        )
     }
 }
 
@@ -58,6 +62,7 @@ public struct CommentsView: View {
 @MainActor
 private final class CommentsContext: ObservableObject {
     let listViewModels: [CommentsListFilter: CommentsListViewModel]
+    let searchViewModel: CommentsSearchViewModel
     let detailContext: CommentDetailContext
 
     init(
@@ -86,6 +91,12 @@ private final class CommentsContext: ObservableObject {
             service: service,
             titleResolver: titleResolver,
             coordinator: coordinator
+        )
+
+        searchViewModel = CommentsSearchViewModel(
+            service: service,
+            onItemsAppended: { titleResolver.resolve(ids: $0.map(\.postID)) },
+            changeEvents: coordinator.events.eraseToAnyPublisher()
         )
     }
 }
