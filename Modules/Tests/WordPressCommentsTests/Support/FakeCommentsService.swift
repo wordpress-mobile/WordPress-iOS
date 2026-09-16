@@ -36,6 +36,15 @@ final class FakeCommentsService: CommentsServiceProtocol {
     var updateContentResult: Result<CommentDetail, Error>?
     private(set) var updateContentInvocations: [(id: Int64, content: String)] = []
 
+    private(set) var searchRequests: [(query: String, nextPage: CommentsPageToken?)] = []
+    var searchResults: [Result<CommentsPage, Error>] = []
+
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage {
+        searchRequests.append((query, nextPage))
+        guard !searchResults.isEmpty else { throw FakeServiceError() }
+        return try searchResults.removeFirst().get()
+    }
+
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         requests.append((filter, nextPage))
         guard !queuedResults.isEmpty else {
