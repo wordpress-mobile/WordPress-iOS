@@ -37,7 +37,13 @@ public enum CommentsHostingController {
             titleResolver: titleResolver,
             coordinator: coordinator
         )
-        let view = CommentsTabView(
+        let search = CommentsSearchViewModel(
+            service: service,
+            onItemsAppended: { titleResolver.resolve(ids: $0.map(\.postID)) },
+            changeEvents: coordinator.events.eraseToAnyPublisher()
+        )
+        let view = CommentsView(
+            search: search,
             viewModels: listViewModels,
             titleResolver: titleResolver,
             router: router
