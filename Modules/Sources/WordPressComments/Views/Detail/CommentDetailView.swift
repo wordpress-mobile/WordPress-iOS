@@ -10,33 +10,33 @@ struct CommentDetailView: View {
     @StateObject private var viewModel: CommentDetailViewModel
     @ObservedObject private var titleResolver: PostTitleResolver
 
-    /// Recursive: tapping the parent strip pushes another detail screen for the
-    /// parent comment.
-    private let openComment: (Int64, CommentListItem?) -> Void
-    /// Built by the router once per screen; the content region keeps it for
-    /// the screen's lifetime.
-    private let renderer: any CommentContentRendering
+    private let router: CommentsDetailRouter
+    @StateObject private var contentRenderer: ContentRenderer
 
     @Environment(\.dismiss) private var dismiss
 
-    init(
-        viewModel: CommentDetailViewModel,
-        titleResolver: PostTitleResolver,
-        renderer: any CommentContentRendering,
-        openComment: @escaping (Int64, CommentListItem?) -> Void
-    ) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-        self.titleResolver = titleResolver
-        self.renderer = renderer
-        self.openComment = openComment
+    init(commentID: Int64, seed: CommentListItem?, router: CommentsDetailRouter) {
+        self.router = router
+        _viewModel = StateObject(wrappedValue: router.makeViewModel(id: commentID, seed: seed))
+        titleResolver = router.titleResolver
+        _contentRenderer = StateObject(wrappedValue: ContentRenderer(router: router))
+    }
+
+    @MainActor
+    private final class ContentRenderer: ObservableObject {
+        let renderer: any CommentContentRendering
+
+        init(router: CommentsDetailRouter) {
+            renderer = router.makeRenderer()
+        }
     }
 
     var body: some View {
         CommentDetailBody(
             viewModel: viewModel,
             titleResolver: titleResolver,
-            renderer: renderer,
-            openParent: { openComment($0.id, $0) },
+            renderer: contentRenderer.renderer,
+            parentDestination: { CommentDetailView(commentID: $0.id, seed: $0, router: router) },
             retry: { Task { await viewModel.retry() } }
         )
         .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
@@ -44,7 +44,6 @@ struct CommentDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task { await viewModel.onAppear() }
         // The comment no longer exists, so there is nothing left to show.
-        // `dismiss` pops this screen off the UIKit navigation stack.
         .onChange(of: viewModel.isDeleted) { _, isDeleted in
             if isDeleted { dismiss() }
         }
@@ -119,8 +118,8 @@ struct CommentDetailBody: View {
     @ObservedObject var viewModel: CommentDetailViewModel
     @ObservedObject var titleResolver: PostTitleResolver
     let renderer: any CommentContentRendering
-    /// Makes the parent strip tappable; nil renders it as plain context.
-    var openParent: ((CommentListItem) -> Void)?
+    /// Review sessions leave parent context unlinked.
+    var parentDestination: ((CommentListItem) -> CommentDetailView)?
     let retry: () -> Void
 
     var body: some View {
@@ -139,7 +138,7 @@ struct CommentDetailBody: View {
             }
             if let parent = viewModel.parentPreview {
                 Divider()
-                CommentParentStrip(parent: parent, onTap: parentTapAction(parent))
+                parentStrip(parent)
                     .padding(.horizontal)
                     .padding(.vertical, 10)
             }
@@ -149,9 +148,18 @@ struct CommentDetailBody: View {
         }
     }
 
-    private func parentTapAction(_ parent: CommentListItem) -> (() -> Void)? {
-        guard let openParent else { return nil }
-        return { openParent(parent) }
+    @ViewBuilder
+    private func parentStrip(_ parent: CommentListItem) -> some View {
+        if let parentDestination {
+            NavigationLink {
+                parentDestination(parent)
+            } label: {
+                CommentParentStrip(parent: parent, showsDisclosureIndicator: true)
+            }
+            .buttonStyle(.plain)
+        } else {
+            CommentParentStrip(parent: parent)
+        }
     }
 
     @ViewBuilder
@@ -202,28 +210,28 @@ private final class StubContentRenderer: NSObject, CommentContentRendering {
     }
 }
 
+private struct PreviewNoticePresenter: NoticePresenting {
+    func present(title: String) {}
+}
+
 #Preview {
     let service = PreviewCommentsService(fetchedStatus: .pending, numberOfReplies: 2)
     let coordinator = CommentsModerationCoordinator(service: service)
     let titleResolver = PostTitleResolver(fetcher: { _ in
         PostTitleResolver.FetchResult(titles: [10: "Reviewing the 2027 Upgrade"])
     })
-    let viewModel = CommentDetailViewModel(
-        commentID: 1,
-        seed: nil,
+    let router = CommentsDetailRouter(
         service: service,
-        capabilities: CommentsCapabilityResolver(capabilities: PreviewCapabilities()),
+        capabilities: PreviewCapabilities(),
         coordinator: coordinator,
         draftStore: PreviewCommentDraftStore(),
-        titleResolver: titleResolver
+        titleResolver: titleResolver,
+        tracker: nil,
+        noticePresenter: PreviewNoticePresenter(),
+        makeContentRenderer: { StubContentRenderer() }
     )
     return NavigationStack {
-        CommentDetailView(
-            viewModel: viewModel,
-            titleResolver: titleResolver,
-            renderer: StubContentRenderer(),
-            openComment: { _, _ in }
-        )
+        CommentDetailView(commentID: 1, seed: nil, router: router)
     }
 }
 #endif
