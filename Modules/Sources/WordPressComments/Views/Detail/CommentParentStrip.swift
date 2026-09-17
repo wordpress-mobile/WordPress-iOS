@@ -1,27 +1,22 @@
 import SwiftUI
 
 /// The "In reply to" strip shown above the content when the comment has a
-/// parent. Tapping it pushes the parent comment via the recursive
-/// `openComment` closure.
+/// parent.
 struct CommentParentStrip: View {
     let parent: CommentListItem
-    let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 8) {
-                Text(text)
-                    .font(.footnote)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                Spacer(minLength: 0)
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            .contentShape(Rectangle())
+        HStack(spacing: 8) {
+            Text(text)
+                .font(.footnote)
+                .lineLimit(1)
+                .truncationMode(.tail)
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
-        .buttonStyle(.plain)
+        .contentShape(Rectangle())
     }
 
     private var text: AttributedString {
