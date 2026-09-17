@@ -26,10 +26,15 @@ import WordPressUI
 }
 
 extension WPTabBarController {
-    @objc public func didSelectViewController(_ viewController: UIViewController) {
-        if #available(iOS 26.0, *) {
-            tabBarMinimizeBehavior = viewController == self.readerNavigationController ? .onScrollDown : .never
-        }
+    /// Keeps ``tabBarMinimizeBehavior`` in sync with the selected tab.
+    ///
+    /// This is driven from the selection itself rather than from `UITabBarControllerDelegate`.
+    /// UIKit only sends the delegate messages when the user taps the tab bar, so every
+    /// programmatic selection – deep links, push notifications, `reloadTabs`, the key
+    /// commands – would otherwise leave the behavior set for whichever tab was tapped last.
+    @objc public func updateTabBarMinimizeBehavior() {
+        guard #available(iOS 26.0, *) else { return }
+        tabBarMinimizeBehavior = selectedIndex == WPTab.reader.rawValue ? .onScrollDown : .never
     }
 
     @objc public class func readerLocalizedTitle() -> String {
