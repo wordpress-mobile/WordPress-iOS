@@ -3,13 +3,16 @@ import WordPressData
 import WordPressUI
 
 protocol SiteMenuViewControllerDelegate: AnyObject {
-    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController)
+    func siteMenuViewController(
+        _ siteMenuViewController: SiteMenuViewController,
+        showDetailsViewController viewController: UIViewController
+    )
 }
 
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
     let blog: Blog
-    private let blogDetailsVC: SiteMenuListViewController
+    private let blogDetailsVC: BlogDetailsViewController
 
     weak var delegate: SiteMenuViewControllerDelegate?
 
@@ -19,7 +22,7 @@ final class SiteMenuViewController: UIViewController {
 
     init(blog: Blog) {
         self.blog = blog
-        blogDetailsVC = SiteMenuListViewController(blog: blog)
+        blogDetailsVC = BlogDetailsViewController(blog: blog)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -32,7 +35,6 @@ final class SiteMenuViewController: UIViewController {
 
         blogDetailsVC.blog = blog
         blogDetailsVC.isSidebarModeEnabled = true
-        blogDetailsVC.isScrollEnabled = true
         blogDetailsVC.presentationDelegate = self
 
         addChild(blogDetailsVC)
@@ -81,14 +83,6 @@ final class SiteMenuViewController: UIViewController {
 
     func showSubsection(_ subsection: BlogDetailsRowKind, userInfo: [String: Any]) {
         blogDetailsVC.showDetailView(for: subsection, userInfo: userInfo)
-    }
-}
-
-// Updates the `BlogDetailsViewController` style to match the native sidebar style.
-private final class SiteMenuListViewController: BlogDetailsViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.tableViewModel?.useSiteMenuStyle = true
     }
 }
 
