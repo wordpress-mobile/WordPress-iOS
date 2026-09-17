@@ -3,18 +3,13 @@ import SwiftUI
 struct CommentsListView: View {
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
-    /// Pushes the detail screen for a tapped row.
-    let openComment: (Int64, CommentListItem?) -> Void
+    let router: CommentsDetailRouter
 
     var body: some View {
         List {
             ForEach(viewModel.items) { item in
-                // A Button (plain style) so assistive tech announces and
-                // activates the row as a control; the plain style keeps the
-                // visual layout unchanged and the rectangle content shape keeps
-                // the whole row tappable.
-                Button {
-                    openComment(item.id, item)
+                NavigationLink {
+                    CommentDetailView(commentID: item.id, seed: item, router: router)
                 } label: {
                     CommentRowView(
                         item: item,

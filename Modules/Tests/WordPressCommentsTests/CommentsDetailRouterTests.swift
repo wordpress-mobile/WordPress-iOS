@@ -1,48 +1,41 @@
 import Foundation
 import Testing
-import UIKit
 @testable import WordPressComments
 
 @MainActor
 struct CommentsDetailRouterTests {
-    @Test func openPushesDetailOntoHostNavigationStack() {
-        let host = UIViewController()
-        let navigation = UINavigationController(rootViewController: host)
+    @Test func makesDetailViewModelWithRequestedIdentityAndSeed() {
         let router = makeRouter(capabilities: FakeCommentsCapabilities())
-        router.host = host
+        let seed = makeItem(id: 42, authorName: "Seed author")
 
-        router.open(id: 1, seed: nil)
+        let viewModel = router.makeViewModel(id: 42, seed: seed)
 
-        #expect(navigation.viewControllers.count == 2)
+        #expect(viewModel.commentID == 42)
+        #expect(viewModel.header?.authorName == "Seed author")
     }
 
-    @Test func resolvesCapabilityOnceAndRetriesAfterFailure() async {
+    @Test func makesRendererWithLinkHandler() throws {
+        let router = makeRouter(capabilities: FakeCommentsCapabilities())
+
+        let renderer = try #require(router.makeRenderer() as? FakeContentRenderer)
+
+        #expect(renderer.onLinkTapped != nil)
+    }
+
+    @Test func makeViewModelReusesCapabilityAndRetriesAfterFailure() async {
         let capabilities = FakeCommentsCapabilities()
         capabilities.error = FakeServiceError()
         let router = makeRouter(capabilities: capabilities)
-        router.host = UINavigationController(rootViewController: UIViewController()).viewControllers[0]
 
         // Resolved while the list loads; the failure is not cached.
         await waitUntil { capabilities.invocations == 1 }
         capabilities.error = nil
-        router.open(id: 1, seed: nil)
+        _ = router.makeViewModel(id: 1, seed: nil)
         await waitUntil { capabilities.invocations == 2 }
 
-        // Once known, later opens reuse the answer.
-        router.open(id: 2, seed: nil)
+        // Once known, later detail screens reuse the answer.
+        _ = router.makeViewModel(id: 2, seed: nil)
         for _ in 0..<10 { await Task.yield() }
         #expect(capabilities.invocations == 2)
-    }
-
-    private func makeRouter(capabilities: FakeCommentsCapabilities) -> CommentsDetailRouter {
-        CommentsDetailRouter(
-            service: FakeCommentsService(),
-            capabilities: capabilities,
-            coordinator: CommentsModerationCoordinator(service: FakeCommentsService()),
-            titleResolver: PostTitleResolver(fetcher: { _ in .init(titles: [:]) }),
-            tracker: nil,
-            noticePresenter: FakeNoticePresenter(),
-            makeContentRenderer: { FakeContentRenderer() }
-        )
     }
 }

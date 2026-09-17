@@ -4,26 +4,20 @@ import WordPressUI
 
 struct CommentsTabView: View {
     @State private var selectedFilter: CommentsListFilter = .all
-    @State private var viewModels: [CommentsListFilter: CommentsListViewModel]
-    @State private var titleResolver: PostTitleResolver
+    private let viewModels: [CommentsListFilter: CommentsListViewModel]
 
-    /// A tapped row (and, recursively, a parent comment) pushes a detail screen
-    /// through it.
     private let router: CommentsDetailRouter
 
     init(
         viewModels: [CommentsListFilter: CommentsListViewModel],
-        titleResolver: PostTitleResolver,
         router: CommentsDetailRouter
     ) {
         self.router = router
-        _titleResolver = State(initialValue: titleResolver)
-        _viewModels = State(initialValue: viewModels)
+        self.viewModels = viewModels
     }
 
     /// Builds one view model per filter tab, all alive for the screen's
-    /// lifetime. The hosting controller keeps the same instances so it can
-    /// retry stale reloads on appearance.
+    /// lifetime, including stale retries when returning from detail.
     ///
     /// The All view model is built first so Pending and Approved can seed
     /// their first appearance from its loaded items. All is a strict
@@ -80,13 +74,24 @@ struct CommentsTabView: View {
             if let viewModel = viewModels[selectedFilter] {
                 CommentsListView(
                     viewModel: viewModel,
-                    titleResolver: titleResolver,
-                    openComment: { router.open(id: $0, seed: $1) }
+                    titleResolver: router.titleResolver,
+                    router: router
                 )
             }
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await reloadStaleTabs()
+        }
+    }
+
+    func reloadStaleTabs() async {
+        await withTaskGroup(of: Void.self) { group in
+            for viewModel in viewModels.values {
+                group.addTask { await viewModel.reloadIfStale() }
+            }
+        }
     }
 
     private var tabBar: some View {
