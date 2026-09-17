@@ -190,7 +190,7 @@ extension BlogDetailsViewController {
             settingsVC.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 systemItem: .done,
                 primaryAction: UIAction { [weak self] _ in
-                    self?.tableView?.deselectSelectedRowWithAnimation(true)
+                    self?.tableViewModel?.clearSelection()
                     self?.dismiss(animated: true, completion: nil)
                 }
             )
