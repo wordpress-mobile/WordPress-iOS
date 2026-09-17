@@ -7,22 +7,26 @@ import WordPressUI
 import Support
 import SwiftUI
 
-private struct Section {
-    let title: String?
-    let rows: [Row]
-    let footerTitle: String?
-    let category: SectionCategory
+private typealias Row = BlogDetailsTableViewModel.Row
 
-    init(
-        title: String? = nil,
-        rows: [Row],
-        footerTitle: String? = nil,
-        category: SectionCategory
-    ) {
-        self.title = title
-        self.rows = rows
-        self.footerTitle = footerTitle
-        self.category = category
+extension BlogDetailsTableViewModel {
+    struct Section {
+        let title: String?
+        let rows: [Row]
+        let footerTitle: String?
+        let category: SectionCategory
+
+        init(
+            title: String? = nil,
+            rows: [Row],
+            footerTitle: String? = nil,
+            category: SectionCategory
+        ) {
+            self.title = title
+            self.rows = rows
+            self.footerTitle = footerTitle
+            self.category = category
+        }
     }
 }
 
@@ -966,27 +970,29 @@ enum BlogDetailsUserInfoKeys {
 
 // MARK: - Table view content
 
-private enum SectionCategory {
-    case reminders
-    case domainCredit
-    case extensiveLogging
-    case xmlrpcDisabled
-    case home
-    case general
-    case jetpack
-    case personalize
-    case configure
-    case external
-    case removeSite
-    case migrationSuccess
-    case jetpackBrandingCard
-    case jetpackInstallCard
-    case content
-    case traffic
-    case maintenance
+extension BlogDetailsTableViewModel {
+    enum SectionCategory: Hashable {
+        case reminders
+        case domainCredit
+        case extensiveLogging
+        case xmlrpcDisabled
+        case home
+        case general
+        case jetpack
+        case personalize
+        case configure
+        case external
+        case removeSite
+        case migrationSuccess
+        case jetpackBrandingCard
+        case jetpackInstallCard
+        case content
+        case traffic
+        case maintenance
+    }
 }
 
-enum BlogDetailsRowKind {
+enum BlogDetailsRowKind: Hashable {
     case reminders
     case domain
     case stats
@@ -1020,47 +1026,57 @@ enum BlogDetailsRowKind {
     case removeSite
 }
 
-private struct Row {
-    let kind: BlogDetailsRowKind
-    let title: String
-    let accessibilityIdentifier: String?
-    let accessibilityHint: String?
-    let image: UIImage?
-    let imageColor: UIColor?
-    let accessoryView: UIView?
-    let detail: String?
-    let showsSelectionState: Bool
-    let showsDisclosureIndicator: Bool
-    let action: (([String: Any]) -> Void)?
+extension BlogDetailsTableViewModel {
+    struct Row: Identifiable {
+        enum ID: Hashable {
+            case row(BlogDetailsRowKind)
+            case pinnedPostType(String)
+        }
 
-    init(
-        kind: BlogDetailsRowKind,
-        title: String,
-        accessibilityIdentifier: String? = nil,
-        accessibilityHint: String? = nil,
-        image: UIImage?,
-        imageColor: UIColor? = .label,
-        accessoryView: UIView? = nil,
-        detail: String? = nil,
-        showsSelectionState: Bool = true,
-        showsDisclosureIndicator: Bool = true,
-        action: (([String: Any]) -> Void)? = nil,
-    ) {
-        self.title = title
-        self.accessibilityIdentifier = accessibilityIdentifier
-        self.accessibilityHint = accessibilityHint
-        self.image = imageColor == nil ? image : image?.withRenderingMode(.alwaysTemplate)
-        self.imageColor = imageColor
-        self.accessoryView = accessoryView
-        self.detail = detail
-        self.showsSelectionState = showsSelectionState
-        self.showsDisclosureIndicator = showsDisclosureIndicator
-        self.action = action
-        self.kind = kind
+        let id: ID
+        let kind: BlogDetailsRowKind
+        let title: String
+        let accessibilityIdentifier: String?
+        let accessibilityHint: String?
+        let image: UIImage?
+        let imageColor: UIColor?
+        let accessoryView: UIView?
+        let detail: String?
+        let showsSelectionState: Bool
+        let showsDisclosureIndicator: Bool
+        let action: (([String: Any]) -> Void)?
+
+        init(
+            kind: BlogDetailsRowKind,
+            id: ID? = nil,
+            title: String,
+            accessibilityIdentifier: String? = nil,
+            accessibilityHint: String? = nil,
+            image: UIImage?,
+            imageColor: UIColor? = .label,
+            accessoryView: UIView? = nil,
+            detail: String? = nil,
+            showsSelectionState: Bool = true,
+            showsDisclosureIndicator: Bool = true,
+            action: (([String: Any]) -> Void)? = nil,
+        ) {
+            self.title = title
+            self.accessibilityIdentifier = accessibilityIdentifier
+            self.accessibilityHint = accessibilityHint
+            self.image = imageColor == nil ? image : image?.withRenderingMode(.alwaysTemplate)
+            self.imageColor = imageColor
+            self.accessoryView = accessoryView
+            self.detail = detail
+            self.showsSelectionState = showsSelectionState
+            self.showsDisclosureIndicator = showsDisclosureIndicator
+            self.action = action
+            self.kind = kind
+            self.id = id ?? .row(kind)
+        }
     }
 }
 
-extension Row {
+private extension BlogDetailsTableViewModel.Row {
     static func home(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .home,
@@ -1117,6 +1133,7 @@ extension Row {
     static func pinnedPostType(_ type: PinnedPostType, viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .pinnedPostType,
+            id: .pinnedPostType(type.slug),
             title: type.name,
             image: UIImage(dashicon: type.icon),
             action: { [weak viewController] _ in
