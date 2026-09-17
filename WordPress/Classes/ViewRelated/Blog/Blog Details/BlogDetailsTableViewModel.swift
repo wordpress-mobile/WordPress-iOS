@@ -6,6 +6,7 @@ import WordPressLegacy
 import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
+import WordPressComments
 import Support
 import SwiftUI
 
@@ -27,6 +28,7 @@ extension BlogDetailsTableViewModel {
             guard blog != oldValue else { return }
             // Rebuild right away so that no row keeps the previous site's custom post types.
             customPostTypes = []
+            updateCommentsView()
             configureTableViewData()
             restartCustomPostTypesObservation()
         }
@@ -40,6 +42,7 @@ extension BlogDetailsTableViewModel {
     }
 
     var customPostTypes: [PostTypeDetailsWithEditContext] = []
+    private var commentsView: CommentsView?
 
     private let usesWordPressLayout: Bool
     private let makeCustomPostTypeService: (Blog) -> CustomPostTypeService.SiteMenuService?
@@ -143,7 +146,13 @@ extension BlogDetailsTableViewModel {
             newSections.append(Section(rows: [], category: .jetpackBrandingCard))
         }
 
+        updateCommentsView()
         sections = newSections
+    }
+
+    /// Resolving the Comments client reads the keychain, so cache the destination instead of building it per render.
+    private func updateCommentsView() {
+        commentsView = isSplitViewDisplayed ? nil : CommentsRouting.makeView(for: blog)
     }
 
     var isSplitViewDisplayed: Bool {
@@ -162,6 +171,14 @@ extension BlogDetailsTableViewModel {
 
     func clearSelection() {
         selectedRowID = nil
+    }
+
+    func commentsDestination(for row: Row) -> CommentsView? {
+        row.kind == .comments ? commentsView : nil
+    }
+
+    func trackCommentsOpened() {
+        viewController?.trackCommentsV2Opened(from: .row)
     }
 
     func select(_ row: Row) {

@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressUI
 
 struct BlogDetailsView: View {
+    @State private var isShowingComments = false
     @ObservedObject var viewModel: BlogDetailsTableViewModel
     var headerViewController: UIViewController?
     let refresh: () async -> Void
@@ -16,6 +17,9 @@ struct BlogDetailsView: View {
         }
         .refreshable { await refresh() }
         .accessibilityIdentifier("Blog Details Table")
+        .onChange(of: viewModel.blog.objectID) { _, _ in
+            isShowingComments = false
+        }
     }
 
     private func menu(headerWidth: CGFloat) -> some View {
@@ -78,7 +82,25 @@ struct BlogDetailsView: View {
 
     @ViewBuilder
     private func menuButton(_ row: BlogDetailsTableViewModel.Row) -> some View {
-        if viewModel.isSplitViewDisplayed, row.showsSelectionState {
+        if let destination = viewModel.commentsDestination(for: row) {
+            NavigationLink(
+                isActive: Binding(
+                    get: { isShowingComments },
+                    set: { isActive in
+                        if isActive, !isShowingComments {
+                            viewModel.trackCommentsOpened()
+                        }
+                        isShowingComments = isActive
+                    }
+                )
+            ) {
+                destination
+                    .id(viewModel.blog.objectID)
+                    .hidesAppTabBar()
+            } label: {
+                BlogDetailsMenuRow(row: row)
+            }
+        } else if viewModel.isSplitViewDisplayed, row.showsSelectionState {
             BlogDetailsMenuRow(row: row)
         } else {
             Button(role: row.kind == .removeSite ? .destructive : nil) {
