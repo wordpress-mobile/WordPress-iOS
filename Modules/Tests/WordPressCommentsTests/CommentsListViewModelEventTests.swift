@@ -450,4 +450,77 @@ struct CommentsListViewModelEventTests {
         #expect(viewModel.state == .loaded)
         #expect(viewModel.items.map(\.id) == [1])
     }
+
+    // MARK: - Reply created: stales only tabs matching the reply's status
+
+    @Test func replyCreatedApprovedStalesApprovedAndAllOnly() async {
+        for filter in CommentsListFilter.allCases {
+            let service = FakeCommentsService()
+            service.queuedResults = [.success(makePage(items: [makeItem(id: 1)], hasNext: false))]
+            let viewModel = CommentsListViewModel(filter: filter, service: service)
+            await viewModel.onAppear()
+
+            viewModel.apply(.replyCreated(parentID: 1, replyStatus: .approved))
+
+            switch filter {
+            case .approved, .all:
+                #expect(viewModel.state == .awaitingReload)
+            case .pending, .spam, .trash:
+                #expect(viewModel.state == .loaded)
+            }
+        }
+    }
+
+    @Test func replyCreatedPendingStalesPendingAndAllOnly() async {
+        for filter in CommentsListFilter.allCases {
+            let service = FakeCommentsService()
+            service.queuedResults = [.success(makePage(items: [makeItem(id: 1)], hasNext: false))]
+            let viewModel = CommentsListViewModel(filter: filter, service: service)
+            await viewModel.onAppear()
+
+            viewModel.apply(.replyCreated(parentID: 1, replyStatus: .pending))
+
+            switch filter {
+            case .pending, .all:
+                #expect(viewModel.state == .awaitingReload)
+            case .approved, .spam, .trash:
+                #expect(viewModel.state == .loaded)
+            }
+        }
+    }
+
+    @Test func replyCreatedDefersTheReloadToTheNextAppearance() async {
+        let service = FakeCommentsService()
+        service.queuedResults = [
+            .success(makePage(items: [makeItem(id: 1)], hasNext: false)),
+            .success(makePage(items: [makeItem(id: 2), makeItem(id: 1)], hasNext: false))
+        ]
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+        await viewModel.onAppear()
+
+        viewModel.apply(.replyCreated(parentID: 1, replyStatus: .approved))
+        viewModel.apply(.replyCreated(parentID: 1, replyStatus: .approved))
+        for _ in 0..<10 { await Task.yield() }
+
+        // No list tab is visible while a reply is sent, so the stale tab
+        // keeps its rows and issues no fetch until it next appears.
+        #expect(viewModel.state == .awaitingReload)
+        #expect(viewModel.items.map(\.id) == [1])
+        #expect(service.requests.count == 1)
+
+        await viewModel.reloadIfStale()
+
+        #expect(viewModel.state == .loaded)
+        #expect(viewModel.items.map(\.id) == [2, 1])
+        #expect(service.requests.count == 2)
+    }
+
+    @Test func replyCreatedBeforeLoadIsIgnored() async {
+        let service = FakeCommentsService()
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+
+        viewModel.apply(.replyCreated(parentID: 1, replyStatus: .approved))
+
+        #expect(viewModel.state == .idle)
+    }
 }
