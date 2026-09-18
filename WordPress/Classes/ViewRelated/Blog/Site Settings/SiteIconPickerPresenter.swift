@@ -38,13 +38,21 @@ final class SiteIconPickerPresenter: NSObject {
 
     fileprivate func showLoadingMessage() {
         SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading...",
-                                                         comment: "Text displayed in HUD while a media item is being loaded."))
+        SVProgressHUD.show(
+            withStatus: NSLocalizedString(
+                "Loading...",
+                comment: "Text displayed in HUD while a media item is being loaded."
+            )
+        )
     }
 
     fileprivate func showErrorLoadingImageMessage() {
-        SVProgressHUD.showDismissibleError(status: NSLocalizedString("Unable to load the image. Please choose a different one or try again later.",
-                                                                         comment: "Text displayed in HUD if there was an error attempting to load a media image."))
+        SVProgressHUD.showDismissibleError(
+            status: NSLocalizedString(
+                "Unable to load the image. Please choose a different one or try again later.",
+                comment: "Text displayed in HUD if there was an error attempting to load a media image."
+            )
+        )
     }
 
     /// Shows a new ImageCropViewController for the given image.
@@ -80,16 +88,19 @@ final class SiteIconPickerPresenter: NSObject {
                             return
                         }
                         var uploadProgress: Progress?
-                        mediaService.uploadMedia(media,
-                                                 automatedRetry: false,
-                                                 progress: &uploadProgress,
-                                                 success: {
-                            WPAnalytics.track(.siteSettingsSiteIconUploaded)
-                            self.onCompletion?(media, nil)
-                        }, failure: { error in
-                            WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
-                            self.onCompletion?(nil, error)
-                        })
+                        mediaService.uploadMedia(
+                            media,
+                            automatedRetry: false,
+                            progress: &uploadProgress,
+                            success: {
+                                WPAnalytics.track(.siteSettingsSiteIconUploaded)
+                                self.onCompletion?(media, nil)
+                            },
+                            failure: { error in
+                                WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
+                                self.onCompletion?(nil, error)
+                            }
+                        )
                     }
                 }
             }
@@ -125,7 +136,10 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
 }
 
 extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
-    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePicker(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
         guard let presentingViewController = picker.presentingViewController else {
             return
         }
@@ -138,7 +152,10 @@ extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
 }
 
 extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
-    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+    func siteMediaPickerViewController(
+        _ viewController: SiteMediaPickerViewController,
+        didFinishWithSelection selection: [Media]
+    ) {
         guard let media = selection.first else {
             onCompletion?(nil, nil)
             return
