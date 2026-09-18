@@ -20,6 +20,13 @@ public enum MediaTrackerEvent: Sendable {
     // Upload events:
     case mediaLibraryAdded(source: MediaUploadSource, kind: MediaKind)
     case mediaLibraryUploadRetried
+
+    // Detail / Edit events:
+    case mediaLibraryPreviewedItem
+    case mediaLibraryEditedItemMetadata
+    case mediaLibraryDeletedItems(count: Int)
+    case siteMediaShareTapped(count: Int)
+    case mediaLibrarySharedItemLink
 }
 
 public enum MediaUploadSource: Sendable {
