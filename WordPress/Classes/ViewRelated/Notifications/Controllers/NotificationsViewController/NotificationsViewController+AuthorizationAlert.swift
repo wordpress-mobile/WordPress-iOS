@@ -50,7 +50,7 @@ extension NotificationsViewController {
         } content: {
             ScaledImage("wpl-bell", height: 78)
                 .foregroundStyle(.secondary)
-        } actions: {
+        } actions: { [weak hostVC] in
             Button {
                 approveAction()
                 WPAnalytics.track(allowEvent, properties: [Analytics.locationKey: Analytics.alertKey])
@@ -62,7 +62,7 @@ extension NotificationsViewController {
             .buttonStyle(.borderedProminent)
             .controlSize(.extraLarge)
 
-            Button(Strings.notNowText) { [weak hostVC] in
+            Button(Strings.notNowText) {
                 WPAnalytics.track(noEvent, properties: [Analytics.locationKey: Analytics.alertKey])
                 hostVC?.presentingViewController?.dismiss(animated: true)
             }
