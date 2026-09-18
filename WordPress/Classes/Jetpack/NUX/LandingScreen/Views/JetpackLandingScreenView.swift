@@ -47,13 +47,13 @@ final class JetpackLandingScreenView: UIView {
             stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: insets.leading),
             stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -insets.trailing)
         ])
-    }
 
-    // MARK: - Layout Lifecycle
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        self.updateLabelsTextAttributes()
+        registerForTraitChanges([
+            UITraitHorizontalSizeClass.self,
+            UITraitUserInterfaceStyle.self
+        ]) { (self: Self, _: UITraitCollection) in
+            self.updateLabelsTextAttributes()
+        }
     }
 
     // MARK: - Label Factory

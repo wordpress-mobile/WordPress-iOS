@@ -51,6 +51,14 @@ class JetpackPrologueViewController: UIViewController {
         view.backgroundColor = JetpackPrologueStyleGuide.backgroundColor
 
         loadNewPrologueView()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.rebuildGradientLayer()
+        }
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.updateLabel(for: self.traitCollection)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,13 +105,7 @@ class JetpackPrologueViewController: UIViewController {
         titleLabel.isHidden = contentSize.isAccessibilityCategory
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
-            updateLabel(for: traitCollection)
-            return
-        }
+    private func rebuildGradientLayer() {
         gradientLayer.removeFromSuperlayer()
         gradientLayer = makeGradientLayer()
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)

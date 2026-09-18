@@ -107,6 +107,29 @@ open class FancyButton: UIButton {
         }
     }
 
+    // MARK: - Initializers
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        commonInit()
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        commonInit()
+    }
+
+    private func commonInit() {
+        registerForTraitChanges([
+            UITraitUserInterfaceStyle.self,
+            UITraitDisplayScale.self
+        ]) { (self: Self, _: UITraitCollection) in
+            self.configureBackgrounds()
+        }
+    }
+
     // MARK: - LifeCycle Methods
 
     open override func didMoveToWindow() {
@@ -117,11 +140,6 @@ open class FancyButton: UIButton {
     open override func awakeFromNib() {
         super.awakeFromNib()
         configureAppearance()
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        configureBackgrounds()
     }
 
     // This implementation is required to allow the text of a button to
