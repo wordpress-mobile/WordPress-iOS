@@ -5,6 +5,7 @@
 * [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]
 * [*] Fix an issue where the Reader tab and Me tab show incorrect state after logging out [#25952]
 * [*] Stats: Open the latest post when tapping the Latest Post Summary card in the Insights tab [#25896]
+* [*] Site menu: Hide Application Passwords for WordPress.com sites that don't support them
 
 27.2
 -----
