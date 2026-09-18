@@ -69,7 +69,7 @@ struct PostSettingsExcerptEditor: View {
         }
         .onChange(of: text) { _, newValue in
             // Debounce word count calculation
-            Task {
+            _ = Task {
                 try await Task.sleep(for: .milliseconds(330))
                 self.wordCount = newValue.wordCount
             }

@@ -259,7 +259,8 @@ class PostCoordinator: NSObject {
 
     /// Sets the post state to "updating" and performs the given changes.
     private func performChanges(_ changes: RemotePostUpdateParameters, for post: AbstractPost) {
-        Task { @MainActor in
+        // The error is surfaced by `update(_:changes:)` itself.
+        _ = Task { @MainActor in
             let post = post.getOriginal()
             setUpdating(true, for: post)
             defer { setUpdating(false, for: post) }

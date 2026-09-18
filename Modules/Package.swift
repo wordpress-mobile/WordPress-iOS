@@ -233,6 +233,7 @@ let package = Package(
             dependencies: [
                 "WordPressCoreProtocols",
                 "WordPressShared",
+                .product(name: "Logging", package: "swift-log"),
                 .product(name: "WordPressAPI", package: "wordpress-rs")
             ]
         ),

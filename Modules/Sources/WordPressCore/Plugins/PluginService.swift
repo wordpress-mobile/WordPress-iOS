@@ -1,5 +1,8 @@
 import Foundation
+import Logging
 import WordPressAPI
+
+private let log = Logger(label: "org.wordpress.plugins")
 
 public actor PluginService: PluginServiceProtocol {
     private let client: WordPressClient
@@ -28,7 +31,11 @@ public actor PluginService: PluginServiceProtocol {
         // function takes a REST API response type, which is not exposed as a public API of `PluginService`.
         // We could refactor this API if we need to call `checkPluginUpdates` directly.
         Task.detached {
-            try await self.checkPluginUpdates(plugins: response.data)
+            do {
+                try await self.checkPluginUpdates(plugins: response.data)
+            } catch {
+                log.error("Failed to check plugin updates: \(error)")
+            }
         }
     }
 

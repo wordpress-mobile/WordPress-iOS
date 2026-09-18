@@ -50,7 +50,7 @@ final class TagSuggestionsService {
         }
         // Refresh in the background without blocking progress
         let blogID = TaggedManagedObjectID(blog)
-        Task { @MainActor in
+        _ = Task { @MainActor in
             let blog = try coreData.mainContext.existingObject(with: blogID)
             try await syncTags(for: blog)
         }
