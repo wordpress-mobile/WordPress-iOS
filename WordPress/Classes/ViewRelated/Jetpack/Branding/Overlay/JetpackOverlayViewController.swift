@@ -30,10 +30,4 @@ class JetpackOverlayViewController: UIViewController {
         super.viewDidLayoutSubviews()
         setPreferredContentSize()
     }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        view.setNeedsLayout()
-    }
 }

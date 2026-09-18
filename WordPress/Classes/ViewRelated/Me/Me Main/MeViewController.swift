@@ -81,13 +81,6 @@ public class MeViewController: UITableViewController {
         registerUserActivity()
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Required to update the tableview cell disclosure indicators
-        reloadViewModel()
-    }
-
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
     }

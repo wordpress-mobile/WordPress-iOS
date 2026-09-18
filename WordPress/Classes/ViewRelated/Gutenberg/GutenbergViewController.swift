@@ -383,11 +383,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         ghostView.frame = view.frame
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        ghostView.frame = view.frame
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
