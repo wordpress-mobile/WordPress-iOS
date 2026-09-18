@@ -3,13 +3,13 @@ import SwiftUI
 struct CommentsListView: View {
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
-    let router: CommentsDetailRouter
+    let context: CommentDetailContext
 
     var body: some View {
         List {
             ForEach(viewModel.items) { item in
                 NavigationLink {
-                    CommentDetailView(commentID: item.id, seed: item, router: router)
+                    CommentDetailView(commentID: item.id, seed: item, context: context)
                 } label: {
                     CommentRowView(item: item, titleState: titleResolver.titleState(for: item.postID))
                         .contentShape(Rectangle())
