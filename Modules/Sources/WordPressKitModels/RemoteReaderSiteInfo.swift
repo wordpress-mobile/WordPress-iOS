@@ -26,7 +26,9 @@ private let SubscriptionDeliveryMethodsKey = "delivery_methods"
 private let DeliveryMethodEmailKey = "email"
 private let DeliveryMethodNotificationKey = "notification"
 
-@objcMembers public class RemoteReaderSiteInfo: NSObject {
+/// Parsed from an API response on one thread, then handed to callers without further
+/// mutation, so crossing a task boundary is safe despite the mutable properties.
+@objcMembers public class RemoteReaderSiteInfo: NSObject, @unchecked Sendable {
     public var feedID: NSNumber?
     public var feedURL: String?
     public var isFollowing: Bool = false

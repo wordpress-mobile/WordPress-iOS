@@ -81,7 +81,8 @@ final class RemoteDownloader: Sendable {
 /// so it's the hook for installing the KVO observation.
 private final class ProgressForwardingDelegate: NSObject, URLSessionTaskDelegate {
     private let progress: Progress
-    private var observation: NSKeyValueObservation?
+    // Only touched from the URLSession delegate queue, which serialises its callbacks.
+    nonisolated(unsafe) private var observation: NSKeyValueObservation?
 
     init(progress: Progress) {
         self.progress = progress
