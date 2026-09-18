@@ -145,6 +145,24 @@ class ActionSheetViewController: UIViewController {
         refreshForTraits()
         updateScrollViewHeight()
         updatePreferredContentSize()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.refreshForTraits()
+            self.updatePreferredContentSize()
+        }
+    }
+
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+
+        // viewDidLoad runs before presentation, so presentingViewController and the
+        // final traits are only valid here. This replaces the first post-presentation
+        // trait callback the old override relied on. viewIsAppearing fires once per
+        // appearance transition and the popover reframe does not re-enter it, so it
+        // cannot restart the CMM-2111 recursion (that loop ran through
+        // viewDidLayoutSubviews, which never calls updatePreferredContentSize()).
+        refreshForTraits()
+        updatePreferredContentSize()
     }
 
     private func button(_ info: ActionSheetButton) -> UIButton {
@@ -185,12 +203,6 @@ class ActionSheetViewController: UIViewController {
         return button
     }
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshForTraits()
-        updatePreferredContentSize()
-    }
-
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
@@ -209,11 +221,15 @@ class ActionSheetViewController: UIViewController {
         updateScrollViewHeight()
     }
 
-    /// Computes `preferredContentSize` off the layout pass. Assigning it while
-    /// presented in a popover synchronously reframes the popover and re-enters
-    /// `viewDidLayoutSubviews`; doing that from within the layout pass recursed until
-    /// the stack overflowed (CMM-2111). Driving it from `viewDidLoad` and trait
-    /// changes instead breaks that feedback loop.
+    /// Sets `preferredContentSize`. Assigning it while presented in a popover
+    /// synchronously reframes the popover and re-enters `viewDidLayoutSubviews`;
+    /// driving this assignment from a repeating, layout-driven caller recursed
+    /// until the stack overflowed (CMM-2111). The invariant that prevents the loop:
+    /// the popover reframe this triggers must not re-enter the caller, so never
+    /// call this from a layout callback such as `viewDidLayoutSubviews`. Its actual
+    /// callers (`viewDidLoad`, the trait-change registration, and `viewIsAppearing`)
+    /// each run per presentation or per discrete trait change, so the reframe does
+    /// not re-enter them.
     private func updatePreferredContentSize() {
         view.layoutIfNeeded()
         let compressedSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
