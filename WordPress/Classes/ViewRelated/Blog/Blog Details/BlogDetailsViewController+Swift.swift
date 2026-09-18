@@ -482,7 +482,6 @@ public enum BlogDetailsNavigationSource: Int {
         case .notification: "notification"
         case .shortcut: "shortcut"
         case .todayStatsCard: "todays_stats_card"
-        default: ""
         }
     }
 }

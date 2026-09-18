@@ -346,8 +346,6 @@ actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
     }
 }
 
-extension WPComApiClient: @retroactive @unchecked Sendable {}
-
 extension WpComUserInfo {
     func asSupportIdentity() async throws -> SupportUser {
         SupportUser(
