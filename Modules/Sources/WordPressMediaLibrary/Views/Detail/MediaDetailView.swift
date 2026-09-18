@@ -57,8 +57,9 @@ struct MediaDetailView: View {
         }
         .sheet(item: $viewModel.sharePayload) { payload in
             ShareSheetRepresentable(urls: payload.urls) { completed in
-                viewModel.reportShareDismissed(completed: completed)
+                viewModel.reportShareDismissed(payload, completed: completed)
             }
+            .onAppear { viewModel.shareSheetDidPresent() }
         }
         .onChange(of: viewModel.shouldPop) { _, shouldPop in
             if shouldPop { dismiss() }
@@ -66,8 +67,10 @@ struct MediaDetailView: View {
         .task { viewModel.onAppear() }
         // The in-flight guards keep anything from covering this screen while
         // a share prepares, so disappearance means a real pop (or a tab
-        // switch, which is an acceptable reason to cancel too).
-        .onDisappear { viewModel.cancelShare() }
+        // switch, which is an acceptable reason to cancel too). Besides
+        // cancelling, the VM releases a share payload whose sheet never
+        // presented, closing the pop-during-download temp-file leak.
+        .onDisappear { viewModel.viewDidDisappear() }
     }
 
     @ViewBuilder private var editableFieldsSection: some View {

@@ -2,29 +2,42 @@ import SwiftUI
 
 struct BannerView: View {
     let summary: MediaLibraryViewModel.BannerSummary
-    let onTap: () -> Void
+    let onTap: (() -> Void)?
 
     var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 12) {
-                if summary.pendingCount > 0 {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .controlSize(.small)
-                }
-                Text(label)
-                    .font(.subheadline)
-                Spacer()
+        if let onTap {
+            Button(action: onTap) {
+                content
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+        } else {
+            content
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .accessibilityElement(children: .combine)
+        }
+    }
+
+    private var content: some View {
+        HStack(spacing: 12) {
+            if summary.pendingCount > 0 {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .controlSize(.small)
+            }
+            Text(label)
+                .font(.subheadline)
+            Spacer()
+            if onTap != nil {
                 Image(systemName: "chevron.right")
                     .foregroundStyle(.tertiary)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(.thinMaterial, in: .rect(cornerRadius: 12))
         }
-        .buttonStyle(.plain)
         .padding(.horizontal, 16)
-        .padding(.vertical, 8)
+        .padding(.vertical, 10)
+        .background(.thinMaterial, in: .rect(cornerRadius: 12))
     }
 
     private var label: String {

@@ -20,6 +20,7 @@ public enum MediaLibraryHostingController {
         capabilities: MediaLibraryCapabilities,
         externalPickerOptions: [ExternalMediaPickerOption] = []
     ) -> UIViewController {
+        let hostContext = MediaLibraryHostContext()
         let view = MediaLibraryContainerView(
             client: client,
             tracker: tracker,
@@ -28,11 +29,63 @@ public enum MediaLibraryHostingController {
             shareService: shareService,
             navigator: navigator,
             capabilities: capabilities,
-            externalPickerOptions: externalPickerOptions
+            externalPickerOptions: externalPickerOptions,
+            hostContext: hostContext
         )
-        let host = UIHostingController(rootView: view)
+        let host = HostingController(rootView: view, context: hostContext)
         host.navigationItem.largeTitleDisplayMode = .never
         return host
+    }
+}
+
+/// Live, containment-derived facts about the screen's UIKit hosting that the
+/// SwiftUI hierarchy can't observe on its own. Written by `HostingController`
+/// from real containment at appearance time, read by `MediaLibraryView`.
+final class MediaLibraryHostContext: ObservableObject {
+    /// When the screen sits above a bottom tab bar (e.g. Jetpack's tab bar,
+    /// or the iPad split view's compact column), the search field minimizes
+    /// into a toolbar button so it doesn't stack a second bar at the bottom
+    /// of the screen. Without one it stays a full-width search bar.
+    @Published var prefersMinimizedSearchBar = false
+    /// Invoked when the screen is popped from its navigation controller (a
+    /// real pop, not a tab switch). Tears down long-lived screen state such
+    /// as selection mode and its in-flight bulk share.
+    var handleDidPop: (() -> Void)?
+}
+
+private final class HostingController: UIHostingController<MediaLibraryContainerView> {
+    private let context: MediaLibraryHostContext
+
+    init(rootView: MediaLibraryContainerView, context: MediaLibraryHostContext) {
+        self.context = context
+        super.init(rootView: rootView)
+        // Containment can change without a disappear/appear cycle when an
+        // iPad window is resized across the compact boundary; re-derive on
+        // size-class changes too.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: HostingController, _) in
+            self.updateSearchBarPreference()
+        }
+    }
+
+    @available(*, unavailable)
+    required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateSearchBarPreference()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isMovingFromParent {
+            context.handleDidPop?()
+        }
+    }
+
+    private func updateSearchBarPreference() {
+        context.prefersMinimizedSearchBar = (tabBarController != nil)
     }
 }
 
@@ -51,6 +104,7 @@ private struct MediaLibraryContainerView: View {
     let navigator: any MediaDetailNavigator
     let capabilities: MediaLibraryCapabilities
     let externalPickerOptions: [ExternalMediaPickerOption]
+    let hostContext: MediaLibraryHostContext
 
     @State private var resolved: Resolved?
     @State private var error: Error?
@@ -70,7 +124,8 @@ private struct MediaLibraryContainerView: View {
                     service: resolved.service,
                     client: client,
                     tracker: tracker,
-                    externalPickerOptions: externalPickerOptions
+                    externalPickerOptions: externalPickerOptions,
+                    hostContext: hostContext
                 )
             } else if let error {
                 EmptyStateView.failure(error: error) {
@@ -84,19 +139,23 @@ private struct MediaLibraryContainerView: View {
             guard resolved == nil else { return }
             do {
                 let service = try await client.service
-                resolved = Resolved(
-                    viewModel: MediaLibraryViewModel(
-                        service: service,
-                        client: client,
-                        tracker: tracker,
-                        uploader: uploader,
-                        urlOpener: urlOpener,
-                        shareService: shareService,
-                        navigator: navigator,
-                        capabilities: capabilities
-                    ),
-                    service: service
+                let viewModel = MediaLibraryViewModel(
+                    service: service,
+                    client: client,
+                    tracker: tracker,
+                    uploader: uploader,
+                    urlOpener: urlOpener,
+                    shareService: shareService,
+                    navigator: navigator,
+                    capabilities: capabilities
                 )
+                // Popping the screen ends selection mode, which also cancels
+                // an in-flight bulk share and releases its payload; nothing
+                // else references the leaving screen's selection state.
+                hostContext.handleDidPop = { [weak viewModel] in
+                    viewModel?.exitSelectionMode()
+                }
+                resolved = Resolved(viewModel: viewModel, service: service)
             } catch {
                 self.error = error
             }

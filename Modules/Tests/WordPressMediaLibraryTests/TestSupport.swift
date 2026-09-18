@@ -114,8 +114,20 @@ func waitUntil(
 
 // MARK: - MediaWithEditContext fixture
 
+private final class TestMediaDetails: MediaDetails {
+    override func parseAsMimeType(mimeType: String) -> MediaDetailsPayload? {
+        nil
+    }
+}
+
 extension MediaWithEditContext {
-    static func fixture(id: Int64 = 9999) -> MediaWithEditContext {
+    static func fixture(
+        id: Int64 = 9999,
+        titleRaw: String? = nil,
+        slug: String = "",
+        sourceUrl: String = "",
+        mimeType: String = ""
+    ) -> MediaWithEditContext {
         MediaWithEditContext(
             id: id,
             date: "",
@@ -124,13 +136,13 @@ extension MediaWithEditContext {
             link: "",
             modified: "",
             modifiedGmt: Date(timeIntervalSince1970: 0),
-            slug: "",
+            slug: slug,
             status: .inherit,
             postType: "",
             password: nil,
             permalinkTemplate: "",
             generatedSlug: "",
-            title: PostTitleWithEditContext(raw: nil, rendered: ""),
+            title: PostTitleWithEditContext(raw: titleRaw, rendered: titleRaw ?? ""),
             author: 0,
             commentStatus: .closed,
             pingStatus: .closed,
@@ -139,13 +151,24 @@ extension MediaWithEditContext {
             caption: MediaCaptionWithEditContext(raw: "", rendered: ""),
             description: MediaDescriptionWithEditContext(raw: "", rendered: ""),
             mediaType: .file,
-            mimeType: "",
-            mediaDetails: MediaDetails(noHandle: .init()),
+            mimeType: mimeType,
+            mediaDetails: TestMediaDetails(noHandle: .init()),
             postId: nil,
-            sourceUrl: "",
+            sourceUrl: sourceUrl,
             missingImageSizes: []
         )
     }
+}
+
+/// Top-level alias matching the call shape used by selection / share tests.
+func makeMediaFixture(
+    id: Int64 = 9999,
+    titleRaw: String? = nil,
+    slug: String = "",
+    sourceUrl: String = "",
+    mimeType: String = ""
+) -> MediaWithEditContext {
+    .fixture(id: id, titleRaw: titleRaw, slug: slug, sourceUrl: sourceUrl, mimeType: mimeType)
 }
 
 // MARK: - MediaUploadPolicy helper
