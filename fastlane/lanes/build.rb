@@ -53,7 +53,7 @@ platform :ios do
   #   bundle exec fastlane test clean:true
   #
   desc 'Run tests locally'
-  lane :test do |scheme: 'WordPress', device: 'iPhone 17', ios_version: nil, only_testing: nil, clean: false|
+  lane :test do |scheme: 'WordPress', device: 'iPhone 18 Pro', ios_version: nil, only_testing: nil, clean: false|
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,

@@ -20,7 +20,7 @@
 #
 # Optional environment variables:
 #   APP                            wordpress | jetpack (default: jetpack)
-#   SIMULATOR_NAME                 Simulator to boot if none running (default: iPhone 16)
+#   SIMULATOR_NAME                 Simulator to boot if none running (default: iPhone 18 Pro)
 #   TEST_DIR                       Test directory (default: Tests/AgentTests/ui-tests)
 #   SIMULATOR_LLM_PILOT_REPO_URL   Remote repo URL for simulator-llm-pilot
 #   SIMULATOR_LLM_PILOT_REF        Full commit SHA, branch, or tag for
@@ -183,7 +183,7 @@ preflight_test_site
 
 # ── Defaults ─────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
-export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 17}"
+export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 18 Pro}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"

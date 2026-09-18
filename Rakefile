@@ -247,7 +247,8 @@ namespace :install do
 
       # compare xcode version to expected CI spec version
       def xcode_version_is_correct?
-        if xcode_version == EXPECTED_XCODE_VERSION
+        # Xcode reports the marketing version without the CI image's prerelease suffix.
+        if xcode_version == EXPECTED_XCODE_VERSION.split('-').first
           puts 'Correct version of Xcode installed'
           true
         else
