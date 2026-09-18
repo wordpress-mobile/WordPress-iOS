@@ -28,8 +28,7 @@ struct CustomPostTabView: View {
     @State private var metricsStore: CustomPostMetricsStore?
 
     @SiteStorage private var authorFilter: CustomPostAuthorFilter
-    /// Global rather than per site: a user who wants a dense list wants it everywhere.
-    @AppStorage("custom_post_list_density") private var density: CustomPostListDensity = .comfortable
+    @State private var density = CustomPostListDensity.stored
 
     /// The redesign is gated to posts: pages keep their hierarchy, which the cards do not draw.
     private var isRedesignEnabled: Bool {
@@ -124,7 +123,7 @@ struct CustomPostTabView: View {
                 commentFetcher: CustomPostCommentCountFetcher(client: client),
                 viewFetcher: StatsViewCountFetcher(blog: blog)
             )
-            store.isEnabled = !density.isCondensed
+            store.isEnabled = !CustomPostListDensity.stored.isCondensed
             _metricsStore = State(initialValue: store)
         }
         self.applyAuthorFilter()
@@ -194,7 +193,11 @@ struct CustomPostTabView: View {
             if isRedesignEnabled {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        density = density.toggled
+                        // The rows resize and lose or gain their excerpt and hero image; animating
+                        // the change lets the list settle rather than snap.
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            density = density.toggled
+                        }
                     } label: {
                         Image(systemName: density.toggleSystemImage)
                     }
@@ -235,6 +238,7 @@ struct CustomPostTabView: View {
         }
         .onChange(of: authorFilter, applyAuthorFilter)
         .onChange(of: density) {
+            density.store()
             // Condensed rows show no metrics, so none are fetched; switching
             // back has to ask for the rows already on screen.
             metricsStore?.isEnabled = !density.isCondensed

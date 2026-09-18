@@ -26,6 +26,20 @@ enum CustomPostListDensity: String, CaseIterable {
     var toggleAccessibilityLabel: String {
         isCondensed ? Strings.showComfortable : Strings.showCondensed
     }
+
+    // Persisted by hand rather than through `@AppStorage`: a `withAnimation` around an
+    // `@AppStorage` write does not animate, because the change reaches the view through
+    // UserDefaults outside the animation's transaction. Global rather than per site: a
+    // user who wants a dense list wants it everywhere.
+    static var stored: Self {
+        UserDefaults.standard.string(forKey: storageKey).flatMap(Self.init(rawValue:)) ?? .comfortable
+    }
+
+    func store() {
+        UserDefaults.standard.set(rawValue, forKey: Self.storageKey)
+    }
+
+    private static let storageKey = "custom_post_list_density"
 }
 
 private enum Strings {

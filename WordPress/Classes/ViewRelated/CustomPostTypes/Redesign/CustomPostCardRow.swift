@@ -119,6 +119,7 @@ struct CustomPostCardRow: View {
             VStack(spacing: 0) {
                 CardImage(state: imageState, mediaHost: mediaHost)
                     .frame(height: 130)
+                    .transition(.opacity)
                 HStack(alignment: .center, spacing: 0) {
                     CardTextColumn(
                         postID: item.id,
@@ -146,6 +147,7 @@ struct CustomPostCardRow: View {
                         .frame(width: size, height: size)
                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .padding(.leading, padding)
+                        .transition(.opacity)
                 }
                 menu()
             }
@@ -279,10 +281,14 @@ private struct CardTextColumn: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
+                    .transition(.opacity)
             }
             metaLine
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        // The density toggle is animated by its caller; this keeps the row animating even when
+        // the change reaches it outside that transaction, e.g. through the List's diffing.
+        .animation(.easeInOut(duration: 0.3), value: configuration.density)
         // One element per card, like the classic row, so VoiceOver reads the
         // whole post at once and the overflow menu stays separately reachable.
         .accessibilityElement(children: .combine)
