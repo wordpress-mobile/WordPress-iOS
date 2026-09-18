@@ -248,6 +248,12 @@ public class FilterTabBar: UIControl {
     }
 
     private func commonInit() {
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _: UITraitCollection) in
+            if self.isAutomaticTabSizingStyleEnabled {
+                self.updateForCurrentEnvironment()
+            }
+        }
+
         tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         tabBarHeightConstraint?.isActive = true
 
@@ -581,14 +587,6 @@ public class FilterTabBar: UIControl {
         static let initialVelocity: CGFloat = -0.5
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if isAutomaticTabSizingStyleEnabled {
-            updateForCurrentEnvironment()
-        }
-    }
-
     private func updateForCurrentEnvironment() {
         if isAutomaticTabSizingStyleEnabled {
             tabSizingStyle = traitCollection.horizontalSizeClass == .regular ? .equalWidths : .fitting
@@ -640,6 +638,10 @@ private class TabBarButton: UIButton {
             button.configuration?.background = background
             button.configuration?.baseBackgroundColor = .clear
         }
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.setFont()
+        }
     }
 
     override var isSelected: Bool {
@@ -661,14 +663,6 @@ private class TabBarButton: UIButton {
             return attributes
         }
         self.configuration = configuration
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            setFont()
-        }
     }
 }
 
