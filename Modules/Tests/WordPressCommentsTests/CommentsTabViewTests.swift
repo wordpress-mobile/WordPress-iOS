@@ -32,7 +32,7 @@ struct CommentsTabViewTests {
 
         let tabView = CommentsTabView(
             viewModels: [.all: staleAllTab, .pending: stalePendingTab, .spam: neverLoadedTab],
-            router: makeRouter()
+            context: makeDetailContext()
         )
         await tabView.reloadStaleTabs()
 
