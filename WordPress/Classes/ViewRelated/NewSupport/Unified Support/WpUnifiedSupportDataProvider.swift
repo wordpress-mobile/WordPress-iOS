@@ -19,10 +19,10 @@ actor WpUnifiedSupportDataProvider: UnifiedSupportDataProvider {
 
     let maximumUploadSize: UInt64 = 20 * 1024 * 1024
 
-    private let client: UnifiedSupportAPIClient
+    private let client: WordPressDotComClient
     private let coreDataStack: CoreDataStack
 
-    init(client: UnifiedSupportAPIClient, coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(client: WordPressDotComClient, coreDataStack: CoreDataStack = ContextManager.shared) {
         self.client = client
         self.coreDataStack = coreDataStack
     }
