@@ -137,11 +137,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         helperContentView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        helperSeparator.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        helperContentView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    }
-
     let selectedPreviewDevice = PreviewDevice.mobile
 
     init(creator: SiteCreator, createsSite: Bool, completion: @escaping SiteDesignStep.SiteDesignSelection) {
@@ -175,6 +170,13 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
+
+        // The base class handles the header traits. This subclass owns only the
+        // helper footer, which hides at accessibility text sizes.
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.helperSeparator.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+            self.helperContentView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
