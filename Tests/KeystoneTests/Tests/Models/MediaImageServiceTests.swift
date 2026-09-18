@@ -198,6 +198,91 @@ class MediaImageServiceTests: CoreDataTestCase {
         XCTAssertEqual(cachedThumbnail.size.height, expectedSize.height, accuracy: 1.5)
     }
 
+    // MARK: - Thumbnail URL
+
+    func testThatThumbnailURLIsReturnedForRepeatedCalls() async throws {
+        // GIVEN
+        let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
+        media.mediaType = .image
+        media.width = 1024
+        media.height = 680
+        media.absoluteLocalURL = try makeLocalURL(forResource: "test-image", fileExtension: "jpg")
+        try mainContext.save()
+
+        // WHEN the same media is requested twice
+        let firstURL = await makeThumbnailURL(for: media)
+        let secondURL = await makeThumbnailURL(for: media)
+
+        // THEN both calls complete with a symlink to the generated thumbnail
+        let first = try XCTUnwrap(firstURL)
+        let second = try XCTUnwrap(secondURL)
+        let fileManager = FileManager.default
+        XCTAssertEqual(
+            try fileManager.destinationOfSymbolicLink(atPath: first.path),
+            try fileManager.destinationOfSymbolicLink(atPath: second.path)
+        )
+    }
+
+    private func makeThumbnailURL(for media: Media) async -> URL? {
+        await withCheckedContinuation { continuation in
+            sut.getThumbnailURL(for: media) {
+                continuation.resume(returning: $0)
+            }
+        }
+    }
+
+    func testThatExistingSymbolicLinkIsReused() throws {
+        // GIVEN
+        let fileManager = FileManager.default
+        let directoryURL = try makeTemporaryDirectory()
+        let destinationURL = directoryURL.appendingPathComponent("thumbnail")
+        try Data().write(to: destinationURL)
+        let symlinkURL = directoryURL.appendingPathComponent("thumbnail.jpg")
+
+        // WHEN the same link is created twice
+        try MediaImageService.makeSymbolicLink(at: symlinkURL, withDestinationURL: destinationURL)
+        try MediaImageService.makeSymbolicLink(at: symlinkURL, withDestinationURL: destinationURL)
+
+        // THEN
+        XCTAssertEqual(
+            try fileManager.destinationOfSymbolicLink(atPath: symlinkURL.path),
+            destinationURL.path
+        )
+    }
+
+    func testThatStaleSymbolicLinkIsReplaced() throws {
+        // GIVEN a link pointing at a different destination
+        let fileManager = FileManager.default
+        let directoryURL = try makeTemporaryDirectory()
+        let destinationURL = directoryURL.appendingPathComponent("thumbnail")
+        try Data().write(to: destinationURL)
+        let symlinkURL = directoryURL.appendingPathComponent("thumbnail.jpg")
+        try fileManager.createSymbolicLink(
+            at: symlinkURL,
+            withDestinationURL: directoryURL.appendingPathComponent("stale")
+        )
+
+        // WHEN
+        try MediaImageService.makeSymbolicLink(at: symlinkURL, withDestinationURL: destinationURL)
+
+        // THEN
+        XCTAssertEqual(
+            try fileManager.destinationOfSymbolicLink(atPath: symlinkURL.path),
+            destinationURL.path
+        )
+    }
+
+    private func makeTemporaryDirectory() throws -> URL {
+        let directoryURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+        addTeardownBlock {
+            try? FileManager.default.removeItem(at: directoryURL)
+        }
+        return directoryURL
+    }
+
     // MARK: - Target Size
 
     func testThatLandscapeImageIsResizedToFillTargetSize() {
