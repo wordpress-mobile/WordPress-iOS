@@ -40,6 +40,10 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         setupNavigation()
         setupHeaderView()
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.setupNotificationsBarButtonItem()
+        }
+
         configureStream(for: selectedChannel)
 
         showSelectInterestsIfNeeded()
@@ -50,12 +54,6 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
         WPAnalytics.track(screen: ScreenID.Reader.discover, context: trackingContext)
         trackDiscoverTab(selectedChannel)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        setupNotificationsBarButtonItem()
     }
 
     private func setupNavigation() {

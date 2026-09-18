@@ -17,6 +17,19 @@ class SiteStatsBaseTableViewController: UIViewController {
         super.viewDidLoad()
 
         initTableView()
+
+        if #available(iOS 26, *) {
+            registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+                self.updateTableViewLayoutMargins()
+            }
+            updateTableViewLayoutMargins()
+        }
+    }
+
+    @available(iOS 26, *)
+    private func updateTableViewLayoutMargins() {
+        let inset = JetpackStats.Constants.cardHorizontalInset(for: UserInterfaceSizeClass(traitCollection.horizontalSizeClass))
+        tableView.directionalLayoutMargins = .init(top: 0, leading: inset, bottom: 0, trailing: inset)
     }
 
     override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
@@ -34,15 +47,6 @@ class SiteStatsBaseTableViewController: UIViewController {
         tableView.pinEdges()
 
         tableView.refreshControl = refreshControl
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 26, *) {
-            let inset = JetpackStats.Constants.cardHorizontalInset(for: UserInterfaceSizeClass(traitCollection.horizontalSizeClass))
-            tableView.directionalLayoutMargins = .init(top: 0, leading: inset, bottom: 0, trailing: inset)
-        }
     }
 }
 
