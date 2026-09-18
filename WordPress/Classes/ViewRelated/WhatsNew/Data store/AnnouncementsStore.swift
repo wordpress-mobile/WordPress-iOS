@@ -162,13 +162,13 @@ private extension CachedAnnouncementsStore {
         }
         cacheState = .loading
         DispatchQueue.global()
-            .async {
-                self.service.getAnnouncements(
+            .async { [weak self] in
+                guard let service = self?.service else { return }
+                service.getAnnouncements(
                     appId: Identifiers.appId,
                     appVersion: Identifiers.appVersion,
                     locale: Locale.current.identifier
-                ) { [weak self] result in
-
+                ) { result in
                     switch result {
                     case .success(let announcements):
                         self?.cache.announcements = announcements

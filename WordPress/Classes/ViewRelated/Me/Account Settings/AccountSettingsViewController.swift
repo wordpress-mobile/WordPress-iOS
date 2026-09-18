@@ -224,8 +224,8 @@ private class AccountSettingsController: SettingsController {
         with settings: AccountSettings?,
         service: AccountSettingsService
     ) -> (ImmuTableRow) -> SettingsTextViewController {
-        { _ in
-            ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
+        { [weak self] _ in
+            ChangePasswordViewController(username: settings?.username ?? "") { value in
                 DispatchQueue.main.async {
                     SVProgressHUD.show(withStatus: Constants.changingPassword)
                     service.updatePassword(
@@ -251,8 +251,8 @@ private class AccountSettingsController: SettingsController {
         with settings: AccountSettings?,
         service: AccountSettingsService
     ) -> (ImmuTableRow) -> ChangeUsernameViewController {
-        { _ in
-            ChangeUsernameViewController(service: service, settings: settings) { [weak self] username in
+        { [weak self] _ in
+            ChangeUsernameViewController(service: service, settings: settings) { username in
                 self?.refreshModel()
                 if let username {
                     let notice = Notice(title: String(format: Constants.usernameChanged, username))
@@ -290,9 +290,9 @@ private class AccountSettingsController: SettingsController {
         _ settings: AccountSettings?,
         service: AccountSettingsService
     ) -> ImmuTableRowControllerGenerator {
-        { _ in
+        { [weak self] _ in
             let configuration = BlogListConfiguration(shouldHideSelfHostedSites: true)
-            let viewController = SitePickerHostingController(configuration: configuration) { [weak self] selectedBlog in
+            let viewController = SitePickerHostingController(configuration: configuration) { selectedBlog in
                 guard let self, let dotComID = selectedBlog.dotComID?.intValue else { return }
 
                 WPAnalytics.trackSettingsChange(self.trackingKey, fieldName: "primary_site")
@@ -445,13 +445,15 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        { _ in
+        { [weak self] _ in
             if ZendeskUtils.zendeskEnabled {
                 guard let leafViewController = UIApplication.shared.leafViewController else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) {
-                    [weak self] identityUpdated in
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(
+                    from: leafViewController,
+                    with: .closeAccount
+                ) { identityUpdated in
                     if identityUpdated {
                         self?.refreshModel()
                     }

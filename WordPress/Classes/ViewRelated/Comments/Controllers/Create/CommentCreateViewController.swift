@@ -69,8 +69,8 @@ final class CommentCreateViewController: UIViewController {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
                 presentingViewController?
-                    .dismiss(animated: true) { [weak self] in
-                        self?.showModerationNoticeIfNeeded(for: commentID)
+                    .dismiss(animated: true) {
+                        self.showModerationNoticeIfNeeded(for: commentID)
                     }
             } catch {
                 setLoading(false)

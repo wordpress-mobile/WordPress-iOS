@@ -58,14 +58,14 @@ final class SiteIconPickerPresenter: NSObject {
     /// Shows a new ImageCropViewController for the given image.
     ///
     func showImageCropViewController(_ image: UIImage, presentingViewController: UIViewController) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self, weak presentingViewController] in
+            guard let self else {
+                return
+            }
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
-            imageCropViewController.onCompletion = { [weak self] image, modified in
-                guard let self else {
-                    return
-                }
+            imageCropViewController.onCompletion = { image, modified in
                 self.onIconSelection?()
                 if !modified, let media = self.originalMedia {
                     self.onCompletion?(media, nil)
@@ -105,12 +105,12 @@ final class SiteIconPickerPresenter: NSObject {
                 }
             }
             imageCropViewController.shouldShowCancelButton = true
-            imageCropViewController.onCancel = { [weak presentingViewController] in
+            imageCropViewController.onCancel = {
                 // Dismiss the crop controller but not the picker
                 presentingViewController?.dismiss(animated: true)
             }
             let navigationController = UINavigationController(rootViewController: imageCropViewController)
-            presentingViewController.present(navigationController, animated: true)
+            presentingViewController?.present(navigationController, animated: true)
         }
     }
 }

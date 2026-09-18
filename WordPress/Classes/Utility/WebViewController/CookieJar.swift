@@ -137,8 +137,8 @@ extension WKHTTPCookieStore: CookieJar {
         }
 
         DispatchQueue.main.async {
-            self.setCookie(cookie) { [weak self] in
-                self?.setCookies(cookies.dropLast(), completion: completion)
+            self.setCookie(cookie) {
+                self.setCookies(cookies.dropLast(), completion: completion)
             }
         }
     }

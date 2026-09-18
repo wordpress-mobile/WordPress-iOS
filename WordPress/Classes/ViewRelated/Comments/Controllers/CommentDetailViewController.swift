@@ -1175,8 +1175,8 @@ private extension CommentDetailViewController {
                 }
                 self.commentService.uploadComment(
                     reply,
-                    success: { [weak self] in
-                        self?.refreshCommentReplyIfNeeded()
+                    success: {
+                        self.refreshCommentReplyIfNeeded()
                         continuation.resume(returning: TaggedManagedObjectID(reply))
                     },
                     failure: { error in

@@ -126,12 +126,12 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
                     { context in
                         self.createSite(for: response.createdSite, in: context)
                     },
-                    completion: { [weak self] blogID in
+                    completion: { blogID in
                         guard let blogID else {
-                            self?.endFailedAssembly()
+                            self.endFailedAssembly()
                             return
                         }
-                        self?.syncBlogAndAccount(createdBlogID: blogID)
+                        self.syncBlogAndAccount(createdBlogID: blogID)
                     },
                     on: .main
                 )

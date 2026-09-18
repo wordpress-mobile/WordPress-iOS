@@ -220,8 +220,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         isLoading = true
 
-        DispatchQueue.main.async {
-            SiteDesignSectionLoader.buildAssembler { [weak self] result in
+        DispatchQueue.main.async { [weak self] in
+            SiteDesignSectionLoader.buildAssembler { result in
                 guard let self else { return }
 
                 switch result {

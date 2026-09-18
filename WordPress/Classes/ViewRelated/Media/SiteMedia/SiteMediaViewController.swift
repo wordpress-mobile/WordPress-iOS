@@ -314,9 +314,9 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                         popover.sourceView = sourceView ?? view
                     }
                 }
-                activityViewController.completionWithItemsHandler = { [weak self] _, isCompleted, _, _ in
+                activityViewController.completionWithItemsHandler = { _, isCompleted, _, _ in
                     if isCompleted {
-                        self?.setEditing(false)
+                        self.setEditing(false)
                     }
                 }
                 present(activityViewController, animated: true, completion: nil)

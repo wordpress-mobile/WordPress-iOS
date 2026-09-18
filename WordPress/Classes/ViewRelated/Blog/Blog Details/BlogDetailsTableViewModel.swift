@@ -560,8 +560,8 @@ private extension BlogDetailsTableViewModel {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 50))
                 .foregroundStyle(.orange)
-        } actions: {
-            Button { [weak self, weak viewController] in
+        } actions: { [weak self, weak viewController] in
+            Button {
                 viewController?
                     .dismiss(animated: true) {
                         self?.presentJetpackConnection()
