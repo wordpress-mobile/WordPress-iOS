@@ -328,6 +328,11 @@ class MediaImportService: NSObject {
 
     private func makeExporter(for exportable: ExportableAsset, options: ExportOptions) -> MediaExporter? {
         switch exportable {
+        case let item as PhotosPickerAsset:
+            let exporter = ItemProviderMediaExporter(provider: item.itemProvider, assetIdentifier: item.assetIdentifier)
+            exporter.imageOptions = options.imageOptions
+            exporter.videoOptions = options.videoOptions
+            return exporter
         case let provider as NSItemProvider:
             let exporter = ItemProviderMediaExporter(provider: provider)
             exporter.imageOptions = options.imageOptions

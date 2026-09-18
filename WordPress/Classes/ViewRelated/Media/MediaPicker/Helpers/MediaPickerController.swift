@@ -157,7 +157,7 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
                 )
                 output.append(mediaInfo)
 
-            case .image, .pickerResult:
+            case .image, .deviceAsset:
                 wpAssertionFailure("unused case")
                 break
             }

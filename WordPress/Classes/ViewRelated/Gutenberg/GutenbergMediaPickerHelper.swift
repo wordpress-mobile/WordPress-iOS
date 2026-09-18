@@ -44,17 +44,12 @@ final class GutenbergMediaPickerHelper: NSObject {
     ) {
         didPickMediaCallback = completion
 
-        var configuration = PHPickerConfiguration()
-        configuration.preferredAssetRepresentationMode = .current
-        if allowMultipleSelection {
-            configuration.selection = .ordered
-            configuration.selectionLimit = 0
-        }
-        configuration.filter = PHPickerFilter(filter)
-
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        context.present(picker, animated: true)
+        PhotosPickerPresenter.present(
+            from: context,
+            filter: .init(filter),
+            isMultipleSelectionEnabled: allowMultipleSelection,
+            delegate: self
+        )
     }
 
     func presentSiteMediaPicker(
@@ -161,15 +156,12 @@ extension GutenbergMediaPickerHelper: SiteMediaPickerViewControllerDelegate {
     }
 }
 
-extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        context.dismiss(animated: true)
-
-        guard !results.isEmpty else {
+extension GutenbergMediaPickerHelper: DevicePhotosPickerDelegate {
+    func devicePhotosPicker(didPick assets: [PhotosPickerAsset]) {
+        guard !assets.isEmpty else {
             return
         }
-
-        didPickMediaCallback?(results.map(\.itemProvider))
+        didPickMediaCallback?(assets)
         didPickMediaCallback = nil
     }
 }

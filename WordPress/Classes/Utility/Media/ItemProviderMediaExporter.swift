@@ -9,10 +9,29 @@ final class ItemProviderMediaExporter: MediaExporter {
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
 
-    private let provider: NSItemProvider
+    /// `nil` for an item picked with the legacy picker under Lockdown Mode, which vends
+    /// assets rather than providers — that route reads the file from the photo library.
+    private let provider: NSItemProvider?
+    private let assetIdentifier: String?
 
-    init(provider: NSItemProvider) {
+    /// Whether to read the file straight from the photo library instead of asking the
+    /// item provider for it.
+    ///
+    /// Defaults to Lockdown Mode, where the system's file provider extension can't
+    /// materialize large photos at all (see `handleLoadFailure` and
+    /// `PhotoLibraryFileLoader`). Everywhere else the provider is faster and needs no
+    /// Photos authorization, so it stays the default route.
+    ///
+    /// The two routes are exclusive: once this picks the photo library, a failure there
+    /// is reported rather than retried through the provider, which in Lockdown Mode is
+    /// the thing that doesn't work.
+    var prefersPhotoLibrarySource = LockdownHelper.isDeviceLockdownModeEnabled
+
+    /// - parameter assetIdentifier: The local identifier of the `PHAsset` the item was
+    ///   picked from, when the picker was library-backed. See `PhotosPickerAsset`.
+    init(provider: NSItemProvider?, assetIdentifier: String? = nil) {
         self.provider = provider
+        self.assetIdentifier = assetIdentifier
     }
 
     func export(onCompletion originalOnCompletion: @escaping (MediaExport) -> Void, onError originalOnError: @escaping (MediaExportError) -> Void) -> Progress {
@@ -20,7 +39,8 @@ final class ItemProviderMediaExporter: MediaExporter {
         let onCompletion: (MediaExport) -> Void
         let onError: (MediaExportError) -> Void
 
-        // Create a temporary directory to hold the exported file from the `NSItemProvider` instance.
+        // Create a temporary directory to stage the picked file, whether it came from the
+        // `NSItemProvider` instance or straight from the photo library.
         let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         do {
             try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
@@ -41,7 +61,7 @@ final class ItemProviderMediaExporter: MediaExporter {
 
         // It's important to use the `MediaImageExporter` because it strips the
         // GPS data and performs other image manipulations before the upload.
-        func processImage(at url: URL) throws {
+        func processImage(at url: URL, typeIdentifier: String?) throws {
             let exporter = MediaImageExporter(url: url)
             exporter.mediaDirectoryType = mediaDirectoryType
             if let imageOptions {
@@ -49,7 +69,7 @@ final class ItemProviderMediaExporter: MediaExporter {
             }
             // If image format is not supported, switch to `.jpeg`.
             if exporter.options.exportImageType == nil,
-               let type = provider.registeredTypeIdentifiers.first,
+               let type = typeIdentifier,
                !ItemProviderMediaExporter.supportedImageTypes.contains(type) {
                 exporter.options.exportImageType = UTType.jpeg.identifier
             }
@@ -80,6 +100,66 @@ final class ItemProviderMediaExporter: MediaExporter {
             progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         }
 
+        // The "process" functions are responsible for making sure the end result file
+        // (the one passed to `onCompletion` block) is located in the local Media library dir (`mediaFileManager`).
+        //
+        // `resourceTypeIdentifier` is the type of a file streamed from the photo library.
+        // It's `nil` for a file that came from the item provider, whose own registered
+        // types describe it instead.
+        func process(fileAt url: URL, resourceTypeIdentifier: String?) throws {
+            let resourceType = resourceTypeIdentifier.flatMap(UTType.init)
+            func hasType(_ type: UTType) -> Bool {
+                resourceType.map { $0.conforms(to: type) } ?? self.hasConformingType(type)
+            }
+            if hasType(.gif) {
+                try processGIF(at: url)
+            } else if hasType(.image) {
+                try processImage(at: url, typeIdentifier: resourceTypeIdentifier ?? self.provider?.registeredTypeIdentifiers.first)
+            } else if hasType(.movie) || hasType(.video) {
+                try processVideo(at: url)
+            } else {
+                onError(ExportError.unsupportedContentType)
+            }
+        }
+
+        if prefersPhotoLibrarySource, let assetIdentifier {
+            let loadProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
+            do {
+                // Retaining `self` on purpose.
+                try PhotoLibraryFileLoader.loadFile(assetIdentifier: assetIdentifier, into: tempDir, progress: loadProgress) { result in
+                    switch result {
+                    case .success(let file):
+                        do {
+                            try process(fileAt: file.url, resourceTypeIdentifier: file.typeIdentifier)
+                        } catch {
+                            onError(ExportError.underlyingError(error))
+                        }
+                    case .failure(let error):
+                        // A cancelled upload is reported by the upload coordinator, so
+                        // surfacing it here would show a spurious failure. Clean up the
+                        // partially streamed file that `onError` would have removed.
+                        guard !loadProgress.isCancelled else {
+                            try? FileManager.default.removeItem(at: tempDir)
+                            return
+                        }
+                        self.handlePhotoLibraryFailure(error, onError: onError)
+                    }
+                }
+                progress.addChild(loadProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
+            } catch {
+                // No fallback: under Lockdown Mode the item provider is precisely what
+                // can't serve the file, so retrying through it would trade a clear
+                // failure for a silent one.
+                handlePhotoLibraryFailure(error, onError: onError)
+            }
+            return progress
+        }
+
+        guard let provider else {
+            onError(ItemProviderMediaExporter.itemUnavailableError)
+            return progress
+        }
+
         let start = CFAbsoluteTimeGetCurrent()
         DDLogInfo("Will export file for provider: \(ObjectIdentifier(provider)) \(provider.registeredTypeIdentifiers)")
 
@@ -89,24 +169,13 @@ final class ItemProviderMediaExporter: MediaExporter {
                 return
             }
             let diff = CFAbsoluteTimeGetCurrent() - start
-            DDLogInfo("Loaded file representation for provider: \(ObjectIdentifier(self.provider)) \(self.provider.registeredTypeIdentifiers) (\(diff) seconds)")
+            DDLogInfo("Loaded file representation for provider: \(ObjectIdentifier(provider)) \(provider.registeredTypeIdentifiers) (\(diff) seconds)")
 
             // Retaining `self` on purpose.
             do {
                 let copyURL = tempDir.appendingPathComponent(url.lastPathComponent)
                 try FileManager.default.copyItem(at: url, to: copyURL)
-
-                // The "process" functions are responsible for making sure the end result file
-                // (the one passed to `onCompletion` block) is located in the local Media library dir (`mediaFileManager`).
-                if self.hasConformingType(.gif) {
-                    try processGIF(at: copyURL)
-                } else if self.hasConformingType(.image) {
-                    try processImage(at: copyURL)
-                } else if self.hasConformingType(.movie) || self.hasConformingType(.video) {
-                    try processVideo(at: copyURL)
-                } else {
-                    onError(ExportError.unsupportedContentType)
-                }
+                try process(fileAt: copyURL, resourceTypeIdentifier: nil)
             } catch {
                 onError(ExportError.underlyingError(error))
             }
@@ -133,7 +202,7 @@ final class ItemProviderMediaExporter: MediaExporter {
     ].map(\.identifier))
 
     private func hasConformingType(_ type: UTType) -> Bool {
-        provider.hasItemConformingToTypeIdentifier(type.identifier)
+        provider?.hasItemConformingToTypeIdentifier(type.identifier) ?? false
     }
 
     /// Surfaces a failure to load the picked file from the `NSItemProvider`.
@@ -151,7 +220,7 @@ final class ItemProviderMediaExporter: MediaExporter {
     /// (e.g. 36 MP) fails and the `PhotosFileProvider` process is killed, giving
     /// `NSItemProviderError -1000` over `NSCocoaErrorDomain 4099`.
     private func handleLoadFailure(_ error: Error?, onError: (MediaExportError) -> Void) {
-        let providerID = ObjectIdentifier(provider)
+        let providerID = provider.map(ObjectIdentifier.init).map(String.init(describing:)) ?? "none"
         guard let error else {
             DDLogError("Failed to load file representation for provider: \(providerID), error: nil")
             onError(ExportError.unknown)
@@ -167,32 +236,62 @@ final class ItemProviderMediaExporter: MediaExporter {
         }
         DDLogError("Failed to load file representation for provider: \(providerID), error: \(error)")
         if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
-            let device = LockdownHelper.isDeviceLockdownModeEnabled
-            let appExcluded = device && !LockdownHelper.isAppLockdownModeEnabled
-            let properties = providerErrorProperties(
-                for: error,
-                connectionError: connectionError,
-                deviceLockdown: device,
-                appExcluded: appExcluded
-            )
+            let properties = providerErrorProperties(for: error, connectionError: connectionError)
             WPAnalytics.track(.mediaImportItemUnavailable, properties: properties)
-            onError(device ? ExportError.lockdownModeRestricted : ExportError.cannotLoadItem)
+            onError(ItemProviderMediaExporter.itemUnavailableError)
         } else {
             onError(ExportError.underlyingError(error))
         }
     }
 
-    private func providerErrorProperties(for error: Error, connectionError: NSError, deviceLockdown: Bool, appExcluded: Bool) -> [AnyHashable: Any] {
+    /// Surfaces a failure to read the picked file straight from the photo library —
+    /// either the asset couldn't be resolved or streaming it failed.
+    ///
+    /// That route is only taken under Lockdown Mode (see `PhotoLibraryFileLoader`), where
+    /// the item provider is precisely what can't serve the file — so there is nothing
+    /// left to fall back to and the failure is reported to the user. It's tracked under
+    /// the same event as a provider failure, told apart by `source`.
+    private func handlePhotoLibraryFailure(_ error: Error, onError: (MediaExportError) -> Void) {
+        DDLogError("Failed to read the picked asset from the photo library, error: \(error)")
         let error = error as NSError
+        var properties = ItemProviderMediaExporter.lockdownProperties
+        properties["source"] = "photo_library"
+        properties["error_domain"] = error.domain
+        properties["error_code"] = error.code
+        properties["type_identifiers"] = typeIdentifiersDescription
+        WPAnalytics.track(.mediaImportItemUnavailable, properties: properties)
+        onError(ItemProviderMediaExporter.itemUnavailableError)
+    }
+
+    private func providerErrorProperties(for error: Error, connectionError: NSError) -> [AnyHashable: Any] {
+        let error = error as NSError
+        var properties = ItemProviderMediaExporter.lockdownProperties
+        properties["source"] = "item_provider"
+        properties["error_domain"] = error.domain
+        properties["error_code"] = error.code
+        properties["underlying_error_domain"] = connectionError.domain
+        properties["underlying_error_code"] = connectionError.code
+        properties["type_identifiers"] = typeIdentifiersDescription
+        return properties
+    }
+
+    private var typeIdentifiersDescription: String {
+        provider?.registeredTypeIdentifiers.joined(separator: ", ") ?? ""
+    }
+
+    /// The Lockdown Mode state recorded alongside an import failure. The device-wide flag
+    /// is the one that governs `PhotosFileProvider`; the per-app value is secondary.
+    private static var lockdownProperties: [AnyHashable: Any] {
+        let device = LockdownHelper.isDeviceLockdownModeEnabled
         return [
-            "error_domain": error.domain,
-            "error_code": error.code,
-            "underlying_error_domain": connectionError.domain,
-            "underlying_error_code": connectionError.code,
-            "type_identifiers": provider.registeredTypeIdentifiers.joined(separator: ", "),
-            "lockdown_mode": deviceLockdown,
-            "lockdown_mode_app_excluded": appExcluded
+            "lockdown_mode": device,
+            "lockdown_mode_app_excluded": device && !LockdownHelper.isAppLockdownModeEnabled
         ]
+    }
+
+    /// The message shown when the app can't get the picked file from either route.
+    private static var itemUnavailableError: ExportError {
+        LockdownHelper.isDeviceLockdownModeEnabled ? .lockdownModeRestricted : .cannotLoadItem
     }
 
     /// The XPC connection error codes (in `NSCocoaErrorDomain`) that signal the item
