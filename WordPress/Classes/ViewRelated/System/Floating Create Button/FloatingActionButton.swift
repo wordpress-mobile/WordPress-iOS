@@ -20,6 +20,10 @@ final class FloatingActionButton: UIButton {
 
         tintColor = .white
         refreshShadow()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.refreshShadow()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -38,10 +42,5 @@ final class FloatingActionButton: UIButton {
         layer.shadowOffset = .zero
         layer.shadowRadius = Constants.shadowRadius
         layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 1 : 0
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshShadow()
     }
 }

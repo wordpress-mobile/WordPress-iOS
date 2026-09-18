@@ -68,6 +68,10 @@ class AppFeedbackPromptView: UIView {
         buttonStack.addArrangedSubview(rightButton)
 
         setupConstraints()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.evaluateStackAxisMode()
+        }
     }
 
     func setupHeading(_ title: String) {
@@ -85,11 +89,6 @@ class AppFeedbackPromptView: UIView {
         rightButton.removeTarget(nil, action: nil, for: .touchUpInside)
         rightButton.setTitle(title, for: .normal)
         rightButton.on(.touchUpInside, call: tapHandler)
-        evaluateStackAxisMode()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
         evaluateStackAxisMode()
     }
 

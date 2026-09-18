@@ -337,6 +337,11 @@ final class ProgressIndicatorView: UIView {
         progressTrackLayer.addSublayer(progressLayer)
         progressLayer.isHidden = false
         progressLayer.strokeEnd = 0.0
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.updateColors()
+            self.setNeedsDisplay()
+        }
     }
 
     func configureLayer(_ layer: CAShapeLayer) {
@@ -369,12 +374,6 @@ final class ProgressIndicatorView: UIView {
         if state == .indeterminate {
             startAnimating()
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateColors()
-        setNeedsDisplay()
     }
 
     private func stateDidChange() {
