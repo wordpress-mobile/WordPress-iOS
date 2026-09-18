@@ -222,18 +222,24 @@ final class MediaImageService {
                 return completion(nil)
             }
 
-            // Fixes the following React Native issue https://github.com/facebook/react-native/issues/42234
-            // where it'll fail to display local images with no path extension.
+            // React Native won't display local files without an extension
+            // (https://github.com/facebook/react-native/issues/42234), so return
+            // a copy of the cached thumbnail under the export's original name.
+            // The copy stays in the media cache directory, where
+            // `Media.absoluteThumbnailLocalURL` resolves saved file names.
+            // On APFS the copy is a clone that shares storage with the cached file.
             //
-            // This workaround creates a temporary symlink that has a file extension.
-            let tempDirectoryURL = URL.Helpers.temporaryDirectory(named: "org.automattic.MediaImageServiceSymlinks")
-            try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
-
-            let symlink = tempDirectoryURL
-                .appendingPathComponent(export.url.lastPathComponent)
-            try FileManager.default.createSymbolicLink(at: symlink, withDestinationURL: thumbnailURL)
-
-            completion(symlink)
+            // The export file still exists when it couldn't be moved to the cache
+            // because a cached thumbnail already existed.
+            do {
+                if !FileManager.default.fileExists(atPath: export.url.path) {
+                    try FileManager.default.copyItem(at: thumbnailURL, to: export.url)
+                }
+                completion(export.url)
+            } catch {
+                Loggers.app.error("Failed to copy the thumbnail: \(error)")
+                completion(nil)
+            }
         }
     }
 
