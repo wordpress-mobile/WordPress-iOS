@@ -8,4 +8,7 @@ struct PendingUpload: Identifiable, Sendable {
     let displayName: String // basename of the temp file
     let kind: MediaKind // for icon + Uploads-row rendering
     let progress: Progress // bound to ProgressView directly
+    /// Materialized temp file on disk; nil until materialization completes.
+    /// Drives the Uploads-row thumbnail.
+    let localFileURL: URL?
 }
