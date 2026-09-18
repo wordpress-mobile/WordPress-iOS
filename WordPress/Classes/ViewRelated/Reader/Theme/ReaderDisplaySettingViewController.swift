@@ -170,7 +170,7 @@ struct ReaderDisplaySettingSelectionView: View {
                     .onAppear(perform: {
                         self.viewHeight = proxy.size.height
                     })
-                    .onChange(of: proxy.size.height) { newValue in
+                    .onChange(of: proxy.size.height) { _, newValue in
                         // update value in case of orientation change.
                         self.viewHeight = newValue
                     }

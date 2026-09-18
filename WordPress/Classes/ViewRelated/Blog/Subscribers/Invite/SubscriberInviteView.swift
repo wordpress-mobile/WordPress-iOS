@@ -36,7 +36,7 @@ struct SubscriberInviteView: View {
                 .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }
         .listStyle(.plain)
-        .onChange(of: emails) { emails in
+        .onChange(of: emails) { _, emails in
             if !emails.contains(where: \.isEmpty) {
                 withAnimation {
                     self.emails.append(SubscriberEmail())

@@ -897,7 +897,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Parameter simplePost: The related post object
     /// - Returns: If the related post URL is not valid
     class func controllerWithSimplePost(_ simplePost: RemoteReaderSimplePost) -> ReaderDetailViewController? {
-        guard !simplePost.postUrl.isEmpty(), let url = URL(string: simplePost.postUrl) else {
+        guard !simplePost.postUrl.isEmpty(), URL(string: simplePost.postUrl) != nil else {
             return nil
         }
 
