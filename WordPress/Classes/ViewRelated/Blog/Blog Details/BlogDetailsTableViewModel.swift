@@ -4,6 +4,7 @@ import WordPressLegacy
 import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
+import WordPressComments
 import Support
 import SwiftUI
 
@@ -20,7 +21,11 @@ extension BlogDetailsTableViewModel {
 
 @MainActor
 @objc public final class BlogDetailsTableViewModel: NSObject, ObservableObject {
-    var blog: Blog
+    var blog: Blog {
+        didSet {
+            if blog != oldValue { updateCommentsView() }
+        }
+    }
     private weak var viewController: BlogDetailsViewController?
     @Published private(set) var sections: [Section] = []
     @Published private(set) var selectedRowID: Row.ID?
@@ -30,6 +35,7 @@ extension BlogDetailsTableViewModel {
     }
 
     var hasCustomPostTypes = false
+    private var commentsView: CommentsView?
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
         self.blog = blog
@@ -103,7 +109,13 @@ extension BlogDetailsTableViewModel {
             newSections.append(Section(rows: [], category: .jetpackBrandingCard))
         }
 
+        updateCommentsView()
         sections = newSections
+    }
+
+    /// Resolving the Comments client reads the keychain, so cache the destination instead of building it per render.
+    private func updateCommentsView() {
+        commentsView = isSplitViewDisplayed ? nil : CommentsRouting.makeView(for: blog)
     }
 
     var isSplitViewDisplayed: Bool {
@@ -122,6 +134,14 @@ extension BlogDetailsTableViewModel {
 
     func clearSelection() {
         selectedRowID = nil
+    }
+
+    func commentsDestination(for row: Row) -> CommentsView? {
+        row.kind == .comments ? commentsView : nil
+    }
+
+    func trackCommentsOpened() {
+        viewController?.trackCommentsV2Opened(from: .row)
     }
 
     func select(_ row: Row) {
@@ -208,10 +228,9 @@ extension BlogDetailsTableViewModel {
                 .foregroundStyle(.orange)
         } actions: {
             Button { [weak self, weak viewController] in
-                viewController?
-                    .dismiss(animated: true) {
-                        self?.presentJetpackConnection()
-                    }
+                viewController?.dismiss(animated: true) {
+                    self?.presentJetpackConnection()
+                }
             } label: {
                 Text(XMLRPCDisabledAlertStrings.connectJetpack)
                     .font(.headline)
@@ -221,14 +240,10 @@ extension BlogDetailsTableViewModel {
             .controlSize(.extraLarge)
 
             Button { [weak viewController] in
-                let url = URL(
-                    string:
-                        "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/"
-                )!
-                viewController?
-                    .dismiss(animated: true) {
-                        UIApplication.shared.open(url)
-                    }
+                let url = URL(string: "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/")!
+                viewController?.dismiss(animated: true) {
+                    UIApplication.shared.open(url)
+                }
             } label: {
                 Text(XMLRPCDisabledAlertStrings.learnMore)
             }
@@ -241,10 +256,9 @@ extension BlogDetailsTableViewModel {
         let controller = UIViewController.jetpackConnection(blog: blog)
         controller.promptType = .bypassXMLRPC
         controller.completionBlock = { [weak controller, weak self] in
-            controller?
-                .dismiss(animated: true) {
-                    self?.viewController?.refresh()
-                }
+            controller?.dismiss(animated: true) {
+                self?.viewController?.refresh()
+            }
         }
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
             systemItem: .close,
@@ -259,7 +273,7 @@ extension BlogDetailsTableViewModel {
 
 private extension BlogDetailsTableViewModel {
     func buildHomeSection() -> Section {
-        Section(rows: [Row.home(viewController: viewController)], category: .home)
+        return Section(rows: [Row.home(viewController: viewController)], category: .home)
     }
 
     func buildContentSection() -> Section {
@@ -290,7 +304,7 @@ private extension BlogDetailsTableViewModel {
     }
 
     func buildRemoveSiteSection() -> Section {
-        Section(rows: [Row.removeSite(viewController: viewController)], category: .removeSite)
+        return Section(rows: [Row.removeSite(viewController: viewController)], category: .removeSite)
     }
 
     func buildJetpackSection() -> Section {
@@ -320,12 +334,11 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.blaze(viewController: viewController))
         }
 
-        let title =
-            if blog.supports(.jetpackSettings) {
-                Strings.jetpackSection
-            } else {
-                ""
-            }
+        let title = if blog.supports(.jetpackSettings) {
+            Strings.jetpackSection
+        } else {
+            ""
+        }
 
         return Section(title: title, rows: rows, category: .jetpack)
     }
@@ -546,35 +559,29 @@ private extension BlogDetailsTableViewModel {
         var shouldAddSectionTitle = true
 
         if !firstSectionRows.isEmpty {
-            sections.append(
-                Section(
-                    title: sectionTitle,
-                    rows: firstSectionRows,
-                    category: .maintenance
-                )
-            )
+            sections.append(Section(
+                title: sectionTitle,
+                rows: firstSectionRows,
+                category: .maintenance
+            ))
             shouldAddSectionTitle = false
         }
 
         if !secondSectionRows.isEmpty {
-            sections.append(
-                Section(
-                    title: shouldAddSectionTitle ? sectionTitle : nil,
-                    rows: secondSectionRows,
-                    category: .maintenance
-                )
-            )
+            sections.append(Section(
+                title: shouldAddSectionTitle ? sectionTitle : nil,
+                rows: secondSectionRows,
+                category: .maintenance
+            ))
             shouldAddSectionTitle = false
         }
 
         if !thirdSectionRows.isEmpty {
-            sections.append(
-                Section(
-                    title: shouldAddSectionTitle ? sectionTitle : nil,
-                    rows: thirdSectionRows,
-                    category: .maintenance
-                )
-            )
+            sections.append(Section(
+                title: shouldAddSectionTitle ? sectionTitle : nil,
+                rows: thirdSectionRows,
+                category: .maintenance
+            ))
         }
 
         return sections
@@ -593,8 +600,7 @@ private extension BlogDetailsTableViewModel {
         }
         let context = ContextManager.shared.mainContext
         guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
-            let dateCreated = defaultAccount.dateCreated
-        else {
+              let dateCreated = defaultAccount.dateCreated else {
             return false
         }
         return dateCreated < hideWPAdminDate
@@ -944,8 +950,7 @@ private extension BlogDetailsTableViewModel.Row {
     }
 
     static func sharing(viewController: BlogDetailsViewController?) -> Row {
-        let sharingTitle =
-            AppConfiguration.isWordPress
+        let sharingTitle = AppConfiguration.isWordPress
             ? Strings.sharing
             : Strings.socialRowTitle
         return Row(
@@ -962,8 +967,7 @@ private extension BlogDetailsTableViewModel.Row {
     }
 
     static func people(viewController: BlogDetailsViewController?) -> Row {
-        let title =
-            viewController?.shouldShowSubscribersRow == true
+        let title = viewController?.shouldShowSubscribersRow == true
             ? Strings.users
             : Strings.people
         return Row(
@@ -1013,8 +1017,7 @@ private extension BlogDetailsTableViewModel.Row {
             title: Strings.plugins,
             image: UIImage(named: "site-menu-plugins"),
             action: { [weak viewController] userInfo in
-                let showManagement =
-                    (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
+                let showManagement = (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
                 if showManagement {
                     viewController?.showManagePluginsScreen()
                 } else {
@@ -1314,8 +1317,7 @@ private enum XMLRPCDisabledAlertStrings {
     )
     static let description = NSLocalizedString(
         "blogDetails.xmlrpcDisabled.alert.description",
-        value:
-            "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
+        value: "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
         comment: "Description explaining options to restore functionality when XML-RPC is disabled"
     )
     static let connectJetpack = NSLocalizedString(
