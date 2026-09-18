@@ -3,6 +3,9 @@ import SwiftUI
 struct CommentsListView: View {
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
+    /// Read here, below the container's `.searchable`, to hide Review while
+    /// the search results cover this list.
+    @Environment(\.isSearching) private var isSearching
     /// Pushes the detail screen for a tapped row.
     let openComment: (Int64, CommentListItem?) -> Void
     /// Starts a review session over the loaded pending comments.
@@ -18,8 +21,12 @@ struct CommentsListView: View {
                 Button {
                     openComment(item.id, item)
                 } label: {
-                    CommentRowView(item: item, titleState: titleResolver.titleState(for: item.postID))
-                        .contentShape(Rectangle())
+                    CommentRowView(
+                        item: item,
+                        titleState: titleResolver.titleState(for: item.postID),
+                        showsPendingStatus: viewModel.filter == .all
+                    )
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
@@ -39,7 +46,7 @@ struct CommentsListView: View {
         .listStyle(.plain)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if viewModel.canReview {
+                if !isSearching && viewModel.canReview {
                     Button(Strings.Review.review) { review(viewModel.reviewBatch) }
                         .accessibilityLabel(Strings.Review.reviewAccessibility)
                 }
