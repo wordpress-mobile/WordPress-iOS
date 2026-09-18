@@ -6,13 +6,13 @@ struct CommentsTabView: View {
     @State private var selectedFilter: CommentsListFilter = .all
     private let viewModels: [CommentsListFilter: CommentsListViewModel]
 
-    private let router: CommentsDetailRouter
+    private let context: CommentDetailContext
 
     init(
         viewModels: [CommentsListFilter: CommentsListViewModel],
-        router: CommentsDetailRouter
+        context: CommentDetailContext
     ) {
-        self.router = router
+        self.context = context
         self.viewModels = viewModels
     }
 
@@ -74,8 +74,8 @@ struct CommentsTabView: View {
             if let viewModel = viewModels[selectedFilter] {
                 CommentsListView(
                     viewModel: viewModel,
-                    titleResolver: router.titleResolver,
-                    router: router
+                    titleResolver: context.titleResolver,
+                    context: context
                 )
             }
         }
