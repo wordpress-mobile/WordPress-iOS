@@ -7,13 +7,13 @@ struct CommentsTabView: View {
     @State private var reviewSession: CommentReviewViewModel?
     private let viewModels: [CommentsListFilter: CommentsListViewModel]
 
-    private let router: CommentsDetailRouter
+    private let context: CommentDetailContext
 
     init(
         viewModels: [CommentsListFilter: CommentsListViewModel],
-        router: CommentsDetailRouter
+        context: CommentDetailContext
     ) {
-        self.router = router
+        self.context = context
         self.viewModels = viewModels
     }
 
@@ -75,11 +75,11 @@ struct CommentsTabView: View {
             if let viewModel = viewModels[selectedFilter] {
                 CommentsListView(
                     viewModel: viewModel,
-                    titleResolver: router.titleResolver,
-                    router: router,
+                    titleResolver: context.titleResolver,
+                    context: context,
                     review: { batch in
                         guard reviewSession == nil else { return }
-                        reviewSession = router.makeReviewSession(batch: batch)
+                        reviewSession = context.makeReviewSession(batch: batch)
                     }
                 )
             }
@@ -87,7 +87,7 @@ struct CommentsTabView: View {
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $reviewSession) { session in
-            router.makeReviewView(session: session)
+            context.makeReviewView(session: session)
         }
         .task {
             await reloadStaleTabs()
