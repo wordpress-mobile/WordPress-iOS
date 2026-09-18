@@ -83,6 +83,9 @@ final class AddressTableViewCell: UITableViewCell {
     }
 
     private func commonInit() {
+        registerForTraitChanges([UITraitLayoutDirection.self]) { (self: Self, _) in
+            self.updateTrailingLabelTextAlignment()
+        }
         self.accessibilityTraits = .button
         self.accessibilityHint = NSLocalizedString(
             "Selects this domain to use for your site.",
@@ -124,15 +127,6 @@ final class AddressTableViewCell: UITableViewCell {
             } else {
                 view.center = CGPoint(x: contentView.frame.width - Appearance.contentMargins.leading / 2, y: bounds.midY)
             }
-        }
-    }
-
-    // MARK: - React to Trait Collection Changes
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.layoutDirection != previousTraitCollection?.layoutDirection {
-            self.updateTrailingLabelTextAlignment()
         }
     }
 

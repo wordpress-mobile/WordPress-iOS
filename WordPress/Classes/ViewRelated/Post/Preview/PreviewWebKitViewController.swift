@@ -102,6 +102,10 @@ class PreviewWebKitViewController: WebKitViewController {
             showNoResults(withTitle: Constants.noPreviewTitle)
         }
         setupDeviceLabel()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, _) in
+            self.updatePresentedPopoverIfNeeded()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -256,11 +260,9 @@ extension PreviewWebKitViewController {
         return .none
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func updatePresentedPopoverIfNeeded() {
         guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
-                return
+            return
         }
 
         prepareForPopoverPresentation(popoverPresentationController)

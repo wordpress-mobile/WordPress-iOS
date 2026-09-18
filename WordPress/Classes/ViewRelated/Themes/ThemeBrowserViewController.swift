@@ -326,6 +326,10 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
         configureSearchController()
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.collectionView?.collectionViewLayout.invalidateLayout()
+        }
+
         updateActiveTheme()
         setupThemesSyncHelper()
         if blog.supports(BlogFeature.customThemes) {
@@ -355,12 +359,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader
         )
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        collectionView?.collectionViewLayout.invalidateLayout()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
