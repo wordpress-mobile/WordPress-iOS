@@ -26,11 +26,13 @@ struct CustomPostListFilter: Equatable {
         self.author = author
     }
 
-    init(tab: CustomPostTab, author: [UserId] = []) {
+    /// `orderby` overrides the tab's own sort field. The redesigned list sorts
+    /// every tab by publish date, which is also what it groups rows by.
+    init(tab: CustomPostTab, author: [UserId] = [], orderby: WpApiParamPostsOrderBy? = nil) {
         self.statuses = tab.statuses
         self.primaryStatus = tab.primaryStatus
         self.order = tab.order
-        self.orderby = tab.orderby
+        self.orderby = orderby ?? tab.orderby
         self.author = author
     }
 

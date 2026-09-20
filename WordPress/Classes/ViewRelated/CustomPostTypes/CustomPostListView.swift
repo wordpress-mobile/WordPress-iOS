@@ -92,8 +92,13 @@ struct CustomPostListView<Header: View>: View {
                     : details.labels.notFound
                 EmptyStateView(emptyText, systemImage: "doc.text")
                     .transition(.opacity)
-            } else if viewModel.shouldDisplayInitialLoading, cardConfiguration == nil {
-                ProgressView()
+            } else if viewModel.shouldDisplayInitialLoading {
+                // Card mode shimmers placeholders inside the list instead, so
+                // the overlay stays empty rather than falling through to the
+                // error below and covering them.
+                if cardConfiguration == nil {
+                    ProgressView()
+                }
             } else if let error = viewModel.errorToDisplay() {
                 EmptyStateView.failure(error: error)
                     .transition(.opacity)
@@ -249,7 +254,6 @@ private struct PaginatedList<Header: View>: View {
         let entries = CustomPostListEntryBuilder.entries(
             from: items,
             showsDateGroups: configuration.showsDateGroups,
-            orderby: viewModel.filter.orderby,
             grouper: configuration.grouper
         )
         return Group {

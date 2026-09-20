@@ -217,6 +217,7 @@ final class CustomPostListViewModel: ObservableObject {
     private func fetchWithPagination() async {
         do {
             _ = try await collection.refresh()
+            error = nil
         } catch {
             Loggers.app.error("Failed to refresh posts: \(error)")
             self.show(error: error)
@@ -229,6 +230,7 @@ final class CustomPostListViewModel: ObservableObject {
     private func fetchAllPagesIfBelowThreshold() async {
         do {
             _ = try await collection.refresh()
+            error = nil
         } catch {
             DDLogError("Failed to refresh pages: \(error)")
             self.show(error: error)
@@ -722,26 +724,38 @@ struct CustomPostCollectionDisplayPost: Equatable {
     /// The header badges string (e.g. "Jan 15, 2026 · Author Name") matching
     /// the regular posts list. Combines the formatted date and author name.
     var headerBadges: String {
-        var badges = [dateForDisplay]
+        badges(startingWith: dateForDisplay)
+    }
+
+    /// The same line for the redesigned card, always dated on the published
+    /// date. That is the field the card list sorts and groups on, so a row
+    /// never contradicts the date-group header above it.
+    var cardDateBadges: String {
+        badges(startingWith: format(date))
+    }
+
+    private func badges(startingWith dateString: String) -> String {
+        var badges = [dateString]
         if let authorName, !authorName.isEmpty {
             badges.append(authorName)
         }
         return badges.joined(separator: " · ")
     }
 
-    private var dateForDisplay: String {
-        let string: String
-        switch status {
-        case .future:
-            string = date.mediumStringWithTime()
-        case .publish, .private:
-            string = date.toMediumString()
-        case .trash:
-            string = (modifiedDate ?? date).toMediumString()
-        default:
-            string = (modifiedDate ?? date).toMediumString()
-        }
+    /// A scheduled post carries its time, which is the part that matters when
+    /// it is still to come.
+    private func format(_ date: Date) -> String {
+        let string = status == .future ? date.mediumStringWithTime() : date.toMediumString()
         return string.capitalized(with: .current)
+    }
+
+    private var dateForDisplay: String {
+        switch status {
+        case .future, .publish, .private:
+            return format(date)
+        default:
+            return format(modifiedDate ?? date)
+        }
     }
 
     /// Combined status badges (e.g. "Private · Sticky") matching the regular

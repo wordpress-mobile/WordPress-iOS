@@ -1,6 +1,4 @@
 import Foundation
-import WordPressAPI
-import WordPressAPIInternal
 
 /// One rendered item of the redesigned list. Group headers occupy list
 /// positions of their own, so the list is built from entries rather than
@@ -24,14 +22,13 @@ enum CustomPostListEntry: Identifiable, Equatable {
 enum CustomPostListEntryBuilder {
     /// Interleaves date-group headers into `items`.
     ///
-    /// Rows are grouped by the date the list is sorted on, so the headers stay
-    /// monotonic. A header is emitted whenever the group changes; items that
-    /// carry no post yet (still loading, or failed without data) neither emit
-    /// nor reset the current group.
+    /// Rows are grouped by the published date, which is also what the
+    /// redesigned list sorts on, so the headers stay monotonic. A header is
+    /// emitted whenever the group changes; items that carry no post yet (still
+    /// loading, or failed without data) neither emit nor reset the current group.
     static func entries(
         from items: [CustomPostCollectionItem],
         showsDateGroups: Bool,
-        orderby: WpApiParamPostsOrderBy,
         grouper: CustomPostDateGrouper
     ) -> [CustomPostListEntry] {
         guard showsDateGroups else {
@@ -42,7 +39,7 @@ enum CustomPostListEntryBuilder {
         var currentGroup: CustomPostDateGroup?
         for item in items {
             if let post = item.post {
-                let group = grouper.group(for: post.groupingDate(orderby: orderby))
+                let group = grouper.group(for: post.date)
                 if group != currentGroup {
                     entries.append(.header(group, ordinal: entries.count))
                     currentGroup = group
@@ -51,12 +48,5 @@ enum CustomPostListEntryBuilder {
             entries.append(.post(item))
         }
         return entries
-    }
-}
-
-extension CustomPostCollectionDisplayPost {
-    /// The date the list sorts this post on, and so the one it is grouped by.
-    func groupingDate(orderby: WpApiParamPostsOrderBy) -> Date {
-        orderby == .modified ? (modifiedDate ?? date) : date
     }
 }

@@ -48,12 +48,13 @@ struct CustomPostMetricsStoreTests {
     private func makeStore(
         comments: CommentRecorder? = CommentRecorder(),
         views: ViewFetcher? = ViewFetcher(),
+        debounce: Duration = .zero,
         maxConcurrentViewRequests: Int = 4
     ) -> CustomPostMetricsStore {
         CustomPostMetricsStore(
             commentFetcher: comments?.fetcher(),
             viewFetcher: views,
-            debounce: .zero,
+            debounce: debounce,
             maxConcurrentViewRequests: maxConcurrentViewRequests
         )
     }
@@ -120,6 +121,28 @@ struct CustomPostMetricsStoreTests {
         store.isEnabled = true
         await settle(store)
         #expect(comments.batches == [[1]])
+    }
+
+    @Test("disabling during the debounce window drops the pending fetch")
+    func disabledDuringDebounce() async {
+        let comments = CommentRecorder()
+        let views = ViewFetcher()
+        views.counts = [1: 9]
+        let store = makeStore(comments: comments, views: views, debounce: .milliseconds(1))
+
+        store.rowDidAppear(1)
+        store.isEnabled = false
+        try? await Task.sleep(for: .milliseconds(20))
+        await settle(store)
+        #expect(comments.batches.isEmpty)
+        #expect(views.requested.isEmpty)
+
+        // Re-enabling starts one fresh fetch, not the dropped one as well.
+        store.isEnabled = true
+        try? await Task.sleep(for: .milliseconds(20))
+        await settle(store)
+        #expect(comments.batches == [[1]])
+        #expect(views.requested == [1])
     }
 
     @Test("rows already fetched or in flight are not requested again")

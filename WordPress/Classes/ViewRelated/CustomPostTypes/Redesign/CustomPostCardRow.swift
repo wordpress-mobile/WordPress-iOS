@@ -19,32 +19,13 @@ struct CustomPostCardRow: View {
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let onDuplicate: (AnyPostWithEditContext) -> Void
 
-    @ObservedObject private var mediaCache: FeaturedMediaURLCache
-
-    init(
-        item: CustomPostCollectionItem,
-        configuration: CustomPostCardConfiguration,
-        mediaHost: MediaHost?,
-        viewModel: CustomPostListViewModel,
-        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
-        onDuplicate: @escaping (AnyPostWithEditContext) -> Void
-    ) {
-        self.item = item
-        self.configuration = configuration
-        self.mediaHost = mediaHost
-        self.viewModel = viewModel
-        self.onSelectPost = onSelectPost
-        self.onDuplicate = onDuplicate
-        self.mediaCache = configuration.mediaCache
-    }
-
     var body: some View {
         switch item.state {
         case .loading:
             CustomPostCardPlaceholder(density: configuration.density)
         case .error(let message):
             if let post = item.post {
-                CardContainer { card(for: post, syncError: message) }
+                CardContainer { card(for: post, syncError: message, menu: EmptyView()) }
             } else {
                 CardContainer { ErrorRow(message: message) }
             }
@@ -61,23 +42,22 @@ struct CustomPostCardRow: View {
         // Not a Button: the overflow menu lives inside the card, and a control
         // nested in a button's label does not reliably get the tap in a List.
         let row = CardContainer {
-            card(for: post, syncError: nil) {
-                PostActionMenu(
+            card(
+                for: post,
+                syncError: nil,
+                menu: PostActionMenu(
                     post: fullPost,
                     pageRole: item.pageRole,
                     viewModel: viewModel,
                     onDuplicate: onDuplicate
                 )
-            }
+            )
         }
         .onTapGesture {
             onSelectPost(fullPost)
         }
         .onAppear {
             configuration.metricsStore?.rowDidAppear(item.id)
-            if let featuredMedia = post.featuredMedia {
-                mediaCache.resolveIfNeeded(featuredMedia)
-            }
         }
         .onDisappear {
             configuration.metricsStore?.rowDidDisappear(item.id)
@@ -101,17 +81,35 @@ struct CustomPostCardRow: View {
         }
     }
 
-    private func card(for post: CustomPostCollectionDisplayPost, syncError: String?) -> some View {
-        card(for: post, syncError: syncError) { EmptyView() }
-    }
-
+    /// Draws the card once its featured image state is known. A post with an
+    /// image resolves it from here rather than from the loaded row, so a row
+    /// showing cached data behind a sync error resolves its image too.
     @ViewBuilder
     private func card<Menu: View>(
         for post: CustomPostCollectionDisplayPost,
         syncError: String?,
-        @ViewBuilder menu: () -> Menu
+        menu: Menu
     ) -> some View {
-        let imageState = post.featuredMedia.map(mediaCache.state(for:)) ?? .unresolvable
+        if let mediaId = post.featuredMedia {
+            MediaResolvingCard(
+                cache: configuration.mediaCache,
+                mediaId: mediaId,
+                entry: configuration.mediaCache.entry(for: mediaId)
+            ) { imageState in
+                cardBody(for: post, syncError: syncError, imageState: imageState, menu: menu)
+            }
+        } else {
+            cardBody(for: post, syncError: syncError, imageState: .unresolvable, menu: menu)
+        }
+    }
+
+    @ViewBuilder
+    private func cardBody<Menu: View>(
+        for post: CustomPostCollectionDisplayPost,
+        syncError: String?,
+        imageState: FeaturedMediaURLCache.State,
+        menu: Menu
+    ) -> some View {
         let isHero = !configuration.density.isCondensed && imageState != .unresolvable
         let padding: CGFloat = configuration.density.isCondensed ? 12 : 14
 
@@ -128,7 +126,7 @@ struct CustomPostCardRow: View {
                         syncError: syncError,
                         isHero: true
                     )
-                    menu()
+                    menu
                 }
                 .padding(padding)
             }
@@ -149,10 +147,30 @@ struct CustomPostCardRow: View {
                         .padding(.leading, padding)
                         .transition(.opacity)
                 }
-                menu()
+                menu
             }
             .padding(padding)
         }
+    }
+}
+
+/// Starts this row's featured image lookup and hands its state to the card.
+/// Observing the one entry rather than the whole cache keeps an image landing
+/// from invalidating every other row in the list.
+private struct MediaResolvingCard<Content: View>: View {
+    let cache: FeaturedMediaURLCache
+    let mediaId: MediaId
+    @ObservedObject var entry: FeaturedMediaURLCache.Entry
+    @ViewBuilder let content: (FeaturedMediaURLCache.State) -> Content
+
+    var body: some View {
+        content(entry.state)
+            .onAppear {
+                cache.mediaDidAppear(mediaId)
+            }
+            .onDisappear {
+                cache.mediaDidDisappear(mediaId)
+            }
     }
 }
 
@@ -317,10 +335,13 @@ private struct CardTextColumn: View {
 
     @ViewBuilder
     private var metaLine: some View {
+        // Dated on the published date, the same field the list is grouped by,
+        // so a row never contradicts the header it sits under.
+        let dateLabel = post.cardDateBadges
         if let store = configuration.metricsStore, !configuration.density.isCondensed {
-            ObservedMetaLine(store: store, postID: postID, dateLabel: post.headerBadges, syncError: syncError)
+            ObservedMetaLine(store: store, postID: postID, dateLabel: dateLabel, syncError: syncError)
         } else {
-            MetaLine(dateLabel: post.headerBadges, metrics: nil, syncError: syncError)
+            MetaLine(dateLabel: dateLabel, metrics: nil, syncError: syncError)
         }
     }
 }

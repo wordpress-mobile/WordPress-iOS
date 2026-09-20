@@ -30,10 +30,10 @@ struct CustomPostTabView: View {
     @SiteStorage private var authorFilter: CustomPostAuthorFilter
     @State private var density = CustomPostListDensity.stored
 
-    /// The redesign is gated to posts: pages keep their hierarchy, which the cards do not draw.
-    private var isRedesignEnabled: Bool {
-        FeatureFlag.postsListRedesign.enabled && details.slug == "post"
-    }
+    /// The redesign is gated to posts: pages keep their hierarchy, which the
+    /// cards do not draw. Decided once, because the sort order the view models
+    /// are built with has to match the grouping the cards draw.
+    private let isRedesignEnabled: Bool
 
     private var activeViewModel: CustomPostListViewModel {
         switch selectedTab {
@@ -63,12 +63,18 @@ struct CustomPostTabView: View {
         self.blog = blog
         self.presentingViewController = presentingViewController
 
+        isRedesignEnabled = FeatureFlag.postsListRedesign.enabled && details.slug == "post"
+        // The cards group rows by publish date, so the list has to sort on it
+        // too or the headers would run backwards on the tabs sorted by
+        // modified date. Matches Android, which sorts every tab by date.
+        let orderby: WpApiParamPostsOrderBy? = isRedesignEnabled ? .date : nil
+
         _allViewModel = State(
             initialValue: CustomPostListViewModel(
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter(tab: .all),
+                filter: CustomPostListFilter(tab: .all, orderby: orderby),
                 blog: blog,
                 showsHierarchyIfApplicable: true,
                 presentingViewController: presentingViewController
@@ -79,7 +85,7 @@ struct CustomPostTabView: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter(tab: .published),
+                filter: CustomPostListFilter(tab: .published, orderby: orderby),
                 blog: blog,
                 showsHierarchyIfApplicable: true,
                 presentingViewController: presentingViewController
@@ -90,7 +96,7 @@ struct CustomPostTabView: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter(tab: .drafts),
+                filter: CustomPostListFilter(tab: .drafts, orderby: orderby),
                 blog: blog,
                 presentingViewController: presentingViewController
             )
@@ -100,7 +106,7 @@ struct CustomPostTabView: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter(tab: .scheduled),
+                filter: CustomPostListFilter(tab: .scheduled, orderby: orderby),
                 blog: blog,
                 presentingViewController: presentingViewController
             )
@@ -110,7 +116,7 @@ struct CustomPostTabView: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter(tab: .trash),
+                filter: CustomPostListFilter(tab: .trash, orderby: orderby),
                 blog: blog,
                 presentingViewController: presentingViewController
             )
@@ -118,7 +124,7 @@ struct CustomPostTabView: View {
 
         _authorFilter = .authorFilter(for: TaggedManagedObjectID(blog))
         _mediaCache = State(initialValue: FeaturedMediaURLCache(client: client))
-        if FeatureFlag.postsListRedesign.enabled, details.slug == "post" {
+        if isRedesignEnabled {
             let store = CustomPostMetricsStore(
                 commentFetcher: CustomPostCommentCountFetcher(client: client),
                 viewFetcher: StatsViewCountFetcher(blog: blog)

@@ -1,6 +1,5 @@
 import Foundation
 import Testing
-import WordPressAPIInternal
 
 @testable import WordPress
 
@@ -26,13 +25,11 @@ struct CustomPostListEntryBuilderTests {
 
     private func entries(
         _ items: [CustomPostCollectionItem],
-        showsDateGroups: Bool = true,
-        orderby: WpApiParamPostsOrderBy = .date
+        showsDateGroups: Bool = true
     ) -> [CustomPostListEntry] {
         CustomPostListEntryBuilder.entries(
             from: items,
             showsDateGroups: showsDateGroups,
-            orderby: orderby,
             grouper: grouper
         )
     }
@@ -65,11 +62,10 @@ struct CustomPostListEntryBuilderTests {
         #expect(result.map(\.id) == ["header-0", "post-1", "post-9", "post-2"])
     }
 
-    @Test("sorting by modified date groups by modified date")
-    func modifiedOrder() {
+    @Test("a recently modified post still groups by its published date")
+    func groupsByPublishedDate() {
         let items = [item(id: 1, daysAgo: 400, modifiedDaysAgo: 1)]
-        #expect(entries(items, orderby: .modified).first == .header(.thisWeek, ordinal: 0))
-        #expect(entries(items, orderby: .date).first != .header(.thisWeek, ordinal: 0))
+        #expect(entries(items).first == .header(.monthAndYear(label: "December 2025"), ordinal: 0))
     }
 
     @Test("a repeated group gets a distinct header id")

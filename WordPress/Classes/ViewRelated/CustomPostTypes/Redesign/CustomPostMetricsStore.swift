@@ -34,8 +34,14 @@ final class CustomPostMetricsStore: ObservableObject {
     /// nothing is requested. Re-enabling asks for the rows still on screen.
     var isEnabled = true {
         didSet {
-            if isEnabled, !oldValue {
+            guard isEnabled != oldValue else { return }
+            if isEnabled {
                 scheduleFetch()
+            } else {
+                // A fetch already waiting out the debounce would otherwise
+                // still fire, for rows that no longer show what it asks for.
+                debounceTask?.cancel()
+                debounceTask = nil
             }
         }
     }
