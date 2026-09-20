@@ -15,7 +15,7 @@ struct VerticalCard: View {
 
     private var accessibilityLabel: Text {
         // The colon makes VoiceOver pause between elements
-        Text(title) + Text(": ") + Text(value.abbreviatedString())
+        Text(title) + Text(": ") + Text(value.abbreviatedAccessibilityLabel())
     }
 
     var body: some View {

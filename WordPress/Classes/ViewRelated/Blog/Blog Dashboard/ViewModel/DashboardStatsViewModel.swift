@@ -26,6 +26,20 @@ class DashboardStatsViewModel {
         apiResponse.todaysStats?.value?.likes?.abbreviatedString(forHeroNumber: true) ?? "0"
     }
 
+    // Spoken forms for VoiceOver (e.g. "1.2 million" instead of "1.2M").
+
+    var todaysViewsAccessibilityLabel: String {
+        apiResponse.todaysStats?.value?.views?.abbreviatedAccessibilityLabel(forHeroNumber: true) ?? "0"
+    }
+
+    var todaysVisitorsAccessibilityLabel: String {
+        apiResponse.todaysStats?.value?.visitors?.abbreviatedAccessibilityLabel(forHeroNumber: true) ?? "0"
+    }
+
+    var todaysLikesAccessibilityLabel: String {
+        apiResponse.todaysStats?.value?.likes?.abbreviatedAccessibilityLabel(forHeroNumber: true) ?? "0"
+    }
+
     var shouldDisplayNudge: Bool {
         guard let todaysStats = apiResponse.todaysStats?.value else {
             return false

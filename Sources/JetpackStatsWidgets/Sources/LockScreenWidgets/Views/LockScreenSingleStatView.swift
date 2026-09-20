@@ -12,7 +12,9 @@ struct LockScreenSingleStatView: View {
                     Spacer()
                     LockScreenSiteTitleView(title: viewModel.siteName)
                     Spacer().frame(height: 4)
-                    LockScreenFieldView(title: viewModel.title, value: viewModel.value.abbreviatedString())
+                    LockScreenFieldView(title: viewModel.title,
+                                        value: viewModel.value.abbreviatedString(),
+                                        spokenValue: viewModel.value.abbreviatedAccessibilityLabel())
                     Spacer()
                 }
             }
