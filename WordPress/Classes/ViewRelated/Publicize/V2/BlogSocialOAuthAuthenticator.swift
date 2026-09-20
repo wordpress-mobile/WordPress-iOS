@@ -1,7 +1,9 @@
 import Foundation
 import JetpackSocial
 import WebKit
-import WordPressData
+// `CoreDataStackSwift` is not `Sendable`, so importing it as preconcurrency keeps
+// this `Sendable` struct's stored stack from warning until the module adopts Swift 6.
+@preconcurrency import WordPressData
 
 /// Adapts the app's `Blog`-backed `RequestAuthenticator` to the
 /// module-facing `SocialOAuthAuthenticator` protocol.
@@ -13,9 +15,9 @@ import WordPressData
 /// we can hand it to `RequestAuthenticator.request` as-is.
 struct BlogSocialOAuthAuthenticator: SocialOAuthAuthenticator {
     private let blogID: TaggedManagedObjectID<Blog>
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
 
-    init(blog: Blog, coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(blog: Blog, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.blogID = TaggedManagedObjectID(blog)
         self.coreDataStack = coreDataStack
     }

@@ -8,9 +8,9 @@ actor PostSearchSuggestionsService {
     private let isEnabled: Bool
     private var cachedAuthorTokens: [PostSearchAuthorToken]?
     private var cachedTags: [PostSearchTagToken]?
-    private let coreData: CoreDataStack
+    private let coreData: CoreDataStackSwift
 
-    init(blog: Blog, coreData: CoreDataStack = ContextManager.shared) {
+    init(blog: Blog, coreData: CoreDataStackSwift = ContextManager.shared) {
         self.blogID = TaggedManagedObjectID(blog)
         self.isEnabled = blog.isAccessibleThroughWPCom
         self.coreData = coreData
