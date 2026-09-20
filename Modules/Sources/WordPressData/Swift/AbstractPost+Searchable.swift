@@ -21,12 +21,7 @@ extension AbstractPost: SearchableItemConvertable {
     }
 
     public var searchDomain: String? {
-        if let dotComID = blog.dotComID, dotComID.intValue > 0 {
-            return dotComID.stringValue
-        } else {
-            // This is a self-hosted site, set domain to the xmlrpc string
-            return blog.xmlrpc
-        }
+        return blog.searchDomain
     }
 
     public var searchTitle: String? {
@@ -76,5 +71,18 @@ fileprivate extension AbstractPost {
             return title
         }
         return "[\(AbstractPost.title(for: status))] \(title)"
+    }
+}
+
+extension Blog {
+    /// The Spotlight domain identifier shared by every item indexed for this
+    /// site, so the site's items can be removed together.
+    public var searchDomain: String? {
+        if let dotComID, dotComID.intValue > 0 {
+            return dotComID.stringValue
+        } else {
+            // This is a self-hosted site, set domain to the xmlrpc string
+            return xmlrpc
+        }
     }
 }
