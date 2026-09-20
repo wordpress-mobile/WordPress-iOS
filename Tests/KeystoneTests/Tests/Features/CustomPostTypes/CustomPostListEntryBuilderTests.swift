@@ -65,7 +65,7 @@ struct CustomPostListEntryBuilderTests {
     @Test("a recently modified post still groups by its published date")
     func groupsByPublishedDate() {
         let items = [item(id: 1, daysAgo: 400, modifiedDaysAgo: 1)]
-        #expect(entries(items).first == .header(.monthAndYear(label: "December 2025"), ordinal: 0))
+        #expect(entries(items).first == .header(.month(label: "December 2025"), ordinal: 0))
     }
 
     @Test("a repeated group gets a distinct header id")

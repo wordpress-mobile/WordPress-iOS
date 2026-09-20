@@ -9,20 +9,6 @@ struct CustomPostCardConfiguration {
     let showsDateGroups: Bool
     let mediaCache: FeaturedMediaURLCache
     /// Only the Published tab carries a store; drafts have neither views nor comments.
-    let metricsStore: CustomPostMetricsStore?
-    let grouper: CustomPostDateGrouper
-
-    init(
-        density: CustomPostListDensity,
-        showsDateGroups: Bool,
-        mediaCache: FeaturedMediaURLCache,
-        metricsStore: CustomPostMetricsStore? = nil,
-        grouper: CustomPostDateGrouper = CustomPostDateGrouper()
-    ) {
-        self.density = density
-        self.showsDateGroups = showsDateGroups
-        self.mediaCache = mediaCache
-        self.metricsStore = metricsStore
-        self.grouper = grouper
-    }
+    var metricsStore: CustomPostMetricsStore? = nil
+    let grouper = CustomPostDateGrouper()
 }

@@ -43,17 +43,17 @@ struct CustomPostDateGrouperTests {
 
     @Test("an earlier month in the same year is named without its year")
     func earlierMonthSameYear() {
-        #expect(group(of: Self.utc(year: 2026, month: 7, day: 24)) == .monthThisYear(monthName: "July"))
+        #expect(group(of: Self.utc(year: 2026, month: 7, day: 24)) == .month(label: "July"))
     }
 
     @Test("a month in an earlier year carries its year")
     func earlierYear() {
-        #expect(group(of: Self.utc(year: 2025, month: 3, day: 2)) == .monthAndYear(label: "March 2025"))
+        #expect(group(of: Self.utc(year: 2025, month: 3, day: 2)) == .month(label: "March 2025"))
     }
 
     @Test("the same month in an earlier year is not mistaken for this month")
     func sameMonthLastYear() {
-        #expect(group(of: Self.utc(year: 2025, month: 9, day: 10)) == .monthAndYear(label: "September 2025"))
+        #expect(group(of: Self.utc(year: 2025, month: 9, day: 10)) == .month(label: "September 2025"))
     }
 
     @Test("the week window crosses a year boundary")
@@ -61,13 +61,13 @@ struct CustomPostDateGrouperTests {
         let january = Self.utc(year: 2027, month: 1, day: 3)
         let grouper = CustomPostDateGrouper(now: january, calendar: calendar, locale: Locale(identifier: "en_US"))
         #expect(grouper.group(for: Self.utc(year: 2026, month: 12, day: 30)) == .thisWeek)
-        #expect(grouper.group(for: Self.utc(year: 2026, month: 12, day: 20)) == .monthAndYear(label: "December 2026"))
+        #expect(grouper.group(for: Self.utc(year: 2026, month: 12, day: 20)) == .month(label: "December 2026"))
     }
 
     @Test("titles read as headers")
     func titles() {
         #expect(CustomPostDateGroup.earlierThisMonth(monthName: "July").localizedTitle == "Earlier in July")
-        #expect(CustomPostDateGroup.monthAndYear(label: "March 2025").localizedTitle == "March 2025")
+        #expect(CustomPostDateGroup.month(label: "March 2025").localizedTitle == "March 2025")
     }
 
     private static func utc(year: Int, month: Int, day: Int) -> Date {

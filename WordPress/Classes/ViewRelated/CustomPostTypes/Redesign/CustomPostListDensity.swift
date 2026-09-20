@@ -5,7 +5,7 @@ import Foundation
 /// `condensed` drops the excerpt, the metrics and the hero image. Dropping the
 /// metrics also stops them being fetched, so a condensed list makes no
 /// per-post stats requests.
-enum CustomPostListDensity: String, CaseIterable {
+enum CustomPostListDensity: String {
     case comfortable
     case condensed
 

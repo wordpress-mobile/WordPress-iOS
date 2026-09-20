@@ -246,7 +246,7 @@ private struct PaginatedList<Header: View>: View {
             .listSectionSeparator(.hidden)
         }
         .listStyle(.plain)
-        .modifier(CardListBackground(isEnabled: cardConfiguration != nil))
+        .cardListBackground(isEnabled: cardConfiguration != nil)
     }
 
     /// The redesigned rows: cards with date-group headers interleaved.
@@ -257,7 +257,7 @@ private struct PaginatedList<Header: View>: View {
             grouper: configuration.grouper
         )
         return Group {
-            if items.isEmpty, viewModel.shouldDisplayInitialLoading {
+            if viewModel.shouldDisplayInitialLoading {
                 // Placeholders live in the list rather than an overlay so the
                 // filter chips above them stay visible while the first page loads.
                 ForEach(0..<6, id: \.self) { _ in
@@ -461,16 +461,16 @@ private struct ForEachContent: View {
     }
 }
 
-/// The context menu and swipe actions shared by the classic row and the
-/// redesigned card.
-struct PostRowActionsModifier: ViewModifier {
-    let post: AnyPostWithEditContext
-    let pageRole: PageRole?
-    let viewModel: CustomPostListViewModel
-    let onDuplicate: (AnyPostWithEditContext) -> Void
-
-    func body(content: Content) -> some View {
-        content
+extension View {
+    /// The context menu and swipe actions shared by the classic row and the
+    /// redesigned card.
+    func postRowActions(
+        post: AnyPostWithEditContext,
+        pageRole: PageRole?,
+        viewModel: CustomPostListViewModel,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void
+    ) -> some View {
+        self
             .contextMenu {
                 PostActionMenuContent(
                     post: post,
@@ -515,17 +515,6 @@ struct PostRowActionsModifier: ViewModifier {
                 }
             }
     }
-}
-
-extension View {
-    func postRowActions(
-        post: AnyPostWithEditContext,
-        pageRole: PageRole?,
-        viewModel: CustomPostListViewModel,
-        onDuplicate: @escaping (AnyPostWithEditContext) -> Void
-    ) -> some View {
-        modifier(PostRowActionsModifier(post: post, pageRole: pageRole, viewModel: viewModel, onDuplicate: onDuplicate))
-    }
 
     /// Cards draw their own chrome, so in card mode the list row supplies none.
     @ViewBuilder
@@ -539,19 +528,16 @@ extension View {
             self
         }
     }
-}
 
-/// Cards sit on a recessed page so they read as cards rather than a flat sheet.
-private struct CardListBackground: ViewModifier {
-    let isEnabled: Bool
-
-    func body(content: Content) -> some View {
+    /// Cards sit on a recessed page so they read as cards rather than a flat sheet.
+    @ViewBuilder
+    fileprivate func cardListBackground(isEnabled: Bool) -> some View {
         if isEnabled {
-            content
+            self
                 .scrollContentBackground(.hidden)
                 .background(Color(.systemGroupedBackground))
         } else {
-            content
+            self
         }
     }
 }

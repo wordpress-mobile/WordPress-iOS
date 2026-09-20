@@ -6,10 +6,8 @@ enum CustomPostDateGroup: Hashable {
     case thisWeek
     /// Older than a week but still inside the current calendar month.
     case earlierThisMonth(monthName: String)
-    /// An earlier month of the current year.
-    case monthThisYear(monthName: String)
-    /// Any month of an earlier year.
-    case monthAndYear(label: String)
+    /// Any earlier month, named with its year unless it is the current one.
+    case month(label: String)
 
     var localizedTitle: String {
         switch self {
@@ -17,9 +15,7 @@ enum CustomPostDateGroup: Hashable {
             return Strings.thisWeek
         case .earlierThisMonth(let monthName):
             return String.localizedStringWithFormat(Strings.earlierInMonth, monthName)
-        case .monthThisYear(let monthName):
-            return monthName
-        case .monthAndYear(let label):
+        case .month(let label):
             return label
         }
     }
@@ -52,12 +48,11 @@ struct CustomPostDateGrouper {
         }
         let then = calendar.dateComponents([.year, .month], from: date)
         let today = calendar.dateComponents([.year, .month], from: now)
-        if then.year == today.year {
-            let monthName = monthFormatter.string(from: date)
-            return then.month == today.month
-                ? .earlierThisMonth(monthName: monthName) : .monthThisYear(monthName: monthName)
+        if then == today {
+            return .earlierThisMonth(monthName: monthFormatter.string(from: date))
         }
-        return .monthAndYear(label: monthYearFormatter.string(from: date))
+        let formatter = then.year == today.year ? monthFormatter : monthYearFormatter
+        return .month(label: formatter.string(from: date))
     }
 
     private static func makeFormatter(template: String, calendar: Calendar, locale: Locale) -> DateFormatter {

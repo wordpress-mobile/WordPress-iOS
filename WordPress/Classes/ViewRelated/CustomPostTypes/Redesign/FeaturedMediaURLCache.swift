@@ -70,8 +70,8 @@ final class FeaturedMediaURLCache {
         visibleIDs.remove(mediaId)
     }
 
-    func resolveIfNeeded(_ mediaId: MediaId) {
-        guard entry(for: mediaId).state == .pending, tasks[mediaId] == nil else { return }
+    private func resolveIfNeeded(_ mediaId: MediaId) {
+        guard entry(for: mediaId).state == .pending else { return }
         startResolving(mediaId)
     }
 
