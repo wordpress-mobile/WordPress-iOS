@@ -301,12 +301,12 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     }
 
     /// When a user views the Ticket List, this is called to:
-    /// - clear the notification count
-    /// - update the application badge count
-    /// - post an NSNotification so the various indicators can be cleared.
+    /// - clear the support notification count
+    /// - post an NSNotification so the support indicators can be cleared.
     ///
+    /// Support no longer touches the home-screen icon badge; the WordPress push
+    /// payload owns that count.
     static func pushNotificationRead() {
-        UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
         unreadNotificationsCount = 0
         saveUnreadCount()
         postNotificationRead()

@@ -32,37 +32,6 @@ final class NotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(notificationCount, 0)
     }
 
-    func testResetLastSeenTimeWhenAccountChange() throws {
-        // Give
-        controller.viewModel.lastSeenChanged(timestamp: "testTime")
-
-        // When
-        postAccountChangeNotification()
-
-        // Then
-        XCTAssertEqual(controller.viewModel.lastSeenTime, nil)
-    }
-
-    func testResetApplicationBadgeWhenAccountChange() throws {
-        // Give
-        let newUnreadCount = 1
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        ZendeskUtils.unreadNotificationsCount = newUnreadCount
-
-        // When
-        postAccountChangeNotification()
-
-        // Then
-        // TODO: rework this unit test
-        let expectation = self.expectation(description: "setBadgeCount")
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-            expectation.fulfill()
-        }
-        wait(for: [expectation])
-
-        XCTAssertEqual(UIApplication.shared.applicationIconBadgeNumber, newUnreadCount)
-    }
-
     func testNeedsReloadResultsWhenAccountChange() throws {
         // Give
         controller.needsReloadResults = false

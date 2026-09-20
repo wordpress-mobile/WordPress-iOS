@@ -111,7 +111,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     lazy var viewModel: NotificationsViewModel = {
-        NotificationsViewModel(userDefaults: userDefaults)
+        NotificationsViewModel()
     }()
 
     var isSidebarModeEnabled = false
@@ -187,8 +187,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Notifications
         startListeningToNotifications()
-        resetApplicationBadge()
-        updateLastSeenTime()
+        notificationsBecameVisible()
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
@@ -242,6 +241,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
+        NotificationActivityService.shared.notificationsResignedVisible()
 
         dismissNoNetworkAlert()
 
@@ -730,15 +730,14 @@ private extension NotificationsViewController {
             return
         }
 
-        resetApplicationBadge()
-        updateLastSeenTime()
+        notificationsBecameVisible()
         reloadResultsControllerIfNeeded()
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
+        // The account-scoped bell state and icon clear are owned by
+        // NotificationActivityService, which observes the same notification.
         resetNotifications()
-        viewModel.didChangeDefaultAccount()
-        resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
             return
@@ -748,13 +747,13 @@ private extension NotificationsViewController {
     }
 
     @objc func notificationsWereUpdated(_ note: Foundation.Notification) {
-        // If we're onscreen, don't leave the badge updated behind
-        guard UIApplication.shared.applicationState == .active else {
+        // While the list is visible, submit the newer observed timestamp as seen.
+        guard UIApplication.shared.applicationState == .active,
+              isViewLoaded, view.window != nil else {
             return
         }
 
-        resetApplicationBadge()
-        updateLastSeenTime()
+        NotificationActivityService.shared.notificationsListDidUpdate(newestTimestamp: newestNotificationTimestamp())
     }
 
     @objc func significantTimeChange(_ note: Foundation.Notification) {
@@ -1242,7 +1241,9 @@ private extension NotificationsViewController {
         let welcomeNotificationSeenKey = userDefaults.welcomeNotificationSeenKey
         if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
-            resetApplicationBadge()
+            NotificationActivityService.shared.requestIconClear()
+            // The tab-bar unread state also depends on this flag, so re-render it.
+            NotificationActivityService.shared.refreshIndicators()
         }
     }
 }
@@ -1835,13 +1836,15 @@ private extension NotificationsViewController {
             }
     }
 
-    func updateLastSeenTime() {
-        guard let note = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification
-        else {
-            return
-        }
+    /// Notifications became visible: hand the newest observed timestamp to the
+    /// activity service, which clears the bell, clears the icon, and submits seen.
+    func notificationsBecameVisible() {
+        NotificationActivityService.shared.notificationsBecameVisible(newestTimestamp: newestNotificationTimestamp())
+    }
 
-        viewModel.lastSeenChanged(timestamp: note.timestamp)
+    /// The newest notification timestamp currently available to the list, if any.
+    func newestNotificationTimestamp() -> String? {
+        (tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification)?.timestamp
     }
 
     func loadNotification(with noteId: String) -> WordPressData.Notification? {
@@ -1874,12 +1877,6 @@ private extension NotificationsViewController {
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetApplicationBadge() {
-        // These notifications are cleared, so we just need to take Zendesk unread notifications
-        // into account when setting the app icon count.
-        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 

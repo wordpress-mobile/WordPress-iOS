@@ -225,24 +225,4 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         wait(for: [contextSaved, expect], timeout: timeout)
     }
-
-    /// Verifies that updateLastSeen method effectively calls the callback with successfull flag
-    ///
-    func testUpdateLastSeenHitsCallbackWithSuccessfulResult() {
-        // Stub Endpoint
-        let endpoint = "notifications/seen"
-        let stubPath = OHPathForFile("notifications-last-seen.json", type(of: self))!
-        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
-
-        // Mediator Expectations
-        let expect = expectation(description: "Update Last Seen")
-
-        // Update Last Seen!
-        mediator.updateLastSeen("1234") { error in
-            XCTAssertNil(error)
-            expect.fulfill()
-        }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
 }

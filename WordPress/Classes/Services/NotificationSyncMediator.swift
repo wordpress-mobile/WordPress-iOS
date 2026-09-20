@@ -271,26 +271,6 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         }
     }
 
-    /// Updates the Backend's Last Seen Timestamp. Used to calculate the Badge Count!
-    ///
-    /// - Note: This method should only be used on the main thread.
-    ///
-    /// - Parameters:
-    ///     - timestamp: Timestamp of the last seen notification.
-    ///     - completion: Callback to be executed on completion.
-    ///
-    func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)? = nil) {
-        assert(Thread.isMainThread)
-
-        remote.updateLastSeen(timestamp) { error in
-            if let error {
-                DDLogError("Error while Updating Last Seen Timestamp: \(error)")
-            }
-
-            completion?(error)
-        }
-    }
-
     /// Deletes the note with the given ID from Core Data.
     ///
     func deleteNote(noteID: String) {

@@ -14,7 +14,6 @@
 @import WordPressUI;
 
 static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
-static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";
 
 NSString * const WPNewPostURLParamTitleKey = @"title";
 NSString * const WPNewPostURLParamContentKey = @"content";
@@ -74,12 +73,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
-                                                     name:NSNotification.ZendeskPushNotificationReceivedNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateIconIndicators:)
-                                                     name:NSNotification.ZendeskPushNotificationClearedNotification
+                                                     name:ObjCBridge.notificationActivityDidChangeNotification
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -91,12 +85,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                                  selector:@selector(signinDidFinish:)
                                                      name:WPTabBarController.wpSigninDidFinishNotification
                                                    object:nil];
-
-        // Watch for application badge number changes
-        [[UIApplication sharedApplication] addObserver:self
-                                            forKeyPath:WPApplicationIconBadgeNumberKeyPath
-                                               options:NSKeyValueObservingOptionNew
-                                               context:nil];
 
         [self.tabBar addObserver:self
                       forKeyPath:WPTabBarFrameKeyPath
@@ -116,7 +104,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)dealloc
 {
     [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
 #pragma mark - Tab Bar Items
@@ -319,7 +306,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self animateSelectedItem:item for:tabBar];
 }
 
-#pragma mark - Zendesk Notifications
+#pragma mark - Notification Activity
 
 - (void)updateIconIndicators:(NSNotification *)notification
 {
@@ -362,9 +349,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return;
     }
 
-    // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
-    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - ObjCBridge.unreadNotificationsCount;
-    if (count > 0 || ![self welcomeNotificationSeen]) {
+    // The bell is driven by the account-scoped in-app activity state, not the
+    // home-screen icon badge. Support keeps its own indicators elsewhere.
+    if (ObjCBridge.hasNewNotificationActivity || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
@@ -392,10 +379,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (object == self.tabBar && [keyPath isEqualToString:WPTabBarFrameKeyPath]) {
         [self notifyOfTabBarHeightChangedIfNeeded];
-    }
-
-    if (object == [UIApplication sharedApplication] && [keyPath isEqualToString:WPApplicationIconBadgeNumberKeyPath]) {
-        [self updateNotificationBadgeVisibility];
     }
 }
 
