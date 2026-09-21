@@ -92,9 +92,9 @@ struct RootSupportView: View {
         }
     }
 
-    /// The unified support flow is only available in internal Jetpack builds while it's being built.
+    /// The unified support flow is only available in the Jetpack app.
     private var isUnifiedSupportAvailable: Bool {
-        BuildSettings.current.brand == .jetpack && BuildConfiguration.current.isInternal
+        BuildSettings.current.brand == .jetpack
     }
 
     @ViewBuilder
