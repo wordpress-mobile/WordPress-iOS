@@ -1,3 +1,7 @@
+27.4
+-----
+
+
 27.3
 -----
 * [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]

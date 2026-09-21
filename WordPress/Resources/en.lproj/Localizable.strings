@@ -2055,6 +2055,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Save Draft";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Comment is awaiting review";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Failed to send comment";
 
@@ -2072,6 +2075,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Send";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Approve";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Delete Permanently";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "More";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Move to Pending";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Restore";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Spam";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Trash";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "This can't be undone.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Delete this comment permanently?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Move to Trash";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Move this comment to the trash?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "This comment has replies. Trash it anyway?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Couldn't load this comment";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "on %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Date";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "Email";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP address";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Website";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "That action couldn't be completed. Please try again.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "In reply to %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Approved";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "Pending";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Spam";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Trash";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Discard Changes";
@@ -2125,6 +2200,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Error unapproving comment";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "No comments yet";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "No approved comments";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "No pending comments";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "No spam comments";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "No trashed comments";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Try again";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Couldn't load comments";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonymous";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ on %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "Pending";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Comments";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "All";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Approved";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "Pending";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Spam";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Trash";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
@@ -2752,6 +2875,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Reader interests prompt reset";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Current Value";
 
@@ -2770,6 +2896,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Remote Config";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Reset Reader Interests Prompt";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Reset Data";
@@ -2791,6 +2920,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Show All Tips";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Show Reader Interests Screen";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Developer";
@@ -5196,6 +5328,18 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Might show incomplete data";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Comparison period";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Selected period";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Lines";
 
@@ -5468,6 +5612,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Failed to mark as spam";
+
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Marking this referrer as spam removes it from your referrer stats. Your other stats are not affected.";
 
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Marked as Spam";
@@ -6064,6 +6211,12 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Unable to sync media";
 
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "This item could not be added to the Media library. It may be too large to import. Please try again or resize the media.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "This item can’t be added to the Media library while Lockdown Mode is on.";
+
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "The item could not be added to the Media library";
 
@@ -6313,8 +6466,14 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "The selected file could not be found.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Couldn't convert the photo for upload.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Couldn't convert the photo for upload.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "The selected file isn't a valid image.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Couldn't remove the location from the photo for upload.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Couldn't access the selected file.";
@@ -6614,9 +6773,6 @@ If you don't add your own text here, we'll use the post's title as the message."
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "My Site";
-
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "My Sites in WordPress";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "My Top Ten Cafes";
@@ -9286,6 +9442,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "No new tags to follow";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Skip";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Choose your tags";
 
@@ -10207,12 +10366,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Sidebar item on iPad */
 "sidebar.notifications" = "Notifications";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Successfully cleared Siri Shortcut Suggestions";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Clear Siri Shortcut Suggestions";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
 
@@ -10798,6 +10951,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Your visitors in the last 7-days are the same as the previous 7-days.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Opens the post";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Comments";
 
@@ -10843,8 +10999,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Manage Stats Cards";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Most Popular Time";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Most Popular Time";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ of views";
@@ -10855,11 +11011,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Subscribers";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Your latest post %1$@ has received %2$@ likes.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "The latest post %1$@ has received %2$@ likes.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Your latest post %1$@ has received %2$@ like.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "The latest post %1$@ has received %2$@ like.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total WordPress.com Subscribers: %@";
@@ -12805,9 +12961,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "WordPress App Settings";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
 
@@ -12817,35 +12970,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS Support";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress Help";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress Media Library";
 
 /* Title for label when the user's site is a multisite. */
 "WordPress multisites are not supported" = "WordPress multisites are not supported";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "WordPress Notification Settings";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress Notifications";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress Plugins";
 
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress Profile";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress Reader";
-
 /* Downloadable/Restorable items: WordPress root */
 "WordPress root" = "WordPress root";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "WordPress Site Details";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress Themes";
@@ -13193,9 +13328,6 @@ from anywhere.";
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Your website credentials will not be stored and are used only for the purpose of installing Jetpack.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
 
 /* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
 "Your WordPress.com profile is powered by Gravatar." = "Your WordPress.com profile is powered by Gravatar.";

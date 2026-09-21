@@ -1,3 +1,2 @@
-Some custom post types are now available. You can manage them under My Site if your site is built with WP.com, or on the home screen if your site is self-hosted. We know, we’re amazing. (But very humble about it.)
-
-While we were making your day better, we fixed an issue where canceling the media picker in the experimental block editor would remove images from galleries. Backup logs will also stay in their lane and won’t show up in Personal plan sites by mistake.
+* [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]
+* [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]
