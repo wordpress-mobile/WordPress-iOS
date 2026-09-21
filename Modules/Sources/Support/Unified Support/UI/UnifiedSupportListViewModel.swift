@@ -115,19 +115,3 @@ final class UnifiedSupportListViewModel: ObservableObject {
         }
     }
 }
-
-extension UnifiedSupportListViewModel.State: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading), (.offline, .offline):
-            true
-        case (.loaded(let lhs), .loaded(let rhs)):
-            lhs == rhs
-        case (.failed(let lhs), .failed(let rhs)):
-            // Errors are rarely `Equatable`, so compare what bridging to `NSError` exposes: the domain and the code.
-            (lhs as NSError) == (rhs as NSError)
-        default:
-            false
-        }
-    }
-}

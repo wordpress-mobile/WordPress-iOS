@@ -15,7 +15,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .loaded(conversations))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == conversations)
         #expect(!viewModel.isUpdatingCachedConversations)
         #expect(viewModel.notice == nil)
     }
@@ -30,7 +34,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .loaded(fetchedConversations))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == fetchedConversations)
         #expect(!viewModel.isUpdatingCachedConversations)
     }
 
@@ -44,7 +52,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .loaded(cachedConversations))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == cachedConversations)
         #expect(!viewModel.isUpdatingCachedConversations)
         #expect(viewModel.notice?.message == UnifiedSupportLocalization.genericErrorMessage)
     }
@@ -54,7 +66,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .loaded([]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [])
     }
 
     @Test func showsOfflineWhenTheRequestFailsBecauseTheDeviceIsOffline() async {
@@ -64,7 +80,10 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .offline)
+        guard case .offline = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
     }
 
     @Test func showsOfflineWhenTheRequestFailsWithoutNetwork() async {
@@ -74,7 +93,10 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .offline)
+        guard case .offline = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
     }
 
     @Test func showsErrorWhenTheRequestFails() async {
@@ -84,7 +106,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .failed(MockError.failure))
+        guard case .failed(let error) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(error as? MockError == .failure)
     }
 
     @Test func showsErrorWhenTheConversationsCannotBeLoaded() async {
@@ -94,7 +120,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .failed(UnifiedSupportError.notLoggedIn))
+        guard case .failed(let error) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(error as? UnifiedSupportError == .notLoggedIn)
     }
 
     @Test func ignoresCancelledRequests() async {
@@ -104,7 +134,10 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .loading)
+        guard case .loading = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
         #expect(viewModel.notice == nil)
         #expect(tracker.trackedEvents.isEmpty)
     }
@@ -145,7 +178,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.refresh()
 
-        #expect(viewModel.state == .loaded([.make(id: 2), .make(id: 1)]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 2), .make(id: 1)])
         #expect(provider.conversationsFetchCount == 2)
     }
 
@@ -159,7 +196,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.refresh()
 
-        #expect(viewModel.state == .loaded([.make(id: 1)]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1)])
         #expect(viewModel.notice?.message == UnifiedSupportLocalization.offlineTitle)
     }
 
@@ -186,7 +227,11 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.retry()
 
-        #expect(viewModel.state == .loaded([.make(id: 1)]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1)])
     }
 
     @Test func loadsOnlyOnce() async {
@@ -208,7 +253,11 @@ struct UnifiedSupportListViewModelTests {
 
         viewModel.upsert(.make(id: 2, status: .bot))
 
-        #expect(viewModel.state == .loaded([.make(id: 2, status: .bot), .make(id: 1)]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 2, status: .bot), .make(id: 1)])
     }
 
     @Test func updatesExistingConversationsInPlace() async {
@@ -221,7 +270,11 @@ struct UnifiedSupportListViewModelTests {
 
         viewModel.upsert(.make(id: 2, status: .ongoing))
 
-        #expect(viewModel.state == .loaded([.make(id: 1), .make(id: 2, status: .ongoing)]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1), .make(id: 2, status: .ongoing)])
     }
 
     @Test func showsANewConversationWhenTheListFailedToLoad() async {
@@ -232,7 +285,11 @@ struct UnifiedSupportListViewModelTests {
 
         viewModel.upsert(.make(id: 1, status: .bot))
 
-        #expect(viewModel.state == .loaded([.make(id: 1, status: .bot)]))
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1, status: .bot)])
     }
 
     private func makeViewModel(_ dataProvider: MockUnifiedSupportDataProvider) -> UnifiedSupportListViewModel {
