@@ -91,6 +91,11 @@ enum UnifiedSupportLocalization {
         value: "Something went wrong",
         comment: "Title shown when support conversations can't be loaded."
     )
+    static let notLoggedInMessage = NSLocalizedString(
+        "com.jetpack.support.unified.notLoggedIn.message",
+        value: "Log in to WordPress.com to get help from our support team.",
+        comment: "Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com."
+    )
     static let genericErrorMessage = NSLocalizedString(
         "com.jetpack.support.unified.error.message",
         value: "Something went wrong. Please try again later.",

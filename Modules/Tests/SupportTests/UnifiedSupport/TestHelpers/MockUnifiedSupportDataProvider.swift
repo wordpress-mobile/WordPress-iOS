@@ -8,6 +8,14 @@ enum MockError: Error {
     case failure
 }
 
+enum LocalizedMockError: LocalizedError {
+    case somethingSpecific
+
+    var errorDescription: String? {
+        "The site is temporarily unavailable."
+    }
+}
+
 /// A data provider whose responses are configured by each test.
 actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
 

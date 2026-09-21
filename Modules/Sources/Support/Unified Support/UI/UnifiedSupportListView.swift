@@ -40,10 +40,10 @@ public struct UnifiedSupportListView: View {
                 message: UnifiedSupportLocalization.offlineMessage,
                 systemImage: "wifi.slash"
             )
-        case .failed:
+        case .failed(let error):
             unavailableView(
                 title: UnifiedSupportLocalization.genericErrorTitle,
-                message: UnifiedSupportLocalization.genericErrorMessage,
+                message: error.unifiedSupportMessage,
                 systemImage: "exclamationmark.triangle"
             )
         }

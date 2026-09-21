@@ -109,11 +109,14 @@ actor WpUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         return userId
     }
 
-    /// Reports requests that failed because the device is offline as `UnifiedSupportError.offline`.
+    /// Translates the transport errors the `Support` module knows about, since it doesn't depend on wordpress-rs.
     private static func performRequest<T>(_ request: () async throws -> T) async throws -> T {
         do {
             return try await request()
         } catch let error as WpApiError {
+            if error.isCancellationError {
+                throw CancellationError()
+            }
             if case .RequestExecutionFailed(_, _, .deviceIsOfflineError, _, _) = error {
                 throw UnifiedSupportError.offline
             }

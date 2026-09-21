@@ -34,9 +34,16 @@ public protocol UnifiedSupportDataProvider: Actor {
     ) async throws -> UnifiedSupportConversation
 }
 
-public enum UnifiedSupportError: Error {
+public enum UnifiedSupportError: Error, LocalizedError {
     /// The device has no network connection.
     case offline
     /// The user isn't logged in to WordPress.com.
     case notLoggedIn
+
+    public var errorDescription: String? {
+        switch self {
+        case .offline: UnifiedSupportLocalization.offlineTitle
+        case .notLoggedIn: UnifiedSupportLocalization.notLoggedInMessage
+        }
+    }
 }

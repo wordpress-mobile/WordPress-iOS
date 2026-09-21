@@ -84,7 +84,7 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .failed)
+        #expect(viewModel.state == .failed(MockError.failure))
     }
 
     @Test func showsErrorWhenTheConversationsCannotBeLoaded() async {
@@ -94,7 +94,19 @@ struct UnifiedSupportListViewModelTests {
 
         await viewModel.load()
 
-        #expect(viewModel.state == .failed)
+        #expect(viewModel.state == .failed(UnifiedSupportError.notLoggedIn))
+    }
+
+    @Test func ignoresCancelledRequests() async {
+        let viewModel = makeViewModel(
+            MockUnifiedSupportDataProvider(.init(fetchedConversations: [.failure(CancellationError())]))
+        )
+
+        await viewModel.load()
+
+        #expect(viewModel.state == .loading)
+        #expect(viewModel.notice == nil)
+        #expect(tracker.trackedEvents.isEmpty)
     }
 
     @Test func tracksLoadingFailures() async throws {
@@ -149,6 +161,19 @@ struct UnifiedSupportListViewModelTests {
 
         #expect(viewModel.state == .loaded([.make(id: 1)]))
         #expect(viewModel.notice?.message == UnifiedSupportLocalization.offlineTitle)
+    }
+
+    @Test func refreshShowsTheErrorMessageWhenItFails() async {
+        let viewModel = makeViewModel(
+            MockUnifiedSupportDataProvider(
+                .init(fetchedConversations: [.success([.make(id: 1)]), .failure(LocalizedMockError.somethingSpecific)])
+            )
+        )
+        await viewModel.load()
+
+        await viewModel.refresh()
+
+        #expect(viewModel.notice?.message == LocalizedMockError.somethingSpecific.errorDescription)
     }
 
     @Test func retryLoadsTheConversationsAfterAFailure() async {

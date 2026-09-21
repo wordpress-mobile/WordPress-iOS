@@ -3,11 +3,11 @@ import Foundation
 @MainActor
 final class UnifiedSupportListViewModel: ObservableObject {
 
-    enum State: Equatable {
+    enum State {
         case loading
         case loaded([UnifiedSupportConversationSummary])
         case offline
-        case failed
+        case failed(any Error)
     }
 
     @Published private(set) var state: State = .loading
@@ -98,7 +98,7 @@ final class UnifiedSupportListViewModel: ObservableObject {
 
     private func handleLoadingError(_ error: any Error) {
         // Leaving the screen during pull to refresh cancels the request, which isn't an error for the user
-        guard !Task.isCancelled else {
+        guard !Task.isCancelled, !error.isUnifiedSupportCancellation else {
             return
         }
 
@@ -108,11 +108,26 @@ final class UnifiedSupportListViewModel: ObservableObject {
 
         if case .loaded = state {
             notice = UnifiedSupportNotice(
-                message: isOffline
-                    ? UnifiedSupportLocalization.offlineTitle : UnifiedSupportLocalization.genericErrorMessage
+                message: isOffline ? UnifiedSupportLocalization.offlineTitle : error.unifiedSupportMessage
             )
         } else {
-            state = isOffline ? .offline : .failed
+            state = isOffline ? .offline : .failed(error)
+        }
+    }
+}
+
+extension UnifiedSupportListViewModel.State: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading), (.offline, .offline):
+            true
+        case (.loaded(let lhs), .loaded(let rhs)):
+            lhs == rhs
+        case (.failed(let lhs), .failed(let rhs)):
+            // Errors are rarely `Equatable`, so compare what bridging to `NSError` exposes: the domain and the code.
+            (lhs as NSError) == (rhs as NSError)
+        default:
+            false
         }
     }
 }
