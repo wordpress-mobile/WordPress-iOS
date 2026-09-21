@@ -5,7 +5,7 @@ env:
   IMAGE_ID: $IMAGE_ID
 
 agents:
-  queue: mac
+  queue: mac-staging
 
 priority: 1
 

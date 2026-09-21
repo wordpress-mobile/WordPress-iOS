@@ -6,7 +6,7 @@ env:
 
 # The finalization needs to run on macOS because of localization linting
 agents:
-  queue: mac
+  queue: mac-staging
 
 priority: 1
 
