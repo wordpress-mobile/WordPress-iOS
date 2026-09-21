@@ -5,7 +5,7 @@ GEM
     abbrev (0.1.2)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    anthropic (1.71.0)
+    anthropic (1.72.0)
       base64 (~> 0.1)
       connection_pool (>= 2, < 4)
       standardwebhooks (~> 1.0)
@@ -164,7 +164,7 @@ GEM
       fastlane (>= 2.232.0)
       google-apis-firebaseappdistribution_v1 (>= 0.9.0)
       google-apis-firebaseappdistribution_v1alpha (>= 0.12.0)
-    fastlane-plugin-sentry (2.6.3)
+    fastlane-plugin-sentry (2.7.0)
       os (~> 1.1, >= 1.1.4)
     fastlane-plugin-wpmreleasetoolkit (15.0.0)
       buildkit (~> 1.5)
@@ -402,7 +402,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anthropic (~> 1.71)
+  anthropic (~> 1.72)
   danger-dangermattic (~> 1.4)
   dotenv
   fastlane (~> 2.240)
