@@ -168,13 +168,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - Static Helpers
-    public static func closeButton(target: Any?, action: Selector) -> UIBarButtonItem {
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: target, action: action)
-        closeButton.accessibilityIdentifier = "close-button"
-        return closeButton
-    }
-
     // MARK: - Initializers
     /// Configure and display the no results view controller
     ///

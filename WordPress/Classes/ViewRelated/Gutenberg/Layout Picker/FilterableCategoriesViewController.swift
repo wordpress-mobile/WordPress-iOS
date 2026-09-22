@@ -97,7 +97,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
 
     private func configureCloseButton() {
-        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeCloseButton(target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
