@@ -612,27 +612,27 @@ class ButtonCell: WPTableViewCellDefault {
     let button: UIButton = {
         let button = UIButton(type: .custom)
 
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
-        button.contentHorizontalAlignment = .trailing
+        button.contentHorizontalAlignment = .leading
 
-        button.setTitleColor(UIAppColor.primary, for: .normal)
-
-        button.setImage(UIImage.gridicon(.external,
-                                         size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize)),
-                        for: .normal)
-
-        // Align the image to the right
-        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-            button.semanticContentAttribute = .forceLeftToRight
-            button.imageEdgeInsets = LayoutSpacing.rtlButtonTitleImageInsets
-        } else {
-            button.semanticContentAttribute = .forceRightToLeft
-            button.imageEdgeInsets = LayoutSpacing.buttonTitleImageInsets
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = .zero
+        configuration.baseForegroundColor = UIAppColor.primary
+        configuration.titleLineBreakMode = .byTruncatingTail
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = WPStyleGuide.fontForTextStyle(.callout)
+            return attributes
         }
 
+        // Align the image after the title
+        configuration.image = UIImage.gridicon(.external,
+                                               size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize))
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = LayoutSpacing.buttonTitleImagePadding
+
+        button.configuration = configuration
         button.translatesAutoresizingMaskIntoConstraints = false
 
         return button
@@ -661,8 +661,7 @@ class ButtonCell: WPTableViewCellDefault {
 
     enum LayoutSpacing {
         static let imageSize: CGFloat = 17.0
-        static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
-        static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
+        static let buttonTitleImagePadding: CGFloat = 4.0
     }
 }
 

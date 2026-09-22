@@ -69,12 +69,26 @@ private extension JetpackRemoteInstallStateView {
         descriptionLabel.adjustsFontForContentSizeCategory = true
         descriptionLabel.textColor = Constants.Description.color
 
-        configureTitleLabel(for: mainButton, font: Constants.MainButton.font)
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = Constants.MainButton.contentInsets
+        configuration.baseForegroundColor = Constants.MainButton.titleColor
+        configuration.titleAlignment = .center
+        configuration.titleLineBreakMode = .byWordWrapping
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = Constants.MainButton.font
+            return attributes
+        }
+        mainButton.configuration = configuration
+        mainButton.configurationUpdateHandler = { button in
+            var configuration = button.configuration
+            configuration?.background.image = button.isEnabled
+                ? Constants.MainButton.normalBackground
+                : Constants.MainButton.loadingBackground
+            button.configuration = configuration
+        }
         mainButton.setTitleColor(Constants.MainButton.titleColor, for: .normal)
         mainButton.setTitle(String(), for: .disabled)
-        mainButton.setBackgroundImage(Constants.MainButton.normalBackground, for: .normal)
-        mainButton.setBackgroundImage(Constants.MainButton.loadingBackground, for: .disabled)
-        mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         mainButton.addSubview(activityIndicator)
         mainButton.pinSubviewAtCenter(activityIndicator)
@@ -129,6 +143,7 @@ private extension JetpackRemoteInstallStateView {
         }
 
         struct MainButton {
+            static let contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 20, bottom: 12, trailing: 20)
             static let normalBackground = UIImage.renderBackgroundImage(fill: UIAppColor.primary)
             static let loadingBackground = UIImage.renderBackgroundImage(fill: UIAppColor.jetpackGreen(.shade70))
             static let titleColor = UIColor.white

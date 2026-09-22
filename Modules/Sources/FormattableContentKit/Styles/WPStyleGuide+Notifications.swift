@@ -193,16 +193,11 @@ extension WPStyleGuide {
             // General
             button.naturalContentHorizontalAlignment = .leading
             button.backgroundColor = .clear
-            button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
             // Color(s)
             let normalColor = UIAppColor.neutral(.shade50)
             let highlightedColor = UIAppColor.neutral(.shade40)
             let selectedColor = UIAppColor.success
-
-            button.setTitleColor(normalColor, for: .normal)
-            button.setTitleColor(selectedColor, for: .selected)
-            button.setTitleColor(highlightedColor, for: .highlighted)
 
             // Image(s)
             let side = WPStyleGuide.fontSizeForTextStyle(.subheadline)
@@ -210,19 +205,44 @@ extension WPStyleGuide {
             let followIcon = UIImage.gridicon(.readerFollow, size: size)
             let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
-            button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
-            button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
-            button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
-            button.imageEdgeInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: -4)
-            button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
-
             // Strings
             let normalText = NSLocalizedString("notifications.button.subscribe", value: "Subscribe", comment: "Prompt to subscribe to a blog.")
             let selectedText = NSLocalizedString("notifications.button.subscribed", value: "Subscribed", comment: "User is subscribed to the blog.")
 
-            button.setTitle(normalText, for: .normal)
-            button.setTitle(selectedText, for: .selected)
-            button.setTitle(selectedText, for: .highlighted)
+            var configuration = UIButton.Configuration.plain()
+            configuration.contentInsets = .zero
+            configuration.imagePadding = followButtonImagePadding
+            configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+                var attributes = attributes
+                attributes.font = WPStyleGuide.subtitleFont()
+                return attributes
+            }
+            button.configuration = configuration
+
+            button.configurationUpdateHandler = { button in
+                var configuration = button.configuration
+
+                // A plain configuration tints the background of a selected button.
+                var background = UIBackgroundConfiguration.clear()
+                background.backgroundColor = .clear
+                configuration?.background = background
+                configuration?.baseBackgroundColor = .clear
+
+                if button.isSelected {
+                    configuration?.title = selectedText
+                    configuration?.image = followingIcon
+                    configuration?.baseForegroundColor = selectedColor
+                } else if button.isHighlighted {
+                    configuration?.title = selectedText
+                    configuration?.image = followingIcon
+                    configuration?.baseForegroundColor = highlightedColor
+                } else {
+                    configuration?.title = normalText
+                    configuration?.image = followIcon
+                    configuration?.baseForegroundColor = normalColor
+                }
+                button.configuration = configuration
+            }
 
             // Default accessibility label and hint.
             button.accessibilityLabel = normalText
@@ -232,6 +252,7 @@ extension WPStyleGuide {
         // MARK: - Constants
         //
 
+        public static let followButtonImagePadding = CGFloat(4)
         public static let subjectNoticonSize = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
         public static let subjectLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize = subjectLineSize
