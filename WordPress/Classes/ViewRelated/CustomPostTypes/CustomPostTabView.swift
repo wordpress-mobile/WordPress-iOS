@@ -55,12 +55,20 @@ struct CustomPostTabView: View {
         self.blog = blog
         self.presentingViewController = presentingViewController
 
+        var allFilter = CustomPostListFilter(tab: .all)
+        // WP Admin's default Posts list sorts by post date, so editing an
+        // older post must not move it above newer ones. Hierarchical types
+        // keep the modified order: the page tree preserves incoming root
+        // order, and changing it is out of scope for this fix.
+        if !details.hierarchical {
+            allFilter.orderby = .date
+        }
         _allViewModel = State(
             initialValue: CustomPostListViewModel(
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter(tab: .all),
+                filter: allFilter,
                 blog: blog,
                 showsHierarchyIfApplicable: true,
                 presentingViewController: presentingViewController
