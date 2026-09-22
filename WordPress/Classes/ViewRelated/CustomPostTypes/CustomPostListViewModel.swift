@@ -27,6 +27,7 @@ final class CustomPostListViewModel: ObservableObject {
     private var canManageOptions = false
     private var isBatchSyncing = false
     private var hasReportedPostDetailLoadingFailure = false
+    private let analytics = CustomPostListAnalytics()
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
     // is less than a threshold, where the app can fetch all content relative quickly.
@@ -128,7 +129,41 @@ final class CustomPostListViewModel: ObservableObject {
         await refresh(pullToRefresh: false)
     }
 
+    func trackOpened() {
+        analytics.opened(properties: analyticsProperties)
+    }
+
+    private var analyticsProperties: [AnyHashable: Any] {
+        let tab: String
+        if filter.search != nil {
+            tab = "search"
+        } else if filter.statuses.contains(.any) {
+            tab = "all"
+        } else {
+            switch filter.primaryStatus {
+            case .publish: tab = "published"
+            case .draft: tab = "drafts"
+            case .future: tab = "scheduled"
+            case .trash: tab = "trash"
+            default: tab = "other"
+            }
+        }
+        return [
+            "post_type": endpoint == .posts ? "posts" : (isPages ? "pages" : "custom"),
+            "tab": tab,
+            "page_size": Constants.pageSize,
+            "hierarchy_eligible": shouldAttemptDisplayHierarchy,
+            "has_cached_content": (collection.listInfo()?.totalItems ?? 0) > 0
+        ]
+    }
+
     private func refresh(pullToRefresh: Bool) async {
+        var load = CustomPostListAnalytics.Load(
+            properties: analyticsProperties,
+            currentPage: collection.listInfo()?.currentPage
+        )
+        defer { analytics.finished(load, isCancelled: Task.isCancelled) }
+
         await fetchHomepageSettingsIfNeeded(forceRefresh: pullToRefresh)
 
         if !pullToRefresh {
@@ -136,9 +171,9 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         if shouldAttemptDisplayHierarchy {
-            await fetchAllPagesIfBelowThreshold()
+            await fetchAllPagesIfBelowThreshold(load: &load)
         } else {
-            await fetchWithPagination()
+            await fetchWithPagination(load: &load)
         }
     }
 
@@ -150,10 +185,27 @@ final class CustomPostListViewModel: ObservableObject {
             return
         }
 
-        if listInfo?.currentPage == nil {
-            _ = try await collection.refresh()
-        } else {
-            _ = try await collection.loadNextPage()
+        let currentPage = listInfo?.currentPage
+        var load = CustomPostListAnalytics.Load(
+            properties: analyticsProperties,
+            currentPage: currentPage,
+            isLoadingMore: true
+        )
+        do {
+            let result: SyncResult
+            if listInfo?.currentPage == nil {
+                result = try await collection.refresh()
+            } else {
+                result = try await collection.loadNextPage()
+                // Rust can return a no-op when another task has already loaded this page.
+                guard result.currentPage != currentPage else { return }
+            }
+            load.record(result)
+            analytics.finished(load, isCancelled: Task.isCancelled)
+        } catch {
+            load.error = error
+            analytics.finished(load, isCancelled: Task.isCancelled)
+            throw error
         }
     }
 
@@ -215,10 +267,11 @@ final class CustomPostListViewModel: ObservableObject {
 
     /// Fetches the first page and lets `handleDataChanges` update the UI
     /// incrementally as each page loads.
-    private func fetchWithPagination() async {
+    private func fetchWithPagination(load: inout CustomPostListAnalytics.Load) async {
         do {
-            _ = try await collection.refresh()
+            load.record(try await collection.refresh())
         } catch {
+            load.error = error
             Loggers.app.error("Failed to refresh posts: \(error)")
             self.show(error: error)
         }
@@ -227,10 +280,11 @@ final class CustomPostListViewModel: ObservableObject {
     /// Fetches the first page to determine total count. If below the
     /// threshold, fetches remaining pages and builds the hierarchy tree.
     /// Otherwise, stays in flat paginated mode.
-    private func fetchAllPagesIfBelowThreshold() async {
+    private func fetchAllPagesIfBelowThreshold(load: inout CustomPostListAnalytics.Load) async {
         do {
-            _ = try await collection.refresh()
+            load.record(try await collection.refresh())
         } catch {
+            load.error = error
             DDLogError("Failed to refresh pages: \(error)")
             self.show(error: error)
             return
@@ -242,6 +296,7 @@ final class CustomPostListViewModel: ObservableObject {
             return
         }
 
+        load.properties["loading_strategy"] = "hierarchy"
         shouldShowHierarchy = true
 
         isBatchSyncing = true
@@ -252,11 +307,12 @@ final class CustomPostListViewModel: ObservableObject {
                 guard let listInfo = collection.listInfo(), listInfo.hasMorePages, !listInfo.isSyncing else {
                     break
                 }
-                _ = try await collection.loadNextPage()
+                load.record(try await collection.loadNextPage())
             }
 
             await loadCachedItems()
         } catch {
+            load.error = error
             Loggers.app.error("Failed to refresh all pages for hierarchy: \(error)")
             self.show(error: error)
         }
