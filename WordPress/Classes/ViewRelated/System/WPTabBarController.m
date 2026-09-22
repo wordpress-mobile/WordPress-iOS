@@ -242,6 +242,20 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     ];
 }
 
+#pragma mark - Tab Selection
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    [super setSelectedIndex:selectedIndex];
+    [self updateTabBarMinimizeBehavior];
+}
+
+- (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController
+{
+    [super setSelectedViewController:selectedViewController];
+    [self updateTabBarMinimizeBehavior];
+}
+
 - (void)showMySitesTab
 {
     [self setSelectedIndex:WPTabMySites];
@@ -304,9 +318,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     }
 
-    [self didSelectViewController:viewController];
-
     return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    [self updateTabBarMinimizeBehavior];
 }
 
 #pragma mark - UITabBarDelegate
