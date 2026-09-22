@@ -21,28 +21,20 @@ struct ExtensiveLogger: LogHandler {
         }
     }
 
-    func log(
-        level: Logging.Logger.Level,
-        message: Logging.Logger.Message,
-        metadata: Logging.Logger.Metadata?,
-        source: String,
-        file: String,
-        function: String,
-        line: UInt
-    ) {
+    func log(event: LogEvent) {
         guard ExtensiveLogging.enabled else { return }
+
+        let merged = metadata.merging(event.metadata ?? [:], uniquingKeysWith: { _, new in new })
 
         LoggerStore.shared
             .storeMessage(
                 label: label,
-                level: .init(level),
-                message: message.description,
-                metadata: self.metadata
-                    .merging(metadata ?? [:], uniquingKeysWith: { _, new in new })
-                    .compactMapValues(LoggerStore.MetadataValue.init),
-                file: file,
-                function: function,
-                line: line
+                level: .init(event.level),
+                message: event.message.description,
+                metadata: merged.compactMapValues(LoggerStore.MetadataValue.init),
+                file: event.file,
+                function: event.function,
+                line: event.line
             )
     }
 }

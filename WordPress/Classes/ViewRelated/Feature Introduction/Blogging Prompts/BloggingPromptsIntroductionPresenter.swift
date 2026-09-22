@@ -99,15 +99,19 @@ private extension BloggingPromptsIntroductionPresenter {
                 .dismiss(
                     animated: true,
                     completion: { [weak self] in
-                        PostEditorRouter.showNewPost(
-                            for: blog,
-                            from: presentingViewController,
-                            context: NewPostEditorContext(
-                                prompt: prompt,
-                                entryPoint: .bloggingPromptsFeatureIntroduction
+                        // UIKit runs the dismissal completion on the main thread but
+                        // doesn't declare it, so state the isolation explicitly.
+                        MainActor.assumeIsolated {
+                            PostEditorRouter.showNewPost(
+                                for: blog,
+                                from: presentingViewController,
+                                context: NewPostEditorContext(
+                                    prompt: prompt,
+                                    entryPoint: .bloggingPromptsFeatureIntroduction
+                                )
                             )
-                        )
-                        self?.trackPostEditorShown(blog)
+                            self?.trackPostEditorShown(blog)
+                        }
                     }
                 )
         })

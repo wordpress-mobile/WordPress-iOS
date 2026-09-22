@@ -2,7 +2,8 @@ import WordPressData
 
 /// Small override of RequestAuthenticator to be able to authenticate with writing rights on Atomic sites.
 /// Needed to load the gutenberg web editor on a web view on Atomic public and private sites.
-class GutenbergRequestAuthenticator: RequestAuthenticator {
+/// Adds no state of its own, so it restates the base class's `Sendable` conformance.
+class GutenbergRequestAuthenticator: RequestAuthenticator, @unchecked Sendable {
     convenience init?(account: WPAccount, blog: Blog? = nil) {
         guard
             let token = account.authToken

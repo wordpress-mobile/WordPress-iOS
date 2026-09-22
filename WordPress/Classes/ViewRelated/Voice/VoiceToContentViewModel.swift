@@ -136,7 +136,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
             try recordingSession.setActive(true)
-            recordingSession.requestRecordPermission() { [weak self] allowed in
+            AVAudioApplication.requestRecordPermission { [weak self] allowed in
                 guard let self else { return }
                 DispatchQueue.main.async {
                     if allowed {

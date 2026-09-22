@@ -42,8 +42,9 @@ extension NotificationsViewController {
         // Note: Optimistically assuming our prompting succeeds since we try to stay
         // in line and not prompt more than two times a year
         AppRatingUtility.shared.ratedCurrentVersion()
-        DispatchQueue.main.async {
-            SKStoreReviewController.requestReview()
+        DispatchQueue.main.async { [weak self] in
+            guard let windowScene = self?.view.window?.windowScene else { return }
+            SKStoreReviewController.requestReview(in: windowScene)
         }
     }
 
