@@ -6,27 +6,6 @@ final class BlazeOverlayViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var closeButtonItem: UIBarButtonItem = {
-        let closeButton = CircularImageButton()
-
-        let fontForSystemImage = UIFont.systemFont(ofSize: Metrics.closeButtonSize)
-        let configuration = UIImage.SymbolConfiguration(font: fontForSystemImage)
-        let closeButtonImage = UIImage(systemName: Constants.closeButtonSystemName, withConfiguration: configuration)
-
-        closeButton.setImage(closeButtonImage, for: .normal)
-        closeButton.tintColor = UIColor(light: .systemGray6, dark: .systemGray5)
-        closeButton.setImageBackgroundColor(UIColor(light: .black, dark: .white))
-
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Metrics.closeButtonSize),
-            closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor)
-        ])
-
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-
-        return UIBarButtonItem(customView: closeButton)
-    }()
-
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -152,7 +131,7 @@ final class BlazeOverlayViewController: UIViewController {
     // MARK: - Setup
 
     private func setupNavigationBar() {
-        navigationItem.rightBarButtonItem = closeButtonItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeCloseButton(target: self, action: #selector(closeButtonTapped))
     }
 
     private func setupView() {
@@ -201,12 +180,7 @@ private extension BlazeOverlayViewController {
         static let contentInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
         static let stackViewSpacing: CGFloat = 30.0
         static let footerStackViewSpacing: CGFloat = 10.0
-        static let closeButtonSize: CGFloat = 30.0
         static let blazeButtonHeight: CGFloat = 54.0
-    }
-
-    enum Constants {
-        static let closeButtonSystemName = "xmark.circle.fill"
     }
 
     enum Colors {
