@@ -131,7 +131,10 @@ final class BlazeOverlayViewController: UIViewController {
     // MARK: - Setup
 
     private func setupNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem.makeCloseButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeCloseButton(
+            target: self,
+            action: #selector(closeButtonTapped)
+        )
     }
 
     private func setupView() {
@@ -142,7 +145,7 @@ final class BlazeOverlayViewController: UIViewController {
         NSLayoutConstraint.activate([
             blazeButton.heightAnchor.constraint(equalToConstant: Metrics.blazeButtonHeight),
             blazeButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
         ])
     }
 
@@ -161,7 +164,13 @@ final class BlazeOverlayViewController: UIViewController {
             return
         }
 
-        BlazeFlowCoordinator.presentBlazeWebFlow(in: self, source: source, blog: blog, postID: post.postID, delegate: self)
+        BlazeFlowCoordinator.presentBlazeWebFlow(
+            in: self,
+            source: source,
+            blog: blog,
+            postID: post.postID,
+            delegate: self
+        )
     }
 }
 
@@ -184,7 +193,10 @@ private extension BlazeOverlayViewController {
     }
 
     enum Colors {
-        static let blazeButtonBackgroundColor = UIColor(light: .black, dark: UIColor(red: 0.11, green: 0.11, blue: 0.118, alpha: 1))
+        static let blazeButtonBackgroundColor = UIColor(
+            light: .black,
+            dark: UIColor(red: 0.11, green: 0.11, blue: 0.118, alpha: 1)
+        )
         static let backgroundColor = UIColor(light: .systemBackground, dark: .black)
     }
 }
