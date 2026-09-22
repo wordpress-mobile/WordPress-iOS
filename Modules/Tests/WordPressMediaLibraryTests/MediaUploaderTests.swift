@@ -539,4 +539,78 @@ final class MediaUploaderTests {
         await uploader.updatePolicy(makePolicy(filePickerContentTypes: [.pdf]))
         #expect(uploader.filePickerContentTypes == [.pdf])
     }
+
+    @Test("localFileURL is nil before materialization and set after")
+    func localFileURLAppearsAfterMaterialization() async throws {
+        let transport = BlockingFakeUploadTransport()
+        let mock = MockMaterializer()
+        let uploader = MediaUploader(
+            transport: transport,
+            materializer: mock,
+            filePickerContentTypes: [.content]
+        )
+
+        let pdfURL = try fixtures.writePDF()
+
+        await uploader.enqueue(sources: [.file(pdfURL)])
+        await mock.waitForStart()
+
+        let before = await uploader.snapshot()
+        #expect(before.pending.first?.localFileURL == nil)
+
+        let realTemp = try fixtures.writeFile(name: "materialized.bin", content: Data("payload".utf8))
+        let materialized = MaterializedUpload(
+            tempFileURL: realTemp,
+            params: MediaCreateParams(filePath: realTemp.path),
+            kind: .document
+        )
+        await mock.complete(with: .success(materialized))
+        try await Task.sleep(for: .milliseconds(50))
+
+        // Transport is still blocked, so the entry is pending with a file on disk.
+        let after = await uploader.snapshot()
+        #expect(after.pending.first?.localFileURL == realTemp)
+
+        await transport.unblock()
+    }
+
+    @Test("upload-stage failure keeps localFileURL on the retryable failed entry")
+    func uploadFailureKeepsLocalFileURL() async throws {
+        let transport = FakeUploadTransport()
+        await transport.setResponses([.failure(URLError(.timedOut))])
+        let uploader = MediaUploader(transport: transport, policy: makeAllowEverythingPolicy())
+
+        let sourceURL = try fixtures.writePDF(name: "fail.pdf")
+
+        await uploader.enqueue(sources: [.file(sourceURL)])
+        try await Task.sleep(for: .milliseconds(200))
+
+        let state = await uploader.snapshot()
+        #expect(state.failed.count == 1)
+        #expect(state.failed[0].isRetryable)
+        #expect(state.failed[0].localFileURL != nil)
+    }
+
+    @Test("materialization failure yields no localFileURL")
+    func materializationFailureHasNoLocalFileURL() async throws {
+        let transport = FakeUploadTransport()
+        let mock = MockMaterializer()
+        let uploader = MediaUploader(
+            transport: transport,
+            materializer: mock,
+            filePickerContentTypes: [.content]
+        )
+
+        let pdfURL = try fixtures.writePDF()
+
+        await uploader.enqueue(sources: [.file(pdfURL)])
+        await mock.waitForStart()
+        await mock.complete(with: .failure(URLError(.cannotOpenFile)))
+        try await Task.sleep(for: .milliseconds(50))
+
+        let state = await uploader.snapshot()
+        #expect(state.failed.count == 1)
+        #expect(!state.failed[0].isRetryable)
+        #expect(state.failed[0].localFileURL == nil)
+    }
 }
