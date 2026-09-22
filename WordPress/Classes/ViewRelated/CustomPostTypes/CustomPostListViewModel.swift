@@ -97,7 +97,7 @@ final class CustomPostListViewModel: ObservableObject {
             .createPostMetadataCollectionWithEditContext(
                 endpointType: details.toPostEndpointType(),
                 filter: filter.asPostListFilter(),
-                perPage: 100
+                perPage: Constants.pageSize
             )
     }
 
@@ -116,7 +116,7 @@ final class CustomPostListViewModel: ObservableObject {
                 .createPostMetadataCollectionWithEditContext(
                     endpointType: endpoint,
                     filter: filter.asPostListFilter(),
-                    perPage: 100
+                    perPage: Constants.pageSize
                 )
             items = []
             listInfo = nil
@@ -948,5 +948,7 @@ private enum HomepageSetting {
 }
 
 private enum Constants {
+    // Match Android's Posts list to reduce the burst of detail requests per page.
+    static let pageSize: UInt32 = 20
     static let hierarchyPageCountThreshold: Int64 = 200
 }
