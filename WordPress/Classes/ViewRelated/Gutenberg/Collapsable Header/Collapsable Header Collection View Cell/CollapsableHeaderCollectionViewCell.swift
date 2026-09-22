@@ -62,13 +62,10 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell, NibLoadable {
         styleSelectedBorder()
         styleShadow()
         checkmarkImageView.isGhostableDisabled = true
-    }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            styleSelectedBorder()
-            styleShadow()
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+            self.styleSelectedBorder()
+            self.styleShadow()
         }
     }
 

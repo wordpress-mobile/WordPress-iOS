@@ -107,14 +107,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Hide the illustration if we only have compact height, or if the user has
-        // dynamic content set to accessibility sizes.
-        illustration.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -124,6 +116,17 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         setupViewHierarchy()
         configureConstraints()
+
+        registerForTraitChanges([UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.updateIllustrationVisibility()
+        }
+        updateIllustrationVisibility()
+    }
+
+    /// Hides the illustration if we only have compact height, or if the user has
+    /// dynamic content set to accessibility sizes.
+    private func updateIllustrationVisibility() {
+        illustration.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     private func setupViewHierarchy() {

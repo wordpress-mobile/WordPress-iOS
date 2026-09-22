@@ -38,6 +38,8 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self], action: #selector(toggleCreateButton))
+
         createButtonCoordinator.add(
             to: view,
             trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
@@ -70,11 +72,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         super.viewDidAppear(animated)
 
         createButtonCoordinator.showCreateButton(for: blog)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        toggleCreateButton()
     }
 
     /// Shows/hides the create button based on the trait collection horizontal size class
