@@ -12,7 +12,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
         remoteApi = MockWordPressComRestApi()
         service = DomainsServiceAdapter(coreDataStack: contextManager, api: remoteApi)
 
-        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "domain-suggestions", withExtension: "json")!
+        let json = Bundle(for: SiteAddressServiceTests.self).url(forResource: "domain-suggestions", withExtension: "json")!
         let data = try Data(contentsOf: json)
         mockedResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
     }

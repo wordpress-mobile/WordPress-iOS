@@ -135,7 +135,7 @@ public class GutenbergContentParser {
         // re-render, while the surrounding comment and text nodes (the Gutenberg
         // block delimiters) are emitted from their original bytes.
         for element in body.children().array() {
-            guard let clone = try? element.copy() as? Element else {
+            guard let clone = element.copy() as? Element else {
                 continue
             }
             try? element.replaceWith(clone)

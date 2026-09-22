@@ -10,13 +10,6 @@ class SiteAssemblyServiceTests: XCTestCase {
 
         let siteCreator = SiteCreator()
 
-        siteCreator.segment = SiteSegment(identifier: 12345,
-            title: "A title",
-            subtitle: "A subtitle",
-            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-            iconColor: "#FF0000",
-            mobile: true)
-
         siteCreator.vertical = SiteIntentVertical(
             slug: "slug",
             localizedTitle: "A title",
