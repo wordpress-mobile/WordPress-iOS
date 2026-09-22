@@ -91,12 +91,6 @@ enum Strings {
         comment: "Comment row headline. %1$@ is the comment author, %2$@ is the post title."
     )
 
-    static let pendingAccessibilityValue = NSLocalizedString(
-        "commentsList.row.pendingAccessibilityValue",
-        value: "Pending",
-        comment: "Accessibility value announced for a comment row that is awaiting moderation"
-    )
-
     static let moderationFailed = NSLocalizedString(
         "commentDetail.moderation.failed",
         value: "That action couldn't be completed. Please try again.",
@@ -107,25 +101,25 @@ enum Strings {
     static let statusApproved = NSLocalizedString(
         "commentDetail.status.approved",
         value: "Approved",
-        comment: "Status pill label on the comment detail screen for an approved comment"
+        comment: "Status label on the comment detail screen for an approved comment"
     )
 
     static let statusPending = NSLocalizedString(
         "commentDetail.status.pending",
         value: "Pending",
-        comment: "Status pill label on the comment detail screen for a comment awaiting moderation"
+        comment: "Status label for a comment awaiting moderation, on the comment detail screen and in the list"
     )
 
     static let statusSpam = NSLocalizedString(
         "commentDetail.status.spam",
         value: "Spam",
-        comment: "Status pill label on the comment detail screen for a comment marked as spam"
+        comment: "Status label on the comment detail screen for a comment marked as spam"
     )
 
     static let statusTrash = NSLocalizedString(
         "commentDetail.status.trash",
-        value: "Trash",
-        comment: "Status pill label on the comment detail screen for a trashed comment"
+        value: "Trashed",
+        comment: "Status label on the comment detail screen for a trashed comment"
     )
 
     static let authorHeaderOnPost = NSLocalizedString(

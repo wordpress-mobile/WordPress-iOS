@@ -1,41 +1,34 @@
-import DesignSystem
 import SwiftUI
 
 struct CommentRowView: View {
     let item: CommentListItem
     let titleState: PostTitleResolver.TitleState
-
-    // Same geometry as the legacy ListTableViewCell: an 8pt dot leading the
-    // avatar, painted clear (not hidden) when the comment isn't pending.
-    private var indicatorColor: Color {
-        item.status == .pending ? Color(UIAppColor.yellow(.shade20)) : .clear
-    }
+    /// Shows the pending status label on pending rows. Only the All tab mixes
+    /// statuses; the other tabs' rows all share the tab's status.
+    let showsPendingStatus: Bool
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(indicatorColor)
-                    .frame(width: 8, height: 8)
-                avatar
-            }
+            avatar
             VStack(alignment: .leading, spacing: 4) {
                 headline
                 Text(item.snippet)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
-                if let date = item.date {
-                    Text(date, format: .relative(presentation: .named))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    if let date = item.date {
+                        Text(date, format: .relative(presentation: .named))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    if showsPendingStatus, item.status == .pending {
+                        CommentStatusPill(status: .pending)
+                    }
                 }
             }
         }
         .accessibilityElement(children: .combine)
-        // The pending state is otherwise conveyed only by the dot's color,
-        // which VoiceOver cannot read once the row's children are combined.
-        .accessibilityValue(item.status == .pending ? Strings.pendingAccessibilityValue : "")
     }
 
     private var avatar: some View {
@@ -78,9 +71,13 @@ struct CommentRowView: View {
 
 #Preview {
     List {
-        CommentRowView(item: .preview(id: 1, status: .pending), titleState: .resolved("A Post Title"))
-        CommentRowView(item: .preview(id: 2, status: .approved), titleState: .loading)
-        CommentRowView(item: .preview(id: 3, status: .approved), titleState: .unavailable)
+        CommentRowView(
+            item: .preview(id: 1, status: .pending),
+            titleState: .resolved("A Post Title"),
+            showsPendingStatus: true
+        )
+        CommentRowView(item: .preview(id: 2, status: .approved), titleState: .loading, showsPendingStatus: true)
+        CommentRowView(item: .preview(id: 3, status: .approved), titleState: .unavailable, showsPendingStatus: false)
     }
     .listStyle(.plain)
 }
