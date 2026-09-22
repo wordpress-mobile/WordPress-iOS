@@ -73,7 +73,9 @@ private struct UnifiedSupportAttachmentTile: View {
         switch attachment.kind {
         case .image:
             NavigationLink {
-                UnifiedSupportImageViewer(attachment: attachment)
+                // The media host is passed in: a pushed screen doesn't inherit the environment here, since
+                // navigation is owned by UIKit.
+                UnifiedSupportImageViewer(attachment: attachment, host: context.mediaHost)
             } label: {
                 imageThumbnail
             }
@@ -157,14 +159,12 @@ private struct UnifiedSupportAttachmentTileStyle: ViewModifier {
 struct UnifiedSupportImageViewer: View {
 
     let attachment: UnifiedSupportAttachment
-
-    @EnvironmentObject
-    private var context: UnifiedSupportContext
+    let host: any MediaHostProtocol
 
     @GestureState private var zoom = 1.0
 
     var body: some View {
-        CachedAsyncImage(url: attachment.url, host: context.mediaHost, mutability: .immutable) { image in
+        CachedAsyncImage(url: attachment.url, host: host, mutability: .immutable) { image in
             image
                 .resizable()
                 .aspectRatio(contentMode: .fit)

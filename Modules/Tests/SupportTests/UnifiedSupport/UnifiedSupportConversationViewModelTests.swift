@@ -149,6 +149,22 @@ struct UnifiedSupportConversationViewModelTests {
         #expect(tracker.trackedEvents.contains { if case .failToSendMessage = $0 { true } else { false } })
     }
 
+    @Test func givesTheMessageBackWhenSendingIsCancelled() async {
+        let provider = MockUnifiedSupportDataProvider(.init(createdConversation: .failure(CancellationError())))
+        let viewModel = makeViewModel(.newBotConversation, provider)
+
+        viewModel.draft = "Hi"
+        viewModel.sendMessage()
+        await viewModel.waitForSending()
+
+        // The message never reached the server, so it can't stay in the conversation looking sent
+        #expect(viewModel.messages.isEmpty)
+        #expect(viewModel.draft == "Hi")
+        // Cancelling isn't a failure worth reporting
+        #expect(viewModel.notice == nil)
+        #expect(tracker.trackedEvents.isEmpty)
+    }
+
     @Test func keepsANewerMessageWhenSendingFails() async {
         let provider = MockUnifiedSupportDataProvider(.init(createdConversation: .failure(MockError.failure)))
         let viewModel = makeViewModel(.newBotConversation, provider)

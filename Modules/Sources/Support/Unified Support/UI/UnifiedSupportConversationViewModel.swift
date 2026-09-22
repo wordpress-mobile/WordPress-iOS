@@ -194,14 +194,15 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         pendingMessageId: UnifiedSupportMessage.ID,
         wasBot: Bool
     ) {
+        // The message never reached the server, so take it out of the conversation whatever went wrong.
+        pendingMessages.removeAll { $0.id == pendingMessageId }
+
+        // Give the message back, unless the user started writing another one in the meantime.
+        if draft.isEmpty {
+            draft = message
+        }
+
         handleFailure(error) {
-            self.pendingMessages.removeAll { $0.id == pendingMessageId }
-
-            // Give the message back, unless the user started writing another one in the meantime.
-            if self.draft.isEmpty {
-                self.draft = message
-            }
-
             self.tracker.track(
                 .failToSendMessage(conversationId: self.conversationId, isBot: wasBot, error)
             )
