@@ -159,6 +159,30 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         reloadTableViewPreservingSelection()
         startListeningToCommentDeletedNotifications()
+
+        // The selection logic depends on the split view's size class, so it reacts to
+        // the horizontal size class only. Nothing moves into a layout method, because
+        // animated row selection on every layout pass is harmful.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.tableView.reloadData()
+
+            if self.splitViewControllerIsHorizontallyCompact {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            } else if let selectedNotification = self.selectedNotification {
+                self.selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
+            } else {
+                self.selectFirstNotificationIfAppropriate()
+            }
+
+            DispatchQueue.main.async {
+                self.showNoResultsViewIfNeeded()
+            }
+        }
+
+        // The filter header resizes with the text size.
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.tableView.tableHeaderView = self.tableHeaderView
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -252,30 +276,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.layoutHeaderView()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        DispatchQueue.main.async {
-            self.showNoResultsViewIfNeeded()
-        }
-
-        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
-            tableView.reloadData()
-        }
-
-        if splitViewControllerIsHorizontallyCompact {
-            tableView.deselectSelectedRowWithAnimation(true)
-        } else {
-            if let selectedNotification {
-                selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
-            } else {
-                selectFirstNotificationIfAppropriate()
-            }
-        }
-
-        tableView.tableHeaderView = tableHeaderView
     }
 
     // MARK: - UITableViewDataSource Methods
