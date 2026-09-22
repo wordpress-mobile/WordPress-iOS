@@ -105,8 +105,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         return indicator
     }()
 
-    private let shouldPushDetailsViewController = UIDevice.current.userInterfaceIdiom != .pad
-
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
@@ -118,6 +116,20 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     var isReaderAppModeEnabled = false
 
     private var isNavigationItemsConfigured = false
+
+    /// Whether the list is the supplementary column of an expanded split view, so it owns
+    /// the detail column next to it and keeps a notification selected and displayed there.
+    ///
+    /// This is deliberately structural rather than based on the size class or device: the
+    /// split view's columns are horizontally compact even when it's expanded, and the
+    /// instance in the compact layout's tab bar becomes regular when the split view expands
+    /// (as does a large iPhone in landscape) without having a detail column of its own.
+    private var isShowingAlongsideDetailColumn: Bool {
+        guard let splitViewController, !splitViewController.isCollapsed else {
+            return false
+        }
+        return splitViewController.viewController(for: .supplementary) === navigationController
+    }
 
     // MARK: - View Lifecycle
 
@@ -160,13 +172,13 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         reloadTableViewPreservingSelection()
         startListeningToCommentDeletedNotifications()
 
-        // The selection logic depends on the split view's size class, so it reacts to
-        // the horizontal size class only. Nothing moves into a layout method, because
-        // animated row selection on every layout pass is harmful.
+        // Resizing can add or remove the detail column next to the list, which changes
+        // whether a row stays selected. `viewWillAppear` covers the list returning to the
+        // screen; this covers it staying on screen while the layout changes around it.
         registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
             self.tableView.reloadData()
 
-            if self.splitViewControllerIsHorizontallyCompact {
+            if !self.isShowingAlongsideDetailColumn {
                 self.tableView.deselectSelectedRowWithAnimation(true)
             } else if let selectedNotification = self.selectedNotification {
                 self.selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
@@ -194,7 +206,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         setupInlinePrompt()
 
         // Manually deselect the selected row.
-        if splitViewControllerIsHorizontallyCompact {
+        if !isShowingAlongsideDetailColumn {
             // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
 
@@ -217,7 +229,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         // Refresh the UI
         reloadResultsControllerIfNeeded()
 
-        if !splitViewControllerIsHorizontallyCompact {
+        if isShowingAlongsideDetailColumn {
             reloadTableViewPreservingSelection()
         }
 
@@ -295,7 +307,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         else {
             return UITableViewCell()
         }
-        cell.selectionStyle = splitViewControllerIsHorizontallyCompact ? .none : .default
+        cell.selectionStyle = isShowingAlongsideDetailColumn ? .default : .none
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         if let deletionRequest = notificationDeletionRequests[note.objectID] {
             cell.configure(with: note, deletionRequest: deletionRequest, parent: self) { [weak self] in
@@ -379,7 +391,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             AppRatingUtility.shared.incrementSignificantEvent()
         }
 
-        if !splitViewControllerIsHorizontallyCompact {
+        if isShowingAlongsideDetailColumn {
             syncNotificationsWithModeratedComments()
         }
     }
@@ -928,16 +940,10 @@ extension NotificationsViewController {
     }
 
     private func displayViewController(_ controller: UIViewController) {
-        if shouldPushDetailsViewController {
-            navigationController?.pushViewController(controller, animated: true)
-        } else if isSidebarModeEnabled {
-            if let splitViewController {
-                splitViewController.setViewController(controller, for: .secondary)
-            } else {
-                navigationController?.pushViewController(controller, animated: true)
-            }
+        if isShowingAlongsideDetailColumn, let splitViewController {
+            splitViewController.setViewController(controller, for: .secondary)
         } else {
-            showDetailViewController(controller, sender: nil)
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -1117,7 +1123,7 @@ private extension NotificationsViewController {
     func selectNextAvailableNotification(ignoring: [WordPressData.Notification]) {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
-        if !splitViewControllerIsHorizontallyCompact,
+        if isShowingAlongsideDetailColumn,
             let selectedNotification,
             ignoring.contains(selectedNotification)
         {
@@ -1355,7 +1361,7 @@ private extension NotificationsViewController {
         tableView.reloadData()
 
         // Show the current selection if our split view isn't collapsed
-        if !splitViewControllerIsHorizontallyCompact, let notification = selectedNotification {
+        if isShowingAlongsideDetailColumn, let notification = selectedNotification {
             selectRow(for: notification, animated: false, scrollPosition: .none)
         }
     }
@@ -1426,7 +1432,7 @@ extension NotificationsViewController {
     }
 
     @objc func selectFirstNotificationIfAppropriate() {
-        guard !splitViewControllerIsHorizontallyCompact && selectedNotification == nil else {
+        guard isShowingAlongsideDetailColumn && selectedNotification == nil else {
             return
         }
 
