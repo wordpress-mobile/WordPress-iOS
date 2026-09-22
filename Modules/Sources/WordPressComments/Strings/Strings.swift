@@ -118,7 +118,7 @@ enum Strings {
 
     static let statusTrash = NSLocalizedString(
         "commentDetail.status.trash",
-        value: "Trash",
+        value: "Trashed",
         comment: "Status label on the comment detail screen for a trashed comment"
     )
 
