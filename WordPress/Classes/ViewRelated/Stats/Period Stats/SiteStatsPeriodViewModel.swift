@@ -3,14 +3,6 @@ import WordPressKit
 import WordPressFlux
 import WordPressShared
 
-struct StatsTrafficSection: Hashable {
-    let periodType: PeriodType
-
-    init(periodType: PeriodType) {
-        self.periodType = periodType
-    }
-}
-
 final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Properties
@@ -121,7 +113,7 @@ final class SiteStatsPeriodViewModel: Observable {
             return [StatsGhostTopImmutableRow(statSection: section)]
         }
 
-        let overviewSection = StatsTrafficSection(periodType: .timeIntervalsSummary)
+        let overviewSection = ImmuTableDiffableSectionID.traffic(.timeIntervalsSummary)
         let overviewRows = blocks(for: .timeIntervalsSummary,
                                   type: .period,
                                   status: store.timeIntervalsSummaryStatus,
@@ -139,7 +131,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([overviewSection])
         snapshot.appendItems(overviewRows, toSection: overviewSection)
 
-        let topPostsAndPagesSection = StatsTrafficSection(periodType: .topPostsAndPages)
+        let topPostsAndPagesSection = ImmuTableDiffableSectionID.traffic(.topPostsAndPages)
         let topPostsAndPagesRows = blocks(for: .topPostsAndPages,
                                           type: .period,
                                           status: store.topPostsAndPagesStatus,
@@ -154,7 +146,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topPostsAndPagesSection])
         snapshot.appendItems(topPostsAndPagesRows, toSection: topPostsAndPagesSection)
 
-        let topReferrersSection = StatsTrafficSection(periodType: .topReferrers)
+        let topReferrersSection = ImmuTableDiffableSectionID.traffic(.topReferrers)
         let topReferrersRows = blocks(for: .topReferrers,
                                       type: .period,
                                       status: store.topReferrersStatus,
@@ -169,7 +161,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topReferrersSection])
         snapshot.appendItems(topReferrersRows, toSection: topReferrersSection)
 
-        let topClicksSection = StatsTrafficSection(periodType: .topClicks)
+        let topClicksSection = ImmuTableDiffableSectionID.traffic(.topClicks)
         let topClicksRows = blocks(for: .topClicks,
                                    type: .period,
                                    status: store.topClicksStatus,
@@ -184,7 +176,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topClicksSection])
         snapshot.appendItems(topClicksRows, toSection: topClicksSection)
 
-        let topAuthorsSection = StatsTrafficSection(periodType: .topAuthors)
+        let topAuthorsSection = ImmuTableDiffableSectionID.traffic(.topAuthors)
         let topAuthorsRows = blocks(for: .topAuthors,
                                     type: .period,
                                     status: store.topAuthorsStatus,
@@ -199,7 +191,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topAuthorsSection])
         snapshot.appendItems(topAuthorsRows, toSection: topAuthorsSection)
 
-        let topCountriesSection = StatsTrafficSection(periodType: .topCountries)
+        let topCountriesSection = ImmuTableDiffableSectionID.traffic(.topCountries)
         let topCountriesRows = blocks(for: .topCountries,
                                       type: .period,
                                       status: store.topCountriesStatus,
@@ -214,7 +206,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topCountriesSection])
         snapshot.appendItems(topCountriesRows, toSection: topCountriesSection)
 
-        let topSearchTermsSection = StatsTrafficSection(periodType: .topSearchTerms)
+        let topSearchTermsSection = ImmuTableDiffableSectionID.traffic(.topSearchTerms)
         let topSearchTermsRows = blocks(for: .topSearchTerms,
                                         type: .period,
                                         status: store.topSearchTermsStatus,
@@ -229,7 +221,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topSearchTermsSection])
         snapshot.appendItems(topSearchTermsRows, toSection: topSearchTermsSection)
 
-        let topPublishedSection = StatsTrafficSection(periodType: .topPublished)
+        let topPublishedSection = ImmuTableDiffableSectionID.traffic(.topPublished)
         let topPublishedRows = blocks(for: .topPublished,
                                       type: .period,
                                       status: store.topPublishedStatus,
@@ -244,7 +236,7 @@ final class SiteStatsPeriodViewModel: Observable {
         snapshot.appendSections([topPublishedSection])
         snapshot.appendItems(topPublishedRows, toSection: topPublishedSection)
 
-        let topVideosSection = StatsTrafficSection(periodType: .topVideos)
+        let topVideosSection = ImmuTableDiffableSectionID.traffic(.topVideos)
         let topVideosRows = blocks(for: .topVideos,
                                    type: .period,
                                    status: store.topVideosStatus,
@@ -261,7 +253,7 @@ final class SiteStatsPeriodViewModel: Observable {
 
         // Check for supportsFileDownloads and append if necessary
         if SiteStatsInformation.sharedInstance.supportsFileDownloads {
-            let topFileDownloadsSection = StatsTrafficSection(periodType: .topFileDownloads)
+            let topFileDownloadsSection = ImmuTableDiffableSectionID.traffic(.topFileDownloads)
             let topFileDownloadsRows = blocks(for: .topFileDownloads,
                                               type: .period,
                                               status: store.topFileDownloadsStatus,
