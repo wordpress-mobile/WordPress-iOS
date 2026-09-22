@@ -37,6 +37,26 @@ struct MediaTrackerAdapter: MediaTracker {
 
         case .mediaLibraryUploadRetried:
             stat = .mediaLibraryUploadMediaRetried
+
+        case .mediaLibraryPreviewedItem:
+            stat = .mediaLibraryPreviewedItem
+
+        case .mediaLibraryEditedItemMetadata:
+            stat = .mediaLibraryEditedItemMetadata
+
+        case .mediaLibraryDeletedItems(let count):
+            stat = .mediaLibraryDeletedItems
+            properties["number_of_items_deleted"] = count
+
+        case .mediaLibrarySharedItemLink:
+            stat = .mediaLibrarySharedItemLink
+
+        case .siteMediaShareTapped(let count):
+            // V1 surface — WPAnalyticsEvent, not WPAnalyticsStat.
+            var shareProperties = properties
+            shareProperties["number_of_items"] = count
+            WPAnalytics.track(.siteMediaShareTapped, properties: shareProperties)
+            return
         }
 
         WPAppAnalytics.track(stat, properties: properties, blog: blog)
