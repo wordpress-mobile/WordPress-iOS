@@ -11,13 +11,17 @@ actor WordPressDotComClient: MediaHostProtocol {
     private let delegate: WpApiClientDelegate
     let api: WPComApiClient
 
-    init() {
-        let session = URLSession(configuration: .ephemeral)
+    /// - Parameter requestTimeout: How long to wait for a response. Uses the `URLSession` default when `nil`.
+    init(coreDataStack: CoreDataStack = ContextManager.shared, requestTimeout: TimeInterval? = nil) {
+        let configuration = URLSessionConfiguration.ephemeral
+        if let requestTimeout {
+            configuration.timeoutIntervalForRequest = requestTimeout
+        }
 
-        self.authProvider = AutoUpdatingWPComAuthenticationProvider(coreDataStack: ContextManager.shared)
+        self.authProvider = AutoUpdatingWPComAuthenticationProvider(coreDataStack: coreDataStack)
         self.delegate = WpApiClientDelegate(
             authProvider: .dynamic(dynamicAuthenticationProvider: self.authProvider),
-            requestExecutor: WpRequestExecutor(urlSession: session),
+            requestExecutor: WpRequestExecutor(urlSession: URLSession(configuration: configuration)),
             middlewarePipeline: WpApiMiddlewarePipeline(middlewares: [
                 WpComTrafficDebugger()
             ]),
@@ -49,9 +53,15 @@ final class AutoUpdatingWPComAuthenticationProvider: @unchecked Sendable, WpDyna
         self.coreDataStack = coreDataStack
         self.authentication = Self.readAuthentication(on: coreDataStack)
 
-        self.cancellable = NotificationCenter.default.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated).sink { [weak self] _ in
-            self?.update()
-        }
+        // Pick up the new token when the user logs in to a different WordPress.com account.
+        self.cancellable =
+            Publishers.Merge(
+                NotificationCenter.default.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated),
+                NotificationCenter.default.publisher(for: .wpAccountDefaultWordPressComAccountChanged)
+            )
+            .sink { [weak self] _ in
+                self?.update()
+            }
     }
 
     @discardableResult

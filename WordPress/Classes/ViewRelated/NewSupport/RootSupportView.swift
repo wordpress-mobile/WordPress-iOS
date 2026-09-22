@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import SwiftUI
 import Support
 import WordPressAPIInternal
@@ -58,6 +59,9 @@ struct RootSupportView: View {
 
             Section("How can we help?") {
                 communitySupportLink
+                if identity != nil && isUnifiedSupportAvailable {
+                    unifiedSupportLink
+                }
                 if let identity {
                     botSupportLink(for: identity)
                     humanSupportLink(for: identity)
@@ -84,6 +88,24 @@ struct RootSupportView: View {
                 imageName: "book.pages",
                 title: "Help Center",
                 detail: "Documentation and tutorials to help you get started."
+            )
+        }
+    }
+
+    /// The unified support flow is only available in the Jetpack app.
+    private var isUnifiedSupportAvailable: Bool {
+        BuildSettings.current.brand == .jetpack
+    }
+
+    @ViewBuilder
+    private var unifiedSupportLink: some View {
+        NavigationLink {
+            UnifiedSupportListView(context: .shared)
+        } label: {
+            SupportAreaRow(
+                imageName: "questionmark.bubble",
+                title: Strings.getHelpTitle,
+                detail: Strings.getHelpDetail
             )
         }
     }
@@ -213,3 +235,16 @@ class RootSupportViewController: UIHostingController<AnyView> {
 //#Preview {
 //    RootSupportView()
 //}
+
+private enum Strings {
+    static let getHelpTitle = NSLocalizedString(
+        "support.root.getHelp.title",
+        value: "Get help",
+        comment: "Title of the row that opens the support conversations with the AI Assistant and support team."
+    )
+    static let getHelpDetail = NSLocalizedString(
+        "support.root.getHelp.detail",
+        value: "Get answers from our support team, anytime",
+        comment: "Description of the row that opens the support conversations."
+    )
+}

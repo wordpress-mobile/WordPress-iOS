@@ -434,6 +434,13 @@ let package = Package(
         ),
         .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")]),
         .testTarget(
+            name: "SupportTests",
+            dependencies: [
+                .target(name: "Support"),
+                .target(name: "WordPressCoreProtocols")
+            ]
+        ),
+        .testTarget(
             name: "JetpackSocialTests",
             dependencies: [
                 .target(name: "JetpackSocial"),
