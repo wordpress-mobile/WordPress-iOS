@@ -424,7 +424,7 @@ private extension PostRepository {
         // A list refresh can delete a retained post while leaving its ID readable.
         // Read the relationship through KVC because its Swift declaration is nonoptional.
         guard !post.isDeleted, post.managedObjectContext != nil,
-            let blog = post.value(forKey: "blog") as? Blog,
+            let blog = post.value(forKey: #keyPath(AbstractPost.blog)) as? Blog,
             !blog.isDeleted, blog.managedObjectContext != nil,
             let remote = remoteFactory.forBlog(blog)
         else {
