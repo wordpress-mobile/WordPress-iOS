@@ -21,15 +21,6 @@ extension PHPickerFilter {
     }
 }
 
-extension PHPickerResult {
-    /// Retrieves an image for the given picker result.
-    ///
-    /// - parameter completion: The completion closure that gets called on the main thread.
-    static func loadImage(for result: PHPickerResult, _ completion: @escaping (UIImage?, Error?) -> Void) {
-        NSItemProvider.loadImage(for: result.itemProvider, completion)
-    }
-}
-
 extension NSItemProvider {
     // MARK: - Images
 

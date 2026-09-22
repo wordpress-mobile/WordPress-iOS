@@ -1,11 +1,12 @@
 import UIKit
+import Photos
 import PhotosUI
 
 extension MediaPickerMenu {
     /// Returns an action for picking photos from the device's Photos library.
     ///
-    /// - note: Use `PHPickerResult.loadImage(for:)` to retrieve an image from the result.
-    func makePhotosAction(delegate: PHPickerViewControllerDelegate) -> UIAction {
+    /// - note: Use `PhotosPickerAsset.loadImage(_:)` to retrieve an image from the result.
+    func makePhotosAction(delegate: DevicePhotosPickerDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromPhotosLibrary,
             image: UIImage(systemName: "photo.on.rectangle.angled"),
@@ -14,24 +15,14 @@ extension MediaPickerMenu {
         )
     }
 
-    func showPhotosPicker(delegate: PHPickerViewControllerDelegate) {
-        var configuration = PHPickerConfiguration()
-        configuration.preferredAssetRepresentationMode = .current
-        if let filter {
-            switch filter {
-            case .images:
-                configuration.filter = .images
-            case .videos:
-                configuration.filter = .videos
-            }
-        }
-        if isMultipleSelectionEnabled {
-            configuration.selectionLimit = 0
-            configuration.selection = .ordered
-        }
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = delegate
-        presentingViewController?.present(picker, animated: true)
+    func showPhotosPicker(delegate: DevicePhotosPickerDelegate) {
+        guard let presentingViewController else { return }
+        PhotosPickerPresenter.present(
+            from: presentingViewController,
+            filter: filter,
+            isMultipleSelectionEnabled: isMultipleSelectionEnabled,
+            delegate: delegate
+        )
     }
 }
 

@@ -101,7 +101,7 @@ struct MediaPickerSelection {
 }
 
 enum MediaPickerItem {
-    case pickerResult(PHPickerResult)
+    case deviceAsset(PhotosPickerAsset)
     case image(UIImage)
     case media(Media)
     case external(ExternalMediaAsset)
@@ -110,8 +110,8 @@ enum MediaPickerItem {
     /// is already uploaded, returns `Media`.
     func exported() -> Exportable {
         switch self {
-        case .pickerResult(let result):
-            return .asset(result.itemProvider)
+        case .deviceAsset(let asset):
+            return .asset(asset)
         case .image(let image):
             return .asset(image)
         case .media(let media):
