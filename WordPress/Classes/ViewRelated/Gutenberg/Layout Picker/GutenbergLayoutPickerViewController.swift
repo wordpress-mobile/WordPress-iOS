@@ -77,7 +77,10 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     }
 
     private func configureCloseButton() {
-        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.makeCloseButton(
+            target: self,
+            action: #selector(closeButtonTapped)
+        )
     }
 
     private func configurePreviewDeviceButton() {

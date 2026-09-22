@@ -103,7 +103,10 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
 private extension FeatureIntroductionViewController {
 
     func configureView() {
-        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeCloseButton(
+            target: self,
+            action: #selector(closeButtonTapped)
+        )
         scrollView.addSubview(contentView)
         hideHeaderVisualEffects()
 
