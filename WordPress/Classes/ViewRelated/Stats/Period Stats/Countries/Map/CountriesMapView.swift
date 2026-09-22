@@ -38,11 +38,13 @@ class CountriesMapView: UIView, NibLoadable {
         backgroundColor = .secondarySystemGroupedBackground
         map.backgroundColor = .secondarySystemGroupedBackground
         colors = mapColors()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+            self.updateColors()
+        }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func updateColors() {
         colors = mapColors()
         setGradientColors()
         setBasicMapColors()

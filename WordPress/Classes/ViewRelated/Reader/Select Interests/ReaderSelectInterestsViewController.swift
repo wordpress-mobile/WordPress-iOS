@@ -115,6 +115,11 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureNavigationBar()
         configureI18N()
         configureCollectionView()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            (self.collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout)?.invalidateLayout()
+        }
+
         configureNoResultsViewController()
         configureSkipButton()
         applyStyles()
@@ -149,16 +154,6 @@ class ReaderSelectInterestsViewController: UIViewController {
         if modalPresentationStyle == .overCurrentContext {
             dismiss(animated: false)
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
-            return
-        }
-
-        layout.invalidateLayout()
     }
 
     // MARK: - IBAction's

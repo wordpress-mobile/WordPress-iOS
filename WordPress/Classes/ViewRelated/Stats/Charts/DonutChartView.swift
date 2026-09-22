@@ -63,6 +63,11 @@ class DonutChartView: UIView {
         configureTitleViews()
         configureLegend()
         configureConstraints()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.updateLegendAxis()
+        }
+        updateLegendAxis()
     }
 
     required init?(coder: NSCoder) {
@@ -258,9 +263,7 @@ class DonutChartView: UIView {
 
     // MARK: - Dynamic Type
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func updateLegendAxis() {
         if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
             legendStackView.axis = .vertical
             legendStackView.alignment = .leading

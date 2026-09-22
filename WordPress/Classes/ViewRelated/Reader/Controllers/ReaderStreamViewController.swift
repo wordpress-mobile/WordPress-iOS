@@ -309,6 +309,12 @@ import AutomatticTracks
 
         isCompact = traitCollection.horizontalSizeClass == .compact
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.isCompact = self.traitCollection.horizontalSizeClass == .compact
+            self.setupNotificationsBarButtonItem()
+        }
+        setupNotificationsBarButtonItem()
+
         // Setup Site Blocking Controller
         self.siteBlockingController.delegate = self
 
@@ -388,13 +394,6 @@ import AutomatticTracks
         }
 
         layoutEmptyStateView()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        isCompact = traitCollection.horizontalSizeClass == .compact
-        setupNotificationsBarButtonItem()
     }
 
     private func layoutEmptyStateView() {
