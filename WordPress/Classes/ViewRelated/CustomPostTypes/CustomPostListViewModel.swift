@@ -26,6 +26,7 @@ final class CustomPostListViewModel: ObservableObject {
     private var homepageSetting: HomepageSetting?
     private var canManageOptions = false
     private var isBatchSyncing = false
+    private var hasReportedPostDetailLoadingFailure = false
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
     // is less than a threshold, where the app can fetch all content relative quickly.
@@ -281,6 +282,8 @@ final class CustomPostListViewModel: ObservableObject {
             items.removeAll { (try? exclude.evaluate($0)) == true }
         }
 
+        reportPostDetailLoadingFailureIfNeeded(in: items)
+
         guard shouldShowHierarchy else {
             indentationMap = [:]
             self.items = items
@@ -302,6 +305,25 @@ final class CustomPostListViewModel: ObservableObject {
 
         indentationMap = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
         self.items = entries.compactMap { itemMap[$0.id] }
+    }
+
+    private func reportPostDetailLoadingFailureIfNeeded(in items: [CustomPostCollectionItem]) {
+        guard !hasReportedPostDetailLoadingFailure,
+            items.contains(where: {
+                if case .error = $0.state { return true }
+                return false
+            })
+        else { return }
+
+        // Count affected list instances, not every row in a failed batch or repeated cache update.
+        hasReportedPostDetailLoadingFailure = true
+        WPLoggingStack.shared.crashLogging.logError(
+            NSError(
+                domain: "CPT.PostDetailLoadingFailure",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to load post details"]
+            )
+        )
     }
 
     // MARK: - Post Actions
