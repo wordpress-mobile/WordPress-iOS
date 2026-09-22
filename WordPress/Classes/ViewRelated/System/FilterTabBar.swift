@@ -193,6 +193,10 @@ public class FilterTabBar: UIControl {
     ///
     var tabSizingStyle: TabSizingStyle = .fitting {
         didSet {
+            guard oldValue != tabSizingStyle else {
+                return
+            }
+
             updateTabSizingConstraints()
             activateTabSizingConstraints()
             tabs.forEach(updateTitleLineBreakMode)
