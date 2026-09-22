@@ -36,7 +36,7 @@ struct CustomPostListEntryBuilderTests {
 
     @Test("a header opens each new group")
     func headersOnGroupChange() {
-        let result = entries([item(id: 1, daysAgo: 1), item(id: 2, daysAgo: 2), item(id: 3, daysAgo: 400)])
+        let result = entries([item(id: 1, daysAgo: 2), item(id: 2, daysAgo: 3), item(id: 3, daysAgo: 400)])
 
         #expect(result.count == 5)
         #expect(result[0] == .header(.thisWeek, ordinal: 0))
@@ -58,7 +58,7 @@ struct CustomPostListEntryBuilderTests {
     @Test("rows without a post neither emit nor reset the group")
     func loadingRows() {
         let loading = CustomPostCollectionItem(id: 9, post: nil, state: .loading)
-        let result = entries([item(id: 1, daysAgo: 1), loading, item(id: 2, daysAgo: 2)])
+        let result = entries([item(id: 1, daysAgo: 2), loading, item(id: 2, daysAgo: 3)])
         #expect(result.map(\.id) == ["header-0", "post-1", "post-9", "post-2"])
     }
 

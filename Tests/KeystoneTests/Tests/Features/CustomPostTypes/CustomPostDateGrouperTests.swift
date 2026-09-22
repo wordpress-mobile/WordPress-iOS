@@ -21,9 +21,32 @@ struct CustomPostDateGrouperTests {
         CustomPostDateGrouper(now: now, calendar: calendar, locale: Locale(identifier: "en_US")).group(for: date)
     }
 
-    @Test("today is this week")
+    @Test("today is today")
     func today() {
-        #expect(group(of: now) == .thisWeek)
+        #expect(group(of: now) == .today)
+    }
+
+    @Test("earlier and later on the same calendar day are both today")
+    func sameCalendarDay() {
+        #expect(group(of: Self.utc(year: 2026, month: 9, day: 10, hour: 0)) == .today)
+        #expect(group(of: Self.utc(year: 2026, month: 9, day: 10, hour: 23)) == .today)
+    }
+
+    @Test("yesterday is yesterday")
+    func yesterday() {
+        #expect(group(of: now.addingTimeInterval(-86_400)) == .yesterday)
+    }
+
+    @Test("late last night is yesterday even when under 24 hours ago")
+    func lateLastNight() {
+        let morning = Self.utc(year: 2026, month: 9, day: 10, hour: 9)
+        let grouper = CustomPostDateGrouper(now: morning, calendar: calendar, locale: Locale(identifier: "en_US"))
+        #expect(grouper.group(for: Self.utc(year: 2026, month: 9, day: 9, hour: 23)) == .yesterday)
+    }
+
+    @Test("two days ago is this week")
+    func twoDaysAgo() {
+        #expect(group(of: now.addingTimeInterval(-2 * 86_400)) == .thisWeek)
     }
 
     @Test("six days ago is still this week")
@@ -66,13 +89,15 @@ struct CustomPostDateGrouperTests {
 
     @Test("titles read as headers")
     func titles() {
+        #expect(CustomPostDateGroup.today.localizedTitle == "Today")
+        #expect(CustomPostDateGroup.yesterday.localizedTitle == "Yesterday")
         #expect(CustomPostDateGroup.earlierThisMonth(monthName: "July").localizedTitle == "Earlier in July")
         #expect(CustomPostDateGroup.month(label: "March 2025").localizedTitle == "March 2025")
     }
 
-    private static func utc(year: Int, month: Int, day: Int) -> Date {
+    private static func utc(year: Int, month: Int, day: Int, hour: Int = 12) -> Date {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "UTC")!
-        return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: 12))!
+        return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour))!
     }
 }

@@ -55,6 +55,7 @@ struct CustomPostTabView: View {
         service: WpService,
         details: PostTypeDetailsWithEditContext,
         blog: Blog,
+        initialTab: CustomPostTab = .all,
         presentingViewController: UIViewController? = nil
     ) {
         self.client = client
@@ -62,6 +63,7 @@ struct CustomPostTabView: View {
         self.details = details
         self.blog = blog
         self.presentingViewController = presentingViewController
+        _selectedTab = State(initialValue: initialTab)
 
         isRedesignEnabled = FeatureFlag.postsListRedesign.enabled && details.slug == "post"
         // The cards group rows by publish date, so the list has to sort on it

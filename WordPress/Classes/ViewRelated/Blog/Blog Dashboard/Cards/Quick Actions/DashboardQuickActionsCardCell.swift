@@ -98,6 +98,13 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         switch items[indexPath.row].action {
         case .posts:
             trackQuickActionsEvent(.openedPosts, blog: blog)
+            if let controller = PostListRouting.makePostListViewController(
+                for: blog,
+                presentingViewController: parentViewController
+            ) {
+                parentViewController.navigationController?.pushViewController(controller, animated: true)
+                return
+            }
             PostListViewController.showForBlog(blog, from: parentViewController)
         case .pages:
             trackQuickActionsEvent(.openedPages, blog: blog)

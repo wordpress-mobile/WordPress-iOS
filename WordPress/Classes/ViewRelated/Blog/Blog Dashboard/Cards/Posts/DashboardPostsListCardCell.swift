@@ -156,7 +156,16 @@ extension DashboardPostsListCardCell {
             return
         }
 
-        PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
+        let initialTab: CustomPostTab = status == .scheduled ? .scheduled : .drafts
+        if let controller = PostListRouting.makePostListViewController(
+            for: blog,
+            initialTab: initialTab,
+            presentingViewController: viewController
+        ) {
+            viewController.navigationController?.pushViewController(controller, animated: true)
+        } else {
+            PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
+        }
         WPAppAnalytics.track(.openedPosts, properties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "posts_card"], blog: blog)
     }
 }

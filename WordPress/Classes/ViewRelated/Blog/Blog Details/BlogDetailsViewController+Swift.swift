@@ -76,11 +76,8 @@ extension BlogDetailsViewController {
     public func showPostList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPosts, from: source)
 
-        // TODO: Remove before merging. Temporarily routes every WordPress.com-accessible site to the
-        // wordpress-rs posts list so the experimental redesign can be tried on those sites, the way
-        // Android's `android_wp_rs_wpcom` rollout flag does. iOS has no such routing yet.
-        if blog.usesCustomPostTypeViewsForPostsAndPages || blog.isAccessibleThroughWPCom {
-            showPinnedPostType(.posts)
+        if let controller = PostListRouting.makePostListViewController(for: blog, presentingViewController: self) {
+            presentationDelegate?.presentBlogDetailsViewController(controller)
             return
         }
 
@@ -126,46 +123,11 @@ extension BlogDetailsViewController {
     }
 
     func showPinnedPostType(_ postType: PinnedPostType) {
-        let feature = NSLocalizedString(
-            "applicationPasswordRequired.feature.customPosts",
-            value: "Custom Post Types",
-            comment: "Feature name for managing custom post types in the app"
+        let controller = PostListRouting.makePinnedPostTypeViewController(
+            for: blog,
+            postType: postType,
+            presentingViewController: self
         )
-        let makeContent = { [blog, weak self] (client: WordPressClient) in
-            PinnedPostTypeView<CustomPostTabView>(
-                blog: blog,
-                service: CustomPostTypeService(client: client, blog: blog),
-                postType: postType,
-                presentingViewController: self
-            ) { resolved in
-                CustomPostTabView(
-                    client: client,
-                    service: resolved.wpService,
-                    details: resolved.details,
-                    blog: blog,
-                    presentingViewController: self
-                )
-            }
-        }
-
-        let controller: UIViewController
-        // TODO: Remove before merging. WordPress.com-accessible sites don't need an application
-        // password: wordpress-rs reaches them through the WP.com REST API with the account's OAuth
-        // token, so the application-password gate is skipped for them. Pairs with `showPostList`.
-        if blog.isAccessibleThroughWPCom, let site = try? WordPressSite(blog: blog) {
-            let client = WordPressClientFactory.shared.instance(for: site)
-            controller = UIHostingController(rootView: makeContent(client))
-        } else {
-            let rootView = ApplicationPasswordRequiredView(
-                blog: blog,
-                localizedFeatureName: feature,
-                source: "custom_post_types",
-                presentingViewController: self,
-                content: makeContent
-            )
-            controller = UIHostingController(rootView: rootView)
-        }
-        controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
