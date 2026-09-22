@@ -59,8 +59,8 @@ struct RootSupportView: View {
 
             Section("How can we help?") {
                 communitySupportLink
-                if identity != nil && isUnifiedSupportAvailable {
-                    unifiedSupportLink
+                if let identity, isUnifiedSupportAvailable {
+                    unifiedSupportLink(for: identity)
                 }
                 if let identity {
                     botSupportLink(for: identity)
@@ -98,9 +98,9 @@ struct RootSupportView: View {
     }
 
     @ViewBuilder
-    private var unifiedSupportLink: some View {
+    private func unifiedSupportLink(for identity: SupportUser) -> some View {
         NavigationLink {
-            UnifiedSupportListView(context: .shared)
+            UnifiedSupportListView(context: .shared, currentUser: identity)
         } label: {
             SupportAreaRow(
                 imageName: "questionmark.bubble",
