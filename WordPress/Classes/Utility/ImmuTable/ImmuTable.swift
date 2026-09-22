@@ -46,7 +46,7 @@ public struct ImmuTable {
     ///                 will raise an exception.
     ///
     public func rowAtIndexPath(_ indexPath: IndexPath) -> ImmuTableRow {
-        return sections[indexPath.section].rows[indexPath.row]
+        sections[indexPath.section].rows[indexPath.row]
     }
 
     /// Registers the row custom class or nib with the table view so it can later be
@@ -71,7 +71,7 @@ public struct ImmuTable {
 extension ImmuTable {
     /// Alias for an ImmuTable with no sections
     static var Empty: ImmuTable {
-        return ImmuTable(sections: [])
+        ImmuTable(sections: [])
     }
 }
 
@@ -157,15 +157,15 @@ public protocol ImmuTableRow {
 
 extension ImmuTableRow {
     public var reusableIdentifier: String {
-        return type(of: self).cell.reusableIdentifier
+        type(of: self).cell.reusableIdentifier
     }
 
     public var cellClass: UITableViewCell.Type {
-        return type(of: self).cell.cellClass
+        type(of: self).cell.cellClass
     }
 
     public static var customHeight: Float? {
-        return nil
+        nil
     }
 }
 
@@ -223,7 +223,8 @@ public enum ImmuTableCell {
 ///         reference to the handler from your view controller.
 ///
 open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
-    typealias UIViewControllerWithTableView = TableViewContainer & UITableViewDataSource & UITableViewDelegate & UIViewController
+    typealias UIViewControllerWithTableView = TableViewContainer & UITableViewDataSource & UITableViewDelegate
+        & UIViewController
 
     @objc unowned let target: UIViewControllerWithTableView
     private weak var passthroughScrollViewDelegate: UIScrollViewDelegate?
@@ -231,7 +232,10 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     /// Initializes the handler with a target table view controller.
     /// - postcondition: After initialization, it becomse the data source and
     ///   delegate for the the target's table view.
-    @objc init(takeOver target: UIViewControllerWithTableView, with passthroughScrollViewDelegate: UIScrollViewDelegate? = nil) {
+    @objc init(
+        takeOver target: UIViewControllerWithTableView,
+        with passthroughScrollViewDelegate: UIScrollViewDelegate? = nil
+    ) {
         self.target = target
         self.passthroughScrollViewDelegate = passthroughScrollViewDelegate
 
@@ -259,11 +263,11 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     // MARK: UITableViewDataSource
 
     open func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sections.count
+        viewModel.sections.count
     }
 
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sections[section].rows.count
+        viewModel.sections[section].rows.count
     }
 
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -276,11 +280,11 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     }
 
     open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.sections[section].headerText
+        viewModel.sections[section].headerText
     }
 
     open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModel.sections[section].footerText
+        viewModel.sections[section].footerText
     }
 
     open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -299,7 +303,11 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return false
     }
 
-    open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    open func tableView(
+        _ tableView: UITableView,
+        moveRowAt sourceIndexPath: IndexPath,
+        to destinationIndexPath: IndexPath
+    ) {
         target.tableView?(tableView, moveRowAt: sourceIndexPath, to: destinationIndexPath)
     }
 
@@ -364,15 +372,28 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return nil
     }
 
-    open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-        if target.responds(to: #selector(UITableViewDelegate.tableView(_:targetIndexPathForMoveFromRowAt:toProposedIndexPath:))) {
-            return target.tableView?(tableView, targetIndexPathForMoveFromRowAt: sourceIndexPath, toProposedIndexPath: proposedDestinationIndexPath) ?? proposedDestinationIndexPath
+    open func tableView(
+        _ tableView: UITableView,
+        targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+        toProposedIndexPath proposedDestinationIndexPath: IndexPath
+    ) -> IndexPath {
+        if target.responds(
+            to: #selector(UITableViewDelegate.tableView(_:targetIndexPathForMoveFromRowAt:toProposedIndexPath:))
+        ) {
+            return target.tableView?(
+                tableView,
+                targetIndexPathForMoveFromRowAt: sourceIndexPath,
+                toProposedIndexPath: proposedDestinationIndexPath
+            ) ?? proposedDestinationIndexPath
         }
 
         return proposedDestinationIndexPath
     }
 
-    open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    open func tableView(
+        _ tableView: UITableView,
+        editingStyleForRowAt indexPath: IndexPath
+    ) -> UITableViewCell.EditingStyle {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:editingStyleForRowAt:))) {
             return target.tableView?(tableView, editingStyleForRowAt: indexPath) ?? .none
         }
@@ -381,10 +402,13 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     }
 
     open func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return target.tableView?(tableView, shouldIndentWhileEditingRowAt: indexPath) ?? true
+        target.tableView?(tableView, shouldIndentWhileEditingRowAt: indexPath) ?? true
     }
 
-    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    public func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:trailingSwipeActionsConfigurationForRowAt:))) {
             return target.tableView?(tableView, trailingSwipeActionsConfigurationForRowAt: indexPath)
         }
@@ -406,8 +430,16 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         passthroughScrollViewDelegate?.scrollViewWillBeginDragging?(scrollView)
     }
 
-    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        passthroughScrollViewDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+    open func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        passthroughScrollViewDelegate?.scrollViewWillEndDragging?(
+            scrollView,
+            withVelocity: velocity,
+            targetContentOffset: targetContentOffset
+        )
     }
 
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -427,7 +459,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     }
 
     open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return passthroughScrollViewDelegate?.viewForZooming?(in: scrollView)
+        passthroughScrollViewDelegate?.viewForZooming?(in: scrollView)
     }
 
     open func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
@@ -439,7 +471,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     }
 
     open func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        return passthroughScrollViewDelegate?.scrollViewShouldScrollToTop?(scrollView) ?? true
+        passthroughScrollViewDelegate?.scrollViewShouldScrollToTop?(scrollView) ?? true
     }
 
     open func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
