@@ -1,5 +1,5 @@
-* [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]
-* [*] Stats: Improve performance when opening the Stats screen [#25938]
-* [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]
-* [*] Fix an issue where the Reader tab and Me tab show incorrect state after logging out [#25952]
-* [*] Stats: Open the latest post when tapping the Latest Post Summary card in the Insights tab [#25896]
+Good news for accessibility: when you’re updating post settings, VoiceOver will tell you which categories are selected. We’ll put that in the “wins” category.
+
+We updated the new Stats screen to load faster. In the Insights tab, you can also open your latest post by tapping the Latest Post Summary card.
+
+Finally, we fixed an issue in the Reader and Me tabs. They now show the right information after you’ve logged out of the app.
