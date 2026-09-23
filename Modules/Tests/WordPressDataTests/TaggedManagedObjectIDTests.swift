@@ -4,6 +4,7 @@ import CoreData
 
 @testable import WordPressData
 
+@MainActor
 @Suite struct TaggedManagedObjectIDTests {
     private let contextManager = ContextManager.forTesting()
 
