@@ -319,10 +319,10 @@ final class PostRepository {
             return
         }
 
-        let remote = try getRemoteService(for: post)
         post.deleteAllRevisions()
         ContextManager.shared.saveContextAndWait(context)
 
+        let remote = try getRemoteService(for: post)
         var remotePost: RemotePost
         do {
             remotePost = try await remote.post(withID: postID)

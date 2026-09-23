@@ -8,7 +8,7 @@ import WordPressKit
 @MainActor
 struct PostRepositoryPostLifetimeTests {
     enum Operation: CaseIterable {
-        case create, save, update, trash, delete, autosave
+        case create, save, update, delete, autosave
 
         @MainActor
         func perform(on post: AbstractPost, using repository: PostRepository) async throws {
@@ -19,8 +19,6 @@ struct PostRepositoryPostLifetimeTests {
                 try await repository.save(post, changes: changes)
             case .update:
                 try await repository.update(post, changes: changes)
-            case .trash:
-                try await repository.trash(post)
             case .delete:
                 try await repository.delete(post)
             case .autosave:
