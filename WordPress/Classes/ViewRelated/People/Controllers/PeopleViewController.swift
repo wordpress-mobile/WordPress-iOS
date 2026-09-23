@@ -67,10 +67,15 @@ class PeopleViewController: UITableViewController {
         return predicate
     }
 
-    /// Sort Descriptor
+    /// Sort Descriptors. `username` and `userID` break ties between people who share a
+    /// display name, so their order stays stable across reloads.
     ///
     private var sortDescriptors: [NSSortDescriptor] {
-        [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
+        [
+            NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))),
+            NSSortDescriptor(key: "username", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))),
+            NSSortDescriptor(key: "userID", ascending: true)
+        ]
     }
 
     private var viewContext: NSManagedObjectContext {
