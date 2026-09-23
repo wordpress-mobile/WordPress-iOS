@@ -1,4 +1,5 @@
 import Foundation
+import SwiftSoup
 import SwiftUI
 import UIKit
 import WordPressAPI
@@ -691,7 +692,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
     init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
         self.modifiedDate = entity.modifiedGmt
-        self.title = entity.title?.raw
+        // Use rendered for wp-admin's title formatting; raw is the stored editor value.
+        self.title = entity.title.map { (try? Entities.unescape($0.rendered)) ?? $0.rendered }
         let contentPreview = GutenbergExcerptGenerator.firstParagraph(from: entity.content.rendered)
         self.content = contentPreview.isEmpty ? entity.excerpt?.raw : contentPreview
         if let authorId = entity.author {
