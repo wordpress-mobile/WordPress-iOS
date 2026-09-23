@@ -94,6 +94,7 @@ struct CustomPostListView<Header: View>: View {
             await viewModel.pullToRefresh()
         }
         .task(id: viewModel.filter) {
+            viewModel.trackOpened()
             await viewModel.refresh()
         }
         .task(id: viewModel.filter) {
