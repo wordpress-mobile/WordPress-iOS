@@ -36,7 +36,7 @@ final class SiteIconPickerPresenter: NSObject {
 
     // MARK: - Private Methods
 
-    fileprivate func showLoadingMessage() {
+    fileprivate static func showLoadingMessage() {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(
             withStatus: NSLocalizedString(
@@ -46,7 +46,14 @@ final class SiteIconPickerPresenter: NSObject {
         )
     }
 
-    fileprivate func showErrorLoadingImageMessage() {
+    /// Synchronous so it's safe to call from `async` contexts, where Swift would
+    /// otherwise pick SVProgressHUD's `async` `dismiss()`. That overload never
+    /// returns if another HUD is shown before the fade-out finishes.
+    fileprivate static func dismissLoadingMessage() {
+        SVProgressHUD.dismiss()
+    }
+
+    fileprivate static func showErrorLoadingImageMessage() {
         SVProgressHUD.showDismissibleError(
             status: NSLocalizedString(
                 "Unable to load the image. Please choose a different one or try again later.",
@@ -62,7 +69,6 @@ final class SiteIconPickerPresenter: NSObject {
             guard let self else {
                 return
             }
-            SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
             imageCropViewController.onCompletion = { image, modified in
@@ -122,14 +128,15 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
             return
         }
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
-        self.showLoadingMessage()
+        Self.showLoadingMessage()
         self.originalMedia = nil
         PHPickerResult.loadImage(for: result) { [weak self] image, error in
             if let image {
+                Self.dismissLoadingMessage()
                 self?.showImageCropViewController(image, presentingViewController: picker)
             } else {
                 DDLogError("Failed to load image: \(String(describing: error))")
-                self?.showErrorLoadingImageMessage()
+                Self.showErrorLoadingImageMessage()
             }
         }
     }
@@ -163,15 +170,16 @@ extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
 
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
 
-        showLoadingMessage()
+        Self.showLoadingMessage()
         originalMedia = media
 
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             do {
                 let image = try await MediaImageService.shared.image(for: media, size: .original)
+                Self.dismissLoadingMessage()
                 self?.showImageCropViewController(image, presentingViewController: viewController)
             } catch {
-                self?.showErrorLoadingImageMessage()
+                Self.showErrorLoadingImageMessage()
             }
         }
     }
@@ -183,7 +191,7 @@ extension SiteIconPickerPresenter: ImagePlaygroundPickerDelegate {
             showImageCropViewController(image, presentingViewController: picker)
         } else {
             DDLogError("Failed to load image created by ImagePlayground")
-            showErrorLoadingImageMessage()
+            Self.showErrorLoadingImageMessage()
         }
     }
 }
