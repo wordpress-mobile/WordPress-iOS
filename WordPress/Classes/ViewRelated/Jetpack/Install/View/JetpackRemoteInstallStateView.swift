@@ -39,7 +39,7 @@ class JetpackRemoteInstallStateView: UIViewController {
     }
 
     func toggleHidingImageView(for collection: UITraitCollection) {
-        imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
+        imageView.isHidden = collection.verticalSizeClass == .compact
     }
 
     func configure(with viewModel: JetpackRemoteInstallStateViewModel) {

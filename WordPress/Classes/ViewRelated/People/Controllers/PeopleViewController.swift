@@ -171,7 +171,7 @@ class PeopleViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let blog, let blogId = blog.dotComID?.intValue else { return }
+        guard let blog else { return }
 
         switch filter {
         case .users, .viewers:

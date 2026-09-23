@@ -142,7 +142,7 @@ struct PostTagsView: View {
             let tagToAdd = components[index].trim()
             if !tagToAdd.isEmpty {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    viewModel.addNewTag(named: tagToAdd)
+                    _ = viewModel.addNewTag(named: tagToAdd)
                 }
             }
         }
@@ -156,7 +156,7 @@ struct PostTagsView: View {
         let trimmedText = viewModel.searchText.trim()
         if !trimmedText.isEmpty {
             withAnimation(.easeInOut(duration: 0.2)) {
-                viewModel.addNewTag(named: trimmedText)
+                _ = viewModel.addNewTag(named: trimmedText)
             }
             viewModel.searchText = ""
         }

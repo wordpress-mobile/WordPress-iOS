@@ -275,9 +275,7 @@ class NoticePresenter {
             equalTo: noticeContainerView.widthAnchor,
             multiplier: 0.5
         )
-        let isRegularWidth = noticeContainerView.traitCollection.containsTraits(
-            in: UITraitCollection(horizontalSizeClass: .regular)
-        )
+        let isRegularWidth = noticeContainerView.traitCollection.horizontalSizeClass == .regular
         noticeContainerView.noticeWidthConstraint?.isActive = isRegularWidth
 
         NSLayoutConstraint.activate([
@@ -518,7 +516,7 @@ class NoticeContainerView: UIView {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        let isRegularWidth = traitCollection.containsTraits(in: UITraitCollection(horizontalSizeClass: .regular))
+        let isRegularWidth = traitCollection.horizontalSizeClass == .regular
         noticeWidthConstraint?.isActive = isRegularWidth
 
         layoutIfNeeded()

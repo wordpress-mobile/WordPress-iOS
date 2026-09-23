@@ -24,7 +24,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         }()
         let description = notification.renderSnippet()?.string
         let inlineAction = inlineAction(viewModel: viewModel, notification: notification, parent: parent)
-        let avatarStyle = AvatarView<Circle>.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
+        let avatarStyle = AvatarView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
         let style = NotificationsTableViewCellContent.Style.regular(
             .init(
                 title: title,

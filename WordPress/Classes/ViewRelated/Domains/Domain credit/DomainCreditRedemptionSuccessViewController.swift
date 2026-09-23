@@ -126,7 +126,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     /// Hides the illustration if we only have compact height, or if the user has
     /// dynamic content set to accessibility sizes.
     private func updateIllustrationVisibility() {
-        illustration.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        illustration.isHidden = traitCollection.verticalSizeClass == .compact || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     private func setupViewHierarchy() {

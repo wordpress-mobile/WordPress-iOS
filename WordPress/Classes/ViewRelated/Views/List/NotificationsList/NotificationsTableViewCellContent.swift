@@ -7,7 +7,7 @@ struct NotificationsTableViewCellContent: View {
             let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
-            let avatarStyle: AvatarView<Circle>.Style
+            let avatarStyle: AvatarView.Style
             let inlineAction: InlineAction.Configuration?
         }
 
