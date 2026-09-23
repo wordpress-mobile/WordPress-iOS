@@ -39,7 +39,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     private var ghostThumbnailSize: CGSize {
-        return SiteDesignCategoryThumbnailSize.recommended.value
+        SiteDesignCategoryThumbnailSize.recommended.value
     }
 
     // MARK: Helper Footer View
@@ -145,12 +145,13 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         self.completion = completion
         tableView = UITableView(frame: .zero, style: .plain)
 
-        super.init(
-            scrollableView: tableView,
-            mainTitle: TextContent.mainTitle,
-            // the primary action button is never shown
-            primaryActionTitle: ""
-        )
+        super
+            .init(
+                scrollableView: tableView,
+                mainTitle: TextContent.mainTitle,
+                // the primary action button is never shown
+                primaryActionTitle: ""
+            )
 
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
@@ -163,7 +164,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(CategorySectionTableViewCell.defaultNib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
+        tableView.register(
+            CategorySectionTableViewCell.defaultNib,
+            forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier
+        )
         tableView.dataSource = self
         navigationItem.backButtonTitle = TextContent.backButtonTitle
         configureHeaderStyling()
@@ -218,8 +222,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         isLoading = true
 
-        DispatchQueue.main.async {
-            SiteDesignSectionLoader.buildAssembler { [weak self] result in
+        DispatchQueue.main.async { [weak self] in
+            SiteDesignSectionLoader.buildAssembler { result in
                 guard let self else { return }
 
                 switch result {
@@ -243,7 +247,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: TextContent.skipButtonTitle, style: .plain, target: self, action: #selector(skipButtonTapped))
+        let skip = UIBarButtonItem(
+            title: TextContent.skipButtonTitle,
+            style: .plain,
+            target: self,
+            action: #selector(skipButtonTapped)
+        )
         navigationItem.rightBarButtonItem = skip
     }
 
@@ -252,7 +261,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             return
         }
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(closeButtonTapped)
+        )
     }
 
     @objc
@@ -275,18 +288,31 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private enum TextContent {
-        static let mainTitle = NSLocalizedString("Choose a theme",
-                                                 comment: "Title for the screen to pick a theme and homepage for a site.")
-        static let backButtonTitle = NSLocalizedString("Design",
-                                                       comment: "Shortened version of the main title to be used in back navigation.")
-        static let skipButtonTitle = NSLocalizedString("Skip",
-                                                       comment: "Continue without making a selection.")
-        static let errorTitle = NSLocalizedString("Unable to load this content right now.",
-                                                  comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
-        static let errorSubtitle = NSLocalizedString("Check your network connection and try again.",
-                                                     comment: "Default subtitle for no-results when there is no connection.")
-        static let helperText = NSLocalizedString("Can’t decide? You can change the theme at any time.",
-                                                  comment: "Helper text that appears at the bottom of the design screen.")
+        static let mainTitle = NSLocalizedString(
+            "Choose a theme",
+            comment: "Title for the screen to pick a theme and homepage for a site."
+        )
+        static let backButtonTitle = NSLocalizedString(
+            "Design",
+            comment: "Shortened version of the main title to be used in back navigation."
+        )
+        static let skipButtonTitle = NSLocalizedString(
+            "Skip",
+            comment: "Continue without making a selection."
+        )
+        static let errorTitle = NSLocalizedString(
+            "Unable to load this content right now.",
+            comment:
+                "Informing the user that a network request failed because the device wasn't able to establish a network connection."
+        )
+        static let errorSubtitle = NSLocalizedString(
+            "Check your network connection and try again.",
+            comment: "Default subtitle for no-results when there is no connection."
+        )
+        static let helperText = NSLocalizedString(
+            "Can’t decide? You can change the theme at any time.",
+            comment: "Helper text that appears at the bottom of the design screen."
+        )
     }
 
     private enum Metrics {
@@ -315,13 +341,18 @@ extension SiteDesignContentCollectionViewController: NoResultsViewControllerDele
 extension SiteDesignContentCollectionViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isLoading ? 1 : (sections.count)
+        isLoading ? 1 : (sections.count)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellReuseIdentifier = CategorySectionTableViewCell.cellReuseIdentifier
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CategorySectionTableViewCell else {
-            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CategorySectionTableViewCell.self). Please make sure the table view is registering the correct nib before loading the data")
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+                as? CategorySectionTableViewCell
+        else {
+            fatalError(
+                "Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CategorySectionTableViewCell.self). Please make sure the table view is registering the correct nib before loading the data"
+            )
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -375,10 +406,11 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
             navController = GutenbergLightNavigationController(rootViewController: previewVC)
         }
         navController.modalPresentationStyle = .pageSheet
-        navigationController?.present(navController, animated: true) {
-            // deselect so no border is shown on dismissal of the preview
-            cell.deselectItems()
-        }
+        navigationController?
+            .present(navController, animated: true) {
+                // deselect so no border is shown on dismissal of the preview
+                cell.deselectItems()
+            }
     }
 
     func didDeselectItem(forCell cell: CategorySectionTableViewCell) {}

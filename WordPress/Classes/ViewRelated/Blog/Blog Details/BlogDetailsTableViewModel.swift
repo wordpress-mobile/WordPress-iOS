@@ -35,8 +35,9 @@ private struct Section {
     var restorableSelectedRow: BlogDetailsRowKind? {
         didSet {
             if let row = restorableSelectedRow,
-               let section = sections.first(where: { $0.rows.contains { $0.kind == row } }),
-               [.jetpackBrandingCard, .domainCredit].contains(section.category) {
+                let section = sections.first(where: { $0.rows.contains { $0.kind == row } }),
+                [.jetpackBrandingCard, .domainCredit].contains(section.category)
+            {
                 restorableSelectedRow = nil
             }
         }
@@ -73,12 +74,21 @@ private struct Section {
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.removeSite)
 
         // Register header/footer views
-        tableView.register(BlogDetailsSectionFooterView.self, forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionFooter)
+        tableView.register(
+            BlogDetailsSectionFooterView.self,
+            forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionFooter
+        )
 
         // Register special card cells
         tableView.register(MigrationSuccessCell.self, forCellReuseIdentifier: CellIdentifiers.migrationSuccess)
-        tableView.register(JetpackBrandingMenuCardCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard)
-        tableView.register(JetpackRemoteInstallTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackInstall)
+        tableView.register(
+            JetpackBrandingMenuCardCell.self,
+            forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard
+        )
+        tableView.register(
+            JetpackRemoteInstallTableViewCell.self,
+            forCellReuseIdentifier: CellIdentifiers.jetpackInstall
+        )
         tableView.register(ExtensiveLoggingCell.self, forCellReuseIdentifier: CellIdentifiers.extensiveLogging)
         tableView.register(XMLRPCDisabledCell.self, forCellReuseIdentifier: CellIdentifiers.xmlrpcDisabled)
 
@@ -221,7 +231,12 @@ private struct Section {
                 if rowItem.showsSelectionState {
                     restorableSelectedRow = row
 
-                    tableView?.selectRow(at: indexPath, animated: false, scrollPosition: optimumScrollPosition(for: indexPath))
+                    tableView?
+                        .selectRow(
+                            at: indexPath,
+                            animated: false,
+                            scrollPosition: optimumScrollPosition(for: indexPath)
+                        )
                 }
 
                 // Call the row's action
@@ -393,14 +408,17 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < sections.count,
-              let footerTitle = sections[section].footerTitle,
-              !footerTitle.isEmpty else {
+            let footerTitle = sections[section].footerTitle,
+            !footerTitle.isEmpty
+        else {
             return nil
         }
 
-        guard let footerView = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: CellIdentifiers.sectionFooterIdentifier
-        ) as? BlogDetailsSectionFooterView else {
+        guard
+            let footerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: CellIdentifiers.sectionFooterIdentifier
+            ) as? BlogDetailsSectionFooterView
+        else {
             return nil
         }
 
@@ -416,14 +434,15 @@ private extension BlogDetailsTableViewModel {
         indexPath: IndexPath,
         row: Row
     ) -> UITableViewCell {
-        let identifier = switch row.kind {
-        case .removeSite:
-            CellIdentifiers.removeSite
-        case .jetpackSettings, .siteSettings, .domain:
-            CellIdentifiers.settings
-        default:
-            CellIdentifiers.standard
-        }
+        let identifier =
+            switch row.kind {
+            case .removeSite:
+                CellIdentifiers.removeSite
+            case .jetpackSettings, .siteSettings, .domain:
+                CellIdentifiers.settings
+            default:
+                CellIdentifiers.standard
+            }
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         cell.accessibilityHint = row.accessibilityHint
@@ -456,10 +475,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureJetpackInstallCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.jetpackInstall
-        ) as? JetpackRemoteInstallTableViewCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.jetpackInstall
+            ) as? JetpackRemoteInstallTableViewCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -468,10 +489,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureMigrationSuccessCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.migrationSuccess
-        ) as? MigrationSuccessCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.migrationSuccess
+            ) as? MigrationSuccessCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -483,10 +506,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureJetpackBrandingCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.jetpackBrandingCard
-        ) as? JetpackBrandingMenuCardCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.jetpackBrandingCard
+            ) as? JetpackBrandingMenuCardCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -495,10 +520,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureExtensiveLoggingCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.extensiveLogging
-        ) as? ExtensiveLoggingCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.extensiveLogging
+            ) as? ExtensiveLoggingCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -507,9 +534,11 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.xmlrpcDisabled
-        ) as? XMLRPCDisabledCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.xmlrpcDisabled
+            ) as? XMLRPCDisabledCell
+        else {
             return UITableViewCell()
         }
 
@@ -531,11 +560,12 @@ private extension BlogDetailsTableViewModel {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 50))
                 .foregroundStyle(.orange)
-        } actions: {
-            Button { [weak self, weak viewController] in
-                viewController?.dismiss(animated: true) {
-                    self?.presentJetpackConnection()
-                }
+        } actions: { [weak self, weak viewController] in
+            Button {
+                viewController?
+                    .dismiss(animated: true) {
+                        self?.presentJetpackConnection()
+                    }
             } label: {
                 Text(XMLRPCDisabledAlertStrings.connectJetpack)
                     .font(.headline)
@@ -545,10 +575,14 @@ private extension BlogDetailsTableViewModel {
             .controlSize(.extraLarge)
 
             Button { [weak viewController] in
-                let url = URL(string: "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/")!
-                viewController?.dismiss(animated: true) {
-                    UIApplication.shared.open(url)
-                }
+                let url = URL(
+                    string:
+                        "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/"
+                )!
+                viewController?
+                    .dismiss(animated: true) {
+                        UIApplication.shared.open(url)
+                    }
             } label: {
                 Text(XMLRPCDisabledAlertStrings.learnMore)
             }
@@ -561,9 +595,10 @@ private extension BlogDetailsTableViewModel {
         let controller = UIViewController.jetpackConnection(blog: blog)
         controller.promptType = .bypassXMLRPC
         controller.completionBlock = { [weak controller, weak self] in
-            controller?.dismiss(animated: true) {
-                self?.viewController?.refresh()
-            }
+            controller?
+                .dismiss(animated: true) {
+                    self?.viewController?.refresh()
+                }
         }
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
             systemItem: .close,
@@ -578,7 +613,7 @@ private extension BlogDetailsTableViewModel {
 
 private extension BlogDetailsTableViewModel {
     func buildHomeSection() -> Section {
-        return Section(rows: [Row.home(viewController: viewController)], category: .home)
+        Section(rows: [Row.home(viewController: viewController)], category: .home)
     }
 
     func buildContentSection() -> Section {
@@ -609,7 +644,7 @@ private extension BlogDetailsTableViewModel {
     }
 
     func buildRemoveSiteSection() -> Section {
-        return Section(rows: [Row.removeSite(viewController: viewController)], category: .removeSite)
+        Section(rows: [Row.removeSite(viewController: viewController)], category: .removeSite)
     }
 
     func buildJetpackSection() -> Section {
@@ -639,11 +674,12 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.blaze(viewController: viewController))
         }
 
-        let title = if blog.supports(.jetpackSettings) {
-            Strings.jetpackSection
-        } else {
-            ""
-        }
+        let title =
+            if blog.supports(.jetpackSettings) {
+                Strings.jetpackSection
+            } else {
+                ""
+            }
 
         return Section(title: title, rows: rows, category: .jetpack)
     }
@@ -866,29 +902,35 @@ private extension BlogDetailsTableViewModel {
         var shouldAddSectionTitle = true
 
         if !firstSectionRows.isEmpty {
-            sections.append(Section(
-                title: sectionTitle,
-                rows: firstSectionRows,
-                category: .maintenance
-            ))
+            sections.append(
+                Section(
+                    title: sectionTitle,
+                    rows: firstSectionRows,
+                    category: .maintenance
+                )
+            )
             shouldAddSectionTitle = false
         }
 
         if !secondSectionRows.isEmpty {
-            sections.append(Section(
-                title: shouldAddSectionTitle ? sectionTitle : nil,
-                rows: secondSectionRows,
-                category: .maintenance
-            ))
+            sections.append(
+                Section(
+                    title: shouldAddSectionTitle ? sectionTitle : nil,
+                    rows: secondSectionRows,
+                    category: .maintenance
+                )
+            )
             shouldAddSectionTitle = false
         }
 
         if !thirdSectionRows.isEmpty {
-            sections.append(Section(
-                title: shouldAddSectionTitle ? sectionTitle : nil,
-                rows: thirdSectionRows,
-                category: .maintenance
-            ))
+            sections.append(
+                Section(
+                    title: shouldAddSectionTitle ? sectionTitle : nil,
+                    rows: thirdSectionRows,
+                    category: .maintenance
+                )
+            )
         }
 
         return sections
@@ -907,7 +949,8 @@ private extension BlogDetailsTableViewModel {
         }
         let context = ContextManager.shared.mainContext
         guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
-              let dateCreated = defaultAccount.dateCreated else {
+            let dateCreated = defaultAccount.dateCreated
+        else {
             return false
         }
         return dateCreated < hideWPAdminDate
@@ -1245,7 +1288,8 @@ extension Row {
     }
 
     static func sharing(viewController: BlogDetailsViewController?) -> Row {
-        let sharingTitle = AppConfiguration.isWordPress
+        let sharingTitle =
+            AppConfiguration.isWordPress
             ? Strings.sharing
             : Strings.socialRowTitle
         return Row(
@@ -1262,7 +1306,8 @@ extension Row {
     }
 
     static func people(viewController: BlogDetailsViewController?) -> Row {
-        let title = viewController?.shouldShowSubscribersRow == true
+        let title =
+            viewController?.shouldShowSubscribersRow == true
             ? Strings.users
             : Strings.people
         return Row(
@@ -1312,7 +1357,8 @@ extension Row {
             title: Strings.plugins,
             image: UIImage(named: "site-menu-plugins"),
             action: { [weak viewController] userInfo in
-                let showManagement = (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
+                let showManagement =
+                    (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
                 if showManagement {
                     viewController?.showManagePluginsScreen()
                 } else {
@@ -1629,7 +1675,8 @@ private enum XMLRPCDisabledAlertStrings {
     )
     static let description = NSLocalizedString(
         "blogDetails.xmlrpcDisabled.alert.description",
-        value: "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
+        value:
+            "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
         comment: "Description explaining options to restore functionality when XML-RPC is disabled"
     )
     static let connectJetpack = NSLocalizedString(

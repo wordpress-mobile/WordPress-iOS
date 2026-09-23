@@ -36,28 +36,42 @@ final class SiteIconPickerPresenter: NSObject {
 
     // MARK: - Private Methods
 
-    fileprivate func showLoadingMessage() {
+    fileprivate static func showLoadingMessage() {
         SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading...",
-                                                         comment: "Text displayed in HUD while a media item is being loaded."))
+        SVProgressHUD.show(
+            withStatus: NSLocalizedString(
+                "Loading...",
+                comment: "Text displayed in HUD while a media item is being loaded."
+            )
+        )
     }
 
-    fileprivate func showErrorLoadingImageMessage() {
-        SVProgressHUD.showDismissibleError(status: NSLocalizedString("Unable to load the image. Please choose a different one or try again later.",
-                                                                         comment: "Text displayed in HUD if there was an error attempting to load a media image."))
+    /// Synchronous so it's safe to call from `async` contexts, where Swift would
+    /// otherwise pick SVProgressHUD's `async` `dismiss()`. That overload never
+    /// returns if another HUD is shown before the fade-out finishes.
+    fileprivate static func dismissLoadingMessage() {
+        SVProgressHUD.dismiss()
+    }
+
+    fileprivate static func showErrorLoadingImageMessage() {
+        SVProgressHUD.showDismissibleError(
+            status: NSLocalizedString(
+                "Unable to load the image. Please choose a different one or try again later.",
+                comment: "Text displayed in HUD if there was an error attempting to load a media image."
+            )
+        )
     }
 
     /// Shows a new ImageCropViewController for the given image.
     ///
     func showImageCropViewController(_ image: UIImage, presentingViewController: UIViewController) {
-        DispatchQueue.main.async {
-            SVProgressHUD.dismiss()
+        DispatchQueue.main.async { [weak self, weak presentingViewController] in
+            guard let self else {
+                return
+            }
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
-            imageCropViewController.onCompletion = { [weak self] image, modified in
-                guard let self else {
-                    return
-                }
+            imageCropViewController.onCompletion = { image, modified in
                 self.onIconSelection?()
                 if !modified, let media = self.originalMedia {
                     self.onCompletion?(media, nil)
@@ -80,26 +94,29 @@ final class SiteIconPickerPresenter: NSObject {
                             return
                         }
                         var uploadProgress: Progress?
-                        mediaService.uploadMedia(media,
-                                                 automatedRetry: false,
-                                                 progress: &uploadProgress,
-                                                 success: {
-                            WPAnalytics.track(.siteSettingsSiteIconUploaded)
-                            self.onCompletion?(media, nil)
-                        }, failure: { error in
-                            WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
-                            self.onCompletion?(nil, error)
-                        })
+                        mediaService.uploadMedia(
+                            media,
+                            automatedRetry: false,
+                            progress: &uploadProgress,
+                            success: {
+                                WPAnalytics.track(.siteSettingsSiteIconUploaded)
+                                self.onCompletion?(media, nil)
+                            },
+                            failure: { error in
+                                WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
+                                self.onCompletion?(nil, error)
+                            }
+                        )
                     }
                 }
             }
             imageCropViewController.shouldShowCancelButton = true
-            imageCropViewController.onCancel = { [weak presentingViewController] in
+            imageCropViewController.onCancel = {
                 // Dismiss the crop controller but not the picker
                 presentingViewController?.dismiss(animated: true)
             }
             let navigationController = UINavigationController(rootViewController: imageCropViewController)
-            presentingViewController.present(navigationController, animated: true)
+            presentingViewController?.present(navigationController, animated: true)
         }
     }
 }
@@ -111,21 +128,25 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
             return
         }
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
-        self.showLoadingMessage()
+        Self.showLoadingMessage()
         self.originalMedia = nil
         PHPickerResult.loadImage(for: result) { [weak self] image, error in
             if let image {
+                Self.dismissLoadingMessage()
                 self?.showImageCropViewController(image, presentingViewController: picker)
             } else {
                 DDLogError("Failed to load image: \(String(describing: error))")
-                self?.showErrorLoadingImageMessage()
+                Self.showErrorLoadingImageMessage()
             }
         }
     }
 }
 
 extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
-    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePicker(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
         guard let presentingViewController = picker.presentingViewController else {
             return
         }
@@ -138,7 +159,10 @@ extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
 }
 
 extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
-    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+    func siteMediaPickerViewController(
+        _ viewController: SiteMediaPickerViewController,
+        didFinishWithSelection selection: [Media]
+    ) {
         guard let media = selection.first else {
             onCompletion?(nil, nil)
             return
@@ -146,15 +170,16 @@ extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
 
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
 
-        showLoadingMessage()
+        Self.showLoadingMessage()
         originalMedia = media
 
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             do {
                 let image = try await MediaImageService.shared.image(for: media, size: .original)
+                Self.dismissLoadingMessage()
                 self?.showImageCropViewController(image, presentingViewController: viewController)
             } catch {
-                self?.showErrorLoadingImageMessage()
+                Self.showErrorLoadingImageMessage()
             }
         }
     }
@@ -166,7 +191,7 @@ extension SiteIconPickerPresenter: ImagePlaygroundPickerDelegate {
             showImageCropViewController(image, presentingViewController: picker)
         } else {
             DDLogError("Failed to load image created by ImagePlayground")
-            showErrorLoadingImageMessage()
+            Self.showErrorLoadingImageMessage()
         }
     }
 }

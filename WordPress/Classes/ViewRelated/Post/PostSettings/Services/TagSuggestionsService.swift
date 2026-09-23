@@ -15,9 +15,10 @@ final class TagSuggestionsService {
         wpAssert(post.managedObjectContext === coreData.mainContext)
 
         guard FeatureFlag.intelligence.enabled,
-              #available(iOS 26, *),
-              let post = post as? Post,
-              !post.isContentEmpty() else {
+            #available(iOS 26, *),
+            let post = post as? Post,
+            !post.isContentEmpty()
+        else {
             return []
         }
 
@@ -32,11 +33,12 @@ final class TagSuggestionsService {
 
         try Task.checkCancellation()
 
-        return try await TagSuggestionGenerator().generate(
-            post: postContent,
-            siteTags: siteTags,
-            postTags: postTags
-        )
+        return try await TagSuggestionGenerator()
+            .generate(
+                post: postContent,
+                siteTags: siteTags,
+                postTags: postTags
+            )
     }
 
     private func getSiteTags(for blog: Blog) async -> [String] {
@@ -48,7 +50,7 @@ final class TagSuggestionsService {
         }
         // Refresh in the background without blocking progress
         let blogID = TaggedManagedObjectID(blog)
-        Task { @MainActor in
+        _ = Task { @MainActor in
             let blog = try coreData.mainContext.existingObject(with: blogID)
             try await syncTags(for: blog)
         }

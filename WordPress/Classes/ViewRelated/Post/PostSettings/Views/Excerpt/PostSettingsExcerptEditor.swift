@@ -69,7 +69,7 @@ struct PostSettingsExcerptEditor: View {
         }
         .onChange(of: text) { _, newValue in
             // Debounce word count calculation
-            Task {
+            _ = Task {
                 try await Task.sleep(for: .milliseconds(330))
                 self.wordCount = newValue.wordCount
             }
@@ -91,15 +91,17 @@ struct PostSettingsExcerptEditor: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 26)
-                    .fill(LinearGradient(
-                        colors: [
-                            Color.blue.opacity(0.15),
-                            Color.purple.opacity(0.10),
-                            Color.pink.opacity(0.08)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ))
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.blue.opacity(0.15),
+                                Color.purple.opacity(0.10),
+                                Color.pink.opacity(0.08)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                     .opacity(isAnimating ? 0.7 : 0.0).padding(-26)
             )
             .opacity(textViewOpacity)
@@ -207,18 +209,18 @@ private enum Strings {
 
 extension PostSettingsExcerptEditor {
     static let mockPostContent = """
-        WordPress has revolutionized the way we think about content management and publishing. From its humble beginnings as a simple blogging platform in 2003, WordPress has grown to power over 40% of all websites on the internet today.
+            WordPress has revolutionized the way we think about content management and publishing. From its humble beginnings as a simple blogging platform in 2003, WordPress has grown to power over 40% of all websites on the internet today.
 
-        What makes WordPress truly special is its flexibility and extensibility. With thousands of themes and plugins available, you can transform a basic WordPress installation into virtually any type of website – from personal blogs and portfolios to complex e-commerce stores and corporate websites.
+            What makes WordPress truly special is its flexibility and extensibility. With thousands of themes and plugins available, you can transform a basic WordPress installation into virtually any type of website – from personal blogs and portfolios to complex e-commerce stores and corporate websites.
 
-        The WordPress mobile app brings this power directly to your fingertips. Whether you're commuting, traveling, or simply away from your desk, you can manage your entire WordPress site from your iPhone or iPad. Create and edit posts, moderate comments, upload photos, check your site's analytics, and even customize your theme – all from the convenience of your mobile device.
+            The WordPress mobile app brings this power directly to your fingertips. Whether you're commuting, traveling, or simply away from your desk, you can manage your entire WordPress site from your iPhone or iPad. Create and edit posts, moderate comments, upload photos, check your site's analytics, and even customize your theme – all from the convenience of your mobile device.
 
-        One of the most compelling features of WordPress is its built-in SEO capabilities. The platform generates clean, semantic HTML that search engines love, and when combined with plugins like Yoast SEO or RankMath, you have everything you need to rank well in search results.
+            One of the most compelling features of WordPress is its built-in SEO capabilities. The platform generates clean, semantic HTML that search engines love, and when combined with plugins like Yoast SEO or RankMath, you have everything you need to rank well in search results.
 
-        The WordPress community is another major strength. With millions of developers, designers, and content creators contributing to the ecosystem, there's always someone ready to help solve problems or share knowledge. From WordCamps and meetups to online forums and documentation, the support network is truly remarkable.
+            The WordPress community is another major strength. With millions of developers, designers, and content creators contributing to the ecosystem, there's always someone ready to help solve problems or share knowledge. From WordCamps and meetups to online forums and documentation, the support network is truly remarkable.
 
-        Looking ahead, WordPress continues to evolve with modern web standards. The introduction of the block editor (Gutenberg) has made content creation more visual and intuitive, while full-site editing capabilities are transforming how we think about WordPress themes and customization. Whether you're a beginner starting your first blog or an experienced developer building complex sites, WordPress provides the tools and flexibility you need to succeed online.
-    """
+            Looking ahead, WordPress continues to evolve with modern web standards. The introduction of the block editor (Gutenberg) has made content creation more visual and intuitive, while full-site editing capabilities are transforming how we think about WordPress themes and customization. Whether you're a beginner starting your first blog or an experienced developer building complex sites, WordPress provides the tools and flexibility you need to succeed online.
+        """
 }
 
 #endif

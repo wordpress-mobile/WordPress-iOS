@@ -126,16 +126,15 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
         }
         // Wait until the HTML document finished loading.
         // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
-        webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil, navigation === self.currentNavigation else {
+        webView.evaluateJavaScript("document.readyState") { [weak self] complete, _ in
+            guard let self, complete != nil, navigation === self.currentNavigation else {
                 return
             }
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
-            webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
-                guard let self,
-                    let height = height as? CGFloat,
+            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
+                guard let height = height as? CGFloat,
                     navigation === self.currentNavigation
                 else {
                     return

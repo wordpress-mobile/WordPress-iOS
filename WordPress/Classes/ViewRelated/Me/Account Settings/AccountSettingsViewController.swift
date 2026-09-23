@@ -24,13 +24,13 @@ func AccountSettingsViewController(accountSettingsService: AccountSettingsServic
 
 private class AccountSettingsController: SettingsController {
     var trackingKey: String {
-        return "account_settings"
+        "account_settings"
     }
 
     let title = NSLocalizedString("Account Settings", comment: "Account Settings Title")
 
     var immuTableRows: [ImmuTableRow.Type] {
-        return [
+        [
             TextRow.self,
             EditableTextRow.self,
             DestructiveButtonRow.self
@@ -44,24 +44,47 @@ private class AccountSettingsController: SettingsController {
 
     var settings: AccountSettings? {
         didSet {
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+            NotificationCenter.default.post(
+                name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification),
+                object: nil
+            )
         }
     }
     var noticeMessage: String? {
         didSet {
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+            NotificationCenter.default.post(
+                name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification),
+                object: nil
+            )
         }
     }
     private let alertHelper = DestructiveAlertHelper()
 
-    init(accountSettingsService: AccountSettingsService,
-         accountService: AccountService = AccountService(coreDataStack: ContextManager.shared)) {
+    init(
+        accountSettingsService: AccountSettingsService,
+        accountService: AccountService = AccountService(coreDataStack: ContextManager.shared)
+    ) {
         self.accountSettingsService = accountSettingsService
         self.accountService = accountService
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.showSettingsChangeErrorMessage), name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: nil)
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(AccountSettingsController.loadStatus),
+            name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(AccountSettingsController.loadSettings),
+            name: NSNotification.Name.AccountSettingsChanged,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(AccountSettingsController.showSettingsChangeErrorMessage),
+            name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed,
+            object: nil
+        )
     }
 
     func refreshModel() {
@@ -69,7 +92,8 @@ private class AccountSettingsController: SettingsController {
     }
 
     @objc func loadStatus() {
-        noticeMessage = accountSettingsService.status.errorMessage ?? noticeForAccountSettings(accountSettingsService.settings)
+        noticeMessage =
+            accountSettingsService.status.errorMessage ?? noticeForAccountSettings(accountSettingsService.settings)
     }
 
     @objc func loadSettings() {
@@ -81,12 +105,16 @@ private class AccountSettingsController: SettingsController {
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
-        return mapViewModel(settings, service: accountSettingsService, presenter: presenter)
+        mapViewModel(settings, service: accountSettingsService, presenter: presenter)
     }
 
     // MARK: - Model mapping
 
-    func mapViewModel(_ settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
+    func mapViewModel(
+        _ settings: AccountSettings?,
+        service: AccountSettingsService,
+        presenter: ImmuTablePresenter
+    ) -> ImmuTable {
 
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
@@ -140,7 +168,8 @@ private class AccountSettingsController: SettingsController {
         let closeAccount = DestructiveButtonRow(
             title: NSLocalizedString("Close Account", comment: "Close account action label"),
             action: closeAccountAction,
-            accessibilityIdentifier: "closeAccountButtonRow")
+            accessibilityIdentifier: "closeAccountButtonRow"
+        )
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -160,18 +189,29 @@ private class AccountSettingsController: SettingsController {
 
     // MARK: - Actions
 
-    func editEmailAddress(_ settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
-        return { row in
+    func editEmailAddress(
+        _ settings: AccountSettings?,
+        service: AccountSettingsService
+    ) -> (ImmuTableRow) -> SettingsTextViewController {
+        { row in
             let editableRow = row as! EditableTextRow
-            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-            let settingsViewController = self.controllerForEditableText(editableRow,
-                                                                         changeType: AccountSettingsChange.email,
-                                                                         hint: hint,
-                                                                         service: service)
+            let hint = NSLocalizedString(
+                "Will not be publicly displayed.",
+                comment: "Help text when editing email address"
+            )
+            let settingsViewController = self.controllerForEditableText(
+                editableRow,
+                changeType: AccountSettingsChange.email,
+                hint: hint,
+                service: service
+            )
             settingsViewController.mode = .email
             settingsViewController.notice = self.noticeForAccountSettings(settings)
             settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
-            settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
+            settingsViewController.actionText = NSLocalizedString(
+                "Revert Pending Change",
+                comment: "Cancels a pending Email Change"
+            )
             settingsViewController.onActionPress = {
                 service.saveChange(.emailRevertPendingChange)
             }
@@ -180,29 +220,39 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    func changePassword(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
-        return { _ in
-            return ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
+    func changePassword(
+        with settings: AccountSettings?,
+        service: AccountSettingsService
+    ) -> (ImmuTableRow) -> SettingsTextViewController {
+        { [weak self] _ in
+            ChangePasswordViewController(username: settings?.username ?? "") { value in
                 DispatchQueue.main.async {
                     SVProgressHUD.show(withStatus: Constants.changingPassword)
-                    service.updatePassword(value, finished: { success, error in
-                        if success {
-                            self?.refreshAccountDetails {
-                                SVProgressHUD.showSuccess(withStatus: Constants.changedPasswordSuccess)
+                    service.updatePassword(
+                        value,
+                        finished: { success, error in
+                            if success {
+                                self?
+                                    .refreshAccountDetails {
+                                        SVProgressHUD.showSuccess(withStatus: Constants.changedPasswordSuccess)
+                                    }
+                            } else {
+                                let errorMessage = error?.localizedDescription ?? Constants.changePasswordGenericError
+                                SVProgressHUD.showError(withStatus: errorMessage)
                             }
-                        } else {
-                            let errorMessage = error?.localizedDescription ?? Constants.changePasswordGenericError
-                            SVProgressHUD.showError(withStatus: errorMessage)
                         }
-                    })
+                    )
                 }
             }
         }
     }
 
-    func changeUsername(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> ChangeUsernameViewController {
-        return { _ in
-            return ChangeUsernameViewController(service: service, settings: settings) { [weak self] username in
+    func changeUsername(
+        with settings: AccountSettings?,
+        service: AccountSettingsService
+    ) -> (ImmuTableRow) -> ChangeUsernameViewController {
+        { [weak self] _ in
+            ChangeUsernameViewController(service: service, settings: settings) { username in
                 self?.refreshModel()
                 if let username {
                     let notice = Notice(title: String(format: Constants.usernameChanged, username))
@@ -213,25 +263,36 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        else {
             return
         }
-        accountService.updateUserDetails(for: account, success: { () in
-            finished()
-        }, failure: { _ in
-            finished()
-        })
+        accountService.updateUserDetails(
+            for: account,
+            success: { () in
+                finished()
+            },
+            failure: { _ in
+                finished()
+            }
+        )
     }
 
     func editWebAddress(_ service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
-        let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
+        let hint = NSLocalizedString(
+            "Shown publicly when you comment on blogs.",
+            comment: "Help text when editing web address"
+        )
         return editText(AccountSettingsChange.webAddress, hint: hint, service: service)
     }
 
-    func editPrimarySite(_ settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        return { _ in
+    func editPrimarySite(
+        _ settings: AccountSettings?,
+        service: AccountSettingsService
+    ) -> ImmuTableRowControllerGenerator {
+        { [weak self] _ in
             let configuration = BlogListConfiguration(shouldHideSelfHostedSites: true)
-            let viewController = SitePickerHostingController(configuration: configuration) { [weak self] selectedBlog in
+            let viewController = SitePickerHostingController(configuration: configuration) { selectedBlog in
                 guard let self, let dotComID = selectedBlog.dotComID?.intValue else { return }
 
                 WPAnalytics.trackSettingsChange(self.trackingKey, fieldName: "primary_site")
@@ -244,7 +305,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var closeAccountAction: (ImmuTableRow) -> Void {
-        return { [weak self] _ in
+        { [weak self] _ in
             guard let self else { return }
             WPAnalytics.track(.accountCloseTapped, properties: ["has_atomic": self.hasAtomicSite])
 
@@ -268,12 +329,22 @@ private class AccountSettingsController: SettingsController {
         }
 
         let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
-        let message = NSLocalizedString("\nTo confirm, please re-enter your username before closing.\n\n",
-                                        comment: "Message of Close Account confirmation alert")
-        let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
-                                                       comment: "Close Account confirmation action title")
+        let message = NSLocalizedString(
+            "\nTo confirm, please re-enter your username before closing.\n\n",
+            comment: "Message of Close Account confirmation alert"
+        )
+        let destructiveActionTitle = NSLocalizedString(
+            "Permanently Close Account",
+            comment: "Close Account confirmation action title"
+        )
 
-        let alert = alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+        let alert = alertHelper.makeAlertWithConfirmation(
+            title: title,
+            message: message,
+            valueToConfirm: value,
+            destructiveActionTitle: destructiveActionTitle,
+            destructiveAction: closeAccount
+        )
         alert.presentFromRootViewController()
     }
 
@@ -287,7 +358,10 @@ private class AccountSettingsController: SettingsController {
             switch $0 {
             case .success:
                 WPAnalytics.track(.accountCloseCompleted, properties: ["status": "success"])
-                let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
+                let status = NSLocalizedString(
+                    "Account closed",
+                    comment: "Overlay message displayed when account successfully closed"
+                )
                 SVProgressHUD.showDismissibleSuccess(status: status)
                 AccountHelper.logOutDefaultWordPressComAccount()
             case .failure(let error):
@@ -302,12 +376,16 @@ private class AccountSettingsController: SettingsController {
     }
 
     private func showCloseAccountErrorAlert(message: String) {
-        let title = NSLocalizedString("Couldn’t close account automatically",
-                                      comment: "Error title displayed when unable to close user account.")
+        let title = NSLocalizedString(
+            "Couldn’t close account automatically",
+            comment: "Error title displayed when unable to close user account."
+        )
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let contactSupportTitle = NSLocalizedString("Contact Support",
-                                      comment: "Title for a button displayed when unable to close user account due to having atomic site.")
+        let contactSupportTitle = NSLocalizedString(
+            "Contact Support",
+            comment: "Title for a button displayed when unable to close user account due to having atomic site."
+        )
         alert.addActionWithTitle(contactSupportTitle, style: .default, handler: contactSupportAction)
         let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alert.addCancelActionWithTitle(cancelAction)
@@ -327,22 +405,32 @@ private class AccountSettingsController: SettingsController {
 
         switch errorCode {
         case "unauthorized":
-            return NSLocalizedString("You're not authorized to close the account.",
-                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
+            return NSLocalizedString(
+                "You're not authorized to close the account.",
+                comment: "Error message displayed when unable to close user account due to being unauthorized."
+            )
         case "atomic-site":
             return localizedErrorMessageForAtomicSites
         case "chargebacked-site":
-            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
-                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
+            return NSLocalizedString(
+                "This user account cannot be closed if there are unresolved chargebacks.",
+                comment: "Error message displayed when unable to close user account due to unresolved chargebacks."
+            )
         case "active-subscriptions":
-            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
-                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
+            return NSLocalizedString(
+                "This user account cannot be closed while it has active subscriptions.",
+                comment: "Error message displayed when unable to close user account due to having active subscriptions."
+            )
         case "active-memberships":
-            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
-                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
+            return NSLocalizedString(
+                "This user account cannot be closed while it has active purchases.",
+                comment: "Error message displayed when unable to close user account due to having active purchases."
+            )
         default:
-            return NSLocalizedString("An error occured while closing account.",
-                                     comment: "Default error message displayed when unable to close user account.")
+            return NSLocalizedString(
+                "An error occured while closing account.",
+                comment: "Default error message displayed when unable to close user account."
+            )
         }
     }
 
@@ -350,18 +438,22 @@ private class AccountSettingsController: SettingsController {
         // Based on https://github.com/Automattic/wp-calypso/pull/65780
         NSLocalizedString(
             "accountSettings.closeAccount.error.atomicSite",
-            value: "This user account cannot be closed immediately because it has active purchases. Please contact our support team to finish deleting the account.",
+            value:
+                "This user account cannot be closed immediately because it has active purchases. Please contact our support team to finish deleting the account.",
             comment: "Error message displayed when unable to close user account due to having active atomic site."
         )
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        return { _ in
+        { [weak self] _ in
             if ZendeskUtils.zendeskEnabled {
                 guard let leafViewController = UIApplication.shared.leafViewController else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) { [weak self] identityUpdated in
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(
+                    from: leafViewController,
+                    with: .closeAccount
+                ) { identityUpdated in
                     if identityUpdated {
                         self?.refreshModel()
                     }
@@ -377,8 +469,9 @@ private class AccountSettingsController: SettingsController {
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
         guard let error = notification.userInfo?[NSUnderlyingErrorKey] as? NSError,
-            let errorMessage = error.userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String else {
-                return
+            let errorMessage = error.userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String
+        else {
+            return
         }
         SVProgressHUD.showError(withStatus: errorMessage)
     }
@@ -387,12 +480,15 @@ private class AccountSettingsController: SettingsController {
 
     fileprivate func noticeForAccountSettings(_ settings: AccountSettings?) -> String? {
         guard settings?.emailPendingChange == true,
-              let pendingAddress = settings?.emailPendingAddress else {
+            let pendingAddress = settings?.emailPendingAddress
+        else {
             return nil
         }
 
-        let localizedNotice = NSLocalizedString("There is a pending change of your email to %@. Please check your inbox for a confirmation link.",
-            comment: "Displayed when there's a pending Email Change. The variable is the new email address.")
+        let localizedNotice = NSLocalizedString(
+            "There is a pending change of your email to %@. Please check your inbox for a confirmation link.",
+            comment: "Displayed when there's a pending Email Change. The variable is the new email address."
+        )
 
         return String(format: localizedNotice, pendingAddress)
     }
@@ -409,10 +505,23 @@ private class AccountSettingsController: SettingsController {
 
     enum Constants {
         static let title = NSLocalizedString("Change Password", comment: "Account Settings Change password label")
-        static let changingPassword = NSLocalizedString("Changing password", comment: "Loader title displayed by the loading view while the password is changing")
-        static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
-        static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
-        static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
+        static let changingPassword = NSLocalizedString(
+            "Changing password",
+            comment: "Loader title displayed by the loading view while the password is changing"
+        )
+        static let changedPasswordSuccess = NSLocalizedString(
+            "Password changed successfully",
+            comment: "Loader title displayed by the loading view while the password is changed successfully"
+        )
+        static let changePasswordGenericError = NSLocalizedString(
+            "There was an error changing the password",
+            comment: "Text displayed when there is a failure loading the history."
+        )
+        static let usernameChanged = NSLocalizedString(
+            "Username changed to %@",
+            comment:
+                "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username."
+        )
         static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
     }
 }

@@ -25,11 +25,17 @@ extension CookieJar {
         hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
     }
 
-    private func hasWordPressAuthCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+    private func hasWordPressAuthCookie(
+        for url: URL,
+        username: String,
+        atomicSite: Bool,
+        completion: @escaping (Bool) -> Void
+    ) {
         getCookies(url: url) { cookies in
-            let cookie = cookies
+            let cookie =
+                cookies
                 .contains(where: { cookie in
-                    return cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
+                    cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
                 })
 
             completion(cookie)
@@ -75,30 +81,31 @@ extension WKHTTPCookieStore: CookieJar {
         //   1. we are not blocking the main thread for UI reasons
         //   2. cookies seem to never load when main thread is blocked (perhaps they dispatch to the main thread later on)
 
-        DispatchQueue.global(qos: .userInitiated).async {
-            let group = DispatchGroup()
-            group.enter()
+        DispatchQueue.global(qos: .userInitiated)
+            .async {
+                let group = DispatchGroup()
+                group.enter()
 
-            var urlCookies: [HTTPCookie] = []
+                var urlCookies: [HTTPCookie] = []
 
-            DispatchQueue.main.async {
-                self.getAllCookies { cookies in
-                    urlCookies = cookies.filter({ cookie in
-                        return cookie.matches(url: url)
-                    })
-                    group.leave()
+                DispatchQueue.main.async {
+                    self.getAllCookies { cookies in
+                        urlCookies = cookies.filter({ cookie in
+                            cookie.matches(url: url)
+                        })
+                        group.leave()
+                    }
+                }
+
+                let result = group.wait(timeout: .now() + .seconds(2))
+                if result == .timedOut {
+                    DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
+                }
+
+                DispatchQueue.main.async {
+                    completion(urlCookies)
                 }
             }
-
-            let result = group.wait(timeout: .now() + .seconds(2))
-            if result == .timedOut {
-                DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
-            }
-
-            DispatchQueue.main.async {
-                completion(urlCookies)
-            }
-        }
     }
 
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
@@ -110,9 +117,12 @@ extension WKHTTPCookieStore: CookieJar {
         cookies
             .forEach({ [unowned self] cookie in
                 group.enter()
-                self.delete(cookie, completionHandler: {
-                    group.leave()
-                })
+                self.delete(
+                    cookie,
+                    completionHandler: {
+                        group.leave()
+                    }
+                )
             })
         let result = group.wait(timeout: .now() + .seconds(2))
         if result == .timedOut {
@@ -127,28 +137,28 @@ extension WKHTTPCookieStore: CookieJar {
         }
 
         DispatchQueue.main.async {
-            self.setCookie(cookie) { [weak self] in
-                self?.setCookies(cookies.dropLast(), completion: completion)
+            self.setCookie(cookie) {
+                self.setCookies(cookies.dropLast(), completion: completion)
             }
         }
     }
 }
 
 #if DEBUG
-    func __removeAllWordPressComCookies() {
-        var jars = [CookieJar]()
-        jars.append(HTTPCookieStorage.shared)
-        jars.append(WKWebsiteDataStore.default().httpCookieStore)
+func __removeAllWordPressComCookies() {
+    var jars = [CookieJar]()
+    jars.append(HTTPCookieStorage.shared)
+    jars.append(WKWebsiteDataStore.default().httpCookieStore)
 
-        let group = DispatchGroup()
-        jars.forEach({ jar in
-            group.enter()
-            jar.removeWordPressComCookies {
-                group.leave()
-            }
-        })
-        _ = group.wait(timeout: .now() + .seconds(5))
-    }
+    let group = DispatchGroup()
+    jars.forEach({ jar in
+        group.enter()
+        jar.removeWordPressComCookies {
+            group.leave()
+        }
+    })
+    _ = group.wait(timeout: .now() + .seconds(5))
+}
 #endif
 
 private let atomicLoggedInCookieNamePrefix = "wordpress_logged_in_"
@@ -164,12 +174,12 @@ private extension HTTPCookie {
     }
 
     private func isWordPressLoggedIn(username: String) -> Bool {
-        return name.hasPrefix(loggedInCookieName)
+        name.hasPrefix(loggedInCookieName)
             && value.components(separatedBy: "%").first == username
     }
 
     private func isWordPressLoggedInAtomic(username: String) -> Bool {
-        return name.hasPrefix(atomicLoggedInCookieNamePrefix)
+        name.hasPrefix(atomicLoggedInCookieNamePrefix)
             && value.components(separatedBy: "|").first == username
     }
 
@@ -180,7 +190,8 @@ private extension HTTPCookie {
 
         let matchesDomain: Bool
         if domain.hasPrefix(".") {
-            matchesDomain = host.hasSuffix(domain)
+            matchesDomain =
+                host.hasSuffix(domain)
                 || host == domain.dropFirst()
         } else {
             matchesDomain = host == domain

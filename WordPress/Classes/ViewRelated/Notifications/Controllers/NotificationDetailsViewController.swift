@@ -727,7 +727,7 @@ private extension NotificationDetailsViewController {
         //
         let urls = imageUrls(from: contentGroup.blocks, inKindSet: ContentMedia.richBlockTypes)
 
-        let completion = {
+        let completion = { [weak self] in
             // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
             // lead to a state in which the cell remains not visible.
             //
@@ -735,7 +735,7 @@ private extension NotificationDetailsViewController {
                 withDuration: ContentMedia.duration,
                 delay: ContentMedia.delay,
                 options: ContentMedia.options,
-                animations: { [weak self] in
+                animations: {
                     self?.tableView.reloadRows(at: [indexPath], with: .fade)
                 }
             )

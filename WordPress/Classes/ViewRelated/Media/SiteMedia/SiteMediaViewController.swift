@@ -11,11 +11,22 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private let coordinator = MediaCoordinator.shared
 
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
-    private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
+    private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(
+        blog: blog,
+        coordinator: coordinator
+    )
 
-    private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))
+    private lazy var toolbarItemDelete = UIBarButtonItem(
+        barButtonSystemItem: .trash,
+        target: self,
+        action: #selector(buttonDeleteTapped)
+    )
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
-    private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
+    private lazy var toolbarItemShare = UIBarButtonItem(
+        barButtonSystemItem: .action,
+        target: self,
+        action: #selector(buttonShareTapped)
+    )
 
     var searchBarButtonItem: UIBarButtonItem? {
         didSet { refreshNavigationItems() }
@@ -79,10 +90,20 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         var items: [UIBarButtonItem] = []
 
         if !isEditing {
-            let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+            let selectButton = UIBarButtonItem(
+                title: Strings.select,
+                style: .plain,
+                target: self,
+                action: #selector(buttonSelectTapped)
+            )
             items.append(selectButton)
         } else {
-            let doneButton = UIBarButtonItem(title: SharedStrings.Button.cancel, image: nil, target: self, action: #selector(buttonDoneTapped))
+            let doneButton = UIBarButtonItem(
+                title: SharedStrings.Button.cancel,
+                image: nil,
+                target: self,
+                action: #selector(buttonDoneTapped)
+            )
             items.append(doneButton)
         }
 
@@ -110,27 +131,37 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     private func makeFiltersBarButtonItem() -> UIBarButtonItem {
         let menu = UIMenu(children: [
-            UIMenu(options: [.displayInline], children: SiteMediaFilter.allFilters.map { filter in
-                let action = UIAction(title: filter.title, image: filter.image) { [weak self] _ in
-                    self?.didUpdateFilter(filter)
+            UIMenu(
+                options: [.displayInline],
+                children: SiteMediaFilter.allFilters.map { filter in
+                    let action = UIAction(title: filter.title, image: filter.image) { [weak self] _ in
+                        self?.didUpdateFilter(filter)
+                    }
+                    if selectedFilter?.mediaType == filter.mediaType {
+                        action.state = .on
+                    }
+                    return action
                 }
-                if selectedFilter?.mediaType == filter.mediaType {
-                    action.state = .on
-                }
-                return action
-            }),
+            ),
             UIDeferredMenuElement.uncached { [weak self] in
                 let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
                 let action = UIAction(
                     title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
-                    image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
-                        self?.collectionViewController.toggleAspectRatioMode()
-                    }
+                    image: UIImage(
+                        systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward"
+                    )
+                ) { [weak self] _ in
+                    self?.collectionViewController.toggleAspectRatioMode()
+                }
                 $0([action])
             }
         ])
 
-        return UIBarButtonItem(title: Strings.filter, image: UIImage(systemName: "line.3.horizontal.decrease"), menu: menu)
+        return UIBarButtonItem(
+            title: Strings.filter,
+            image: UIImage(systemName: "line.3.horizontal.decrease"),
+            menu: menu
+        )
     }
 
     private func didUpdateFilter(_ filter: SiteMediaFilter) {
@@ -202,7 +233,8 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         }
         let alert = UIAlertController(
             title: nil,
-            message: selection.count == 1 ? Strings.deleteConfirmationMessageOne : Strings.deleteConfirmationMessageMany,
+            message: selection.count == 1
+                ? Strings.deleteConfirmationMessageOne : Strings.deleteConfirmationMessageMany,
             preferredStyle: UIDevice.current.userInterfaceIdiom == .phone ? .actionSheet : .alert
         )
         alert.addCancelActionWithTitle(Strings.deleteConfirmationCancel)
@@ -223,19 +255,32 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
 
         updateProgress(nil)
-        coordinator.delete(media: selection, onProgress: updateProgress, success: { [weak self] in
-            WPAppAnalytics.track(.mediaLibraryDeletedItems, properties: ["number_of_items_deleted": deletedItemsCount], blog: self?.blog)
-            SVProgressHUD.showSuccess(withStatus: Strings.deletionSuccessMessage)
+        coordinator.delete(
+            media: selection,
+            onProgress: updateProgress,
+            success: { [weak self] in
+                WPAppAnalytics.track(
+                    .mediaLibraryDeletedItems,
+                    properties: ["number_of_items_deleted": deletedItemsCount],
+                    blog: self?.blog
+                )
+                SVProgressHUD.showSuccess(withStatus: Strings.deletionSuccessMessage)
 
-            self?.setEditing(false)
-        }, failure: {
-            SVProgressHUD.showError(withStatus: Strings.deletionFailureMessage)
-        })
+                self?.setEditing(false)
+            },
+            failure: {
+                SVProgressHUD.showError(withStatus: Strings.deletionFailureMessage)
+            }
+        )
     }
 
     // MARK: - Actions (Share)
 
-    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil, sourceView: UIView? = nil) {
+    private func shareSelectedMedia(
+        _ selection: [Media],
+        barButtonItem: UIBarButtonItem? = nil,
+        sourceView: UIView? = nil
+    ) {
         guard !selection.isEmpty else {
             return
         }
@@ -247,15 +292,21 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
         setPreparingToShare(true)
 
-        WPAnalytics.track(.siteMediaShareTapped, properties: [
-            "number_of_items": selection.count
-        ])
+        WPAnalytics.track(
+            .siteMediaShareTapped,
+            properties: [
+                "number_of_items": selection.count
+            ]
+        )
 
         Task {
             do {
                 let fileURLs = try await Media.downloadRemoteData(for: selection, blog: blog)
 
-                let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
+                let activityViewController = UIActivityViewController(
+                    activityItems: fileURLs,
+                    applicationActivities: nil
+                )
                 if let popover = activityViewController.popoverPresentationController {
                     if let barButtonItem {
                         popover.barButtonItem = barButtonItem
@@ -263,9 +314,9 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                         popover.sourceView = sourceView ?? view
                     }
                 }
-                activityViewController.completionWithItemsHandler = { [weak self] _, isCompleted, _, _ in
+                activityViewController.completionWithItemsHandler = { _, isCompleted, _, _ in
                     if isCompleted {
-                        self?.setEditing(false)
+                        self.setEditing(false)
                     }
                 }
                 present(activityViewController, animated: true, completion: nil)
@@ -279,7 +330,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     // MARK: - SiteMediaCollectionViewControllerDelegate
 
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media]) {
+    func siteMediaViewController(
+        _ viewController: SiteMediaCollectionViewController,
+        didUpdateSelection selection: [Media]
+    ) {
         updateToolbarItemsState(for: selection)
     }
 
@@ -287,16 +341,26 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         buttonAddMediaMenuController.makeMenu(for: self)
     }
 
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? {
+    func siteMediaViewController(
+        _ viewController: SiteMediaCollectionViewController,
+        contextMenuFor media: Media,
+        sourceView: UIView
+    ) -> UIMenu? {
         var actions: [UIAction] = []
 
-        actions.append(UIAction(title: SharedStrings.Button.share, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
-            self?.shareSelectedMedia([media], sourceView: sourceView)
-        })
+        actions.append(
+            UIAction(title: SharedStrings.Button.share, image: UIImage(systemName: "square.and.arrow.up")) {
+                [weak self] _ in
+                self?.shareSelectedMedia([media], sourceView: sourceView)
+            }
+        )
         if blog.supports(.mediaDeletion) {
-            actions.append(UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) { [weak self] _ in
-                self?.deleteSelectedMedia([media])
-            })
+            actions.append(
+                UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) {
+                    [weak self] _ in
+                    self?.deleteSelectedMedia([media])
+                }
+            )
         }
         return UIMenu(children: actions)
     }
@@ -308,20 +372,85 @@ extension SiteMediaViewController {
 
 private enum Strings {
     static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
-    static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
-    static let addMedia = NSLocalizedString("mediaLibrary.buttonAddMedia", value: "Add Media", comment: "Navigation bar button item")
-    static let filter = NSLocalizedString("mediaLibrary.buttonFilter", value: "Filter", comment: "Navigation bar button item")
-    static let addButtonAccessibilityLabel = NSLocalizedString("mediaLibrary.addButtonAccessibilityLabel", value: "Add", comment: "Accessibility label for add button to add items to the user's media library")
-    static let addButtonAccessibilityHint = NSLocalizedString("mediaLibrary.addButtonAccessibilityHint", value: "Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
-    static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
-    static let deleteConfirmationMessageMany = NSLocalizedString("mediaLibrary.deleteConfirmationMessageMany", value: "Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
-    static let deleteConfirmationCancel = NSLocalizedString("mediaLibrary.deleteConfirmationCancel", value: "Cancel", comment: "Verb. Button title. Tapping cancels an action.")
-    static let deleteConfirmationConfirm = NSLocalizedString("mediaLibrary.deleteConfirmationConfirm", value: "Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)")
-    static let deletionProgressViewTitle = NSLocalizedString("mediaLibrary.deletionProgressViewTitle", value: "Deleting...", comment: "Text displayed in HUD while a media item is being deleted.")
-    static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
-    static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
-    static let sharingFailureMessage = NSLocalizedString("mediaLibrary.sharingFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
-    static let buttonDelete = NSLocalizedString("mediaLibrary.buttonDelete", value: "Delete", comment: "Context menu button")
-    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
-    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
+    static let select = NSLocalizedString(
+        "mediaLibrary.buttonSelect",
+        value: "Select",
+        comment: "Media screen navigation bar button Select title"
+    )
+    static let addMedia = NSLocalizedString(
+        "mediaLibrary.buttonAddMedia",
+        value: "Add Media",
+        comment: "Navigation bar button item"
+    )
+    static let filter = NSLocalizedString(
+        "mediaLibrary.buttonFilter",
+        value: "Filter",
+        comment: "Navigation bar button item"
+    )
+    static let addButtonAccessibilityLabel = NSLocalizedString(
+        "mediaLibrary.addButtonAccessibilityLabel",
+        value: "Add",
+        comment: "Accessibility label for add button to add items to the user's media library"
+    )
+    static let addButtonAccessibilityHint = NSLocalizedString(
+        "mediaLibrary.addButtonAccessibilityHint",
+        value: "Add new media",
+        comment: "Accessibility hint for add button to add items to the user's media library"
+    )
+    static let deleteConfirmationMessageOne = NSLocalizedString(
+        "mediaLibrary.deleteConfirmationMessageOne",
+        value: "Are you sure you want to permanently delete this item?",
+        comment:
+            "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso."
+    )
+    static let deleteConfirmationMessageMany = NSLocalizedString(
+        "mediaLibrary.deleteConfirmationMessageMany",
+        value: "Are you sure you want to permanently delete these items?",
+        comment: "Message prompting the user to confirm that they want to permanently delete a group of media items."
+    )
+    static let deleteConfirmationCancel = NSLocalizedString(
+        "mediaLibrary.deleteConfirmationCancel",
+        value: "Cancel",
+        comment: "Verb. Button title. Tapping cancels an action."
+    )
+    static let deleteConfirmationConfirm = NSLocalizedString(
+        "mediaLibrary.deleteConfirmationConfirm",
+        value: "Delete",
+        comment: "Title for button that permanently deletes one or more media items (photos / videos)"
+    )
+    static let deletionProgressViewTitle = NSLocalizedString(
+        "mediaLibrary.deletionProgressViewTitle",
+        value: "Deleting...",
+        comment: "Text displayed in HUD while a media item is being deleted."
+    )
+    static let deletionSuccessMessage = NSLocalizedString(
+        "mediaLibrary.deletionSuccessMessage",
+        value: "Deleted!",
+        comment: "Text displayed in HUD after successfully deleting a media item"
+    )
+    static let deletionFailureMessage = NSLocalizedString(
+        "mediaLibrary.deletionFailureMessage",
+        value: "Unable to delete all media items.",
+        comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."
+    )
+    static let sharingFailureMessage = NSLocalizedString(
+        "mediaLibrary.sharingFailureMessage",
+        value: "Unable to share the selected items.",
+        comment: "Text displayed in HUD if there was an error attempting to share a group of media items."
+    )
+    static let buttonDelete = NSLocalizedString(
+        "mediaLibrary.buttonDelete",
+        value: "Delete",
+        comment: "Context menu button"
+    )
+    static let aspectRatioGrid = NSLocalizedString(
+        "mediaLibrary.aspectRatioGrid",
+        value: "Aspect Ratio Grid",
+        comment: "Button name in the more menu"
+    )
+    static let squareGrid = NSLocalizedString(
+        "mediaLibrary.squareGrid",
+        value: "Square Grid",
+        comment: "Button name in the more menu"
+    )
 }
