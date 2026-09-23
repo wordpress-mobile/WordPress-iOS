@@ -13,7 +13,9 @@ struct UnifiedSupportComposer: View {
 
     @FocusState private var isFocused: Bool
 
-    private let cornerRadius: CGFloat = 20
+    private var shape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: 12, style: .continuous)
+    }
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
@@ -36,12 +38,14 @@ struct UnifiedSupportComposer: View {
             .submitLabel(.send)
             .onSubmit(sendIfPossible)
 
+        // A rounded rectangle rather than the default capsule: its corners would eat into the text once the
+        // message takes more than one line.
         if #available(iOS 26.0, *) {
-            field.glassEffect()
+            field.glassEffect(.regular, in: shape)
         } else {
             field
                 .background(Color(.systemGray6))
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .clipShape(shape)
         }
     }
 
