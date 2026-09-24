@@ -231,7 +231,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Notifications
         startListeningToNotifications()
-        resetApplicationBadge()
         notificationsBecameVisible()
 
         // Refresh the UI
@@ -764,19 +763,17 @@ private extension NotificationsViewController {
             return
         }
 
-        resetApplicationBadge()
         notificationsBecameVisible()
         reloadResultsControllerIfNeeded()
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
-        // The account-scoped bell state is owned by NotificationActivityService,
-        // which observes the same notification. It keeps a visible list's
-        // visibility, so rebinding here is enough for the new account's content
-        // to be marked seen, whichever observer runs first.
+        // The account-scoped bell state and icon clear are owned by
+        // NotificationActivityService, which observes the same notification. It
+        // keeps a visible list's visibility, so rebinding here is enough for the
+        // new account's content to be marked seen, whichever observer runs first.
         resetNotifications()
         bindToCurrentAccount()
-        resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
             return
@@ -1264,7 +1261,7 @@ private extension NotificationsViewController {
         let welcomeNotificationSeenKey = userDefaults.welcomeNotificationSeenKey
         if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
-            resetApplicationBadge()
+            activityService.requestIconClear()
             // The tab-bar unread state also depends on this flag, so re-render it.
             activityService.refreshIndicators()
         }
@@ -1932,12 +1929,6 @@ private extension NotificationsViewController {
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetApplicationBadge() {
-        // These notifications are cleared, so we just need to take Zendesk unread notifications
-        // into account when setting the app icon count.
-        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 
