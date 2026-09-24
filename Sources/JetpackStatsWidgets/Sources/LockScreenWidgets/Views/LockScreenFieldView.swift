@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 
 struct LockScreenFieldView: View {
     struct ValueFontSize {
@@ -8,27 +9,29 @@ struct LockScreenFieldView: View {
     }
 
     let title: String
-    let value: String
-    let spokenValue: String
+    let value: AbbreviatedNumber
     let valueFontSize: CGFloat
 
-    init(title: String, value: String, spokenValue: String, valueFontSize: CGFloat = ValueFontSize.default) {
+    init(title: String, value: Int, valueFontSize: CGFloat = ValueFontSize.default) {
         self.title = title
-        self.value = value
-        self.spokenValue = spokenValue
+        self.value = value.abbreviated()
         self.valueFontSize = valueFontSize
+    }
+
+    private var accessibilityLabel: Text {
+        // The colon makes VoiceOver pause between elements
+        Text(title) + Text(": ") + Text(value.accessibilityLabel)
     }
 
     var body: some View {
         VStack {
-            Text(value)
+            Text(value.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: valueFontSize, weight: .heavy))
                 .minimumScaleFactor(0.9)
                 .foregroundColor(.white)
                 .allowsTightening(true)
                 .lineLimit(1)
-                .accessibilityLabel(Text(spokenValue))
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 11))
@@ -36,5 +39,7 @@ struct LockScreenFieldView: View {
                 .allowsTightening(true)
                 .lineLimit(1)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
     }
 }
