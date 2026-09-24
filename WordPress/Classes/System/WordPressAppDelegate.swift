@@ -226,6 +226,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         NSItemProvider.removeTemporaryData()
         SiteStorageAccess.removePinnedPostTypes()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
+        NotificationActivityService.shared.start()
         setupPingHub()
         setupBackgroundRefresh(application)
         // The notice presenter must exist from process launch: background launches
