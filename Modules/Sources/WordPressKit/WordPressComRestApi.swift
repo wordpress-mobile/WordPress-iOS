@@ -553,6 +553,7 @@ extension WordPressComRestApi {
 
         return .init(
             code: mappedError,
+            response: httpResponse,
             apiErrorCode: errorCode,
             apiErrorMessage: errorDescription,
             apiErrorData: errorEntry["data"],
