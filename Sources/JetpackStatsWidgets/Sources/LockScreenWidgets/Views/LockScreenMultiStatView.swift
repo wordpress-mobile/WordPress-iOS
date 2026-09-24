@@ -16,6 +16,7 @@ struct LockScreenMultiStatView: View {
                         LockScreenFieldView(
                             title: viewModel.primaryField.title,
                             value: viewModel.primaryField.value.abbreviatedString(),
+                            spokenValue: viewModel.primaryField.value.abbreviatedAccessibilityLabel(),
                             valueFontSize: constantValueFontSize()
                         )
                         Spacer()
@@ -23,6 +24,7 @@ struct LockScreenMultiStatView: View {
                         LockScreenFieldView(
                             title: viewModel.secondaryField.title,
                             value: viewModel.secondaryField.value.abbreviatedString(),
+                            spokenValue: viewModel.secondaryField.value.abbreviatedAccessibilityLabel(),
                             valueFontSize: constantValueFontSize()
                         )
                         Spacer()

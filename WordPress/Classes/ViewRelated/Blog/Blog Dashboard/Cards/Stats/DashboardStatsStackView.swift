@@ -25,6 +25,26 @@ final class DashboardStatsStackView: UIStackView {
         }
     }
 
+    // Spoken forms for VoiceOver (e.g. "1.2 million"); fall back to the displayed strings.
+
+    var viewsAccessibilityValue: String? {
+        didSet {
+            updateAccessibility()
+        }
+    }
+
+    var visitorsAccessibilityValue: String? {
+        didSet {
+            updateAccessibility()
+        }
+    }
+
+    var likesAccessibilityValue: String? {
+        didSet {
+            updateAccessibility()
+        }
+    }
+
     // MARK: Private Properties
 
     var viewsView: DashboardSingleStatView?
@@ -77,9 +97,9 @@ final class DashboardStatsStackView: UIStackView {
                   self.accessibilityLabel = Strings.errorTitle
                   return
         }
-        let arguments = [views.accessibilityLabel ?? views,
-                         visitors.accessibilityLabel ?? visitors,
-                         likes.accessibilityLabel ?? likes]
+        let arguments = [viewsAccessibilityValue ?? views,
+                         visitorsAccessibilityValue ?? visitors,
+                         likesAccessibilityValue ?? likes]
         self.accessibilityLabel = String(format: Strings.accessibilityLabelFormat, arguments: arguments)
     }
 }

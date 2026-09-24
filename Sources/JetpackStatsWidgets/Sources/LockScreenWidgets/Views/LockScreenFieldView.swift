@@ -9,16 +9,14 @@ struct LockScreenFieldView: View {
 
     let title: String
     let value: String
+    let spokenValue: String
     let valueFontSize: CGFloat
 
-    init(title: String, value: String, valueFontSize: CGFloat = ValueFontSize.default) {
+    init(title: String, value: String, spokenValue: String, valueFontSize: CGFloat = ValueFontSize.default) {
         self.title = title
         self.value = value
+        self.spokenValue = spokenValue
         self.valueFontSize = valueFontSize
-    }
-
-    private var accessibilityLabel: Text {
-        Text(title) + Text(": ") + Text(value)
     }
 
     var body: some View {
@@ -30,6 +28,7 @@ struct LockScreenFieldView: View {
                 .foregroundColor(.white)
                 .allowsTightening(true)
                 .lineLimit(1)
+                .accessibilityLabel(Text(spokenValue))
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 11))

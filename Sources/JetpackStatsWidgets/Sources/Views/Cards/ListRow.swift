@@ -67,6 +67,7 @@ struct ListRow: View {
             Text(value.abbreviatedString())
                 .font(Constants.dataViewFont)
                 .foregroundColor(Constants.dataViewFontColor)
+                .accessibilityLabel(Text(value.abbreviatedAccessibilityLabel()))
 
             Text(percentFormatter.string(for: percentValue) ?? "0")
 

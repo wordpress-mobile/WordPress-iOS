@@ -89,6 +89,9 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         statsStackView?.views = viewModel?.todaysViews
         statsStackView?.visitors = viewModel?.todaysVisitors
         statsStackView?.likes = viewModel?.todaysLikes
+        statsStackView?.viewsAccessibilityValue = viewModel?.todaysViewsAccessibilityLabel
+        statsStackView?.visitorsAccessibilityValue = viewModel?.todaysVisitorsAccessibilityLabel
+        statsStackView?.likesAccessibilityValue = viewModel?.todaysLikesAccessibilityLabel
 
         nudgeView?.onTap = { [weak self, weak viewController] in
             guard let self, let viewController else { return }
