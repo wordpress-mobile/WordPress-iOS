@@ -41,10 +41,10 @@ protocol NotificationActivityAccountResolving {
 /// The bell means "new WordPress activity since Notifications was last marked
 /// seen", account-scoped and independent of the home-screen icon badge. This
 /// service owns what is app-wide: the default-account lifecycle, list
-/// visibility, and the change notification. Everything bound to one account
-/// (the refresh, the seen submission and retry, and the saved snapshot) lives
-/// in a ``NotificationActivityAccountSession``. All state is main-actor
-/// isolated.
+/// visibility, the home-screen icon, and the change notification. Everything
+/// bound to one account (the refresh, the seen submission and retry, and the
+/// saved snapshot) lives in a ``NotificationActivityAccountSession``. All
+/// state is main-actor isolated.
 ///
 /// A session belongs to one account. Losing that account's credentials pauses
 /// its network work but keeps the session and its saved state; only a sign-out
@@ -59,6 +59,7 @@ final class NotificationActivityService: ObservableObject {
     // Dependencies
     private let resolver: NotificationActivityAccountResolving
     private let store: NotificationActivityStore
+    private let iconBadge: AppIconBadgeWriting
     private let notificationCenter: NotificationCenter
     private let isForeground: @MainActor () -> Bool
 
@@ -76,11 +77,13 @@ final class NotificationActivityService: ObservableObject {
     init(
         resolver: NotificationActivityAccountResolving = DefaultNotificationActivityAccountResolver(),
         store: NotificationActivityStore = NotificationActivityStore(),
+        iconBadge: AppIconBadgeWriting = AppIconBadgeController(),
         notificationCenter: NotificationCenter = .default,
         isForeground: @escaping @MainActor () -> Bool = { UIApplication.shared.applicationState != .background }
     ) {
         self.resolver = resolver
         self.store = store
+        self.iconBadge = iconBadge
         self.notificationCenter = notificationCenter
         self.isForeground = isForeground
     }
@@ -97,6 +100,8 @@ final class NotificationActivityService: ObservableObject {
             self?.defaultAccountDidChange()
         }
         observe(UIApplication.didBecomeActiveNotification) { [weak self] _ in
+            // Not gated on an account: a failed sign-out clear must still land.
+            self?.iconBadge.retryPendingWrite()
             self?.refresh()
         }
         observe(Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications)) {
@@ -139,6 +144,13 @@ final class NotificationActivityService: ObservableObject {
         session?.invalidate()
         session = nil
         setActivity(false)
+
+        // An explicit sign-out or account change (restore == false) clears the
+        // icon; a process restart (restore == true) never does, so a badge iOS is
+        // showing from earlier pushes survives a relaunch.
+        if !restore {
+            iconBadge.setBadgeCount(0)
+        }
 
         guard let account = resolver.defaultAccount() else {
             // A restore before any default account exists keeps saved state; a
@@ -203,6 +215,7 @@ final class NotificationActivityService: ObservableObject {
     /// A push, PingHub event, reconnect, or successful sync signals that state
     /// may have changed. It is a reason to refresh, not proof the bell is `true`.
     func notedPossibleActivity() {
+        iconBadge.retryPendingWrite()
         guard !resolveAccountIfNeeded() else { return }
         session?.notedPossibleActivity()
     }
@@ -210,12 +223,13 @@ final class NotificationActivityService: ObservableObject {
     // MARK: - Opening Notifications and seen updates
 
     /// The Notifications list `list`, bound to the account identified by
-    /// `accountUUID`, became visible: publish the clear, persist it, and submit
-    /// the newest observed timestamp as seen.
+    /// `accountUUID`, became visible: publish the clear, persist it, request an
+    /// icon clear, and submit the newest observed timestamp as seen.
     func notificationsBecameVisible(_ list: AnyObject, accountUUID: String?, newestTimestamp: Date?) {
         resolveAccountIfNeeded()
         guard let session = session(for: accountUUID) else { return }
         visibleLists.insert(ObjectIdentifier(list))
+        iconBadge.setBadgeCount(0)
         session.listBecameVisible(newestTimestamp: newestTimestamp)
     }
 
@@ -242,7 +256,22 @@ final class NotificationActivityService: ObservableObject {
         refresh()
     }
 
-    // MARK: - Indicators
+    // MARK: - Home-screen icon
+
+    /// Applies a WordPress push badge count. A push processed while Notifications
+    /// is visible in the foreground keeps the icon at zero. When the app is not
+    /// in the foreground the push count is applied as-is, so backgrounding with
+    /// Notifications on screen does not clear a badge iOS just set.
+    func applyPushBadgeCount(_ count: Int) {
+        let suppress = isForeground() && isNotificationsVisible
+        iconBadge.setBadgeCount(suppress ? 0 : count)
+    }
+
+    /// Requests an icon count of zero (sign-out, disabling notifications, or a
+    /// welcome-notification clear).
+    func requestIconClear() {
+        iconBadge.setBadgeCount(0)
+    }
 
     /// Re-evaluates indicators that also depend on inputs outside this service,
     /// such as the welcome-notification-seen flag on the legacy tab bar. Posting
@@ -273,11 +302,29 @@ final class NotificationActivityService: ObservableObject {
 // MARK: - Non-isolated entry points for legacy callers
 
 extension NotificationActivityService {
-    /// A WordPress push arrived. Treats it as a reason to refresh the bell: a
-    /// foreground push otherwise triggers no sync, so the indicator would stay
-    /// stale. Safe to call from non-main-actor code.
-    nonisolated static func pushDidArrive() {
-        Task { @MainActor in shared.notedPossibleActivity() }
+    /// A WordPress push updated the badge. Applies the icon count and treats the
+    /// push as a reason to refresh the bell (a foreground push otherwise triggers
+    /// no sync, so the indicator would stay stale). Safe to call from
+    /// non-main-actor code.
+    ///
+    /// On the main thread the count applies before returning: a tapped push opens
+    /// Notifications right after this call, and a deferred write would land after
+    /// the list's icon clear.
+    nonisolated static func pushDidUpdateBadge(count: Int) {
+        let apply: @MainActor () -> Void = {
+            shared.applyPushBadgeCount(count)
+            shared.notedPossibleActivity()
+        }
+        if Thread.isMainThread {
+            MainActor.assumeIsolated(apply)
+        } else {
+            Task { @MainActor in apply() }
+        }
+    }
+
+    /// Clears the home-screen icon badge. Safe to call from non-main-actor code.
+    nonisolated static func clearAppIconBadge() {
+        Task { @MainActor in shared.requestIconClear() }
     }
 }
 
