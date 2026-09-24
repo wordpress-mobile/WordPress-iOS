@@ -55,6 +55,7 @@ WordPress/WordPress.xcodeproj/*.pbxuser
 WordPress/WordPress.xcodeproj/*.perspectivev3
 WordPress/WordPress.xcodeproj/project.xcworkspace
 WordPress/WordPress.xcodeproj/xcuserdata
+WordPress/WordPress.xcodeproj/xcshareddata/xcodecloud/
 /build
 .hockey_app_credentials
 WordPress/Derived Sources/
