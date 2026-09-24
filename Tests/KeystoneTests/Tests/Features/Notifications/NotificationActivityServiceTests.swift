@@ -67,6 +67,14 @@ struct NotificationActivityServiceTests {
         }
     }
 
+    final class FakeIconWriter: AppIconBadgeWriting {
+        private(set) var counts: [Int] = []
+        var last: Int? { counts.last }
+        func setBadgeCount(_ count: Int) { counts.append(count) }
+        private(set) var retryCount = 0
+        func retryPendingWrite() { retryCount += 1 }
+    }
+
     final class FakeResolver: NotificationActivityAccountResolving {
         /// The default account's UUID; `nil` means signed out.
         var defaultUUID: String?
@@ -101,6 +109,7 @@ struct NotificationActivityServiceTests {
         /// Backs `store`. Share it between fixtures to model a process restart.
         let defaults: InMemoryUserDefaults
         let store: NotificationActivityStore
+        let icon = FakeIconWriter()
         let resolver: FakeResolver
         private let foregroundBox = ForegroundBox()
         var foreground: Bool {
@@ -121,6 +130,7 @@ struct NotificationActivityServiceTests {
             service = NotificationActivityService(
                 resolver: resolver,
                 store: store,
+                iconBadge: icon,
                 notificationCenter: notificationCenter,
                 isForeground: { box.value }
             )
@@ -145,8 +155,8 @@ struct NotificationActivityServiceTests {
 
     /// Drains queued main-actor work until every piece of observable state the
     /// tests assert on stops changing, so tests do not depend on a fixed number
-    /// of task hops. The signature covers the remote call counts, the published
-    /// bell, and the persisted snapshot, so a still-pending
+    /// of task hops. The signature covers the remote call counts, the icon
+    /// writes, the published bell, and the persisted snapshot, so a still-pending
     /// `finishFetch`/`finishSeen` keeps the loop running until its effects land.
     /// A fetch suspended on a manual continuation counts as quiescent (its
     /// `fetchCount` already incremented), which is what the timing tests want.
@@ -159,6 +169,7 @@ struct NotificationActivityServiceTests {
             let signature = [
                 "\(f.allRemotes.map(\.fetchCount).reduce(0, +))",
                 "\(f.allRemotes.map(\.seenTimestamps.count).reduce(0, +))",
+                "\(f.icon.counts.count)",
                 "\(f.service.hasNewActivity)",
                 "\(snapshot?.pendingSeen?.timeIntervalSince1970 ?? 0)",
                 "\(snapshot?.acknowledgedSeen?.timeIntervalSince1970 ?? 0)",
@@ -248,7 +259,7 @@ struct NotificationActivityServiceTests {
 
     // MARK: - Opening Notifications
 
-    @Test func becomingVisibleClearsBellAndSubmitsSeen() async {
+    @Test func becomingVisibleClearsBellIconAndSubmitsSeen() async {
         let f = await started(fetch: .success(true))
         #expect(f.service.hasNewActivity)
 
@@ -256,6 +267,7 @@ struct NotificationActivityServiceTests {
         await settle(f)
 
         #expect(!f.service.hasNewActivity)
+        #expect(f.icon.last == 0)
         #expect(f.store.load()?.hasActivity == false)
         #expect(f.remote.seenTimestamps.contains(Self.tenOClock))
     }
@@ -334,6 +346,25 @@ struct NotificationActivityServiceTests {
         #expect(!f.service.hasNewActivity)
     }
 
+    @Test func processRestartDoesNotClearIcon() async {
+        // A launch (restore: true) must not wipe a badge iOS is showing from
+        // earlier pushes.
+        let f = await started(
+            snapshot: .init(accountUUID: "account-A", hasActivity: true, acknowledgedSeen: nil, pendingSeen: nil),
+            fetch: .success(true)
+        )
+        #expect(f.icon.counts.isEmpty)
+    }
+
+    @Test func accountChangeClearsIcon() async {
+        let f = await started()
+        #expect(f.icon.counts.isEmpty) // launch did not clear
+
+        f.switchAccount(to: "account-B")
+        await settle(f)
+        #expect(f.icon.last == 0) // account change clears the icon
+    }
+
     @Test func recoversWhenCredentialsReturnOnForeground() async {
         // A launch without credentials (token invalidated) must not latch off: a
         // later foreground picks up the credentials and refreshes.
@@ -345,6 +376,7 @@ struct NotificationActivityServiceTests {
         await settle(f)
         #expect(!f.service.hasNewActivity)
         #expect(f.store.load() != nil) // saved state kept without credentials
+        #expect(f.icon.counts.isEmpty) // icon not cleared either
 
         f.resolver.hasCredentials = true
         f.notificationCenter.post(name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -365,6 +397,7 @@ struct NotificationActivityServiceTests {
         openList(f)
         await settle(f)
         #expect(f.remote.seenTimestamps.contains(Self.tenOClock))
+        #expect(f.icon.last == 0)
     }
 
     @Test func rejectedSeenIsDroppedAndStopsSuppressingBell() async {
@@ -385,20 +418,22 @@ struct NotificationActivityServiceTests {
     }
 
     @Test func foregroundPushRefreshesBell() async {
-        // Mirrors pushDidArrive on a foreground push: treat the push as a refresh
-        // trigger so the bell does not stay stale.
+        // Mirrors pushDidUpdateBadge on a foreground push: apply the icon count
+        // and treat the push as a refresh trigger so the bell does not stay stale.
         let f = await started()
         #expect(!f.service.hasNewActivity)
         let fetchesBefore = f.remote.fetchCount
 
         f.remote.autoFetchResult = .success(true)
+        f.service.applyPushBadgeCount(2)
         f.service.notedPossibleActivity()
         await settle(f)
         #expect(f.remote.fetchCount > fetchesBefore)
         #expect(f.service.hasNewActivity)
+        #expect(f.icon.last == 2)
     }
 
-    @Test func signOutClearsState() async {
+    @Test func signOutClearsStateAndIcon() async {
         let f = await started(
             snapshot: .init(accountUUID: "account-A", hasActivity: true, acknowledgedSeen: nil, pendingSeen: nil),
             fetch: .success(true)
@@ -409,6 +444,18 @@ struct NotificationActivityServiceTests {
 
         #expect(!f.service.hasNewActivity)
         #expect(f.store.load() == nil)
+        #expect(f.icon.last == 0)
+    }
+
+    @Test func foregroundRetriesIconWriteWhenSignedOut() async {
+        let f = await started()
+        f.switchAccount(to: nil)
+        await settle(f)
+
+        f.notificationCenter.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        await settle(f)
+
+        #expect(f.icon.retryCount == 1)
     }
 
     // MARK: - Seen retries
@@ -488,7 +535,18 @@ struct NotificationActivityServiceTests {
         #expect(f.service.hasNewActivity)
     }
 
-    // MARK: - Visibility and activity triggers
+    // MARK: - Home-screen icon
+
+    @Test func pushBadgeAppliedWhenNotVisibleZeroWhenVisible() async {
+        let f = await started()
+
+        f.service.applyPushBadgeCount(5)
+        #expect(f.icon.last == 5)
+
+        openList(f, newestTimestamp: nil)
+        f.service.applyPushBadgeCount(9) // ignored while visible
+        #expect(f.icon.last == 0)
+    }
 
     @Test func notificationsStaysVisibleUntilTheLastListResigns() async {
         // On iPad a new list can appear before the old one disappears.
@@ -501,6 +559,8 @@ struct NotificationActivityServiceTests {
         f.service.notificationsResignedVisible(f.list)
         await settle(f)
         #expect(!f.service.hasNewActivity)
+        f.service.applyPushBadgeCount(3)
+        #expect(f.icon.last == 0)
 
         f.service.notificationsListDidUpdate(
             other,
@@ -566,6 +626,15 @@ struct NotificationActivityServiceTests {
         f.service.notificationsResignedVisible(f.list)
         await settle(f)
         #expect(f.remote.fetchCount >= 1)
+    }
+
+    @Test func pushBadgeAppliedWhileBackgroundedEvenWhenNotificationsWasVisible() async {
+        let f = await started()
+
+        openList(f, newestTimestamp: nil) // isNotificationsVisible = true
+        f.foreground = false // app backgrounded with Notifications on top
+        f.service.applyPushBadgeCount(7)
+        #expect(f.icon.last == 7) // not suppressed to 0 while backgrounded
     }
 
     // MARK: - Credentials, account binding, and PingHub
