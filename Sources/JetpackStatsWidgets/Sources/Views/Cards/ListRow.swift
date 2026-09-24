@@ -79,6 +79,8 @@ struct ListRow: View {
                 .background(differenceBackgroundColor)
                 .cornerRadius(Constants.differenceCornerRadius)
         }
+        // Read each day as one element ("Sep 24, 2026, 1.2 million, +5%") rather than three
+        .accessibilityElement(children: .combine)
         .frame(height: rowHeight)
         .offset(x: 0, y: Constants.verticalCenteringOffset) // each row isn't _quite_ centered vertically
                                                             // and we're not entirely sure why yet, but this fixes it

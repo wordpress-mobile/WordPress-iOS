@@ -257,8 +257,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         isAccessibilityElement = true
 
         let itemTitle = itemLabel.text ?? ""
-        let dataTitle = dataLabel.text?.accessibilityLabel ?? dataLabel.text ?? ""
-        let secondDataTitle = secondDataLabel.text?.accessibilityLabel ?? secondDataLabel.text
+        let dataTitle = dataLabel.text ?? ""
+        let secondDataTitle = secondDataLabel.text
 
         accessibilityLabel = [itemTitle, dataTitle, secondDataTitle].compactMap { $0 }.joined(separator: ", ")
 

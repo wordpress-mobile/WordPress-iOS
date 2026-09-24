@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class DashboardStatsViewModel {
 
@@ -14,30 +15,16 @@ class DashboardStatsViewModel {
 
     // MARK: Public Variables
 
-    var todaysViews: String {
-        apiResponse.todaysStats?.value?.views?.abbreviatedString(forHeroNumber: true) ?? "0"
+    var todaysViews: AbbreviatedNumber {
+        (apiResponse.todaysStats?.value?.views ?? 0).abbreviated(forHeroNumber: true)
     }
 
-    var todaysVisitors: String {
-        apiResponse.todaysStats?.value?.visitors?.abbreviatedString(forHeroNumber: true) ?? "0"
+    var todaysVisitors: AbbreviatedNumber {
+        (apiResponse.todaysStats?.value?.visitors ?? 0).abbreviated(forHeroNumber: true)
     }
 
-    var todaysLikes: String {
-        apiResponse.todaysStats?.value?.likes?.abbreviatedString(forHeroNumber: true) ?? "0"
-    }
-
-    // Spoken forms for VoiceOver (e.g. "1.2 million" instead of "1.2M").
-
-    var todaysViewsAccessibilityLabel: String {
-        apiResponse.todaysStats?.value?.views?.abbreviatedAccessibilityLabel(forHeroNumber: true) ?? "0"
-    }
-
-    var todaysVisitorsAccessibilityLabel: String {
-        apiResponse.todaysStats?.value?.visitors?.abbreviatedAccessibilityLabel(forHeroNumber: true) ?? "0"
-    }
-
-    var todaysLikesAccessibilityLabel: String {
-        apiResponse.todaysStats?.value?.likes?.abbreviatedAccessibilityLabel(forHeroNumber: true) ?? "0"
+    var todaysLikes: AbbreviatedNumber {
+        (apiResponse.todaysStats?.value?.likes ?? 0).abbreviated(forHeroNumber: true)
     }
 
     var shouldDisplayNudge: Bool {

@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+import WordPressShared
 
 class DashboardStatsViewModelTests: XCTestCase {
 
@@ -11,9 +12,9 @@ class DashboardStatsViewModelTests: XCTestCase {
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
-        XCTAssertEqual(viewModel.todaysViews, "1")
-        XCTAssertEqual(viewModel.todaysVisitors, "2")
-        XCTAssertEqual(viewModel.todaysLikes, "3")
+        XCTAssertEqual(viewModel.todaysViews.text, "1")
+        XCTAssertEqual(viewModel.todaysVisitors.text, "2")
+        XCTAssertEqual(viewModel.todaysLikes.text, "3")
     }
 
     func testReturnedDataIsFormattedCorrectly() {
@@ -24,9 +25,12 @@ class DashboardStatsViewModelTests: XCTestCase {
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
-        XCTAssertEqual(viewModel.todaysViews, "10,000")
-        XCTAssertEqual(viewModel.todaysVisitors, "200.0K")
-        XCTAssertEqual(viewModel.todaysLikes, "3.0M")
+        XCTAssertEqual(viewModel.todaysViews.text, "10,000")
+        XCTAssertEqual(viewModel.todaysVisitors.text, "200.0K")
+        XCTAssertEqual(viewModel.todaysLikes.text, "3.0M")
+        XCTAssertEqual(viewModel.todaysViews.accessibilityLabel, "10,000")
+        XCTAssertEqual(viewModel.todaysVisitors.accessibilityLabel, "200 thousand")
+        XCTAssertEqual(viewModel.todaysLikes.accessibilityLabel, "3 million")
     }
 
     func testReturnZeroIfAPIResponseIsEmpty() {
@@ -37,9 +41,9 @@ class DashboardStatsViewModelTests: XCTestCase {
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
-        XCTAssertEqual(viewModel.todaysViews, "0")
-        XCTAssertEqual(viewModel.todaysVisitors, "0")
-        XCTAssertEqual(viewModel.todaysLikes, "0")
+        XCTAssertEqual(viewModel.todaysViews.text, "0")
+        XCTAssertEqual(viewModel.todaysVisitors.text, "0")
+        XCTAssertEqual(viewModel.todaysLikes.text, "0")
     }
 
     func testReturnTrueIfAllTodaysStatsAreZero() {
