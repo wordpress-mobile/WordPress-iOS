@@ -1,6 +1,7 @@
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import WordPressShared
 @testable import WordPress
 @testable import WordPressData
 
@@ -9,18 +10,22 @@ final class NotificationsViewControllerTests: XCTestCase {
     private var controller: NotificationsViewController!
     private var contextManager: ContextManager!
     private var utility: NotificationUtility!
+    private var primerDefaults: PrimerDefaults!
 
     override func setUpWithError() throws {
         contextManager = ContextManager.forTesting()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         utility = NotificationUtility(coreDataStack: contextManager)
         controller = NotificationsViewController.loadFromStoryboard()
+        primerDefaults = PrimerDefaults.current
     }
 
     override func tearDownWithError() throws {
         controller = nil
         contextManager = nil
         utility = nil
+        primerDefaults.restore()
+        primerDefaults = nil
         UserSettings.defaultDotComUUID = nil
         HTTPStubs.removeAllStubs()
         FeatureFlagOverrideStore().removeOverride(for: FeatureFlag.readerAndNotificationsInWordPressApp)
@@ -184,12 +189,124 @@ final class NotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(NotificationsSplitViewContent().notificationsViewController.scope, .all)
         XCTAssertEqual(WPTabBarController(staticScreens: false).notificationsViewController?.scope, .all)
     }
+
+    // MARK: - Permission primers
+
+    // The primer alert and the inline primer only appear after the system reports an undetermined
+    // authorization status, which the test host doesn't control. The second alert has no such
+    // dependency, so these tests observe it: showing it resets its counter.
+
+    func testPrimersAreSuppressedOnAppearanceWhenNotificationsAreNotPresented() {
+        // Given
+        signInToWordPressDotCom()
+        controller.notificationMigrationService = makeMigrationService(shouldPresentNotifications: false)
+        controller.loadViewIfNeeded()
+
+        // First appearance, then a repeated appearance past the inline prompt threshold.
+        for tabAccessCount in [1, 6] {
+            PrimerDefaults.fresh.restore()
+            userDefaults.notificationsTabAccessCount = tabAccessCount
+            userDefaults.secondNotificationsAlertCount = Constants.secondAlertThreshold
+
+            // When
+            controller.showNotificationPrimersIfNeeded()
+
+            // Then
+            XCTAssertEqual(userDefaults.secondNotificationsAlertCount, Constants.secondAlertThreshold)
+        }
+    }
+
+    func testPrimersAppearOnAppearanceWhenNotificationsArePresented() {
+        // Given
+        signInToWordPressDotCom()
+        controller.notificationMigrationService = makeMigrationService(shouldPresentNotifications: true)
+        controller.loadViewIfNeeded()
+
+        for tabAccessCount in [1, 6] {
+            PrimerDefaults.fresh.restore()
+            userDefaults.notificationsTabAccessCount = tabAccessCount
+            userDefaults.secondNotificationsAlertCount = Constants.secondAlertThreshold
+
+            // When
+            controller.showNotificationPrimersIfNeeded()
+
+            // Then
+            XCTAssertEqual(userDefaults.secondNotificationsAlertCount, Constants.secondAlertDisabled)
+        }
+    }
+
+    func testSecondAlertIsSuppressedAfterSyncWhenNotificationsAreNotPresented() {
+        // Given
+        let window = showControllerAfterSync(shouldPresentNotifications: false)
+
+        // When
+        controller.tableViewDidChangeContent(controller.tableView)
+
+        // Then
+        XCTAssertEqual(userDefaults.secondNotificationsAlertCount, Constants.secondAlertThreshold)
+        window.isHidden = true
+    }
+
+    func testSecondAlertAppearsAfterSyncWhenNotificationsArePresented() {
+        // Given
+        let window = showControllerAfterSync(shouldPresentNotifications: true)
+
+        // When
+        controller.tableViewDidChangeContent(controller.tableView)
+
+        // Then
+        XCTAssertEqual(userDefaults.secondNotificationsAlertCount, Constants.secondAlertDisabled)
+        window.isHidden = true
+    }
 }
 
 private extension NotificationsViewControllerTests {
 
     enum Constants {
         static let entityName = "Notification"
+        static let secondAlertThreshold = 10
+        static let secondAlertDisabled = -1
+    }
+
+    /// The permission primers read their state from the standard user defaults, so tests save and restore it.
+    struct PrimerDefaults {
+        var onboardingNotificationsPromptDisplayed: Bool
+        var notificationPrimerAlertWasDisplayed: Bool
+        var notificationPrimerInlineWasAcknowledged: Bool
+        var notificationsTabAccessCount: Int
+        var secondNotificationsAlertCount: Int
+
+        static var current: PrimerDefaults {
+            let userDefaults = UserPersistentStoreFactory.instance()
+            return PrimerDefaults(
+                onboardingNotificationsPromptDisplayed: userDefaults.onboardingNotificationsPromptDisplayed,
+                notificationPrimerAlertWasDisplayed: userDefaults.notificationPrimerAlertWasDisplayed,
+                notificationPrimerInlineWasAcknowledged: userDefaults.notificationPrimerInlineWasAcknowledged,
+                notificationsTabAccessCount: userDefaults.notificationsTabAccessCount,
+                secondNotificationsAlertCount: userDefaults.secondNotificationsAlertCount
+            )
+        }
+
+        static let fresh = PrimerDefaults(
+            onboardingNotificationsPromptDisplayed: false,
+            notificationPrimerAlertWasDisplayed: false,
+            notificationPrimerInlineWasAcknowledged: false,
+            notificationsTabAccessCount: 0,
+            secondNotificationsAlertCount: 0
+        )
+
+        func restore() {
+            let userDefaults = UserPersistentStoreFactory.instance()
+            userDefaults.onboardingNotificationsPromptDisplayed = onboardingNotificationsPromptDisplayed
+            userDefaults.notificationPrimerAlertWasDisplayed = notificationPrimerAlertWasDisplayed
+            userDefaults.notificationPrimerInlineWasAcknowledged = notificationPrimerInlineWasAcknowledged
+            userDefaults.notificationsTabAccessCount = notificationsTabAccessCount
+            userDefaults.secondNotificationsAlertCount = secondNotificationsAlertCount
+        }
+    }
+
+    var userDefaults: UserPersistentRepository {
+        UserPersistentStoreFactory.instance()
     }
 
     func signInToWordPressDotCom() {
@@ -205,6 +322,29 @@ private extension NotificationsViewControllerTests {
         request.predicate = predicate
         request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
         return try contextManager.mainContext.fetch(request)
+    }
+
+    func makeMigrationService(shouldPresentNotifications: Bool) -> JetpackNotificationMigrationServiceMock {
+        let service = JetpackNotificationMigrationServiceMock()
+        service.shouldPresentNotificationsToReturn = shouldPresentNotifications
+        return service
+    }
+
+    /// Puts the list on screen with the second alert due, as it is when a sync adds notifications.
+    func showControllerAfterSync(shouldPresentNotifications: Bool) -> UIWindow {
+        signInToWordPressDotCom()
+        PrimerDefaults.fresh.restore()
+        userDefaults.notificationPrimerInlineWasAcknowledged = true
+        userDefaults.secondNotificationsAlertCount = Constants.secondAlertThreshold
+        controller.notificationMigrationService = makeMigrationService(
+            shouldPresentNotifications: shouldPresentNotifications
+        )
+        controller.loadViewIfNeeded()
+
+        let window = UIWindow()
+        window.rootViewController = controller
+        window.isHidden = false
+        return window
     }
 
     var notificationCount: Int? {

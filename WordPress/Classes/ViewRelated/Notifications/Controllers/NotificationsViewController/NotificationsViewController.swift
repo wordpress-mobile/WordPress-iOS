@@ -125,6 +125,10 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     /// Set by the code that creates the list, before its view loads.
     var scope: NotificationsListScope = .all
 
+    /// Decides whether the push notification permission primers may appear.
+    var notificationMigrationService: any JetpackNotificationMigrationServiceProtocol =
+        JetpackNotificationMigrationService.shared
+
     private var isNavigationItemsConfigured = false
 
     /// Whether the list is the supplementary column of an expanded split view, so it owns
@@ -280,16 +284,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             userDefaults.notificationsTabAccessCount += 1
         }
 
-        // Don't show the notification primers if we already asked during onboarding
-        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
-            return
-        }
-
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
-        }
-        showNotificationPrimerAlertIfNeeded()
-        showSecondNotificationsAlertIfNeeded()
+        showNotificationPrimersIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -2208,6 +2203,23 @@ private extension NotificationsViewController {
 
 // MARK: - Push Notifications Permission Alert
 extension NotificationsViewController {
+    func showNotificationPrimersIfNeeded() {
+        // Don't show the notification primers if we already asked during onboarding
+        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
+            return
+        }
+
+        guard canShowNotificationPrimers else {
+            return
+        }
+
+        if shouldShowPrimeForPush {
+            setupNotificationPrompt()
+        }
+        showNotificationPrimerAlertIfNeeded()
+        showSecondNotificationsAlertIfNeeded()
+    }
+
     private func showNotificationPrimerAlertIfNeeded() {
         guard shouldShowPrimeForPush, !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
@@ -2257,8 +2269,16 @@ extension NotificationsViewController {
         }
     }
 
+    /// False while the app doesn't present push notifications, as in the WordPress app, so that the
+    /// primers don't ask for a permission the app won't use.
+    private var canShowNotificationPrimers: Bool {
+        notificationMigrationService.shouldPresentNotifications()
+    }
+
     private func showSecondNotificationsAlertIfNeeded() {
-        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold else {
+        guard canShowNotificationPrimers,
+            userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold
+        else {
             return
         }
         showSecondNotificationAlert()
