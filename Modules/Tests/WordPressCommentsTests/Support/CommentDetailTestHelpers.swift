@@ -7,6 +7,22 @@ func makeResolver() -> PostTitleResolver {
     PostTitleResolver(fetcher: { _ in PostTitleResolver.FetchResult(titles: [:]) })
 }
 
+@MainActor
+func makeRouter(
+    service: FakeCommentsService = FakeCommentsService(),
+    capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities()
+) -> CommentsDetailRouter {
+    CommentsDetailRouter(
+        service: service,
+        capabilities: capabilities,
+        coordinator: CommentsModerationCoordinator(service: service),
+        titleResolver: makeResolver(),
+        tracker: nil,
+        noticePresenter: FakeNoticePresenter(),
+        makeContentRenderer: { FakeContentRenderer() }
+    )
+}
+
 func makeDetail(
     id: Int64 = 1,
     parent: Int64 = 0,
