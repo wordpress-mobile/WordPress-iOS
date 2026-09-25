@@ -21,13 +21,18 @@ final class UnifiedSupportListViewModel: ObservableObject {
     private let tracker: any UnifiedSupportTracker
     private(set) var loadingTask: Task<Void, Never>?
 
+    /// The conversations that changed while the list was off screen.
+    private var updatedConversations: [UnifiedSupportConversation] = []
+
     init(dataProvider: any UnifiedSupportDataProvider, tracker: any UnifiedSupportTracker) {
         self.dataProvider = dataProvider
         self.tracker = tracker
     }
 
+    /// Shows the conversations the user created or replied to since the last time the list was on screen.
     func onAppear() {
         tracker.track(.viewConversationList)
+        applyUpdatedConversations()
     }
 
     /// Loads the conversations the first time the list appears.
@@ -79,20 +84,37 @@ final class UnifiedSupportListViewModel: ObservableObject {
         await refresh()
     }
 
-    /// Adds a new conversation at the top of the list, or updates an existing one in place.
+    /// Takes note of a conversation the user created or replied to, to show it when the list comes back on screen.
+    ///
+    /// The list isn't updated right away on purpose: adding the first conversation replaces the empty state with the
+    /// list, and the empty state owns the link to the conversation the user is writing in, so SwiftUI closes it.
     func upsert(_ conversation: UnifiedSupportConversation) {
-        let summary = conversation.summary
+        updatedConversations.removeAll { $0.id == conversation.id }
+        updatedConversations.append(conversation)
+    }
 
-        guard case .loaded(var conversations) = state else {
-            state = .loaded([summary])
+    /// Adds the new conversations at the top of the list, and updates the ones already in it in place.
+    private func applyUpdatedConversations() {
+        guard !updatedConversations.isEmpty else {
             return
         }
 
-        if let index = conversations.firstIndex(where: { $0.id == summary.id }) {
-            conversations[index] = summary
+        var conversations: [UnifiedSupportConversationSummary]
+        if case .loaded(let loadedConversations) = state {
+            conversations = loadedConversations
         } else {
-            conversations.insert(summary, at: 0)
+            conversations = []
         }
+
+        for summary in updatedConversations.map(\.summary) {
+            if let index = conversations.firstIndex(where: { $0.id == summary.id }) {
+                conversations[index] = summary
+            } else {
+                conversations.insert(summary, at: 0)
+            }
+        }
+
+        updatedConversations = []
         state = .loaded(conversations)
     }
 

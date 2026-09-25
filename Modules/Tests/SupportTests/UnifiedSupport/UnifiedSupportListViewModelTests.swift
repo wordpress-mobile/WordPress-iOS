@@ -252,6 +252,7 @@ struct UnifiedSupportListViewModelTests {
         await viewModel.load()
 
         viewModel.upsert(.make(id: 2, status: .bot))
+        viewModel.onAppear()
 
         guard case .loaded(let actualConversations) = viewModel.state else {
             Issue.record("Unexpected state: \(viewModel.state)")
@@ -269,12 +270,46 @@ struct UnifiedSupportListViewModelTests {
         await viewModel.load()
 
         viewModel.upsert(.make(id: 2, status: .ongoing))
+        viewModel.onAppear()
 
         guard case .loaded(let actualConversations) = viewModel.state else {
             Issue.record("Unexpected state: \(viewModel.state)")
             return
         }
         #expect(actualConversations == [.make(id: 1), .make(id: 2, status: .ongoing)])
+    }
+
+    /// Adding the first conversation replaces the empty state, which closes the conversation the user is writing in.
+    @Test func keepsTheListUnchangedWhileTheConversationIsOpen() async {
+        let viewModel = makeViewModel(
+            MockUnifiedSupportDataProvider(.init(fetchedConversations: [.success([])]))
+        )
+        await viewModel.load()
+
+        viewModel.upsert(.make(id: 1, status: .bot))
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations.isEmpty)
+    }
+
+    @Test func keepsOnlyTheLatestVersionOfAConversation() async {
+        let viewModel = makeViewModel(
+            MockUnifiedSupportDataProvider(.init(fetchedConversations: [.success([])]))
+        )
+        await viewModel.load()
+
+        viewModel.upsert(.make(id: 1, status: .bot))
+        viewModel.upsert(.make(id: 1, status: .ongoing))
+        viewModel.onAppear()
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1, status: .ongoing)])
     }
 
     @Test func showsANewConversationWhenTheListFailedToLoad() async {
@@ -284,6 +319,7 @@ struct UnifiedSupportListViewModelTests {
         await viewModel.load()
 
         viewModel.upsert(.make(id: 1, status: .bot))
+        viewModel.onAppear()
 
         guard case .loaded(let actualConversations) = viewModel.state else {
             Issue.record("Unexpected state: \(viewModel.state)")

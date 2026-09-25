@@ -66,7 +66,7 @@ struct UnifiedSupportMappingTests {
                 .asUnifiedSupportAttachment()
         )
 
-        #expect(attachment.id == 7)
+        #expect(attachment.remoteId == 7)
         #expect(attachment.filename == "screenshot.png")
         #expect(attachment.contentType == "image/png")
         #expect(attachment.fileSize == 48_213)

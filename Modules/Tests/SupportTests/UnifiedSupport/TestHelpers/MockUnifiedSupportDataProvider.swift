@@ -27,6 +27,10 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         /// The results of fetching the conversations, used in order. The last one is used for any further fetches.
         var fetchedConversations: [Result<[UnifiedSupportConversationSummary], any Error>] = []
 
+        var fetchedConversation: Result<UnifiedSupportConversation, any Error> = .failure(MockError.notStubbed)
+        var createdConversation: Result<UnifiedSupportConversation, any Error> = .failure(MockError.notStubbed)
+        var repliedConversation: Result<UnifiedSupportConversation, any Error> = .failure(MockError.notStubbed)
+
         fileprivate mutating func nextFetchedConversations() -> Result<[UnifiedSupportConversationSummary], any Error> {
             guard let result = fetchedConversations.first else {
                 return .failure(MockError.notStubbed)
@@ -42,6 +46,7 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
 
     private let stubs: OSAllocatedUnfairLock<Stubs>
     private let fetchCount = OSAllocatedUnfairLock(initialState: 0)
+    private let sentMessagesStore = OSAllocatedUnfairLock<[SentMessage]>(initialState: [])
 
     init(_ stubs: Stubs = Stubs()) {
         self.stubs = OSAllocatedUnfairLock(initialState: stubs)
@@ -74,12 +79,18 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         )
     }
 
+    /// The messages sent, in order, with the conversation they were sent to. A `nil` id means a new conversation.
+    nonisolated var sentMessages: [(conversationId: UInt64?, message: String)] {
+        sentMessagesStore.withLock { $0 }
+    }
+
     func fetchConversation(id: UInt64) async throws -> UnifiedSupportConversation {
-        throw MockError.notStubbed
+        try stubs.withLock { $0.fetchedConversation }.get()
     }
 
     func createBotConversation(message: String) async throws -> UnifiedSupportConversation {
-        throw MockError.notStubbed
+        sentMessagesStore.withLock { $0.append((nil, message)) }
+        return try stubs.withLock { $0.createdConversation }.get()
     }
 
     func reply(
@@ -88,9 +99,12 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         attachments: [URL],
         includeApplicationLogs: Bool
     ) async throws -> UnifiedSupportConversation {
-        throw MockError.notStubbed
+        sentMessagesStore.withLock { $0.append((id, message)) }
+        return try stubs.withLock { $0.repliedConversation }.get()
     }
 }
+
+typealias SentMessage = (conversationId: UInt64?, message: String)
 
 struct StubCachedAndFetchedResult<T: Sendable>: CachedAndFetchedResult {
     let cachedResult: @Sendable () async throws -> T?
