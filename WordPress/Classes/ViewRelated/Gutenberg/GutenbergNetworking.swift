@@ -1,4 +1,3 @@
-import Alamofire
 import WordPressData
 import WordPressKit
 
