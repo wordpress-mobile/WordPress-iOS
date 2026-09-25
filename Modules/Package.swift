@@ -34,7 +34,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
-        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.5.2"),
@@ -545,7 +544,6 @@ enum XcodeSupport {
             "WordPressCore",
             "WordPressKit",
             "WordPressData",
-            .product(name: "Alamofire", package: "Alamofire"),
             .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
             .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
             .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
