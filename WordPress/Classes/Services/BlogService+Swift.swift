@@ -83,7 +83,8 @@ extension BlogService {
     }
 
     public func syncTaxnomies(for blogId: TaggedManagedObjectID<Blog>) async throws {
-        let client = try await self.coreDataStack.performQuery { context in
+        let stack = try coreDataStackSwift()
+        let client = try await stack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
             return try WordPressClientFactory.shared.instance(for: .init(blog: blog))
         }
@@ -111,7 +112,8 @@ extension BlogService {
     }
 
     public func syncPostTypes(for blogId: TaggedManagedObjectID<Blog>) async throws {
-        let service = try await self.coreDataStack.performQuery { context in
+        let stack = try coreDataStackSwift()
+        let service = try await stack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
             return CustomPostTypeService(blog: blog)
         }
@@ -220,7 +222,33 @@ extension BlogService {
     }
 }
 
+extension BlogService {
+    /// Error thrown when the injected `id<CoreDataStack>` cannot back the
+    /// background query overloads, which require `CoreDataStackSwift`.
+    enum CoreDataStackBridgeError: LocalizedError {
+        case unsupportedStack
+
+        var errorDescription: String? {
+            "BlogService requires a CoreDataStackSwift-conforming stack for background queries."
+        }
+    }
+}
+
 private extension BlogService {
+    /// Bridges the base `coreDataStack` property to `CoreDataStackSwift`.
+    ///
+    /// `BlogService` keeps its Objective-C `id<CoreDataStack>` dependency, but
+    /// the background query overloads moved to `CoreDataStackSwift`. Production
+    /// and test injections use `ContextManager`, which conforms. Fail here,
+    /// before any query or network request, rather than fall back to the shared
+    /// stack or force a cast.
+    func coreDataStackSwift() throws -> CoreDataStackSwift {
+        guard let stack = coreDataStack as? CoreDataStackSwift else {
+            throw CoreDataStackBridgeError.unsupportedStack
+        }
+        return stack
+    }
+
     private func findBlogAuthor(
         with userId: NSNumber,
         and blog: Blog,
