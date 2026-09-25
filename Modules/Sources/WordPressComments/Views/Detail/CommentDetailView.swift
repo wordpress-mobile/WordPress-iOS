@@ -32,69 +32,25 @@ struct CommentDetailView: View {
     }
 
     var body: some View {
-        fixedRegions
-            .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
-            .toolbar { trailingToolbarItems }
-            .navigationBarTitleDisplayMode(.inline)
-            .task { await viewModel.onAppear() }
-            // The comment no longer exists, so there is nothing left to show.
-            // `dismiss` pops this screen off the UIKit navigation stack.
-            .onChange(of: viewModel.isDeleted) { _, isDeleted in
-                if isDeleted { dismiss() }
-            }
-            .sheet(item: $viewModel.composer) { composer in
-                CommentComposerView(viewModel: composer) { viewModel.composerClosed($0) }
-                    .presentationDetents([.large])
-            }
-    }
-
-    private var fixedRegions: some View {
-        VStack(spacing: 0) {
-            if let header = viewModel.header {
-                VStack(alignment: .leading, spacing: 12) {
-                    CommentStatusPill(status: header.status)
-                    CommentAuthorHeader(
-                        header: header,
-                        titleState: titleResolver.titleState(for: header.postID),
-                        detail: viewModel.loadedDetail
-                    )
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 12)
-            }
-            if let parent = viewModel.parentPreview {
-                Divider()
-                CommentParentStrip(parent: parent) { openComment(parent.id, parent) }
-                    .padding(.horizontal)
-                    .padding(.vertical, 10)
-            }
-            Divider()
-            contentRegion
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        CommentDetailBody(
+            viewModel: viewModel,
+            titleResolver: titleResolver,
+            renderer: renderer,
+            openParent: { openComment($0.id, $0) },
+            retry: { Task { await viewModel.retry() } }
+        )
+        .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
+        .toolbar { trailingToolbarItems }
+        .navigationBarTitleDisplayMode(.inline)
+        .task { await viewModel.onAppear() }
+        // The comment no longer exists, so there is nothing left to show.
+        // `dismiss` pops this screen off the UIKit navigation stack.
+        .onChange(of: viewModel.isDeleted) { _, isDeleted in
+            if isDeleted { dismiss() }
         }
-    }
-
-    @ViewBuilder
-    private var contentRegion: some View {
-        switch viewModel.content {
-        case .loading:
-            ProgressView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        case .failed:
-            failureView
-        case .loaded(let detail):
-            CommentContentRegion(renderer: renderer, html: detail.contentHTML)
-        }
-    }
-
-    private var failureView: some View {
-        ContentUnavailableView {
-            Label(Strings.detailErrorTitle, systemImage: "exclamationmark.triangle")
-        } actions: {
-            Button(Strings.errorRetry) {
-                Task { await viewModel.retry() }
-            }
-            .buttonStyle(.borderedProminent)
+        .sheet(item: $viewModel.composer) { composer in
+            CommentComposerView(viewModel: composer) { viewModel.composerClosed($0) }
+                .presentationDetents([.large])
         }
     }
 
@@ -151,6 +107,68 @@ struct CommentDetailView: View {
                 }
                 .accessibilityLabel(Strings.detailMoreActions)
             }
+        }
+    }
+}
+
+/// The fixed regions every detail presentation shares: the status pill and
+/// author header, the optional "In reply to" strip, and the content region.
+/// The ordinary screen and the review sheet add their own toolbars and
+/// lifecycle around it.
+struct CommentDetailBody: View {
+    @ObservedObject var viewModel: CommentDetailViewModel
+    @ObservedObject var titleResolver: PostTitleResolver
+    let renderer: any CommentContentRendering
+    /// Makes the parent strip tappable; nil renders it as plain context.
+    var openParent: ((CommentListItem) -> Void)?
+    let retry: () -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            if let header = viewModel.header {
+                VStack(alignment: .leading, spacing: 12) {
+                    CommentStatusPill(status: header.status)
+                    CommentAuthorHeader(
+                        header: header,
+                        titleState: titleResolver.titleState(for: header.postID),
+                        detail: viewModel.loadedDetail
+                    )
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 12)
+            }
+            if let parent = viewModel.parentPreview {
+                Divider()
+                CommentParentStrip(parent: parent, onTap: parentTapAction(parent))
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+            }
+            Divider()
+            contentRegion
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private func parentTapAction(_ parent: CommentListItem) -> (() -> Void)? {
+        guard let openParent else { return nil }
+        return { openParent(parent) }
+    }
+
+    @ViewBuilder
+    private var contentRegion: some View {
+        switch viewModel.content {
+        case .loading:
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        case .failed:
+            ContentUnavailableView {
+                Label(Strings.detailErrorTitle, systemImage: "exclamationmark.triangle")
+            } actions: {
+                Button(Strings.errorRetry, action: retry)
+                    .buttonStyle(.borderedProminent)
+            }
+        case .loaded(let detail):
+            CommentContentRegion(renderer: renderer, html: detail.contentHTML)
         }
     }
 }
