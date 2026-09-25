@@ -55,6 +55,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         // Then
         let tabBarController = try XCTUnwrap(windowManager.presentedViewController as? WPTabBarController)
         XCTAssertFalse(tabBarController.shouldUseStaticScreens)
+        XCTAssertEqual(tabBarController.notificationsViewController?.scope, .reader)
     }
 
     func testSignInResolvesReaderTabsUIBeforeTheUIReloads() {
