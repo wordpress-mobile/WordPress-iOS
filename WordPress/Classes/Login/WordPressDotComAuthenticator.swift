@@ -57,6 +57,15 @@ struct WordPressDotComAuthenticator {
         rawValue: "WordPressDotComAuthenticatorCallbackURL"
     )
 
+    /// A WordPress.com bearer token supplied as a launch argument, used to sign a Simulator in
+    /// without the web flow. Reads `-wpcom-token`, falling back to the legacy
+    /// `-ui-test-wpcom-token` argument for backward compatibility.
+    static var launchArgumentToken: String? {
+        let defaults = UserDefaults.standard
+        return defaults.string(forKey: "wpcom-token")
+            ?? defaults.string(forKey: "ui-test-wpcom-token")
+    }
+
     static func redirectURI(for scheme: String) -> String {
         "\(scheme)://oauth2-callback"
     }
@@ -131,7 +140,7 @@ struct WordPressDotComAuthenticator {
 
         let token: String
         do {
-            if let tokenLaunchArgument = UserDefaults.standard.string(forKey: "ui-test-wpcom-token") {
+            if let tokenLaunchArgument = Self.launchArgumentToken {
                 token = tokenLaunchArgument
             } else {
                 token = try await authenticate(
