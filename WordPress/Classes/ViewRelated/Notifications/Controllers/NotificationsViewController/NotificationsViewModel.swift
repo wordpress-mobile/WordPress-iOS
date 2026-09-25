@@ -11,7 +11,6 @@ final class NotificationsViewModel {
     }
 
     enum Constants {
-        static let lastSeenKey = "notifications_last_seen_time"
         static let headerTextKey = "text"
         static let actionAnalyticsKey = "inline_action"
         static let likedAnalyticsKey = "liked"
@@ -25,7 +24,6 @@ final class NotificationsViewModel {
     // MARK: - Depdencies
 
     private let contextManager: CoreDataStackSwift
-    private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
     private let crashLogger: CrashLogging
@@ -38,47 +36,15 @@ final class NotificationsViewModel {
     // MARK: - Init
 
     init(
-        userDefaults: UserPersistentRepository,
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
         contextManager: CoreDataStackSwift = ContextManager.shared,
         analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
         crashLogger: CrashLogging = CrashLogging.main
     ) {
-        self.userDefaults = userDefaults
         self.notificationMediator = notificationMediator
         self.analyticsTracker = analyticsTracker
         self.crashLogger = crashLogger
         self.contextManager = contextManager
-    }
-
-    /// The last time when user seen notifications
-    private(set) var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Constants.lastSeenKey)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Constants.lastSeenKey)
-        }
-    }
-
-    func lastSeenChanged(timestamp: String?) {
-        guard let timestamp,
-              timestamp != lastSeenTime,
-              let mediator = notificationMediator else {
-            return
-        }
-
-        mediator.updateLastSeen(timestamp) { [weak self] error in
-            guard error == nil else {
-                return
-            }
-
-            self?.lastSeenTime = timestamp
-        }
-    }
-
-    func didChangeDefaultAccount() {
-        lastSeenTime = nil
     }
 
     func loadNotification(
