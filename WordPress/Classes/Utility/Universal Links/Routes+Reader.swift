@@ -73,7 +73,7 @@ extension ReaderRoute: Route {
 
 extension ReaderRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.readerAndNotificationsAvailable() else {
             RootViewCoordinator.sharedPresenter.showReader() // Show static reader tab
             return
         }
