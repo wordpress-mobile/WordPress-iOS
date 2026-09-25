@@ -290,13 +290,18 @@ final class VideoSessionProgressObserver {
 
     private func work() {
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100)) {
-            // A tick that's already queued when `stop()` is called must not report,
-            // or it overwrites the progress set after the export ends.
-            guard !self.interrupt else { return }
-            self.progressHandler(self.sessionProgress())
-            if self.sessionProgress() != 1 {
-                self.work()
-            }
+            self.tick()
+        }
+    }
+
+    /// Reports the current progress and schedules the next tick.
+    func tick() {
+        // A tick that's already queued when `stop()` is called must not report,
+        // or it overwrites the progress set after the export ends.
+        guard !interrupt else { return }
+        progressHandler(sessionProgress())
+        if sessionProgress() != 1 {
+            work()
         }
     }
 
