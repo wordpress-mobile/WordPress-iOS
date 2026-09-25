@@ -1,4 +1,5 @@
 import XCTest
+import BuildSettingsKit
 @testable import WordPress
 @testable import WordPressData
 
@@ -15,6 +16,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
 
     override func tearDown() {
         UserSettings.defaultDotComUUID = nil
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = nil
     }
 
     // MARK: General Phase Tests
@@ -379,7 +381,233 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(phase, .normal)
     }
 
+    // MARK: App UI Type
+
+    func testReaderTabsUITypeInEveryPhaseWhenFlagIsOn() {
+        for (phase, flags) in allPhaseFlags() {
+            // When
+            let store = makeCoordinator(flags: flags, app: .wordpress, isReaderAndNotificationsEnabled: true)
+
+            // Then
+            XCTAssertEqual(
+                JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, app: .wordpress),
+                phase
+            )
+            XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .readerTabs, "phase \(phase)")
+            XCTAssertFalse(JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(), "phase \(phase)")
+            XCTAssertTrue(JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(), "phase \(phase)")
+            XCTAssertTrue(JetpackFeaturesRemovalCoordinator.readerAndNotificationsAvailable(), "phase \(phase)")
+            XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderTabsUI(), "phase \(phase)")
+        }
+    }
+
+    func testPhaseMappingIsUnchangedWhenFlagIsOff() {
+        let expectedTypes: [JetpackFeaturesRemovalCoordinator.GeneralPhase: RootViewCoordinator.AppUIType] = [
+            .normal: .normal,
+            .one: .normal,
+            .two: .normal,
+            .three: .normal,
+            .staticScreens: .staticScreens,
+            .four: .simplified,
+            .newUsers: .simplified
+        ]
+        for (phase, flags) in allPhaseFlags() {
+            // When
+            makeCoordinator(flags: flags, app: .wordpress, isReaderAndNotificationsEnabled: false)
+
+            // Then
+            XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, expectedTypes[phase], "phase \(phase)")
+            XCTAssertFalse(JetpackFeaturesRemovalCoordinator.isReaderTabsUI(), "phase \(phase)")
+        }
+    }
+
+    func testStaticScreensPhaseWhenFlagIsOff() {
+        // When
+        makeCoordinator(
+            flags: productionFlags(),
+            app: .wordpress,
+            isReaderAndNotificationsEnabled: false
+        )
+
+        // Then
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled())
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures())
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.readerAndNotificationsAvailable())
+    }
+
+    func testSelfHostedPhaseWithoutAccount() {
+        // Given
+        UserSettings.defaultDotComUUID = nil
+        let flags = productionFlags()
+
+        for isReaderAndNotificationsEnabled in [true, false] {
+            // When
+            makeCoordinator(
+                flags: flags,
+                app: .wordpress,
+                isReaderAndNotificationsEnabled: isReaderAndNotificationsEnabled
+            )
+
+            // Then
+            XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
+            XCTAssertFalse(JetpackFeaturesRemovalCoordinator.readerAndNotificationsAvailable())
+        }
+    }
+
+    func testNormalUITypeWithoutAccountWhenSelfHostedPhaseIsOff() {
+        // Given
+        UserSettings.defaultDotComUUID = nil
+        let flags = productionFlags(phaseSelfHosted: false)
+
+        // When
+        makeCoordinator(flags: flags, app: .wordpress, isReaderAndNotificationsEnabled: true)
+
+        // Then
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
+    }
+
+    func testJetpackAppIgnoresFlag() {
+        let flags = productionFlags()
+
+        for isReaderAndNotificationsEnabled in [true, false] {
+            // When
+            makeCoordinator(
+                flags: flags,
+                app: .jetpack,
+                isReaderAndNotificationsEnabled: isReaderAndNotificationsEnabled
+            )
+
+            // Then
+            XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
+            XCTAssertTrue(JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled())
+            XCTAssertTrue(JetpackFeaturesRemovalCoordinator.readerAndNotificationsAvailable())
+        }
+    }
+
+    func testJetpackBrandingIsHiddenInReaderTabsUI() {
+        // Given
+        let flags = productionFlags()
+
+        // When
+        makeCoordinator(flags: flags, app: .wordpress, isReaderAndNotificationsEnabled: true)
+
+        // Then
+        XCTAssertFalse(
+            JetpackBrandingVisibility.all.isEnabled(
+                isWordPress: true,
+                isDotComAvailable: true,
+                shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(),
+                isReaderTabsUI: JetpackFeaturesRemovalCoordinator.isReaderTabsUI()
+            )
+        )
+    }
+
     // MARK: Helpers
+
+    /// Remote flags that resolve to each general phase for a WordPress.com account.
+    private func allPhaseFlags() -> [(JetpackFeaturesRemovalCoordinator.GeneralPhase, [WordPressKit.FeatureFlag])] {
+        [
+            (
+                .normal,
+                generateFlags(
+                    phaseOne: false,
+                    phaseTwo: false,
+                    phaseThree: false,
+                    phaseFour: false,
+                    phaseNewUsers: false,
+                    phaseSelfHosted: false
+                )
+            ),
+            (
+                .one,
+                generateFlags(
+                    phaseOne: true,
+                    phaseTwo: false,
+                    phaseThree: false,
+                    phaseFour: false,
+                    phaseNewUsers: false,
+                    phaseSelfHosted: false
+                )
+            ),
+            (
+                .two,
+                generateFlags(
+                    phaseOne: true,
+                    phaseTwo: true,
+                    phaseThree: false,
+                    phaseFour: false,
+                    phaseNewUsers: false,
+                    phaseSelfHosted: false
+                )
+            ),
+            (
+                .three,
+                generateFlags(
+                    phaseOne: true,
+                    phaseTwo: true,
+                    phaseThree: true,
+                    phaseFour: false,
+                    phaseNewUsers: false,
+                    phaseSelfHosted: false
+                )
+            ),
+            (.staticScreens, productionFlags()),
+            (
+                .four,
+                generateFlags(
+                    phaseOne: true,
+                    phaseTwo: true,
+                    phaseThree: true,
+                    phaseFour: true,
+                    phaseNewUsers: false,
+                    phaseSelfHosted: false
+                )
+            ),
+            (
+                .newUsers,
+                generateFlags(
+                    phaseOne: true,
+                    phaseTwo: true,
+                    phaseThree: true,
+                    phaseFour: true,
+                    phaseNewUsers: true,
+                    phaseSelfHosted: false
+                )
+            )
+        ]
+    }
+
+    /// The removal phase flags observed in production on 2026-09-25: signed-in users are in the
+    /// static screens phase, and users without a WordPress.com account in the self-hosted phase.
+    private func productionFlags(phaseSelfHosted: Bool = true) -> [WordPressKit.FeatureFlag] {
+        generateFlags(
+            phaseOne: true,
+            phaseTwo: true,
+            phaseThree: true,
+            phaseFour: false,
+            phaseStaticScreens: true,
+            phaseNewUsers: false,
+            phaseSelfHosted: phaseSelfHosted
+        )
+    }
+
+    @discardableResult
+    private func makeCoordinator(
+        flags: [WordPressKit.FeatureFlag],
+        app: AppBrand,
+        isReaderAndNotificationsEnabled: Bool
+    ) -> RemoteFeatureFlagStore {
+        let store = RemoteFeatureFlagStore(persistenceStore: InMemoryUserDefaults())
+        store.update(using: MockFeatureFlagRemote(flags: flags), waitOn: self)
+        _ = RootViewCoordinator(
+            featureFlagStore: store,
+            windowManager: nil,
+            app: app,
+            isReaderAndNotificationsEnabled: isReaderAndNotificationsEnabled
+        )
+        return store
+    }
 
     private func generateFlags(phaseOne: Bool,
                                phaseTwo: Bool,
