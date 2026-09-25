@@ -11,7 +11,8 @@ public enum CommentsHostingController {
         client: WordPressClient,
         makeContentRenderer: @escaping @MainActor () -> any CommentContentRendering,
         tracker: any CommentsTracker,
-        noticePresenter: any NoticePresenting
+        noticePresenter: any NoticePresenting,
+        draftStore: any CommentDraftStoring
     ) -> UIViewController {
         let service = CommentsService(client: client)
         let titleResolver = PostTitleResolver(fetcher: PostTitleResolver.liveFetcher(client: client))
@@ -24,6 +25,7 @@ public enum CommentsHostingController {
             service: service,
             capabilities: CommentsCapabilities(client: client),
             coordinator: coordinator,
+            draftStore: draftStore,
             titleResolver: titleResolver,
             tracker: tracker,
             noticePresenter: noticePresenter,
@@ -54,13 +56,13 @@ public enum CommentsHostingController {
     }
 }
 
-/// Hosts the tab view and, on each appearance, retries the list tabs whose
-/// stale reload failed while the list was off screen (typically behind a
-/// pushed detail screen). `markStale()` already reloads eagerly at event
-/// time; this is only the retry for when that reload failed. It lives in the
-/// controller because SwiftUI's `onAppear` and `.task` do not re-run when a
-/// UIKit-pushed controller is popped back to this one (verified on a
-/// simulator).
+/// Hosts the tab view and, on each appearance, reloads the list tabs still
+/// awaiting a stale reload: one deferred to this appearance (a reply sent
+/// from the detail screen) or one that failed while the list was off screen
+/// (typically behind a pushed detail screen). Moderation events reload
+/// eagerly at event time. It lives in the controller because SwiftUI's
+/// `onAppear` and `.task` do not re-run when a UIKit-pushed controller is
+/// popped back to this one (verified on a simulator).
 final class CommentsRootHostingController<Content: View>: UIHostingController<Content> {
     private let listViewModels: [CommentsListViewModel]
 
