@@ -165,9 +165,20 @@ class BlogJetpackTests: CoreDataTestCase {
         // See also https://github.com/wordpress-mobile/WordPress-iOS/issues/20964
         HTTPStubs.stubRequest(forEndpoint: "me/sites",
                               withFileAtPath: OHPathForFile("me-sites-with-jetpack.json", Self.self)!)
+        let diagStart = Date()
+        let diagLock = NSLock()
+        var diagEvents: [String] = []
+        func diag(_ msg: String) {
+            diagLock.lock(); defer { diagLock.unlock() }
+            diagEvents.append("+\(String(format: "%.3f", Date().timeIntervalSince(diagStart))) \(msg)\(Thread.isMainThread ? "" : " [bg]")")
+        }
+        HTTPStubs.onStubActivation { request, _, _ in diag("stub \(request.url?.path ?? "")") }
+        HTTPStubs.onStubMissing { request in diag("MISSING \(request.url?.absoluteString ?? "")") }
         HTTPStubs.stubRequests { request in
             (request.url?.path.matches(regex: "sites/\\d+/rewind/capabilities").count ?? 0) > 0
         } withStubResponse: { _ in
+            diag("capabilities response begin")
+            defer { diag("capabilities response end") }
             // We can't delete the `Account` instance until the first API request completes. Because the URLSession instance
             // used in the `me/sites` API request will be invalidated upon account deletion (see `WPAccount.prepareForDeletion` method).
             self.mainContext.performAndWait {
@@ -181,14 +192,20 @@ class BlogJetpackTests: CoreDataTestCase {
         }
 
         let syncExpectation = expectation(description: "Blogs sync")
+        diag("sync start")
         blogService.syncBlogs(for: wpComAccount) {
+            diag("sync success")
             syncExpectation.fulfill()
         } failure: { error in
             XCTFail("Sync blogs shouldn't fail: \(error)")
         }
 
         // No blogs should be saved after the sync blogs operation finishes.
-        wait(for: [syncExpectation], timeout: 1.0)
+        wait(for: [syncExpectation], timeout: 30.0)
+        diag("wait returned")
+        HTTPStubs.onStubActivation(nil)
+        HTTPStubs.onStubMissing(nil)
+        XCTFail("BJDIAG " + diagEvents.joined(separator: " | "))
         XCTAssertEqual(Blog.count(in: mainContext), 0)
     }
 
