@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-21 12:36:27+0000 */
+/* Translation-Revision-Date: 2026-09-23 05:11:06+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ro */
@@ -3302,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Site-ul meu";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Site-urile mele în WordPress";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Primele zece cafenele, pe gustul meu";
 
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Arată articolul";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Sugestiile scurtăturilor de la Siri s-au șters cu succes.";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Șterge sugestiile scurtăturilor de la Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
 
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Setări aplicații WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "Aplicații WordPress - aplicații pentru orice tip de ecran";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress ";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Ajutor WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Bibliotecă Media WordPress";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Setări notificări WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Notificări WordPress";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "Module WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Profil WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Cititor WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Detalii site WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "Teme WordPress";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Datele de conectare ale site-ului tău web nu vor fi stocate și sunt folosite numai cu scopul de a instala Jetpack.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Rezumat tău săptămânal este pregătit, atinge aici pentru a-l vedea!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Urmărești această conversație. Vei primi un email și o notificare ori de câte ori apare un nou comentariu.";
@@ -7329,6 +7296,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Salvează ciorna";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Comentariul așteaptă o verificare";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Trimiterea comentariului a eșuat";
 
@@ -7346,6 +7316,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Trimite";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Aprobă";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Șterge definitiv";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Mai multe";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Mută la în așteptare";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Restaurează";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Spam";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Aruncă la gunoi";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Acest lucru nu poate fi anulat.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Ștergi definitiv acest comentariu?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Aruncă la gunoi";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Arunci acest comentariu la gunoi?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Acest comentariu are răspunsuri. Îl arunci la gunoi oricum?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Nu am putut să încarc acest comentariu";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "pe %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Dată";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "Email";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "Adresă IP";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Site web";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Acea acțiune nu a putut fi finalizată. Te rog să încerci din nou.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "Ca răspuns la %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Aprobat";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "În așteptare";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Spam";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "La gunoi";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Renunță la modificări";
@@ -7370,6 +7412,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Eroare la refuzarea comentariului";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Niciun comentariu până acum";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Niciun comentariu aprobat";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Niciun comentariu în așteptare";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Niciun comentariu spam";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Niciun comentariu la gunoi";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Încearcă din nou";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Nu am putut să încarc comentariile";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonim";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ pe %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "În așteptare";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Comentarii";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Toate";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Aprobate";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "În așteptare";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Spam";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Aruncate la gunoi";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Numele de utilizator sau parola stocate în aplicație pot fi învechite. Te rog reintrodu parola ta în setări și încearcă din nou.";
@@ -7698,6 +7788,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Resetare mesaj Domenii de interes în Cititor";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Valoare curentă";
 
@@ -7716,6 +7809,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurare la distanță";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Resetează mesajul Domenii de interes în Cititor";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Resetează datele";
@@ -7737,6 +7833,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Arată toate sfaturile";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Afișează ecranul Domenii de interes în Cititor";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Dezvoltator";
@@ -8951,6 +9050,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "S-ar putea să arate date incomplete";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Perioadă pentru comparație";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Perioada selectată";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Linii";
 
@@ -9224,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Marcarea ca spam a eșuat";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Marcarea acestui referent ca fiind spam îl înlătură din statisticile pentru referenți. Celelalte statistici nu sunt afectate.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Marcat ca spam";
 
@@ -9469,6 +9583,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Nu pot să sincronizez elementele media";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Acest element nu a putut fi adăugat în biblioteca Media. Probabil este prea mare pentru a fi importat. Te rugăm să încerci din nou sau să redimensionezi elementul Media.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Acest element nu poate fi adăugat în biblioteca Media cât timp este activat Mod blocare.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Elementul nu a putut fi adăugat în biblioteca Media";
@@ -9719,8 +9839,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Fișierul selectat nu a putut fi găsit.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Nu am putut să convertesc fotografia pentru încărcare.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Nu am putut să convertesc fotografia pentru încărcare.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Fișierul selectat nu este o imagine validă.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Nu am putut să înlătur locația din fotografia pentru încărcare.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Nu am putut să accesez fișierul selectat.";
@@ -11305,7 +11431,7 @@ but tapping on this button will remove their like from the post. */
 "reader.discover.channel.forYou" = "Pentru tine";
 
 /* Header view channel (filter) */
-"reader.discover.channel.freshlyPresed" = "Proaspăt publicate";
+"reader.discover.channel.freshlyPresed" = "Freshly Pressed";
 
 /* Header view channel (filter) */
 "reader.discover.channel.latest" = "Ultimele";
@@ -11674,6 +11800,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Nu sunt etichete noi de urmărit";
+
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Omite";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Alege etichetele";
@@ -12416,6 +12545,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Vizitatorii din ultimele 7 zile sunt identici ca număr cu vizitatorii din 7 zile anterioare.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Deschide articolul";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Comentarii";
 
@@ -12461,8 +12593,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Administrează cardurile cu statistici";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Cea mai populară oră";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Cea mai populară oră";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ din vizualizări";
@@ -12473,11 +12605,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Abonați";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Ultimul articol %1$@ a avut %2$@ aprecieri.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ apreciere.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Ultimul articol %1$@ a avut %2$@ apreciere.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total abonați WordPress.com: %@";

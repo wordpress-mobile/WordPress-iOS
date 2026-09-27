@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-26 09:57:40+0000 */
+/* Translation-Revision-Date: 2026-09-25 09:58:01+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: zh_CN */
@@ -3299,9 +3299,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "我的站点";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "我的 WordPress 站点";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "我的十大咖啡馆";
 
@@ -4769,12 +4766,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "显示文章";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "已成功清除 Siri 快捷键建议";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "清除 Siri 快捷键建议";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "站点";
 
@@ -6216,38 +6207,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "WordPress 应用程序设置";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress App——适用于任何屏幕的App";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 博客";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress 帮助";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress 媒体库";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "WordPress 通知设置";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress 通知";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress 插件";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress 个人资料";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress 阅读器";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "WordPress 站点详细信息";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress 主题";
@@ -6513,9 +6483,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "系统将不会存储您的网站凭据，并且仅将其用于安装 Jetpack。";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "您的每周综述已准备就绪，点击此处即可查看详情！";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "您已关注此对话。当有新评论时，您将会收到一封电子邮件及通知。";
@@ -7323,6 +7290,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "保存草稿";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "评论正在等待审核";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "无法发送评论";
 
@@ -7340,6 +7310,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "发送";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "批准";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "永久删除";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "更多";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "转为“待处理”状态";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "恢复";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "垃圾评论";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "移至回收站";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "此操作无法撤销。";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "是否要永久删除此评论？";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "移至回收站";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "将此评论移至回收站？";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "此评论有回复。 仍要将其移至回收站？";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "无法加载此评论";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "位于 %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "日期";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "电子邮件地址";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP 地址";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "网站";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "该操作无法完成。 请重试。";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "回复 %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "已批准";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "待处理";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "垃圾评论";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "移至回收站";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "放弃更改";
@@ -7364,6 +7406,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "取消批准评论时出错";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "尚无任何评论";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "无已批准的评论";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "无待审评论";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "无垃圾评论";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "无已移至回收站的评论";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "请重试";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "无法加载评论";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "匿名";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@（位于 %2$@）";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "待处理";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "评论数";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "全部";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "已批准";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "待处理";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "垃圾评论";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "移至回收站";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "应用程序中存储的用户名或密码可能已过期。 请在设置中重新输入密码，然后重试。";
@@ -7689,6 +7779,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "读者兴趣提示已重置";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "当前值";
 
@@ -7707,6 +7800,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "远程配置";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "重置读者兴趣提示";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "重置数据";
@@ -7728,6 +7824,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "显示所有提示";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "显示读者兴趣屏幕";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "开发者";
@@ -8942,6 +9041,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "可能显示不完整数据";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@：%2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "比较时段";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "所选时段";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "折线图";
 
@@ -9215,6 +9326,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "垃圾内容标记失败";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "将此推荐来源标记为垃圾信息后，它将从您的推荐来源统计信息中移除。 您的其他统计信息不受影响。";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "已标记为垃圾内容";
 
@@ -9460,6 +9574,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "无法同步媒体";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "无法将此项目添加到媒体库。 它可能因过大而无法导入。 请重试或调整媒体文件的大小。";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "在锁定模式处于开启状态时，无法将此项目添加到媒体库。";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "无法将此项目添加到媒体库";
@@ -9710,8 +9830,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "找不到所选文件。";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "无法将照片转换为可上传的格式。";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "无法转换照片以供上传。";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "所选文件不是有效的图片。";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "无法移除照片中的位置信息以便上传。";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "无法访问所选文件。";
@@ -11642,6 +11768,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "没有要关注的新标签";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "跳过";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "选择您的标签";
 
@@ -12383,6 +12512,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "您过去 7 天的访客数与上一个 7 天相同 。\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "打开该文章";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "评论数";
 
@@ -12428,8 +12560,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "管理统计数据卡片";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 人气最高的时间";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "人气最高的时间";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ 浏览量";
@@ -12440,11 +12572,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "订阅者";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "最新文章 %1$@ 收到了 %2$@ 个赞。";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "最新文章 %1$@ 收到了 %2$@ 个赞。";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "WordPress.com 订阅者总数：%@";

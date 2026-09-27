@@ -4751,12 +4751,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Показва публикацията";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Успешно са изчистени подсказките на Siri";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Почистване на подсказките на Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Сайт";
 
@@ -6465,9 +6459,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Данните за достъп към сайта няма да бъдат съхранени и ще се ползват само за инсталиране на Jetpack.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Седмичното обобщение е готово, вижте подробностите!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Следвате дискусията. Ще получите имейл и известие, когато има нов коментар.";
@@ -11432,9 +11423,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Управление на статистически карти";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Най-популярно време";
-
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ прегледи";
 
@@ -11443,12 +11431,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Абонати";
-
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Последната ви публикация %1$@ има %2$@ харесвания.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Последната ви публикация %1$@ има %2$@ харесване.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Общо абонати в WordPress.com: %@";

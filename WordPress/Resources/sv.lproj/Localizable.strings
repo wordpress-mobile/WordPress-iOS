@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-26 09:57:57+0000 */
+/* Translation-Revision-Date: 2026-09-25 09:57:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: sv_SE */
@@ -3302,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Min webbplats";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Mina WordPress-webbplatser";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mina tio favoritcaféer";
 
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Visar inlägget";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Genvägsförslageni för Siri har rensats";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Renda genvägsförslag för Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Webbplats";
 
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "App-inställningar för WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress-appar – appar för alla skärmtyper";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress-blogg";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress-hjälp";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress mediabibliotek";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Inställningar för WordPress-aviseringar";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress-aviseringar";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress-tillägg";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress-profil";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress-läsare";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Uppgifter om WordPress-webbplatsen";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress-teman";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Inloggningsuppgifterna till din webbplats används enbart för att installera Jetpack och de kommer inte att sparas.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Din veckosammanfattning är klar, tryck här för mer information!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Du följer denna konversation. Du kommer att få ett e-postmeddelande och en avisering varje gång en ny kommentar publiceras.";
@@ -7329,6 +7296,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Spara utkast";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Kommentar väntar på granskning";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Misslyckades att skicka kommentar";
 
@@ -7346,6 +7316,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Skicka";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Godkänn";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Ta bort permanent";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Mer";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Flytta till Inväntar granskning";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Återställ";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Skräppost";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Papperskorg";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Detta kan inte ångras.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Ta bort den här kommentaren permanent?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Flytta till papperskorgen";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Flytta denna kommentar till papperskorgen?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Denna kommentar har svar. Släng den ändå?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Kunde inte ladda denna kommentar";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "den %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Datum";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "E-post";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP-adress";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Webbplats";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Åtgärden kunde inte slutföras. Försök igen.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "Som svar till %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Godkänd";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "Inväntar granskning";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Skräppost";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Papperskorg";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Kasta ändringar";
@@ -7370,6 +7412,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Det gick inte att ångra godkännande av kommentaren";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Inga kommentarer än";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Inga godkända kommentarer";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Inga väntande kommentarer";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Inga skräppostkommentarer";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Inga kastade kommentarer";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Försök igen";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Kunde inte ladda kommentarer";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonym";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ på %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "Inväntar granskning";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Kommentarer";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Alla";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Godkänd";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "Inväntar granskning";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Skräppost";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Papperskorg";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Användarnamnet eller lösenordet som är lagrat i appen kan vara inaktuellt. Ange ditt lösenord i inställningarna och försök igen.";
@@ -7698,6 +7788,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Lägg till en anpassad CSS-URL här som ska hämtas i läsaren. Om du kör Calypso lokalt kan länken se ut ungefär så här: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Återställning av prompt för läsarintressen";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Nuvarande värde";
 
@@ -7716,6 +7809,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Fjärrkonfiguration";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Prompt för att återställa läsarintressen";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Återställ data";
@@ -7737,6 +7833,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Visa alla tips";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Visa skärmen Läsarintressen";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Utvecklare";
@@ -8951,6 +9050,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Kan visa ofullständiga data";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Jämförelseperiod";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Vald period";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Rader";
 
@@ -9224,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Det gick inte att markera som skräppost";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Om en hänvisning markeras som skräppost tas den bort från din hänvisningsstatistik. Din övriga statistik påverkas inte.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Markerad som skräppost";
 
@@ -9469,6 +9583,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Det gick inte att synkronisera media";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Objektet kunde inte läggas till i mediabiblioteket. Det kan vara för stort för att importera. Försök igen eller ändra storlek på media.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Det här objektet kan inte läggas till i mediabiblioteket när låst läge är aktiverat.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Objektet kunde inte läggas till i mediabiblioteket.";
@@ -9719,8 +9839,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Den valda filen kunde inte hittas.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Kunde inte konvertera fotot för uppladdning.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Kunde inte konvertera fotot för uppladdning.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Den valda filen är inte en giltig bild.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Det gick inte att ta bort platsen från fotot för uppladdning.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Kunde inte komma åt den valda filen.";
@@ -11675,6 +11801,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Inga nya etiketter att följa";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Hoppa över";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Välj dina etiketter";
 
@@ -12416,6 +12545,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Antalet besökare under de senaste 7 dagarna är samma som under de föregående 7 dagarna.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Öppnar inlägget";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Kommentarer";
 
@@ -12461,8 +12593,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Hantera statistikkort";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Populäraste tidpunkten";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Populäraste tiddpunkten";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ av visningarna";
@@ -12473,11 +12605,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Prenumeranter";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkeringar.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Det senaste inlägget %1$@ har fått %2$@ gillamarkeringar.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkering.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Det senaste inlägget %1$@ har fått %2$@ gillamarkering.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Totalt antal WordPress.com-prenumeranter: %@";

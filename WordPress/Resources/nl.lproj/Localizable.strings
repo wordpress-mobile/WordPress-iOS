@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-20 21:10:06+0000 */
+/* Translation-Revision-Date: 2026-09-21 06:36:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: nl */
@@ -3302,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Mijn site";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Mijn sites in WordPress";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mijn toptien cafés";
 
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Geeft het bericht weer";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Siri voorgestelde opdrachten succesvol gewist";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Siri snelkoppeling suggesties wissen";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
 
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "WordPress app-instellingen";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress apps - Apps voor elk scherm";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress blog";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress ondersteuning";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress mediabibliotheek";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "WordPress melding-instellingen";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress meldingen";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress plugins";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress profiel";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress Reader";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "WordPress site details";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress thema's";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "De referenties voor je site zullen niet worden opgeslagen en worden alleen gebruikt om Jetpack te installeren.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Je wekelijkse overzicht is klaar, hier tikken om de details te bekijken!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Je volgt deze conversatie. Je ontvangt een e-mail zodra er een nieuwe reactie is.";
@@ -7329,6 +7296,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Concept opslaan";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Reactie wacht op beoordeling";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Reactie verzenden mislukt";
 
@@ -7346,6 +7316,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Verzenden";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Goedkeuren";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Permanent verwijderen";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Meer";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Naar in behandeling verplaatsen";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Terugzetten";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Spam";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Prullenbak";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Dit kan niet ongedaan worden gemaakt.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Deze reactie permanent verwijderen?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Naar prullenbak verplaatsen";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Deze reactie naar de prullenbak verplaatsen?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Deze reactie heeft antwoorden. Toch naar de prullenbak verplaatsen?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Kon deze reactie niet laden";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "op %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Datum";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "E-mail";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP-adres";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Site";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Die actie kon niet worden afgerond. Probeer het opnieuw.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "In antwoord op %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Goedgekeurd";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "In afwachting";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Spam";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Prullenbak";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Wijzigingen negeren";
@@ -7370,6 +7412,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Fout bij afkeuren van reactie";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Nog geen reacties";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Geen toegestane reacties";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Geen wachtende reacties";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Geen spamreacties";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Geen verwijderde reacties";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Opnieuw proberen";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Ko de reacties niet laden";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anoniem";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ op %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "In afwachting";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Reacties";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Alle";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Goedgekeurd";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "In afwachting";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Spam";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Prullenbak";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Gebruikersnaam en wachtwoord die in de app zijn opgeslagen zijn wellicht verouderd. Voer je wachtwoord opnieuw in bij de instellingen en probeer het nogmaals.";
@@ -7698,6 +7788,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Een aangepaste CSS URL toevoegen om in de Reader te laden. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Reader interesses prompt gereset";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Huidige waarde";
 
@@ -7716,6 +7809,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Externe configuratie";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Prompt voor het resetten van Reader interesses";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Gegevens resetten";
@@ -7737,6 +7833,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Alle tips weergeven";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Reader interesses  scherm weergeven";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Ontwikkelaar";
@@ -8951,6 +9050,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Kan onvolledige gegevens tonen";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Vergelijkingsperiode";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Geselecteerde periode";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Regels";
 
@@ -9224,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Niet gelukt om als spam te markeren";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Als je deze referrer als spam markeert, wordt hij uit je referrer-statistieken verwijderd. Je andere statistieken worden niet beïnvloed.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Als spam gemarkeerd";
 
@@ -9469,6 +9583,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Kan media niet synchroniseren";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Dit item kon niet worden toegevoegd aan de mediabibliotheek. Het is mogelijk te groot om te importeren. Probeer het opnieuw of pas het formaat van de media aan.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Dit item kan’t worden toegevoegd aan de mediabibliotheek terwijl de vergrendelingsmodus is ingeschakeld.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Het item kon niet worden toegevoegd aan de mediabibliotheek.";
@@ -9719,8 +9839,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Het geselecteerde bestand kon niet worden gevonden.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "De foto kon niet worden geconverteerd voor upload.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Kon de foto niet converteren voor upload.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Het geselecteerde bestand is geen geldige afbeelding.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Kon de locatie niet van de foto verwijderen voor upload.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Er kon geen toegang worden verkregen tot het geselecteerde bestand.";
@@ -11675,6 +11801,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Geen nieuwe tags om te volgen";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Overslaan";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Kies je tags";
 
@@ -12416,6 +12545,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Je hebt de afgelopen 7 dagen hetzelfde aantal bezoekers gehad als de vorige 7 dagen.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Opent het bericht";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Reacties";
 
@@ -12461,8 +12593,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Beheer statistiek kaarten";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Populairste tijd";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Populairste tijd";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ van weergaven";
@@ -12473,11 +12605,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Abonnees";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Je nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Het nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Je nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Het nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Totaal aantal WordPress.com abonnees: %@";
