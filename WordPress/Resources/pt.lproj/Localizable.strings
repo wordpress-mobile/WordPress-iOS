@@ -2190,12 +2190,6 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Site WordPress";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Ajuda do WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Notificações do WordPress";
-
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress demasiado antiga";
 

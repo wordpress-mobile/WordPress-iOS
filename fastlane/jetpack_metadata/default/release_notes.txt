@@ -1,8 +1,5 @@
-Some custom post types are now available. You can manage them under My Site if your site is built with WP.com, or on the home screen if your site is self-hosted. We know, we’re amazing. (But very humble about it.)
+Good news for accessibility: when you’re updating post settings, VoiceOver will tell you which categories are selected. We’ll put that in the “wins” category.
 
-While we were making your day better, we also squashed several bugs and made some small, yet ever-so-important fixes.
+We updated the new Stats screen to load faster. In the Insights tab, you can also open your latest post by tapping the Latest Post Summary card.
 
-- Canceling the media picker in the experimental block editor will no longer remove images from galleries. Phew.
-- We fixed the forever-loading indicator on the Stats screen for self-hosted sites that aren’t connected to Jetpack.
-- Subscriber email stats are now sorted by post date so your most recent posts will appear at the top of the list.
-- Backup logs will stay in their lane and won’t show up in Personal plan sites by mistake.
+Finally, we fixed an issue in the Reader and Me tabs. They now show the right information after you’ve logged out of the app.

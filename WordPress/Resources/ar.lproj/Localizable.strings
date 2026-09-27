@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-26 09:57:04+0000 */
+/* Translation-Revision-Date: 2026-09-25 09:57:53+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ar */
@@ -3302,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "موقعي";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "المواقع الخاصة بي في ووردبريس";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "أفضل عشرة مقاهي";
 
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "يعرض المقالة";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "تم مسح اقتراحات Siri Shortcut بنجاح";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "مسح اقتراحات Siri Shortcut";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "الموقع";
 
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "ووردبريس";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "إعدادات تطبيق ووردبريس";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "تطبيقات ووردبريس - تطبيقات لأي شاشة";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "مدونة ووردبريس";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "مساعدة ووردبريس";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "مكتبة وسائط ووردبريس";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "إعدادات إشعارات ووردبريس";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "إشعارات ووردبريس";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "إضافات ووردبريس";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "ملف ووردبريس الشخصي";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "قارئ ووردبريس";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "تفاصيل موقع ووردبريس";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "قوالب ووردبريس";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "لن يتم تخزين بيانات اعتمادك وستُستخدم فقط بغرض تنصيب Jetpack.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "موجزك الأسبوعي جاهز، اضغط هنا للاطلاع على التفاصيل!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "إنك تتابع هذه المحادثة. ستتلقى بريدًا إلكترونيًا وتنبيهًا عند إجراء تعليق جديد.";
@@ -7323,6 +7290,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "حفظ المسودة";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "التعليق في انتظار المراجعة";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "فشل إرسال التعليق";
 
@@ -7340,6 +7310,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "إرسال";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "اعتماد";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "حذف نهائيًا";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "المزيد";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "نقل إلى \"مُعلق\"";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "استعادة";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "مزعج";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "نقل إلى سلة المهملات";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "لا يمكن التراجع عن هذا الإجراء.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "هل ترغب في حذف هذا التعليق نهائيًا؟";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "نقل إلى سلة المهملات";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "هل ترغب في نقل هذا التعليق إلى سلة المهملات؟";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "يحتوي هذا التعليق على ردود. هل ترغب في نقله إلى سلة المهملات على أي حال؟";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "تعذَّر تحميل هذا تعليق";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "في %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "التاريخ";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "البريد الإلكتروني";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "عنوان IP";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "الموقع الإلكتروني";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "تعذَّر إكمال ذلك الإجراء. يُرجى إعادة المحاولة.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "ردًا على %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "معتمد";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "مُعلق";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "مزعج";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "منقول إلى سلة المهملات";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "تجاهل التغييرات";
@@ -7364,6 +7406,51 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "خطأ أثناء إلغاء اعتماد التعليق";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "لا توجد تعليقات حتى الآن";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "لا توجد تعليقات معتمدة";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "لا توجد تعليقات مُعلقة";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "لا توجد تعليقات مزعجة";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "لا توجد تعليقات منقولة إلى سلة المهملات";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "حاول مرة أخرى";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "تعذَّر تحميل التعليقات";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "مجهول الهوية";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "تعليق %1$@ على %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "مُعلق";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "التعليقات";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "الكل";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "التعليقات المعتمدة";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "التعليقات المُعلقة";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "التعليقات المزعجة";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "قد يكون اسم المستخدم أو كلمة المرور المخزَّنان في التطبيق غير محدَّثين. يرجى إعادة إدخال كلمة المرور في الإعدادات والمحاولة مرة أخرى.";
@@ -7689,6 +7776,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "أضف عنوان URL الخاص بـ CSS المخصص هنا ليتم تحميله في القارئ. إذا كنتَ تقوم بتشغيل Calypso محليًا، فقد يبدو هذا مثل: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "تمت إعادة تعيين موجّه اهتمامات القارئ";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "القيمة الحالية";
 
@@ -7707,6 +7797,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "تكوين بعيد";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "إعادة تعيين موجّه اهتمامات القارئ";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "إعادة تعيين البيانات";
@@ -7728,6 +7821,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "إظهار كل النصائح";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "عرض شاشة اهتمامات القارئ";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "المطور";
@@ -8939,6 +9035,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "قد تظهر بيانات غير مكتملة";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "فترة المقارنة";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "الفترة المحددة";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "خطوط";
 
@@ -9206,6 +9314,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "فشل وضع علامة على أنه بريد مزعج";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "سيؤدي وضع علامة \"مزعج\" على هذا الموجه إلى إزالته من إحصاءات الموجه. لا تتأثر إحصاءاتك الأخرى بذلك.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "تم وضع علامة على أنه بريد مزعج";
 
@@ -9448,6 +9559,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "تتعذر مزامنة الوسائط";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "تعذَّرت إضافة هذا العنصر إلى مكتبة الوسائط. قد يكون حجمه كبيرًا جدًا بحيث يتعذر استيراده. يُرجى إعادة المحاولة أو تغيير حجم الوسائط.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "تتعذّر إضافة هذا العنصر إلى مكتبة الوسائط في أثناء تفعيل وضع التأمين.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "تتعذر إضافة العنصر إلى مكتبة الوسائط";
@@ -9698,8 +9815,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "تعذّر العثور على الملف المحدد.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "تعذر تحويل الصورة للرفع.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "تعذَّر تحويل الصورة للرفع.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "الملف المحدد ليس صورة صالحة.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "تعذَّرت إزالة الموقع الجغرافي من الصورة للرفع.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "تعذر الوصول إلى الملف المحدد.";
@@ -11639,6 +11762,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "لا توجد وسوم جديدة للمتابعة";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "تخطي";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "اختيار وسومك";
 
@@ -12371,6 +12497,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "إن زائريك في آخر 7 أيام نفس الزائرين في الأيام الـ 7 السابقة.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "يفتح التدوينة";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "التعليقات";
 
@@ -12416,8 +12545,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "إدارة بطاقات الإحصاءات";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 الوقت الأكثر شيوعًا";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "الوقت الأكثر تفاعلاً";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ من المشاهدات";
@@ -12428,11 +12557,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "المشتركون";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "حصلت أحدث تدوينة %1$@ على %2$@ من الإعجابات.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "حصلت أحدث تدوينة %1$@ على %2$@ من الإعجابات.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "إجمالي المشتركين في ووردبريس.كوم: %@";

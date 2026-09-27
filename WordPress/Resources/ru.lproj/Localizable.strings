@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-26 09:58:35+0000 */
+/* Translation-Revision-Date: 2026-09-25 10:55:40+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ru */
@@ -3302,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Мой сайт";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Мои сайты WordPress";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Мой выбор лучших 10 кафе";
 
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Показать запись.";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Предложения ярлыков Siri очищены";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Очистить предложения ярлыков Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Сайт";
 
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Настройки приложения WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "Приложения WordPress - приложения для любого экрана";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Блог на WordPress";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Справка по WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Библиотека медиафайлов WordPress";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Настройки уведомлений WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Уведомления WordPress";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "Плагины WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Профиль WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Чтиво WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Подробности о сайте WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "Темы WordPress";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Ваши данные входа на сайт не сохраняются и будут использованы только для установки Jetpack.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Сводка за неделю готова, нажмите тут для того, чтобы посмотреть!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Вы подписаны на эту беседу. Вы получите уведомление и сообщение по Email при появлении новых комментариев.";
@@ -7329,6 +7296,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Сохранить черновик";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Комментарий ожидает проверки";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Не удалось отправить комментарий.";
 
@@ -7346,6 +7316,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Отправить";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Одобрить";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Удалить навсегда";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Ещё";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Переместить в список «На утверждении»";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Восстановить";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Спам";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Корзина";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Это действие невозможно отменить.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Удалить этот комментарий без возможности восстановления?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Переместить в корзину";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Переместить комментарий в корзину?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "У этого комментария есть ответы. Всё равно переместить в корзину?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Невозможно загрузить комментарий";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "к %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Дата";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "Адрес эл. почты";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP-адрес";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Веб-сайт";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Не удалось выполнить это действие. Повторите попытку.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "В ответ на %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Одобрено";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "На утверждении";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Спам";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Корзина";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Отменить изменения";
@@ -7370,6 +7412,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Ошибка при отклонении комментария";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Комментариев пока нет";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Нет одобренных комментариев";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Нет комментариев на утверждении";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Нет комментариев, помеченных как спам";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Нет комментариев в корзине";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Повторить попытку";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Не удалось загрузить комментарии";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Анонимно";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ к записи %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "На утверждении";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Комментарии";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Все";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Одобрено";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "На утверждении";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Спам";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Корзина";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Имя пользователя или пароль, сохранённые в приложении, могли устареть. Введите ещё раз ваш пароль в настройках и попробуйте снова.";
@@ -7698,6 +7788,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Добавьте сюда собственный URL-адрес CSS для загрузки в Чтиво. Если вы используете Calypso локально, это может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Сброс подсказки об интересах читателя";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Текущее значение";
 
@@ -7716,6 +7809,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Удаленная настройка";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Сбросить подсказку «Интересы читателя»";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Сброс данных";
@@ -7737,6 +7833,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Показывать все подсказки";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Показать экран интересов читателя";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Разработчику";
@@ -8951,6 +9050,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Могут отображаться неполные данные";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Период сравнения";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Выбранный период";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Строки";
 
@@ -9224,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Не удалось пометить как спам";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Пометка этого источника перехода в качестве спама удалит его из статистики переходов. Это не повлияет на остальные статистические данные.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Помечено как спам";
 
@@ -9469,6 +9583,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Невозможно синхронизировать медиа";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Не удалось добавить этот элемент в библиотеку файлов. Возможно, он слишком велик для импорта. Повторите попытку или измените размер медиафайла.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Этот элемент нельзя добавить в библиотеку файлов, когда включён режим блокировки.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Невозможно добавить файл в библиотеку медиафайлов.";
@@ -9719,8 +9839,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Не удалось найти выбранный файл.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Не удалось преобразовать фотографию для загрузки.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Не удалось преобразовать фотографию для загрузки.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Выбранный файл не является допустимым изображением.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Не удалось удалить геопозицию из фотографии перед загрузкой.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Нет доступа к выбранному файлу.";
@@ -11675,6 +11801,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Нет новых меток для подписки";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Пропустить";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Выберите теги";
 
@@ -12416,6 +12545,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "За последние 7 дней сайт посетило столько же человек, сколько за предыдущий 7-дневный период.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Открывает запись";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Комментарии";
 
@@ -12461,8 +12593,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Управление карточками статистики";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Самое популярное время";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Самое популярное время";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "Просмотров: %1$@";
@@ -12473,11 +12605,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Подписчики";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Ваша последняя запись %1$@ получила %2$@ отметок \"нравится\".";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Ваша последняя запись %1$@ получила %2$@ отметок \"нравится\".";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ваша последняя запись %1$@ получила %2$@ отметку \"нравится\".";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Ваша последняя запись %1$@ получила %2$@ отметку \"нравится\".";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Всего подписчиков WordPress.com: %@";

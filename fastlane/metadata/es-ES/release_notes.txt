@@ -1,0 +1,1 @@
+Buenas noticias para la accesibilidad: cuando actualices los ajustes de la entrada, VoiceOver te dirá qué categorías están seleccionadas. Pondremos eso en la categoría de «victorias».

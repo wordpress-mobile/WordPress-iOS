@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-21 13:15:44+0000 */
+/* Translation-Revision-Date: 2026-09-21 08:04:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: cs_CZ */
@@ -3302,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Moje weby";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Moje stránky na WordPressu";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Moje top desítka kaváren";
 
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Zobrazuje příspěvek";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Úspěšně vymazány návrhy zkratek Siri";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Vymazat návrhy zkratek Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Web";
 
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Nastavení aplikace WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress Apps – Aplikace pro jakoukoli obrazovku";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Web vývojářů WordPressu";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Nápověda WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress knihovna médií";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Nastavení oznámení WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Oznámení WordPress";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress pluginy";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Profil WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress Reader";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Podrobnosti o webu WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress šablony ";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Pověření na vašem webu nebudou uložena a budou použita pouze za účelem instalace Jetpack.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Vaše týdenní shrnutí je připraveno, klepnutím sem zobrazíte podrobnosti!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Sledujete tuto konverzaci. Při každém novém komentáři obdržíte e-mail a upozornění.";
@@ -7329,6 +7296,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Uložit koncept";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Komentář čeká na schválení";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Odeslání komentáře se nezdařilo";
 
@@ -7346,6 +7316,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Odeslat";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Schválit";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Trvale smazat";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Více";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Přesunout do stavu „Čeká na vyřízení“";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Obnovit";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Nevyžádaná pošta";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Silný";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "To už nejde vzít zpět.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Chcete tento komentář trvale smazat?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Přesunout do koše";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Přesunout tento komentář do koše?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Tento komentář má odpovědi. Chcete ho i tak smazat?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Tento komentář se nepodařilo načíst";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "je %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Údaje";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "E-mail";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP adresa";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Webové stránky";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Tuto akci se nepodařilo dokončit. Zkuste to prosím znovu.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "V odpovědi na %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Schváleno";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "Čeká na vyřízení";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Nevyžádaná pošta";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Silný";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Zahodit změny";
@@ -7370,6 +7412,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Chyba při zamítnutí komentáře";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Zatím žádné komentáře";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Žádné schválené komentáře";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Žádné čekající komentáře";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Žádné spamové komentáře";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Žádné smazané komentáře";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Zkuste to znovu";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Nepodařilo se načíst komentáře";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonymní";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ je %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "Čeká se na vyřízení";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Komentáře";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Vše";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Schváleno";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "Čeká na vyřízení";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Nevyžádaná pošta";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Silný";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Uživatelské jméno nebo heslo uložené v aplikaci může být zastaralé. Zadejte prosím znovu heslo v nastavení a zkuste to znovu.";
@@ -7698,6 +7788,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Přidejte sem vlastní URL adresu CSS pro načtení ve Čtečce. Pokud spouštíte Calypso lokálně, může to být například: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Zájem čtenářů vedl k obnovení";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Aktuální hodnota";
 
@@ -7716,6 +7809,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Vzdálená konfigurace";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Vymazat dotaz na zájmy čtenáře";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Obnovit data";
@@ -7737,6 +7833,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Zobrazit všechny tipy";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Zobrazit obrazovku se zájmy čtenářů";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Vývojář";
@@ -8951,6 +9050,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Může zobrazovat neúplná data";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Srovnávací období";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Vybrané období";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Čárový";
 
@@ -9224,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Označení jako spam se nezdařilo";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Označením tohoto zdroje návštěvnosti jako spamu ho odstraníte ze svých statistik zdrojů návštěvnosti. Ostatní statistiky tím nebudou ovlivněny.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Označeno jako spam";
 
@@ -9469,6 +9583,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Synchronizace médií se nezdařila";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Tuto položku nebylo možné přidat do knihovny médií. Je možné, že je příliš velká na import. Zkuste to prosím znovu nebo změňte velikost souboru.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Tuto položku nelze přidat do knihovny médií, pokud je zapnutý režim uzamčení.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Položku nelze přidat do mediální knihovny";
@@ -9719,8 +9839,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Vybraný soubor nebyl nalezen.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Nepodařilo se převést fotografii pro nahrání.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Fotografii se nepodařilo převést pro nahrání.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Vybraný soubor není platný obrázek.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Nepodařilo se mi odstranit údaje o místě z fotografie před jejím nahráním.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Nepodařilo se získat přístup k vybranému souboru.";
@@ -11675,6 +11801,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Žádné nové štítky ke sledování";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Loď";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Vyberte své štítky";
 
@@ -12416,6 +12545,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Počet návštěvníků za posledních 7 dní je stejný jako za předchozích 7 dní.\nVaši návštěvníci za posledních 7 dní jsou stejní jako za předchozích 7 dní.\n\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Otevře příspěvek";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentáře";
 
@@ -12461,8 +12593,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Správa karet statistik";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Nejoblíbenější čas";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Nejoblíbenější čas";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ zobrazení";
@@ -12473,11 +12605,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Odběratelé";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Váš nejnovější příspěvek %1$@ obdržel %2$@ to se mi líbí.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Nejnovější příspěvek %1$@ získal %2$@ lajků.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Váš nejnovější příspěvek %1$@ obdržel %2$@ to se mi líbí.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Nejnovější příspěvek %1$@ získal %2$@ lajků.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Celkem odběratelů WordPress.com: %@";
