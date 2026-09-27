@@ -492,13 +492,15 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
     private func handlePlainTextFile(url: URL) -> ExtractedItem? {
         var returnedItem = ExtractedItem()
-        let rawText = (try? String(contentsOf: url)) ?? ""
+        var encoding = String.Encoding.utf8
+        let rawText = (try? String(contentsOf: url, usedEncoding: &encoding)) ?? ""
         returnedItem.importedText = rawText.escapeHtmlNamedEntities()
         return returnedItem
     }
 
     private func handleMarkdown(url: URL, item: ExtractedItem? = nil) -> ExtractedItem? {
-        guard let md = try? String(contentsOf: url) else {
+        var encoding = String.Encoding.utf8
+        guard let md = try? String(contentsOf: url, usedEncoding: &encoding) else {
             return item
         }
 
