@@ -215,14 +215,19 @@ class MediaVideoExporter: MediaExporter {
             session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         }
 
-        let observer = VideoSessionProgressObserver(
-            videoSession: session,
-            progressHandler: { value in
-                progress.completedUnitCount = Int64(Float(MediaExportProgressUnits.done) * value)
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask {
+                for await state in session.states(updateInterval: 0.1) {
+                    if case .exporting(let exportProgress) = state {
+                        progress.completedUnitCount = Int64(
+                            Double(MediaExportProgressUnits.done) * exportProgress.fractionCompleted
+                        )
+                    }
+                }
             }
-        )
-        defer { observer.stop() }
-        try await session.export(to: mediaURL, as: AVFileType(rawValue: outputType))
+            defer { group.cancelAll() }
+            try await session.export(to: mediaURL, as: AVFileType(rawValue: outputType))
+        }
 
         let pixelSize = await mediaURL.videoPixelSize
         progress.completedUnitCount = MediaExportProgressUnits.done
@@ -337,37 +342,5 @@ class MediaVideoExporter: MediaExporter {
             .avi
         ]
         return types.map(\.identifier)
-    }
-}
-
-fileprivate class VideoSessionProgressObserver {
-
-    let videoSession: AVAssetExportSession
-    let progressHandler: (Float) -> ()
-    var interrupt: Bool
-
-    init(videoSession: AVAssetExportSession, progressHandler: @escaping (Float) -> ()) {
-        self.videoSession = videoSession
-        self.progressHandler = progressHandler
-        interrupt = false
-        self.work()
-    }
-
-    private func work() {
-        DispatchQueue.global()
-            .asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100)) {
-                self.progressHandler(self.videoSession.progress)
-                if self.videoSession.progress != 1 && !self.interrupt {
-                    self.work()
-                }
-            }
-    }
-
-    func stop() {
-        interrupt = true
-    }
-
-    deinit {
-        interrupt = true
     }
 }
