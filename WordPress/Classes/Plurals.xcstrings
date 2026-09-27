@@ -496,13 +496,13 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$d vez por semana"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$d vezes por semana"
                 }
               }
@@ -1198,13 +1198,13 @@
             "plural": {
               "one": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld palavra"
                 }
               },
               "other": {
                 "stringUnit": {
-                  "state": "needs_review",
+                  "state": "translated",
                   "value": "%1$ld palavras"
                 }
               }
