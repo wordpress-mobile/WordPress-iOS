@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-28 23:43:21+0000 */
+/* Translation-Revision-Date: 2026-09-23 20:08:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: de */
@@ -1756,7 +1756,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Double tap to edit button text" = "Zum Bearbeiten des Button-Texts zweimal tippen";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Zum Bearbeiten des Label-Texts zweimal tippen";
+"Double tap to edit label text" = "Für die Bearbeitung des Beschriftungstexts zweimal tippen";
 
 /* No comment provided by engineer. */
 "Double tap to edit placeholder text" = "Zum Bearbeiten des Platzhaltertexts zweimal tippen";
@@ -1907,7 +1907,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Edit focal point" = "Fokuspunkt bearbeiten";
 
 /* No comment provided by engineer. */
-"Edit media" = "Medien bearbeiten";
+"Edit media" = "Medium bearbeiten";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
@@ -3157,7 +3157,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Media Settings Title
    User action to edit media settings. */
-"Media Settings" = "Medien-Einstellungen";
+"Media Settings" = "Medieneinstellungen";
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Hochladen von Mediendaten";
@@ -3301,9 +3301,6 @@ translators: %s: Block name e.g. \"Image block\" */
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Meine Website";
-
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Meine Websites in WordPress";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Meine Top 10 Cafés";
@@ -3836,7 +3833,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending review" = "Ausstehende Überprüfung";
 
 /* People site intent topic */
-"People" = "Leute";
+"People" = "Personen";
 
 /* Label for date periods. */
 "Period" = "Zeitraum";
@@ -4772,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Zeigt den Beitrag an";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Vorschläge für Siri-Kurzbefehle erfolgreich gelöscht";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Vorschläge für Siri-Kurzbefehle löschen";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Website";
 
@@ -5196,7 +5187,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Testimonials" = "Testimonials";
 
 /* Title of a button style */
-"Text Only" = "Nur-Text";
+"Text Only" = "Nur Text";
 
 /* No comment provided by engineer. */
 "Text color" = "Textfarbe";
@@ -5767,7 +5758,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow Conversation" = "Unterhaltung nicht mehr folgen";
 
 /* No comment provided by engineer. */
-"Ungroup block" = "Block entgruppieren";
+"Ungroup block" = "Blockgruppierung aufheben";
 
 /* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Unbekannt";
@@ -6219,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "WordPress-App-Einstellungen";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress-Apps – Apps für jeden Bildschirm";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress-Blog";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress-Hilfe";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress-Mediathek";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "WordPress-Benachrichtigungseinstellungen";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress-Benachrichtigungen";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "WordPress-Plugins";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "WordPress-Profil";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress Reader";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "WordPress-Websitedetails";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "WordPress-Themes";
@@ -6516,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Deine Zugangsdaten werden nicht gespeichert und werden nur für die Installation von Jetpack verwendet.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Deine wöchentliche Zusammenfassung ist fertig! Tippe hier, um Details zu sehen.";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Du folgst dieser Unterhaltung. Du erhältst eine E-Mail und eine Benachrichtigung, sobald ein neuer Kommentar hinzugefügt wird.";
@@ -7329,6 +7296,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Entwurf speichern";
 
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Kommentar wartet auf Moderation";
+
 /* Error title */
 "commentCreate.failedToSentComment" = "Kommentar konnte nicht gesendet werden";
 
@@ -7346,6 +7316,78 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Senden";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Freigeben";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Endgültig löschen";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Mehr";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Zu Ausstehend verschieben";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Wiederherstellen";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Spam";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Papierkorb";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Dies kann nicht rückgängig gemacht werden.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Diesen Kommentar endgültig löschen?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "In den Papierkorb verschieben";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Diesen Kommentar in den Papierkorb verschieben?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Dieser Kommentar verfügt über Antworten. Soll er dennoch in den Papierkorb verschoben werden?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Dieser Kommentar konnte nicht geladen werden";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "zu %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Datum";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "E-Mail-Adresse";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "IP-Adresse";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Website";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Diese Aktion konnte nicht abgeschlossen werden. Bitte versuche es erneut.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "Als Antwort auf %@";
+
+/* Status pill label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Freigegeben";
+
+/* Status pill label on the comment detail screen for a comment awaiting moderation */
+"commentDetail.status.pending" = "Ausstehend";
+
+/* Status pill label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Spam";
+
+/* Status pill label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Papierkorb";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Änderungen verwerfen";
@@ -7370,6 +7412,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Fehler beim Zurückweisen des Kommentars";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Noch keine Kommentare";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Keine freigegebenen Kommentare";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Keine ausstehenden Kommentare";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Keine Spam-Kommentare";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Keine Kommentare im Papierkorb";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Erneut versuchen";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Kommentare konnten nicht geladen werden";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonym";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ zu %2$@";
+
+/* Accessibility value announced for a comment row that is awaiting moderation */
+"commentsList.row.pendingAccessibilityValue" = "Ausstehend";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Kommentare";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Alle";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Freigegeben";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "Ausstehend";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Spam";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Papierkorb";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Der in der App gespeicherte Benutzername oder das Passwort ist unter Umständen veraltet. Bitte gib dein Passwort in den Einstellungen erneut ein und versuche es noch einmal.";
@@ -7698,6 +7788,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Füge hier eine individuelle CSS-URL hinzu, die im Reader geladen werden soll. Wenn du Calypso lokal ausführst, kann das in etwa so aussehen: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Prompt für Reader-Interessen zurückgesetzt";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Aktueller Wert";
 
@@ -7716,6 +7809,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Remote-Konfiguration";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Prompt für Reader-Interessen zurücksetzen";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Daten zurücksetzen";
@@ -7737,6 +7833,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Alle Tipps anzeigen";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Ansicht für Reader-Interessen anzeigen";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Entwickler";
@@ -8477,7 +8576,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.menuCard.phaseFour.title" = "Zu Jetpack wechseln";
 
 /* Menu item title to hide the card for now and show it later. */
-"jetpack.menuCard.remindLater" = "Später daran erinnern";
+"jetpack.menuCard.remindLater" = "Später erinnern";
 
 /* Jetpack Plugin Modal footnote */
 "jetpack.plugin.modal.footnote" = "Mit der Einrichtung von Jetpack stimmst du unseren %@ zu";
@@ -8951,6 +9050,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Angezeigte Daten könnten unvollständig sein";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Vergleichszeitraum";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Ausgewählter Zeitraum";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Linien";
 
@@ -8970,7 +9081,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.chartData.detailedData" = "Detaillierte Daten";
 
 /* Label for previous value */
-"jetpackStats.chartData.previous" = "Vorherige";
+"jetpackStats.chartData.previous" = "Vorheriger";
 
 /* Title for chart data screen */
 "jetpackStats.chartData.title" = "Diagrammdaten";
@@ -9224,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Konnte nicht als Spam markiert werden";
 
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Wenn du diesen Referrer als Spam markierst, wird er aus deinen Referrer-Statistiken entfernt. Deine anderen Statistiken sind davon nicht betroffen.";
+
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Als Spam markiert";
 
@@ -9384,7 +9498,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.wordAds.outstanding" = "Ausstehend";
 
 /* Amount paid out from WordAds earnings */
-"jetpackStats.wordAds.paid" = "Bezahlt";
+"jetpackStats.wordAds.paid" = "Ausgezahlt";
 
 /* Title for payment history card and screen */
 "jetpackStats.wordAds.paymentsHistory" = "Zahlungsverlauf";
@@ -9411,7 +9525,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackinstallcard.notice.individual" = "Diese Website verwendet das %1$@-Plugin, das noch nicht alle Funktionen der App unterstützt. Bitte installiere das vollständige Jetpack-Plugin.";
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
-"jetpackinstallcard.notice.multiple" = "Diese Website verwendet individuelle Jetpack-Plugins, die noch nicht alle Funktionen der App unterstützen. Bitte installiere das vollständige Jetpack-Plugin.";
+"jetpackinstallcard.notice.multiple" = "Diese Website verwendet eigenständige Jetpack-Plugins, die noch nicht alle Funktionen der App unterstützen. Bitte installiere das vollständige Jetpack-Plugin.";
 
 /* Later today */
 "later today" = "später heute";
@@ -9469,6 +9583,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Medien konnten nicht synchronisiert werden";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Dieses Element konnte nicht zur Mediathek hinzugefügt werden. Es ist möglicherweise zu groß für den Import. Bitte versuche es erneut oder ändere die Größe der Medien.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Dieses Element kann nicht zur Mediathek hinzugefügt werden, solange der Blockierungsmodus aktiviert ist.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Die Datei konnte nicht zur Mediathek hinzugefügt werden";
@@ -9719,8 +9839,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Die ausgewählte Datei konnte nicht gefunden werden.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Das Foto konnte für den Upload nicht konvertiert werden.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Das Foto konnte für den Upload nicht konvertiert werden.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Die ausgewählte Datei ist kein gültiges Bild.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Der Standort konnte für den Upload nicht aus dem Foto entfernt werden.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Auf die ausgewählte Datei konnte nicht zugegriffen werden.";
@@ -9732,7 +9858,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.upload.error.videoExport" = "Das Video konnte nicht für den Upload vorbereitet werden: %1$@";
 
 /* Error shown when no AVAssetExportSession can be created for the configured export preset. */
-"mediaLibrary.upload.error.videoExport.noExporter" = "Für die ausgewählte Videoqualität ist kein Exporter verfügbar.";
+"mediaLibrary.upload.error.videoExport.noExporter" = "Für die ausgewählte Videoqualität ist keine Exportfunktion verfügbar.";
 
 /* Display name used for camera-captured photos in the Uploads queue. */
 "mediaLibrary.upload.fallback.cameraImage" = "Kamera-Foto";
@@ -9858,7 +9984,7 @@ Example: Reply to Pamela Nguyen */
 "migration.notifications.primaryDescription" = "Du erhältst dieselben Benachrichtigungen, sie kommen aber ab sofort von der Jetpack-App.";
 
 /* Title of the migration notifications screen. */
-"migration.notifications.title" = "Benachrichtigungen zulassen, um deine Website auf dem neusten Stand zu halten";
+"migration.notifications.title" = "Benachrichtigungen zulassen, um über deine Website auf dem Laufenden zu bleiben";
 
 /* The primary description in the migration welcome screen */
 "migration.welcome.primaryDescription" = "Anscheinend wechselst du von der WordPress-App.";
@@ -11226,7 +11352,7 @@ Example: Reply to Pamela Nguyen */
 "reader.button.unfollow" = "Entfolgen";
 
 /* A shared button title for Reader */
-"reader.button.unsubscribe" = "Deabonnieren";
+"reader.button.unsubscribe" = "Abbestellen";
 
 /* Button title. Follow the comments on a post. */
 "reader.comments.buttonFollow" = "Folgen";
@@ -11674,6 +11800,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Keine neuen Schlagwörter zum Folgen vorhanden";
+
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Überspringen";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Wähle deine Schlagwörter";
@@ -12378,10 +12507,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.dashboard.tab.traffic" = "Traffic";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"stats.insights.accessibility.label.viewsVisitorsLastDays" = "Letzte 7 Tage";
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "Letzte 7 Tage";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Vorherige 7 Tage";
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Vorherige 7 Tage";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* mehr als in den vorherigen 7 Tagen";
@@ -12402,10 +12531,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.label.views.sevenDays.same" = "Deine Aufrufe in den letzten 7 Tagen sind unverändert gegenüber den vorherigen 7 Tagen.\n";
 
 /* Last 7-days legend label */
-"stats.insights.label.viewsVisitorsLastDays" = "Letzte 7 Tage";
+"stats.insights.label.viewsVisitorsLastDays" = "Letzte 7 Tage";
 
 /* Previous 7-days legend label */
-"stats.insights.label.viewsVisitorsPreviousDays" = "Vorherige 7 Tage";
+"stats.insights.label.viewsVisitorsPreviousDays" = "Vorherige 7 Tage";
 
 /* Stats insights visitors higher than previous 7 days */
 "stats.insights.label.visitors.sevenDays.higher" = "Deine Besucherzahlen in den letzten 7 Tagen sind %@ höher als in den vorherigen 7 Tagen.\n";
@@ -12415,6 +12544,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Deine Besucherzahlen in den letzten 7 Tagen sind unverändert gegenüber den vorherigen 7 Tagen.\n";
+
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Öffnet den Beitrag";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Kommentare";
@@ -12461,8 +12593,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Statistikkarten verwalten";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Beliebteste Zeit";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Beliebtester Zeitraum";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ der Aufrufe";
@@ -12473,11 +12605,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Abonnenten";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Dein neuester Beitrag %1$@ hat %2$@ Likes erhalten.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Der neueste Beitrag %1$@ hat %2$@ Likes erhalten.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Dein neuester Beitrag %1$@ hat %2$@ Like erhalten.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Der neueste Beitrag %1$@ hat %2$@ Like erhalten.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "WordPress.com-Abonnenten insgesamt: %@";
@@ -12591,13 +12723,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "submitFeedback.successNoticeTitle" = "Feedback gesendet";
 
 /* Button title */
-"subscriberDetails.buttonDeleteSubscriber" = "Abonnent löschen";
+"subscriberDetails.buttonDeleteSubscriber" = "Abonnenten löschen";
 
 /* Remove subscriber confirmation dialog message; subscriber name as input. */
 "subscriberDetails.deleteSubscriberConfirmationDialog.message" = "Möchtest du %@ wirklich entfernen? Diese Person erhält dann keine neuen Benachrichtigungen mehr von deiner Website.";
 
 /* Remove subscriber confirmation dialog title */
-"subscriberDetails.deleteSubscriberConfirmationDialog.title" = "Abonnent löschen";
+"subscriberDetails.deleteSubscriberConfirmationDialog.title" = "Abonnenten löschen";
 
 /* Form field name */
 "subscriberDetails.fieldName.country" = "Land";
@@ -12654,13 +12786,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "subscriberDetails.section.subscriberDetails" = "Details zum Abonnenten";
 
 /* Button title */
-"subscribers.buttonDeleteSubscriber" = "Abonnent löschen";
+"subscribers.buttonDeleteSubscriber" = "Abonnenten löschen";
 
 /* Remove subscriber confirmation dialog message; subscriber name as input. */
 "subscribers.deleteSubscriberConfirmationDialog.message" = "Möchtest du %@ wirklich entfernen? Diese Person erhält dann keine neuen Benachrichtigungen mehr von deiner Website.";
 
 /* Remove subscriber confirmation dialog title */
-"subscribers.deleteSubscriberConfirmationDialog.title" = "Abonnent löschen";
+"subscribers.deleteSubscriberConfirmationDialog.title" = "Abonnenten löschen";
 
 /* Empty state view title */
 "subscribers.empty" = "Keine Abonnenten";
@@ -13205,7 +13337,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "wordpress.jetpack.plugin.modal.secondary.button.title" = "Ohne Jetpack fortfahren";
 
 /* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
-"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ verwendet individuelle Jetpack-Plugins, die von der WordPress-App nicht unterstützt werden.";
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ verwendet eigenständige Jetpack-Plugins, die von der WordPress-App nicht unterstützt werden.";
 
 /* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
 "wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ verwendet das Plugin %2$@, das von der WordPress-App nicht unterstützt wird.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-19 04:37:16+0000 */
+/* Translation-Revision-Date: 2026-09-26 15:00:02+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: pl */
@@ -234,7 +234,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "'%s' is not fully-supported" = "'%s' nie jest w pełni obsługiwany";
 
 /* Empty Post Title */
-"(No Title)" = "(brak tytułu) ";
+"(No Title)" = "(Brak tytułu)";
 
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(brak tytułu)";
@@ -1451,6 +1451,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nie udało się połączyć. Twój hosting blokuje żądania POST, które są niezbędne do komunikacji aplikacji z witryną. Skontaktuj się z dostawcą hostingu, aby rozwiązać ten problem.";
+
+/* Error message shown when the discovered XML-RPC endpoint is not served over HTTPS even though the site address uses HTTPS. */
+"Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Nie udało się nawiązać bezpiecznego połączenia z punktem końcowym XML-RPC twojej strony.";
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Nie udało się wczytać danych. Odśwież ponownie później.";
@@ -3299,9 +3302,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Moja witryna";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Moje witryny na WordPress";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Moje dziesięć ulubionych kawiarni";
 
@@ -4769,12 +4769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Wyświetla wpis";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Pomyślnie wyczyszczono sugestie skrótów Siri";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Wyczyść sugestie skrótów Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Witryna";
 
@@ -5899,6 +5893,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Użyj stylów motywu";
 
+/* Option to load blocks provided by plugins installed on the site */
+"Use third-party blocks (beta)" = "Korzystaj z bloków innych twórców (wersja beta)";
+
 /* A placeholder for the twitter username
    Account Settings Username label
    Label for entering username in the username field
@@ -6213,38 +6210,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Ustawienia aplikacji WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "Aplikacje WordPress - na wszystkie urządzenia";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Pomoc WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Biblioteka multimediów WordPress";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Ustawienia powiadomień WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Powiadomienia WordPress";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "Wtyczki WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Profil WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Czytnik WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Szczegóły witryny internetowej WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "Motywy WordPress";
@@ -6510,9 +6486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Dane logowania do witryny nie będą przechowywane i zostaną użyte wyłącznie do instalacji Jetpacka.";
-
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Twoje tygodniowe podsumowanie jest gotowe, stuknij tutaj, aby zobaczyć szczegóły!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Obserwujesz tę dyskusję. Otrzymasz wiadomość email oraz powiadomienie, gdy pojawi się nowy komentarz.";
@@ -7765,6 +7738,12 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Po prostu kup domenę";
 
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Wygasło %1$@";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expires on Oct 17, 2027'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiresOn.label" = "Wygasają %1$@";
+
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "Nigdy nie wygasa";
 
@@ -7941,6 +7920,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Wszystkie";
+
+/* Plural label displaying the number of patterns in a category. %1$d is a placeholder for the number of patterns. */
+"editor.patterns.count.plural" = "%1$d wzorów";
+
+/* Singular label displaying the number of patterns in a category */
+"editor.patterns.count.singular" = "1 wzór";
 
 /* Context menu action to insert a pattern */
 "editor.patterns.insertPattern" = "Wstaw wzorzec";
@@ -8808,7 +8793,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.button.addCard" = "Dodaj kartę";
 
 /* Apply button */
-"jetpackStats.button.apply" = "Zatwierdź";
+"jetpackStats.button.apply" = "Zastosuj";
 
 /* Cancel button */
 "jetpackStats.button.cancel" = "Anuluj";
@@ -9701,9 +9686,6 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Wybranego pliku nie można było znaleźć.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Nie można było przekonwertować zdjęcia do przesłania.";
-
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Nie można było uzyskać dostępu do wybranego pliku.";
 
@@ -10503,6 +10485,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the update button in the post editor navigation bar */
 "postEditor.updateButton.title" = "Zaaktualizuj";
+
+/* Error shown when creating a post from media without a usable remote URL. */
+"postEditorRouter.invalidMedia" = "Nie udało się dodać wybranego pliku multimedialnego.";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Formaty wpisów nie zostały skonfigurowane dla tej witryny.";
@@ -11413,8 +11398,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Otwiera szczegóły witryny";
 
+/* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
+"reader.post.header.author.a11yHint" = "Wyświetl profil autora";
+
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "Wyświetla wpisy z tej witryny.";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "Subskrybuj";
+
+/* Button in the reader post header showing the user is subscribed to the site */
+"reader.post.header.subscribed" = "Zapisano się";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "u{2026}zobacz więcej";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Więcej działań";
@@ -12296,6 +12293,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Dopasuj wygląd edytora blokowego do twojego motywu.";
 
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Zainstaluj wtyczkę Gutenberg na swojej stronie, aby włączyć obsługę stylów motywu.";
+
+/* Explanation for the option to load blocks provided by plugins installed on the site */
+"siteSettings.thirdPartyBlocks.footer.enabled" = "Wczytuj bloki innych dostawców z wtyczek zainstalowanych w twojej witrynie.";
+
+/* Explanation appended to the 'Use third-party blocks' footer when the site can't support the feature */
+"siteSettings.thirdPartyBlocks.footer.unsupported" = "Zainstaluj wtyczkę Jetpack na swojej stronie, żeby włączyć obsługę bloków innych twórców.";
+
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Dodaj %1$@";
 
@@ -12419,9 +12425,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Zarządzaj kartami statystyk";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Najpopularniejszy czas";
-
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ wyświetleń";
 
@@ -12430,12 +12433,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Subskrybenci";
-
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Twój ostatni wpis „%1$@” otrzymał %2$@ polubień.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Twój ostatni wpis „%1$@” otrzymał %2$@ polubienie.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Łączna liczba subskrybentów WordPress.com: %@";

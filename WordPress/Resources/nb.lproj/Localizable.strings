@@ -2113,9 +2113,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Mitt nettsted";
 
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Mine nettsteder i WordPress";
-
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
@@ -3206,12 +3203,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Viser innlegget";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Fjernet forslag til Siri-snarveier";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Fjern forslag til Siri-snarveier";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Nettsted";
 
@@ -4153,32 +4144,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Innstillinger for WorfPress-appen";
-
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress-blogg";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Hjelp med WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress-mediebiblioteket";
-
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Innstillinger for varslinger i WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Varslinger for WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Brukerprofil i WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Leser for WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = " WordPress nettstedsdetaljer";
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS-kundestøtte";
