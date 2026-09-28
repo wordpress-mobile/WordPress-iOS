@@ -36,6 +36,12 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
     private var loadingTask: Task<Void, Never>?
     private(set) var sendingTask: Task<Void, Never>?
 
+    /// Counts the messages sent from this screen, so a refresh that started before one of them can't put the
+    /// conversation back the way it was before it.
+    private var mutationCount = 0
+
+    private var isRefreshingSilently = false
+
     init(
         source: Source,
         dataProvider: any UnifiedSupportDataProvider,
@@ -140,6 +146,37 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         isLoading = false
     }
 
+    /// Fetches the conversation again without showing that it's happening, so answers from the support team show up
+    /// while the user is reading.
+    ///
+    /// Only tickets are refreshed: a chat with the AI Assistant only changes when the user writes in it.
+    func refreshSilently() async {
+        guard
+            !isBot,
+            let conversationId,
+            !isSending,
+            !isLoading,
+            !isRefreshingSilently,
+            dataProvider.isOnline()
+        else {
+            return
+        }
+        isRefreshingSilently = true
+        defer { isRefreshingSilently = false }
+
+        let mutationCountAtStart = mutationCount
+        guard let updated = try? await dataProvider.fetchConversation(id: conversationId) else {
+            // The user didn't ask for this, so a failure isn't worth a message.
+            return
+        }
+
+        // A message sent while this was on its way has already replaced the conversation with a newer one.
+        guard mutationCountAtStart == mutationCount, !isSending, updated.id == self.conversationId else {
+            return
+        }
+        conversation = updated
+    }
+
     /// Sends the message being written in the chat, and shows it as sent while the AI Assistant answers.
     func sendMessage() {
         let message = draft.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -241,6 +278,7 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
             return false
         }
         isSending = true
+        mutationCount += 1
         return true
     }
 

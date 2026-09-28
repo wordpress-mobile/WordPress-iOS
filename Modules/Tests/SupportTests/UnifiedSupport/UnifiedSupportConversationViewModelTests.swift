@@ -217,6 +217,59 @@ struct UnifiedSupportConversationViewModelTests {
         #expect(tracker.trackedEvents.contains { if case .escalateConversation = $0 { true } else { false } })
     }
 
+    // MARK: - Refreshing silently
+
+    @Test func showsTheAnswersThatArrivedWhileReadingATicket() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let answered = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 1, content: "Hi, I'm Jane", authorRole: .support)]
+        )
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        await viewModel.load()
+
+        provider.updateStubs { $0.fetchedConversation = .success(answered) }
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.messages.map(\.content) == ["Hi, I'm Jane"])
+    }
+
+    /// A chat only changes when the user writes in it, so there is nothing to poll for.
+    @Test func doesNotRefreshAChatWithTheAssistant() async {
+        let chat = UnifiedSupportConversation.make(id: 7, status: .bot)
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(chat)))
+        let viewModel = makeViewModel(.existing(chat.summary), provider)
+
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.conversation == nil)
+    }
+
+    @Test func dropsARefreshThatStartedBeforeAReplyWasSent() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let replied = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 2, content: "Any news?", authorRole: .user)]
+        )
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversation: .success(ticket), repliedConversation: .success(replied))
+        )
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        await viewModel.load()
+
+        // The reply lands while the refresh is still on its way, so the refresh's older answer must be dropped.
+        async let refresh: Void = viewModel.refreshSilently()
+        viewModel.replyDraft.message = "Any news?"
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+        await refresh
+
+        #expect(viewModel.messages.map(\.content) == ["Any news?"])
+    }
+
     // MARK: - Replying to a ticket
 
     @Test func sendsTheReplyWithItsAttachmentsAndLogs() async {

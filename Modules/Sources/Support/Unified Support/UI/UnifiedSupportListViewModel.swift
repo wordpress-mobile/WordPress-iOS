@@ -20,19 +20,37 @@ final class UnifiedSupportListViewModel: ObservableObject {
     private let dataProvider: any UnifiedSupportDataProvider
     private let tracker: any UnifiedSupportTracker
     private(set) var loadingTask: Task<Void, Never>?
+    private(set) var silentRefreshTask: Task<Void, Never>?
 
     /// The conversations that changed while the list was off screen.
     private var updatedConversations: [UnifiedSupportConversation] = []
+
+    /// The conversations the user started here, which the list endpoint can take a while to report.
+    private var locallyAddedConversations: [UInt64: UnifiedSupportConversationSummary] = [:]
+
+    /// Whether a fetch the user can see is running, so a silent refresh doesn't get in its way.
+    private var isFetching = false
+
+    private var isRefreshingSilently = false
 
     init(dataProvider: any UnifiedSupportDataProvider, tracker: any UnifiedSupportTracker) {
         self.dataProvider = dataProvider
         self.tracker = tracker
     }
 
-    /// Shows the conversations the user created or replied to since the last time the list was on screen.
+    /// Shows the conversations the user created or replied to since the last time the list was on screen, and picks
+    /// up what changed on the server meanwhile.
     func onAppear() {
         tracker.track(.viewConversationList)
         applyUpdatedConversations()
+
+        // The first appearance is followed by `loadIfNeeded()`, which fetches the conversations anyway.
+        guard loadingTask != nil else {
+            return
+        }
+        silentRefreshTask = Task {
+            await refreshSilently()
+        }
     }
 
     /// Loads the conversations the first time the list appears.
@@ -50,6 +68,8 @@ final class UnifiedSupportListViewModel: ObservableObject {
     /// Shows the cached conversations, if any, while the latest ones are fetched.
     func load() async {
         state = .loading
+        isFetching = true
+        defer { isFetching = false }
 
         do {
             let result = try dataProvider.loadConversations()
@@ -62,7 +82,7 @@ final class UnifiedSupportListViewModel: ObservableObject {
 
             let conversations = try await result.fetchedResult()
             isUpdatingCachedConversations = false
-            state = .loaded(conversations)
+            show(conversations)
         } catch {
             isUpdatingCachedConversations = false
             handleLoadingError(error)
@@ -71,9 +91,11 @@ final class UnifiedSupportListViewModel: ObservableObject {
 
     /// Fetches the latest conversations, keeping the current ones if that fails.
     func refresh() async {
+        isFetching = true
+        defer { isFetching = false }
+
         do {
-            let conversations = try await dataProvider.loadConversations().fetchedResult()
-            state = .loaded(conversations)
+            show(try await dataProvider.loadConversations().fetchedResult())
         } catch {
             handleLoadingError(error)
         }
@@ -82,6 +104,41 @@ final class UnifiedSupportListViewModel: ObservableObject {
     func retry() async {
         state = .loading
         await refresh()
+    }
+
+    /// Fetches the latest conversations without showing that it's happening.
+    ///
+    /// Nothing is reported when it fails: the user didn't ask for it, and the conversations already on screen stay
+    /// as they are.
+    func refreshSilently() async {
+        guard !isFetching, !isRefreshingSilently, dataProvider.isOnline() else {
+            return
+        }
+        isRefreshingSilently = true
+        defer { isRefreshingSilently = false }
+
+        guard let conversations = try? await dataProvider.loadConversations().fetchedResult() else {
+            return
+        }
+
+        // A load the user can see may have started in the meantime, and its result is the newer one.
+        guard !isFetching else {
+            return
+        }
+        show(conversations)
+    }
+
+    /// Shows the conversations the server sent, keeping the ones it doesn't list yet.
+    ///
+    /// A conversation the user just started can take a while to reach the list endpoint, and dropping it from the
+    /// list would look like it was lost.
+    private func show(_ conversations: [UnifiedSupportConversationSummary]) {
+        let listed = Set(conversations.map(\.id))
+        let missing = locallyAddedConversations.values
+            .filter { !listed.contains($0.id) }
+            .sorted { $0.updatedAt > $1.updatedAt }
+
+        state = .loaded(missing + conversations)
     }
 
     /// Takes note of a conversation the user created or replied to, to show it when the list comes back on screen.
@@ -107,6 +164,8 @@ final class UnifiedSupportListViewModel: ObservableObject {
         }
 
         for summary in updatedConversations.map(\.summary) {
+            locallyAddedConversations[summary.id] = summary
+
             if let index = conversations.firstIndex(where: { $0.id == summary.id }) {
                 conversations[index] = summary
             } else {

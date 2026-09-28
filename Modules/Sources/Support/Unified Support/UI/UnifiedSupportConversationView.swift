@@ -52,6 +52,9 @@ struct UnifiedSupportConversationView: View {
         }
         .unifiedSupportNotice($viewModel.notice)
         .navigationBarTitleDisplayMode(.inline)
+        .unifiedSupportAutoRefresh {
+            await viewModel.refreshSilently()
+        }
         .sheet(isPresented: $viewModel.isReplySheetPresented) {
             UnifiedSupportReplySheet(viewModel: viewModel, supportDataProvider: context.supportDataProvider)
         }

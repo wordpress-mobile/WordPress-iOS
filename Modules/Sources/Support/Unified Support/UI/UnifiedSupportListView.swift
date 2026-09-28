@@ -33,6 +33,9 @@ public struct UnifiedSupportListView: View {
             }
             .unifiedSupportNotice($viewModel.notice)
             .environmentObject(context)
+            .unifiedSupportAutoRefresh {
+                await viewModel.refreshSilently()
+            }
             .onAppear {
                 viewModel.onAppear()
                 viewModel.loadIfNeeded()

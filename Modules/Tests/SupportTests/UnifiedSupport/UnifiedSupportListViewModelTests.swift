@@ -312,6 +312,91 @@ struct UnifiedSupportListViewModelTests {
         #expect(actualConversations == [.make(id: 1, status: .ongoing)])
     }
 
+    // MARK: - Refreshing silently
+
+    @Test func showsTheLatestConversationsWhenRefreshingSilently() async {
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversations: [.success([.make(id: 1)]), .success([.make(id: 2), .make(id: 1)])])
+        )
+        let viewModel = makeViewModel(provider)
+        await viewModel.load()
+
+        await viewModel.refreshSilently()
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 2), .make(id: 1)])
+    }
+
+    @Test func keepsTheConversationsAndSaysNothingWhenARefreshFails() async {
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversations: [.success([.make(id: 1)]), .failure(MockError.failure)])
+        )
+        let viewModel = makeViewModel(provider)
+        await viewModel.load()
+
+        await viewModel.refreshSilently()
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1)])
+        #expect(viewModel.notice == nil)
+        #expect(tracker.trackedEvents.isEmpty)
+    }
+
+    @Test func doesNotRefreshSilentlyWhenTheDeviceIsOffline() async {
+        let provider = MockUnifiedSupportDataProvider(
+            .init(isOnline: false, fetchedConversations: [.success([.make(id: 1)])])
+        )
+        let viewModel = makeViewModel(provider)
+
+        await viewModel.refreshSilently()
+
+        #expect(provider.conversationsFetchCount == 0)
+    }
+
+    /// The list endpoint can take a while to report a conversation the user just started.
+    @Test func keepsANewConversationTheServerDoesNotListYet() async {
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversations: [.success([.make(id: 1)])])
+        )
+        let viewModel = makeViewModel(provider)
+        await viewModel.load()
+
+        viewModel.upsert(.make(id: 2, status: .bot))
+        viewModel.onAppear()
+        await viewModel.silentRefreshTask?.value
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations.map(\.id) == [2, 1])
+    }
+
+    @Test func refreshesWhenComingBackFromAConversation() async {
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversations: [.success([.make(id: 1)])])
+        )
+        let viewModel = makeViewModel(provider)
+
+        // The first appearance loads the conversations, so it doesn't fetch them twice.
+        viewModel.onAppear()
+        viewModel.loadIfNeeded()
+        await viewModel.loadingTask?.value
+        await viewModel.silentRefreshTask?.value
+        #expect(provider.conversationsFetchCount == 1)
+
+        viewModel.onAppear()
+        await viewModel.silentRefreshTask?.value
+
+        #expect(provider.conversationsFetchCount == 2)
+    }
+
     @Test func showsANewConversationWhenTheListFailedToLoad() async {
         let viewModel = makeViewModel(
             MockUnifiedSupportDataProvider(.init(fetchedConversations: [.failure(MockError.failure)]))
