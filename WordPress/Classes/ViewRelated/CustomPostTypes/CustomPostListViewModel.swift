@@ -801,25 +801,39 @@ struct CustomPostCollectionDisplayPost: Equatable {
 
     /// The header badges string (e.g. "Jan 15, 2026 · Author Name") matching
     /// the regular posts list. Combines the formatted date and author name.
-    var headerBadges: String {
-        var badges = [dateForDisplay]
+    ///
+    /// - Parameter now: The reference date for relative wording such as "2 minutes ago".
+    func headerBadges(relativeTo now: Date) -> String {
+        var badges = [dateForDisplay(relativeTo: now)]
         if let authorName, !authorName.isEmpty {
             badges.append(authorName)
         }
         return badges.joined(separator: " · ")
     }
 
-    private var dateForDisplay: String {
-        let context = Formatter.Context.beginningOfSentence
+    /// The date the header shows: the post date for published, private, and
+    /// scheduled posts; the modified date otherwise.
+    var rowDate: Date {
         switch status {
-        case .future:
-            return date.mediumStringWithTime(formattingContext: context)
-        case .publish, .private:
-            return date.toMediumString(formattingContext: context)
-        case .trash:
-            return (modifiedDate ?? date).toMediumString(formattingContext: context)
+        case .future, .publish, .private:
+            return date
         default:
-            return (modifiedDate ?? date).toMediumString(formattingContext: context)
+            return modifiedDate ?? date
+        }
+    }
+
+    /// Whether the header date is worded relative to now ("2 minutes ago")
+    /// and therefore goes stale as time passes.
+    var hasRelativeRowDate: Bool {
+        status != .future
+    }
+
+    private func dateForDisplay(relativeTo now: Date) -> String {
+        let context = Formatter.Context.beginningOfSentence
+        if hasRelativeRowDate {
+            return rowDate.toMediumString(formattingContext: context, relativeTo: now)
+        } else {
+            return rowDate.mediumStringWithTime(formattingContext: context)
         }
     }
 
