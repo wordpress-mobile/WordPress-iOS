@@ -281,72 +281,10 @@ private func makeService(
     return CustomPostEditorService(
         blog: blog,
         post: post,
-        details: makePostTypeDetails(),
+        details: makeTestPostType(),
         client: client,
         wpService: wpService,
         initialSettings: initialSettings
-    )
-}
-
-private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
-    PostTypeDetailsWithEditContext(
-        capabilities: [:],
-        description: "",
-        hierarchical: false,
-        viewable: true,
-        labels: makePostTypeLabels(),
-        name: "Test Post Type",
-        slug: "test_post_type",
-        supports: PostTypeSupportsMap(map: [
-            .title: .bool(true),
-            .editor: .bool(true)
-        ]),
-        hasArchive: .bool(false),
-        taxonomies: [],
-        restBase: "test_post_type",
-        restNamespace: "wp/v2",
-        visibility: PostTypeVisibility(showInNavMenus: true, showUi: true),
-        icon: nil
-    )
-}
-
-private func makePostTypeLabels() -> PostTypeLabels {
-    PostTypeLabels(
-        name: "",
-        singularName: "",
-        addNew: "",
-        addNewItem: "",
-        editItem: "",
-        newItem: "",
-        viewItem: "",
-        viewItems: "",
-        searchItems: "",
-        notFound: "",
-        notFoundInTrash: "",
-        parentItemColon: nil,
-        allItems: "",
-        archives: "",
-        attributes: "",
-        insertIntoItem: "",
-        uploadedToThisItem: "",
-        featuredImage: "",
-        setFeaturedImage: "",
-        removeFeaturedImage: "",
-        useFeaturedImage: "",
-        filterItemsList: "",
-        filterByDate: "",
-        itemsListNavigation: "",
-        itemsList: "",
-        itemPublished: "",
-        itemPublishedPrivately: "",
-        itemRevertedToDraft: "",
-        itemTrashed: "",
-        itemScheduled: "",
-        itemUpdated: "",
-        itemLink: "",
-        itemLinkDescription: "",
-        menuName: "",
-        nameAdminBar: ""
     )
 }
 
