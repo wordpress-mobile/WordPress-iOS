@@ -28,20 +28,17 @@ extension Date {
             return formatter
         }()
 
-        static let mediumDate: DateFormatter = {
+        // Not cached: callers set a time zone or formatting context, which would leak to
+        // other callers through a shared instance.
+        //
+        // `includingTime` also turns on relative dates (e.g. "Today at 9:56 AM").
+        static func makeMediumDate(includingTime: Bool) -> DateFormatter {
             let formatter = DateFormatter()
+            formatter.doesRelativeDateFormatting = includingTime
             formatter.dateStyle = .medium
-            formatter.timeStyle = .none
+            formatter.timeStyle = includingTime ? .short : .none
             return formatter
-        }()
-
-        static let mediumDateTime: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.doesRelativeDateFormatting = true
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter
-        }()
+        }
 
         static let mediumUTCDateTime: DateFormatter = {
             let formatter = DateFormatter()
@@ -114,6 +111,9 @@ extension Date {
     /// Formats the current date as relative date if it's within a week of
     /// today, or with DateFormatter.Style.medium otherwise.
     /// - Parameter timeZone: An optional time zone used to adjust the date formatters. **NOTE**: This has no affect on relative time stamps.
+    /// - Parameter formattingContext: The position of the string in a sentence. Use `.beginningOfSentence` to
+    ///   capitalize the first word the way the locale expects (e.g. "Yesterday"). `nil` leaves the context
+    ///   unset, which differs from `.unknown`: an explicit `.unknown` lowercases relative dates.
     ///
     /// - Example: 22 hours from now
     /// - Example: 5 minutes ago
@@ -121,20 +121,26 @@ extension Date {
     /// - Example: 2 days ago
     /// - Example: Jan 22, 2017
     ///
-    public func toMediumString(inTimeZone timeZone: TimeZone? = nil) -> String {
-        let relativeFormatter = RelativeDateTimeFormatter()
-        relativeFormatter.dateTimeStyle = .named
-
-        let absoluteFormatter = DateFormatters.mediumDate
-
-        if let timeZone {
-            absoluteFormatter.timeZone = timeZone
-        }
-
+    public func toMediumString(
+        inTimeZone timeZone: TimeZone? = nil,
+        formattingContext: Formatter.Context? = nil
+    ) -> String {
         let components = Calendar.current.dateComponents([.day], from: self, to: Date())
         if let days = components.day, abs(days) < 7 {
+            let relativeFormatter = RelativeDateTimeFormatter()
+            relativeFormatter.dateTimeStyle = .named
+            if let formattingContext {
+                relativeFormatter.formattingContext = formattingContext
+            }
             return relativeFormatter.localizedString(fromTimeInterval: timeIntervalSinceNow)
         } else {
+            let absoluteFormatter = DateFormatters.makeMediumDate(includingTime: false)
+            if let timeZone {
+                absoluteFormatter.timeZone = timeZone
+            }
+            if let formattingContext {
+                absoluteFormatter.formattingContext = formattingContext
+            }
             return absoluteFormatter.string(from: self)
         }
     }
@@ -143,10 +149,19 @@ extension Date {
     /// That is, it uses the `DateFormatter` `dateStyle` `.medium` and `timeStyle` `.short`.
     ///
     /// - Parameter timeZone: An optional time zone used to adjust the date formatters.
-    public func mediumStringWithTime(timeZone: TimeZone? = nil) -> String {
-        let formatter = DateFormatters.mediumDateTime
+    /// - Parameter formattingContext: The position of the string in a sentence. Use `.beginningOfSentence` to
+    ///   capitalize the first word the way the locale expects (e.g. "Today at 9:56 AM"). `nil` leaves the
+    ///   context unset, which differs from `.unknown`: an explicit `.unknown` lowercases "today".
+    public func mediumStringWithTime(
+        timeZone: TimeZone? = nil,
+        formattingContext: Formatter.Context? = nil
+    ) -> String {
+        let formatter = DateFormatters.makeMediumDate(includingTime: true)
         if let timeZone {
             formatter.timeZone = timeZone
+        }
+        if let formattingContext {
+            formatter.formattingContext = formattingContext
         }
         return formatter.string(from: self)
     }

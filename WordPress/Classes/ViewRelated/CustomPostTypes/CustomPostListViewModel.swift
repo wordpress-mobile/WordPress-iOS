@@ -810,18 +810,17 @@ struct CustomPostCollectionDisplayPost: Equatable {
     }
 
     private var dateForDisplay: String {
-        let string: String
+        let context = Formatter.Context.beginningOfSentence
         switch status {
         case .future:
-            string = date.mediumStringWithTime()
+            return date.mediumStringWithTime(formattingContext: context)
         case .publish, .private:
-            string = date.toMediumString()
+            return date.toMediumString(formattingContext: context)
         case .trash:
-            string = (modifiedDate ?? date).toMediumString()
+            return (modifiedDate ?? date).toMediumString(formattingContext: context)
         default:
-            string = (modifiedDate ?? date).toMediumString()
+            return (modifiedDate ?? date).toMediumString(formattingContext: context)
         }
-        return string.capitalized(with: .current)
     }
 
     /// Combined status badges (e.g. "Private · Sticky") matching the regular
