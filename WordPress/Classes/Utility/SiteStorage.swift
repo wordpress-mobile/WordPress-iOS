@@ -55,6 +55,21 @@ enum SiteStorageAccess {
     }
 }
 
+extension SiteStorageAccess {
+    /// Removes the custom post types that earlier versions pinned to the site menu. The site menu
+    /// has listed every custom post type since 27.4.
+    ///
+    /// TODO: Delete in 27.6, when few users still update from a version that wrote these keys.
+    static func removePinnedPostTypes(from defaults: UserDefaults = .standard) {
+        let keyPrefix = prefix + separator
+        let keySuffix = separator + "pinned-post-types"
+        for key in defaults.dictionaryRepresentation().keys
+        where key.hasPrefix(keyPrefix) && key.hasSuffix(keySuffix) {
+            defaults.removeObject(forKey: key)
+        }
+    }
+}
+
 #if DEBUG
 
 private struct SiteStoragePreviewContent: View {
