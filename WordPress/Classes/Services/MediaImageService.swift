@@ -1,5 +1,6 @@
 import AsyncImageKit
 import CoreData
+import Logging
 import UIKit
 import WordPressData
 import WordPressShared
@@ -38,6 +39,9 @@ final class MediaImageService {
         case unsupportedMediaType(_ type: MediaType)
         case unsupportedThumbnailSize(_ size: ImageSize)
         case missingImageURL
+        /// A remote thumbnail request failed. Carries the requested URL so the
+        /// failure can be diagnosed from logs (e.g. private-site 403s).
+        case thumbnailFetchFailed(url: URL, routing: String, underlying: Swift.Error)
     }
 
     /// Returns an image for the given media asset.
@@ -111,7 +115,8 @@ final class MediaImageService {
         }
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
-            return RemoteImageInfo(imageURL: remoteURL, host: MediaHost(blog))
+            let routing = "wpcom=\(blog.isHostedAtWPcom) private=\(blog.isPrivate) wpforteams=\(blog.isWPForTeams) atomic=\(blog.isAtomic) photon=\(blog.isEligibleForPhoton)"
+            return RemoteImageInfo(imageURL: remoteURL, host: MediaHost(blog), routing: routing)
         }
     }
 
@@ -141,12 +146,16 @@ final class MediaImageService {
 
     private func actuallyLoadThumbnail(for media: SafeMedia, size: ImageSize) async throws -> UIImage {
         if let image = await cachedThumbnail(for: media.mediaID, size: size) {
+            Loggers.networking.debug("Media thumbnail loaded from the disk cache")
             return image
         }
         if let image = await localThumbnail(for: media, size: size) {
+            Loggers.networking.debug("Media thumbnail generated from a local file")
             return image
         }
-        return try await remoteThumbnail(for: media, size: size)
+        let image = try await remoteThumbnail(for: media, size: size)
+        Loggers.networking.debug("Media thumbnail downloaded from the server")
+        return image
     }
 
     // MARK: - Thumbnails (Memory Cache)
@@ -251,12 +260,17 @@ final class MediaImageService {
         }
         // The service has a custom disk cache for thumbnails, so it's important to
         // disable the native url cache which is by default set to `URLCache.shared`
-        let data = try await data(for: info, isCached: false)
-        let image = try await ImageDecoder.makeImage(from: data)
-        if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
-            try? data.write(to: fileURL)
+        do {
+            let data = try await data(for: info, isCached: false)
+            let image = try await ImageDecoder.makeImage(from: data)
+            if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
+                try? data.write(to: fileURL)
+            }
+            return image
+        } catch {
+            // Enrich with the requested URL so private-site 403s are diagnosable from logs.
+            throw Error.thumbnailFetchFailed(url: info.imageURL, routing: info.routing, underlying: error)
         }
-        return image
     }
 
     // There are two reasons why these operations are performed in the background:
@@ -267,7 +281,9 @@ final class MediaImageService {
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
             guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize, blog: blog) else { return nil }
-            return RemoteImageInfo(imageURL: imageURL, host: MediaHost(blog))
+            let routing = "wpcom=\(blog.isHostedAtWPcom) private=\(blog.isPrivate) wpforteams=\(blog.isWPForTeams) atomic=\(blog.isAtomic) photon=\(blog.isEligibleForPhoton)"
+            Loggers.networking.debug("Media thumbnail routing [\(imageURL.host ?? "?")] \(routing)")
+            return RemoteImageInfo(imageURL: imageURL, host: MediaHost(blog), routing: routing)
         }
     }
 
@@ -281,6 +297,8 @@ final class MediaImageService {
     private struct RemoteImageInfo {
         let imageURL: URL
         let host: MediaHost
+        /// Diagnostic: the routing flags that produced `imageURL` (explains 403s).
+        let routing: String
     }
 
     // MARK: - Thubmnail for Video
@@ -479,8 +497,22 @@ private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: Media
     "\(mediaID.objectID)-\(size.rawValue)"
 }
 
+extension MediaImageService.Error {
+    /// The HTTP status code, when this failure came from an unacceptable server
+    /// response. Used to skip retrying hard client errors (4xx) that won't recover.
+    var httpStatusCode: Int? {
+        guard case let .thumbnailFetchFailed(_, _, underlying) = self,
+            let downloaderError = underlying as? ImageDownloaderError,
+            case let .unacceptableStatusCode(statusCode) = downloaderError
+        else {
+            return nil
+        }
+        return statusCode
+    }
+}
+
 private extension Blog {
     var isEligibleForPhoton: Bool {
-        !((isHostedAtWPcom && isPrivate) || (!isHostedAtWPcom && isBasicAuthCredentialStored))
+        !((isHostedAtWPcom && (isPrivate || isWPForTeams)) || (!isHostedAtWPcom && isBasicAuthCredentialStored))
     }
 }
