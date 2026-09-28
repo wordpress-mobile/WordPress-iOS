@@ -21,10 +21,16 @@ actor WpUnifiedSupportDataProvider: UnifiedSupportDataProvider {
 
     private let client: WordPressDotComClient
     private let coreDataStack: CoreDataStack
+    private let logUploader: EncryptedLogUploader
 
-    init(client: WordPressDotComClient, coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(
+        client: WordPressDotComClient,
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        logUploader: EncryptedLogUploader = EncryptedLogUploader()
+    ) {
         self.client = client
         self.coreDataStack = coreDataStack
+        self.logUploader = logUploader
     }
 
     nonisolated func isOnline() -> Bool {
@@ -84,9 +90,13 @@ actor WpUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         attachments: [URL],
         includeApplicationLogs: Bool
     ) async throws -> UnifiedSupportConversation {
-        // TODO: Upload the application logs and send their IDs when `includeApplicationLogs` is `true`.
+        // The logs are queued before the reply, so a failure to prepare them doesn't send a reply that refers to
+        // logs the support team will never get.
+        let encryptedLogIds = includeApplicationLogs ? try await logUploader.uploadLogs() : []
+
         let params = ReplyToUnifiedConversationParams(
             message: message,
+            encryptedLogIds: encryptedLogIds,
             // wordpress-rs reads the files from disk, so it needs file system paths without percent-encoding.
             attachments: attachments.map { $0.path(percentEncoded: false) }
         )

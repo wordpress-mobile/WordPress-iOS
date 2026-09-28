@@ -135,17 +135,31 @@ struct UnifiedSupportClosedBanner: View {
 struct UnifiedSupportReplyButton: View {
 
     let action: UnifiedSupportReplyAction
+    let isSending: Bool
     let perform: () -> Void
 
     var body: some View {
         Button(action: perform) {
-            Label(action.title, systemImage: "arrowshape.turn.up.left")
+            label
                 .font(.headline)
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
+        .disabled(isSending)
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+    }
+
+    @ViewBuilder
+    private var label: some View {
+        if isSending {
+            HStack(spacing: 8) {
+                ProgressView()
+                Text(UnifiedSupportLocalization.sendingReply)
+            }
+        } else {
+            Label(action.title, systemImage: "arrowshape.turn.up.left")
+        }
     }
 }

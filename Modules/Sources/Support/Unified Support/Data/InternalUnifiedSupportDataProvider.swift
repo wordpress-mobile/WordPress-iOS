@@ -7,14 +7,16 @@ extension UnifiedSupportContext {
     static let testing = UnifiedSupportContext(
         dataProvider: InternalUnifiedSupportDataProvider(),
         tracker: InternalUnifiedSupportTracker(),
-        mediaHost: InternalMediaHost()
+        mediaHost: InternalMediaHost(),
+        supportDataProvider: .testing
     )
 
     static func testing(dataProvider: InternalUnifiedSupportDataProvider) -> UnifiedSupportContext {
         UnifiedSupportContext(
             dataProvider: dataProvider,
             tracker: InternalUnifiedSupportTracker(),
-            mediaHost: InternalMediaHost()
+            mediaHost: InternalMediaHost(),
+            supportDataProvider: .testing
         )
     }
 }

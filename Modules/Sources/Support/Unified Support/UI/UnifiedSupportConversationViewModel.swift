@@ -19,6 +19,14 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
     @Published var draft = ""
     @Published var notice: UnifiedSupportNotice?
 
+    /// The reply being written to the support team, kept while the form is closed.
+    @Published var replyDraft = UnifiedSupportReplyDraft()
+
+    @Published var isReplySheetPresented = false
+
+    /// A reply that couldn't be sent. Its draft is kept, so the user can open the form again and send it.
+    @Published var replyFailure: UnifiedSupportNotice?
+
     let currentUser: SupportUser
 
     private let summary: UnifiedSupportConversationSummary?
@@ -89,6 +97,15 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isSending && !isLoading
     }
 
+    var canSendReply: Bool {
+        replyDraft.canSend && !isSending
+    }
+
+    /// The maximum total size of the files that can be sent with a reply, in bytes.
+    var maximumUploadSize: UInt64 {
+        dataProvider.maximumUploadSize
+    }
+
     func onAppear() {
         if let conversationId {
             tracker.track(.viewConversation(conversationId: conversationId, isBot: isBot))
@@ -118,22 +135,17 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         do {
             conversation = try await dataProvider.fetchConversation(id: conversationId)
         } catch {
-            handleFailure(error) {
-                self.tracker.track(.failToLoadConversation(conversationId: conversationId, error))
-            }
+            handleFailure(error, then: .failToLoadConversation(conversationId: conversationId, error))
         }
         isLoading = false
     }
 
-    /// Sends the message being written, and shows it as sent while the server answers.
+    /// Sends the message being written in the chat, and shows it as sent while the AI Assistant answers.
     func sendMessage() {
         let message = draft.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        // The flag is set before any asynchronous work, so a double tap can't send the message twice.
-        guard !message.isEmpty, !isSending else {
+        guard !message.isEmpty, beginSending() else {
             return
         }
-        isSending = true
 
         guard dataProvider.isOnline() else {
             isSending = false
@@ -141,6 +153,107 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
             return
         }
 
+        draft = ""
+        let wasBot = isBot
+
+        send(message: message) { [weak self] updated in
+            self?.tracker.track(.sendBotMessage(conversationId: updated.id))
+        } onFailure: { [weak self] error in
+            guard let self else {
+                return
+            }
+
+            // Give the message back, unless the user started writing another one in the meantime.
+            if draft.isEmpty {
+                draft = message
+            }
+
+            report(error, as: .failToSendMessage(conversationId: conversationId, isBot: wasBot, error)) { message in
+                self.notice = UnifiedSupportNotice(message: message)
+            }
+        }
+    }
+
+    /// Sends the reply written in the form, which closes as soon as the sending starts.
+    ///
+    /// The draft is only thrown away once the server has the reply, so nothing the user wrote or attached is lost
+    /// when the sending fails.
+    func sendTicketReply() {
+        let reply = replyDraft
+        let message = reply.message.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !message.isEmpty, beginSending() else {
+            return
+        }
+        isReplySheetPresented = false
+
+        guard dataProvider.isOnline() else {
+            isSending = false
+            replyFailure = UnifiedSupportNotice(message: UnifiedSupportLocalization.offlineTitle)
+            return
+        }
+
+        // Files that don't fit in the upload limit are left behind, as the form warned.
+        let attachments = UnifiedSupportAttachmentValidator(maximumUploadSize: dataProvider.maximumUploadSize)
+            .validate(reply.files)
+            .accepted
+        let wasBot = isBot
+
+        send(
+            message: message,
+            attachments: attachments.map(\.url),
+            includeApplicationLogs: reply.includeApplicationLogs
+        ) { [weak self] updated in
+            guard let self else {
+                return
+            }
+
+            tracker.track(
+                .replyToTicket(
+                    conversationId: updated.id,
+                    attachmentCount: attachments.count,
+                    includesApplicationLogs: reply.includeApplicationLogs
+                )
+            )
+            discardReplyDraft()
+            notice = UnifiedSupportNotice(message: UnifiedSupportLocalization.replySent)
+        } onFailure: { [weak self] error in
+            guard let self else {
+                return
+            }
+
+            report(error, as: .failToSendMessage(conversationId: conversationId, isBot: wasBot, error)) { message in
+                self.replyFailure = UnifiedSupportNotice(message: message)
+            }
+        }
+    }
+
+    /// Throws the reply away, with the files picked for it.
+    func discardReplyDraft() {
+        UnifiedSupportAttachmentStorage.delete(replyDraft.files)
+        replyDraft = UnifiedSupportReplyDraft()
+    }
+
+    /// Marks a message as being sent, unless one already is.
+    ///
+    /// The flag is set before any asynchronous work, so a double tap can't send the same message twice.
+    private func beginSending() -> Bool {
+        guard !isSending else {
+            return false
+        }
+        isSending = true
+        return true
+    }
+
+    /// Sends a message to the server, showing it in the conversation while it's on its way.
+    ///
+    /// The message is taken out of the conversation again when it doesn't reach the server.
+    private func send(
+        message: String,
+        attachments: [URL] = [],
+        includeApplicationLogs: Bool = false,
+        onSuccess: @escaping (UnifiedSupportConversation) -> Void,
+        onFailure: @escaping (any Error) -> Void
+    ) {
         let pendingMessage = UnifiedSupportMessage(
             id: .pending(UUID()),
             content: message,
@@ -149,7 +262,6 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
             createdAt: .now
         )
         pendingMessages.append(pendingMessage)
-        draft = ""
 
         let conversationId = self.conversationId
         let wasBot = isBot
@@ -161,15 +273,17 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
                     updated = try await dataProvider.reply(
                         toConversation: conversationId,
                         message: message,
-                        attachments: [],
-                        includeApplicationLogs: false
+                        attachments: attachments,
+                        includeApplicationLogs: includeApplicationLogs
                     )
                 } else {
                     updated = try await dataProvider.createBotConversation(message: message)
                 }
                 handleSentMessage(updated, wasBot: wasBot)
+                onSuccess(updated)
             } catch {
-                handleSendingError(error, message: message, pendingMessageId: pendingMessage.id, wasBot: wasBot)
+                pendingMessages.removeAll { $0.id == pendingMessage.id }
+                onFailure(error)
             }
             isSending = false
         }
@@ -180,7 +294,6 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         conversation = updated
         pendingMessages.removeAll()
 
-        tracker.track(.sendBotMessage(conversationId: updated.id))
         if wasBot && !updated.isBot {
             tracker.track(.escalateConversation(conversationId: updated.id))
         }
@@ -188,38 +301,27 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         onConversationUpdated(updated)
     }
 
-    private func handleSendingError(
-        _ error: any Error,
-        message: String,
-        pendingMessageId: UnifiedSupportMessage.ID,
-        wasBot: Bool
-    ) {
-        // The message never reached the server, so take it out of the conversation whatever went wrong.
-        pendingMessages.removeAll { $0.id == pendingMessageId }
-
-        // Give the message back, unless the user started writing another one in the meantime.
-        if draft.isEmpty {
-            draft = message
-        }
-
-        handleFailure(error) {
-            self.tracker.track(
-                .failToSendMessage(conversationId: self.conversationId, isBot: wasBot, error)
-            )
+    /// Reports a failure to the user, unless the request was cancelled by leaving the screen.
+    private func handleFailure(_ error: any Error, then event: @autoclosure () -> UnifiedSupportEvent) {
+        report(error, as: event()) { message in
+            self.notice = UnifiedSupportNotice(message: message)
         }
     }
 
-    /// Reports a failure to the user, unless the request was cancelled by leaving the screen.
-    private func handleFailure(_ error: any Error, then report: () -> Void) {
+    /// Tracks a failure and hands its message to the caller, unless the request was cancelled by leaving the screen.
+    private func report(
+        _ error: any Error,
+        as event: @autoclosure () -> UnifiedSupportEvent,
+        show: (String) -> Void
+    ) {
         guard !Task.isCancelled, !error.isUnifiedSupportCancellation else {
             return
         }
 
-        report()
+        tracker.track(event())
 
+        // Being offline is by far the most common failure, and its own message is clearer than the server's.
         let isOffline = (error as? UnifiedSupportError) == .offline || !dataProvider.isOnline()
-        notice = UnifiedSupportNotice(
-            message: isOffline ? UnifiedSupportLocalization.offlineTitle : error.unifiedSupportMessage
-        )
+        show(isOffline ? UnifiedSupportLocalization.offlineTitle : error.unifiedSupportMessage)
     }
 }
