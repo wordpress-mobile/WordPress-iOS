@@ -29,7 +29,7 @@ struct CoreRESTPostEditorRoute: View {
             presentingViewController: presentingViewController
         ) { [weak presentingViewController] client in
             if let presentingViewController {
-                PinnedPostTypeView<AnyView>(
+                PostTypeResolverView<AnyView>(
                     blog: blog,
                     service: CustomPostTypeService(client: client, blog: blog),
                     postType: postType,

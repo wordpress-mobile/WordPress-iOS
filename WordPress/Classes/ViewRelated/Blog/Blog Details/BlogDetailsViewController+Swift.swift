@@ -134,7 +134,7 @@ extension BlogDetailsViewController {
             source: "custom_post_types",
             presentingViewController: self
         ) { [blog, weak self] client in
-            PinnedPostTypeView<CustomPostTabView>(
+            PostTypeResolverView<CustomPostTabView>(
                 blog: blog,
                 service: CustomPostTypeService(client: client, blog: blog),
                 postType: postType,

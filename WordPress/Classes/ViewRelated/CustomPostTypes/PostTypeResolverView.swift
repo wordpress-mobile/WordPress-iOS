@@ -7,8 +7,7 @@ import WordPressAPI
 import WordPressAPIInternal
 import WordPressUI
 
-// TODO: Rename PinnedPostTypeView to reflect its broader role as a post type resolver.
-struct PinnedPostTypeView<Content: View>: View {
+struct PostTypeResolverView<Content: View>: View {
     struct Resolved {
         let wpService: WpService
         let details: PostTypeDetailsWithEditContext
