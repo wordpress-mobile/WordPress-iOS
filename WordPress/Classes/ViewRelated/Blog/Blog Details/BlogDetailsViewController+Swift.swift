@@ -77,7 +77,7 @@ extension BlogDetailsViewController {
         trackEvent(.openedPosts, from: source)
 
         if blog.usesCustomPostTypeViewsForPostsAndPages {
-            showPinnedPostType(.posts)
+            showPostType(.post)
             return
         }
 
@@ -90,7 +90,7 @@ extension BlogDetailsViewController {
         trackEvent(.openedPages, from: source)
 
         if blog.usesCustomPostTypeViewsForPostsAndPages {
-            showPinnedPostType(.pages)
+            showPostType(.page)
             return
         }
 
@@ -99,30 +99,7 @@ extension BlogDetailsViewController {
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
-    public func showCustomPostTypes() {
-        let feature = NSLocalizedString(
-            "applicationPasswordRequired.feature.customPosts",
-            value: "Custom Post Types",
-            comment: "Feature name for managing custom post types in the app"
-        )
-        let rootView = ApplicationPasswordRequiredView(
-            blog: blog,
-            localizedFeatureName: feature,
-            source: "custom_post_types",
-            presentingViewController: self
-        ) { [blog, weak self] client in
-            CustomPostTypesView(
-                blog: blog,
-                service: CustomPostTypeService(client: client, blog: blog),
-                presentingViewController: self
-            )
-        }
-        let controller = UIHostingController(rootView: rootView)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        presentationDelegate?.presentBlogDetailsViewController(controller)
-    }
-
-    func showPinnedPostType(_ postType: PinnedPostType) {
+    func showPostType(_ postType: PostTypeReference) {
         let feature = NSLocalizedString(
             "applicationPasswordRequired.feature.customPosts",
             value: "Custom Post Types",
@@ -135,10 +112,8 @@ extension BlogDetailsViewController {
             presentingViewController: self
         ) { [blog, weak self] client in
             PostTypeResolverView<CustomPostTabView>(
-                blog: blog,
-                service: CustomPostTypeService(client: client, blog: blog),
-                postType: postType,
-                presentingViewController: self
+                service: CustomPostTypeService(client: client),
+                postType: postType
             ) { resolved in
                 CustomPostTabView(
                     client: client,

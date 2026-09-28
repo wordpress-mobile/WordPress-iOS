@@ -4,7 +4,7 @@ import WordPressData
 
 struct CoreRESTPostEditorRoute: View {
     let blog: Blog
-    let postType: PinnedPostType
+    let postType: PostTypeReference
     let initialSettings: PostSettings?
     let initialContent: EditorContent?
     let entryPoint: PostEditorEntryPoint
@@ -27,28 +27,24 @@ struct CoreRESTPostEditorRoute: View {
             localizedFeatureName: Strings.featureName,
             source: "block_editor",
             presentingViewController: presentingViewController
-        ) { [weak presentingViewController] client in
-            if let presentingViewController {
-                PostTypeResolverView<AnyView>(
-                    blog: blog,
-                    service: CustomPostTypeService(client: client, blog: blog),
-                    postType: postType,
-                    presentingViewController: presentingViewController
-                ) { resolved in
-                    AnyView(
-                        CustomPostEditor(
-                            wpService: resolved.wpService,
-                            client: client,
-                            post: nil,
-                            details: resolved.details,
-                            blog: blog,
-                            initialSettings: initialSettings,
-                            initialContent: initialContent,
-                            entryPoint: entryPoint
-                        )
-                        .toolbar(.hidden, for: .navigationBar)
+        ) { client in
+            PostTypeResolverView<AnyView>(
+                service: CustomPostTypeService(client: client),
+                postType: postType
+            ) { resolved in
+                AnyView(
+                    CustomPostEditor(
+                        wpService: resolved.wpService,
+                        client: client,
+                        post: nil,
+                        details: resolved.details,
+                        blog: blog,
+                        initialSettings: initialSettings,
+                        initialContent: initialContent,
+                        entryPoint: entryPoint
                     )
-                }
+                    .toolbar(.hidden, for: .navigationBar)
+                )
             }
         }
         .toolbar {

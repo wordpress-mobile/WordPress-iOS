@@ -1,8 +1,6 @@
 import Foundation
 import SwiftUI
-import UIKit
 import WordPressCore
-import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressUI
@@ -13,31 +11,22 @@ struct PostTypeResolverView<Content: View>: View {
         let details: PostTypeDetailsWithEditContext
     }
 
-    let blog: Blog
     let customPostTypeService: CustomPostTypeService
-    let postType: PinnedPostType
-    weak var presentingViewController: UIViewController?
+    let postType: PostTypeReference
     let content: (Resolved) -> Content
-
-    @SiteStorage private var pinnedTypes: [PinnedPostType]
 
     @State private var resolved: Resolved?
     @State private var isLoading = true
     @State private var error: Error?
 
     init(
-        blog: Blog,
         service: CustomPostTypeService,
-        postType: PinnedPostType,
-        presentingViewController: UIViewController? = nil,
+        postType: PostTypeReference,
         @ViewBuilder content: @escaping (Resolved) -> Content
     ) {
-        self.blog = blog
         self.customPostTypeService = service
         self.postType = postType
-        self.presentingViewController = presentingViewController
         self.content = content
-        _pinnedTypes = .pinnedPostTypes(for: TaggedManagedObjectID(blog))
     }
 
     var body: some View {
@@ -69,61 +58,37 @@ struct PostTypeResolverView<Content: View>: View {
         do {
             let wpService = try await customPostTypeService.client.service
 
-            if let details = try await customPostTypeService.resolvePostType(slug: postType.slug) {
+            switch postType {
+            case .details(let details):
                 resolved = Resolved(wpService: wpService, details: details)
-            } else {
-                pinnedTypes.removeAll { $0.slug == postType.slug }
-                self.error = PostTypeNotFoundError(name: postType.name)
+            case .slug(let slug):
+                if let details = try await customPostTypeService.resolvePostType(slug: slug) {
+                    resolved = Resolved(wpService: wpService, details: details)
+                } else {
+                    self.error = PostTypeNotFoundError(slug: slug)
+                }
             }
         } catch {
-            DDLogError("Failed to resolve post type '\(postType.slug)': \(error)")
+            Loggers.app.error("Failed to resolve post type: \(error)")
             self.error = error
         }
     }
 }
 
-struct PinnedPostType: Codable, Hashable {
-    let slug: String
-    let name: String
-    let icon: String?
-}
+enum PostTypeReference {
+    /// Looked up in the cache, falling back to syncing the site's post types when it is missing.
+    case slug(String)
+    case details(PostTypeDetailsWithEditContext)
 
-extension PinnedPostType {
-    // TODO: Ideally use the post type details directly instead of PinnedPostType,
-    // once the CPT infrastructure is more mature.
-    var isBuiltInPostOrPage: Bool {
-        slug == Self.posts.slug || slug == Self.pages.slug
-    }
-
-    static let posts = PinnedPostType(slug: "post", name: "Posts", icon: nil)
-    static let pages = PinnedPostType(slug: "page", name: "Pages", icon: nil)
-}
-
-extension SiteStorage where Value == [PinnedPostType] {
-    static func pinnedPostTypes(for blog: TaggedManagedObjectID<Blog>) -> Self {
-        SiteStorage(wrappedValue: [], "pinned-post-types", blog: blog)
-    }
-}
-
-extension SiteStorageAccess {
-    static func pinnedPostTypes(for blog: TaggedManagedObjectID<Blog>) -> [PinnedPostType] {
-        read([PinnedPostType].self, key: "pinned-post-types", blog: blog) ?? []
-    }
-
-    static func writePinnedPostTypes(_ value: [PinnedPostType], for blog: TaggedManagedObjectID<Blog>) {
-        write(value, key: "pinned-post-types", blog: blog)
-    }
-
-    static func pinnedPostTypesUpdated(for blog: TaggedManagedObjectID<Blog>) -> Bool {
-        exists(key: "pinned-post-types", blog: blog)
-    }
+    static let post = PostTypeReference.slug("post")
+    static let page = PostTypeReference.slug("page")
 }
 
 private struct PostTypeNotFoundError: LocalizedError {
-    let name: String
+    let slug: String
 
     var errorDescription: String? {
-        String.localizedStringWithFormat(Strings.notFound, name)
+        String.localizedStringWithFormat(Strings.notFound, slug)
     }
 }
 
@@ -131,6 +96,6 @@ private enum Strings {
     static let notFound = NSLocalizedString(
         "pinnedPostType.error.notFound",
         value: "\"%1$@\" is not available on this site.",
-        comment: "Error message when a pinned custom post type cannot be found. %1$@ is the post type name."
+        comment: "Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'."
     )
 }
