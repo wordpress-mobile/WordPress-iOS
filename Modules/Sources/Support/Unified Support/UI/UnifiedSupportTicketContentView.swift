@@ -21,7 +21,7 @@ struct UnifiedSupportTicketContentView: View {
                 if message.authorRole == .system {
                     UnifiedSupportSystemMessage(message: message)
                 } else {
-                    UnifiedSupportMessageCard(message: message)
+                    UnifiedSupportMessageCard(message: message, currentUserName: viewModel.currentUser.username)
                 }
             }
         }
@@ -53,14 +53,17 @@ struct UnifiedSupportMessageCard: View {
 
     let message: UnifiedSupportMessage
 
+    /// The name of the signed-in user, which the server doesn't use for their own messages.
+    let currentUserName: String
+
     private var isWrittenByUser: Bool {
-        message.authorRole == .user
+        message.isUser
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline) {
-                Text(message.authorName)
+                Text(message.authorDisplayName(currentUserName: currentUserName))
                     .font(.headline)
                     .foregroundStyle(isWrittenByUser ? Color.accentColor : .secondary)
 
@@ -76,8 +79,11 @@ struct UnifiedSupportMessageCard: View {
                 .textSelection(.enabled)
 
             if !message.attachments.isEmpty {
-                UnifiedSupportAttachmentsView(attachments: message.attachments)
-                    .padding(.top, 4)
+                UnifiedSupportAttachmentsView(
+                    attachments: message.attachments,
+                    showsRelatedHeader: message.hasOnlyLinkAttachments
+                )
+                .padding(.top, 4)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

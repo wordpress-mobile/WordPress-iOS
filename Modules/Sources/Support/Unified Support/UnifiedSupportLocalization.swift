@@ -159,6 +159,11 @@ enum UnifiedSupportLocalization {
         value: "%1$d%% match",
         comment: "How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87."
     )
+    static let relatedLinks = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.attachment.related",
+        value: "Related:",
+        comment: "Introduces the pages the AI Assistant used to answer, listed under its answer."
+    )
     static let openLink = NSLocalizedString(
         "com.jetpack.support.unified.conversation.attachment.openLink",
         value: "Open link: %1$@",
