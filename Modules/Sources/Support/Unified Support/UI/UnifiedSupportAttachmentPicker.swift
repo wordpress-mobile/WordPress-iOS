@@ -17,8 +17,17 @@ struct UnifiedSupportAttachmentPicker: View {
     /// The picker item each file was loaded from, used to keep the picker and the list in sync.
     @State private var items: [UUID: PhotosPickerItem] = [:]
 
-    @State private var isLoading = false
+    /// The items being imported, claimed before the import starts.
+    ///
+    /// An item is only in `items` once it has finished importing, so two imports running at the same time would
+    /// otherwise both take the same item for a new one.
+    @State private var importing: Set<PhotosPickerItem> = []
+
     @State private var loadingErrorMessage: String?
+
+    private var isLoading: Bool {
+        !importing.isEmpty
+    }
 
     private var validation: UnifiedSupportAttachmentValidator.Result {
         UnifiedSupportAttachmentValidator(maximumUploadSize: maximumUploadSize).validate(files)
@@ -166,18 +175,26 @@ struct UnifiedSupportAttachmentPicker: View {
             UnifiedSupportAttachmentStorage.delete(file)
         }
 
-        let loaded = Set(items.values)
-        let newItems = newSelection.filter { !loaded.contains($0) }
+        let claimed = Set(items.values).union(importing)
+        let newItems = newSelection.filter { !claimed.contains($0) }
         guard !newItems.isEmpty else {
             return
         }
 
-        isLoading = true
-        loadingErrorMessage = nil
+        if importing.isEmpty {
+            loadingErrorMessage = nil
+        }
+        importing.formUnion(newItems)
+        defer { importing.subtract(newItems) }
 
         for item in newItems {
             do {
                 guard let file = try await item.loadTransferable(type: UnifiedSupportPickedFile.self) else {
+                    continue
+                }
+                // The user can take the item off the picker while it's being imported.
+                guard selection.contains(item) else {
+                    UnifiedSupportAttachmentStorage.delete(file)
                     continue
                 }
                 items[file.id] = item
@@ -186,8 +203,6 @@ struct UnifiedSupportAttachmentPicker: View {
                 loadingErrorMessage = error.unifiedSupportMessage
             }
         }
-
-        isLoading = false
     }
 
     private func format(bytes: UInt64) -> String {

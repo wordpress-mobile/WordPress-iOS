@@ -174,7 +174,23 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         guard mutationCountAtStart == mutationCount, !isSending, updated.id == self.conversationId else {
             return
         }
+        // The server can also answer a refresh that started after a reply with a snapshot taken before it. Showing
+        // that answer would take the reply the user was just told was sent back off the ticket.
+        guard !losesKnownMessages(updated) else {
+            return
+        }
         conversation = updated
+    }
+
+    /// Whether a fetched conversation is missing messages the screen already shows.
+    ///
+    /// Only what the server has confirmed is compared: a message still on its way lives in `pendingMessages`.
+    private func losesKnownMessages(_ updated: UnifiedSupportConversation) -> Bool {
+        guard let conversation else {
+            return false
+        }
+        let updatedIds = Set(updated.messages.map(\.id))
+        return !conversation.messages.allSatisfy { updatedIds.contains($0.id) }
     }
 
     /// Sends the message being written in the chat, and shows it as sent while the AI Assistant answers.

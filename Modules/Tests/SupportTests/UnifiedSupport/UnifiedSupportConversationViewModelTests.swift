@@ -270,6 +270,50 @@ struct UnifiedSupportConversationViewModelTests {
         #expect(viewModel.messages.map(\.content) == ["Any news?"])
     }
 
+    /// The server can answer a refresh that started after a reply with a snapshot taken before it, and a reply
+    /// that disappears reads as a reply that was never sent.
+    @Test func keepsTheMessagesAServerSnapshotHasNotCaughtUpWith() async {
+        let replied = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 1, content: "Any news?", authorRole: .user)]
+        )
+        let lagging = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(replied)))
+        let viewModel = makeViewModel(.existing(replied.summary), provider)
+        await viewModel.load()
+
+        provider.updateStubs { $0.fetchedConversation = .success(lagging) }
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.messages.map(\.content) == ["Any news?"])
+    }
+
+    /// A refresh that keeps every message and adds one is the answer from support the polling exists for.
+    @Test func takesARefreshThatOnlyAddsMessages() async {
+        let ticket = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 1, content: "Any news?", authorRole: .user)]
+        )
+        let answered = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [
+                .make(id: 1, content: "Any news?", authorRole: .user),
+                .make(id: 2, content: "Hi, I'm Jane", authorRole: .support)
+            ]
+        )
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        await viewModel.load()
+
+        provider.updateStubs { $0.fetchedConversation = .success(answered) }
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.messages.map(\.content) == ["Any news?", "Hi, I'm Jane"])
+    }
+
     // MARK: - Replying to a ticket
 
     @Test func sendsTheReplyWithItsAttachmentsAndLogs() async {
