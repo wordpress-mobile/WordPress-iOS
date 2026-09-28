@@ -106,4 +106,67 @@ enum UnifiedSupportLocalization {
         value: "Try again",
         comment: "Button to try loading the support conversations again."
     )
+
+    // MARK: - Conversation
+
+    static let newConversation = NSLocalizedString(
+        "com.jetpack.support.unified.newConversation",
+        value: "New conversation",
+        comment: "Button that starts a new support conversation with the AI Assistant."
+    )
+    static let startConversation = NSLocalizedString(
+        "com.jetpack.support.unified.startConversation",
+        value: "Start Conversation",
+        comment: "Button that starts the user's first support conversation."
+    )
+    static let loadingConversation = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.loading",
+        value: "Loading conversation…",
+        comment: "Shown while a support conversation is loading."
+    )
+    static let messagePlaceholder = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.messagePlaceholder",
+        value: "Type a message…",
+        comment: "Placeholder of the field used to write a message to the AI Assistant."
+    )
+    static let sendMessage = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.send",
+        value: "Send",
+        comment: "Button that sends the message written for the AI Assistant."
+    )
+    static let assistantIsTyping = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.typing",
+        value: "The AI Assistant is typing",
+        comment: "Announced while waiting for the AI Assistant to answer."
+    )
+    static let lastUpdated = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.lastUpdated",
+        value: "Last updated %1$@",
+        comment: "Time a support conversation was last updated. %1$@ is a time, like '2 days ago'."
+    )
+    static let transferredToHumanSupport = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.transferred",
+        value: "Transferred to human support",
+        comment: "Shown in a conversation where the AI Assistant handed the question to the support team."
+    )
+    static let conversationClosed = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.closed",
+        value: "This conversation is closed. You can no longer reply to it.",
+        comment: "Shown at the end of a support conversation that can't accept replies."
+    )
+    static let attachmentMatchScore = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.attachment.matchScore",
+        value: "%1$d%% match",
+        comment: "How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87."
+    )
+    static let openLink = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.attachment.openLink",
+        value: "Open link: %1$@",
+        comment: "Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title."
+    )
+    static let loadingAttachment = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.attachment.loading",
+        value: "Loading attachment…",
+        comment: "Shown while an attachment of a support message is loading."
+    )
 }

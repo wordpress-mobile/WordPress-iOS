@@ -215,7 +215,7 @@ extension UnifiedSupportConversation {
                 createdAt: Date(timeIntervalSinceNow: -86_400),
                 attachments: [
                     UnifiedSupportAttachment(
-                        id: 3,
+                        remoteId: 3,
                         filename: "screenshot.png",
                         contentType: "image/png",
                         fileSize: 48_213,
@@ -273,7 +273,7 @@ private extension UnifiedSupportMessage {
 private extension UnifiedSupportAttachment {
     static func previewLink(id: UInt64, title: String, score: Double) -> UnifiedSupportAttachment {
         UnifiedSupportAttachment(
-            id: id,
+            remoteId: id,
             filename: title,
             contentType: "text/html",
             fileSize: 0,

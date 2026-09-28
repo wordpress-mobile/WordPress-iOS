@@ -69,7 +69,8 @@ public struct UnifiedSupportAttachment: Identifiable, Sendable, Equatable {
         case other
     }
 
-    public let id: UInt64
+    /// The attachment's ID on the server, which is 0 for every page the AI Assistant used as a source.
+    public let remoteId: UInt64
     public let filename: String
     public let contentType: String
     public let fileSize: UInt64
@@ -78,15 +79,23 @@ public struct UnifiedSupportAttachment: Identifiable, Sendable, Equatable {
     /// How closely a source matches the AI Assistant answer, from 0 to 1.
     public let matchScore: Double?
 
+    /// Identifies the attachment within its message.
+    ///
+    /// The server's ID isn't enough: it's 0 for all of a message's sources, and identical IDs would make a list show
+    /// the same source over and over.
+    public var id: String {
+        "\(remoteId)-\(url.absoluteString)"
+    }
+
     public init(
-        id: UInt64,
+        remoteId: UInt64,
         filename: String,
         contentType: String,
         fileSize: UInt64,
         url: URL,
         matchScore: Double? = nil
     ) {
-        self.id = id
+        self.remoteId = remoteId
         self.filename = filename
         self.contentType = contentType
         self.fileSize = fileSize

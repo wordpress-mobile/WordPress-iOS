@@ -14,3 +14,11 @@ final class SpyUnifiedSupportTracker: UnifiedSupportTracker {
         events.withLock { $0.append(event) }
     }
 }
+
+@MainActor
+extension UnifiedSupportConversationViewModel {
+    /// Waits for the message being sent, if any.
+    func waitForSending() async {
+        await sendingTask?.value
+    }
+}

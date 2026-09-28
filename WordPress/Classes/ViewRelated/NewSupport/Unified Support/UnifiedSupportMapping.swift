@@ -54,7 +54,7 @@ extension UnifiedAttachment {
         }
 
         return UnifiedSupportAttachment(
-            id: id,
+            remoteId: id,
             filename: filename,
             contentType: contentType,
             fileSize: size,

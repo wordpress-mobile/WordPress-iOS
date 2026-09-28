@@ -5,7 +5,12 @@ public struct UnifiedSupportListView: View {
 
     @StateObject private var viewModel: UnifiedSupportListViewModel
 
-    public init(context: UnifiedSupportContext) {
+    private let context: UnifiedSupportContext
+    private let currentUser: SupportUser
+
+    public init(context: UnifiedSupportContext, currentUser: SupportUser) {
+        self.context = context
+        self.currentUser = currentUser
         _viewModel = StateObject(
             wrappedValue: UnifiedSupportListViewModel(dataProvider: context.dataProvider, tracker: context.tracker)
         )
@@ -15,10 +20,19 @@ public struct UnifiedSupportListView: View {
         content
             .navigationTitle(UnifiedSupportLocalization.conversationsTitle)
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    newConversationLink {
+                        Image(systemName: "square.and.pencil")
+                    }
+                    .accessibilityLabel(UnifiedSupportLocalization.newConversation)
+                }
+            }
             .overlay {
                 OverlayProgressView(shouldBeVisible: viewModel.isUpdatingCachedConversations)
             }
             .unifiedSupportNotice($viewModel.notice)
+            .environmentObject(context)
             .onAppear {
                 viewModel.onAppear()
                 viewModel.loadIfNeeded()
@@ -51,7 +65,11 @@ public struct UnifiedSupportListView: View {
 
     private func conversationList(_ conversations: [UnifiedSupportConversationSummary]) -> some View {
         List(conversations) { conversation in
-            UnifiedSupportConversationRow(conversation: conversation)
+            NavigationLink {
+                conversationView(for: .existing(conversation))
+            } label: {
+                UnifiedSupportConversationRow(conversation: conversation)
+            }
         }
         .listStyle(.plain)
         .refreshable {
@@ -64,7 +82,36 @@ public struct UnifiedSupportListView: View {
             Label(UnifiedSupportLocalization.emptyConversationsTitle, systemImage: "bubble.left.and.text.bubble.right")
         } description: {
             Text(UnifiedSupportLocalization.emptyConversationsMessage)
+        } actions: {
+            newConversationLink {
+                Text(UnifiedSupportLocalization.startConversation)
+            }
+            .buttonStyle(.borderedProminent)
         }
+    }
+
+    private func newConversationLink<Label: View>(@ViewBuilder label: () -> Label) -> some View {
+        NavigationLink {
+            conversationView(for: .newBotConversation)
+        } label: {
+            label()
+        }
+    }
+
+    private func conversationView(for source: UnifiedSupportConversationViewModel.Source) -> some View {
+        UnifiedSupportConversationView(
+            viewModel: UnifiedSupportConversationViewModel(
+                source: source,
+                dataProvider: context.dataProvider,
+                tracker: context.tracker,
+                currentUser: currentUser,
+                onConversationUpdated: { [weak viewModel] conversation in
+                    viewModel?.upsert(conversation)
+                }
+            )
+        )
+        // Required until SwiftUI owns the nav controller
+        .environmentObject(context)
     }
 
     private func unavailableView(title: String, message: String, systemImage: String) -> some View {
@@ -85,13 +132,16 @@ public struct UnifiedSupportListView: View {
 
 #Preview("Conversations") {
     NavigationStack {
-        UnifiedSupportListView(context: .testing)
+        UnifiedSupportListView(context: .testing, currentUser: SupportDataProvider.supportUser)
     }
 }
 
 #Preview("Empty") {
     NavigationStack {
-        UnifiedSupportListView(context: .testing(dataProvider: InternalUnifiedSupportDataProvider(conversations: [])))
+        UnifiedSupportListView(
+            context: .testing(dataProvider: InternalUnifiedSupportDataProvider(conversations: [])),
+            currentUser: SupportDataProvider.supportUser
+        )
     }
 }
 
@@ -100,7 +150,8 @@ public struct UnifiedSupportListView: View {
         UnifiedSupportListView(
             context: .testing(
                 dataProvider: InternalUnifiedSupportDataProvider(loadingError: UnifiedSupportError.offline)
-            )
+            ),
+            currentUser: SupportDataProvider.supportUser
         )
     }
 }
