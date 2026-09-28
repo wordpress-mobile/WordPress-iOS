@@ -3,10 +3,10 @@ import WordPressData
 import WordPressKit
 
 final class AtomicSiteService {
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStack
     private let remote: AtomicSiteServiceRemote
 
-    required init(contextManager: CoreDataStackSwift = ContextManager.shared,
+    required init(contextManager: CoreDataStack = ContextManager.shared,
                   remote: AtomicSiteServiceRemote? = nil) {
         self.contextManager = contextManager
         self.remote = remote ?? AtomicSiteServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: contextManager.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2))

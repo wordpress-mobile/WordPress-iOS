@@ -36,9 +36,9 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
     /// The most recently created blog corresponding to the site creation request; `nil` otherwise.
     private(set) var createdBlog: Blog?
 
-    private var coreDataStack: CoreDataStackSwift
+    private var coreDataStack: CoreDataStack
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
         self.accountService = AccountService(coreDataStack: coreDataStack)
         self.blogService = BlogService(coreDataStack: coreDataStack)

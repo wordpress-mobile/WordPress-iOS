@@ -28,7 +28,7 @@ final class PostSearchService {
     init(blog: Blog,
          settings: PostListFilterSettings,
          criteria: PostSearchCriteria,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared
+         coreDataStack: CoreDataStack = ContextManager.shared
     ) {
         self.blog = blog
         self.settings = settings

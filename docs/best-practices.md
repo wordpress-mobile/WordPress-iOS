@@ -8,11 +8,11 @@ It’s a good idea to check the style guide from time to time as we update it to
 
 ## Use the Core Data Stack APIs
 
-WordPress for iOS wraps Core Data access in `CoreDataStack`, `CoreDataStackSwift`, and `ContextManager`. New code should use these project APIs instead of creating, storing, or saving raw `NSManagedObjectContext` instances. The wrappers centralize background contexts, save behavior, merge policy, permanent object ID handling, and save error reporting.
+WordPress for iOS wraps Core Data access in `CoreDataStack` and `ContextManager`. New code should use these project APIs instead of creating, storing, or saving raw `NSManagedObjectContext` instances. The wrappers centralize background contexts, save behavior, merge policy, permanent object ID handling, and save error reporting.
 
 Use these APIs by default:
 
-- Inject `CoreDataStackSwift` into new Swift services, repositories, and view models. Default the dependency to `ContextManager.shared` at the composition boundary.
+- Inject `CoreDataStack` into new Swift services, repositories, and view models. Default the dependency to `ContextManager.shared` at the composition boundary.
 - Use `CoreDataStack` when a type must remain Objective-C-compatible.
 - Use `ContextManager.shared` directly only at composition boundaries, in legacy code, or in small UI integration points where dependency injection would add noise.
 - Do not call `newDerivedContext()` in new code. It is deprecated and exists for legacy callers. Use `performQuery` or `performAndSave` instead.
@@ -62,7 +62,7 @@ If existing UI code edits `mainContext` directly, save through the stack with `s
 
 Do not capture an `NSManagedObject`, such as `Blog` or `WPAccount`, and use it from a different queue, task, or escaping closure. Touching its properties outside its context's queue violates Core Data's concurrency model.
 
-When a model reference needs to cross a concurrency boundary, store a `TaggedManagedObjectID<Model>` instead of the managed object. Inject a `CoreDataStack` or `CoreDataStackSwift` into the type that performs the work, then resolve the ID inside `performQuery` for reads or `performAndSave` for writes.
+When a model reference needs to cross a concurrency boundary, store a `TaggedManagedObjectID<Model>` instead of the managed object. Inject a `CoreDataStack` into the type that performs the work, then resolve the ID inside `performQuery` for reads or `performAndSave` for writes.
 
 ```swift
 let blogID = TaggedManagedObjectID(blog)

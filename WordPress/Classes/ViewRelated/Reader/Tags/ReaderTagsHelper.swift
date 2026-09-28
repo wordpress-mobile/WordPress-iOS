@@ -3,7 +3,7 @@ import UIKit
 import WordPressData
 
 struct ReaderTagsHelper {
-    let contextManager: CoreDataStackSwift = ContextManager.shared
+    let contextManager: CoreDataStack = ContextManager.shared
 
     private var viewControler: NSManagedObjectContext { contextManager.mainContext }
 
