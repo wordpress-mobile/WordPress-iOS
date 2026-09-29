@@ -18,6 +18,13 @@ struct ApplicationLogPicker: View {
     var state: ViewState = .loading
 
     var body: some View {
+        // Offering logs the support team will never receive is worse than not offering them at all.
+        if dataProvider.canShareApplicationLogs {
+            picker
+        }
+    }
+
+    private var picker: some View {
         Section {
             VStack(alignment: .leading, spacing: 12) {
                 Toggle(isOn: $includeApplicationLogs.animation(.easeInOut(duration: 0.3))) {
