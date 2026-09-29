@@ -40,12 +40,15 @@ struct UnifiedSupportReplySheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(UnifiedSupportLocalization.cancel, action: close)
+                    SupportCancelButton(title: UnifiedSupportLocalization.cancel, action: close)
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(UnifiedSupportLocalization.send, action: viewModel.sendTicketReply)
-                        .disabled(!viewModel.canSendReply || isImportingAttachments)
+                    SupportSendButton(
+                        title: UnifiedSupportLocalization.send,
+                        action: viewModel.sendTicketReply
+                    )
+                    .disabled(!viewModel.canSendReply || isImportingAttachments)
                 }
             }
         }
