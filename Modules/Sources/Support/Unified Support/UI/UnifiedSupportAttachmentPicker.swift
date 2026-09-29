@@ -13,6 +13,9 @@ struct UnifiedSupportAttachmentPicker: View {
     /// Whether files are still being brought in, so the form doesn't send a reply without them.
     @Binding var isImporting: Bool
 
+    /// The imports started here, held by the form so that closing it stops them.
+    let imports: UnifiedSupportAttachmentImports
+
     let maximumUploadSize: UInt64
 
     @State private var selection: [PhotosPickerItem] = []
@@ -89,7 +92,7 @@ struct UnifiedSupportAttachmentPicker: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .onChange(of: selection) { _, newSelection in
-            Task {
+            imports.start {
                 await load(newSelection)
             }
         }
@@ -188,14 +191,19 @@ struct UnifiedSupportAttachmentPicker: View {
                 guard let file = try await item.loadTransferable(type: UnifiedSupportPickedFile.self) else {
                     continue
                 }
-                // The user can take the item off the picker while it's being imported.
-                guard selection.contains(item) else {
+                // The form can close, or the item come off the picker, while the file is being brought in.
+                // Either way the reply it was picked for is gone, and so is anywhere to put it.
+                guard !Task.isCancelled, selection.contains(item) else {
                     UnifiedSupportAttachmentStorage.delete(file)
                     continue
                 }
                 items[file.id] = item
                 files.append(file)
             } catch {
+                // Closing the form cancels the import, which isn't a failure worth a message.
+                guard !Task.isCancelled, !error.isUnifiedSupportCancellation else {
+                    return
+                }
                 loadingErrorMessage = error.unifiedSupportMessage
             }
         }
@@ -203,6 +211,33 @@ struct UnifiedSupportAttachmentPicker: View {
 
     private func format(bytes: UInt64) -> String {
         ByteCountFormatter().string(fromByteCount: Int64(bytes))
+    }
+}
+
+/// The imports running for a reply form.
+///
+/// Bringing a file in outlives the view that started it, so the form has to stop the ones still running when it
+/// closes: a file that arrives afterwards would attach itself to a reply the user threw away.
+@MainActor
+final class UnifiedSupportAttachmentImports {
+
+    private var tasks: [UUID: Task<Void, Never>] = [:]
+
+    /// Runs an import that `cancelAll()` can stop.
+    func start(_ work: @escaping @MainActor () async -> Void) {
+        let id = UUID()
+        tasks[id] = Task { [weak self] in
+            await work()
+            self?.tasks[id] = nil
+        }
+    }
+
+    /// Stops the imports still running, so their files can't land in a reply the user has closed.
+    func cancelAll() {
+        for task in tasks.values {
+            task.cancel()
+        }
+        tasks.removeAll()
     }
 }
 
@@ -258,6 +293,7 @@ private struct UnifiedSupportAttachmentThumbnail: View {
         UnifiedSupportAttachmentPicker(
             files: $files,
             isImporting: $isImporting,
+            imports: UnifiedSupportAttachmentImports(),
             maximumUploadSize: 20 * 1024 * 1024
         )
     }

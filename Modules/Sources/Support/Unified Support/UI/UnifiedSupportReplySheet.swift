@@ -17,6 +17,9 @@ struct UnifiedSupportReplySheet: View {
     /// Set while the picked files are still being brought in, so a reply can't leave without its attachments.
     @State private var isImportingAttachments = false
 
+    /// The imports still running, so that leaving the form stops them.
+    @State private var attachmentImports = UnifiedSupportAttachmentImports()
+
     var body: some View {
         NavigationStack {
             Form {
@@ -29,6 +32,7 @@ struct UnifiedSupportReplySheet: View {
                 UnifiedSupportAttachmentPicker(
                     files: $viewModel.replyDraft.files,
                     isImporting: $isImportingAttachments,
+                    imports: attachmentImports,
                     maximumUploadSize: viewModel.maximumUploadSize
                 )
 
@@ -57,8 +61,13 @@ struct UnifiedSupportReplySheet: View {
         .onAppear {
             isMessageFocused = true
         }
+        // Whichever way the form went away, a file still on its way in has nowhere left to go.
+        .onDisappear {
+            attachmentImports.cancelAll()
+        }
         .alert(UnifiedSupportLocalization.discardReplyTitle, isPresented: $isConfirmingDiscard) {
             Button(UnifiedSupportLocalization.discardReply, role: .destructive) {
+                attachmentImports.cancelAll()
                 viewModel.discardReplyDraft()
                 dismiss()
             }
@@ -73,6 +82,8 @@ struct UnifiedSupportReplySheet: View {
             isConfirmingDiscard = true
             return
         }
+        // Nothing was written, so a file still being brought in isn't wanted either.
+        attachmentImports.cancelAll()
         dismiss()
     }
 }
