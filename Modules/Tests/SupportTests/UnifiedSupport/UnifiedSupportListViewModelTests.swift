@@ -378,6 +378,77 @@ struct UnifiedSupportListViewModelTests {
         #expect(actualConversations.map(\.id) == [2, 1])
     }
 
+    /// The list endpoint can also report a conversation from a snapshot taken before the user wrote in it, and a
+    /// row that goes back the way it was reads as the reply having been lost.
+    @Test func keepsAConversationTheServerListsFromBeforeTheReply() async {
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversations: [.success([.make(id: 1, status: .bot)])])
+        )
+        let viewModel = makeViewModel(provider)
+        await viewModel.load()
+
+        // The message escalated the chat, which the list endpoint still reports as a chat.
+        viewModel.upsert(.make(id: 1, status: .ongoing))
+        viewModel.onAppear()
+        await viewModel.refreshSilently()
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [.make(id: 1, status: .ongoing)])
+    }
+
+    /// Once the server has news of its own, it's the one that knows better.
+    @Test func takesTheServerRowWhenItIsNewerThanTheOneSentFromHere() async {
+        let solved = UnifiedSupportConversationSummary.make(
+            id: 1,
+            status: .solved,
+            updatedAt: Date(timeIntervalSince1970: 3_000)
+        )
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversations: [.success([solved])]))
+        let viewModel = makeViewModel(provider)
+        await viewModel.load()
+
+        viewModel.upsert(.make(id: 1, status: .ongoing))
+        viewModel.onAppear()
+        await viewModel.refreshSilently()
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [solved])
+    }
+
+    /// A row is only held on to until the server lists the conversation: what the support team does to a ticket
+    /// afterwards doesn't move `updatedAt`, so holding on any longer would keep that news out for good.
+    @Test func letsGoOfARowOnceTheServerListsTheConversation() async {
+        let closed = UnifiedSupportConversationSummary.make(id: 1, status: .closed, canAcceptReply: false)
+        let provider = MockUnifiedSupportDataProvider(
+            .init(
+                fetchedConversations: [
+                    .success([.make(id: 1, status: .bot)]),
+                    .success([.make(id: 1, status: .bot)]),
+                    .success([closed])
+                ]
+            )
+        )
+        let viewModel = makeViewModel(provider)
+        await viewModel.load()
+
+        viewModel.upsert(.make(id: 1, status: .ongoing))
+        viewModel.onAppear()
+        await viewModel.refreshSilently()
+        await viewModel.refreshSilently()
+
+        guard case .loaded(let actualConversations) = viewModel.state else {
+            Issue.record("Unexpected state: \(viewModel.state)")
+            return
+        }
+        #expect(actualConversations == [closed])
+    }
+
     @Test func refreshesWhenComingBackFromAConversation() async {
         let provider = MockUnifiedSupportDataProvider(
             .init(fetchedConversations: [.success([.make(id: 1)])])

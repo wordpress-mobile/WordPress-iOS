@@ -128,17 +128,32 @@ final class UnifiedSupportListViewModel: ObservableObject {
         show(conversations)
     }
 
-    /// Shows the conversations the server sent, keeping the ones it doesn't list yet.
+    /// Shows the conversations the server sent, with whatever it hasn't caught up with yet.
     ///
-    /// A conversation the user just started can take a while to reach the list endpoint, and dropping it from the
-    /// list would look like it was lost.
+    /// A conversation the user just wrote in is known here before the list endpoint reports it. It can be missing
+    /// from the list altogether, or listed from a snapshot taken before the reply — an escalated chat still shown
+    /// as a chat, say. Either way the row the user was just shown would go back the way it was, which reads as the
+    /// reply having been lost.
     private func show(_ conversations: [UnifiedSupportConversationSummary]) {
-        let listed = Set(conversations.map(\.id))
-        let missing = locallyAddedConversations.values
-            .filter { !listed.contains($0.id) }
-            .sorted { $0.updatedAt > $1.updatedAt }
+        var listed = conversations
+        var missing: [UnifiedSupportConversationSummary] = []
 
-        state = .loaded(missing + conversations)
+        for local in locallyAddedConversations.values.sorted(by: { $0.updatedAt > $1.updatedAt }) {
+            guard let index = listed.firstIndex(where: { $0.id == local.id }) else {
+                missing.append(local)
+                continue
+            }
+
+            // The server lists it now, so from the next answer on it's the one that knows better: holding on any
+            // longer would keep a ticket the support team has closed meanwhile looking like it's still open.
+            locallyAddedConversations[local.id] = nil
+
+            if listed[index].updatedAt <= local.updatedAt {
+                listed[index] = local
+            }
+        }
+
+        state = .loaded(missing + listed)
     }
 
     /// Takes note of a conversation the user created or replied to, to show it when the list comes back on screen.
