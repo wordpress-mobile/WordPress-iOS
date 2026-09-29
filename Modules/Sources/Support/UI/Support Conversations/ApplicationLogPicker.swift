@@ -42,12 +42,7 @@ struct ApplicationLogPicker: View {
                     .foregroundColor(.secondary)
             }.padding(4)
         } header: {
-            HStack {
-                Text(Localization.applicationLogs)
-                Text(Localization.optional)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
+            Text(Localization.applicationLogs)
         } footer: {
             if includeApplicationLogs {
                 switch self.state {
