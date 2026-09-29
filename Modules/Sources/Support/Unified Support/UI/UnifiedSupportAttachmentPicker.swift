@@ -10,6 +10,9 @@ struct UnifiedSupportAttachmentPicker: View {
 
     @Binding var files: [UnifiedSupportPickedFile]
 
+    /// Whether files are still being brought in, so the form doesn't send a reply without them.
+    @Binding var isImporting: Bool
+
     let maximumUploadSize: UInt64
 
     @State private var selection: [PhotosPickerItem] = []
@@ -45,7 +48,6 @@ struct UnifiedSupportAttachmentPicker: View {
 
             if !files.isEmpty {
                 gallery
-                uploadSizeIndicator
             }
 
             if !validation.skipped.isEmpty {
@@ -123,13 +125,11 @@ struct UnifiedSupportAttachmentPicker: View {
         }
     }
 
-    private var uploadSizeIndicator: some View {
-        VStack(alignment: .leading) {
-            ProgressView(
-                value: Double(min(validation.acceptedSize, maximumUploadSize)),
-                total: Double(maximumUploadSize)
-            )
-            .tint(validation.skipped.isEmpty ? Color.accentColor : Color(.systemRed))
+    private var skippedFiles: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(UnifiedSupportLocalization.attachmentsSkipped)
+                .font(.caption)
+                .foregroundStyle(Color(.systemRed))
 
             Text(
                 String.localizedStringWithFormat(
@@ -140,14 +140,6 @@ struct UnifiedSupportAttachmentPicker: View {
             )
             .font(.caption2)
             .foregroundStyle(.secondary)
-        }
-    }
-
-    private var skippedFiles: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(UnifiedSupportLocalization.attachmentsSkipped)
-                .font(.caption)
-                .foregroundStyle(Color(.systemRed))
 
             ForEach(validation.skipped) { file in
                 Text("\(file.filename) · \(format(bytes: file.fileSize))")
@@ -185,7 +177,11 @@ struct UnifiedSupportAttachmentPicker: View {
             loadingErrorMessage = nil
         }
         importing.formUnion(newItems)
-        defer { importing.subtract(newItems) }
+        isImporting = true
+        defer {
+            importing.subtract(newItems)
+            isImporting = !importing.isEmpty
+        }
 
         for item in newItems {
             do {
@@ -256,7 +252,13 @@ private struct UnifiedSupportAttachmentThumbnail: View {
 #Preview {
     @Previewable @State var files: [UnifiedSupportPickedFile] = []
 
+    @Previewable @State var isImporting = false
+
     Form {
-        UnifiedSupportAttachmentPicker(files: $files, maximumUploadSize: 20 * 1024 * 1024)
+        UnifiedSupportAttachmentPicker(
+            files: $files,
+            isImporting: $isImporting,
+            maximumUploadSize: 20 * 1024 * 1024
+        )
     }
 }

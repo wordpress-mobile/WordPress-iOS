@@ -1,13 +1,16 @@
 import SwiftUI
 
 extension View {
-    /// Repeats `action` while the screen is the one on top, and once more whenever the app comes back from the
-    /// background.
+    /// Runs `action` whenever the app comes back from the background, and optionally repeats it while the screen
+    /// is the one on top.
     ///
     /// The screen stops refreshing when the user opens another one, so a conversation being read doesn't have the
     /// list changing behind it.
+    ///
+    /// - Parameter interval: How often to repeat the action, or `nil` to only run it on returning from the
+    ///   background. A list the user isn't looking at has nothing to gain from polling.
     func unifiedSupportAutoRefresh(
-        every interval: Duration = .seconds(60),
+        every interval: Duration? = nil,
         action: @escaping () async -> Void
     ) -> some View {
         modifier(UnifiedSupportAutoRefreshModifier(interval: interval, action: action))
@@ -16,7 +19,7 @@ extension View {
 
 private struct UnifiedSupportAutoRefreshModifier: ViewModifier {
 
-    let interval: Duration
+    let interval: Duration?
     let action: () async -> Void
 
     @State private var isOnScreen = false
@@ -26,7 +29,7 @@ private struct UnifiedSupportAutoRefreshModifier: ViewModifier {
             .onAppear { isOnScreen = true }
             .onDisappear { isOnScreen = false }
             .task(id: isOnScreen) {
-                guard isOnScreen else {
+                guard isOnScreen, let interval else {
                     return
                 }
                 while !Task.isCancelled {

@@ -14,6 +14,9 @@ struct UnifiedSupportReplySheet: View {
 
     @State private var isConfirmingDiscard = false
 
+    /// Set while the picked files are still being brought in, so a reply can't leave without its attachments.
+    @State private var isImportingAttachments = false
+
     var body: some View {
         NavigationStack {
             Form {
@@ -25,6 +28,7 @@ struct UnifiedSupportReplySheet: View {
 
                 UnifiedSupportAttachmentPicker(
                     files: $viewModel.replyDraft.files,
+                    isImporting: $isImportingAttachments,
                     maximumUploadSize: viewModel.maximumUploadSize
                 )
 
@@ -41,7 +45,7 @@ struct UnifiedSupportReplySheet: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button(UnifiedSupportLocalization.send, action: viewModel.sendTicketReply)
-                        .disabled(!viewModel.canSendReply)
+                        .disabled(!viewModel.canSendReply || isImportingAttachments)
                 }
             }
         }

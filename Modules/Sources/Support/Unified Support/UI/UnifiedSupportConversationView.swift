@@ -52,7 +52,7 @@ struct UnifiedSupportConversationView: View {
         }
         .unifiedSupportNotice($viewModel.notice)
         .navigationBarTitleDisplayMode(.inline)
-        .unifiedSupportAutoRefresh {
+        .unifiedSupportAutoRefresh(every: .seconds(60)) {
             await viewModel.refreshSilently()
         }
         .sheet(isPresented: $viewModel.isReplySheetPresented) {
