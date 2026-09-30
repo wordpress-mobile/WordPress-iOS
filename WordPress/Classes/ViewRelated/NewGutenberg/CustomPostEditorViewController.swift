@@ -117,6 +117,13 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         undoButton.isEnabled = false
     }
 
+    override func editorDidRequestLatestContent(
+        _ controller: GutenbergKit.EditorViewController
+    ) -> (title: String, content: String)? {
+        // After a save, the post is newer than the content the editor opened with.
+        post.map { ($0.title?.raw ?? "", $0.content.raw ?? "") }
+    }
+
     override func editor(
         _ viewController: GutenbergKit.EditorViewController,
         didUpdateHistoryState state: EditorState
