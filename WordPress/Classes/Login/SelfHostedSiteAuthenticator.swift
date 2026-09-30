@@ -69,6 +69,7 @@ struct SelfHostedSiteAuthenticator {
         case authentication(Error)
         case xmlrpcDisabled(Error)
         case xmlrpcEndpointNotFound
+        case authorizationHeaderBlocked(VerifyIssuedApplicationPasswordError)
         case loadingSiteInfoFailure(Error)
         case savingSiteFailure
         case mismatchedUser(expectedUsername: String)
@@ -84,6 +85,14 @@ struct SelfHostedSiteAuthenticator {
                     value: "Could not determine the site's XML-RPC endpoint",
                     comment:
                         "Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site"
+                )
+            case .authorizationHeaderBlocked:
+                return NSLocalizedString(
+                    "addSite.selfHosted.authorizationHeaderBlocked",
+                    value:
+                        "Sign-in could not complete because your site's server is not passing login credentials to WordPress. Contact your hosting provider about this error. Your site's Site Health page should list it as \"The authorization header is missing\".",
+                    comment:
+                        "Error message when a self-hosted site's server does not pass the app's login credentials (the HTTP Authorization header) to WordPress. \"The authorization header is missing\" is the title WordPress shows on its Site Health page for this problem."
                 )
             case .loadingSiteInfoFailure:
                 return NSLocalizedString(
@@ -354,6 +363,22 @@ struct SelfHostedSiteAuthenticator {
         apiDiscovery: AutoDiscoveryAttemptSuccess,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        // The credentials were issued moments ago, so a request that WordPress treats as
+        // unauthenticated means the server dropped the Authorization header. The check must not be
+        // used for stored credentials: some hosts answer a revoked password the same way.
+        do {
+            try await internalClient.verifyIssuedApplicationPassword(credentials, apiRootUrl: apiDiscovery.apiRootUrl)
+        } catch {
+            if let error = error as? VerifyIssuedApplicationPasswordError, case .AuthorizationHeaderBlocked = error {
+                logFailure(
+                    "The site's server does not pass the Authorization header, so sign-in cannot continue.",
+                    error: error
+                )
+                throw .authorizationHeaderBlocked(error)
+            }
+            logFailure("Failed to verify the application password. Sign-in will continue.", error: error)
+        }
+
         // We still need to set the `Blog.xmlrpc`, because it's used all across the app.
         let xmlrpc: URL
         do {
@@ -583,6 +608,8 @@ private extension SelfHostedSiteAuthenticator {
         switch error {
         case let error as AutoDiscoveryAttemptFailure:
             log(error: error)
+        case let error as VerifyIssuedApplicationPasswordError:
+            log(error: error)
         case let error as WpApiError:
             log(error: error)
         case let error as RequestExecutionError:
@@ -626,6 +653,13 @@ private extension SelfHostedSiteAuthenticator {
             )
         case .FetchAndParseApiRoot(_, _, .applicationPasswordsNotSupported):
             Loggers.login.error("The site does not support application passwords.")
+        }
+    }
+
+    func log(error: VerifyIssuedApplicationPasswordError) {
+        switch error {
+        case .AuthorizationHeaderBlocked(_, let error), .Other(let error):
+            log(error: error)
         }
     }
 
