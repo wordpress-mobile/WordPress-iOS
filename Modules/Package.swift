@@ -64,13 +64,7 @@ let package = Package(
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
-        // TODO: update once wordpress-rs is released. This local archive is built by `local-archive.rb` from
-        // the wordpress-rs branch `task/cmm-2465-blocked-authorization-header`, which adds
-        // `WordPressLoginClient.verifyIssuedApplicationPassword`. Restore the remote `exact:` pin then.
-        .package(
-            name: "wordpress-rs",
-            path: "/Users/tonyli/Projects/ai-artifacts/urukhai/cmm-2465-blocked-authorization-header/wordpress-rs-local-archive"
-        ),
+        .package(url: "https://github.com/automattic/wordpress-rs", branch: "pr-build/1659"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
