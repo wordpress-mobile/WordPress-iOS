@@ -63,7 +63,10 @@ let package = Package(
             revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
+        .package(
+            url: "https://github.com/wordpress-mobile/GutenbergKit",
+            revision: "8b27d201ed7ae921790dd6c0dd72b5497592235c"
+        ),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
             exact: "0.9.1"
