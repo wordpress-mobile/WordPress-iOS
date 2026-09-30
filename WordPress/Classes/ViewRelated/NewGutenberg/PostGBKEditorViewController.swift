@@ -122,6 +122,10 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         // Do nothing
     }
 
+    func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
+        // Do nothing
+    }
+
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
         // Do nothing
     }

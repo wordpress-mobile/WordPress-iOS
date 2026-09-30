@@ -83,6 +83,10 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
         // Do nothing
     }
 
+    func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
+        // Do nothing
+    }
+
     func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
         return nil
     }
