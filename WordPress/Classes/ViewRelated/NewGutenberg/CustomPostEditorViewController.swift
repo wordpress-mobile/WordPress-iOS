@@ -158,12 +158,23 @@ private extension CustomPostEditorViewController {
             navigationController?.view.isUserInteractionEnabled = true
         }
 
+        // The editor can't report its content before it loads, but nothing could have been edited yet either.
+        guard hasEditorLoaded || editorService.hasSettingsChanges else {
+            endEditorSession(outcome: .cancel)
+            navigationController?.dismiss(animated: true)
+            return
+        }
+
         let changed: Bool
+        var canSave = true
         do {
             changed = try await hasUnsavedChanges()
         } catch {
+            // Without the editor's content (e.g. after a crash), let the user discard
+            // their changes rather than trapping them in the editor.
             DDLogError("Failed to get editor content: \(error)")
-            return
+            changed = true
+            canSave = false
         }
 
         if changed {
@@ -174,7 +185,7 @@ private extension CustomPostEditorViewController {
                 self.endEditorSession(outcome: .discard)
                 self.navigationController?.dismiss(animated: true)
             }
-            if post?.status ?? .draft == .draft {
+            if canSave, post?.status ?? .draft == .draft {
                 alert.addAction(
                     UIAlertAction(
                         title: PostEditorStrings.saveDraft,

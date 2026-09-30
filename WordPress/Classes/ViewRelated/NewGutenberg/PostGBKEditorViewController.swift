@@ -18,6 +18,9 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
+    /// Whether the editor has finished loading at least once, so the user could have edited it.
+    private(set) var hasEditorLoaded = false
+
     /// Whether the editor crashed and has not reloaded yet, so calls into it are refused.
     private(set) var isEditorUnavailable = false
 
@@ -117,6 +120,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     /// Subclasses that override this must call `super`.
     func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        hasEditorLoaded = true
         isEditorUnavailable = false
     }
 
