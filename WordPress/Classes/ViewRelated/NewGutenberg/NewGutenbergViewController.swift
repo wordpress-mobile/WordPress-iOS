@@ -228,6 +228,8 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
      */
 
     override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        super.editorDidLoad(viewContoller)
+
         if !editorSession.started {
             // Note that this method is also used to track startup performance
             // It assumes this is being called when the editor has finished loading
@@ -235,6 +237,14 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
             // is still reflecting the actual startup time of the editor
             editorSession.start()
         }
+    }
+
+    override func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
+        super.editorDidBecomeUnavailable(viewController)
+
+        // A reloaded editor starts with empty history and re-enables these as the user edits.
+        gutenbergDidRequestToggleRedoButton(true)
+        gutenbergDidRequestToggleUndoButton(true)
     }
 
     override func editor(
