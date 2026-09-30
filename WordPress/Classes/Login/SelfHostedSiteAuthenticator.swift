@@ -90,9 +90,9 @@ struct SelfHostedSiteAuthenticator {
                 return NSLocalizedString(
                     "addSite.selfHosted.authorizationHeaderBlocked",
                     value:
-                        "Sign-in could not complete because your site's server is not passing login credentials to WordPress. Contact your hosting provider about this error. Your site's Site Health page should list it as \"The authorization header is missing\".",
+                        "Your server is blocking sign-in with application passwords. Contact your hosting provider for help.",
                     comment:
-                        "Error message when a self-hosted site's server does not pass the app's login credentials (the HTTP Authorization header) to WordPress. \"The authorization header is missing\" is the title WordPress shows on its Site Health page for this problem."
+                        "Error message when a self-hosted site's server blocks application password authentication by not passing the HTTP Authorization header to WordPress."
                 )
             case .loadingSiteInfoFailure:
                 return NSLocalizedString(
