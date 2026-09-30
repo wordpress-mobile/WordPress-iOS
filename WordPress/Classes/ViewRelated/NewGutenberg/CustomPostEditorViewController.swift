@@ -100,9 +100,21 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     }
 
     override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        super.editorDidLoad(viewContoller)
+
+        primarySaveButton.isEnabled = true
         if editorSession?.started == false {
             editorSession?.start()
         }
+    }
+
+    override func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
+        super.editorDidBecomeUnavailable(viewController)
+
+        // Saving reads the content from the editor, so it has to wait for the reload.
+        primarySaveButton.isEnabled = false
+        redoButton.isEnabled = false
+        undoButton.isEnabled = false
     }
 
     override func editor(
@@ -178,7 +190,11 @@ private extension CustomPostEditorViewController {
     }
 
     func rightBarButtonItems() -> [UIBarButtonItem] {
-        var children: [UIMenuElement] = [editorModeToggle(), settingsAction(), helpAction(), feedbackAction()]
+        // Deferred so the toggle reflects the current editor mode and availability.
+        let editorModeToggle = UIDeferredMenuElement.uncached { [weak self] resolve in
+            resolve(self.map { [$0.editorModeToggle()] } ?? [])
+        }
+        var children: [UIMenuElement] = [editorModeToggle, settingsAction(), helpAction(), feedbackAction()]
 
         if post?.status ?? .draft == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in

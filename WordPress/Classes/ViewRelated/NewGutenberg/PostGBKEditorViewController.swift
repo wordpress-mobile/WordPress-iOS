@@ -18,6 +18,9 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
+    /// Whether the editor crashed and has not reloaded yet, so calls into it are refused.
+    private(set) var isEditorUnavailable = false
+
     init(
         postId: Int?,
         postType: PostTypeDetails,
@@ -81,7 +84,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         let title =
             editorViewController.isCodeEditorEnabled ? PostEditorStrings.visualEditor : PostEditorStrings.codeEditor
         let icon = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
-        return UIAction(title: title, image: UIImage(systemName: icon)) { [weak editorViewController] _ in
+        return UIAction(
+            title: title,
+            image: UIImage(systemName: icon),
+            attributes: isEditorUnavailable ? [.disabled] : []
+        ) { [weak editorViewController] _ in
             editorViewController?.isCodeEditorEnabled.toggle()
         }
     }
@@ -108,12 +115,14 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     // MARK: - GutenbergKit.EditorViewControllerDelegate
 
+    /// Subclasses that override this must call `super`.
     func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
-        // Do nothing
+        isEditorUnavailable = false
     }
 
+    /// Subclasses that override this must call `super`.
     func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
-        // Do nothing
+        isEditorUnavailable = true
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
