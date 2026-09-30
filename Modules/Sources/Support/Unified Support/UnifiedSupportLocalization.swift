@@ -265,15 +265,20 @@ enum UnifiedSupportLocalization {
         value: "Add More",
         comment: "Button that picks more images and videos to send with a reply."
     )
-    static let attachmentsSize = NSLocalizedString(
-        "com.jetpack.support.unified.reply.attachments.size",
-        value: "%1$@ of %2$@ used",
-        comment: "How much of the upload limit the attachments take. %1$@ and %2$@ are sizes, like '2 MB'."
+    static let attachmentsPartial = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.partial",
+        value: "Max size reached. Only %1$d of %2$d files will be sent",
+        comment: "Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked."
     )
-    static let attachmentsSkipped = NSLocalizedString(
-        "com.jetpack.support.unified.reply.attachments.skipped",
-        value: "These files won't be sent because the reply would be too large:",
-        comment: "Introduces the files that don't fit in a reply to the support team."
+    static let attachmentTooLarge = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.tooLarge.one",
+        value: "This file is too large to send.",
+        comment: "Shown when the only file picked for a reply is over the upload limit on its own."
+    )
+    static let attachmentsTooLarge = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.tooLarge.other",
+        value: "These files are too large to send.",
+        comment: "Shown when every file picked for a reply is over the upload limit on its own."
     )
     static let attachmentsFailedTitle = NSLocalizedString(
         "com.jetpack.support.unified.reply.attachments.failed",

@@ -35,11 +35,11 @@ struct UnifiedSupportAttachmentPicker: View {
         !importing.isEmpty
     }
 
-    private var validation: UnifiedSupportAttachmentValidator.Result {
-        UnifiedSupportAttachmentValidator(maximumUploadSize: maximumUploadSize).validate(files)
-    }
-
     var body: some View {
+        // Worked out once per pass: every file is measured against the limit, and the gallery asks about each of
+        // them again.
+        let validation = UnifiedSupportAttachmentValidator(maximumUploadSize: maximumUploadSize).validate(files)
+
         Section {
             Text(UnifiedSupportLocalization.attachmentsDescription)
                 .font(.body)
@@ -50,11 +50,12 @@ struct UnifiedSupportAttachmentPicker: View {
             }
 
             if !files.isEmpty {
-                gallery
+                gallery(validation)
             }
 
+            // Nothing to say while everything fits: the user didn't ask to be kept posted on a budget.
             if !validation.skipped.isEmpty {
-                skippedFiles
+                overflow(validation)
             }
 
             picker
@@ -98,13 +99,15 @@ struct UnifiedSupportAttachmentPicker: View {
         }
     }
 
-    private var gallery: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+    private func gallery(_ validation: UnifiedSupportAttachmentValidator.Result) -> some View {
+        let skipped = Set(validation.skipped.map(\.id))
+
+        return ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 12) {
                 ForEach(files) { file in
                     ZStack(alignment: .topTrailing) {
                         UnifiedSupportAttachmentThumbnail(file: file)
-                            .opacity(validation.skipped.contains(file) ? 0.4 : 1)
+                            .opacity(skipped.contains(file.id) ? 0.4 : 1)
 
                         Button {
                             remove(file)
@@ -128,28 +131,36 @@ struct UnifiedSupportAttachmentPicker: View {
         }
     }
 
-    private var skippedFiles: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(UnifiedSupportLocalization.attachmentsSkipped)
+    /// Shown only once the upload limit is in the way, which is the only point at which there's anything to say.
+    ///
+    /// The bar is full by definition here. Which files are left out is read off the gallery, where they're the
+    /// faded ones.
+    private func overflow(_ validation: UnifiedSupportAttachmentValidator.Result) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            ProgressView(value: 1)
+                .tint(Color(.systemRed))
+                // The line underneath says the same thing in words.
+                .accessibilityHidden(true)
+
+            Text(overflowMessage(validation))
                 .font(.caption)
                 .foregroundStyle(Color(.systemRed))
-
-            Text(
-                String.localizedStringWithFormat(
-                    UnifiedSupportLocalization.attachmentsSize,
-                    format(bytes: validation.acceptedSize),
-                    format(bytes: maximumUploadSize)
-                )
-            )
-            .font(.caption2)
-            .foregroundStyle(.secondary)
-
-            ForEach(validation.skipped) { file in
-                Text("\(file.filename) · \(format(bytes: file.fileSize))")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
         }
+    }
+
+    private func overflowMessage(_ validation: UnifiedSupportAttachmentValidator.Result) -> String {
+        // Nothing was accepted, so every file is over the limit on its own and no amount of removing helps.
+        guard !validation.accepted.isEmpty else {
+            return validation.skipped.count == 1
+                ? UnifiedSupportLocalization.attachmentTooLarge
+                : UnifiedSupportLocalization.attachmentsTooLarge
+        }
+
+        return String.localizedStringWithFormat(
+            UnifiedSupportLocalization.attachmentsPartial,
+            validation.accepted.count,
+            validation.accepted.count + validation.skipped.count
+        )
     }
 
     private func remove(_ file: UnifiedSupportPickedFile) {
@@ -207,10 +218,6 @@ struct UnifiedSupportAttachmentPicker: View {
                 loadingErrorMessage = error.unifiedSupportMessage
             }
         }
-    }
-
-    private func format(bytes: UInt64) -> String {
-        ByteCountFormatter().string(fromByteCount: Int64(bytes))
     }
 }
 
