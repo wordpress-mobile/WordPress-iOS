@@ -260,6 +260,11 @@ extension SupportDataProvider {
 }
 
 actor InternalLogDataProvider: ApplicationLogDataProvider {
+    /// The logs are made up here, so there's nothing to keep from anyone.
+    nonisolated var canShareApplicationLogs: Bool {
+        true
+    }
+
     private var logs: [ApplicationLog] = [
         ApplicationLog(path: URL(filePath: #filePath), createdAt: Date(), modifiedAt: Date()),
         ApplicationLog(path: URL(filePath: #filePath).deletingLastPathComponent().appendingPathComponent("SupportDataProvider.swift"), createdAt: Date(), modifiedAt: Date()),

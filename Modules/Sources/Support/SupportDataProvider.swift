@@ -263,12 +263,6 @@ public protocol ApplicationLogDataProvider: Actor {
 }
 
 public extension ApplicationLogDataProvider {
-    /// Logs are shareable unless a provider knows otherwise, which is how they behaved before the opt-out was
-    /// taken into account.
-    nonisolated var canShareApplicationLogs: Bool {
-        true
-    }
-
     func readApplicationLog(_ log: ApplicationLog) async throws -> String {
         try String(contentsOf: log.path, encoding: .utf8)
     }
