@@ -7,19 +7,26 @@ class CookieJarTests: XCTestCase {
     var cookieJar: CookieJar {
         return mockCookieJar
     }
-    let wordPressComLoginURL = URL(string: "https://wordpress.com/wp-login.php")!
 
     override func setUp() {
         super.setUp()
         mockCookieJar = MockCookieJar()
     }
 
-    func testGetCookies() {
+    func testSelfHostedAuthCookieIsScopedToItsSite() {
         addCookies()
 
-        let expectation = self.expectation(description: "getCookies completion called")
-        cookieJar.getCookies(url: wordPressComLoginURL) { cookies in
-            XCTAssertEqual(cookies.count, 2)
+        let siteURL = URL(string: "https://example.com/wp-login.php")!
+        let anotherSiteURL = URL(string: "https://example.org/wp-login.php")!
+
+        let expectation = self.expectation(description: "hasCookie completion called")
+        expectation.expectedFulfillmentCount = 2
+        cookieJar.hasWordPressSelfHostedAuthCookie(for: siteURL, username: "testuser") { matches in
+            XCTAssertTrue(matches)
+            expectation.fulfill()
+        }
+        cookieJar.hasWordPressSelfHostedAuthCookie(for: anotherSiteURL, username: "testuser") { matches in
+            XCTAssertFalse(matches)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
