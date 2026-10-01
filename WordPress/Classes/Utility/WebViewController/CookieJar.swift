@@ -114,13 +114,13 @@ extension WKHTTPCookieStore: CookieJar {
     }
 
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        guard let cookie = cookies.last else {
+        guard let cookie = cookies.first else {
             return completion()
         }
 
         DispatchQueue.main.async {
             self.setCookie(cookie) {
-                self.setCookies(cookies.dropLast(), completion: completion)
+                self.setCookies(Array(cookies.dropFirst()), completion: completion)
             }
         }
     }
