@@ -4,9 +4,11 @@ import ImageIO
 import UniformTypeIdentifiers
 
 extension UnifiedSupportPickedFile: Transferable {
+    /// The photo library offers images and videos under their own content types, so both have to be declared.
+    /// They're stored the same way: `store` works out from the file itself whether re-encoding it is worth it.
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(importedContentType: .image) { received in
-            try UnifiedSupportAttachmentStorage.store(received.file, compressingImage: true)
+            try UnifiedSupportAttachmentStorage.store(received.file)
         }
         FileRepresentation(importedContentType: .movie) { received in
             try UnifiedSupportAttachmentStorage.store(received.file)
@@ -27,9 +29,10 @@ enum UnifiedSupportAttachmentStorage {
 
     /// Copies a picked file to a directory of its own, so deleting one attachment never touches the others.
     ///
-    /// Images are scaled down and re-encoded on the way in: a photo straight from the camera is several times the
-    /// size of what support needs to see, and a handful of them wouldn't fit in one reply.
-    static func store(_ file: URL, compressingImage: Bool = false) throws -> UnifiedSupportPickedFile {
+    /// Still images are scaled down and re-encoded on the way in: a photo straight from the camera is several
+    /// times the size of what support needs to see, and a handful of them wouldn't fit in one reply. Everything
+    /// else — videos, documents, archives — is copied as it is.
+    static func store(_ file: URL) throws -> UnifiedSupportPickedFile {
         let id = UUID()
         let directory = URL.cachesDirectory
             .appendingPathComponent(directoryName)
@@ -40,13 +43,45 @@ enum UnifiedSupportAttachmentStorage {
         var destination = directory.appendingPathComponent(file.lastPathComponent)
 
         // Falling back to the original keeps an image the system can't re-encode attachable.
-        if compressingImage, let compressed = compressImage(at: file, in: directory) {
+        if shouldCompress(file), let compressed = compressImage(at: file, in: directory) {
             destination = compressed
         } else {
             try FileManager.default.copyItem(at: file, to: destination)
         }
 
         return UnifiedSupportPickedFile(id: id, url: destination, fileSize: size(of: destination))
+    }
+
+    /// Copies a file picked from outside the photo library, which the app may only read while it holds the
+    /// file's security scope.
+    ///
+    /// The scope is let go of again straight away: the copy is the only thing that needs the original, and iOS
+    /// hands out a limited number of them.
+    static func store(securityScoped file: URL) throws -> UnifiedSupportPickedFile {
+        let hasScope = file.startAccessingSecurityScopedResource()
+        defer {
+            if hasScope {
+                file.stopAccessingSecurityScopedResource()
+            }
+        }
+
+        // Read through a coordinator: a document picked from iCloud Drive may not be on the device yet, and
+        // copying it straight away would fail rather than fetch it.
+        var stored: Result<UnifiedSupportPickedFile, Error>?
+        var coordinationError: NSError?
+        NSFileCoordinator().coordinate(readingItemAt: file, error: &coordinationError) { url in
+            stored = Result { try store(url) }
+        }
+
+        if let coordinationError {
+            throw coordinationError
+        }
+
+        guard let stored else {
+            throw CocoaError(.fileReadUnknown)
+        }
+
+        return try stored.get()
     }
 
     static func delete(_ file: UnifiedSupportPickedFile) {
@@ -58,6 +93,19 @@ enum UnifiedSupportAttachmentStorage {
         for file in files {
             delete(file)
         }
+    }
+
+    /// Whether re-encoding the file as a smaller JPEG is worth it.
+    ///
+    /// Only still images are: a video costs more to re-encode than it saves, and a document would be destroyed
+    /// by it. Animated images are left alone too, since re-encoding one keeps nothing but its first frame —
+    /// which is usually the very thing the user attached it to show.
+    private static func shouldCompress(_ file: URL) -> Bool {
+        guard let type = try? file.resourceValues(forKeys: [.contentTypeKey]).contentType else {
+            return false
+        }
+
+        return type.conforms(to: .image) && !type.conforms(to: .gif)
     }
 
     /// Writes a scaled down JPEG copy of an image next to it, and returns where it landed.

@@ -2,7 +2,10 @@ import PhotosUI
 import QuickLookThumbnailing
 import SwiftUI
 
-/// The section of the reply form used to attach images and videos.
+/// The section of the reply form used to attach files.
+///
+/// Photos and videos come from the photo library, and everything else — documents, archives, exported logs — from
+/// the file browser. Both end up in the same list.
 ///
 /// Files are taken up to the upload limit, in the order they were picked. The ones that don't fit are listed, so the
 /// user can make room for them by removing another file.
@@ -29,10 +32,19 @@ struct UnifiedSupportAttachmentPicker: View {
     /// otherwise both take the same item for a new one.
     @State private var importing: Set<PhotosPickerItem> = []
 
+    /// How many browsed files are being copied in.
+    ///
+    /// The file browser keeps no selection to track these against, so there's nothing to count but the files
+    /// themselves.
+    @State private var importingFileCount = 0
+
+    @State private var isShowingFileBrowser = false
+
     @State private var loadingErrorMessage: String?
 
+    /// Whether a file from either source is still being brought in.
     private var isLoading: Bool {
-        !importing.isEmpty
+        !importing.isEmpty || importingFileCount > 0
     }
 
     var body: some View {
@@ -70,27 +82,56 @@ struct UnifiedSupportAttachmentPicker: View {
         .listRowSeparator(.hidden)
     }
 
+    /// The two places a file can come from, offered side by side.
+    ///
+    /// They're separate pickers because the photo library doesn't list documents, and the file browser is a poor
+    /// way to find a screenshot. Each one says what it opens, so neither needs explaining.
     private var picker: some View {
-        PhotosPicker(selection: $selection, matching: .any(of: [.images, .videos])) {
-            HStack {
-                if isLoading {
-                    ProgressView()
-                        .tint(Color.accentColor)
-                } else {
-                    Image(systemName: "paperclip")
-                }
+        // Read out here: the labels below are built in a nonisolated context, which can't reach the state.
+        let isLoadingPhotos = !importing.isEmpty
+        let isLoadingFiles = importingFileCount > 0
 
-                Text(
-                    files.isEmpty
-                        ? UnifiedSupportLocalization.addAttachments
-                        : UnifiedSupportLocalization.addMoreAttachments
+        return HStack(spacing: 12) {
+            PhotosPicker(selection: $selection, matching: .any(of: [.images, .videos])) {
+                UnifiedSupportAttachmentSourceLabel(
+                    title: UnifiedSupportLocalization.attachFromPhotoLibrary,
+                    systemImage: "photo.on.rectangle",
+                    isLoading: isLoadingPhotos
                 )
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.accentColor.opacity(0.1))
-            .foregroundStyle(Color.accentColor)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+
+            Button {
+                isShowingFileBrowser = true
+            } label: {
+                UnifiedSupportAttachmentSourceLabel(
+                    title: UnifiedSupportLocalization.attachFromFiles,
+                    systemImage: "folder",
+                    isLoading: isLoadingFiles
+                )
+            }
+            // Left to the label, which is already drawn as a button.
+            .buttonStyle(.plain)
+        }
+        // Anything the support team can be sent is worth offering, so the browser isn't narrowed to a list of
+        // types: a crash report or an exported database is as useful as a screenshot. `data` is every type
+        // that is a file, which leaves out the one thing there's no sending — a folder.
+        .fileImporter(
+            isPresented: $isShowingFileBrowser,
+            allowedContentTypes: [.data],
+            allowsMultipleSelection: true
+        ) { result in
+            switch result {
+            case .success(let urls):
+                imports.start {
+                    await load(browsed: urls)
+                }
+            case .failure(let error):
+                // Backing out of the browser isn't a failure worth a message.
+                guard !error.isUnifiedSupportCancellation else {
+                    return
+                }
+                loadingErrorMessage = error.unifiedSupportMessage
+            }
         }
         .onChange(of: selection) { _, newSelection in
             imports.start {
@@ -187,14 +228,14 @@ struct UnifiedSupportAttachmentPicker: View {
             return
         }
 
-        if importing.isEmpty {
+        if !isLoading {
             loadingErrorMessage = nil
         }
         importing.formUnion(newItems)
         isImporting = true
         defer {
             importing.subtract(newItems)
-            isImporting = !importing.isEmpty
+            isImporting = isLoading
         }
 
         for item in newItems {
@@ -218,6 +259,79 @@ struct UnifiedSupportAttachmentPicker: View {
                 loadingErrorMessage = error.unifiedSupportMessage
             }
         }
+    }
+
+    /// Brings in the files picked from the file browser.
+    ///
+    /// Unlike the photo library, the browser remembers no selection, so each pick is only ever an addition and
+    /// there's nothing to take back off the list here.
+    private func load(browsed urls: [URL]) async {
+        guard !urls.isEmpty else {
+            return
+        }
+
+        if !isLoading {
+            loadingErrorMessage = nil
+        }
+        importingFileCount += urls.count
+        isImporting = true
+        defer {
+            importingFileCount -= urls.count
+            isImporting = isLoading
+        }
+
+        for url in urls {
+            do {
+                // Copying a file the size of a video would block the form for as long as it takes.
+                let file = try await Task.detached(priority: .userInitiated) {
+                    try UnifiedSupportAttachmentStorage.store(securityScoped: url)
+                }.value
+
+                // The form can close while a file is being copied, which leaves the reply it was picked for
+                // gone, and nowhere to put it.
+                guard !Task.isCancelled else {
+                    UnifiedSupportAttachmentStorage.delete(file)
+                    continue
+                }
+                files.append(file)
+            } catch {
+                // Closing the form cancels the import, which isn't a failure worth a message.
+                guard !Task.isCancelled, !error.isUnifiedSupportCancellation else {
+                    return
+                }
+                loadingErrorMessage = error.unifiedSupportMessage
+            }
+        }
+    }
+}
+
+/// One of the places an attachment can be picked from, drawn as a button.
+private struct UnifiedSupportAttachmentSourceLabel: View {
+
+    let title: String
+    let systemImage: String
+
+    /// Whether this source is still bringing a file in, which replaces its icon with a spinner.
+    let isLoading: Bool
+
+    var body: some View {
+        VStack(spacing: 6) {
+            if isLoading {
+                ProgressView()
+                    .tint(Color.accentColor)
+            } else {
+                Image(systemName: systemImage)
+            }
+
+            Text(title)
+                .font(.subheadline)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.accentColor.opacity(0.1))
+        .foregroundStyle(Color.accentColor)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
 
@@ -248,7 +362,7 @@ final class UnifiedSupportAttachmentImports {
     }
 }
 
-/// A preview of a picked file, generated by QuickLook so it works for images and videos alike.
+/// A preview of a picked file, generated by QuickLook so it works for images, videos and documents alike.
 private struct UnifiedSupportAttachmentThumbnail: View {
 
     let file: UnifiedSupportPickedFile
@@ -257,6 +371,10 @@ private struct UnifiedSupportAttachmentThumbnail: View {
 
     @State private var image: UIImage?
 
+    /// Whether QuickLook has been asked, which is what separates a file still being previewed from one that has
+    /// no preview to offer.
+    @State private var didGenerateThumbnail = false
+
     var body: some View {
         Group {
             if let image {
@@ -264,11 +382,7 @@ private struct UnifiedSupportAttachmentThumbnail: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
             } else {
-                Color(.systemGray5)
-                    .overlay {
-                        Image(systemName: "doc")
-                            .foregroundStyle(.secondary)
-                    }
+                placeholder
             }
         }
         .frame(width: Self.size.width, height: Self.size.height)
@@ -276,7 +390,28 @@ private struct UnifiedSupportAttachmentThumbnail: View {
         .accessibilityLabel(file.filename)
         .task(id: file.id) {
             image = await generateThumbnail()
+            didGenerateThumbnail = true
         }
+    }
+
+    /// Names the file once it's clear no preview is coming: the archives and logs QuickLook can't draw would
+    /// otherwise all be the same anonymous tile.
+    private var placeholder: some View {
+        Color(.systemGray5)
+            .overlay {
+                VStack(spacing: 4) {
+                    Image(systemName: "doc")
+
+                    if didGenerateThumbnail {
+                        Text(file.filename)
+                            .font(.caption2)
+                            .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 4)
+                    }
+                }
+                .foregroundStyle(.secondary)
+            }
     }
 
     private func generateThumbnail() async -> UIImage? {
