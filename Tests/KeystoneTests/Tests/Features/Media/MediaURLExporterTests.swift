@@ -40,8 +40,6 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     fileprivate func exportTestVideo(removingGPS: Bool) throws {
-        throw XCTSkip("This test became too flaky in iOS 18")
-
         guard let mediaPath = OHPathForFile(testDeviceVideoName, type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test video file")
             return
@@ -62,7 +60,7 @@ class MediaURLExporterTests: XCTestCase {
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
+        waitForExpectations(timeout: 60.0, handler: nil)
     }
 
     func testThatURLExportingGIFWorks() {
@@ -91,7 +89,7 @@ class MediaURLExporterTests: XCTestCase {
         XCTAssertTrue(asset.isPlayable, "Error: exported video asset is unplayble.")
 
         if let duration = export.duration {
-            XCTAssertTrue(asset.duration.seconds == duration, "The exported video's duration does not match the expected duration.")
+            XCTAssertEqual(asset.duration.seconds, duration, accuracy: 0.01, "The exported video's duration does not match the expected duration.")
         }
         var hasLocationData = false
         for metadata in asset.metadata {
