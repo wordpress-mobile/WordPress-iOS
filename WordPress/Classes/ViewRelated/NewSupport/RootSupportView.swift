@@ -62,9 +62,6 @@ struct RootSupportView: View {
                 if let identity, isUnifiedSupportAvailable {
                     unifiedSupportLink(for: identity)
                 }
-                if let identity {
-                    humanSupportLink(for: identity)
-                }
             }
 
             Section("Diagnostics") {
@@ -105,20 +102,6 @@ struct RootSupportView: View {
                 imageName: "questionmark.bubble",
                 title: Strings.getHelpTitle,
                 detail: Strings.getHelpDetail
-            )
-        }
-    }
-
-    @ViewBuilder
-    private func humanSupportLink(for identity: SupportUser) -> some View {
-        NavigationLink {
-            SupportConversationListView(currentUser: identity)
-                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-        } label: {
-            SupportAreaRow(
-                imageName: "envelope.badge",
-                title: "Ask the Happiness Engineers",
-                detail: "For your tough questions. We'll reply via email."
             )
         }
     }
