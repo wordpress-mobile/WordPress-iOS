@@ -5,10 +5,6 @@ import WebKit
 class MockCookieJar: HTTPCookieStorage {
     var _cookies = [HTTPCookie]()
 
-    override func cookies(for URL: URL) -> [HTTPCookie]? {
-        return _cookies
-    }
-
     override var cookies: [HTTPCookie]? {
         return _cookies
     }
