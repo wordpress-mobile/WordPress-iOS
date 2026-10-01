@@ -410,7 +410,7 @@ DEPENDENCIES
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit (~> 15.0)
   rake
-  rmagick (~> 7.1.6)
+  rmagick (~> 7.1)
   rubocop (~> 1.91)
   rubocop-rake (~> 0.7)
 
