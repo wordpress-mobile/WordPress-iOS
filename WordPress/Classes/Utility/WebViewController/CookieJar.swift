@@ -110,11 +110,7 @@ extension WKHTTPCookieStore: CookieJar {
                     }
                 )
             })
-        let result = group.wait(timeout: .now() + .seconds(2))
-        if result == .timedOut {
-            DDLogWarn("Time out waiting for WKHTTPCookieStore to remove cookies")
-        }
-        completion()
+        group.notify(queue: .main, execute: completion)
     }
 
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
