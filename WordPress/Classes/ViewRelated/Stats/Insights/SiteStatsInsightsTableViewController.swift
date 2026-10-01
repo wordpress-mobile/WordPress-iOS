@@ -514,11 +514,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        guard let manageVC = ManageConnectionsHostingController.make(for: blog) else {
-            return wpAssertionFailure("social connections service unavailable")
+        guard let sharingVC = ManageConnectionsHostingController.sharingDestination(for: blog) else {
+            return
         }
 
-        let navigationController = UINavigationController(rootViewController: manageVC)
+        let navigationController = UINavigationController(rootViewController: sharingVC)
         present(navigationController, animated: true)
 
         applyTableUpdates()
