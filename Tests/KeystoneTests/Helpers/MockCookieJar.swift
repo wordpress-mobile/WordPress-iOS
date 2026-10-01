@@ -45,12 +45,12 @@ extension HTTPCookieStorage {
 }
 
 extension WKHTTPCookieStore {
-    func setWordPressCookie(username: String, domain: String) {
+    func setWordPressCookie(username: String, domain: String, completion: @escaping () -> Void) {
         let cookie = wordPressCookie(username: username, domain: domain)
-        setCookie(cookie)
+        setCookie(cookie, completionHandler: completion)
     }
 
-    func setWordPressComCookie(username: String) {
-        setWordPressCookie(username: username, domain: ".wordpress.com")
+    func setWordPressComCookie(username: String, completion: @escaping () -> Void) {
+        setWordPressCookie(username: username, domain: ".wordpress.com", completion: completion)
     }
 }
