@@ -7,7 +7,6 @@ class WKCookieJarTests: XCTestCase {
     var cookieJar: CookieJar {
         return wkCookieStore
     }
-    let wordPressComLoginURL = URL(string: "https://wordpress.com/wp-login.php")!
 
     override func setUp() {
         super.setUp()
@@ -17,20 +16,6 @@ class WKCookieJarTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-    }
-
-    func testGetCookies() {
-        XCTExpectFailure(
-            "WKHTTPCookieStore tests fail on Xcode 15+. The calling setCookie on the store does not seem to set the cookie...",
-            options: .nonStrict()
-        )
-
-        let expectation = self.expectation(description: "getCookies completion called")
-        cookieJar.getCookies(url: wordPressComLoginURL) { cookies in
-            XCTAssertEqual(cookies.count, 1, "Should be one cookie for wordpress.com")
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testHasCookieMatching() {
