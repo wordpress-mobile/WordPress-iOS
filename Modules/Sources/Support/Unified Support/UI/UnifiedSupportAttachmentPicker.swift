@@ -283,15 +283,26 @@ struct UnifiedSupportAttachmentPicker: View {
         for url in urls {
             do {
                 // Copying a file the size of a video would block the form for as long as it takes.
-                let file = try await Task.detached(priority: .userInitiated) {
-                    try UnifiedSupportAttachmentStorage.store(securityScoped: url)
-                }.value
+                //
+                // The coordination is held out here so leaving the form can stop a fetch still waiting on
+                // iCloud: a detached task inherits no cancellation, and awaiting one isn't a cancellation
+                // point either, so nothing else would interrupt the download.
+                let coordination = UnifiedSupportFileCoordination()
+                let copy = Task.detached(priority: .userInitiated) {
+                    try UnifiedSupportAttachmentStorage.store(securityScoped: url, coordination: coordination)
+                }
+                let file = try await withTaskCancellationHandler {
+                    try await copy.value
+                } onCancel: {
+                    coordination.cancel()
+                }
 
                 // The form can close while a file is being copied, which leaves the reply it was picked for
-                // gone, and nowhere to put it.
+                // gone, and nowhere to put it. The files queued behind this one have nowhere to go either, so
+                // they're left uncopied rather than copied and thrown away one by one.
                 guard !Task.isCancelled else {
                     UnifiedSupportAttachmentStorage.delete(file)
-                    continue
+                    break
                 }
                 files.append(file)
             } catch {
