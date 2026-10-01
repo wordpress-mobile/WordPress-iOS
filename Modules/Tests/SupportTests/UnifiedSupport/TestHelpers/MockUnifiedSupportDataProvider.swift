@@ -80,7 +80,7 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
     }
 
     /// The messages sent, in order, with the conversation they were sent to. A `nil` id means a new conversation.
-    nonisolated var sentMessages: [(conversationId: UInt64?, message: String)] {
+    nonisolated var sentMessages: [SentMessage] {
         sentMessagesStore.withLock { $0 }
     }
 
@@ -89,7 +89,7 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
     }
 
     func createBotConversation(message: String) async throws -> UnifiedSupportConversation {
-        sentMessagesStore.withLock { $0.append((nil, message)) }
+        sentMessagesStore.withLock { $0.append(SentMessage(conversationId: nil, message: message)) }
         return try stubs.withLock { $0.createdConversation }.get()
     }
 
@@ -99,12 +99,27 @@ actor MockUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         attachments: [URL],
         includeApplicationLogs: Bool
     ) async throws -> UnifiedSupportConversation {
-        sentMessagesStore.withLock { $0.append((id, message)) }
+        sentMessagesStore.withLock {
+            $0.append(
+                SentMessage(
+                    conversationId: id,
+                    message: message,
+                    attachments: attachments,
+                    includesApplicationLogs: includeApplicationLogs
+                )
+            )
+        }
         return try stubs.withLock { $0.repliedConversation }.get()
     }
 }
 
-typealias SentMessage = (conversationId: UInt64?, message: String)
+struct SentMessage: Equatable, Sendable {
+    /// `nil` when the message started a new conversation.
+    var conversationId: UInt64?
+    var message: String
+    var attachments: [URL] = []
+    var includesApplicationLogs = false
+}
 
 struct StubCachedAndFetchedResult<T: Sendable>: CachedAndFetchedResult {
     let cachedResult: @Sendable () async throws -> T?

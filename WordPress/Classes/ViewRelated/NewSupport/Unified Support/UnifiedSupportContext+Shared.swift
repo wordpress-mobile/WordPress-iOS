@@ -10,7 +10,8 @@ extension UnifiedSupportContext {
         return UnifiedSupportContext(
             dataProvider: WpUnifiedSupportDataProvider(client: client),
             tracker: WpUnifiedSupportTracker(),
-            mediaHost: client
+            mediaHost: client,
+            supportDataProvider: .shared
         )
     }()
 }

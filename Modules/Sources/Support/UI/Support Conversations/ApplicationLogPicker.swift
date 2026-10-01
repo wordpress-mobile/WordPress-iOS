@@ -18,6 +18,13 @@ struct ApplicationLogPicker: View {
     var state: ViewState = .loading
 
     var body: some View {
+        // Offering logs the support team will never receive is worse than not offering them at all.
+        if dataProvider.canShareApplicationLogs {
+            picker
+        }
+    }
+
+    private var picker: some View {
         Section {
             VStack(alignment: .leading, spacing: 12) {
                 Toggle(isOn: $includeApplicationLogs.animation(.easeInOut(duration: 0.3))) {
@@ -35,12 +42,7 @@ struct ApplicationLogPicker: View {
                     .foregroundColor(.secondary)
             }.padding(4)
         } header: {
-            HStack {
-                Text(Localization.applicationLogs)
-                Text(Localization.optional)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
+            Text(Localization.applicationLogs)
         } footer: {
             if includeApplicationLogs {
                 switch self.state {

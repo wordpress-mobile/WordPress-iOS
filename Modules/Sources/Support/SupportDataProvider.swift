@@ -160,6 +160,10 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     }
 
     // Application Logs
+    public var canShareApplicationLogs: Bool {
+        self.applicationLogProvider.canShareApplicationLogs
+    }
+
     public func fetchApplicationLogs() async throws -> [ApplicationLog] {
         try await self.applicationLogProvider.fetchApplicationLogs()
     }
@@ -246,6 +250,12 @@ public protocol DiagnosticsDataProvider: Actor {
 }
 
 public protocol ApplicationLogDataProvider: Actor {
+    /// Whether the application logs can reach the support team.
+    ///
+    /// The user can opt out of sharing them, and logs queued while they're opted out are never uploaded. The
+    /// support forms don't offer logs they can't deliver.
+    nonisolated var canShareApplicationLogs: Bool { get }
+
     func readApplicationLog(_ log: ApplicationLog) async throws -> String
     func fetchApplicationLogs() async throws -> [ApplicationLog]
     func deleteApplicationLogs(in logs: [ApplicationLog]) async throws

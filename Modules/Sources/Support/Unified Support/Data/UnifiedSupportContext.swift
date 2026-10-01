@@ -12,13 +12,18 @@ public final class UnifiedSupportContext: ObservableObject {
     /// Authenticates the requests for private attachments.
     let mediaHost: any MediaHostProtocol
 
+    /// Backs the application log picker the reply form shares with the other support screens.
+    let supportDataProvider: SupportDataProvider
+
     public init(
         dataProvider: any UnifiedSupportDataProvider,
         tracker: any UnifiedSupportTracker,
-        mediaHost: any MediaHostProtocol
+        mediaHost: any MediaHostProtocol,
+        supportDataProvider: SupportDataProvider
     ) {
         self.dataProvider = dataProvider
         self.tracker = tracker
         self.mediaHost = mediaHost
+        self.supportDataProvider = supportDataProvider
     }
 }

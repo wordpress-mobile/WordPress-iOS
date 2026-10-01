@@ -6,6 +6,9 @@ struct UnifiedSupportAttachmentsView: View {
 
     let attachments: [UnifiedSupportAttachment]
 
+    /// Whether the links are the pages an answer is based on, which are introduced as extra reading.
+    var showsRelatedHeader = false
+
     private var links: [UnifiedSupportAttachment] {
         attachments.filter { $0.kind == .link }
     }
@@ -18,6 +21,10 @@ struct UnifiedSupportAttachmentsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            if showsRelatedHeader && !links.isEmpty {
+                UnifiedSupportRelatedLinksHeader()
+            }
+
             ForEach(links) { link in
                 UnifiedSupportAttachmentLink(attachment: link)
             }
@@ -30,6 +37,22 @@ struct UnifiedSupportAttachmentsView: View {
                 }
             }
         }
+    }
+}
+
+/// Separates an answer from the pages it was based on, which otherwise read as one block.
+struct UnifiedSupportRelatedLinksHeader: View {
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Divider()
+
+            Text(UnifiedSupportLocalization.relatedLinks)
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.top, 4)
     }
 }
 

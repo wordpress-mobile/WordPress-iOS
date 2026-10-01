@@ -33,6 +33,12 @@ extension SupportDataProvider {
 }
 
 actor WpLogDataProvider: ApplicationLogDataProvider {
+    /// Logs are only uploaded when the user shares crash reports: `EventLoggingDelegate` won't send a queued log
+    /// otherwise, so a form that offered them would promise what it can't deliver.
+    nonisolated var canShareApplicationLogs: Bool {
+        !UserSettings.userHasOptedOutOfCrashLogging
+    }
+
     func fetchApplicationLogs() async throws -> [Support.ApplicationLog] {
         try WPLogger.shared().fileLogger
             .logFileManager

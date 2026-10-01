@@ -217,6 +217,231 @@ struct UnifiedSupportConversationViewModelTests {
         #expect(tracker.trackedEvents.contains { if case .escalateConversation = $0 { true } else { false } })
     }
 
+    // MARK: - Refreshing silently
+
+    @Test func showsTheAnswersThatArrivedWhileReadingATicket() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let answered = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 1, content: "Hi, I'm Jane", authorRole: .support)]
+        )
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        await viewModel.load()
+
+        provider.updateStubs { $0.fetchedConversation = .success(answered) }
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.messages.map(\.content) == ["Hi, I'm Jane"])
+    }
+
+    /// A chat only changes when the user writes in it, so there is nothing to poll for.
+    @Test func doesNotRefreshAChatWithTheAssistant() async {
+        let chat = UnifiedSupportConversation.make(id: 7, status: .bot)
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(chat)))
+        let viewModel = makeViewModel(.existing(chat.summary), provider)
+
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.conversation == nil)
+    }
+
+    @Test func dropsARefreshThatStartedBeforeAReplyWasSent() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let replied = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 2, content: "Any news?", authorRole: .user)]
+        )
+        let provider = MockUnifiedSupportDataProvider(
+            .init(fetchedConversation: .success(ticket), repliedConversation: .success(replied))
+        )
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        await viewModel.load()
+
+        // The reply lands while the refresh is still on its way, so the refresh's older answer must be dropped.
+        async let refresh: Void = viewModel.refreshSilently()
+        viewModel.replyDraft.message = "Any news?"
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+        await refresh
+
+        #expect(viewModel.messages.map(\.content) == ["Any news?"])
+    }
+
+    /// The server can answer a refresh that started after a reply with a snapshot taken before it, and a reply
+    /// that disappears reads as a reply that was never sent.
+    @Test func keepsTheMessagesAServerSnapshotHasNotCaughtUpWith() async {
+        let replied = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 1, content: "Any news?", authorRole: .user)]
+        )
+        let lagging = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(replied)))
+        let viewModel = makeViewModel(.existing(replied.summary), provider)
+        await viewModel.load()
+
+        provider.updateStubs { $0.fetchedConversation = .success(lagging) }
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.messages.map(\.content) == ["Any news?"])
+    }
+
+    /// A refresh that keeps every message and adds one is the answer from support the polling exists for.
+    @Test func takesARefreshThatOnlyAddsMessages() async {
+        let ticket = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [.make(id: 1, content: "Any news?", authorRole: .user)]
+        )
+        let answered = UnifiedSupportConversation.make(
+            id: 7,
+            status: .ongoing,
+            messages: [
+                .make(id: 1, content: "Any news?", authorRole: .user),
+                .make(id: 2, content: "Hi, I'm Jane", authorRole: .support)
+            ]
+        )
+        let provider = MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        await viewModel.load()
+
+        provider.updateStubs { $0.fetchedConversation = .success(answered) }
+        await viewModel.refreshSilently()
+
+        #expect(viewModel.messages.map(\.content) == ["Any news?", "Hi, I'm Jane"])
+    }
+
+    // MARK: - Replying to a ticket
+
+    @Test func sendsTheReplyWithItsAttachmentsAndLogs() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(repliedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        let file = makeFile(fileSize: 10)
+
+        viewModel.replyDraft = UnifiedSupportReplyDraft(
+            message: "  Here is a screenshot  ",
+            files: [file],
+            includeApplicationLogs: true
+        )
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+
+        #expect(
+            provider.sentMessages == [
+                SentMessage(
+                    conversationId: 7,
+                    message: "Here is a screenshot",
+                    attachments: [file.url],
+                    includesApplicationLogs: true
+                )
+            ]
+        )
+    }
+
+    @Test func closesTheFormAndKeepsNothingWhenTheReplyIsSent() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(repliedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+
+        viewModel.isReplySheetPresented = true
+        viewModel.replyDraft.message = "Any news?"
+        viewModel.sendTicketReply()
+        #expect(!viewModel.isReplySheetPresented)
+
+        await viewModel.waitForSending()
+
+        #expect(viewModel.replyDraft == UnifiedSupportReplyDraft())
+        #expect(viewModel.notice?.message == UnifiedSupportLocalization.replySent)
+        #expect(viewModel.replyFailure == nil)
+    }
+
+    @Test func keepsTheReplyWhenSendingFails() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(repliedConversation: .failure(MockError.failure)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        let draft = UnifiedSupportReplyDraft(message: "Any news?", files: [makeFile(fileSize: 10)])
+
+        viewModel.replyDraft = draft
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+
+        #expect(viewModel.replyDraft == draft)
+        #expect(viewModel.replyFailure?.message == UnifiedSupportLocalization.genericErrorMessage)
+        #expect(viewModel.messages.isEmpty)
+        #expect(tracker.trackedEvents.contains { if case .failToSendMessage = $0 { true } else { false } })
+    }
+
+    @Test func keepsTheReplyWhenTheDeviceIsOffline() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(isOnline: false))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+
+        viewModel.replyDraft.message = "Any news?"
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+
+        #expect(provider.sentMessages.isEmpty)
+        #expect(viewModel.replyDraft.message == "Any news?")
+        #expect(viewModel.replyFailure?.message == UnifiedSupportLocalization.offlineTitle)
+        #expect(!viewModel.isSending)
+    }
+
+    @Test func leavesOutTheAttachmentsThatDoNotFit() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(repliedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+        let fitting = makeFile(fileSize: viewModel.maximumUploadSize)
+        let tooLarge = makeFile(fileSize: 1)
+
+        viewModel.replyDraft = UnifiedSupportReplyDraft(message: "Screenshots", files: [fitting, tooLarge])
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+
+        #expect(provider.sentMessages.map(\.attachments) == [[fitting.url]])
+    }
+
+    @Test func doesNotSendABlankReply() async {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(repliedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+
+        viewModel.replyDraft.message = "   "
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+
+        #expect(!viewModel.canSendReply)
+        #expect(provider.sentMessages.isEmpty)
+    }
+
+    @Test func tracksTheReplyWithWhatItCarries() async throws {
+        let ticket = UnifiedSupportConversation.make(id: 7, status: .ongoing)
+        let provider = MockUnifiedSupportDataProvider(.init(repliedConversation: .success(ticket)))
+        let viewModel = makeViewModel(.existing(ticket.summary), provider)
+
+        viewModel.replyDraft = UnifiedSupportReplyDraft(
+            message: "Any news?",
+            files: [makeFile(fileSize: 10)],
+            includeApplicationLogs: true
+        )
+        viewModel.sendTicketReply()
+        await viewModel.waitForSending()
+
+        let event = try #require(
+            tracker.trackedEvents.first { if case .replyToTicket = $0 { true } else { false } }
+        )
+        guard case .replyToTicket(let conversationId, let attachmentCount, let includesLogs) = event else {
+            Issue.record("Unexpected event: \(event)")
+            return
+        }
+        #expect(conversationId == 7)
+        #expect(attachmentCount == 1)
+        #expect(includesLogs)
+    }
+
     // MARK: - Tracking
 
     @Test func tracksOpeningAnExistingConversation() throws {
@@ -247,6 +472,10 @@ struct UnifiedSupportConversationViewModelTests {
     }
 
     // MARK: - Helpers
+
+    private func makeFile(fileSize: UInt64) -> UnifiedSupportPickedFile {
+        UnifiedSupportPickedFile(url: URL(fileURLWithPath: "/tmp/\(UUID().uuidString).png"), fileSize: fileSize)
+    }
 
     private func makeViewModel(
         _ source: UnifiedSupportConversationViewModel.Source,

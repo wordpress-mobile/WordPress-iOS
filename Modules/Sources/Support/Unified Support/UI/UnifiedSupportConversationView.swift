@@ -5,10 +5,22 @@ import SwiftUI
 struct UnifiedSupportConversationView: View {
 
     @StateObject private var viewModel: UnifiedSupportConversationViewModel
+    @EnvironmentObject private var context: UnifiedSupportContext
     @Namespace private var bottom
 
     init(viewModel: @autoclosure @escaping () -> UnifiedSupportConversationViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
+    }
+
+    private var isReplyFailureShown: Binding<Bool> {
+        Binding(
+            get: { viewModel.replyFailure != nil },
+            set: { isShown in
+                if !isShown {
+                    viewModel.replyFailure = nil
+                }
+            }
+        )
     }
 
     var body: some View {
@@ -40,6 +52,24 @@ struct UnifiedSupportConversationView: View {
         }
         .unifiedSupportNotice($viewModel.notice)
         .navigationBarTitleDisplayMode(.inline)
+        .unifiedSupportAutoRefresh(every: .seconds(60)) {
+            await viewModel.refreshSilently()
+        }
+        .sheet(isPresented: $viewModel.isReplySheetPresented) {
+            UnifiedSupportReplySheet(viewModel: viewModel, supportDataProvider: context.supportDataProvider)
+        }
+        .alert(
+            UnifiedSupportLocalization.replyFailedTitle,
+            isPresented: isReplyFailureShown,
+            presenting: viewModel.replyFailure
+        ) { _ in
+            Button(UnifiedSupportLocalization.replyFailedTryAgain) {
+                viewModel.isReplySheetPresented = true
+            }
+            Button(UnifiedSupportLocalization.ok, role: .cancel) {}
+        } message: { failure in
+            Text(failure.message)
+        }
         .onAppear {
             viewModel.onAppear()
             viewModel.loadIfNeeded()
@@ -66,8 +96,8 @@ struct UnifiedSupportConversationView: View {
                 )
             }
         } else if viewModel.canAcceptReply {
-            UnifiedSupportReplyButton(action: viewModel.replyAction) {
-                // TODO: Open the reply form.
+            UnifiedSupportReplyButton(action: viewModel.replyAction, isSending: viewModel.isSending) {
+                viewModel.isReplySheetPresented = true
             }
             .background(.bar)
         } else {

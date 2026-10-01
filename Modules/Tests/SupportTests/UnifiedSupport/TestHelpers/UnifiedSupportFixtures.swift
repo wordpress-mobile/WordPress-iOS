@@ -53,14 +53,41 @@ extension UnifiedSupportMessage {
         content: String = "Hello",
         authorRole: AuthorRole = .user,
         authorName: String = "Author",
-        createdAt: Date = Date(timeIntervalSince1970: 1_500)
+        createdAt: Date = Date(timeIntervalSince1970: 1_500),
+        attachments: [UnifiedSupportAttachment] = []
     ) -> UnifiedSupportMessage {
         UnifiedSupportMessage(
             id: .remote(id),
             content: content,
             authorRole: authorRole,
             authorName: authorName,
-            createdAt: createdAt
+            createdAt: createdAt,
+            attachments: attachments
+        )
+    }
+}
+
+extension UnifiedSupportAttachment {
+    static func makeLink(
+        filename: String = "Migrate your site",
+        url: String = "https://jetpack.com/support/"
+    ) -> UnifiedSupportAttachment {
+        UnifiedSupportAttachment(
+            remoteId: 0,
+            filename: filename,
+            contentType: "text/html",
+            fileSize: 0,
+            url: URL(string: url)!
+        )
+    }
+
+    static func makeImage(filename: String = "screenshot.png") -> UnifiedSupportAttachment {
+        UnifiedSupportAttachment(
+            remoteId: 1,
+            filename: filename,
+            contentType: "image/png",
+            fileSize: 1_024,
+            url: URL(string: "https://example.com/\(filename)")!
         )
     }
 }

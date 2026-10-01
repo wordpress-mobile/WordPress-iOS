@@ -20,6 +20,89 @@ struct UnifiedSupportMessageTests {
 
         #expect(String(message.attributedContent.characters) == "Some bold text")
     }
+
+    // MARK: - Author
+
+    @Test func readsTheUserFromTheRole() {
+        let message = UnifiedSupportMessage.make(authorRole: .user, authorName: "alinclamba85d71154af")
+
+        #expect(message.isUser)
+        #expect(!message.isBot)
+    }
+
+    @Test func readsTheAssistantFromTheRole() {
+        #expect(UnifiedSupportMessage.make(authorRole: .bot, authorName: "bot").isBot)
+    }
+
+    /// The conversations endpoint labels the assistant's messages with a role this app doesn't know.
+    @Test(arguments: ["bot", "Bot", "BOT"])
+    func readsTheAssistantFromTheAuthorName(_ authorName: String) {
+        #expect(UnifiedSupportMessage.make(authorRole: .unknown, authorName: authorName).isBot)
+    }
+
+    @Test func readsAHappinessEngineerAsNeitherTheUserNorTheAssistant() {
+        let message = UnifiedSupportMessage.make(authorRole: .support, authorName: "Jane")
+
+        #expect(!message.isUser)
+        #expect(!message.isBot)
+    }
+
+    @Test func showsTheSignedInUserByTheirName() {
+        let message = UnifiedSupportMessage.make(authorRole: .user, authorName: "alinclamba85d71154af")
+
+        #expect(message.authorDisplayName(currentUserName: "Alin Clamba") == "Alin Clamba")
+    }
+
+    @Test func fallsBackToTheNameTheServerSendsForTheUser() {
+        let message = UnifiedSupportMessage.make(authorRole: .user, authorName: "alinclamba85d71154af")
+
+        #expect(message.authorDisplayName(currentUserName: "") == "alinclamba85d71154af")
+    }
+
+    @Test func showsTheAssistantByItsName() {
+        let message = UnifiedSupportMessage.make(authorRole: .bot, authorName: "bot")
+
+        #expect(
+            message.authorDisplayName(currentUserName: "Alin Clamba")
+                == UnifiedSupportLocalization.statusAIAssistant
+        )
+    }
+
+    @Test func showsAHappinessEngineerByTheNameTheServerSends() {
+        let message = UnifiedSupportMessage.make(authorRole: .support, authorName: "Jane")
+
+        #expect(message.authorDisplayName(currentUserName: "Alin Clamba") == "Jane")
+    }
+
+    // MARK: - Related links
+
+    @Test func answersBasedOnPagesAreToldApartFromTheirSources() {
+        let message = UnifiedSupportMessage.make(
+            authorRole: .bot,
+            attachments: [.makeLink(), .makeLink()]
+        )
+
+        #expect(message.hasOnlyLinkAttachments)
+    }
+
+    @Test func aMessageMixingLinksAndFilesKeepsItsPlainLayout() {
+        let message = UnifiedSupportMessage.make(
+            authorRole: .support,
+            attachments: [.makeLink(), .makeImage()]
+        )
+
+        #expect(!message.hasOnlyLinkAttachments)
+    }
+
+    @Test func aMessageFromTheUserIsNeverPresentedAsExtraReading() {
+        let message = UnifiedSupportMessage.make(authorRole: .user, attachments: [.makeLink()])
+
+        #expect(!message.hasOnlyLinkAttachments)
+    }
+
+    @Test func aMessageWithoutAttachmentsHasNothingToIntroduce() {
+        #expect(!UnifiedSupportMessage.make(authorRole: .bot).hasOnlyLinkAttachments)
+    }
 }
 
 struct UnifiedSupportAttachmentTests {

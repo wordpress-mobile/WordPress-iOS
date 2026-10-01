@@ -159,6 +159,11 @@ enum UnifiedSupportLocalization {
         value: "%1$d%% match",
         comment: "How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87."
     )
+    static let relatedLinks = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.attachment.related",
+        value: "Related:",
+        comment: "Introduces the pages the AI Assistant used to answer, listed under its answer."
+    )
     static let openLink = NSLocalizedString(
         "com.jetpack.support.unified.conversation.attachment.openLink",
         value: "Open link: %1$@",
@@ -168,5 +173,121 @@ enum UnifiedSupportLocalization {
         "com.jetpack.support.unified.conversation.attachment.loading",
         value: "Loading attachment…",
         comment: "Shown while an attachment of a support message is loading."
+    )
+
+    // MARK: - Reply form
+
+    static let message = NSLocalizedString(
+        "com.jetpack.support.unified.reply.message",
+        value: "Message",
+        comment: "Title of the field where the user writes a reply to the support team."
+    )
+    static let send = NSLocalizedString(
+        "com.jetpack.support.unified.reply.send",
+        value: "Send",
+        comment: "Button that sends the reply written for the support team."
+    )
+    static let cancel = NSLocalizedString(
+        "com.jetpack.support.unified.reply.cancel",
+        value: "Cancel",
+        comment: "Button that closes the form used to reply to the support team."
+    )
+    static let ok = NSLocalizedString(
+        "com.jetpack.support.unified.reply.ok",
+        value: "OK",
+        comment: "Button that dismisses a message about a reply that couldn't be sent."
+    )
+    static let optional = NSLocalizedString(
+        "com.jetpack.support.unified.reply.optional",
+        value: "Optional",
+        comment: "Marks a part of the reply form the user doesn't have to fill in."
+    )
+    static let sendingReply = NSLocalizedString(
+        "com.jetpack.support.unified.reply.sending",
+        value: "Sending…",
+        comment: "Shown on the reply button while the reply is being sent to the support team."
+    )
+    static let replySent = NSLocalizedString(
+        "com.jetpack.support.unified.reply.sent",
+        value: "Your reply has been sent. Check your email for updates.",
+        comment: "Shown after a reply to the support team has been sent."
+    )
+    static let replyFailedTitle = NSLocalizedString(
+        "com.jetpack.support.unified.reply.failed.title",
+        value: "Your reply wasn't sent",
+        comment: "Title of the message shown when a reply to the support team couldn't be sent."
+    )
+    static let replyFailedTryAgain = NSLocalizedString(
+        "com.jetpack.support.unified.reply.failed.tryAgain",
+        value: "Try Again",
+        comment: "Button that opens the reply form again after a reply couldn't be sent."
+    )
+    static let discardReplyTitle = NSLocalizedString(
+        "com.jetpack.support.unified.reply.discard.title",
+        value: "Discard this reply?",
+        comment: "Title of the confirmation shown when closing the reply form with an unsent reply."
+    )
+    static let discardReplyMessage = NSLocalizedString(
+        "com.jetpack.support.unified.reply.discard.message",
+        value: "Your message and its attachments will be lost.",
+        comment: "Explains what is lost by closing the reply form with an unsent reply."
+    )
+    static let discardReply = NSLocalizedString(
+        "com.jetpack.support.unified.reply.discard.confirm",
+        value: "Discard",
+        comment: "Button that throws away an unsent reply to the support team."
+    )
+    static let keepWriting = NSLocalizedString(
+        "com.jetpack.support.unified.reply.discard.cancel",
+        value: "Keep Writing",
+        comment: "Button that goes back to the reply form instead of throwing away an unsent reply."
+    )
+
+    // MARK: - Reply attachments
+
+    static let attachments = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments",
+        value: "Attachments",
+        comment: "Title of the part of the reply form where images and videos are attached."
+    )
+    static let attachmentsDescription = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.description",
+        value: "Add images or videos that show the problem.",
+        comment: "Explains what to attach to a reply to the support team."
+    )
+    static let addAttachments = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.add",
+        value: "Add Images or Videos",
+        comment: "Button that picks the images and videos to send with a reply."
+    )
+    static let addMoreAttachments = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.addMore",
+        value: "Add More",
+        comment: "Button that picks more images and videos to send with a reply."
+    )
+    static let attachmentsPartial = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.partial",
+        value: "Max size reached. Only %1$d of %2$d files will be sent",
+        comment: "Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked."
+    )
+    static let attachmentTooLarge = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.tooLarge.one",
+        value: "This file is too large to send.",
+        comment: "Shown when the only file picked for a reply is over the upload limit on its own."
+    )
+    static let attachmentsTooLarge = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.tooLarge.other",
+        value: "These files are too large to send.",
+        comment: "Shown when every file picked for a reply is over the upload limit on its own."
+    )
+    static let attachmentsFailedTitle = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.failed",
+        value: "Unable to attach the file",
+        comment: "Title of the message shown when a picked image or video can't be attached to a reply."
+    )
+    static let removeAttachment = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.remove",
+        value: "Remove %1$@",
+        comment: "Button that takes a file off a reply. %1$@ is the file name."
     )
 }

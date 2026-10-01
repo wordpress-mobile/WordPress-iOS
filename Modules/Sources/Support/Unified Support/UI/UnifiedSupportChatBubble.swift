@@ -6,7 +6,7 @@ struct UnifiedSupportChatBubble: View {
     let message: UnifiedSupportMessage
 
     private var isWrittenByUser: Bool {
-        message.authorRole == .user
+        message.isUser
     }
 
     private var links: [UnifiedSupportAttachment] {
@@ -26,6 +26,10 @@ struct UnifiedSupportChatBubble: View {
                 Text(message.attributedContent)
                     .font(.body)
                     .textSelection(.enabled)
+
+                if message.hasOnlyLinkAttachments {
+                    UnifiedSupportRelatedLinksHeader()
+                }
 
                 ForEach(links) { link in
                     UnifiedSupportSourceLink(attachment: link)
@@ -58,10 +62,15 @@ private struct UnifiedSupportSourceLink: View {
             openURL(attachment.url)
         } label: {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text(attachment.filename)
-                    .font(.subheadline)
-                    .underline()
-                    .multilineTextAlignment(.leading)
+                // The same icon as in a ticket, so a link doesn't change its looks once the conversation is
+                // handed to a Happiness Engineer.
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Image(systemName: "arrow.up.forward.square")
+                    Text(attachment.filename)
+                        .underline()
+                        .multilineTextAlignment(.leading)
+                }
+                .font(.subheadline)
 
                 if let matchScore = attachment.matchScore {
                     Text(
