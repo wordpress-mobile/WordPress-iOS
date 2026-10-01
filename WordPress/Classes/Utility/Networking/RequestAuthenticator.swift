@@ -76,8 +76,6 @@ class RequestAuthenticator: NSObject, @unchecked Sendable {
 
     /// Potentially rewrites a request for authentication.
     ///
-    /// This method will call the completion block with the request to be used.
-    ///
     /// - Warning: On WordPress.com, this uses a special redirect system. It
     /// requires the web view to call `interceptRedirect(request:)` before
     /// loading any request.
@@ -86,213 +84,194 @@ class RequestAuthenticator: NSObject, @unchecked Sendable {
     ///     - url: the URL to be loaded.
     ///     - cookieJar: a CookieJar object where the authenticator will look
     ///     for existing cookies.
-    ///     - completion: this will be called with either the request for
-    ///     authentication, or a request for the original URL.
+    /// - Returns: either the request for authentication, or a request for the
+    ///     original URL.
     ///
-    func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
+    @MainActor
+    func request(url: URL, cookieJar: CookieJar) async -> URLRequest {
         switch self.credentials {
         case .dotCom(let username, let authToken, let authenticationType):
-            requestForWPCom(
+            return await requestForWPCom(
                 url: url,
                 cookieJar: cookieJar,
                 username: username,
                 authToken: authToken,
-                authenticationType: authenticationType,
-                completion: completion)
+                authenticationType: authenticationType)
         case .siteLogin(let loginURL, let username, let password):
-            requestForSelfHosted(
+            return await requestForSelfHosted(
                 url: url,
                 loginURL: loginURL,
                 cookieJar: cookieJar,
                 username: username,
-                password: password,
-                completion: completion)
+                password: password)
         }
     }
 
-    private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
+    /// Calls the completion block on the main thread with the result of `request(url:cookieJar:)`.
+    func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
+        Task { @MainActor in
+            completion(await request(url: url, cookieJar: cookieJar))
+        }
+    }
+
+    @MainActor
+    private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType) async -> URLRequest {
 
         switch authenticationType {
         case .regular:
-            requestForWPCom(
+            return await requestForWPCom(
                 url: url,
                 cookieJar: cookieJar,
                 username: username,
-                authToken: authToken,
-                completion: completion)
+                authToken: authToken)
         case .regularMapped(let siteID):
-            requestForMappedWPCom(url: url,
+            return await requestForMappedWPCom(url: url,
                 cookieJar: cookieJar,
                 username: username,
                 authToken: authToken,
-                siteID: siteID,
-                completion: completion)
+                siteID: siteID)
 
         case .privateAtomic(let siteID):
-            requestForPrivateAtomicWPCom(
+            return await requestForPrivateAtomicWPCom(
                 url: url,
                 cookieJar: cookieJar,
                 username: username,
-                siteID: siteID,
-                completion: completion)
+                siteID: siteID)
         case .atomic(let loginURL):
-            requestForAtomicWPCom(
+            return await requestForAtomicWPCom(
                 url: url,
                 loginURL: loginURL,
                 cookieJar: cookieJar,
                 username: username,
-                authToken: authToken,
-                completion: completion)
+                authToken: authToken)
         }
     }
 
-    private func requestForSelfHosted(url: URL, loginURL: URL, cookieJar: CookieJar, username: String, password: String, completion: @escaping (URLRequest) -> Void) {
-
-        func done() {
-            let request = URLRequest(url: url)
-            completion(request)
-        }
-
-        authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: loginURL, username: username, password: password, success: {
-            done()
-        }) { [weak self] error in
+    @MainActor
+    private func requestForSelfHosted(url: URL, loginURL: URL, cookieJar: CookieJar, username: String, password: String) async -> URLRequest {
+        do {
+            try await authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: loginURL, username: username, password: password)
+        } catch {
             // Make sure this error scenario isn't silently ignored.
-            self?.logErrorIfNeeded(error)
+            logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
             // the issue when it happens.
-            done()
         }
+
+        return URLRequest(url: url)
     }
 
-    private func requestForPrivateAtomicWPCom(url: URL, cookieJar: CookieJar, username: String, siteID: Int, completion: @escaping (URLRequest) -> Void) {
-
-        func done() {
-            let request = URLRequest(url: url)
-            completion(request)
-        }
-
+    @MainActor
+    private func requestForPrivateAtomicWPCom(url: URL, cookieJar: CookieJar, username: String, siteID: Int) async -> URLRequest {
         // We should really consider refactoring how we retrieve the default account since it doesn't really use
         // a context at all...
         let context = ContextManager.shared.mainContext
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             WordPressAppDelegate.crashLogging?.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
-            done()
-            return
+            return URLRequest(url: url)
         }
         let authenticationService = AtomicAuthenticationService(account: account)
 
-        authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID, success: {
-            done()
-        }) { [weak self] error in
+        do {
+            try await authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID)
+        } catch {
             // Make sure this error scenario isn't silently ignored.
-            self?.logErrorIfNeeded(error)
+            logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
             // the issue when it happens.
-            done()
         }
+
+        return URLRequest(url: url)
     }
 
-    private func requestForAtomicWPCom(url: URL, loginURL: String, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
-
-        func done() {
-            // For non-private Atomic sites, proxy the request through wp-login like Calypso does.
-            // If the site has SSO enabled auth should happen and we get redirected to our preview.
-            // If SSO is not enabled wp-admin prompts for credentials, then redirected.
-            var components = URLComponents(string: loginURL)
-            var queryItems = components?.queryItems ?? []
-            queryItems.append(URLQueryItem(name: "redirect_to", value: url.absoluteString))
-            components?.queryItems = queryItems
-            let requestURL = components?.url ?? url
-
-            let request = URLRequest(url: requestURL)
-            completion(request)
-        }
-
-        authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
-            done()
-        }) { [weak self] error in
+    @MainActor
+    private func requestForAtomicWPCom(url: URL, loginURL: String, cookieJar: CookieJar, username: String, authToken: String) async -> URLRequest {
+        do {
+            try await authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken)
+        } catch {
             // Make sure this error scenario isn't silently ignored.
-            self?.logErrorIfNeeded(error)
+            logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
             // the issue when it happens.
-            done()
         }
+
+        // For non-private Atomic sites, proxy the request through wp-login like Calypso does.
+        // If the site has SSO enabled auth should happen and we get redirected to our preview.
+        // If SSO is not enabled wp-admin prompts for credentials, then redirected.
+        var components = URLComponents(string: loginURL)
+        var queryItems = components?.queryItems ?? []
+        queryItems.append(URLQueryItem(name: "redirect_to", value: url.absoluteString))
+        components?.queryItems = queryItems
+        let requestURL = components?.url ?? url
+
+        return URLRequest(url: requestURL)
     }
 
-    private func requestForMappedWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, siteID: Int, completion: @escaping (URLRequest) -> Void) {
-        func done() {
-            guard
-                let host = url.host,
-                !host.contains(WPComDomain)
-            else {
-                // The requested URL is to the unmapped version of the domain,
-                // so skip proxying the request through r-login.
-                completion(URLRequest(url: url))
-                return
-            }
-
-            let rlogin = "https://r-login.wordpress.com/remote-login.php?action=auth"
-            guard var components = URLComponents(string: rlogin) else {
-                // Safety net in case something unexpected changes in the future.
-                DDLogError("There was an unexpected problem initializing URLComponents via the rlogin string.")
-                completion(URLRequest(url: url))
-                return
-            }
-            var queryItems = components.queryItems ?? []
-            queryItems.append(contentsOf: [
-                URLQueryItem(name: "host", value: host),
-                URLQueryItem(name: "id", value: String(siteID)),
-                URLQueryItem(name: "back", value: url.absoluteString)
-            ])
-            components.queryItems = queryItems
-            let requestURL = components.url ?? url
-
-            let request = URLRequest(url: requestURL)
-            completion(request)
-        }
-
-        authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
-            done()
-        }) { [weak self] error in
+    @MainActor
+    private func requestForMappedWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, siteID: Int) async -> URLRequest {
+        do {
+            try await authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken)
+        } catch {
             // Make sure this error scenario isn't silently ignored.
-            self?.logErrorIfNeeded(error)
+            logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
             // the issue when it happens.
-            done()
         }
+
+        guard
+            let host = url.host,
+            !host.contains(WPComDomain)
+        else {
+            // The requested URL is to the unmapped version of the domain,
+            // so skip proxying the request through r-login.
+            return URLRequest(url: url)
+        }
+
+        let rlogin = "https://r-login.wordpress.com/remote-login.php?action=auth"
+        guard var components = URLComponents(string: rlogin) else {
+            // Safety net in case something unexpected changes in the future.
+            DDLogError("There was an unexpected problem initializing URLComponents via the rlogin string.")
+            return URLRequest(url: url)
+        }
+        var queryItems = components.queryItems ?? []
+        queryItems.append(contentsOf: [
+            URLQueryItem(name: "host", value: host),
+            URLQueryItem(name: "id", value: String(siteID)),
+            URLQueryItem(name: "back", value: url.absoluteString)
+        ])
+        components.queryItems = queryItems
+        let requestURL = components.url ?? url
+
+        return URLRequest(url: requestURL)
     }
 
-    private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
-
-        func done() {
-            let request = URLRequest(url: url)
-            completion(request)
-        }
-
-        authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
-            done()
-        }) { [weak self] error in
+    @MainActor
+    private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String) async -> URLRequest {
+        do {
+            try await authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken)
+        } catch {
             // Make sure this error scenario isn't silently ignored.
-            self?.logErrorIfNeeded(error)
+            logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
             // the issue when it happens.
-            done()
         }
+
+        return URLRequest(url: url)
     }
 
     private func logErrorIfNeeded(_ error: Swift.Error) {
@@ -345,24 +324,36 @@ extension RequestAuthenticator {
 // MARK: Navigation Validator
 extension RequestAuthenticator {
     /// Validates that the navigation worked as expected then provides a recommendation on if the screen should reload or not.
-    func decideActionFor(response: URLResponse, cookieJar: CookieJar, completion: @escaping (WPNavigationActionType) -> Void) {
-        switch self.credentials {
-        case .dotCom(let username, _, let authenticationType):
-            decideActionForWPCom(response: response, cookieJar: cookieJar, username: username, authenticationType: authenticationType, completion: completion)
-        case .siteLogin:
-            completion(.allow)
+    @MainActor
+    func decideActionFor(response: URLResponse, cookieJar: CookieJar) async -> WPNavigationActionType {
+        guard needsAuthenticationRecovery(response) else {
+            return .allow
         }
+
+        await cookieJar.removeWordPressComCookies()
+        return .reload
     }
 
-    private func decideActionForWPCom(response: URLResponse, cookieJar: CookieJar, username: String, authenticationType: DotComAuthenticationType, completion: @escaping (WPNavigationActionType) -> Void) {
-
-        guard didEncouterRecoverableChallenge(response) else {
+    /// Completion-handler variant of `decideActionFor(response:cookieJar:)`.
+    ///
+    /// Calls the completion block synchronously when the action is `.allow`, otherwise on the main thread.
+    func decideActionFor(response: URLResponse, cookieJar: CookieJar, completion: @escaping (WPNavigationActionType) -> Void) {
+        guard needsAuthenticationRecovery(response) else {
             completion(.allow)
             return
         }
 
-        cookieJar.removeWordPressComCookies {
-            completion(.reload)
+        Task { @MainActor in
+            completion(await decideActionFor(response: response, cookieJar: cookieJar))
+        }
+    }
+
+    private func needsAuthenticationRecovery(_ response: URLResponse) -> Bool {
+        switch self.credentials {
+        case .dotCom:
+            return didEncouterRecoverableChallenge(response)
+        case .siteLogin:
+            return false
         }
     }
 
