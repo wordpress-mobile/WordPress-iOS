@@ -26,36 +26,26 @@ class AtomicAuthenticationService {
         remote.getAuthCookie(siteID: siteID, success: success, failure: failure)
     }
 
-    func loadAuthCookies(
-        into cookieJar: CookieJar,
-        username: String,
-        siteID: Int,
-        success: @escaping () -> Void,
-        failure: @escaping (Error) -> Void) {
-
-        cookieJar.hasWordPressComAuthCookie(
-            username: username,
-            atomicSite: true) { hasCookie in
-
-                guard !hasCookie else {
-                    success()
-                    return
-                }
-
-                self.getAuthCookie(siteID: siteID, success: { cookies in
-                    cookieJar.setCookies([cookies]) {
-                        success()
-                    }
-                }) { error in
-                    // Make sure this error scenario isn't silently ignored.
-                    WordPressAppDelegate.crashLogging?.logError(error)
-
-                    // Even if getting the auth cookies fail, we'll still try to load the URL
-                    // so that the user sees a reasonable error situation on screen.
-                    // We could opt to create a special screen but for now I'd rather users report
-                    // the issue when it happens.
-                    failure(error)
-                }
+    @MainActor
+    func loadAuthCookies(into cookieJar: CookieJar, username: String, siteID: Int) async throws {
+        guard await !cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: true) else {
+            return
         }
+
+        let cookie: HTTPCookie
+        do {
+            cookie = try await withCheckedThrowingContinuation { continuation in
+                getAuthCookie(
+                    siteID: siteID,
+                    success: { continuation.resume(returning: $0) },
+                    failure: { continuation.resume(throwing: $0) })
+            }
+        } catch {
+            // Make sure this error scenario isn't silently ignored.
+            WordPressAppDelegate.crashLogging?.logError(error)
+            throw error
+        }
+
+        await cookieJar.setCookie(cookie)
     }
 }
