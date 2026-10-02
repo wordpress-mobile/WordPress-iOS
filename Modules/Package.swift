@@ -64,10 +64,7 @@ let package = Package(
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
-        .package(
-            url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.9.1"
-        ),
+        .package(url: "https://github.com/automattic/wordpress-rs", branch: "pr-build/1659"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
