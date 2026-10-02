@@ -1,6 +1,4 @@
 public protocol NotificationSyncMediatorProtocol {
-    func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?)
-
     func toggleLikeForPostNotification(
         isLike: Bool,
         postID: UInt,

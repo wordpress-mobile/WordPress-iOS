@@ -32,15 +32,15 @@ final class NotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(notificationCount, 0)
     }
 
-    func testResetLastSeenTimeWhenAccountChange() throws {
+    func testNeedsReloadResultsWhenAccountChange() throws {
         // Give
-        controller.viewModel.lastSeenChanged(timestamp: "testTime")
+        controller.needsReloadResults = false
 
         // When
         postAccountChangeNotification()
 
         // Then
-        XCTAssertEqual(controller.viewModel.lastSeenTime, nil)
+        XCTAssertEqual(controller.needsReloadResults, true)
     }
 
     func testResetApplicationBadgeWhenAccountChange() throws {
@@ -63,15 +63,36 @@ final class NotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(UIApplication.shared.applicationIconBadgeNumber, newUnreadCount)
     }
 
-    func testNeedsReloadResultsWhenAccountChange() throws {
-        // Give
-        controller.needsReloadResults = false
+    @MainActor
+    func testSubmitsSeenForNotificationOutsideSelectedFilter() async throws {
+        // Given a visible list filtered to comments
+        let uuid = "account-A"
+        AccountBuilder(contextManager.mainContext).with(uuid: uuid).build()
+        let previousDefaultDotComUUID = UserSettings.defaultDotComUUID
+        UserSettings.defaultDotComUUID = uuid
+        addTeardownBlock { UserSettings.defaultDotComUUID = previousDefaultDotComUUID }
 
-        // When
-        postAccountChangeNotification()
+        let serviceTests = NotificationActivityServiceTests()
+        let fixture = await serviceTests.started(uuid: uuid)
+        controller = NotificationsViewController.loadFromStoryboard()
+        controller.activityService = fixture.service
+
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        addTeardownBlock { window.isHidden = true }
+
+        controller.filterTabBar.setSelectedIndex(2)
+        controller.filterTabBar.sendActions(for: .valueChanged)
+
+        // When a like arrives
+        _ = try utility.loadLikeNotification()
+        contextManager.mainContext.processPendingChanges()
+        await serviceTests.settle(fixture)
 
         // Then
-        XCTAssertEqual(controller.needsReloadResults, true)
+        // The fixture's timestamp, 2015-03-28T00:23:41+00:00, in Unix seconds.
+        XCTAssertEqual(fixture.remote.seenTimestamps, [Date(timeIntervalSince1970: 1_427_502_221)])
     }
 }
 

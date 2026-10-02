@@ -139,7 +139,7 @@ struct SidebarView: View {
                 Label {
                     Text(Strings.notifications)
                 } icon: {
-                    if notificationsButtonViewModel.counter > 0 {
+                    if notificationsButtonViewModel.hasNewActivity {
                         Image(systemName: "bell.badge")
                             .foregroundStyle(.red, .primary)
                     } else {
