@@ -130,28 +130,19 @@ struct SidebarView: View {
     private var more: some View {
         switch BuildSettings.current.brand {
         case .wordpress:
+            if AccountHelper.isDotcomAvailable(),
+                JetpackFeaturesRemovalCoordinator.readerAndNotificationsAvailable()
+            {
+                notificationsAndReader
+            }
+
             Button(action: { viewModel.navigate(.help) }) {
                 Label(Strings.help, systemImage: "questionmark.circle")
             }
             .accessibilityIdentifier("sidebar_help")
         case .jetpack:
             if AccountHelper.isDotcomAvailable() {
-                Label {
-                    Text(Strings.notifications)
-                } icon: {
-                    if notificationsButtonViewModel.hasNewActivity {
-                        Image(systemName: "bell.badge")
-                            .foregroundStyle(.red, .primary)
-                    } else {
-                        Image(systemName: "bell")
-                    }
-                }
-                .accessibilityIdentifier("sidebar_notifications")
-                .tag(SidebarSelection.notifications)
-
-                Label(Strings.reader, systemImage: "eyeglasses")
-                    .tag(SidebarSelection.reader)
-                    .accessibilityIdentifier("sidebar_reader")
+                notificationsAndReader
 
                 if RemoteFeatureFlag.domainManagement.enabled() {
                     Button(action: { viewModel.navigate(.domains) }) {
@@ -169,6 +160,26 @@ struct SidebarView: View {
             // TODO: (reader) add iPad support
             fatalError("unsupported")
         }
+    }
+
+    @ViewBuilder
+    private var notificationsAndReader: some View {
+        Label {
+            Text(Strings.notifications)
+        } icon: {
+            if notificationsButtonViewModel.hasNewActivity {
+                Image(systemName: "bell.badge")
+                    .foregroundStyle(.red, .primary)
+            } else {
+                Image(systemName: "bell")
+            }
+        }
+        .accessibilityIdentifier("sidebar_notifications")
+        .tag(SidebarSelection.notifications)
+
+        Label(Strings.reader, systemImage: "eyeglasses")
+            .tag(SidebarSelection.reader)
+            .accessibilityIdentifier("sidebar_reader")
     }
 }
 

@@ -197,6 +197,26 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         return currentAppUIType != .simplified
     }
 
+    /// Whether Reader and Notifications are live rather than static posters.
+    ///
+    /// Unlike `jetpackFeaturesEnabled()`, this is also true in the WordPress app's Reader-tabs UI.
+    /// Use it only to decide whether to navigate into Reader or Notifications, never to gate push
+    /// notifications, prompts, or other Jetpack features.
+    static func readerAndNotificationsAvailable(
+        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()
+    ) -> Bool {
+        guard let currentAppUIType else {
+            return shouldEnableJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: featureFlagStore)
+        }
+        return currentAppUIType == .normal || currentAppUIType == .readerTabs
+    }
+
+    /// Whether the WordPress app shows live Reader and Notifications tabs while the other
+    /// Jetpack features stay disabled.
+    static func isReaderTabsUI() -> Bool {
+        currentAppUIType == .readerTabs
+    }
+
     /// Used to determine if the Jetpack features are to be displayed or not based on the removal phase regardless of the app UI state.
     private static func shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
         let phase = generalPhase(featureFlagStore: featureFlagStore)
@@ -236,6 +256,12 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
                                        blog: Blog? = nil,
                                        onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                        onDidDismiss: JetpackOverlayDismissCallback? = nil) {
+        if (source == .reader || source == .notifications) && isReaderTabsUI() {
+            onWillDismiss?()
+            onDidDismiss?()
+            return
+        }
+
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig()
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
