@@ -5,6 +5,8 @@ public enum CommentsTrackedEvent: Equatable, Sendable {
     case spammed(commentID: Int64, postID: Int64)
     case trashed(commentID: Int64, postID: Int64)
     // Permanent delete: legacy has no analytics event; deliberately untracked.
+    /// A reply was successfully created, matching legacy's reply-sent event.
+    case repliedTo(commentID: Int64, postID: Int64)
 }
 
 public protocol CommentsTracker: Sendable {

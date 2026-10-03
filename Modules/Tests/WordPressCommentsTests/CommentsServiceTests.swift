@@ -1,5 +1,6 @@
 import Testing
 import WordPressAPI
+import WordPressAPIInternal
 @testable import WordPressComments
 
 struct CommentsServiceTests {

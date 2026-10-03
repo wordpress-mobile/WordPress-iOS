@@ -270,4 +270,171 @@ struct CommentsModerationCoordinatorTests {
         // A mapped success fires the same analytics event as a plain success.
         #expect(spy.trackedEvents == [.approved(commentID: 1, postID: 10)])
     }
+
+    // MARK: - Reply chain
+
+    @Test func replyEmitsReplyCreatedWithLandedStatus() async throws {
+        let service = FakeCommentsService()
+        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        let spy = SpyCommentsTracker()
+        let coordinator = CommentsModerationCoordinator(service: service, tracker: spy)
+        let recorder = EventRecorder(coordinator)
+        let parent = makeDetail(id: 1, status: .approved)
+
+        let outcome = try await coordinator.reply(to: parent, content: "hi")
+
+        #expect(outcome.replyStatus == .approved)
+        #expect(!outcome.alreadyPosted)
+        #expect(recorder.events == [.replyCreated(parentID: 1, replyStatus: .approved)])
+        #expect(spy.trackedEvents == [.repliedTo(commentID: 1, postID: 10)])
+        #expect(!coordinator.isMutating(id: 1))
+    }
+
+    @Test func replyWithApproveParentInvokesSetStatus() async throws {
+        let service = FakeCommentsService()
+        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        service.setStatusResult = .success(makeDetail(id: 1, status: .approved))
+        let spy = SpyCommentsTracker()
+        let coordinator = CommentsModerationCoordinator(service: service, tracker: spy)
+        let recorder = EventRecorder(coordinator)
+        let parent = makeDetail(id: 1, status: .hold)
+
+        let outcome = try await coordinator.reply(to: parent, content: "hi")
+
+        #expect(outcome.replyStatus == .approved)
+        // The approve's statusChanged lands first so loaded list tabs update
+        // the parent row in place before replyCreated marks them stale.
+        #expect(
+            recorder.events == [
+                .statusChanged(id: 1, to: .approved),
+                .replyCreated(parentID: 1, replyStatus: .approved)
+            ]
+        )
+        // Regression test: a naive nested `perform(.approve, on: parent)` call
+        // would be dropped by the `isMutating` guard the chain itself holds,
+        // so `setStatus` must actually run via `runModeration` directly.
+        #expect(service.setStatusInvocations.map(\.status) == [.approved])
+        #expect(spy.trackedEvents == [.repliedTo(commentID: 1, postID: 10), .approved(commentID: 1, postID: 10)])
+    }
+
+    @Test func replyCreateFailureThrowsWithoutEventsOrApprove() async {
+        let service = FakeCommentsService()
+        service.createReplyResult = .failure(FakeServiceError())
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let parent = makeDetail(id: 1, status: .hold)
+
+        await #expect(throws: (any Error).self) {
+            try await coordinator.reply(to: parent, content: "hi")
+        }
+
+        #expect(recorder.events.isEmpty)
+        #expect(service.setStatusInvocations.isEmpty)
+    }
+
+    @Test func replyDuplicateContinuesChainAndApproves() async throws {
+        let service = FakeCommentsService()
+        // comment_duplicate: an earlier send already landed server-side.
+        service.createReplyResult = .failure(WpApiError.stub(code: .CommentDuplicate))
+        service.setStatusResult = .success(makeDetail(id: 1, status: .approved))
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let parent = makeDetail(id: 1, status: .hold)
+
+        let outcome = try await coordinator.reply(to: parent, content: "hi")
+
+        #expect(outcome.alreadyPosted)
+        #expect(outcome.replyStatus == .approved)
+        #expect(recorder.events.contains(.replyCreated(parentID: 1, replyStatus: .approved)))
+        #expect(recorder.events.contains(.statusChanged(id: 1, to: .approved)))
+        #expect(service.setStatusInvocations.map(\.status) == [.approved])
+    }
+
+    @Test func replyApproveFailureStillSucceedsWithoutStatusEvent() async throws {
+        let service = FakeCommentsService()
+        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        service.setStatusResult = .failure(FakeServiceError())
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let parent = makeDetail(id: 1, status: .hold)
+
+        // The reply lands but the parent approval fails. The reply still
+        // succeeds, and the parent's status never changes: the approve emits
+        // its statusChanged only on success, so there is no optimistic emit to
+        // undo. The parent stays Pending, the true server state.
+        let outcome = try await coordinator.reply(to: parent, content: "hi")
+
+        #expect(outcome.replyStatus == .approved)
+        #expect(recorder.events == [.replyCreated(parentID: 1, replyStatus: .approved)])
+    }
+
+    @Test func toolbarActionDuringReplyChainIsDropped() async throws {
+        let service = BlockingCommentsService()
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let parent = makeDetail(id: 1, status: .approved)
+
+        async let replyOutcome = coordinator.reply(to: parent, content: "hi")
+        await waitUntil { !service.createReplyInvocations.isEmpty }
+
+        // The reply chain holds the slot, so a toolbar action is dropped by the
+        // isMutating guard: no request, no event.
+        try? await coordinator.perform(.trash, on: parent)
+        #expect(recorder.events.isEmpty)
+        #expect(coordinator.isMutating(id: 1))
+
+        service.resolveCreateReply(callIndex: 0, with: makeDetail(id: 99, status: .approved))
+        let outcome = try await replyOutcome
+
+        #expect(outcome.replyStatus == .approved)
+        #expect(recorder.events == [.replyCreated(parentID: 1, replyStatus: .approved)])
+    }
+
+    @Test func replyAwaitsPendingMutationOnParent() async throws {
+        let service = BlockingCommentsService()
+        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let parent = makeDetail(id: 1, status: .approved)
+
+        let approve = Task { try? await coordinator.perform(.approve, on: parent) }
+        await waitUntil { !service.setStatusInvocations.isEmpty }
+
+        async let replyOutcome = coordinator.reply(to: parent, content: "hi")
+        // The reply call is suspended in waitForPendingMutation; the approve
+        // is still blocked on its continuation, so createReply must not have
+        // fired yet.
+        await Task.yield()
+        #expect(service.createReplyInvocations.isEmpty)
+
+        service.resolveSetStatus(callIndex: 0, with: makeDetail(id: 1, status: .approved))
+        let outcome = try await replyOutcome
+        _ = await approve.value
+
+        #expect(outcome.replyStatus == .approved)
+        #expect(service.createReplyInvocations.count == 1)
+    }
+
+    @Test func reentryFetchAwaitsReplyChain() async throws {
+        let service = BlockingCommentsService()
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let parent = makeDetail(id: 5, status: .approved)
+
+        async let replyOutcome = coordinator.reply(to: parent, content: "hi")
+        await waitUntil { !service.createReplyInvocations.isEmpty }
+
+        async let waiterResumed: Bool = {
+            await coordinator.waitForPendingMutation(id: 5)
+            return true
+        }()
+
+        // Let the waiter reach its suspension point; the chain is still in
+        // flight, so it must not have resumed yet.
+        await Task.yield()
+        #expect(coordinator.isMutating(id: 5))
+
+        service.resolveCreateReply(callIndex: 0, with: makeDetail(id: 99, status: .approved))
+        #expect(await waiterResumed)
+        #expect(!coordinator.isMutating(id: 5))
+        _ = try await replyOutcome
+    }
 }

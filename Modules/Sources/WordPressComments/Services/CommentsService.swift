@@ -56,6 +56,10 @@ protocol CommentsServiceProtocol: Sendable {
     /// Total number of replies to `id`, read from the list response's
     /// `X-WP-Total` header rather than the (unused) page of results.
     func numberOfReplies(for id: Int64) async throws -> Int
+
+    /// Creates a reply to `parentID` on `postID` and returns the created
+    /// comment's detail.
+    func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail
 }
 
 /// Errors raised by `CommentsService` that don't originate from wordpress-rs.
@@ -165,6 +169,18 @@ final class CommentsService: CommentsServiceProtocol {
             params: CommentListParams(perPage: 1, parent: [.init(id)], status: .all)
         )
         return Int(response.headerMap.wpTotal() ?? 0)
+    }
+
+    func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail {
+        // Core returns the create response in view context unless the caller
+        // has moderate_comments (create_item overrides any requested
+        // ?context=), and wordpress-rs decodes it as such, so the result never
+        // carries edit-only fields (`contentRaw`, email, IP). The reply chain
+        // only reads its status.
+        let response = try await client.api.comments.create(
+            params: CommentCreateParams(post: postID, content: content, parent: parentID)
+        )
+        return CommentDetail(comment: response.data)
     }
 }
 
