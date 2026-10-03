@@ -633,9 +633,20 @@ private struct PostContent: View {
         .contentShape(Rectangle())
     }
 
+    @ViewBuilder
     private var header: some View {
+        if post.hasRelativeRowDate {
+            TimelineView(RelativeDateTimelineSchedule(date: post.rowDate)) { context in
+                headerText(relativeTo: context.date)
+            }
+        } else {
+            headerText(relativeTo: .now)
+        }
+    }
+
+    private func headerText(relativeTo now: Date) -> some View {
         HStack {
-            Text(verbatim: post.headerBadges)
+            Text(verbatim: post.headerBadges(relativeTo: now))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
