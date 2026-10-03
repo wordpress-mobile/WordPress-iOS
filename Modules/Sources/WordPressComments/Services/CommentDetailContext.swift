@@ -2,7 +2,7 @@ import UIKit
 
 /// Shares dependencies across comment detail and parent destinations.
 @MainActor
-final class CommentsDetailRouter {
+final class CommentDetailContext {
     private let service: any CommentsServiceProtocol
     /// Shared by every detail view model, so the capability resolves once
     /// while the list loads and later screens read it synchronously.
