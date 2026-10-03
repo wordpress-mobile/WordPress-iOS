@@ -4,6 +4,7 @@ import WordPressLegacy
 import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
+import WordPressComments
 import Support
 import SwiftUI
 
@@ -20,7 +21,11 @@ extension BlogDetailsTableViewModel {
 
 @MainActor
 @objc public final class BlogDetailsTableViewModel: NSObject, ObservableObject {
-    var blog: Blog
+    var blog: Blog {
+        didSet {
+            if blog != oldValue { updateCommentsView() }
+        }
+    }
     private weak var viewController: BlogDetailsViewController?
     @Published private(set) var sections: [Section] = []
     @Published private(set) var selectedRowID: Row.ID?
@@ -30,6 +35,7 @@ extension BlogDetailsTableViewModel {
     }
 
     var hasCustomPostTypes = false
+    private var commentsView: CommentsView?
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
         self.blog = blog
@@ -103,7 +109,13 @@ extension BlogDetailsTableViewModel {
             newSections.append(Section(rows: [], category: .jetpackBrandingCard))
         }
 
+        updateCommentsView()
         sections = newSections
+    }
+
+    /// Resolving the Comments client reads the keychain, so cache the destination instead of building it per render.
+    private func updateCommentsView() {
+        commentsView = isSplitViewDisplayed ? nil : CommentsRouting.makeView(for: blog)
     }
 
     var isSplitViewDisplayed: Bool {
@@ -122,6 +134,14 @@ extension BlogDetailsTableViewModel {
 
     func clearSelection() {
         selectedRowID = nil
+    }
+
+    func commentsDestination(for row: Row) -> CommentsView? {
+        row.kind == .comments ? commentsView : nil
+    }
+
+    func trackCommentsOpened() {
+        viewController?.trackCommentsV2Opened(from: .row)
     }
 
     func select(_ row: Row) {
