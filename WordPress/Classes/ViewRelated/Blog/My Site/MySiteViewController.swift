@@ -268,7 +268,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// - Scroll view
     ///   - Stack view
     ///     - Site picker view controller
-    ///     - Blog dashboard view controller OR blog details view controller
+    ///     - Blog dashboard view controller
+    ///
+    /// The site menu uses its own list, with the site picker embedded in it.
     ///
     private func setupConstraints() {
         view.addSubview(scrollView)
@@ -331,7 +333,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         guard !isReaderAppModeEnabled else {
             return
         }
-        if scrollView.contentOffset.y >= 60 {
+        if currentSection == .dashboard && scrollView.contentOffset.y >= 60 {
             if isNavigationBarHidden {
                 setNavigationBarHidden(false, animated: animated)
             }
@@ -455,28 +457,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        // Refresh editor capabilities and invalidate editor cache
-        if RemoteFeatureFlag.newGutenberg.enabled() {
-            EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
-            Task {
-                await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(blog))
-            }
-        }
-
         switch currentSection {
         case .siteMenu:
-
-            blogDetailsViewController?
-                .pulledToRefresh(with: refreshControl) { [weak self] in
-                    guard let self else {
-                        return
-                    }
-
-                    self.updateNavigationTitle(for: blog)
-                    self.headerViewController?.blogDetailHeaderView.blog = blog
-                }
-
+            Task { await refreshSiteMenu() }
         case .dashboard:
+            refreshEditor(for: blog)
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
             /// the dashboard updating fast.
@@ -489,12 +474,12 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
             /// Update today's prompt if the blog has blogging prompts enabled.
             fetchPrompt(for: blog)
-        }
 
-        WPAnalytics.track(
-            .mySitePullToRefresh,
-            properties: [WPAppAnalyticsKeyTabSource: currentSection.analyticsDescription]
-        )
+            WPAnalytics.track(
+                .mySitePullToRefresh,
+                properties: [WPAppAnalyticsKeyTabSource: currentSection.analyticsDescription]
+            )
+        }
     }
 
     private func syncBlogAndAllMetadata(_ blog: Blog) {
@@ -506,6 +491,27 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             self.updateNavigationTitle(for: blog)
             self.headerViewController?.blogDetailHeaderView.blog = blog
             self.blogDashboardViewController?.reloadCardsLocally()
+        }
+    }
+
+    private func refreshSiteMenu() async {
+        guard let blog else { return }
+        refreshEditor(for: blog)
+        await blogDetailsViewController?.refreshMenu()
+        updateNavigationTitle(for: blog)
+        headerViewController?.blogDetailHeaderView.blog = blog
+        WPAnalytics.track(
+            .mySitePullToRefresh,
+            properties: [WPAppAnalyticsKeyTabSource: Section.siteMenu.analyticsDescription]
+        )
+    }
+
+    private func refreshEditor(for blog: Blog) {
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+            Task {
+                await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(blog))
+            }
         }
     }
 
@@ -684,7 +690,16 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        removeChildFromStackView(blogDetailsViewController)
+        let header = headerViewController
+        blogDetailsViewController.headerViewController = nil
+        header?.remove()
+        blogDetailsViewController.remove()
+        if let header {
+            addChild(header)
+            stackView.insertArrangedSubview(header.view, at: 0)
+            header.didMove(toParent: self)
+        }
+        scrollView.isHidden = false
     }
 
     /// Shows a `BlogDetailsViewController` for the specified `Blog`. If the VC doesn't exist, this method also takes care
@@ -698,10 +713,19 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         let blogDetailsViewController = self.blogDetailsViewController(for: blog)
 
-        embedChildInStackView(blogDetailsViewController)
-
-        // This ensures that the spotlight views embedded in the site picker don't get clipped.
-        stackView.sendSubviewToBack(blogDetailsViewController.view)
+        if blogDetailsViewController.parent == nil {
+            if let headerViewController {
+                blogDetailsViewController.headerViewController = headerViewController
+                removeChildFromStackView(headerViewController)
+            }
+            blogDetailsViewController.onRefresh = { [weak self] in
+                await self?.refreshSiteMenu()
+            }
+            add(blogDetailsViewController)
+            blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            view.pinSubviewToAllEdges(blogDetailsViewController.view)
+        }
+        scrollView.isHidden = true
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }
@@ -772,7 +796,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         case .siteMenu:
             blogDetailsViewController?.blog = blog
             blogDetailsViewController?.configureTableViewData()
-            blogDetailsViewController?.tableView?.reloadData()
             blogDetailsViewController?.preloadMetadata()
             blogDetailsViewController?.showInitialDetailsForBlog()
         case .dashboard:
