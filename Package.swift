@@ -56,6 +56,11 @@ let package = Package(
             ],
             path: "Modules/Tests/GutenbergProcessorsTests",
             swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .testTarget(
+            name: "TextBundleTests",
+            dependencies: [.product(name: "TextBundle", package: "Modules")],
+            path: "Modules/Tests/TextBundleTests"
         )
     ]
 )
