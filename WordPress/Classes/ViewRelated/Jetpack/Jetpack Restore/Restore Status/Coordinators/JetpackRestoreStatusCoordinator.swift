@@ -26,7 +26,7 @@ class JetpackRestoreStatusCoordinator {
         site: JetpackSiteRef,
         view: JetpackRestoreStatusView,
         service: JetpackRestoreService? = nil,
-        coreDataStack: CoreDataStackSwift = ContextManager.shared
+        coreDataStack: CoreDataStack = ContextManager.shared
     ) {
         self.service = service ?? JetpackRestoreService(coreDataStack: coreDataStack)
         self.site = site

@@ -7,7 +7,7 @@ import WordPressSharedUI
 class BloggingPromptsService {
     let siteID: NSNumber
 
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStack
     private let remote: BloggingPromptsServiceRemote // TODO: Remove once the settings logic is ported.
     private let api: WordPressComRestApi
     private let calendar: Calendar = .autoupdatingCurrent
@@ -219,7 +219,7 @@ class BloggingPromptsService {
     ///   - api: When supplied, the WordPressComRestApi instance to use to fetch the prompts.
     ///     Otherwise, an default or anonymous instance will be computed based on whether there is an account available.
     required init?(
-        contextManager: CoreDataStackSwift = ContextManager.shared,
+        contextManager: CoreDataStack = ContextManager.shared,
         api: WordPressComRestApi? = nil,
         remote: BloggingPromptsServiceRemote? = nil,
         blog: Blog? = nil
@@ -270,10 +270,10 @@ class BloggingPromptsService {
 /// Convenience factory to generate `BloggingPromptsService` for different blogs.
 ///
 class BloggingPromptsServiceFactory {
-    let contextManager: CoreDataStackSwift
+    let contextManager: CoreDataStack
     let remote: BloggingPromptsServiceRemote?
 
-    init(contextManager: CoreDataStackSwift = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
+    init(contextManager: CoreDataStack = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
         self.contextManager = contextManager
         self.remote = remote
     }

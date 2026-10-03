@@ -225,7 +225,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     private var scheduledTime: Date
     private weak var delegate: BloggingRemindersFlowDelegate?
 
-    fileprivate var coreDataStack: CoreDataStackSwift {
+    fileprivate var coreDataStack: CoreDataStack {
         ContextManager.shared
     }
 

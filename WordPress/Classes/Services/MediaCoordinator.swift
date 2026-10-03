@@ -13,7 +13,7 @@ import enum Alamofire.AFError
 class MediaCoordinator: NSObject {
     @objc static let shared = MediaCoordinator()
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
 
     private var mainContext: NSManagedObjectContext {
         coreDataStack.mainContext
@@ -49,7 +49,7 @@ class MediaCoordinator: NSObject {
 
     init(
         _ mediaServiceFactory: MediaService.Factory = MediaService.Factory(),
-        coreDataStack: CoreDataStackSwift = ContextManager.shared
+        coreDataStack: CoreDataStack = ContextManager.shared
     ) {
         self.mediaServiceFactory = mediaServiceFactory
         self.coreDataStack = coreDataStack

@@ -71,7 +71,7 @@ struct WordPressDotComAuthenticator {
     }
 
     let redirectURIScheme: String
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
@@ -79,7 +79,7 @@ struct WordPressDotComAuthenticator {
     private let clientSecret: String
 
     init(
-        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        coreDataStack: CoreDataStack = ContextManager.shared,
         showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
