@@ -191,7 +191,7 @@ struct TopListCard: View {
         .environment(\.context, context)
         .environment(\.router, router)
 
-        router.navigate(to: screen, title: viewModel.selection.item.localizedTitle)
+        router.navigate(to: screen, title: viewModel.selection.localizedScreenTitle)
     }
 
     private var itemTypePicker: some View {
@@ -203,7 +203,8 @@ struct TopListCard: View {
                         selection.item = item
                         let supportedMetric = getSupportedMetrics(for: item)
                         if !supportedMetric.contains(selection.metric),
-                           let metric = supportedMetric.first {
+                            let metric = supportedMetric.first
+                        {
                             selection.metric = metric
                         }
                         viewModel.selection = selection
@@ -262,10 +263,14 @@ struct TopListCard: View {
                 viewModel.selection.options.locationLevel = level
 
                 // Track location level change
-                viewModel.tracker?.send(.locationLevelChanged, properties: [
-                    "from_level": previousLevel.analyticsName,
-                    "to_level": level.analyticsName
-                ])
+                viewModel.tracker?
+                    .send(
+                        .locationLevelChanged,
+                        properties: [
+                            "from_level": previousLevel.analyticsName,
+                            "to_level": level.analyticsName
+                        ]
+                    )
             } label: {
                 Label(level.localizedTitle, systemImage: level.systemImage)
             }
@@ -280,10 +285,14 @@ struct TopListCard: View {
                 viewModel.selection.options.deviceBreakdown = breakdown
 
                 // Track device breakdown change
-                viewModel.tracker?.send(.deviceBreakdownChanged, properties: [
-                    "from_breakdown": previousBreakdown.analyticsName,
-                    "to_breakdown": breakdown.analyticsName
-                ])
+                viewModel.tracker?
+                    .send(
+                        .deviceBreakdownChanged,
+                        properties: [
+                            "from_breakdown": previousBreakdown.analyticsName,
+                            "to_breakdown": breakdown.analyticsName
+                        ]
+                    )
             } label: {
                 Label(breakdown.localizedTitle, systemImage: breakdown.systemImage)
             }
@@ -300,10 +309,14 @@ struct TopListCard: View {
                         viewModel.selection.options.utmParamGrouping = grouping
 
                         // Track UTM parameter grouping change
-                        viewModel.tracker?.send(.utmParamGroupingChanged, properties: [
-                            "from_grouping": previousGrouping.analyticsName,
-                            "to_grouping": grouping.analyticsName
-                        ])
+                        viewModel.tracker?
+                            .send(
+                                .utmParamGroupingChanged,
+                                properties: [
+                                    "from_grouping": previousGrouping.analyticsName,
+                                    "to_grouping": grouping.analyticsName
+                                ]
+                            )
                     } label: {
                         Text(grouping.localizedTitle)
                     }
@@ -449,15 +462,17 @@ private struct TopListCardPreview: View {
 
     init(item: TopListItemType) {
         self.item = item
-        self._viewModel = StateObject(wrappedValue: TopListViewModel(
-            configuration: TopListCardConfiguration(
-                item: item,
-                metric: item == .fileDownloads ? .downloads : .views
-            ),
-            dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-            service: MockStatsService(),
-            tracker: MockStatsTracker.shared
-        ))
+        self._viewModel = StateObject(
+            wrappedValue: TopListViewModel(
+                configuration: TopListCardConfiguration(
+                    item: item,
+                    metric: item == .fileDownloads ? .downloads : .views
+                ),
+                dateRange: Calendar.demo.makeDateRange(for: .last28Days),
+                service: MockStatsService(),
+                tracker: MockStatsTracker.shared
+            )
+        )
     }
 
     var body: some View {
