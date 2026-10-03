@@ -1,5 +1,7 @@
+import Combine
 import Foundation
 import UIKit
+import WordPressAPI
 import WordPressLegacy
 import WordPressShared
 import WordPressSharedObjC
@@ -26,8 +28,17 @@ private struct Section {
     }
 }
 
+@MainActor
 @objc public final class BlogDetailsTableViewModel: NSObject {
-    var blog: Blog
+    var blog: Blog {
+        didSet {
+            guard blog != oldValue else { return }
+            // Rebuild right away so that no row keeps the previous site's custom post types.
+            customPostTypes = []
+            configureTableViewData()
+            restartCustomPostTypesObservation()
+        }
+    }
     private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
     private var sections: [Section] = []
@@ -55,13 +66,43 @@ private struct Section {
         }
     }
 
-    var hasCustomPostTypes = false
+    var customPostTypes: [PostTypeDetailsWithEditContext] = []
     var useSiteMenuStyle = false
 
-    @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
+    private let usesWordPressLayout: Bool
+    private let makeCustomPostTypeService: (Blog) -> (any CustomPostTypeServiceProtocol)?
+    private var customPostTypesObservation: Task<Void, Never>?
+    private var credentialChangeObservation: AnyCancellable?
+
+    init(
+        blog: Blog,
+        viewController: BlogDetailsViewController,
+        usesWordPressLayout: Bool = AppConfiguration.isWordPress,
+        makeCustomPostTypeService: @escaping (Blog) -> (any CustomPostTypeServiceProtocol)? =
+            CustomPostTypeService.init(blog:),
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.blog = blog
         self.viewController = viewController
+        self.usesWordPressLayout = usesWordPressLayout
+        self.makeCustomPostTypeService = makeCustomPostTypeService
         super.init()
+
+        // A new application password can change how the site is reached, and the cache keys a
+        // site's data by its transport: a WordPress.com Atomic site moves from its site ID to its
+        // URL. A source built before the change keeps reading data that no sync updates anymore.
+        let passwordUpdates = notificationCenter.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated)
+        credentialChangeObservation =
+            passwordUpdates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.restartCustomPostTypesObservation()
+            }
+        restartCustomPostTypesObservation()
+    }
+
+    deinit {
+        customPostTypesObservation?.cancel()
     }
 
     @objc public func configure(tableView: UITableView) {
@@ -127,7 +168,7 @@ private struct Section {
             newSections.append(buildHomeSection())
         }
 
-        if AppConfiguration.isWordPress {
+        if usesWordPressLayout {
             if viewController.shouldAddJetpackSection() {
                 newSections.append(buildJetpackSection())
             }
@@ -253,6 +294,60 @@ private struct Section {
             }
         }
         return nil
+    }
+}
+
+// MARK: - Custom post types
+
+private extension BlogDetailsTableViewModel {
+    /// Replaces the observation of the site's custom post types with a new one built from the
+    /// site's current transport. The rows stay as they are until the new observation's first read.
+    func restartCustomPostTypesObservation() {
+        customPostTypesObservation?.cancel()
+        customPostTypesObservation = nil
+
+        guard let service = makeCustomPostTypeService(blog) else {
+            if !customPostTypes.isEmpty {
+                applyCustomPostTypes([])
+            }
+            return
+        }
+
+        customPostTypesObservation = Task { [weak self] in
+            let updates: AnyPublisher<Void, Never>
+            do {
+                updates = try await service.customTypesUpdates()
+            } catch {
+                Loggers.app.error("Failed to observe custom post types: \(error)")
+                return
+            }
+
+            // Subscribe before the first read so that no write between the two goes unnoticed.
+            // Buffering one signal is enough: every read returns the latest state, so updates
+            // that arrive during a read only need one more read after it.
+            let (signals, continuation) = AsyncStream.makeStream(of: Void.self, bufferingPolicy: .bufferingNewest(1))
+            let subscription = updates.sink { continuation.yield() }
+            defer { subscription.cancel() }
+            continuation.yield()
+
+            for await _ in signals {
+                guard !Task.isCancelled else { return }
+                do {
+                    let types = try await service.customTypes()
+                    guard !Task.isCancelled, let self else { return }
+                    self.applyCustomPostTypes(types)
+                } catch {
+                    Loggers.app.error("Failed to read custom post types: \(error)")
+                }
+            }
+        }
+    }
+
+    func applyCustomPostTypes(_ types: [PostTypeDetailsWithEditContext]) {
+        guard types != customPostTypes else { return }
+        customPostTypes = types
+        configureTableViewData()
+        reloadTableViewPreservingSelection()
     }
 }
 
@@ -628,19 +723,17 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
 
-        if blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
-                .filter { !$0.isBuiltInPostOrPage }
-            for type in pinned {
-                rows.append(Row.pinnedPostType(type, viewController: viewController))
-            }
-            if !pinned.isEmpty || hasCustomPostTypes {
-                rows.append(Row.customPostTypes(viewController: viewController))
-            }
-        }
+        rows += customPostTypeRows()
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
         return Section(title: title, rows: rows, category: .content)
+    }
+
+    /// The rows go at the end of their section so that the rows above keep their index paths
+    /// when custom post types appear. `reloadTableViewPreservingSelection` re-runs the selected
+    /// row's action when its index path changes, which replaces the detail screen in sidebar mode.
+    func customPostTypeRows() -> [Row] {
+        customPostTypes.map { Row.customPostType($0, viewController: viewController) }
     }
 
     func buildRemoveSiteSection() -> Section {
@@ -714,16 +807,7 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
-        if blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
-                .filter { !$0.isBuiltInPostOrPage }
-            for type in pinned {
-                rows.append(Row.pinnedPostType(type, viewController: viewController))
-            }
-            if !pinned.isEmpty || hasCustomPostTypes {
-                rows.append(Row.customPostTypes(viewController: viewController))
-            }
-        }
+        rows += customPostTypeRows()
 
         let title = Strings.publishSection
         return Section(title: title, rows: rows, category: .content)
@@ -986,7 +1070,7 @@ private enum SectionCategory {
     case maintenance
 }
 
-enum BlogDetailsRowKind {
+enum BlogDetailsRowKind: Equatable {
     case reminders
     case domain
     case stats
@@ -995,7 +1079,6 @@ enum BlogDetailsRowKind {
     case themes
     case media
     case pages
-    case customPostTypes
     case activity
     case backup
     case scan
@@ -1016,7 +1099,7 @@ enum BlogDetailsRowKind {
     case viewSite
     case admin
     case siteSettings
-    case pinnedPostType
+    case customPostType(slug: String)
     case removeSite
 }
 
@@ -1103,24 +1186,16 @@ extension Row {
         )
     }
 
-    static func customPostTypes(viewController: BlogDetailsViewController?) -> Row {
+    static func customPostType(
+        _ details: PostTypeDetailsWithEditContext,
+        viewController: BlogDetailsViewController?
+    ) -> Row {
         Row(
-            kind: .customPostTypes,
-            title: CustomPostTypesView.title,
-            image: UIImage(systemName: "ellipsis"),
+            kind: .customPostType(slug: details.slug),
+            title: details.name,
+            image: UIImage(dashicon: details.icon),
             action: { [weak viewController] _ in
-                viewController?.showCustomPostTypes()
-            }
-        )
-    }
-
-    static func pinnedPostType(_ type: PinnedPostType, viewController: BlogDetailsViewController?) -> Row {
-        Row(
-            kind: .pinnedPostType,
-            title: type.name,
-            image: UIImage(dashicon: type.icon),
-            action: { [weak viewController] _ in
-                viewController?.showPinnedPostType(type)
+                viewController?.showPostType(.details(details))
             }
         )
     }
