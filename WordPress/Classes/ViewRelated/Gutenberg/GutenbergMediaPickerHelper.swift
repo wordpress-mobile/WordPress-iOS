@@ -135,12 +135,18 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
                 guard let videoURL = info[.mediaURL] as? URL else {
                     return
                 }
-                guard self.blog.canUploadVideo(from: videoURL) else {
-                    self.presentVideoLimitExceededAfterCapture(on: self.context)
-                    return
-                }
-                self.didPickMediaCallback?([videoURL])
+                let didPickMediaCallback = self.didPickMediaCallback
                 self.didPickMediaCallback = nil
+                // `context` is unowned and can be deallocated while the duration loads.
+                Task { @MainActor [weak context = self.context] in
+                    guard await self.blog.canUploadVideo(from: videoURL) else {
+                        if let context {
+                            self.presentVideoLimitExceededAfterCapture(on: context)
+                        }
+                        return
+                    }
+                    didPickMediaCallback?([videoURL])
+                }
             default:
                 break
             }
