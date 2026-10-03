@@ -89,6 +89,17 @@ actor ApplicationPasswordRepository {
 
     /// When returning true, a valid application password is guaranteed to be returned by the `Blog.getApplicationToken` function.
     ///
+    /// This function must never transmit credentials over an unencrypted connection on its own, so
+    /// each path checks the destinations it contacts and throws `insecureConnection` for a
+    /// non-loopback http one. Validation, which every path performs, contacts the site URL and REST
+    /// root, so those are checked up front. Self-hosted password creation additionally contacts the
+    /// cookie/nonce URLs (`login_url`, `admin_url`, wp-json, all derived from `xmlrpc` and
+    /// independently http-capable), checked before creating. A Jetpack-connected site creates its
+    /// password through the WordPress.com proxy over https, so it is not gated on the site's own
+    /// scheme. Getting an application password for an insecure site instead goes through the
+    /// interactive sign-in flow, which shows an insecure-connection warning. The REST root discovered
+    /// at runtime is validated in `updateRestAPIURLIfNeeded`.
+    ///
     /// This function is safe to call multiple times, but every call performs real work, including
     /// HTTP requests (password validation, and REST API root rediscovery when the stored root is
     /// stale). Limit calls to once per "site launch" (app launch, switching site, etc.) to avoid
@@ -162,7 +173,27 @@ actor ApplicationPasswordRepository {
 }
 
 private extension ApplicationPasswordRepository {
+    /// Throws `insecureConnection` when any URL would send credentials over a non-loopback http
+    /// connection. Callers pass only the destinations the request they are about to make contacts.
+    static func checkInsecureURL(_ urls: [URL]) throws {
+        if urls.contains(where: \.isInsecureConnection) {
+            throw ApplicationPasswordRepositoryError.insecureConnection
+        }
+    }
+
     func validatePasswords(in blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword? {
+        // Validation contacts the site URL and stored REST root, here and in the token copy below.
+        // Reject before any request when either is insecure, without contacting the site.
+        let validationDestinations = try await coreDataStack.performQuery { context in
+            let blog = try context.existingObject(with: blogId)
+            var destinations = [try blog.getUrl()]
+            if let restApiRootURL = blog.restApiRootURL, let parsed = URL(string: restApiRootURL) {
+                destinations.append(parsed)
+            }
+            return destinations
+        }
+        try Self.checkInsecureURL(validationDestinations)
+
         try await saveApplicationPassword(of: blogId)
 
         let (owners, siteUrl) = try await coreDataStack.performQuery { context in
@@ -258,6 +289,28 @@ private extension ApplicationPasswordRepository {
                 parameters: parameters
             )
         } else if let dotOrgApi {
+            // Creating a password here uses cookie and nonce authentication, contacting the site's
+            // login_url, admin_url, and wp-json base. Each derives from `xmlrpc` (or its own option),
+            // so each can use http independently. Gate on every credential destination before
+            // sending anything.
+            let destinations = try await coreDataStack.performQuery { context in
+                let blog = try context.existingObject(with: blogId)
+                var destinations: [URL] = [try blog.getUrl()]
+                if let restApiRootURL = blog.restApiRootURL, let parsed = URL(string: restApiRootURL) {
+                    destinations.append(parsed)
+                }
+                if let restBase = blog.url(withPath: "wp-json/"), let parsed = URL(string: restBase) {
+                    destinations.append(parsed)
+                }
+                if let loginURL = blog.loginURL {
+                    destinations.append(loginURL)
+                }
+                if let adminURL = blog.makeAdminURL() {
+                    destinations.append(adminURL)
+                }
+                return destinations
+            }
+            try Self.checkInsecureURL(destinations)
             password = try await createPasswordOnSelfHostedSites(api: dotOrgApi, parameters: parameters)
         } else {
             // This error should never happen since a blog is accessible via either dot-com or a dot-org API.
@@ -385,6 +438,13 @@ private extension ApplicationPasswordRepository {
             throw error
         }
 
+        // Discovery can resolve an http REST root even for an https site (e.g. an advertised http
+        // API root). Reject it before persisting, so an insecure value is never stored where other
+        // consumers (WordPressSite, EditorConfiguration, ...) could later send credentials to it.
+        if let url = URL(string: apiRootURL.url()), url.isInsecureConnection {
+            throw ApplicationPasswordRepositoryError.insecureConnection
+        }
+
         if apiRootURL.url() != restApiRootUrl {
             try await coreDataStack.performAndSave { context in
                 let blog = try context.existingObject(with: blogId)
@@ -506,6 +566,7 @@ extension ApplicationPasswordStorage {
 enum ApplicationPasswordRepositoryError: LocalizedError {
     case usernameNotFound
     case restApiInaccessible
+    case insecureConnection
     case unknown
 
     var errorDescription: String? {
@@ -515,6 +576,13 @@ enum ApplicationPasswordRepositoryError: LocalizedError {
                 "applicationPasswordRepository.error.usernameNotFound",
                 value: "Unable to find username for the site",
                 comment: "Error message when the username cannot be found for application password creation"
+            )
+        case .insecureConnection:
+            return NSLocalizedString(
+                "applicationPasswordRepository.error.insecureConnection",
+                value: "The site uses an unencrypted connection (HTTP).",
+                comment:
+                    "Error message when application password creation is skipped because the site uses an insecure HTTP connection"
             )
         case .restApiInaccessible:
             return NSLocalizedString(
