@@ -4,7 +4,6 @@ import WordPressFlux
 import WordPressShared
 
 import class AutomatticTracks.CrashLogging
-import enum Alamofire.AFError
 
 /// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
@@ -901,27 +900,12 @@ extension Media {
         // `NSError` with just a `domain` and `code` set.
         // This was _not_ a fun one to track down.
 
-        // I don't want to hand-encode the Alamofire.AFError domain and/or code — they're both subject to change
-        // in the future, so I'm hand-creating an error here to get the domain/code out of.
-        let multipartEncodingFailedSampleError =
-            AFError.multipartEncodingFailed(
-                reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)
-            ) as NSError
-        // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
-
         if let nsError = error as NSError?,
-            nsError.domain == multipartEncodingFailedSampleError.domain,
-            nsError.code == multipartEncodingFailedSampleError.code
-        {
-            // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
-            return true
-        } else if let nsError = error as NSError?,
             nsError.domain == "Alamofire.AFError",
-            nsError.code == 2 /* AFError.multipartEncodingFailed */
+            [2, 4].contains(nsError.code)
         {
-            // Check if the original error is `AFError.multipartEncodingFailed`.
-            // We will soon remove Alamofire from the app, and the above `if` statement will be delete along with Alamofire,
-            // which is why actual values—instead of `AFError` references-are used here.
+            // Media that failed to upload in older app versions, which used Alamofire, may still have
+            // `AFError.multipartEncodingFailed` persisted. Its code is 2 in Alamofire 4 and 4 in Alamofire 5.
 
             return true
         } else if let nsError = error as NSError?,
