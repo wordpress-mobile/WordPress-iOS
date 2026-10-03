@@ -86,7 +86,11 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(
+            readerPostService: serviceMock,
+            sharingController: postSharingControllerMock,
+            view: viewMock
+        )
         coordinator.post = post
 
         coordinator.share(fromView: button)
@@ -129,6 +133,37 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         XCTAssertTrue(presentedViewController is WebKitViewController)
     }
 
+    @MainActor
+    func testResolveMentionProfilesDeduplicatesHandles() async {
+        let post = makeMentionPost()
+        let profileService = ReaderUserProfileServiceMock()
+        let coordinator = ReaderDetailCoordinator(
+            readerUserProfileService: profileService,
+            view: ReaderDetailViewMock()
+        )
+        coordinator.post = post
+
+        await coordinator.resolveMentionProfiles(for: post)
+
+        XCTAssertEqual(profileService.requestedHandles, ["example-user"])
+    }
+
+    @MainActor
+    func testResolveMentionProfilesSkipsNonWordPressComPost() async {
+        let post = makeMentionPost()
+        post.isWPCom = false
+        let profileService = ReaderUserProfileServiceMock()
+        let coordinator = ReaderDetailCoordinator(
+            readerUserProfileService: profileService,
+            view: ReaderDetailViewMock()
+        )
+        coordinator.post = post
+
+        await coordinator.resolveMentionProfiles(for: post)
+
+        XCTAssertTrue(profileService.requestedHandles.isEmpty)
+    }
+
     /// Tell the view to scroll when URL is a hash link
     ///
     func testScrollWhenUrlIsHash() {
@@ -156,6 +191,24 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
     func makeReaderPost() -> ReaderPost {
         ReaderPostBuilder(mainContext).build()
     }
+
+    private var mentionURL: URL {
+        URL(string: "https://example.wordpress.com/mentions/example-user/")!
+    }
+
+    private func makeMentionPost() -> ReaderPost {
+        let post = makeReaderPost()
+        post.isWPCom = true
+        post.content = """
+            <a href="\(mentionURL.absoluteString)"
+               data-type="fragment-mention"
+               data-username="example-user">@example-user</a>
+            <a href="\(mentionURL.absoluteString)"
+               data-type="fragment-mention"
+               data-username="example-user">@example-user</a>
+            """
+        return post
+    }
 }
 
 // MARK: - Private Helpers
@@ -175,7 +228,13 @@ private class ReaderPostServiceMock: ReaderPostService {
         super.init(coreDataStack: ContextManager.forTesting())
     }
 
-    override func fetchPost(_ postID: UInt, forSite siteID: UInt, isFeed: Bool, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func fetchPost(
+        _ postID: UInt,
+        forSite siteID: UInt,
+        isFeed: Bool,
+        success: ((ReaderPost?) -> Void)!,
+        failure: ((Error?) -> Void)!
+    ) {
         didCallFetchPostWithPostID = postID
         didCallFetchPostWithSiteID = siteID
         didCallFetchPostWithIsFeed = isFeed
@@ -190,6 +249,15 @@ private class ReaderPostServiceMock: ReaderPostService {
         }
 
         success(returnPost)
+    }
+}
+
+private final class ReaderUserProfileServiceMock: ReaderUserProfileService {
+    private(set) var requestedHandles: [String] = []
+
+    func fetchProfile(handle: String) async -> ReaderUserProfile? {
+        requestedHandles.append(handle)
+        return nil
     }
 }
 
@@ -208,7 +276,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         }
 
         get {
-            return _navigationController
+            _navigationController
         }
     }
 
@@ -232,15 +300,19 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallScrollToWith = to
     }
 
-    func updateHeader() { }
+    func updateHeader() {}
 
     func updateLikesView(with viewModel: ReaderDetailLikesViewModel) {}
 
-    func updateComments(_ comments: [Comment], totalComments: Int) { }
+    func updateComments(_ comments: [Comment], totalComments: Int) {}
 
-    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) { }
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {}
 
-    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+    override func present(
+        _ viewControllerToPresent: UIViewController,
+        animated flag: Bool,
+        completion: (() -> Void)? = nil
+    ) {
         didCallPresentWith = viewControllerToPresent
     }
 }
@@ -250,7 +322,11 @@ private class PostSharingControllerMock: PostSharingController {
     var didCallShareReaderPostWithView: UIPopoverPresentationControllerSourceItem?
     var didCallShareReaderPostWithViewController: UIViewController?
 
-    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
+    override func shareReaderPost(
+        _ post: ReaderPost,
+        fromAnchor anchor: UIPopoverPresentationControllerSourceItem,
+        inViewController viewController: UIViewController
+    ) {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController
