@@ -25,6 +25,7 @@ class CustomPostTypeService {
     func refresh() async throws {
         let service = try await resolveService()
         _ = try await service.postTypes().syncPostTypes()
+        await reportPostTypeUsage(using: service)
 
         // If the user has not manually pinned any post types (typically right after first fetching post types),
         // we automatically pin 3 post types, so that the user can see their content straight from the top-level screens.
@@ -36,34 +37,28 @@ class CustomPostTypeService {
         }
     }
 
+    /// Tracking must not change what `refresh()` throws, so a failed cache read is ignored.
+    private func reportPostTypeUsage(using service: WpService) async {
+        guard await !CustomPostTypeUsageTracker.shared.hasReported(blog) else {
+            return
+        }
+        guard
+            let allTypes = try? await service.postTypes()
+                .createPostTypeCollectionWithEditContextFiltered(
+                    filter: PostTypeFilter(viewable: nil, showUi: nil, hierarchical: nil)
+                )
+                .loadData()
+        else {
+            return
+        }
+        await CustomPostTypeUsageTracker.shared.report(PostTypeClassification(allTypes.map(\.data)), for: blog)
+    }
+
     func customTypes() async throws -> [PostTypeDetailsWithEditContext] {
         let collection = try await resolveCollection()
         return try await collection.loadData()
-            .compactMap { entry -> PostTypeDetailsWithEditContext? in
-                let details = entry.data
-
-                // TODO: Determine if we should support post types without "editor"
-                // (title-only posts, e.g. GiveWP's `give_forms`).
-                //
-                // Currently wordpress-rs requires the `content` field in API responses,
-                // which is absent for post types that don't support "editor".
-                //
-                // For these post types, the app also needs to hide "open in editor"
-                // options since there is no content body to edit.
-                //
-                // Most plugins that set `show_in_rest = true` do so for block editor
-                // support, which requires "editor". Plugins with data-only post types
-                // (e.g. WooCommerce orders) typically keep `show_in_rest = false` and
-                // use custom REST routes instead. So this may not be worth supporting.
-                guard details.supports.supports(feature: .editor) else {
-                    return nil
-                }
-
-                if case .custom = details.toPostEndpointType(), details.slug != "attachment" {
-                    return details
-                }
-                return nil
-            }
+            .map(\.data)
+            .filter(\.isCustomPostType)
             .sorted(using: KeyPathComparator(\.name))
     }
 
@@ -97,5 +92,36 @@ class CustomPostTypeService {
         let collection = service.postTypes().createPostTypeCollectionWithEditContext()
         self.collection = collection
         return collection
+    }
+}
+
+extension PostTypeDetailsWithEditContext {
+    /// Whether the app lists this post type as a custom post type.
+    var isCustomPostType: Bool {
+        guard viewable, visibility.showUi else {
+            return false
+        }
+
+        // TODO: Determine if we should support post types without "editor"
+        // (title-only posts, e.g. GiveWP's `give_forms`).
+        //
+        // Currently wordpress-rs requires the `content` field in API responses,
+        // which is absent for post types that don't support "editor".
+        //
+        // For these post types, the app also needs to hide "open in editor"
+        // options since there is no content body to edit.
+        //
+        // Most plugins that set `show_in_rest = true` do so for block editor
+        // support, which requires "editor". Plugins with data-only post types
+        // (e.g. WooCommerce orders) typically keep `show_in_rest = false` and
+        // use custom REST routes instead. So this may not be worth supporting.
+        guard supports.supports(feature: .editor) else {
+            return false
+        }
+
+        guard case .custom = toPostEndpointType() else {
+            return false
+        }
+        return slug != "attachment"
     }
 }
