@@ -2,7 +2,7 @@
 ---
 
 agents:
-  queue: mac
+  queue: mac-staging
 env:
   IMAGE_ID: $IMAGE_ID
 

@@ -4,7 +4,7 @@
 # Weekly public-beta promotion — run by a Buildkite schedule (see docs/testflight-promotion.md).
 
 agents:
-  queue: mac
+  queue: mac-staging
 env:
   IMAGE_ID: $IMAGE_ID
 
