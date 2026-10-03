@@ -86,13 +86,6 @@ class BorderedButtonTableViewCell: UITableViewCell {
         self.buttonBackgroundColor = backgroundColor
         configureView()
     }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            updateButtonBorderColors()
-        }
-    }
 }
 
 // MARK: - Private Extension
@@ -102,6 +95,10 @@ private extension BorderedButtonTableViewCell {
     func configureView() {
         selectionStyle = .none
         accessibilityTraits = .button
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.updateButtonBorderColors()
+        }
 
         configureButton()
         contentView.addSubview(button)

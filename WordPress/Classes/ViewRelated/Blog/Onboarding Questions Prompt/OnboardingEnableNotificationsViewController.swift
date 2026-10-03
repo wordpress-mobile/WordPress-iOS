@@ -28,6 +28,11 @@ class OnboardingEnableNotificationsViewController: UIViewController {
         applyStyles()
         applyLocalization()
         updateContent()
+        updateContent(for: traitCollection)
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.updateContent(for: self.traitCollection)
+        }
 
         WPAnalytics.track(.onboardingEnableNotificationsDisplayed)
         UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed = true
@@ -63,12 +68,6 @@ extension OnboardingEnableNotificationsViewController {
 
         // Hide the detail image if the text is too large
         detailView.isHidden = contentSize.isAccessibilityCategory
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        updateContent(for: traitCollection)
     }
 }
 

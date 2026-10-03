@@ -507,15 +507,17 @@ class NoticeContainerView: UIView {
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _: UITraitCollection) in
+            self.updateNoticeWidthConstraint()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func updateNoticeWidthConstraint() {
         let isRegularWidth = traitCollection.horizontalSizeClass == .regular
         noticeWidthConstraint?.isActive = isRegularWidth
 
