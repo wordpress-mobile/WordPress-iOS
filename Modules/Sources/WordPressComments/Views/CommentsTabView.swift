@@ -6,6 +6,7 @@ struct CommentsTabView: View {
     @State private var selectedFilter: CommentsListFilter = .all
     @State private var viewModels: [CommentsListFilter: CommentsListViewModel]
     @State private var titleResolver: PostTitleResolver
+    @State private var reviewSession: CommentReviewViewModel?
 
     /// A tapped row (and, recursively, a parent comment) pushes a detail screen
     /// through it.
@@ -81,12 +82,19 @@ struct CommentsTabView: View {
                 CommentsListView(
                     viewModel: viewModel,
                     titleResolver: titleResolver,
-                    openComment: { router.open(id: $0, seed: $1) }
+                    openComment: { router.open(id: $0, seed: $1) },
+                    review: { batch in
+                        guard reviewSession == nil else { return }
+                        reviewSession = router.makeReviewSession(batch: batch)
+                    }
                 )
             }
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $reviewSession) { session in
+            router.makeReviewView(session: session)
+        }
     }
 
     private var tabBar: some View {
