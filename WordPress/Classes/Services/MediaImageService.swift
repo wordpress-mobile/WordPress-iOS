@@ -231,10 +231,25 @@ final class MediaImageService {
 
             let symlink = tempDirectoryURL
                 .appendingPathComponent(export.url.lastPathComponent)
-            try FileManager.default.createSymbolicLink(at: symlink, withDestinationURL: thumbnailURL)
-
-            completion(symlink)
+            do {
+                try MediaImageService.makeSymbolicLink(at: symlink, withDestinationURL: thumbnailURL)
+                completion(symlink)
+            } catch {
+                Loggers.app.error("Failed to create a thumbnail symlink: \(error)")
+                completion(nil)
+            }
         }
+    }
+
+    /// Tolerates a link that already exists at `url`: reuses it when it points at
+    /// `destinationURL`, otherwise replaces whatever occupies the path.
+    static func makeSymbolicLink(at url: URL, withDestinationURL destinationURL: URL) throws {
+        let fileManager = FileManager.default
+        if (try? fileManager.destinationOfSymbolicLink(atPath: url.path)) == destinationURL.path {
+            return
+        }
+        try? fileManager.removeItem(at: url) // Stale link or a file occupying the path
+        try fileManager.createSymbolicLink(at: url, withDestinationURL: destinationURL)
     }
 
     // MARK: - Remote Thumbnail
