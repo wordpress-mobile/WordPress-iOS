@@ -29,6 +29,7 @@ final class PreviewCommentsService: CommentsServiceProtocol {
     func delete(id: Int64) async throws {}
     func numberOfReplies(for id: Int64) async throws -> Int { replyCount }
     func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail { .preview() }
+    func updateContent(id: Int64, content: String) async throws -> CommentDetail { .preview() }
 }
 
 struct PreviewCapabilities: CommentsCapabilitiesProtocol {
