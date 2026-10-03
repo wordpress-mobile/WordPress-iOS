@@ -10,6 +10,7 @@ struct LineChartView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.context) var context
     @Environment(\.showComparison) private var showComparison
+    @Environment(\.isPlaceholder) private var isPlaceholder
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -23,12 +24,14 @@ struct LineChartView: View {
     var body: some View {
         Chart {
             currentPeriodMarks
-            if showComparison {
+            if showComparison, !isPlaceholder {
                 previousPeriodMarks
             }
-            averageLine
-            significantPointAnnotations
-            selectionIndicatorMarks
+            if !isPlaceholder {
+                averageLine
+                significantPointAnnotations
+                selectionIndicatorMarks
+            }
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
@@ -36,8 +39,8 @@ struct LineChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .chartXSelection(value: $selectedDate)
-        .animation(.spring, value: ObjectIdentifier(data))
+        .chartXSelection(value: isPlaceholder ? .constant(nil) : $selectedDate)
+        .animation(isPlaceholder ? nil : .spring, value: ObjectIdentifier(data))
         .onChange(of: selectedDate) {
             selectedDataPoints = SelectedDataPoints.compute(for: $1, data: data)
         }
@@ -52,23 +55,20 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var currentPeriodMarks: some ChartContent {
-        // Solid line and area for complete data points
-        ForEach(completeDataPoints) { point in
+        let areaStyle = ChartHelper.areaStyle(
+            color: data.metric.primaryColor,
+            colorScheme: colorScheme,
+            isPlaceholder: isPlaceholder
+        )
+        // Solid line and area for complete data points. The placeholder draws every point
+        // solid; its dashed incomplete segment is invisible at placeholder opacity.
+        ForEach(isPlaceholder ? data.currentData : completeDataPoints) { point in
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 series: .value("Period", "Current")
             )
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [
-                        data.metric.primaryColor.opacity(colorScheme == .light ? 0.15 : 0.25),
-                        data.metric.primaryColor.opacity(0.0)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .foregroundStyle(areaStyle)
             .interpolationMethod(.linear)
 
             LineMark(
@@ -86,20 +86,22 @@ struct LineChartView: View {
         }
 
         // Dashed line segment connecting the last complete point to today's incomplete point
-        ForEach(incompleteSegmentPoints) { point in
-            LineMark(
-                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
-                y: .value("Value", point.value),
-                series: .value("Period", "Incomplete")
-            )
-            .foregroundStyle(data.metric.primaryColor.opacity(0.4))
-            .lineStyle(StrokeStyle(
-                lineWidth: 3,
-                lineCap: .round,
-                lineJoin: .round,
-                dash: [6, 5]
-            ))
-            .interpolationMethod(.linear)
+        if !isPlaceholder {
+            ForEach(incompleteSegmentPoints) { point in
+                LineMark(
+                    x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
+                    y: .value("Value", point.value),
+                    series: .value("Period", "Incomplete")
+                )
+                .foregroundStyle(data.metric.primaryColor.opacity(0.4))
+                .lineStyle(StrokeStyle(
+                    lineWidth: 3,
+                    lineCap: .round,
+                    lineJoin: .round,
+                    dash: [6, 5]
+                ))
+                .interpolationMethod(.linear)
+            }
         }
     }
 
@@ -233,20 +235,34 @@ struct LineChartView: View {
         ChartHelper.makeXAxis(
             domain: xAxisDomain,
             granularity: data.granularity,
-            calendar: context.calendar
+            calendar: context.calendar,
+            isPlaceholder: isPlaceholder
         )
     }
 
-    private var yAxis: some AxisContent {
-        AxisMarks { value in
-            if let value = value.as(Int.self) {
-                AxisGridLine()
-                    .foregroundStyle(Color(.opaqueSeparator).opacity(0.5))
+    private var yAxisGridLineColor: Color {
+        Color(.opaqueSeparator).opacity(0.5)
+    }
 
-                AxisValueLabel {
-                    Text(valueFormatter.format(value: value, context: .compact))
-                        .font(.caption2.weight(.medium)).tracking(-0.1)
-                        .foregroundColor(.secondary)
+    @AxisContentBuilder
+    private var yAxis: some AxisContent {
+        if isPlaceholder {
+            ChartHelper.makePlaceholderYAxis(
+                domain: yAxisDomain,
+                formatter: valueFormatter,
+                gridLineColor: yAxisGridLineColor
+            )
+        } else {
+            AxisMarks { value in
+                if let value = value.as(Int.self) {
+                    AxisGridLine()
+                        .foregroundStyle(yAxisGridLineColor)
+
+                    AxisValueLabel {
+                        Text(valueFormatter.format(value: value, context: .compact))
+                            .font(.caption2.weight(.medium)).tracking(-0.1)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
         }
