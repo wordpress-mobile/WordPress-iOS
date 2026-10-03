@@ -34,4 +34,24 @@ public protocol CoreDataStackSwift: CoreDataStack {
     /// - Returns: The value returned by the `block`
     /// - Throws: The error thrown by the `block`, in which case the Core Data changes made by the `block` is discarded.
     func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T
+
+    /// Perform a query using the `mainContext` and return the result.
+    ///
+    /// - Warning: Do not return `NSManagedObject` instances from the closure.
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T
+
+    /// Perform a query on a fresh background context and return the result.
+    ///
+    /// The changes made by the closure are not saved. Provide a throwing closure
+    /// to select this background overload over the `mainContext` one above.
+    ///
+    /// - Warning: Do not return `NSManagedObject` instances from the closure.
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) rethrows -> T
+
+    /// Perform an asynchronous query on a fresh background context and return the result.
+    ///
+    /// The changes made by the closure are not saved.
+    ///
+    /// - Warning: Do not return `NSManagedObject` instances from the closure.
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T
 }

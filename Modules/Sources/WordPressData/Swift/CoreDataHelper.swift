@@ -195,24 +195,14 @@ extension ContextManager.ContextManagerError: LocalizedError, CustomDebugStringC
 public extension CoreDataStack {
     /// Perform a query using the `mainContext` and return the result.
     ///
+    /// The background query overloads live on `CoreDataStackSwift`; only this
+    /// synchronous nonthrowing `mainContext` convenience remains available on
+    /// the Objective-C-compatible `CoreDataStack`.
+    ///
     /// - Warning: Do not return `NSManagedObject` instances from the closure.
     func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
         mainContext.performAndWait { [mainContext] in
             block(mainContext)
-        }
-    }
-
-    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
-        let context = newDerivedContext()
-        return try await context.perform {
-            try block(context)
-        }
-    }
-
-    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) rethrows -> T {
-        let context = newDerivedContext()
-        return try context.performAndWait {
-            try block(context)
         }
     }
 

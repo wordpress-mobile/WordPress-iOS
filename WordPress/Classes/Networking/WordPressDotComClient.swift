@@ -45,11 +45,11 @@ final class AutoUpdatingWPComAuthenticationProvider: @unchecked Sendable, WpDyna
     private let lock = NSLock()
     private var authentication: WpAuthentication
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
 
     private var cancellable: AnyCancellable?
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: CoreDataStackSwift) {
         self.coreDataStack = coreDataStack
         self.authentication = Self.readAuthentication(on: coreDataStack)
 
@@ -123,7 +123,7 @@ final class AutoUpdatingWPComAuthenticationProvider: @unchecked Sendable, WpDyna
         ])
     }
 
-    private static func readAuthentication(on stack: CoreDataStack) -> WpAuthentication {
+    private static func readAuthentication(on stack: CoreDataStackSwift) -> WpAuthentication {
         do {
             guard let authToken = try stack.performQuery({
                 try WPAccount.lookupDefaultWordPressComAccountToken(in: $0)

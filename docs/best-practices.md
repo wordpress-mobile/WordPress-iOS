@@ -28,7 +28,9 @@ let siteName = coreDataStack.performQuery { context in
 }
 ```
 
-Return plain values, value types, identifiers, or object IDs from `performQuery`. Prefer `TaggedManagedObjectID<Model>` over a bare `NSManagedObjectID` when the model type is known. Do not return `NSManagedObject` instances from a query closure. Managed objects are tied to the context and queue that produced them, so using them after the closure returns can reintroduce Core Data concurrency bugs.
+Return plain values, value types, identifiers, or object IDs from `performQuery`. Prefer `TaggedManagedObjectID<Model>` over a bare `NSManagedObjectID` when the model type is known. Do not return `NSManagedObject` instances from any `performQuery` overload. Managed objects are tied to the context and queue that produced them, so using them after the closure returns can reintroduce Core Data concurrency bugs.
+
+`performQuery` has three overloads. The synchronous nonthrowing overload runs on `mainContext` and is the only one available on the Objective-C-compatible `CoreDataStack`. The synchronous throwing and `async` overloads run on a fresh background context that is not saved, and require `CoreDataStackSwift`. Inject `CoreDataStackSwift` when a type performs background reads. None of the overloads save.
 
 ### Writing Core Data
 
