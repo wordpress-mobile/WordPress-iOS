@@ -1,0 +1,77 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/referrers/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "groups": [
+          {
+            "group": "Search Engines",
+            "name": "Search Engines",
+            "total": 512,
+            "results": [
+              {
+                "name": "Google Search",
+                "url": "http://www.google.com/",
+                "views": 468
+              },
+              {
+                "name": "Bing",
+                "url": "http://www.bing.com",
+                "views": 31
+              },
+              {
+                "name": "DuckDuckGo",
+                "url": "https://duckduckgo.com",
+                "views": 13
+              }
+            ]
+          },
+          {
+            "group": "instagram.com",
+            "name": "Instagram",
+            "url": "https://www.instagram.com/",
+            "total": 274,
+            "results": {
+              "views": 274
+            }
+          },
+          {
+            "group": "facebook.com",
+            "name": "Facebook",
+            "url": "http://facebook.com/",
+            "total": 188,
+            "results": {
+              "views": 188
+            }
+          },
+          {
+            "group": "WordPress.com Reader",
+            "name": "WordPress.com Reader",
+            "url": "https://wordpress.com/",
+            "total": 96,
+            "results": {
+              "views": 96
+            }
+          },
+          {
+            "group": "pinterest.com",
+            "name": "Pinterest",
+            "url": "http://pinterest.com/",
+            "total": 61,
+            "results": {
+              "views": 61
+            }
+          }
+        ],
+        "other_views": 49,
+        "total_views": 1180
+      }
+    }
+  }
+}

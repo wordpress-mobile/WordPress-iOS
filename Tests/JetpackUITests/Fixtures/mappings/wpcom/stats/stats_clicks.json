@@ -1,0 +1,54 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/clicks/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "clicks": [
+          {
+            "name": "instagram.com/infocusphotographers",
+            "url": "https://www.instagram.com/infocusphotographers",
+            "views": 92,
+            "children": null
+          },
+          {
+            "name": "pinterest.com/infocusphotographers",
+            "url": "https://www.pinterest.com/infocusphotographers",
+            "views": 47,
+            "children": null
+          },
+          {
+            "name": "WordPress.com Media",
+            "url": null,
+            "views": 38,
+            "children": [
+              {
+                "name": "infocusphotographers.files.wordpress.com/2019/05/portfolio-01.jpg",
+                "url": "https://infocusphotographers.files.wordpress.com/2019/05/portfolio-01.jpg",
+                "views": 22
+              },
+              {
+                "name": "infocusphotographers.files.wordpress.com/2019/05/portfolio-02.jpg",
+                "url": "https://infocusphotographers.files.wordpress.com/2019/05/portfolio-02.jpg",
+                "views": 16
+              }
+            ]
+          },
+          {
+            "name": "maps.google.com",
+            "url": "https://maps.google.com/?q=In+Focus+Photography",
+            "views": 23,
+            "children": null
+          }
+        ],
+        "other_clicks": 14,
+        "total_clicks": 214
+      }
+    }
+  }
+}

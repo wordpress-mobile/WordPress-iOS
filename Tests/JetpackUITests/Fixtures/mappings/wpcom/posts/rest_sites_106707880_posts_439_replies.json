@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.1/sites/106707880/posts/439/replies"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 0,
+      "site_ID": 106707880
+    }
+  }
+}

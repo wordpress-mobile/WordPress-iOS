@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/devices/platform/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "top_values": {
+        "iphone": 1124,
+        "android": 687,
+        "mac": 512,
+        "windows": 471,
+        "ipad": 102,
+        "linux": 64,
+        "android_tablet": 22,
+        "unknown": 30
+      }
+    }
+  }
+}

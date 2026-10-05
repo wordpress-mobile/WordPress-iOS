@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/subscribers/*"
+  },
+  "response": {
+    "status": 200,
+    "transformers": [
+      "stats-series"
+    ],
+    "transformerParameters": {
+      "fields": [
+        {
+          "name": "subscribers",
+          "level": 1289,
+          "growth": 1.35
+        },
+        {
+          "name": "subscribers_paid",
+          "level": 38,
+          "growth": 0.05
+        }
+      ]
+    }
+  }
+}

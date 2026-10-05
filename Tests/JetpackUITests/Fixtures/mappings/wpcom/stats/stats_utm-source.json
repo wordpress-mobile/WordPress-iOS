@@ -1,0 +1,60 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.1/sites/106707880/stats/utm/utm_source"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "top_utm_values": {
+        "instagram": 164,
+        "newsletter": 121,
+        "facebook": 88,
+        "google": 57,
+        "pinterest": 26
+      },
+      "top_posts": {
+        "instagram": [
+          {
+            "id": 90,
+            "title": "Martin and Amy's Wedding",
+            "views": 164,
+            "href": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/"
+          }
+        ],
+        "newsletter": [
+          {
+            "id": 106,
+            "title": "Some News to Share",
+            "views": 121,
+            "href": "http://infocusphotographers.com/2016/04/19/some-news-to-share/"
+          }
+        ],
+        "facebook": [
+          {
+            "id": 24,
+            "title": "Portfolio",
+            "views": 88,
+            "href": "http://infocusphotographers.com/portfolio/"
+          }
+        ],
+        "google": [
+          {
+            "id": 24,
+            "title": "Portfolio",
+            "views": 57,
+            "href": "http://infocusphotographers.com/portfolio/"
+          }
+        ],
+        "pinterest": [
+          {
+            "id": 1,
+            "title": "Home",
+            "views": 26,
+            "href": "http://infocusphotographers.com/about/"
+          }
+        ]
+      }
+    }
+  }
+}
