@@ -10,9 +10,6 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
     public static var useURLSession = true
 
     private let endpoint: URL
-    private let userAgent: String?
-    private var backgroundUploads: Bool
-    private var backgroundSessionIdentifier: String
     @objc public static let defaultBackgroundSessionIdentifier = "org.wordpress.wporgxmlrpcapi"
 
     /// onChallenge's Callback Closure Signature. Host Apps should call this method, whenever a proper AuthChallengeDisposition has been
@@ -32,16 +29,21 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
         wpxmlrpc.WPXMLRPCFaultErrorDomain
     }
 
-    private lazy var urlSession: URLSession = makeSession(configuration: .default)
-    private lazy var uploadURLSession: URLSession = {
-        backgroundUploads
-            ? makeSession(configuration: .background(withIdentifier: self.backgroundSessionIdentifier))
-            : urlSession
-    }()
+    /// The sessions requests are sent on. They're created with the object and never replaced, so
+    /// requests running concurrently always agree on which session to use.
+    ///
+    /// They must not be created lazily. A `lazy var` isn't thread-safe: requests that start
+    /// together on a new instance can each find no session and create one, and all but one of
+    /// those sessions are then destroyed while their requests are still running.
+    private let urlSession: URLSession
+    private let uploadURLSession: URLSession
 
-    private func makeSession(configuration sessionConfiguration: URLSessionConfiguration) -> URLSession {
+    private static func makeSession(
+        configuration sessionConfiguration: URLSessionConfiguration,
+        userAgent: String?
+    ) -> URLSession {
         var additionalHeaders: [String: AnyObject] = ["Accept-Encoding": "gzip, deflate" as AnyObject]
-        if let userAgent = self.userAgent {
+        if let userAgent {
             additionalHeaders["User-Agent"] = userAgent as AnyObject?
         }
         sessionConfiguration.httpAdditionalHeaders = additionalHeaders
@@ -50,14 +52,10 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
         if sessionConfiguration.identifier != nil {
             return URLSession.backgroundSession(configuration: sessionConfiguration)
         } else {
-            return URLSession(configuration: sessionConfiguration, delegate: sessionDelegate, delegateQueue: nil)
+            // The session keeps its delegate alive until it's invalidated.
+            return URLSession(configuration: sessionConfiguration, delegate: SessionDelegate(), delegateQueue: nil)
         }
     }
-
-    // swiftlint:disable weak_delegate
-    /// `URLSessionDelegate` for the URLSession instances in this class.
-    private let sessionDelegate = SessionDelegate()
-    // swiftlint:enable weak_delegate
 
     /// Creates a new API object to connect to the WordPress XMLRPC API for the specified endpoint.
     ///
@@ -68,9 +66,18 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
     ///   - backgroundSessionIdentifier: The session identifier to use for the background session. This must be unique in the system.
     @objc public init(endpoint: URL, userAgent: String? = nil, backgroundUploads: Bool = false, backgroundSessionIdentifier: String) {
         self.endpoint = endpoint
-        self.userAgent = userAgent
-        self.backgroundUploads = backgroundUploads
-        self.backgroundSessionIdentifier = backgroundSessionIdentifier
+
+        let urlSession = Self.makeSession(configuration: .default, userAgent: userAgent)
+        self.urlSession = urlSession
+        if backgroundUploads {
+            self.uploadURLSession = Self.makeSession(
+                configuration: .background(withIdentifier: backgroundSessionIdentifier),
+                userAgent: userAgent
+            )
+        } else {
+            self.uploadURLSession = urlSession
+        }
+
         super.init()
     }
 

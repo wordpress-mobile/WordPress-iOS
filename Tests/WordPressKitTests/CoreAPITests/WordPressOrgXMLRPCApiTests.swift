@@ -388,4 +388,64 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         XCTAssertEqual(progress.fractionCompleted, 1)
     }
+
+    /// Requests that start together on a new instance have to share one session.
+    ///
+    /// If the session is created lazily, each of them can create one. All but one of those sessions
+    /// are then destroyed while their requests are still running.
+    func testRequestsStartedTogetherOnANewInstanceShareOneSession() async throws {
+        let stubPath = try XCTUnwrap(OHPathForFileInBundle("xmlrpc-response-getpost.xml", Bundle.coreAPITestsBundle))
+        stub(condition: isXmlRpcAPIRequest()) { _ in
+            fixture(filePath: stubPath, headers: self.xmlContentTypeHeaders)
+        }
+
+        // `URLSession` tells this delegate which session each request ran on.
+        let recorder = SessionRecorder()
+        let previousDelegate = wpkURLSessionNotifyingDelegate
+        wpkURLSessionNotifyingDelegate = recorder
+        defer { wpkURLSessionNotifyingDelegate = previousDelegate }
+
+        let endpoint = try XCTUnwrap(URL(string: xmlrpcEndpoint))
+        let instanceCount = 50
+        let requestCount = 8
+        for _ in 0..<instanceCount {
+            let api = WordPressOrgXMLRPCApi(endpoint: endpoint)
+            await withTaskGroup(of: Void.self) { group in
+                for _ in 0..<requestCount {
+                    group.addTask { _ = await api.call(method: "wp.getPost", parameters: nil) }
+                }
+            }
+        }
+
+        // The delegate can hear about a request a moment after the request has returned.
+        let deadline = Date().addingTimeInterval(10)
+        while recorder.requestCount < instanceCount * requestCount, Date() < deadline {
+            try await Task.sleep(nanoseconds: 10_000_000)
+        }
+
+        XCTAssertEqual(recorder.requestCount, instanceCount * requestCount)
+        XCTAssertEqual(recorder.sessionCount, instanceCount, "Some instances used more than one session")
+    }
+}
+
+/// Records the sessions that requests ran on.
+///
+/// It keeps hold of them, so that a new session can't be mistaken for an earlier one that has been
+/// deallocated and whose address has been reused.
+private final class SessionRecorder: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+    private let lock = NSLock()
+    private var sessions: [URLSession] = []
+    private var requests = 0
+
+    var sessionCount: Int { lock.withLock { sessions.count } }
+    var requestCount: Int { lock.withLock { requests } }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        lock.withLock {
+            requests += 1
+            if !sessions.contains(where: { $0 === session }) {
+                sessions.append(session)
+            }
+        }
+    }
 }
