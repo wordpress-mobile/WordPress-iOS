@@ -18,6 +18,7 @@
 
 - [Localization](localization.md)
 - [Feature Flags](feature-flags.md)
+- [UI Tests](ui-tests.md)
 - [Formattable Content](formattable-content.md)
 - [Issue Triage](issue-triage.md)
 
