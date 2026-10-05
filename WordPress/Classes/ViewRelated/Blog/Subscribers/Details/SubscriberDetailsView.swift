@@ -28,6 +28,7 @@ struct SubscriberDetailsView: View {
             .padding()
             .disabled(isDeleting)
         }
+        .accessibilityIdentifier("subscriber-details")
         .task {
             await refresh()
         }

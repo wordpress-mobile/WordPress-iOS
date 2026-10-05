@@ -58,6 +58,7 @@ struct ChartCard: View {
         .animation(.spring, value: viewModel.isEditing)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Strings.Accessibility.chartContainer)
+        .accessibilityIdentifier("chart_card")
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
                 ChartCardCustomizationView(chartViewModel: viewModel)
@@ -180,6 +181,7 @@ struct ChartCard: View {
                 .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
+        .accessibilityIdentifier("chart_card_more_button")
     }
 
     @ViewBuilder

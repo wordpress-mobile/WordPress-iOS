@@ -198,6 +198,7 @@ struct TodayCard<MenuContent: View>: View {
                 .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
+        .accessibilityIdentifier("today_card_more_button")
     }
 
     @ViewBuilder
