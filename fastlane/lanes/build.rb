@@ -119,6 +119,14 @@ platform :ios do
   # @option [String] name The (partial) name of the `*.xctestrun` file to run
   # @option [String] device Name of the simulator device to run the test on
   # @option [String] ios_version The deployment target version to test on
+  # @option [String] only_testing Comma-separated tests to run, each `Target/Class` or
+  #   `Target/Class/method`. Runs every test in the xctestrun file when omitted.
+  # @option [Boolean] reset_simulator Whether to erase the Simulator first (default: true). A CI job
+  #   runs in a VM made for it, so its Simulator has nothing to erase, and it has started booting
+  #   it by now.
+  # @option [Integer] concurrent_workers How many Simulators to run the tests on at once. Xcode clones
+  #   the device and hands each clone whole test classes, so more than one only helps when there's
+  #   more than one class to run. Runs on the one device when omitted.
   #
   # @called_by CI
   #
@@ -133,24 +141,36 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    # The only supported mode runs the WordPress unit tests (xctestrun name `WordPressUnitTests`).
+    # Two modes are supported, and the scheme can be inferred from the xctestrun name:
+    #
+    # - (WordPress, WordPressUnitTests): the unit tests
+    # - (Jetpack, JetpackUITests): the UI tests
+    ui_tests = options[:name].include?('JetpackUITests')
+    scheme = ui_tests ? 'Jetpack' : 'WordPress'
+
+    workers = options[:concurrent_workers].to_i
+    parallel = workers > 1
+
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
+      scheme: scheme,
       # Naming the device and the deployment target stops scan from reading the build settings to pick a simulator.
       device: options[:device] || CI_SIMULATOR_DEVICE,
       deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
+      only_testing: options[:only_testing]&.split(','),
+      parallel_testing: parallel ? true : nil,
+      concurrent_workers: parallel ? workers : nil,
       # The tests run from the prebuilt .xctestrun. Resolving packages, or reading build settings
       # (which also resolves them), would fetch every Swift package for nothing.
       skip_package_dependencies_resolution: true,
       disallow_xcodebuild_settings_lookup: true,
       derived_data_path: DERIVED_DATA_PATH,
-      app_name: 'WordPress',
+      app_name: scheme,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
-      reset_simulator: true,
+      reset_simulator: options.fetch(:reset_simulator, true),
       result_bundle: true,
       output_types: 'junit',
       # Workaround: on Xcode 27, post-test simulator diagnostics collection can hang until its 600 s timeout.
