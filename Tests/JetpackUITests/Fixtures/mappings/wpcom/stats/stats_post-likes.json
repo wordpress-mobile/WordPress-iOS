@@ -1,0 +1,86 @@
+{
+  "priority": 6,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.2/sites/[0-9]+/posts/[0-9]+/likes/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 23,
+      "i_like": false,
+      "likes": [
+        {
+          "ID": 31877,
+          "login": "priyaraman",
+          "name": "Priya Raman",
+          "site_ID": 32877,
+          "avatar_URL": "https://0.gravatar.com/avatar/00000000000000000000000000007c85?s=96",
+          "bio": "",
+          "date_liked": "{{now offset='-1 days'}}",
+          "preferred_blog": {
+            "url": "http://priyaraman.wordpress.com",
+            "name": "Priya Raman",
+            "id": 32877
+          }
+        },
+        {
+          "ID": 31802,
+          "login": "danielosei",
+          "name": "Daniel Osei",
+          "site_ID": 32802,
+          "avatar_URL": "https://0.gravatar.com/avatar/00000000000000000000000000007c3a?s=96",
+          "bio": "",
+          "date_liked": "{{now offset='-2 days'}}",
+          "preferred_blog": {
+            "url": "http://danielosei.wordpress.com",
+            "name": "Daniel Osei",
+            "id": 32802
+          }
+        },
+        {
+          "ID": 31754,
+          "login": "sofialindqvist",
+          "name": "Sofia Lindqvist",
+          "site_ID": 32754,
+          "avatar_URL": "https://0.gravatar.com/avatar/00000000000000000000000000007c0a?s=96",
+          "bio": "",
+          "date_liked": "{{now offset='-2 days'}}",
+          "preferred_blog": {
+            "url": "http://sofialindqvist.wordpress.com",
+            "name": "Sofia Lindqvist",
+            "id": 32754
+          }
+        },
+        {
+          "ID": 31690,
+          "login": "kenjiwatanabe",
+          "name": "Kenji Watanabe",
+          "site_ID": 32690,
+          "avatar_URL": "https://0.gravatar.com/avatar/00000000000000000000000000007bca?s=96",
+          "bio": "",
+          "date_liked": "{{now offset='-4 days'}}",
+          "preferred_blog": {
+            "url": "http://kenjiwatanabe.wordpress.com",
+            "name": "Kenji Watanabe",
+            "id": 32690
+          }
+        },
+        {
+          "ID": 31615,
+          "login": "mayahernandez",
+          "name": "Maya Hernandez",
+          "site_ID": 32615,
+          "avatar_URL": "https://0.gravatar.com/avatar/00000000000000000000000000007b7f?s=96",
+          "bio": "",
+          "date_liked": "{{now offset='-5 days'}}",
+          "preferred_blog": {
+            "url": "http://mayahernandez.wordpress.com",
+            "name": "Maya Hernandez",
+            "id": 32615
+          }
+        }
+      ]
+    }
+  }
+}

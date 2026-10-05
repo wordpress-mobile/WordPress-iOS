@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/wp-json/wp/v2/users/me"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 1,
+      "username": "e2eflowtestingmobile",
+      "name": "e2eflowtestingmobile",
+      "first_name": "",
+      "last_name": "",
+      "email": "e2e@example.com",
+      "url": "",
+      "description": "",
+      "link": "{{request.requestLine.baseUrl}}/?author=1",
+      "locale": "en_US",
+      "nickname": "e2eflowtestingmobile",
+      "slug": "e2eflowtestingmobile",
+      "roles": ["administrator"],
+      "registered_date": "2020-01-01T00:00:00+00:00",
+      "capabilities": {
+        "administrator": true
+      },
+      "extra_capabilities": {
+        "administrator": true
+      },
+      "avatar_urls": {
+        "24": "https://secure.gravatar.com/avatar/?s=24&d=mm&r=g",
+        "48": "https://secure.gravatar.com/avatar/?s=48&d=mm&r=g",
+        "96": "https://secure.gravatar.com/avatar/?s=96&d=mm&r=g"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json; charset=UTF-8"
+    },
+    "transformers": ["response-template"]
+  }
+}

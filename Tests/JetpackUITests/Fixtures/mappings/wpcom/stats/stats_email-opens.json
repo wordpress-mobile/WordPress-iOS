@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/opens/emails/[0-9]+/rate/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "total_sends": 1284,
+      "unique_opens": 742,
+      "total_opens": 1532,
+      "opens_rate": 0.58
+    }
+  }
+}

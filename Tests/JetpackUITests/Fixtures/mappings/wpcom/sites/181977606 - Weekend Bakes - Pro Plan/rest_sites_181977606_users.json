@@ -1,0 +1,44 @@
+{
+    "request": {
+      "method": "GET",
+      "urlPattern": "/rest/v1.1/sites/181977606/users.*",
+      "queryParameters": {
+        "locale": {
+          "matches": "(.*)"
+        },
+        "authors_only": {
+          "equalTo": "1"
+        },
+        "number": {
+          "equalTo": "100"
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "jsonBody": {
+        "found": 1,
+        "users": [
+          {
+            "ID": 152748359,
+            "login": "appstorescreens",
+            "email": "test@example.com",
+            "name": "appstorescreens",
+            "first_name": "",
+            "last_name": "",
+            "nice_name": "e2eflowtestingmobile",
+            "URL": "http://tricountyrealestate.wordpress.com",
+            "avatar_URL": "https://0.gravatar.com/avatar/35029b2103460109f574c38dfeea5f3f?s=96&d=identicon&r=G",
+            "profile_URL": "https://en.gravatar.com/appstorescreens",
+            "ip_address": "",
+            "site_ID": 181977606,
+            "site_visible": true,
+            "roles": [
+              "administrator"
+            ],
+            "is_super_admin": false
+          }
+        ]
+      }
+    }
+  }

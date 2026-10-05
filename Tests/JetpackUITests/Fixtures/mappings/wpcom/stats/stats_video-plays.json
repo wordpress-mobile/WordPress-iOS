@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/video-plays/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "plays": [
+          {
+            "post_id": 90,
+            "url": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+            "title": "Martin and Amy's Wedding Highlights",
+            "plays": 86
+          },
+          {
+            "post_id": 24,
+            "url": "http://infocusphotographers.com/portfolio/",
+            "title": "Behind the Scenes: Studio Tour",
+            "plays": 41
+          }
+        ],
+        "other_plays": 6,
+        "total_plays": 133
+      }
+    }
+  }
+}

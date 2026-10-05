@@ -1,0 +1,82 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/location-views/city/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "views": [
+          {
+            "location": "San Francisco",
+            "country_code": "US",
+            "views": 268,
+            "coordinates": {
+              "latitude": "37.7749",
+              "longitude": "-122.4194"
+            }
+          },
+          {
+            "location": "London",
+            "country_code": "GB",
+            "views": 231,
+            "coordinates": {
+              "latitude": "51.5074",
+              "longitude": "-0.1278"
+            }
+          },
+          {
+            "location": "New York",
+            "country_code": "US",
+            "views": 207,
+            "coordinates": {
+              "latitude": "40.7128",
+              "longitude": "-74.0060"
+            }
+          },
+          {
+            "location": "Toronto",
+            "country_code": "CA",
+            "views": 142,
+            "coordinates": {
+              "latitude": "43.6532",
+              "longitude": "-79.3832"
+            }
+          },
+          {
+            "location": "Los Angeles",
+            "country_code": "US",
+            "views": 133,
+            "coordinates": {
+              "latitude": "34.0522",
+              "longitude": "-118.2437"
+            }
+          },
+          {
+            "location": "Sydney",
+            "country_code": "AU",
+            "views": 97,
+            "coordinates": {
+              "latitude": "-33.8688",
+              "longitude": "151.2093"
+            }
+          },
+          {
+            "location": "Berlin",
+            "country_code": "DE",
+            "views": 71,
+            "coordinates": {
+              "latitude": "52.5200",
+              "longitude": "13.4050"
+            }
+          }
+        ],
+        "other_views": 1863,
+        "total_views": 3012
+      }
+    }
+  }
+}
