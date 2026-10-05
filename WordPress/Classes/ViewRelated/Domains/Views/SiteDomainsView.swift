@@ -97,6 +97,7 @@ struct SiteDomainsView: View {
                                 .foregroundColor(.secondary.opacity(0.5))
                         }
                     }
+                    .accessibilityIdentifier("site-domain-row")
                 } else {
                     AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
                 }

@@ -20,6 +20,7 @@ struct TimezoneInfoView: View {
             .foregroundColor(.secondary)
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("stats_timezone_button")
         .popover(isPresented: $showingTimezoneInfo) {
             timezoneInfoContent
         }

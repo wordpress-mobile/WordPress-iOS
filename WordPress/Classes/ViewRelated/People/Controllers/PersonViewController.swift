@@ -85,6 +85,7 @@ final class PersonViewController: UITableViewController {
         super.viewDidLoad()
 
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        tableView.accessibilityIdentifier = "person_table_view"
     }
 
     override func viewWillAppear(_ animated: Bool) {

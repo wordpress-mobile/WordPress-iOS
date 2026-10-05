@@ -76,6 +76,7 @@ struct TopListCard: View {
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.spring, value: viewModel.isEditing)
         .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("top_list_card_\(viewModel.selection.item.rawValue)")
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
@@ -103,6 +104,7 @@ struct TopListCard: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.title))
+        .accessibilityIdentifier("top_list_card_title")
     }
 
     private var mapView: some View {
@@ -138,6 +140,7 @@ struct TopListCard: View {
                         .padding(.vertical, Constants.step0_5)
                 }
                 .fixedSize()
+                .accessibilityIdentifier("top_list_card_location_level_button")
             } else if viewModel.selection.item == .devices {
                 Menu {
                     deviceBreakdownPicker
@@ -242,6 +245,7 @@ struct TopListCard: View {
                 .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
+        .accessibilityIdentifier("top_list_card_more_button")
     }
 
     @ViewBuilder
@@ -388,6 +392,7 @@ struct TopListCard: View {
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
+        .accessibilityIdentifier("top_list_card_show_all_button")
     }
 
     private var showMoreInlineButton: some View {
