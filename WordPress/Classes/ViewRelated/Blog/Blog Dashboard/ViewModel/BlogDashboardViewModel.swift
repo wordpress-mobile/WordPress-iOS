@@ -77,6 +77,7 @@ final class BlogDashboardViewModel {
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
+                cell.accessibilityIdentifier = "dashboard-card-\(cardModel.cardType.rawValue)"
                 if var cellConfigurable = cell as? BlogDashboardCardConfigurable {
                     cellConfigurable.row = indexPath.row
                     cellConfigurable.configure(blog: blog, viewController: viewController, model: cardModel)

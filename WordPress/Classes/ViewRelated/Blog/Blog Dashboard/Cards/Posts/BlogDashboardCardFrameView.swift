@@ -33,6 +33,7 @@ class BlogDashboardCardFrameView: UIView {
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = .preferredFont(forTextStyle: .subheadline).withWeight(.semibold)
         titleLabel.accessibilityTraits = .button
+        titleLabel.accessibilityIdentifier = "dashboard-card-header"
         titleLabel.numberOfLines = 0
         return titleLabel
     }()
@@ -49,6 +50,7 @@ class BlogDashboardCardFrameView: UIView {
         button.tintColor = UIColor.secondaryLabel
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
+        button.accessibilityIdentifier = "dashboard-card-more-button"
         button.accessibilityTraits = .button
         button.isHidden = true
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
