@@ -1,6 +1,7 @@
 27.4
 -----
 * [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
+* [*] Fix a rare crash when several network requests start at the same time [#26116]
 
 27.3
 -----
