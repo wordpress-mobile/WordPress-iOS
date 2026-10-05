@@ -228,6 +228,13 @@
 			remoteGlobalIDString = 0CED016F2D95B897003015CF;
 			remoteInfo = Keystone;
 		};
+		24753234306C77300075CFDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FABB1F8F2602FC2C00C8785C;
+			remoteInfo = Jetpack;
+		};
 		3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -530,6 +537,7 @@
 		24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.release.xcconfig; sourceTree = "<group>"; };
 		24351253264DCA08009BB2B6 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../Secrets/Secrets.swift; sourceTree = BUILT_PRODUCTS_DIR; };
 		2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.alpha.xcconfig; sourceTree = "<group>"; };
+		2475322C306C77300075CFDD /* JetpackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		24AE9E66264B34E500AC7F15 /* Secrets-example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Secrets-example.swift"; sourceTree = "<group>"; };
 		24B54FAE2624F8430041B18E /* JetpackRelease-Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JetpackRelease-Alpha.entitlements"; sourceTree = "<group>"; };
 		24B54FAF2624F84C0041B18E /* JetpackRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetpackRelease.entitlements; sourceTree = "<group>"; };
@@ -800,6 +808,13 @@
 			);
 			target = E16AB92914D978240047A2E5 /* WordPressTest */;
 		};
+		24753236306C77300075CFDD /* Exceptions for "JetpackUITests" folder in "JetpackUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				JetpackUITests.xctestplan,
+			);
+			target = 2475322B306C77300075CFDD /* JetpackUITests */;
+		};
 		3F1A64F82DA7ABC300786B92 /* Exceptions for "Classes" folder in "Reader" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -944,6 +959,17 @@
 			path = Recoleta;
 			sourceTree = "<group>";
 		};
+		2475322D306C77300075CFDD /* JetpackUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				24753236306C77300075CFDD /* Exceptions for "JetpackUITests" folder in "JetpackUITests" target */,
+			);
+			explicitFolders = (
+				Fixtures,
+			);
+			path = JetpackUITests;
+			sourceTree = "<group>";
+		};
 		24CE57C42CD3375200C7B37D /* Classes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -1068,6 +1094,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		24753229306C77300075CFDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A8280FA2E5FE9B60037E180 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1183,6 +1216,7 @@
 				0C73A9BD2DAEDFDE00CC0F3A /* KeystoneTests */,
 				0C3313C62E0439A9000C3760 /* MiniatureTests */,
 				4A8280FE2E5FE9B60037E180 /* WordPressKitTests */,
+				2475322D306C77300075CFDD /* JetpackUITests */,
 			);
 			name = Tests;
 			path = ../Tests;
@@ -1220,6 +1254,7 @@
 				0C3313B72E0439A8000C3760 /* Miniature.app */,
 				0C3313C32E0439A9000C3760 /* MiniatureTests.xctest */,
 				4A8280FD2E5FE9B60037E180 /* WordPressKitTests.xctest */,
+				2475322C306C77300075CFDD /* JetpackUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1719,6 +1754,29 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2475322B306C77300075CFDD /* JetpackUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 24753233306C77300075CFDD /* Build configuration list for PBXNativeTarget "JetpackUITests" */;
+			buildPhases = (
+				24753228306C77300075CFDD /* Sources */,
+				24753229306C77300075CFDD /* Frameworks */,
+				2475322A306C77300075CFDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				24753235306C77300075CFDD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2475322D306C77300075CFDD /* JetpackUITests */,
+			);
+			name = JetpackUITests;
+			packageProductDependencies = (
+			);
+			productName = JetpackUITests;
+			productReference = 2475322C306C77300075CFDD /* JetpackUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		4A8280FC2E5FE9B60037E180 /* WordPressKitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4A8281062E5FE9B70037E180 /* Build configuration list for PBXNativeTarget "WordPressKitTests" */;
@@ -1994,6 +2052,10 @@
 							};
 						};
 					};
+					2475322B306C77300075CFDD = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = FABB1F8F2602FC2C00C8785C;
+					};
 					4A8280FC2E5FE9B60037E180 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
@@ -2112,6 +2174,7 @@
 				0C3313B62E0439A8000C3760 /* Miniature */,
 				0C3313C22E0439A9000C3760 /* MiniatureTests */,
 				4A8280FC2E5FE9B60037E180 /* WordPressKitTests */,
+				2475322B306C77300075CFDD /* JetpackUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -2169,6 +2232,13 @@
 				747D09862034837C0085EABF /* WordPressShare.js in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				4A690C152BA791B100A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2475322A306C77300075CFDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2688,6 +2758,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		24753228306C77300075CFDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A8280F92E5FE9B60037E180 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2789,6 +2866,11 @@
 			isa = PBXTargetDependency;
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 			targetProxy = 0C5A8A7A2D9B22F100C25301 /* PBXContainerItemProxy */;
+		};
+		24753235306C77300075CFDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
+			targetProxy = 24753234306C77300075CFDD /* PBXContainerItemProxy */;
 		};
 		3FCFFAFE2994A949002840C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3814,6 +3896,139 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		24753230306C77300075CFDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Jetpack;
+			};
+			name = Debug;
+		};
+		24753231306C77300075CFDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Jetpack;
+			};
+			name = Release;
+		};
+		24753232306C77300075CFDD /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Jetpack;
+			};
+			name = "Release-Alpha";
 		};
 		4A8281032E5FE9B60037E180 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5303,6 +5518,16 @@
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
 				8546B4441BEAD39700193C07 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		24753233306C77300075CFDD /* Build configuration list for PBXNativeTarget "JetpackUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24753230306C77300075CFDD /* Debug */,
+				24753231306C77300075CFDD /* Release */,
+				24753232306C77300075CFDD /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
