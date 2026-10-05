@@ -1,6 +1,7 @@
 import Foundation
 import WordPressCore
 import WordPressData
+import WordPressShared
 
 /// Encapsulates Account-Y Helpers
 ///
@@ -80,6 +81,9 @@ import WordPressData
     }
 
     static func logOutDefaultWordPressComAccount() {
+        let started = ContinuousClock.now
+        let hasAccount = isDotcomAvailable()
+
         // Unschedule any scheduled blogging reminders
         let service = AccountService(coreDataStack: ContextManager.shared)
 
@@ -99,6 +103,21 @@ import WordPressData
 
         WordPressClientFactory.shared.reset()
         JetpackSocialFactory.shared.reset()
+
+        guard hasAccount else {
+            return
+        }
+
+        // Tracked on the next main queue turn, not here, so that the duration is how long the
+        // main thread stayed busy. That includes work that logging out starts but that only
+        // runs after this method returns.
+        DispatchQueue.main.async {
+            let elapsed = started.duration(to: .now).components
+            WPAnalytics.track(
+                .logout,
+                withProperties: ["duration_ms": Double(elapsed.seconds) * 1000 + Double(elapsed.attoseconds) / 1e15]
+            )
+        }
     }
 
     static func deleteAccountData() {
