@@ -553,4 +553,38 @@ class WordPressComRestApiTests: XCTestCase {
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
         XCTAssertEqual(request.httpBodyText, #"{"arg1":"value1"}"#)
     }
+
+    /// Requests that start together on a new instance have to share one session.
+    ///
+    /// If the session is created lazily, each of them can create one. All but one of those sessions
+    /// are then destroyed while their requests are still running, which can crash in `URLSession`.
+    func testRequestsStartedTogetherOnANewInstanceShareOneSession() async {
+        stub(condition: isHost("public-api.wordpress.com")) { _ in
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
+        }
+        let request = HTTPRequestBuilder(url: URL(string: "https://public-api.wordpress.com/rest/v1/foo")!)
+        let requestCount = 8
+
+        for _ in 0..<50 {
+            let api = WordPressComRestApi()
+            let lock = NSLock()
+            var taskIdentifiers: [Int] = []
+
+            await withTaskGroup(of: Void.self) { group in
+                for _ in 0..<requestCount {
+                    group.addTask {
+                        _ = await api.perform(
+                            request: request,
+                            decoder: { $0 },
+                            taskCreated: { identifier in lock.withLock { taskIdentifiers.append(identifier) } }
+                        )
+                    }
+                }
+            }
+
+            // A session numbers its tasks from one, so two tasks with the same identifier came from
+            // two sessions.
+            XCTAssertEqual(Set(taskIdentifiers).count, requestCount, "The requests ran on more than one session")
+        }
+    }
 }
