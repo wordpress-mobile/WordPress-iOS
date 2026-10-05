@@ -125,6 +125,27 @@ steps:
       #         context: "Unit Tests Keystone"
 
   #################
+  # Run UI Tests
+  #################
+  - group: "🔬 UI Tests"
+    key: ui_tests_group
+    steps:
+      - label: "🔬 :jetpack: UI Tests"
+        command: ".buildkite/commands/run-ui-tests.sh 'iPhone 18 Pro'"
+        depends_on: "build_jetpack"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        artifact_paths:
+          - "build/results/*"
+          - "build/results/crashes/*"
+        retry:
+          automatic:
+            - exit_status: "*"
+              limit: 1
+        notify:
+          - github_commit_status:
+              context: "UI Tests"
+
+  #################
   # Linters
   #################
   - group: "Linters"

@@ -111,6 +111,8 @@ platform :ios do
   # @option [String] name The (partial) name of the `*.xctestrun` file to run
   # @option [String] device Name of the simulator device to run the test on
   # @option [String] ios_version The deployment target version to test on
+  # @option [String] only_testing Comma-separated tests to run, each `Target/Class` or
+  #   `Target/Class/method`. Runs every test in the xctestrun file when omitted.
   #
   # @called_by CI
   #
@@ -125,19 +127,28 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    # The only supported mode runs the WordPress unit tests (xctestrun name `WordPressUnitTests`).
+    # Two modes are supported, and the scheme can be inferred from the xctestrun name:
+    #
+    # - (WordPress, WordPressUnitTests): the unit tests
+    # - (Jetpack, JetpackUITests): the UI tests
+    ui_tests = options[:name].include?('JetpackUITests')
+    scheme = ui_tests ? 'Jetpack' : 'WordPress'
+
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
+      scheme: scheme,
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
+      only_testing: options[:only_testing]&.split(','),
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
-      output_types: 'junit'
+      output_types: 'junit',
+      # After a UI test run Xcode otherwise spends up to ten minutes on `simctl diagnose`.
+      xcargs: ui_tests ? '-collect-test-diagnostics never' : nil
     )
   end
 
