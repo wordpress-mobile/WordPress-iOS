@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/wpcom/v2/sites/.*/rewind/capabilities.*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "capabilities": [
+        "backup",
+        "restore",
+        "backup-daily",
+        "scan",
+        "antispam"
+      ]
+    }
+  }
+}

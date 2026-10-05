@@ -1,0 +1,474 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/post/[0-9]+/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{now format='yyyy-MM-dd'}}",
+      "views": 30428,
+      "years": {
+        "{{now offset='-2 years' format='yyyy'}}": {
+          "months": {
+            "1": 612,
+            "2": 580,
+            "3": 705,
+            "4": 731,
+            "5": 802,
+            "6": 768,
+            "7": 744,
+            "8": 690,
+            "9": 721,
+            "10": 815,
+            "11": 794,
+            "12": 760
+          },
+          "total": 8722
+        },
+        "{{now offset='-1 years' format='yyyy'}}": {
+          "months": {
+            "1": 842,
+            "2": 791,
+            "3": 913,
+            "4": 1004,
+            "5": 1284,
+            "6": 1120,
+            "7": 1032,
+            "8": 987,
+            "9": 1065,
+            "10": 1143,
+            "11": 1098,
+            "12": 1021
+          },
+          "total": 12300
+        }
+      },
+      "averages": {
+        "{{now offset='-2 years' format='yyyy'}}": {
+          "months": {
+            "1": 20,
+            "2": 19,
+            "3": 24,
+            "4": 24,
+            "5": 27,
+            "6": 26,
+            "7": 25,
+            "8": 23,
+            "9": 24,
+            "10": 27,
+            "11": 26,
+            "12": 25
+          },
+          "overall": 24
+        },
+        "{{now offset='-1 years' format='yyyy'}}": {
+          "months": {
+            "1": 28,
+            "2": 26,
+            "3": 30,
+            "4": 33,
+            "5": 43,
+            "6": 37,
+            "7": 34,
+            "8": 33,
+            "9": 36,
+            "10": 38,
+            "11": 37,
+            "12": 34
+          },
+          "overall": 34
+        }
+      },
+      "weeks": [
+        {
+          "days": [
+            {
+              "day": "{{now offset='-41 days' format='yyyy-MM-dd'}}",
+              "count": 31
+            },
+            {
+              "day": "{{now offset='-40 days' format='yyyy-MM-dd'}}",
+              "count": 44
+            },
+            {
+              "day": "{{now offset='-39 days' format='yyyy-MM-dd'}}",
+              "count": 47
+            },
+            {
+              "day": "{{now offset='-38 days' format='yyyy-MM-dd'}}",
+              "count": 52
+            },
+            {
+              "day": "{{now offset='-37 days' format='yyyy-MM-dd'}}",
+              "count": 49
+            },
+            {
+              "day": "{{now offset='-36 days' format='yyyy-MM-dd'}}",
+              "count": 38
+            },
+            {
+              "day": "{{now offset='-35 days' format='yyyy-MM-dd'}}",
+              "count": 29
+            }
+          ],
+          "total": 290,
+          "average": 41,
+          "change": null
+        },
+        {
+          "days": [
+            {
+              "day": "{{now offset='-34 days' format='yyyy-MM-dd'}}",
+              "count": 33
+            },
+            {
+              "day": "{{now offset='-33 days' format='yyyy-MM-dd'}}",
+              "count": 46
+            },
+            {
+              "day": "{{now offset='-32 days' format='yyyy-MM-dd'}}",
+              "count": 51
+            },
+            {
+              "day": "{{now offset='-31 days' format='yyyy-MM-dd'}}",
+              "count": 55
+            },
+            {
+              "day": "{{now offset='-30 days' format='yyyy-MM-dd'}}",
+              "count": 48
+            },
+            {
+              "day": "{{now offset='-29 days' format='yyyy-MM-dd'}}",
+              "count": 41
+            },
+            {
+              "day": "{{now offset='-28 days' format='yyyy-MM-dd'}}",
+              "count": 30
+            }
+          ],
+          "total": 304,
+          "average": 43,
+          "change": 4.8
+        },
+        {
+          "days": [
+            {
+              "day": "{{now offset='-27 days' format='yyyy-MM-dd'}}",
+              "count": 35
+            },
+            {
+              "day": "{{now offset='-26 days' format='yyyy-MM-dd'}}",
+              "count": 49
+            },
+            {
+              "day": "{{now offset='-25 days' format='yyyy-MM-dd'}}",
+              "count": 53
+            },
+            {
+              "day": "{{now offset='-24 days' format='yyyy-MM-dd'}}",
+              "count": 58
+            },
+            {
+              "day": "{{now offset='-23 days' format='yyyy-MM-dd'}}",
+              "count": 52
+            },
+            {
+              "day": "{{now offset='-22 days' format='yyyy-MM-dd'}}",
+              "count": 44
+            },
+            {
+              "day": "{{now offset='-21 days' format='yyyy-MM-dd'}}",
+              "count": 32
+            }
+          ],
+          "total": 323,
+          "average": 46,
+          "change": 6.2
+        },
+        {
+          "days": [
+            {
+              "day": "{{now offset='-20 days' format='yyyy-MM-dd'}}",
+              "count": 36
+            },
+            {
+              "day": "{{now offset='-19 days' format='yyyy-MM-dd'}}",
+              "count": 52
+            },
+            {
+              "day": "{{now offset='-18 days' format='yyyy-MM-dd'}}",
+              "count": 57
+            },
+            {
+              "day": "{{now offset='-17 days' format='yyyy-MM-dd'}}",
+              "count": 61
+            },
+            {
+              "day": "{{now offset='-16 days' format='yyyy-MM-dd'}}",
+              "count": 55
+            },
+            {
+              "day": "{{now offset='-15 days' format='yyyy-MM-dd'}}",
+              "count": 46
+            },
+            {
+              "day": "{{now offset='-14 days' format='yyyy-MM-dd'}}",
+              "count": 34
+            }
+          ],
+          "total": 341,
+          "average": 49,
+          "change": 5.6
+        },
+        {
+          "days": [
+            {
+              "day": "{{now offset='-13 days' format='yyyy-MM-dd'}}",
+              "count": 39
+            },
+            {
+              "day": "{{now offset='-12 days' format='yyyy-MM-dd'}}",
+              "count": 54
+            },
+            {
+              "day": "{{now offset='-11 days' format='yyyy-MM-dd'}}",
+              "count": 60
+            },
+            {
+              "day": "{{now offset='-10 days' format='yyyy-MM-dd'}}",
+              "count": 63
+            },
+            {
+              "day": "{{now offset='-9 days' format='yyyy-MM-dd'}}",
+              "count": 58
+            },
+            {
+              "day": "{{now offset='-8 days' format='yyyy-MM-dd'}}",
+              "count": 49
+            },
+            {
+              "day": "{{now offset='-7 days' format='yyyy-MM-dd'}}",
+              "count": 37
+            }
+          ],
+          "total": 360,
+          "average": 51,
+          "change": 5.6
+        },
+        {
+          "days": [
+            {
+              "day": "{{now offset='-6 days' format='yyyy-MM-dd'}}",
+              "count": 71
+            },
+            {
+              "day": "{{now offset='-5 days' format='yyyy-MM-dd'}}",
+              "count": 96
+            },
+            {
+              "day": "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+              "count": 88
+            },
+            {
+              "day": "{{now offset='-3 days' format='yyyy-MM-dd'}}",
+              "count": 74
+            },
+            {
+              "day": "{{now offset='-2 days' format='yyyy-MM-dd'}}",
+              "count": 67
+            },
+            {
+              "day": "{{now offset='-1 days' format='yyyy-MM-dd'}}",
+              "count": 52
+            },
+            {
+              "day": "{{now format='yyyy-MM-dd'}}",
+              "count": 43
+            }
+          ],
+          "total": 491,
+          "average": 70,
+          "change": 36.4
+        }
+      ],
+      "fields": [
+        "period",
+        "views"
+      ],
+      "data": [
+        [
+          "{{now offset='-41 days' format='yyyy-MM-dd'}}",
+          31
+        ],
+        [
+          "{{now offset='-40 days' format='yyyy-MM-dd'}}",
+          44
+        ],
+        [
+          "{{now offset='-39 days' format='yyyy-MM-dd'}}",
+          47
+        ],
+        [
+          "{{now offset='-38 days' format='yyyy-MM-dd'}}",
+          52
+        ],
+        [
+          "{{now offset='-37 days' format='yyyy-MM-dd'}}",
+          49
+        ],
+        [
+          "{{now offset='-36 days' format='yyyy-MM-dd'}}",
+          38
+        ],
+        [
+          "{{now offset='-35 days' format='yyyy-MM-dd'}}",
+          29
+        ],
+        [
+          "{{now offset='-34 days' format='yyyy-MM-dd'}}",
+          33
+        ],
+        [
+          "{{now offset='-33 days' format='yyyy-MM-dd'}}",
+          46
+        ],
+        [
+          "{{now offset='-32 days' format='yyyy-MM-dd'}}",
+          51
+        ],
+        [
+          "{{now offset='-31 days' format='yyyy-MM-dd'}}",
+          55
+        ],
+        [
+          "{{now offset='-30 days' format='yyyy-MM-dd'}}",
+          48
+        ],
+        [
+          "{{now offset='-29 days' format='yyyy-MM-dd'}}",
+          41
+        ],
+        [
+          "{{now offset='-28 days' format='yyyy-MM-dd'}}",
+          30
+        ],
+        [
+          "{{now offset='-27 days' format='yyyy-MM-dd'}}",
+          35
+        ],
+        [
+          "{{now offset='-26 days' format='yyyy-MM-dd'}}",
+          49
+        ],
+        [
+          "{{now offset='-25 days' format='yyyy-MM-dd'}}",
+          53
+        ],
+        [
+          "{{now offset='-24 days' format='yyyy-MM-dd'}}",
+          58
+        ],
+        [
+          "{{now offset='-23 days' format='yyyy-MM-dd'}}",
+          52
+        ],
+        [
+          "{{now offset='-22 days' format='yyyy-MM-dd'}}",
+          44
+        ],
+        [
+          "{{now offset='-21 days' format='yyyy-MM-dd'}}",
+          32
+        ],
+        [
+          "{{now offset='-20 days' format='yyyy-MM-dd'}}",
+          36
+        ],
+        [
+          "{{now offset='-19 days' format='yyyy-MM-dd'}}",
+          52
+        ],
+        [
+          "{{now offset='-18 days' format='yyyy-MM-dd'}}",
+          57
+        ],
+        [
+          "{{now offset='-17 days' format='yyyy-MM-dd'}}",
+          61
+        ],
+        [
+          "{{now offset='-16 days' format='yyyy-MM-dd'}}",
+          55
+        ],
+        [
+          "{{now offset='-15 days' format='yyyy-MM-dd'}}",
+          46
+        ],
+        [
+          "{{now offset='-14 days' format='yyyy-MM-dd'}}",
+          34
+        ],
+        [
+          "{{now offset='-13 days' format='yyyy-MM-dd'}}",
+          39
+        ],
+        [
+          "{{now offset='-12 days' format='yyyy-MM-dd'}}",
+          54
+        ],
+        [
+          "{{now offset='-11 days' format='yyyy-MM-dd'}}",
+          60
+        ],
+        [
+          "{{now offset='-10 days' format='yyyy-MM-dd'}}",
+          63
+        ],
+        [
+          "{{now offset='-9 days' format='yyyy-MM-dd'}}",
+          58
+        ],
+        [
+          "{{now offset='-8 days' format='yyyy-MM-dd'}}",
+          49
+        ],
+        [
+          "{{now offset='-7 days' format='yyyy-MM-dd'}}",
+          37
+        ],
+        [
+          "{{now offset='-6 days' format='yyyy-MM-dd'}}",
+          71
+        ],
+        [
+          "{{now offset='-5 days' format='yyyy-MM-dd'}}",
+          96
+        ],
+        [
+          "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+          88
+        ],
+        [
+          "{{now offset='-3 days' format='yyyy-MM-dd'}}",
+          74
+        ],
+        [
+          "{{now offset='-2 days' format='yyyy-MM-dd'}}",
+          67
+        ],
+        [
+          "{{now offset='-1 days' format='yyyy-MM-dd'}}",
+          52
+        ],
+        [
+          "{{now format='yyyy-MM-dd'}}",
+          43
+        ]
+      ],
+      "highest_month": 1284,
+      "highest_day_average": 43,
+      "highest_week_average": 70
+    }
+  }
+}

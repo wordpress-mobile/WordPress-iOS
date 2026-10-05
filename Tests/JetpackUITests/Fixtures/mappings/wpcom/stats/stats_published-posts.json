@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/posts/*",
+    "queryParameters": {
+      "after": {
+        "matches": ".+"
+      },
+      "before": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 0,
+      "posts": []
+    }
+  }
+}

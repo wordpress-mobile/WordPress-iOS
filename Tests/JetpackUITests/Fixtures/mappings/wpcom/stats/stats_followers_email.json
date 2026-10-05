@@ -1,0 +1,63 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/followers/*",
+    "queryParameters": {
+      "type": {
+        "equalTo": "email"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "page": 1,
+      "pages": 1,
+      "total": 383,
+      "total_email": 383,
+      "total_wpcom": 906,
+      "subscribers": [
+        {
+          "avatar": "https://0.gravatar.com/avatar/000000000000000000000000000111e2?s=64",
+          "label": "amelia.grant@example.com",
+          "ID": "70114",
+          "url": null,
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-2 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/000000000000000000000000000111d2?s=64",
+          "label": "t.okafor@example.com",
+          "ID": "70098",
+          "url": null,
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-5 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/000000000000000000000000000111ad?s=64",
+          "label": "hello@studiolumen.example",
+          "ID": "70061",
+          "url": null,
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-9 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/00000000000000000000000000011163?s=64",
+          "label": "marco.bianchi@example.com",
+          "ID": "69987",
+          "url": null,
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-16 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/0000000000000000000000000001110e?s=64",
+          "label": "jen.wu@example.com",
+          "ID": "69902",
+          "url": null,
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-31 days'}}"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "request": {
+    "urlPath": "/wpcom/v2/sites/221670093/gutenberg",
+    "method": "POST",
+    "queryParameters": {
+      "platform": {
+        "matches": "mobile"
+      },
+      "editor": {
+        "matches": "gutenberg"
+      },
+      "locale": {
+        "matches": ".*"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "editor_mobile": "gutenberg",
+      "editor_web": "gutenberg",
+      "opt_out": "https://public-api.wordpress.com/wpcom/v2/sites/221670093/gutenberg?editor=aztec&platform=mobile"
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}
