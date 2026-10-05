@@ -96,8 +96,6 @@ open class WordPressComRestApi: NSObject {
 
     @objc public let sharedContainerIdentifier: String?
 
-    private let backgroundUploads: Bool
-
     private let localeKey: String
 
     @objc public let baseURL: URL
@@ -144,7 +142,6 @@ open class WordPressComRestApi: NSObject {
                 useEphemeralSession: Bool = false) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
-        self.backgroundUploads = backgroundUploads
         self.backgroundSessionIdentifier = backgroundSessionIdentifier
         self.sharedContainerIdentifier = sharedContainerIdentifier
         self.localeKey = localeKey
@@ -360,9 +357,9 @@ open class WordPressComRestApi: NSObject {
     /// requests running concurrently, off the main actor, always agree on which session to use.
     ///
     /// They must not be created lazily. A `lazy var` isn't thread-safe: requests that start
-    /// together on a new instance can each find no session and create one. All but one of those
-    /// sessions are then destroyed while their requests are still running, which can crash in
-    /// `URLSession`.
+    /// together on a new instance can each find no session, create one and store it. Those
+    /// stores race. Two of them can each release the session that a third request stored, which
+    /// frees it while that request is still using it and crashes in `URLSession`.
     private let urlSession: URLSession
     private let uploadURLSession: URLSession
 
