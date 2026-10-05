@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # Official Anthropic SDK — backs the AI translation tier of the localization pipeline (fastlane/lanes/ai_translator.rb).
-gem 'anthropic', '~> 1.74'
+gem 'anthropic', '~> 1.76'
 gem 'danger-dangermattic', '~> 1.4'
 gem 'dotenv'
 # 2.223.1 includes a fix for an ASC-interfacing issue
@@ -16,7 +16,7 @@ gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
 #
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 15.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 15.1'
 gem 'rake'
 gem 'rubocop', '~> 1.91'
 gem 'rubocop-rake', '~> 0.7'
