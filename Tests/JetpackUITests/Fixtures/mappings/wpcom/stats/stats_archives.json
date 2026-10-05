@@ -1,0 +1,68 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/archives/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "category": [
+          {
+            "href": "http://infocusphotographers.com/category/weddings/",
+            "value": "weddings",
+            "views": 318
+          },
+          {
+            "href": "http://infocusphotographers.com/category/portraits/",
+            "value": "portraits",
+            "views": 204
+          },
+          {
+            "href": "http://infocusphotographers.com/category/news/",
+            "value": "news",
+            "views": 87
+          }
+        ],
+        "tag": [
+          {
+            "href": "http://infocusphotographers.com/tag/outdoor/",
+            "value": "outdoor",
+            "views": 96
+          },
+          {
+            "href": "http://infocusphotographers.com/tag/engagement/",
+            "value": "engagement",
+            "views": 71
+          }
+        ],
+        "author": [
+          {
+            "href": "http://infocusphotographers.com/author/leahrand/",
+            "value": "leahrand",
+            "views": 64
+          },
+          {
+            "href": "http://infocusphotographers.com/author/andreazoellner/",
+            "value": "andreazoellner",
+            "views": 22
+          }
+        ],
+        "date": [
+          {
+            "href": "http://infocusphotographers.com/2016/03/",
+            "value": "2016/03",
+            "views": 48
+          },
+          {
+            "href": "http://infocusphotographers.com/2016/04/",
+            "value": "2016/04",
+            "views": 31
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/devices/browser/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "top_values": {
+        "safari": 1361,
+        "chrome": 1198,
+        "firefox": 174,
+        "edge": 151,
+        "samsung": 74,
+        "other": 54
+      }
+    }
+  }
+}

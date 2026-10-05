@@ -1,0 +1,59 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/rest/v1.1/sites/new",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.lang_id"
+      },
+      {
+        "matchesJsonPath": "$.options.template"
+      },
+      {
+        "matchesJsonPath": "$.options.timezone_string"
+      },
+      {
+        "matchesJsonPath": "$.options.site_information.site_tagline"
+      },
+      {
+        "matchesJsonPath": "$.find_available_url"
+      },
+      {
+        "matchesJsonPath": "$.blog_title"
+      },
+      {
+        "matchesJsonPath": "$.public"
+      },
+      {
+        "matchesJsonPath": "$.client_secret"
+      },
+      {
+        "matchesJsonPath": "$.validate"
+      },
+      {
+        "matchesJsonPath": "$.client_id"
+      },
+      {
+        "matchesJsonPath": "$.blog_name"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "success": true,
+      "blog_details": {
+        "url": "https://domainexample.blog/",
+        "blogid": "221670093",
+        "blogname": "New Testing Site",
+        "xmlrpc": "https://domainexample.blog/xmlrpc.php",
+        "site_slug": "domainexample.blog"
+      }
+    }
+  }
+}
