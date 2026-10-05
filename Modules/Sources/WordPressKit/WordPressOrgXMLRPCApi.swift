@@ -33,8 +33,9 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
     /// requests running concurrently always agree on which session to use.
     ///
     /// They must not be created lazily. A `lazy var` isn't thread-safe: requests that start
-    /// together on a new instance can each find no session and create one, and all but one of
-    /// those sessions are then destroyed while their requests are still running.
+    /// together on a new instance can each find no session, create one and store it. Those
+    /// stores race. Two of them can each release the session that a third request stored, which
+    /// frees it while that request is still using it.
     private let urlSession: URLSession
     private let uploadURLSession: URLSession
 
