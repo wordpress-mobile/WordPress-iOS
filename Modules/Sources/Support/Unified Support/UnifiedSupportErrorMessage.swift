@@ -20,8 +20,11 @@ extension Error {
         return UnifiedSupportLocalization.genericErrorMessage
     }
 
-    /// Whether the request was cancelled, which happens when the user leaves the screen while it's loading.
+    /// Whether the work was cancelled rather than failed, which happens when the user leaves the screen while
+    /// it's loading or backs out of a system picker.
     var isUnifiedSupportCancellation: Bool {
-        self is CancellationError || (self as? URLError)?.code == .cancelled
+        self is CancellationError
+            || (self as? URLError)?.code == .cancelled
+            || (self as? CocoaError)?.code == .userCancelled
     }
 }

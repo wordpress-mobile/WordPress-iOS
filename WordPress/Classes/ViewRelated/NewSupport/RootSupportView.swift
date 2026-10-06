@@ -61,9 +61,8 @@ struct RootSupportView: View {
                 communitySupportLink
                 if let identity, isUnifiedSupportAvailable {
                     unifiedSupportLink(for: identity)
-                }
-                if let identity {
-                    humanSupportLink(for: identity)
+                } else {
+                    communityForumLink
                 }
             }
 
@@ -109,16 +108,19 @@ struct RootSupportView: View {
         }
     }
 
+    /// Offered wherever the unified support flow isn't — a brand with no Happiness Engineer channel, or a user
+    /// we have no WP.com identity for — so nobody is left with documentation alone. It's the same place the
+    /// support screen this one replaces sends them.
     @ViewBuilder
-    private func humanSupportLink(for identity: SupportUser) -> some View {
+    private var communityForumLink: some View {
         NavigationLink {
-            SupportConversationListView(currentUser: identity)
-                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
+            let url = URL(string: "https://wordpress.org/support/forum/mobile/")!
+            WebKitView(configuration: WebViewControllerConfiguration(url: url))
         } label: {
             SupportAreaRow(
-                imageName: "envelope.badge",
-                title: "Ask the Happiness Engineers",
-                detail: "For your tough questions. We'll reply via email."
+                imageName: "person.2",
+                title: Strings.communityForumTitle,
+                detail: Strings.communityForumDetail
             )
         }
     }
@@ -231,5 +233,15 @@ private enum Strings {
         "support.root.getHelp.detail",
         value: "Get answers from our support team, anytime",
         comment: "Description of the row that opens the support conversations."
+    )
+    static let communityForumTitle = NSLocalizedString(
+        "support.root.communityForum.title",
+        value: "Community Forums",
+        comment: "Title of the row that opens the WordPress.org support forums."
+    )
+    static let communityForumDetail = NSLocalizedString(
+        "support.root.communityForum.detail",
+        value: "Ask a question and get help from our group of volunteers.",
+        comment: "Description of the row that opens the WordPress.org support forums."
     )
 }
