@@ -365,17 +365,8 @@ extension BlogDetailsViewController {
     }
 
     public func showSharing(from source: BlogDetailsNavigationSource) {
-        let sharingVC: UIViewController
-
-        if !blog.supports(.publicize) {
-            // if publicize is disabled, show the sharing buttons settings.
-            sharingVC = SharingButtonsViewController(blog: blog)
-        } else if let manage = ManageConnectionsHostingController.make(for: blog) {
-            sharingVC = manage
-        } else {
-            // supports(.publicize) implies a linked WP.com account, so the
-            // service should always resolve; guards a broken auth state.
-            return wpAssertionFailure("social connections service unavailable")
+        guard let sharingVC = ManageConnectionsHostingController.sharingDestination(for: blog) else {
+            return
         }
 
         trackEvent(.openedSharingManagement, from: source)
