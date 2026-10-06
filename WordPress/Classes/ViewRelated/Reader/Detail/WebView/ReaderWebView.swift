@@ -131,12 +131,16 @@ class ReaderWebView: WKWebView {
                     }
                 })
 
-                // Only display images after they have fully loaded, to have a native feel
+                // Only display images after they have fully loaded, to have a native feel.
+                // Listen on the image itself, as `currentSrc` is empty until WebKit resolves
+                // lazy `sizes="auto"` images.
                 document.querySelectorAll('img').forEach((el) => {
-                    var img = new Image();
-                    img.addEventListener('load', () => { el.style.opacity = "1" }, false);
-                    img.src = el.currentSrc;
-                    el.src = img.src;
+                    var show = () => { el.style.opacity = "1" };
+                    if (el.complete && el.naturalWidth > 0) {
+                        show();
+                    } else {
+                        el.addEventListener('load', show, { once: true });
+                    }
                 })
 
                 // Load all embeds
