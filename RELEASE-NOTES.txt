@@ -2,6 +2,7 @@
 -----
 * [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
 * [*] Fix a rare crash when several network requests start at the same time [#26116]
+* [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
 
 27.3
 -----
