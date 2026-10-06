@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import WordPressData
 
 #if UI_TEST_HTTP_FIXTURES
@@ -9,6 +9,10 @@ struct UITestConfigurator {
     static func prepareApplicationForUITests() {
         if CommandLine.arguments.contains("-ui-test-reset-everything") {
             resetEverything()
+        }
+        if CommandLine.arguments.contains("-ui-test-disable-animations") {
+            // A UI test waits for the app's animations to finish before every tap and query.
+            UIView.setAnimationsEnabled(false)
         }
 
         #if UI_TEST_HTTP_FIXTURES
