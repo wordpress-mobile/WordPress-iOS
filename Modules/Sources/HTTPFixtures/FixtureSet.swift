@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 import os
 
@@ -114,3 +115,4 @@ public final class FixtureSet: Sendable {
         return files.sorted { $0.path < $1.path }
     }
 }
+#endif

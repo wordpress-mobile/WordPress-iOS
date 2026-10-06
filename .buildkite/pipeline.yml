@@ -66,9 +66,10 @@ steps:
           - github_commit_status:
               context: "WordPress Build for Testing"
 
+      # The UI tests run against this build, so it has the HTTP fixtures compiled in.
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
-        command: ".buildkite/commands/build-for-testing.sh jetpack"
+        command: ".buildkite/commands/build-for-testing.sh jetpack http_fixtures:true"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:

@@ -1,4 +1,4 @@
-#if DEBUG
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 import ObjectiveC
 import os
@@ -12,8 +12,9 @@ import os
 /// It can't see requests that leave the process another way: the content of a `WKWebView`,
 /// background sessions, WebSockets and media playback.
 ///
-/// - warning: Compiled into debug builds only. Nothing in a release build can reroute the app's
-///   requests.
+/// - warning: Like the rest of this module, this is only compiled when the build sets the
+///   `UI_TEST_HTTP_FIXTURES` compilation condition. No other build of the app has anything in it
+///   that can reroute its requests.
 public final class FixtureURLProtocol: URLProtocol, @unchecked Sendable {
     private struct Configuration: Sendable {
         let fixtures: FixtureSet

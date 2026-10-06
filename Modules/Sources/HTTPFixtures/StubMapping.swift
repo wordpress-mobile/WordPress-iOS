@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// One request matcher and the response to answer with, read from a WireMock stub mapping file.
@@ -384,3 +385,4 @@ func canonicalJSON(_ json: Any) -> Data? {
         options: [.fragmentsAllowed, .sortedKeys, .withoutEscapingSlashes]
     )
 }
+#endif

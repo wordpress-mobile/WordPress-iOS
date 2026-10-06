@@ -6,7 +6,7 @@ The `JetpackUITests` target holds the XCUITest UI tests for the Jetpack app. Mos
 
 The tests sign in with the same token as `make sim-login` (see [Simulator Sign-In](simulator-sign-in.md)): the `WPCOM_TOKEN` environment variable, then `~/.wpcom-token` on the Mac. Without a token, every test that needs one is skipped rather than failed.
 
-In Xcode, select the **Jetpack** scheme and a Simulator destination, then run the tests from the Test Navigator. `JetpackUITests` is the scheme's default test plan.
+In Xcode, select the **Jetpack** scheme and a Simulator destination, then run the tests from the Test Navigator. `JetpackUITests` is the scheme's default test plan. This runs the suites that sign in to a real account, and not the ones that run against the fixtures: see below.
 
 From the command line:
 
@@ -16,7 +16,16 @@ xcodebuild \
   -scheme Jetpack \
   -testPlan JetpackUITests \
   -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
-  test
+  test \
+  SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST_HTTP_FIXTURES'
+```
+
+The last line is a build setting, and the suites that run against the [fixtures](#fixtures) need it. The code that serves the fixtures is left out of the app unless the build sets the `UI_TEST_HTTP_FIXTURES` compilation condition ([The build flag](#the-build-flag) has the details), and the command line is the only place it can be set from: Xcode has no way to give a compilation condition to a Swift package module, which is where that code is. Against an app built without it, such as one built in Xcode, each test in those suites fails as soon as the app has launched, with a message that says the fixtures weren't compiled in.
+
+fastlane's `test` lane sets it for the Jetpack scheme:
+
+```bash
+bundle exec fastlane test scheme:Jetpack only_testing:JetpackUITests/ReaderTests
 ```
 
 `xcodebuild` doesn't pass its own environment to the test runner, but it forwards any variable prefixed with `TEST_RUNNER_` with the prefix removed. To supply the token from the environment instead of `~/.wpcom-token`, export it as `TEST_RUNNER_WPCOM_TOKEN`.
@@ -99,7 +108,27 @@ Use the fixtures for any screen that changes the account just by being looked at
 
 It doesn't cover requests that leave the app's process another way: the content of a web view, which includes the block editor's own requests, background uploads, the notifications WebSocket and media playback. Those still go to the network, where the fixture account's token is no good.
 
-`FixtureURLProtocol` is compiled into debug builds only.
+### The build flag
+
+None of that is in the app unless it's built for it. Every file in the `HTTPFixtures` module is wrapped in `#if UI_TEST_HTTP_FIXTURES`, and so is the code in `UITestConfigurator` that reads the launch arguments. A build that doesn't set that compilation condition compiles the module to nothing, and has no code in it that can reroute a request or that knows the launch arguments.
+
+No configuration or scheme in the project sets the condition. A build gets it as a build setting on the `xcodebuild` command line, which reaches the package's modules as well as the app's own targets:
+
+```
+SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST_HTTP_FIXTURES'
+```
+
+fastlane passes that in two places. The `test` lane does for the Jetpack scheme, whose tests are these ones. `build_jetpack_for_testing` does when it's given `http_fixtures:true`, which is how CI builds the app the UI tests run against.
+
+SwiftLint's `http_fixtures_build_flag` rule fails a file in the module that doesn't start with the condition, so a new file can't be left out of it.
+
+The module's unit tests, `HTTPFixturesTests`, are compiled out with it. To run them, set the condition:
+
+```bash
+swift test -Xswiftc -DUI_TEST_HTTP_FIXTURES --filter HTTPFixturesTests
+```
+
+CI's Swift package tests do. Without it the target has one test, which is reported as skipped with that command in its message. The target isn't in `WordPressUnitTests.xctestplan`, because the build for those tests doesn't set the condition.
 
 ### Writing a fixture
 

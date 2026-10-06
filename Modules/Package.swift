@@ -117,6 +117,9 @@ let package = Package(
             // Set to v5 to avoid @Sendable warnings and errors
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
+        // Answers the app's requests from fixtures, for the UI tests. Every file is wrapped in
+        // `#if UI_TEST_HTTP_FIXTURES`, so the module is empty unless the build sets that
+        // condition, and the app that ships has none of it. See docs/ui-tests.md.
         .target(name: "HTTPFixtures"),
         .target(
             name: "JetpackStats",

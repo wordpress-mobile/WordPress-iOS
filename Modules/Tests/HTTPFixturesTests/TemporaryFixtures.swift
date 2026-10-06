@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 import HTTPFixtures
 
@@ -49,3 +50,4 @@ extension StubResponse {
         String(decoding: body, as: UTF8.self)
     }
 }
+#endif

@@ -1,7 +1,7 @@
 import Foundation
 import WordPressData
 
-#if DEBUG
+#if UI_TEST_HTTP_FIXTURES
 import HTTPFixtures
 #endif
 
@@ -11,7 +11,7 @@ struct UITestConfigurator {
             resetEverything()
         }
 
-        #if DEBUG
+        #if UI_TEST_HTTP_FIXTURES
         serveHTTPFixturesIfNeeded()
         #endif
     }
@@ -26,13 +26,16 @@ struct UITestConfigurator {
         }
     }
 
-    #if DEBUG
+    #if UI_TEST_HTTP_FIXTURES
     /// Answers the app's network requests from the fixtures in the directory passed as the
     /// `-ui-test-http-fixtures` launch argument, so UI tests run against data that doesn't change.
     ///
     /// The `-ui-test-http-log` launch argument names a file to log every request to.
     ///
     /// This has to run before the app creates a `URLSession`. See `FixtureURLProtocol`.
+    ///
+    /// Only a build that sets the `UI_TEST_HTTP_FIXTURES` compilation condition has this, or the
+    /// `HTTPFixtures` module it uses. The build for the UI tests sets it: see `docs/ui-tests.md`.
     private static func serveHTTPFixturesIfNeeded() {
         let defaults = UserDefaults.standard
         guard let directory = defaults.string(forKey: "ui-test-http-fixtures") else {

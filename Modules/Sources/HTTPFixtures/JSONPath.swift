@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// The two forms of JSONPath the fixtures use.
@@ -55,3 +56,4 @@ enum JSONPath: Sendable {
         }
     }
 }
+#endif
