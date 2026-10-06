@@ -7,6 +7,8 @@ fi
 DEVICE=${1:?Usage $0 DEVICE AREA}
 AREA=${2:?Usage $0 DEVICE AREA}
 
+"$(dirname "${BASH_SOURCE[0]}")/boot-simulator.sh" "$DEVICE"
+
 # The suites are grouped by area of the app, one folder each, and each area runs in a job of its own.
 TESTS_DIR=Tests/JetpackUITests/Tests
 
@@ -48,7 +50,7 @@ install_gems
 
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:JetpackUITests device:"$DEVICE" only_testing:"$SUITES"
+bundle exec fastlane test_without_building name:JetpackUITests device:"$DEVICE" only_testing:"$SUITES" reset_simulator:false
 TESTS_EXIT_STATUS=$?
 set -e
 
