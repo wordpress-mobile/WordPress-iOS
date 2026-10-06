@@ -49,7 +49,10 @@ final class NotificationsTests: JetpackUITestCase {
                 notifications.notifications.count == texts.count
             }
             for text in texts {
-                XCTAssertTrue(notifications.notification(beginningWith: text).exists, "\(text) isn't under \(filter)")
+                XCTAssertTrue(
+                    notifications.notification(beginningWith: text).pollForExistence(timeout: 10),
+                    "\(text) isn't under \(filter)"
+                )
             }
         }
     }

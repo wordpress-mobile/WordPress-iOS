@@ -21,7 +21,7 @@ final class EditorScreen: ScreenObject {
         closeButton.tap()
 
         let confirmation = app.sheets["post-has-changes-alert"]
-        if confirmation.waitForExistence(timeout: 3) {
+        if confirmation.pollForExistence(timeout: 3) {
             // "Discard Draft" for a new post, "Discard Changes" for an existing one.
             confirmation.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Discard'")).firstMatch.tap()
         }

@@ -25,7 +25,7 @@ final class ReaderTests: JetpackUITestCase {
         let reader = try reader()
 
         for name in Fixture.subscriptions {
-            XCTAssertTrue(reader.menu.staticTexts[name].exists, "\(name) isn't in the menu")
+            XCTAssertTrue(reader.menu.staticTexts[name].pollForExistence(timeout: 10), "\(name) isn't in the menu")
         }
     }
 
@@ -62,7 +62,7 @@ final class ReaderTests: JetpackUITestCase {
 
         try search.waitFor(app.searchFields.firstMatch)
         for scope in ["posts", "sites"] {
-            XCTAssertTrue(app.buttons[scope].exists, "The \(scope) scope is missing")
+            XCTAssertTrue(app.buttons[scope].pollForExistence(timeout: 10), "The \(scope) scope is missing")
         }
     }
 
@@ -88,8 +88,11 @@ final class ReaderTests: JetpackUITestCase {
             .goToPost(titled: Fixture.post)
             .waitForScreen()
 
-        XCTAssertTrue(post.site(named: Fixture.postSite).exists, "The post's site isn't shown")
-        XCTAssertTrue(post.author(named: Fixture.postAuthor).exists, "The post's author isn't shown")
+        XCTAssertTrue(post.site(named: Fixture.postSite).pollForExistence(timeout: 10), "The post's site isn't shown")
+        XCTAssertTrue(
+            post.author(named: Fixture.postAuthor).pollForExistence(timeout: 10),
+            "The post's author isn't shown"
+        )
     }
 
     func testPostMenu() throws {
