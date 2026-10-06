@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// Finds the text of a value in a JSON document, exactly as the document has it.
@@ -128,3 +129,4 @@ enum JSONText {
         private static let delimiters = whitespace.union([UInt8(ascii: ","), UInt8(ascii: "}"), UInt8(ascii: "]")])
     }
 }
+#endif

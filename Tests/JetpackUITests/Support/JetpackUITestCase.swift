@@ -87,6 +87,37 @@ class JetpackUITestCase: XCTestCase {
         Self.previousBackend = Self.backend
         launchDate = Date()
         app.launch()
+        try checkAppServesFixtures()
+    }
+
+    /// Fails a test on the fixtures backend when the app isn't serving them.
+    ///
+    /// The fixtures are only in an app built with the `UI_TEST_HTTP_FIXTURES` compilation
+    /// condition. Any other build ignores the launch arguments above and sends its requests to
+    /// WordPress.com, where the test would fail on whichever screen first needed the fixture
+    /// account.
+    ///
+    /// The app creates the request log as it starts serving the fixtures, before it finishes
+    /// launching, so a log that isn't there by now means it isn't serving them.
+    private func checkAppServesFixtures() throws {
+        guard let requestLog else {
+            return
+        }
+        let deadline = Date(timeIntervalSinceNow: 5)
+        while !FileManager.default.fileExists(atPath: requestLog.file.path(percentEncoded: false)) {
+            guard Date() < deadline else {
+                throw FixturesNotCompiledInError()
+            }
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+    }
+
+    struct FixturesNotCompiledInError: Error, CustomStringConvertible {
+        let description = """
+            The app was built without the HTTP fixtures this test runs against. They're only compiled in when the \
+            build sets the UI_TEST_HTTP_FIXTURES compilation condition, which a build made in Xcode doesn't. See \
+            "Running the tests" in docs/ui-tests.md.
+            """
     }
 
     /// The fixtures the app runs against: the ones in the test bundle, unless the `UI_TEST_FIXTURES`

@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// Generates the body of a stats response that has a row for every period in the interval the
@@ -251,3 +252,4 @@ struct StatsSeries: Sendable {
         }
     }
 }
+#endif

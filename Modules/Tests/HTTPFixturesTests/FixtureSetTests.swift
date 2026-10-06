@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 import Testing
 import HTTPFixtures
@@ -339,3 +340,4 @@ struct JetpackUITestFixturesTests {
         _ = try FixtureSet(directory: Self.directory)
     }
 }
+#endif
