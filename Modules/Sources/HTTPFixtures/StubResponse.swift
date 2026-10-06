@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// The response a `FixtureSet` answers a request with.
@@ -49,3 +50,4 @@ public struct FixtureError: Error, CustomStringConvertible, Sendable {
         "\(file): \(reason)"
     }
 }
+#endif
