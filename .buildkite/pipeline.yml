@@ -131,10 +131,17 @@ steps:
   - group: "🔬 UI Tests"
     key: ui_tests_group
     steps:
-      - label: "🔬 :jetpack: UI Tests"
-        command: ".buildkite/commands/run-ui-tests.sh 'iPhone 18 Pro'"
+      - label: "🔬 :jetpack: UI Tests ({{matrix}})"
+        command: ".buildkite/commands/run-ui-tests.sh 'iPhone 18 Pro' {{matrix}}"
         depends_on: "build_jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
+        # One job per area of the app: the folders in Tests/JetpackUITests/Tests.
+        matrix:
+          - "Me"
+          - "MySite"
+          - "Notifications"
+          - "Reader"
+          - "Stats"
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
@@ -144,7 +151,7 @@ steps:
               limit: 1
         notify:
           - github_commit_status:
-              context: "UI Tests"
+              context: "UI Tests ({{matrix}})"
 
   #################
   # Linters

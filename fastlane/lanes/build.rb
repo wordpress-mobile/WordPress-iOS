@@ -128,6 +128,9 @@ platform :ios do
   # @option [String] ios_version The deployment target version to test on
   # @option [String] only_testing Comma-separated tests to run, each `Target/Class` or
   #   `Target/Class/method`. Runs every test in the xctestrun file when omitted.
+  # @option [Integer] concurrent_workers How many Simulators to run the tests on at once. Xcode clones
+  #   the device and hands each clone whole test classes, so more than one only helps when there's
+  #   more than one class to run. Runs on the one device when omitted.
   #
   # @called_by CI
   #
@@ -149,6 +152,9 @@ platform :ios do
     ui_tests = options[:name].include?('JetpackUITests')
     scheme = ui_tests ? 'Jetpack' : 'WordPress'
 
+    workers = options[:concurrent_workers].to_i
+    parallel = workers > 1
+
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
@@ -158,6 +164,8 @@ platform :ios do
       test_without_building: true,
       xctestrun: xctestrun_path,
       only_testing: options[:only_testing]&.split(','),
+      parallel_testing: parallel ? true : nil,
+      concurrent_workers: parallel ? workers : nil,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,

@@ -39,10 +39,20 @@ Tests/JetpackUITests
 ├── JetpackUITests.xctestplan
 ├── Screens   # One screen object per screen or component
 ├── Support   # The test case and screen object base classes, credentials
-└── Tests     # The test cases
+└── Tests     # The test cases, in a folder per area of the app
 ```
 
 The folder is synchronized with the `JetpackUITests` target, so a new file is picked up without editing the project file.
+
+The suites are grouped by area of the app: `Me`, `MySite`, `Notifications`, `Reader` and `Stats`. Put a new suite in the folder for its area.
+
+## In CI
+
+CI runs the suites that run against the [fixtures](#fixtures), and not the ones that need a real account, which it has no token for. A suite is picked up by its `backend` override, so a new one runs without editing the pipeline.
+
+Each area runs in a job of its own, so that they run at the same time: the "UI Tests" step in `.buildkite/pipeline.yml` has a matrix of the folders under `Tests`. A new folder has to be added to it, and every job fails if it finds a fixture-backed suite in a folder that isn't there, so one can't be left out unnoticed.
+
+Each job runs its suites one after another on one Simulator. `test_without_building` can spread them over clones of the Simulator instead, when it's given `concurrent_workers`, but CI doesn't: a clone starts cold, and with four starting at once the first test on each took over a minute to reach My Site and timed out, so the run was no faster than one Simulator and had failures.
 
 ## Writing a test
 
