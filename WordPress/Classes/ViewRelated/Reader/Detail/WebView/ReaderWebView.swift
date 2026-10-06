@@ -132,8 +132,7 @@ class ReaderWebView: WKWebView {
                 })
 
                 // Only display images after they have fully loaded, to have a native feel.
-                // Listen on the image itself, as `currentSrc` is empty until WebKit resolves
-                // lazy `sizes="auto"` images.
+                // WebKit marks unloaded lazy images as complete, so also require a naturalWidth.
                 document.querySelectorAll('img').forEach((el) => {
                     var show = () => { el.style.opacity = "1" };
                     if (el.complete && el.naturalWidth > 0) {
