@@ -1,0 +1,38 @@
+{
+    "notificationId": "55551",
+    "type": "new_post",
+    "read": 0,
+    "noticon": "\uf410",
+    "timestamp": "2015-03-31T10:00:00+00:00",
+    "icon": "https://2.gravatar.com/avatar/33333333",
+    "url": "https://somethingthatmightnotexist.wordpress.com/2015/03/26/something/",
+    "subject": [
+        {
+            "text": "New post on Something: Night sky observation notes",
+            "ranges": [
+                {
+                    "type": "post",
+                    "indices": [
+                        22,
+                        50
+                    ],
+                    "url": "https://somethingthatmightnotexist.wordpress.com/2015/03/26/something/",
+                    "site_id": 444444,
+                    "id": 44
+                }
+            ]
+        }
+    ],
+    "body": [],
+    "meta": {
+        "ids": {
+            "site": 444444,
+            "post": 44
+        },
+        "links": {
+            "site": "https://public-api.wordpress.com/rest/v1/sites/444444",
+            "post": "https://public-api.wordpress.com/rest/v1/posts/44"
+        }
+    },
+    "title": "New Post"
+}

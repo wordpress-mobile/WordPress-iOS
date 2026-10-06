@@ -15,6 +15,10 @@ class RootViewCoordinator {
         case normal
         case simplified
         case staticScreens
+        /// The WordPress app with a WordPress.com account and the
+        /// `readerAndNotificationsInWordPressApp` flag on: live Reader and Notifications tabs,
+        /// while the other Jetpack features stay disabled as in `staticScreens`.
+        case readerTabs
     }
 
     // MARK: Static shared variables
@@ -58,6 +62,11 @@ class RootViewCoordinator {
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
     private let app: AppBrand
+    private let isReaderAndNotificationsEnabled: Bool
+    private var accountChangeObserver: NSObjectProtocol?
+    /// The type the current root view presenter was built for. It differs from
+    /// `currentAppUIType` after an account change until `reloadUIIfNeeded` rebuilds the UI.
+    private var presentedAppUIType: AppUIType?
 
     var isSiteCreationActive = false
     var isFullScreenOverlayBeingDisplayed = false
@@ -66,13 +75,39 @@ class RootViewCoordinator {
     init(
         featureFlagStore: RemoteFeatureFlagStore,
         windowManager: WindowManager?,
-        app: AppBrand = BuildSettings.current.brand
+        app: AppBrand = BuildSettings.current.brand,
+        isReaderAndNotificationsEnabled: Bool = FeatureFlag.readerAndNotificationsInWordPressApp.enabled
     ) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
-        self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
+        self.currentAppUIType = Self.appUIType(
+            featureFlagStore: featureFlagStore,
+            app: app,
+            isReaderAndNotificationsEnabled: isReaderAndNotificationsEnabled
+        )
         self.app = app
+        self.isReaderAndNotificationsEnabled = isReaderAndNotificationsEnabled
         updateJetpackFeaturesRemovalCoordinatorState()
+
+        if isReaderAndNotificationsEnabled {
+            // Without this, the type keeps its launch value until My Site appears and calls
+            // `reloadUIIfNeeded`. Checks that run before that read the stale type: the post-login
+            // notifications prompt, push registration, and the iPad sidebar, which never shows My Site.
+            accountChangeObserver = NotificationCenter.default.addObserver(
+                forName: .wpAccountDefaultWordPressComAccountChanged,
+                object: nil,
+                queue: nil
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.currentAppUIType = self.resolveAppUIType()
+            }
+        }
+    }
+
+    deinit {
+        if let accountChangeObserver {
+            NotificationCenter.default.removeObserver(accountChangeObserver)
+        }
     }
 
     // MARK: - Root Coordination
@@ -95,6 +130,7 @@ class RootViewCoordinator {
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
+        presentedAppUIType = appType
         if app == .reader {
             return ReaderRootViewPresenter()
         }
@@ -102,7 +138,7 @@ class RootViewCoordinator {
             return SplitViewRootPresenter()
         }
         switch appType {
-        case .normal:
+        case .normal, .readerTabs:
             return WPTabBarController(staticScreens: false)
         case .simplified:
             return MySitesCoordinator(onBecomeActiveTab: {})
@@ -114,8 +150,17 @@ class RootViewCoordinator {
     // MARK: JP Features State
 
     /// Used to determine the expected app UI type based on the removal phase.
-    private static func appUIType(featureFlagStore: RemoteFeatureFlagStore) -> AppUIType {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+    private static func appUIType(
+        featureFlagStore: RemoteFeatureFlagStore,
+        app: AppBrand,
+        isReaderAndNotificationsEnabled: Bool
+    ) -> AppUIType {
+        // The flag wins over every removal phase so that a remote phase change can't take
+        // Reader and Notifications away from WordPress.com accounts.
+        if app == .wordpress && isReaderAndNotificationsEnabled && !AccountHelper.noWordPressDotComAccount {
+            return .readerTabs
+        }
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore, app: app)
         switch phase {
         case .four, .newUsers, .selfHosted:
             return .simplified
@@ -124,6 +169,14 @@ class RootViewCoordinator {
         default:
             return .normal
         }
+    }
+
+    private func resolveAppUIType() -> AppUIType {
+        Self.appUIType(
+            featureFlagStore: featureFlagStore,
+            app: app,
+            isReaderAndNotificationsEnabled: isReaderAndNotificationsEnabled
+        )
     }
 
     private func updateJetpackFeaturesRemovalCoordinatorState() {
@@ -136,8 +189,8 @@ class RootViewCoordinator {
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
     @discardableResult
     func reloadUIIfNeeded(blog: Blog?) -> Bool {
-        let newUIType: AppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
-        let oldUIType = currentAppUIType
+        let newUIType = resolveAppUIType()
+        let oldUIType = presentedAppUIType ?? currentAppUIType
         guard newUIType != oldUIType, let windowManager else {
             return false
         }

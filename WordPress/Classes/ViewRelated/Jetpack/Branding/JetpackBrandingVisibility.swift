@@ -9,11 +9,12 @@ enum JetpackBrandingVisibility {
     func isEnabled(
         isWordPress: Bool,
         isDotComAvailable: Bool,
-        shouldShowJetpackFeatures: Bool
+        shouldShowJetpackFeatures: Bool,
+        isReaderTabsUI: Bool
     ) -> Bool {
         switch self {
         case .all:
-            return isWordPress && isDotComAvailable && shouldShowJetpackFeatures
+            return isWordPress && isDotComAvailable && shouldShowJetpackFeatures && !isReaderTabsUI
         }
     }
 
@@ -21,7 +22,8 @@ enum JetpackBrandingVisibility {
         return isEnabled(
             isWordPress: AppConfiguration.isWordPress,
             isDotComAvailable: AccountHelper.isDotcomAvailable(),
-            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
+            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(),
+            isReaderTabsUI: JetpackFeaturesRemovalCoordinator.isReaderTabsUI()
         )
     }
 }
