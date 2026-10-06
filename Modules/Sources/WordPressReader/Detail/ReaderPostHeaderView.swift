@@ -545,9 +545,10 @@ private enum Strings {
         comment: "Button in the reader post header showing the user is subscribed to the site"
     )
 
+    // Use a literal ellipsis: genstrings copies Swift `\u{…}` escapes verbatim into Localizable.strings.
     static let viewMore = AppLocalizedString(
         "reader.post.header.viewMore",
-        value: "\u{2026}view more",
+        value: "…view more",
         comment: "Appended to the truncated excerpt in the reader post header to indicate more content is available"
     )
 
