@@ -132,7 +132,8 @@ class ReaderWebView: WKWebView {
                 })
 
                 // Only display images after they have fully loaded, to have a native feel.
-                // WebKit marks unloaded lazy images as complete, so also require a naturalWidth.
+                // On iOS 27, a lazy `sizes="auto"` image reports `complete` before it has loaded,
+                // so also require a naturalWidth.
                 document.querySelectorAll('img').forEach((el) => {
                     var show = () => { el.style.opacity = "1" };
                     if (el.complete && el.naturalWidth > 0) {
