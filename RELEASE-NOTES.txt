@@ -1,6 +1,6 @@
 27.4
 -----
-
+* [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
 
 27.3
 -----
