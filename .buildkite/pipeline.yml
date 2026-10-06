@@ -89,7 +89,7 @@ steps:
               context: "Swift Package Tests"
 
       - label: "🔬 :wordpress: Unit Tests"
-        command: ".buildkite/commands/run-unit-tests.sh"
+        command: ".buildkite/commands/run-unit-tests.sh 'iPhone 17 Pro (26.5)'"
         depends_on: "build_wordpress"
         plugins:
           - $CI_TOOLKIT_PLUGIN

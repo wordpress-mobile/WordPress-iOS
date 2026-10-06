@@ -128,6 +128,9 @@ platform :ios do
   # @option [String] ios_version The deployment target version to test on
   # @option [String] only_testing Comma-separated tests to run, each `Target/Class` or
   #   `Target/Class/method`. Runs every test in the xctestrun file when omitted.
+  # @option [Boolean] reset_simulator Whether to erase the Simulator first (default: true). A CI job
+  #   runs in a VM made for it, so its Simulator has nothing to erase, and it has started booting
+  #   it by now.
   # @option [Integer] concurrent_workers How many Simulators to run the tests on at once. Xcode clones
   #   the device and hands each clone whole test classes, so more than one only helps when there's
   #   more than one class to run. Runs on the one device when omitted.
@@ -186,7 +189,7 @@ platform :ios do
       parallel_testing: parallel ? true : nil,
       concurrent_workers: parallel ? workers : nil,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
-      reset_simulator: true,
+      reset_simulator: options.fetch(:reset_simulator, true),
       result_bundle: true,
       output_types: 'junit',
       # After a UI test run Xcode otherwise spends up to ten minutes on `simctl diagnose`.
