@@ -71,9 +71,7 @@ class JetpackUITestCase: XCTestCase {
             "-AppRatingsSkipRatingCurrentVersion", "YES",
             // The first time the Notifications tab is shown the app asks to send push notifications,
             // in a sheet that covers the list a moment after the list appears.
-            "-NotificationPrimerAlertWasDisplayed", "YES",
-            // XCTest waits for the app's animations to finish before every tap and query.
-            "-ui-test-disable-animations"
+            "-NotificationPrimerAlertWasDisplayed", "YES"
         ]
         if Self.backend == .fixtures {
             let fixtures = try Self.fixturesDirectory
