@@ -23,7 +23,8 @@ class ReaderWebView: WKWebView {
     /// See also: https://stackoverflow.com/q/79802987/496295
     static let baseURL = URL(string: "https://wordpress.com/reader")!
 
-    let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
+    let jsToRemoveSrcSet =
+        "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
     var postURL: URL? = nil
 
@@ -60,7 +61,7 @@ class ReaderWebView: WKWebView {
     /// Ie.: Including tags, CSS, JS, etc.
     ///
     func formattedContent(_ content: String, additionalJavaScript: String = "") -> String {
-        return """
+        """
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=\(displaySetting.size.scale), maximum-scale=\(displaySetting.size.scale), user-scalable=no'>
@@ -110,52 +111,55 @@ class ReaderWebView: WKWebView {
     /// Tell the webview to load all media
     /// You want to use this method only after the webview has appearead (after a didFinish, for example)
     func loadMedia() {
-        evaluateJavaScript("""
-            var elements = ["\(elements.joined(separator: "\",\""))"]
+        evaluateJavaScript(
+            """
+                var elements = ["\(elements.joined(separator: "\",\""))"]
 
-            elements.forEach((element) => {
-                document.querySelectorAll(`${element}-placeholder`).forEach((el) => {
-                    var regex = new RegExp(`${element}-placeholder`, "g")
-                    el.outerHTML = el.outerHTML.replace(regex, element)
+                elements.forEach((element) => {
+                    document.querySelectorAll(`${element}-placeholder`).forEach((el) => {
+                        var regex = new RegExp(`${element}-placeholder`, "g")
+                        el.outerHTML = el.outerHTML.replace(regex, element)
+                    })
                 })
-            })
 
-            // Make all images tappable
-            // Exception for images in Stories, which have their own link structure
-            // and images that already have a link
-            document.querySelectorAll('img:not(.wp-story-image)').forEach((el) => {
-                if (el.parentNode.nodeName.toLowerCase() !== 'a') {
-                    el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`;
-                }
-            })
+                // Make all images tappable
+                // Exception for images in Stories, which have their own link structure
+                // and images that already have a link
+                document.querySelectorAll('img:not(.wp-story-image)').forEach((el) => {
+                    if (el.parentNode.nodeName.toLowerCase() !== 'a') {
+                        el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`;
+                    }
+                })
 
-            // Only display images after they have fully loaded, to have a native feel
-            document.querySelectorAll('img').forEach((el) => {
-                var img = new Image();
-                img.addEventListener('load', () => { el.style.opacity = "1" }, false);
-                img.src = el.currentSrc;
-                el.src = img.src;
-            })
+                // Only display images after they have fully loaded, to have a native feel
+                document.querySelectorAll('img').forEach((el) => {
+                    var img = new Image();
+                    img.addEventListener('load', () => { el.style.opacity = "1" }, false);
+                    img.src = el.currentSrc;
+                    el.src = img.src;
+                })
 
-            // Load all embeds
-            const embedsToLookFor = {
-                'blockquote[class^="instagram-"]': 'https://www.instagram.com/embed.js',
-                'blockquote[class^="twitter-"], a[class^="twitter-"]': 'https://platform.twitter.com/widgets.js',
-                'fb\\\\:post, [class^=fb-]': 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2',
-                '[class^=tumblr-]': 'https://assets.tumblr.com/post.js',
-                '.embed-reddit': 'https://embed.redditmedia.com/widgets/platform.js',
-                '.embed-tiktok': 'https://www.tiktok.com/embed.js',
-            };
+                // Load all embeds
+                const embedsToLookFor = {
+                    'blockquote[class^="instagram-"]': 'https://www.instagram.com/embed.js',
+                    'blockquote[class^="twitter-"], a[class^="twitter-"]': 'https://platform.twitter.com/widgets.js',
+                    'fb\\\\:post, [class^=fb-]': 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2',
+                    '[class^=tumblr-]': 'https://assets.tumblr.com/post.js',
+                    '.embed-reddit': 'https://embed.redditmedia.com/widgets/platform.js',
+                    '.embed-tiktok': 'https://www.tiktok.com/embed.js',
+                };
 
-            Object.keys(embedsToLookFor).forEach((key) => {
-              if (document.querySelectorAll(key).length > 0) {
-                var s = document.createElement( 'script' );
-                s.setAttribute( 'src', embedsToLookFor[key] );
-                document.body.appendChild( s );
-              }
-            })
+                Object.keys(embedsToLookFor).forEach((key) => {
+                  if (document.querySelectorAll(key).length > 0) {
+                    var s = document.createElement( 'script' );
+                    s.setAttribute( 'src', embedsToLookFor[key] );
+                    document.body.appendChild( s );
+                  }
+                })
 
-        """, completionHandler: nil)
+            """,
+            completionHandler: nil
+        )
     }
 
     /// Change all occurrences of elements to change it's HTML tag to "element-placeholder"
@@ -188,10 +192,10 @@ class ReaderWebView: WKWebView {
         }
 
         return """
-        img.emoji {
-            width: 1em;
-        }
-        """
+            img.emoji {
+                width: 1em;
+            }
+            """
     }
 
     private func overrideStyles() -> String {
@@ -200,7 +204,7 @@ class ReaderWebView: WKWebView {
         ///
         /// The `reader.css` forces the text to be displayed in Noto, but this method overrides it back to the
         /// user-preferred font.
-        return """
+        """
             body.reader-full-post.reader-full-post__story-content {
                 font: -apple-system-body !important;
                 font-family: \(displaySetting.font.cssString) !important;
@@ -219,14 +223,14 @@ class ReaderWebView: WKWebView {
     private func cssColors() -> String {
         if displaySetting.color.adaptsToInterfaceStyle {
             return """
-                @media (prefers-color-scheme: dark) {
-                    \(mappedCSSColors(.dark))
-                }
+                    @media (prefers-color-scheme: dark) {
+                        \(mappedCSSColors(.dark))
+                    }
 
-                @media (prefers-color-scheme: light) {
-                    \(mappedCSSColors(.light))
-                }
-            """
+                    @media (prefers-color-scheme: light) {
+                        \(mappedCSSColors(.light))
+                    }
+                """
         }
 
         // for other color themes not adapting to interface, it doesn't matter what interface style we pass here
@@ -237,18 +241,18 @@ class ReaderWebView: WKWebView {
     private func mappedCSSColors(_ style: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: style)
         return """
-            :root {
-              --color-text: #\(displaySetting.color.foreground.color(for: trait).hexStringWithAlpha);
-              --color-neutral-0: #\(neutralColor(shade: .shade0, trait: trait).hexStringWithAlpha);
-              --color-neutral-5: #\(neutralColor(shade: .shade5, trait: trait).hexStringWithAlpha);
-              --color-neutral-10: #\(neutralColor(shade: .shade10, trait: trait).hexStringWithAlpha);
-              --color-neutral-40: #\(neutralColor(shade: .shade40, trait: trait).hexStringWithAlpha);
-              --color-neutral-50: #\(neutralColor(shade: .shade50, trait: trait).hexStringWithAlpha);
-              --color-neutral-70: #\(neutralColor(shade: .shade70, trait: trait).hexStringWithAlpha);
-              --main-link-color: #\(linkColor(for: trait).hexStringWithAlpha);
-              --main-link-active-color: #\(activeLinkColor(for: trait).hexStringWithAlpha);
-            }
-        """
+                :root {
+                  --color-text: #\(displaySetting.color.foreground.color(for: trait).hexStringWithAlpha);
+                  --color-neutral-0: #\(neutralColor(shade: .shade0, trait: trait).hexStringWithAlpha);
+                  --color-neutral-5: #\(neutralColor(shade: .shade5, trait: trait).hexStringWithAlpha);
+                  --color-neutral-10: #\(neutralColor(shade: .shade10, trait: trait).hexStringWithAlpha);
+                  --color-neutral-40: #\(neutralColor(shade: .shade40, trait: trait).hexStringWithAlpha);
+                  --color-neutral-50: #\(neutralColor(shade: .shade50, trait: trait).hexStringWithAlpha);
+                  --color-neutral-70: #\(neutralColor(shade: .shade70, trait: trait).hexStringWithAlpha);
+                  --main-link-color: #\(linkColor(for: trait).hexStringWithAlpha);
+                  --main-link-active-color: #\(activeLinkColor(for: trait).hexStringWithAlpha);
+                }
+            """
     }
 
     /// Returns the requested neutral color based on the current color theme.
@@ -327,7 +331,8 @@ final class ReaderWebViewMessageHandler: NSObject, WKScriptMessageHandler {
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let body = message.body as? String,
-              let event = EventMessage(rawValue: body)?.analyticEvent else {
+            let event = EventMessage(rawValue: body)?.analyticEvent
+        else {
             return
         }
         WPAnalytics.track(event)
