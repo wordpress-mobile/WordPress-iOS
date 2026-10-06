@@ -4,21 +4,38 @@ if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; th
   exit 0
 fi
 
-DEVICE=${1:?Usage $0 DEVICE}
+DEVICE=${1:?Usage $0 DEVICE AREA}
+AREA=${2:?Usage $0 DEVICE AREA}
+
+# The suites are grouped by area of the app, one folder each, and each area runs in a job of its own.
+TESTS_DIR=Tests/JetpackUITests/Tests
 
 # Only the suites that run against the fixtures in Tests/JetpackUITests/Fixtures. The others sign
 # in to a real WordPress.com account, which CI doesn't have a token for.
-SUITES=$(grep -lE 'class var backend: Backend \{ \.fixtures \}' Tests/JetpackUITests/Tests/*.swift \
+FIXTURE_SUITE='class var backend: Backend \{ \.fixtures \}'
+
+# A suite outside the folders the pipeline has a job for would never run here, so fail instead.
+for suite in $(grep -lE "$FIXTURE_SUITE" "$TESTS_DIR"/*.swift "$TESTS_DIR"/*/*.swift 2>/dev/null); do
+  area=$(basename "$(dirname "$suite")")
+  if ! grep -qE "^ +- \"$area\"\$" .buildkite/pipeline.yml; then
+    echo "Error: no UI Tests job runs $suite. Move it into an area's folder under $TESTS_DIR, or add its folder to the step's matrix in .buildkite/pipeline.yml."
+    exit 1
+  fi
+done
+
+SUITE_FILES=$(grep -lE "$FIXTURE_SUITE" "$TESTS_DIR/$AREA"/*.swift || true)
+
+if [[ -z "$SUITE_FILES" ]]; then
+  echo "Error: found no UI test suite that runs against the fixtures in $TESTS_DIR/$AREA"
+  exit 1
+fi
+
+SUITES=$(echo "$SUITE_FILES" \
   | xargs -n1 basename \
   | sed -e 's/\.swift$//' -e 's/^/JetpackUITests\//' \
   | paste -sd, -)
 
-if [[ -z "$SUITES" ]]; then
-  echo "Error: found no UI test suite that runs against the fixtures"
-  exit 1
-fi
-
-echo "Running UI tests on $DEVICE. The iOS version will be the latest available in the CI host."
+echo "Running the $AREA UI tests on $DEVICE. The iOS version will be the latest available in the CI host."
 echo "Suites: $SUITES"
 
 echo "--- 📦 Downloading Build Artifacts"
