@@ -16,9 +16,9 @@ extension JetpackUITestCase {
 
     /// How long to wait for an analytics event unless told otherwise.
     ///
-    /// The app queues the events it tracks and sends them every 15 seconds, so an event can take
-    /// that long to leave the app.
-    static let analyticsEventTimeout: TimeInterval = 30
+    /// The app queues the events it tracks and sends them in batches: once a second when it runs
+    /// against the fixtures, where a test is waiting for them, and every 15 seconds otherwise.
+    static let analyticsEventTimeout: TimeInterval = 10
 
     /// The analytics events the app has tracked since it launched for this test and has sent to
     /// Tracks, in the order it tracked them.
@@ -57,7 +57,7 @@ extension JetpackUITestCase {
                 guard Date() < deadline else {
                     throw AnalyticsEventNotSentError(name: name, properties: properties, timeout: timeout, sent: events)
                 }
-                Thread.sleep(forTimeInterval: 0.5)
+                Thread.sleep(forTimeInterval: 0.1)
             }
         }
     }

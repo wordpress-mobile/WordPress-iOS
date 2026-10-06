@@ -66,6 +66,12 @@ final class EditorTests: JetpackUITestCase {
 
 To add a screen, subclass `ScreenObject` and pass it the elements that identify the screen. Initializing a screen object waits for the first of those elements to become hittable and throws if it doesn't, so constructing one doubles as the assertion that the app reached that screen.
 
+To wait for an element, use `pollForExistence(timeout:)` or `poll(timeout:until:)`, or a screen object's `waitFor` and `tap`, which are built on them. Don't use XCTest's `waitForExistence(timeout:)` or `wait(for:toEqual:timeout:)`: they check once a second and not before the first second is up, so each one takes a second even when the element is already there, and a test makes dozens of them.
+
+Against the fixtures those waits check right away, because the fixtures answer at once and a screen's content is there when the screen is. Against a real account they hold off for a second first, as XCTest's do. Content arrives over the network after its screen, and those suites lean on that second in places: a list that reloads as each part of it arrives can move or replace the row a test was about to act on. A screen object that waits for its content to finish loading wouldn't need it.
+
+The tests launch the app with `-ui-test-disable-animations`, which turns off UIKit's animations. XCTest waits for the app's animations to finish before every tap and query. A swipe scrolls a list just as far with them off.
+
 Identify elements by accessibility identifier where the app sets one. Several screens don't have one yet; their screen objects fall back to the navigation bar title, which works because the test plan pins the app's language to English.
 
 Because the tests run against a real account, a test must leave the account as it found it — discard drafts instead of publishing them, and undo any setting it changes.
@@ -224,7 +230,7 @@ func testOpeningStatsFromAQuickActionIsTracked() throws {
 
 An event's name is the one Tracks receives, with the app's `jpios_` prefix. `waitForAnalyticsEvent` also takes properties the event has to have, which is how to pick one event out of several with the same name, and `sentAnalyticsEvents()` returns everything sent so far, for a test that needs to check an order or that an event wasn't sent.
 
-The app queues the events it tracks and sends them every 15 seconds, so `waitForAnalyticsEvent` can take that long to return. It waits 30 seconds by default.
+The app queues the events it tracks and sends them in batches. That's every 15 seconds normally, and once a second when it runs against the fixtures, so that a test isn't kept waiting for them. `waitForAnalyticsEvent` waits 10 seconds by default.
 
 Only the events the app tracked since it launched for the test are returned. The app also sends events an earlier launch tracked and didn't get to send, and those are left out.
 

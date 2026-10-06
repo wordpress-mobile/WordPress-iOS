@@ -20,7 +20,6 @@ final class NotificationsScreen: ScreenObject {
     var notifications: XCUIElementQuery { table.cells }
 
     init(app: XCUIApplication) throws {
-        Self.declinePushNotifications(in: app, coveringListWith: tableGetter(app))
         try super.init(expectedElementGetters: [tableGetter], app: app)
     }
 
@@ -51,19 +50,5 @@ final class NotificationsScreen: ScreenObject {
     func goToNotificationSettings() throws -> SheetScreen {
         try openMenu().select("Notification Settings")
         return try SheetScreen(title: "Notification Settings", dismissButton: "Done", app: app)
-    }
-
-    /// The first time the tab is shown the app asks to send push notifications, in a sheet that
-    /// covers the list. Declining leaves the system's own permission prompt unasked.
-    private static func declinePushNotifications(in app: XCUIApplication, coveringListWith table: XCUIElement) {
-        // The list's header has a hidden copy of the button, which is the one with an identifier.
-        let notNow = app.buttons.matching(NSPredicate(format: "label == 'Not now' AND identifier == ''")).firstMatch
-        let deadline = Date(timeIntervalSinceNow: defaultWaitTimeout)
-
-        while !table.isHittable, Date() < deadline {
-            if notNow.exists {
-                notNow.tap()
-            }
-        }
     }
 }

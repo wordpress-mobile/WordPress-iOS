@@ -140,7 +140,7 @@ extension StatsScreen {
             maxSwipes: Self.maxSwipes,
             waitsForExistence: false
         )
-        guard item.waitForExistence(timeout: Self.defaultWaitTimeout) else {
+        guard item.pollForExistence(timeout: Self.defaultWaitTimeout) else {
             throw XCTSkip("This site has no \(dataType.title) stats in the date range")
         }
         try scrollAndTap(item)

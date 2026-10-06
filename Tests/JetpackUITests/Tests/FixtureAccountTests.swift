@@ -20,7 +20,7 @@ final class FixtureAccountTests: JetpackUITestCase {
             .goToSitePicker()
 
         for name in ["Tri-County Real Estate", "Four Paws Dog Grooming", "Weekend Bakes"] {
-            XCTAssertTrue(sitePicker.site(named: name).waitForExistence(timeout: 5), "\(name) isn't listed")
+            XCTAssertTrue(sitePicker.site(named: name).pollForExistence(timeout: 10), "\(name) isn't listed")
         }
     }
 }

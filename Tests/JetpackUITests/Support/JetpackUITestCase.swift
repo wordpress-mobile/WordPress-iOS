@@ -68,7 +68,12 @@ class JetpackUITestCase: XCTestCase {
             "-com.apple.TipKit.HideAllTips", "1",
             // After enough activity the app asks whether you're enjoying it, in an alert that can
             // appear over any screen.
-            "-AppRatingsSkipRatingCurrentVersion", "YES"
+            "-AppRatingsSkipRatingCurrentVersion", "YES",
+            // The first time the Notifications tab is shown the app asks to send push notifications,
+            // in a sheet that covers the list a moment after the list appears.
+            "-NotificationPrimerAlertWasDisplayed", "YES",
+            // XCTest waits for the app's animations to finish before every tap and query.
+            "-ui-test-disable-animations"
         ]
         if Self.backend == .fixtures {
             let fixtures = try Self.fixturesDirectory
@@ -85,6 +90,7 @@ class JetpackUITestCase: XCTestCase {
         }
         Self.nextTestMustReset = Self.resetsAppBeforeEachTest
         Self.previousBackend = Self.backend
+        XCUIElement.firstCheckDelay = Self.backend == .live ? 1 : 0
         launchDate = Date()
         app.launch()
         try checkAppServesFixtures()

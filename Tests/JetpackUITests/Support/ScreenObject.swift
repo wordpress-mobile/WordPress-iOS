@@ -78,7 +78,7 @@ class ScreenObject {
         try XCTContext.runActivity(named: "Wait for \(Self.self)") { _ in
             for getter in getters {
                 let element = getter(app)
-                guard element.wait(for: \.isHittable, toEqual: true, timeout: waitTimeout) else {
+                guard element.poll(timeout: waitTimeout, until: { $0.exists && $0.isHittable }) else {
                     throw ScreenNotLoadedError(screen: "\(Self.self)", element: "\(element)", timeout: waitTimeout)
                 }
             }
@@ -158,7 +158,7 @@ class ScreenObject {
             guard Date() < deadline else {
                 throw ElementNotReachedError(element: "\(Self.self)", expectation: "did not see \(expectation)")
             }
-            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.2))
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
         }
     }
 
@@ -169,7 +169,7 @@ class ScreenObject {
 
     /// Waits for `element` to appear.
     func waitFor(_ element: XCUIElement) throws {
-        guard element.waitForExistence(timeout: waitTimeout) else {
+        guard element.pollForExistence(timeout: waitTimeout) else {
             throw ElementNotReachedError(element: "\(element)", expectation: "did not appear")
         }
     }
@@ -188,7 +188,7 @@ class ScreenObject {
     ///
     /// - Parameter name: What the item is, to complete the sentence "This site has no…".
     func tapFirst(_ item: XCUIElement, named name: String) throws {
-        guard item.waitForExistence(timeout: waitTimeout) else {
+        guard item.pollForExistence(timeout: waitTimeout) else {
             throw XCTSkip("This site has no \(name) to open")
         }
         item.tap()
@@ -208,7 +208,7 @@ class ScreenObject {
 
     /// Waits for a filter tab to be the selected one.
     func waitForSelection(of tab: XCUIElement) throws {
-        guard tab.wait(for: \.isSelected, toEqual: true, timeout: waitTimeout) else {
+        guard tab.poll(timeout: waitTimeout, until: { $0.exists && $0.isSelected }) else {
             throw ElementNotReachedError(element: "\(tab)", expectation: "was not selected")
         }
     }
