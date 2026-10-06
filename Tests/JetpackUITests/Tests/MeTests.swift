@@ -37,7 +37,7 @@ final class MeTests: JetpackUITestCase {
             "Primary Site": "Tri-County Real Estate"
         ]
         for (row, value) in values {
-            XCTAssertTrue(settings.row(row).staticTexts[value].exists, "\(row) isn't \(value)")
+            XCTAssertTrue(settings.row(row).staticTexts[value].pollForExistence(timeout: 10), "\(row) isn't \(value)")
         }
     }
 
@@ -70,7 +70,7 @@ final class MeTests: JetpackUITestCase {
             .waitForScreen()
 
         for row in [help.contactSupportRow, help.ticketsRow, help.contactEmailRow, help.versionRow] {
-            XCTAssertTrue(row.exists, "\(row) is missing")
+            XCTAssertTrue(row.pollForExistence(timeout: 10), "\(row) is missing")
         }
 
         try help.goToLogs().goBack()
@@ -83,7 +83,7 @@ final class MeTests: JetpackUITestCase {
             .waitForScreen()
 
         for row in ["Share with Friends", "Blog", "Legal and More", "Automattic Family", "Work With Us"] {
-            XCTAssertTrue(about.row(row).exists, "\(row) is missing")
+            XCTAssertTrue(about.row(row).pollForExistence(timeout: 10), "\(row) is missing")
         }
 
         try about.goToLegal().goBack()

@@ -93,8 +93,9 @@ final class StatsFixtureTests: JetpackUITestCase {
 
     /// Fails if Stats asked for something no fixture answered, or reported an error loading a card.
     private func assertStatsLoaded(file: StaticString = #filePath, line: UInt = #line) throws {
-        // Stats reports its errors as analytics events, which the app sends every 15 seconds.
-        Thread.sleep(forTimeInterval: 17)
+        // Stats reports its errors as analytics events, which the app sends once a second when it
+        // runs against the fixtures.
+        Thread.sleep(forTimeInterval: 3)
 
         let unanswered = try unansweredRequests()
             .filter { $0.url.path().contains("/stats") || $0.url.path().contains("/posts/") }

@@ -21,7 +21,11 @@ extension StatsScreen {
     // MARK: - Insights
 
     func goToViewsAndVisitors() throws -> StatsDetailsScreen {
-        try scrollAndTap(app.tables.buttons["Week"])
+        // The button is in the tab's first card, which loads a moment after the tab appears.
+        // Scrolling before then would scroll past where it's about to be.
+        let week = app.tables.buttons["Week"]
+        try waitFor(week)
+        try scrollAndTap(week)
         return try StatsDetailsScreen(title: "Views & Visitors", app: app)
     }
 
