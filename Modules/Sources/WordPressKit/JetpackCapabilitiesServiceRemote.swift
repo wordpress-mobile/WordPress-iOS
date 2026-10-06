@@ -34,7 +34,9 @@ open class JetpackCapabilitiesServiceRemote: ServiceRemoteWordPressComREST {
             }
         }
 
-        dispatchGroup.notify(queue: .global(qos: .background)) {
+        // Not the background queue: callers wait for this, signing in among them, and the system
+        // can leave background work unstarted for as long as the device is busy with anything else.
+        dispatchGroup.notify(queue: .global()) {
             success(jetpackCapabilities)
         }
     }

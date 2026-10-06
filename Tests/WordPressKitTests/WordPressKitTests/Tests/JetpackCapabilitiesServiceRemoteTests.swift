@@ -31,6 +31,19 @@ class JetpackCapabilitiesServiceRemoteTests: RemoteTestCase, RESTTestable {
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
+    /// Callers wait for the capabilities, so they aren't delivered on the background queue
+    func testCapabilitiesAreNotDeliveredAtBackgroundPriority() {
+        let expect = expectation(description: "Get the available capabilities")
+        stubRemoteResponse("wpcom/v2/sites/34197361/rewind/capabilities", filename: "jetpack-capabilities-34197361-success.json", contentType: .ApplicationJSON)
+
+        service.for(siteIds: [34197361], success: { _ in
+            XCTAssertNotEqual(qos_class_self(), QOS_CLASS_BACKGROUND)
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
     /// When a single request fails, the associated capabilities are not returned
     func testSingleRequestFails() {
         let expect = expectation(description: "Get the available capabilities")
