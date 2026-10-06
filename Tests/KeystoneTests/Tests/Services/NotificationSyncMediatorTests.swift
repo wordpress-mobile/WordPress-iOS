@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import WordPressData
 @testable import WordPress
 
 // MARK: - NotificationSyncMediatorTests
@@ -57,6 +58,46 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         }
 
         wait(for: [expect], timeout: timeout)
+    }
+
+    /// Verifies that a sync bound to an account that is no longer the default does not write its notes, so a
+    /// late result from a replaced account cannot repopulate the new account's list, and does not report new data.
+    ///
+    func testSyncDoesNotWriteNotesOnceItsAccountIsReplaced() {
+        let result = sync(boundTo: "account-A", defaultAccount: "account-B")
+        XCTAssertEqual(result.noteCount, 0)
+        XCTAssertFalse(result.hasNewData)
+    }
+
+    /// Verifies that a sync bound to the current default account still writes its notes.
+    ///
+    func testSyncWritesNotesForTheDefaultAccount() {
+        let result = sync(boundTo: "account-A", defaultAccount: "account-A")
+        XCTAssertEqual(result.noteCount, 1)
+        XCTAssertTrue(result.hasNewData)
+    }
+
+    private func sync(boundTo accountUUID: String, defaultAccount: String) -> (noteCount: Int, hasNewData: Bool) {
+        let previousDefault = UserSettings.defaultDotComUUID
+        UserSettings.defaultDotComUUID = defaultAccount
+        defer { UserSettings.defaultDotComUUID = previousDefault }
+
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
+        HTTPStubs.stubRequest(forEndpoint: "notifications/", withFileAtPath: stubPath)
+        let mediator = NotificationSyncMediator(
+            manager: contextManager,
+            dotcomAPI: dotcomAPI,
+            accountUUID: accountUUID
+        )!
+
+        let expect = expectation(description: "Sync")
+        var hasNewData = false
+        mediator.sync { _, newData in
+            hasNewData = newData
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+        return (mainContext.countObjects(ofType: Notification.self), hasNewData)
     }
 
     /// Verifies that the Sync call, when called repeatedly, won't duplicate our local dataset.
