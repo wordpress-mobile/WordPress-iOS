@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 import Testing
 import HTTPFixtures
@@ -151,3 +152,4 @@ struct StatsSeriesTests {
         }
     }
 }
+#endif

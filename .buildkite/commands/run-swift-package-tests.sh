@@ -7,9 +7,10 @@ fi
 echo "--- :swift: Restoring Swift Packages cache"
 restore_swiftpm_cache --package-resolved Package.resolved --artifacts .build
 
+# The HTTPFixtures module and its tests are compiled out unless this condition is set.
 echo "--- :swift: Running cross-platform Swift package tests"
 set +e
-swift test
+swift test -Xswiftc -DUI_TEST_HTTP_FIXTURES
 SWIFT_TEST_EXIT_STATUS=$?
 set -e
 

@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// A request, reduced to the parts a fixture can match on.
@@ -64,3 +65,4 @@ extension StubRequest {
         return spaced.removingPercentEncoding ?? spaced
     }
 }
+#endif

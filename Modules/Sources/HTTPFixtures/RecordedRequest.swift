@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// A request the app made, as the request log records it.
@@ -18,3 +19,4 @@ public struct RecordedRequest: Codable, Equatable, Sendable {
     /// when no mapping matched.
     public let fixture: String?
 }
+#endif

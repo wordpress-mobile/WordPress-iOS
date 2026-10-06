@@ -18,8 +18,9 @@ fi
 
 source "$(dirname "${BASH_SOURCE[0]}")/install-a8c-secrets.sh"
 
+# Anything after the app's name is an option for the lane, such as `http_fixtures:true`.
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane "build_${APP}_for_testing"
+bundle exec fastlane "build_${APP}_for_testing" "${@:2}"
 
 echo "--- :swift: Saving Swift Packages cache"
 save_swiftpm_cache --package-resolved Modules/Package.resolved --artifacts DerivedData/SourcePackages

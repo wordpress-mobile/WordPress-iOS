@@ -202,6 +202,13 @@ custom_rules:
     severity: error
     excluded: '.*Widgets/.*'
 
+  http_fixtures_build_flag:
+    name: "HTTP Fixtures Build Flag"
+    regex: '\A(?!#if UI_TEST_HTTP_FIXTURES\n).'
+    included: 'Modules/Sources/HTTPFixtures/.*\.swift'
+    message: "Wrap the whole file in `#if UI_TEST_HTTP_FIXTURES`. This module has to compile to nothing unless the build sets that condition, so that the app that ships has none of it. See docs/ui-tests.md."
+    severity: error
+
   full_range_attributed_string_attribute:
     name: "Full-Range Attributed String Attribute"
     regex: '\.addAttributes?\([^\n]*range:\s*NS(MakeRange\(0,|Range\(location:\s*0,\s*length:)'

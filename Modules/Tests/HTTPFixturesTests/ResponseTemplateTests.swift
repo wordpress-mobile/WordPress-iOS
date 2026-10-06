@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 import Testing
 @testable import HTTPFixtures
@@ -83,3 +84,4 @@ struct ResponseTemplateTests {
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if UI_TEST_HTTP_FIXTURES
 import Foundation
 
 /// Renders the template expressions in a response, the way WireMock's
@@ -266,3 +267,4 @@ struct ResponseTemplate {
         return tokens
     }
 }
+#endif
