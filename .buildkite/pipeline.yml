@@ -149,9 +149,10 @@ steps:
           automatic:
             - exit_status: "*"
               limit: 1
+        # One status for all the jobs: GitHub gets the context as written, without the matrix value.
         notify:
           - github_commit_status:
-              context: "UI Tests ({{matrix}})"
+              context: "UI Tests"
 
   #################
   # Linters
