@@ -155,11 +155,30 @@ platform :ios do
     workers = options[:concurrent_workers].to_i
     parallel = workers > 1
 
+    # The tests are already built, so the project has nothing more to tell xcodebuild. Left to work
+    # it out, scan resolves every Swift package and then reads the build settings, which took 150
+    # seconds of a 7-minute UI test job. What it reads them for is given to it here instead: where
+    # the build is, the app's name, and the oldest iOS the app runs on.
+    #
+    # It also reads them to choose a Simulator, so this is only for a caller that names one.
+    project_settings = { deployment_target_version: options[:ios_version] }
+    if options[:device]
+      deployment_target = File.read(File.join(PROJECT_ROOT_FOLDER, 'config', 'Common.xcconfig'))[/^IPHONEOS_DEPLOYMENT_TARGET\s*=\s*([\d.]+)/, 1]
+      project_settings = {
+        deployment_target_version: options[:ios_version] || deployment_target,
+        derived_data_path: DERIVED_DATA_PATH,
+        app_name: scheme,
+        skip_package_dependencies_resolution: true,
+        # Fail if anything still asks for the build settings, instead of quietly paying for them again.
+        disallow_xcodebuild_settings_lookup: true
+      }
+    end
+
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
       device: options[:device],
-      deployment_target_version: options[:ios_version],
+      **project_settings,
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
