@@ -34,6 +34,9 @@ class JetpackUITestCase: XCTestCase {
     /// so a test on the other one has to start from a reset app too.
     private static var previousBackend: Backend?
 
+    /// Whether the app has yet to be launched in this run.
+    private static var isFirstLaunch = true
+
     private(set) var app = XCUIApplication()
 
     /// What the app has sent in this test, when it runs against the fixtures.
@@ -92,6 +95,21 @@ class JetpackUITestCase: XCTestCase {
         launchDate = Date()
         app.launch()
         try checkAppServesFixtures()
+        if Self.isFirstLaunch {
+            Self.isFirstLaunch = false
+            waitOutColdStart()
+        }
+    }
+
+    /// Gives the first launch of a run longer to get to My Site than a test allows it.
+    ///
+    /// CI runs the tests on a Simulator it has just erased and booted, where the first launch
+    /// has taken more than 76 seconds to sign in, against under 10 for every launch after it. A
+    /// test gives My Site 60 seconds to appear, which the first test of a run then failed by.
+    ///
+    /// If My Site never appears, the test's own wait for it is what fails.
+    private func waitOutColdStart() {
+        _ = app.otherElements["my_site"].poll(timeout: 180) { $0.exists }
     }
 
     /// Fails a test on the fixtures backend when the app isn't serving them.

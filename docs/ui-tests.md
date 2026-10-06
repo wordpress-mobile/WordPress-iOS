@@ -80,7 +80,7 @@ To wait for an element, use `pollForExistence(timeout:)` or `poll(timeout:until:
 
 Against the fixtures those waits check right away, because the fixtures answer at once and a screen's content is there when the screen is. Against a real account they hold off for a second first, as XCTest's do. Content arrives over the network after its screen, and those suites lean on that second in places: a list that reloads as each part of it arrives can move or replace the row a test was about to act on. A screen object that waits for its content to finish loading wouldn't need it.
 
-The app's animations are left on, although XCTest waits for them before every tap and query. Launching the app with `UIView.setAnimationsEnabled(false)` took two minutes off the fixture-backed run's nine, but on CI the app then sometimes stayed on the sign-in screen after it had signed in, or showed My Site without its create button.
+The first launch of a run gets three minutes to reach My Site, where a test gives it one. CI runs on a Simulator it has just erased and booted, and the first sign-in there has taken over 76 seconds, against under 10 for every launch after it.
 
 Identify elements by accessibility identifier where the app sets one. Several screens don't have one yet; their screen objects fall back to the navigation bar title, which works because the test plan pins the app's language to English.
 
