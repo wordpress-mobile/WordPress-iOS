@@ -96,28 +96,6 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
             completion(error)
         })
     }
-
-    /// Updates the Last Seen Notification's Timestamp.
-    ///
-    /// - Parameters:
-    ///     - timestamp: Timestamp of the last seen notification.
-    ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
-    ///
-    @objc public func updateLastSeen(_ timestamp: String, completion: @escaping ((Error?) -> Void)) {
-        let path = "notifications/seen"
-        let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
-
-        let parameters = [
-            "time": timestamp
-        ]
-
-        wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { response, _ in
-            let error = self.errorFromResponse(response)
-            completion(error)
-        }, failure: { error, _ in
-            completion(error)
-        })
-    }
 }
 
 // MARK: - Private Methods
