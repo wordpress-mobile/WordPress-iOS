@@ -6,7 +6,7 @@ import WordPressAPI
 import WordPressAPIInternal
 
 protocol TaxonomyServiceProtocol {
-    func getTags(page: Int, recentlyUsed: Bool) async throws -> [AnyTermWithViewContext]
+    func getTags(page: Int, recentlyUsed: Bool) async throws -> (terms: [AnyTermWithViewContext], hasMore: Bool)
     func searchTags(with query: String) async throws -> [AnyTermWithViewContext]
     func createTag(name: String, description: String) async throws -> AnyTermWithViewContext
     func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext
@@ -38,7 +38,7 @@ class TagsService: TaxonomyServiceProtocol {
     func getTags(
         page: Int = 0,
         recentlyUsed: Bool = false
-    ) async throws -> [AnyTermWithViewContext] {
+    ) async throws -> (terms: [AnyTermWithViewContext], hasMore: Bool) {
         guard let remote else {
             throw TagsServiceError.noRemoteService
         }
@@ -52,7 +52,8 @@ class TagsService: TaxonomyServiceProtocol {
 
         return try await withCheckedThrowingContinuation { continuation in
             remote.getTagsWith(paging, success: { remoteTags in
-                continuation.resume(returning: remoteTags.map { AnyTermWithViewContext(tag: $0) })
+                let terms = remoteTags.map { AnyTermWithViewContext(tag: $0) }
+                continuation.resume(returning: (terms, terms.count == pageSize))
             }, failure: { error in
                 continuation.resume(throwing: error)
             })
@@ -254,7 +255,10 @@ class AnyTermService: TaxonomyServiceProtocol {
         self.client = client
     }
 
-    func getTags(page: Int = 0, recentlyUsed: Bool = false) async throws -> [AnyTermWithViewContext] {
+    func getTags(
+        page: Int = 0,
+        recentlyUsed: Bool = false
+    ) async throws -> (terms: [AnyTermWithViewContext], hasMore: Bool) {
         let perPage: UInt32 = 100
         let params = TermListParams(
             page: UInt32(page + 1),
@@ -268,7 +272,7 @@ class AnyTermService: TaxonomyServiceProtocol {
             params: params
         )
 
-        return response.data
+        return (response.data, response.nextPageParams != nil)
     }
 
     func searchTags(with query: String) async throws -> [AnyTermWithViewContext] {
