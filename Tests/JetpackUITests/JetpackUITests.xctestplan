@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "8E6A0C4F-3B1D-4F7A-9C2E-5D8B7A1F0E63",
+      "name" : "Foundation",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPress.xcodeproj",
+      "identifier" : "FABB1F8F2602FC2C00C8785C",
+      "name" : "Jetpack"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "2475322B306C77300075CFDD",
+        "name" : "JetpackUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

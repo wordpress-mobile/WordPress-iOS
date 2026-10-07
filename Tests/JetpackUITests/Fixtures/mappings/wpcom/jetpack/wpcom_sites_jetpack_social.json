@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/wpcom/v2/sites/.*/jetpack-social.*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "is_share_limit_enabled": false,
+      "is_enhanced_publishing_enabled": false,
+      "is_social_image_generator_enabled": false
+    }
+  }
+}

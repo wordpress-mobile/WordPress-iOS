@@ -1,0 +1,63 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/followers/*",
+    "queryParameters": {
+      "type": {
+        "equalTo": "wpcom"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "page": 1,
+      "pages": 1,
+      "total": 906,
+      "total_email": 383,
+      "total_wpcom": 906,
+      "subscribers": [
+        {
+          "avatar": "https://0.gravatar.com/avatar/00000000000000000000000000007c85?s=64",
+          "label": "Priya Raman",
+          "ID": "31877",
+          "url": "http://priyaraman.wordpress.com",
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-1 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/00000000000000000000000000007c3a?s=64",
+          "label": "Daniel Osei",
+          "ID": "31802",
+          "url": "http://danielosei.wordpress.com",
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-3 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/00000000000000000000000000007c0a?s=64",
+          "label": "Sofia Lindqvist",
+          "ID": "31754",
+          "url": "http://sofialindqvist.wordpress.com",
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-8 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/00000000000000000000000000007bca?s=64",
+          "label": "Kenji Watanabe",
+          "ID": "31690",
+          "url": "http://kenjiwatanabe.wordpress.com",
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-12 days'}}"
+        },
+        {
+          "avatar": "https://0.gravatar.com/avatar/00000000000000000000000000007b7f?s=64",
+          "label": "Maya Hernandez",
+          "ID": "31615",
+          "url": "http://mayahernandez.wordpress.com",
+          "follow_data": null,
+          "date_subscribed": "{{now offset='-27 days'}}"
+        }
+      ]
+    }
+  }
+}

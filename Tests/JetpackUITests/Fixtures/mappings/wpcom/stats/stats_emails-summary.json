@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/emails/summary/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "posts": [
+        {
+          "id": 106,
+          "href": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+          "date": "{{now offset='-6 days' format='yyyy-MM-dd'}} 09:30:00",
+          "title": "Some News to Share",
+          "type": "post",
+          "opens": 1532,
+          "clicks": 211
+        },
+        {
+          "id": 90,
+          "href": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+          "date": "{{now offset='-20 days' format='yyyy-MM-dd'}} 09:30:00",
+          "title": "Martin and Amy's Wedding",
+          "type": "post",
+          "opens": 1810,
+          "clicks": 342
+        },
+        {
+          "id": 237,
+          "href": "http://infocusphotographers.com/2019/03/13/photo-contest/",
+          "date": "{{now offset='-41 days' format='yyyy-MM-dd'}} 09:30:00",
+          "title": "Photo Contest",
+          "type": "post",
+          "opens": 1274,
+          "clicks": 156
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/posts/*",
+    "queryParameters": {
+      "order_by": {
+        "equalTo": "date"
+      },
+      "number": {
+        "equalTo": "1"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 3,
+      "posts": [
+        {
+          "ID": 106,
+          "title": "Some News to Share",
+          "URL": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+          "date": "{{now offset='-6 days'}}",
+          "like_count": 23,
+          "discussion": {
+            "comment_count": 7,
+            "comments_open": true,
+            "comment_status": "open",
+            "pings_open": true,
+            "ping_status": "open"
+          },
+          "featured_image": ""
+        }
+      ]
+    }
+  }
+}

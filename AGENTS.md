@@ -41,7 +41,8 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - The WordPress scheme uses `WordPressUnitTests.xctestplan` for the full unit test suite, including tests in the `Modules` Swift package.
 - Add every unit test target to `WordPressUnitTests.xctestplan`.
 - Run the full suite with `xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests test`. Do not use `swift test`.
-- To verify changes end-to-end on an iOS simulator, follow @docs/simulator-sign-in.md to sign in to the app.
+- UI tests live in `Tests/JetpackUITests` and run with the Jetpack scheme's `JetpackUITests` test plan. Most suites sign in to a real WordPress.com account, so they need a token; a suite can instead run against the fixtures in `Tests/JetpackUITests/Fixtures`, which needs an app built with the `UI_TEST_HTTP_FIXTURES` compilation condition. See `docs/ui-tests.md`.
+- To sign a Simulator into WordPress.com, run `make sim-login` (it targets the running simulator; the WordPress.com token comes from `~/.wpcom-token` or `WPCOM_TOKEN`, and it prompts if none is set). See @docs/simulator-sign-in.md for options and self-hosted sign-in.
 
 ### Important Considerations
 - **Multi-site Support**: Code must handle both WordPress.com and self-hosted sites

@@ -27,31 +27,13 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      shouldAutocreateTestPlan = "YES">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EA14532229AD874C001F3143"
-               BuildableName = "JetpackUITests.xctest"
-               BlueprintName = "JetpackUITests"
-               ReferencedContainer = "container:WordPress.xcodeproj">
-            </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "LoginTests/testEmailMagicLinkLogin()">
-               </Test>
-               <Test
-                  Identifier = "SignupTests/testEmailSignup()">
-               </Test>
-               <Test
-                  Identifier = "SupportScreenTests/testSupportForumsCanBeLoadedDuringLogin()">
-               </Test>
-            </SkippedTests>
-         </TestableReference>
-      </Testables>
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:../Tests/JetpackUITests/JetpackUITests.xctestplan"
+            default = "YES">
+         </TestPlanReference>
+      </TestPlans>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

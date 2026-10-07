@@ -18,8 +18,9 @@ fi
 
 "$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
 
+# Anything after the app's name is an option for the lane, such as `http_fixtures:true`.
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane "build_${APP}_for_testing"
+bundle exec fastlane "build_${APP}_for_testing" "${@:2}"
 
 echo "--- :arrow_up: Upload Build Products"
 tar -cf "build-products-${APP}.tar" DerivedData/Build/Products/

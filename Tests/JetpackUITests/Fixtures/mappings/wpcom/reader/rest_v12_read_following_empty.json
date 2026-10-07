@@ -1,0 +1,26 @@
+{
+  "scenarioName": "reader_subscriptions_flow",
+  "requiredScenarioState": "initial_subscriptions_list",
+  "newScenarioState": "empty_subscriptions_list",
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.2/read/following"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date_range": {
+        "before": "2019-05-23T13:00:09+00:00",
+        "after": "2021-05-17T16:34:44+00:00"
+      },
+      "number": 0,
+      "posts": [
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

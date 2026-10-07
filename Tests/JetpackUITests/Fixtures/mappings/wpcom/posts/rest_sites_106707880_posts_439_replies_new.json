@@ -1,0 +1,54 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/rest/v1.1/sites/106707880/posts/439/replies/new"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "ID": 1,
+      "post": {
+        "ID": 439,
+        "title": "Social",
+        "type": "post",
+        "link": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/439"
+      },
+      "author": {
+        "ID": 152748359,
+        "login": "e2eflowtestingmobile",
+        "email": false,
+        "name": "e2eflowtestingmobile",
+        "first_name": "",
+        "last_name": "",
+        "nice_name": "e2eflowtestingmobile",
+        "URL": "http://e2eflowtestingmobile.wordpress.com",
+        "avatar_URL": "https://1.gravatar.com/avatar/7a4015c11be6a342f65e0e169092d402?s=96&d=identicon&r=G",
+        "profile_URL": "http://en.gravatar.com/e2eflowtestingmobile",
+        "site_ID": 106707880,
+        "has_avatar": false
+      },
+      "date": "2019-05-23T12:46:55+00:00",
+      "URL": "https://e2eflowtestingmobile.wordpress.com/2019/05/23/sit-elit-adipiscing-elit-dolor-lorem/",
+      "short_URL": "https://wp.me/paIC9Y-75",
+      "content": "\n<p>{{jsonPath request.body '$.content'}}</p>\n",
+      "raw_content": "{{jsonPath request.body '$.content'}}",
+      "status": "approved",
+      "parent": false,
+      "type": "comment",
+      "like_count": 0,
+      "i_like": false,
+      "meta": {
+        "links": {
+          "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/comments/1",
+          "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/comments/1/help",
+          "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+          "post": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/439",
+          "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/comments/1/replies/",
+          "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/comments/1/likes/"
+        }
+      },
+      "can_moderate": true,
+      "i_replied": false
+    }
+  }
+}

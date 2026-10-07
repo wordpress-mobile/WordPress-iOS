@@ -66,9 +66,10 @@ steps:
           - github_commit_status:
               context: "WordPress Build for Testing"
 
+      # The UI tests run against this build, so it has the HTTP fixtures compiled in.
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
-        command: ".buildkite/commands/build-for-testing.sh jetpack"
+        command: ".buildkite/commands/build-for-testing.sh jetpack http_fixtures:true"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
@@ -88,7 +89,7 @@ steps:
               context: "Swift Package Tests"
 
       - label: "🔬 :wordpress: Unit Tests"
-        command: ".buildkite/commands/run-unit-tests.sh"
+        command: ".buildkite/commands/run-unit-tests.sh 'iPhone 17 Pro (26.5)'"
         depends_on: "build_wordpress"
         plugins:
           - $CI_TOOLKIT_PLUGIN
@@ -123,6 +124,35 @@ steps:
       #   notify:
       #     - github_commit_status:
       #         context: "Unit Tests Keystone"
+
+  #################
+  # Run UI Tests
+  #################
+  - group: "🔬 UI Tests"
+    key: ui_tests_group
+    steps:
+      - label: "🔬 :jetpack: UI Tests ({{matrix}})"
+        command: ".buildkite/commands/run-ui-tests.sh 'iPhone 18 Pro' {{matrix}}"
+        depends_on: "build_jetpack"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        # One job per area of the app: the folders in Tests/JetpackUITests/Tests.
+        matrix:
+          - "Me"
+          - "MySite"
+          - "Notifications"
+          - "Reader"
+          - "Stats"
+        artifact_paths:
+          - "build/results/*"
+          - "build/results/crashes/*"
+        retry:
+          automatic:
+            - exit_status: "*"
+              limit: 1
+        # One status for all the jobs: GitHub gets the context as written, without the matrix value.
+        notify:
+          - github_commit_status:
+              context: "UI Tests"
 
   #################
   # Linters

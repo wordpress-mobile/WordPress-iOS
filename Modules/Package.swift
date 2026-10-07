@@ -13,6 +13,7 @@ let package = Package(
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
         .library(name: "GutenbergProcessors", targets: ["GutenbergProcessors"]),
+        .library(name: "HTTPFixtures", targets: ["HTTPFixtures"]),
         .library(name: "JetpackStats", targets: ["JetpackStats"]),
         .library(name: "JetpackSocial", targets: ["JetpackSocial"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
@@ -116,6 +117,10 @@ let package = Package(
             // Set to v5 to avoid @Sendable warnings and errors
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
+        // Answers the app's requests from fixtures, for the UI tests. Every file is wrapped in
+        // `#if UI_TEST_HTTP_FIXTURES`, so the module is empty unless the build sets that
+        // condition, and the app that ships has none of it. See docs/ui-tests.md.
+        .target(name: "HTTPFixtures"),
         .target(
             name: "JetpackStats",
             dependencies: [
@@ -370,6 +375,7 @@ let package = Package(
             ],
             resources: [.process("Resources")]
         ),
+        .testTarget(name: "HTTPFixturesTests", dependencies: ["HTTPFixtures"]),
         .testTarget(name: "JetpackStatsTests", dependencies: ["JetpackStats"]),
         .testTarget(
             name: "JetpackStatsWidgetsCoreTests",
@@ -525,6 +531,7 @@ enum XcodeSupport {
             "BuildSettingsKit",
             "FormattableContentKit",
             "GutenbergProcessors",
+            "HTTPFixtures",
             "JetpackSocial",
             "JetpackStats",
             "JetpackStatsWidgetsCore",

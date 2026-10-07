@@ -110,6 +110,7 @@ struct TopListItemView: View {
         .frame(height: cellHeight)
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("top_list_item")
         .contextMenu {
             contextMenuContent
         }

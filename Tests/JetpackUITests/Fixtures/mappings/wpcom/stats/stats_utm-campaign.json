@@ -1,0 +1,54 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.1/sites/106707880/stats/utm/utm_campaign"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "top_utm_values": {
+        "spring-minis": 252,
+        "newsletter-april": 147,
+        "portfolio-launch": 57
+      },
+      "top_posts": {
+        "spring-minis": [
+          {
+            "id": 90,
+            "title": "Martin and Amy's Wedding",
+            "views": 164,
+            "href": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/"
+          },
+          {
+            "id": 24,
+            "title": "Portfolio",
+            "views": 88,
+            "href": "http://infocusphotographers.com/portfolio/"
+          }
+        ],
+        "newsletter-april": [
+          {
+            "id": 106,
+            "title": "Some News to Share",
+            "views": 121,
+            "href": "http://infocusphotographers.com/2016/04/19/some-news-to-share/"
+          },
+          {
+            "id": 1,
+            "title": "Home",
+            "views": 26,
+            "href": "http://infocusphotographers.com/about/"
+          }
+        ],
+        "portfolio-launch": [
+          {
+            "id": 24,
+            "title": "Portfolio",
+            "views": 57,
+            "href": "http://infocusphotographers.com/portfolio/"
+          }
+        ]
+      }
+    }
+  }
+}

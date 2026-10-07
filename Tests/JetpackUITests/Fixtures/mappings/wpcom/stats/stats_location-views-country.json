@@ -1,0 +1,91 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/location-views/country/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "views": [
+          {
+            "country_code": "US",
+            "views": 1648
+          },
+          {
+            "country_code": "GB",
+            "views": 402
+          },
+          {
+            "country_code": "CA",
+            "views": 296
+          },
+          {
+            "country_code": "AU",
+            "views": 214
+          },
+          {
+            "country_code": "DE",
+            "views": 151
+          },
+          {
+            "country_code": "IN",
+            "views": 118
+          },
+          {
+            "country_code": "FR",
+            "views": 77
+          }
+        ],
+        "other_views": 106,
+        "total_views": 3012
+      },
+      "country-info": {
+        "US": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-us?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-us?s=48",
+          "country_full": "United States",
+          "map_region": "021"
+        },
+        "GB": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-gb?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-gb?s=48",
+          "country_full": "United Kingdom",
+          "map_region": "154"
+        },
+        "CA": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-ca?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-ca?s=48",
+          "country_full": "Canada",
+          "map_region": "021"
+        },
+        "AU": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-au?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-au?s=48",
+          "country_full": "Australia",
+          "map_region": "053"
+        },
+        "DE": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-de?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-de?s=48",
+          "country_full": "Germany",
+          "map_region": "155"
+        },
+        "IN": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-in?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-in?s=48",
+          "country_full": "India",
+          "map_region": "034"
+        },
+        "FR": {
+          "flag_icon": "https://secure.gravatar.com/blavatar/flag-fr?s=48",
+          "flat_flag_icon": "https://secure.gravatar.com/blavatar/flat-flag-fr?s=48",
+          "country_full": "France",
+          "map_region": "155"
+        }
+      }
+    }
+  }
+}

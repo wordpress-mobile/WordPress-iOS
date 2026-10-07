@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/devices/screensize/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "top_values": {
+        "mobile": 61.4,
+        "desktop": 34.9,
+        "tablet": 3.7
+      }
+    }
+  }
+}

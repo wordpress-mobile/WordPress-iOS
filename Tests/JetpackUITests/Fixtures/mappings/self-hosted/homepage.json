@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/"
+  },
+  "response": {
+    "status": 200,
+    "body": "<html><head><link rel=\"https://api.w.org/\" href=\"{{request.requestLine.baseUrl}}/wp-json/\" /></head><body>Mock WordPress Site</body></html>",
+    "headers": {
+      "Content-Type": "text/html; charset=UTF-8",
+      "Link": "<{{request.requestLine.baseUrl}}/wp-json/>; rel=\"https://api.w.org/\""
+    },
+    "transformers": ["response-template"]
+  }
+}

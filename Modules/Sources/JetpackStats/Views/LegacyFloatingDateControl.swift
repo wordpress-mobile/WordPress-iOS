@@ -63,6 +63,7 @@ struct LegacyFloatingDateControl: View {
         .tint(Color.primary)
         .menuOrder(.fixed)
         .buttonStyle(.plain)
+        .accessibilityIdentifier("stats_date_range_button")
         .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
         .floatingStyle()
     }
@@ -119,6 +120,7 @@ struct LegacyFloatingDateControl: View {
             dateRange.navigate(direction)
         }
         .disabled(isDisabled)
+        .accessibilityIdentifier("stats_date_range_\(direction)_button")
     }
 }
 

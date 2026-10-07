@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/wpcom/v2/sites/.*/rewind/downloads/.*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "downloadId": 434619,
+      "rewindId": "1690111277.168",
+      "backupPoint": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now offset='-2 days' format=customformat}}",
+      "startedAt": "{{now format=customformat}}",
+      "progress": 86
+    }
+  }
+}
