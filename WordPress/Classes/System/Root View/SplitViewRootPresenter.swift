@@ -332,22 +332,23 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
         case .blog:
             break
         case .reader:
+            // Not animated, because the split view can't expand again while a push is in flight.
             if let selection = readerPresenter.sidebar.viewModel.selection {
                 switch selection {
                 case .main(let readerStaticScreen):
                     switch readerStaticScreen {
-                    case .recent: tabBarVC.showReader(path: .recent)
-                    case .discover: tabBarVC.showReader(path: .discover)
-                    case .saved: tabBarVC.showReader()
-                    case .likes: tabBarVC.showReader(path: .likes)
-                    case .search: tabBarVC.showReader(path: .search)
+                    case .recent: tabBarVC.showReader(path: .recent, animated: false)
+                    case .discover: tabBarVC.showReader(path: .discover, animated: false)
+                    case .saved: tabBarVC.showReader(path: nil, animated: false)
+                    case .likes: tabBarVC.showReader(path: .likes, animated: false)
+                    case .search: tabBarVC.showReader(path: .search, animated: false)
                     case .subscrtipions, .lists, .tags:
                         wpAssertionFailure("not supported by Jetpack")
                     }
                 case .allSubscriptions:
-                    tabBarVC.showReader(path: .subscriptions)
+                    tabBarVC.showReader(path: .subscriptions, animated: false)
                 default:
-                    tabBarVC.showReader()
+                    tabBarVC.showReader(path: nil, animated: false)
                 }
             }
         case .notifications:

@@ -42,11 +42,15 @@ extension WPTabBarController {
     }
 
     func showReader(path: ReaderNavigationPath?) {
+        showReader(path: path, animated: true)
+    }
+
+    func showReader(path: ReaderNavigationPath?, animated: Bool) {
         showReaderTab()
         if let path {
-            self.readerPresenter?.navigate(to: path)
+            self.readerPresenter?.navigate(to: path, animated: animated)
         } else { // navigate back to the reader root
-            self.readerPresenter?.navigate(to: .discover)
+            self.readerPresenter?.navigate(to: .discover, animated: animated)
         }
     }
 

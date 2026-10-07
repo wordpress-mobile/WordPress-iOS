@@ -23,6 +23,10 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     private var selectionObserver: AnyCancellable?
 
+    /// Disabled for programmatic setup, like the initial screen or syncing tabs when the
+    /// iPad split view collapses. A push still animating then prevents it from expanding again.
+    private var isNavigationAnimated = true
+
     public convenience override init() {
         self.init(viewModel: ReaderSidebarViewModel())
     }
@@ -78,6 +82,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     // MARK: - Navigation
 
     func showInitialSelection() {
+        // The initial screen is part of setting up the stack, so it isn't animated.
+        // The publisher emits the current selection synchronously on subscription.
+        isNavigationAnimated = false
+        defer { isNavigationAnimated = true }
+
         // -warning: List occasionally sets the selection to `nil` when switching items.
         selectionObserver = sidebarViewModel.$selection.compactMap { $0 }
             .removeDuplicates { [weak self] in
@@ -234,7 +243,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 return
             }
 
-            mainNavigationController.safePushViewController(viewController, animated: true)
+            mainNavigationController.safePushViewController(viewController, animated: isNavigationAnimated)
         }
     }
 
@@ -249,7 +258,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             }
             let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
             wpAssert(navigationVC != nil)
-            navigationVC?.safePushViewController(viewController, animated: true)
+            navigationVC?.safePushViewController(viewController, animated: isNavigationAnimated)
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
@@ -257,7 +266,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 return
             }
 
-            mainNavigationController.safePushViewController(viewController, animated: true)
+            mainNavigationController.safePushViewController(viewController, animated: isNavigationAnimated)
         }
     }
 
@@ -294,7 +303,10 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // MARK: - Deep Links (ReaderNavigationPath)
 
-    func navigate(to path: ReaderNavigationPath) {
+    func navigate(to path: ReaderNavigationPath, animated: Bool = true) {
+        isNavigationAnimated = animated
+        defer { isNavigationAnimated = true }
+
         let viewModel = sidebarViewModel
 
         switch path {
