@@ -2,15 +2,6 @@
 
 set -euo pipefail
 
-# The committed .age blob is the versioned source of the decrypted secrets file.
-# Where a8c-secrets puts the plaintext is the tool's business, so ask it rather
-# than spelling out its layout here.
-#
-# Reach the repo root by trimming SRCROOT's last component rather than appending
-# `/..`: the input file list this path is matched against is the one Xcode
-# resolved, and Xcode collapses `..` when it writes it.
-ENCRYPTED_SECRETS_FILE="${SRCROOT%/*}/.a8c-secrets/Secrets.swift.age"
-
 # To help the Xcode build system optimize the build, we want to ensure each of
 # the secrets we want to copy is defined as an input file for the run script
 # build phase.
@@ -55,6 +46,9 @@ function ensure_is_in_input_files_list() {
   fi
 }
 
+# Reach the repo root by trimming SRCROOT's last component rather than appending `/..`.
+# The `.xcfilelist` this path is matched against is the one Xcode resolved, and Xcode collapses `..` when it writes it.
+ENCRYPTED_SECRETS_FILE="${SRCROOT%/*}/.a8c-secrets/Secrets.swift.age"
 ensure_is_in_input_files_list $ENCRYPTED_SECRETS_FILE
 
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
@@ -66,7 +60,7 @@ SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
 # `a8c-secrets which` exits non-zero when the file has not been decrypted yet.
-# WordPress, Jetpack, and Reader use all the same secrets at this time.
+# NOTE: WordPress, Jetpack, and Reader use all the same secrets at this time.
 if command -v a8c-secrets > /dev/null 2>&1 && SECRETS_FILE=$(a8c-secrets which Secrets.swift 2>/dev/null); then
     echo "Applying Production Secrets"
     cp "$SECRETS_FILE" "$SECRETS_DESTINATION_FILE"
