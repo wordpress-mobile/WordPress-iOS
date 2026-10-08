@@ -332,25 +332,26 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
         case .blog:
             break
         case .reader:
-            // Not animated, because the split view can't expand again while a push is in flight.
-            if let selection = readerPresenter.sidebar.viewModel.selection {
-                switch selection {
-                case .main(let readerStaticScreen):
-                    switch readerStaticScreen {
-                    case .recent: tabBarVC.showReader(path: .recent, animated: false)
-                    case .discover: tabBarVC.showReader(path: .discover, animated: false)
-                    case .saved: tabBarVC.showReader(path: nil, animated: false)
-                    case .likes: tabBarVC.showReader(path: .likes, animated: false)
-                    case .search: tabBarVC.showReader(path: .search, animated: false)
-                    case .subscrtipions, .lists, .tags:
-                        wpAssertionFailure("not supported by Jetpack")
-                    }
-                case .allSubscriptions:
-                    tabBarVC.showReader(path: .subscriptions, animated: false)
-                default:
-                    tabBarVC.showReader(path: nil, animated: false)
+            guard let selection = readerPresenter.sidebar.viewModel.selection else { break }
+            let path: ReaderNavigationPath?
+            switch selection {
+            case .main(let readerStaticScreen):
+                switch readerStaticScreen {
+                case .recent: path = .recent
+                case .discover: path = .discover
+                case .saved: path = nil
+                case .likes: path = .likes
+                case .search: path = .search
+                case .subscrtipions, .lists, .tags:
+                    return wpAssertionFailure("not supported by Jetpack")
                 }
+            case .allSubscriptions:
+                path = .subscriptions
+            default:
+                path = nil
             }
+            // Not animated, because the split view can't expand again while a push is in flight.
+            tabBarVC.showReader(path: path, animated: false)
         case .notifications:
             tabBarVC.showNotificationsTab()
         default:
