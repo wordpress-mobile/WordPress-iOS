@@ -5,7 +5,6 @@ import WebKit
 /// cookie storage systems.
 ///
 protocol CookieJar: AnyObject {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
@@ -28,11 +27,11 @@ extension CookieJar {
         atomicSite: Bool,
         completion: @escaping (Bool) -> Void
     ) {
-        getCookies(url: url) { cookies in
+        getCookies { cookies in
             let cookie =
                 cookies
                 .contains(where: { cookie in
-                    cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
+                    cookie.matches(url: url) && cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
                 })
 
             completion(cookie)
@@ -47,10 +46,6 @@ extension CookieJar {
 }
 
 extension HTTPCookieStorage: CookieJar {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
-        completion(cookies(for: url) ?? [])
-    }
-
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
         completion(cookies ?? [])
     }
@@ -70,7 +65,7 @@ extension HTTPCookieStorage: CookieJar {
 }
 
 extension WKHTTPCookieStore: CookieJar {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
+    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
 
         // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
         // - adds timeout so the above failure will eventually return
@@ -83,30 +78,24 @@ extension WKHTTPCookieStore: CookieJar {
                 let group = DispatchGroup()
                 group.enter()
 
-                var urlCookies: [HTTPCookie] = []
+                var allCookies: [HTTPCookie] = []
 
                 DispatchQueue.main.async {
                     self.getAllCookies { cookies in
-                        urlCookies = cookies.filter({ cookie in
-                            cookie.matches(url: url)
-                        })
+                        allCookies = cookies
                         group.leave()
                     }
                 }
 
                 let result = group.wait(timeout: .now() + .seconds(2))
                 if result == .timedOut {
-                    DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
+                    Loggers.app.warning("Time out waiting for WKHTTPCookieStore to get cookies")
                 }
 
                 DispatchQueue.main.async {
-                    completion(urlCookies)
+                    completion(allCookies)
                 }
             }
-    }
-
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
-        getAllCookies(completion)
     }
 
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
@@ -121,21 +110,17 @@ extension WKHTTPCookieStore: CookieJar {
                     }
                 )
             })
-        let result = group.wait(timeout: .now() + .seconds(2))
-        if result == .timedOut {
-            DDLogWarn("Time out waiting for WKHTTPCookieStore to remove cookies")
-        }
-        completion()
+        group.notify(queue: .main, execute: completion)
     }
 
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        guard let cookie = cookies.last else {
+        guard let cookie = cookies.first else {
             return completion()
         }
 
         DispatchQueue.main.async {
             self.setCookie(cookie) {
-                self.setCookies(cookies.dropLast(), completion: completion)
+                self.setCookies(Array(cookies.dropFirst()), completion: completion)
             }
         }
     }
