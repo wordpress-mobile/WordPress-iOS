@@ -35,11 +35,10 @@ class RequestAuthenticatorTests: XCTestCase {
             credentials: .siteLogin(loginURL: siteLoginURL, username: siteUser, password: sitePassword))
     }
 
-    func testAuthenticatedSiteRequestWithoutCookie() {
+    func testAuthenticatedSiteRequestWithoutCookie() async {
         let url = URL(string: "https://example.com/some-page/?preview=true&preview_nonce=7ad6fc")!
         let authenticator = siteAuthenticator
         let cookieJar = MockCookieJar()
-        let expectation = self.expectation(description: "Authorization cookies obtained")
 
         stub(condition: { request in
             return request.url! == self.siteLoginURL && request.httpMethod! == "POST"
@@ -51,22 +50,16 @@ class RequestAuthenticatorTests: XCTestCase {
                     "Set-Cookie": self.selfHostedAuthCookies])
         }
 
-        authenticator.request(url: url, cookieJar: cookieJar) { _ in
-            cookieJar.hasWordPressSelfHostedAuthCookie(for: url, username: self.siteUser) { hasCookie in
-                if hasCookie {
-                    expectation.fulfill()
-                }
-            }
-        }
+        _ = await authenticator.request(url: url, cookieJar: cookieJar)
 
-        waitForExpectations(timeout: 0.2)
+        let hasCookie = await cookieJar.hasWordPressSelfHostedAuthCookie(for: url, username: siteUser)
+        XCTAssertTrue(hasCookie)
     }
 
-    func testAuthenticatedDotComRequestWithoutCookie() {
+    func testAuthenticatedDotComRequestWithoutCookie() async {
         let url = URL(string: "https://example.wordpress.com/some-page/")!
         let authenticator = dotComAuthenticator
         let cookieJar = MockCookieJar()
-        let expectation = self.expectation(description: "Authorization cookies obtained")
 
         stub(condition: { request in
             return request.url! == self.dotComLoginURL && request.httpMethod! == "POST"
@@ -78,36 +71,27 @@ class RequestAuthenticatorTests: XCTestCase {
                     "Set-Cookie": self.wpComAuthCookies])
         }
 
-        authenticator.request(url: url, cookieJar: cookieJar) { _ in
-            cookieJar.hasWordPressComAuthCookie(username: self.dotComUser, atomicSite: false) { hasCookie in
-                if hasCookie {
-                    expectation.fulfill()
-                }
-            }
-        }
+        _ = await authenticator.request(url: url, cookieJar: cookieJar)
 
-        waitForExpectations(timeout: 0.2)
+        let hasCookie = await cookieJar.hasWordPressComAuthCookie(username: dotComUser, atomicSite: false)
+        XCTAssertTrue(hasCookie)
     }
 
-    func testUnauthenticatedDotComRequestWithCookie() {
+    func testUnauthenticatedDotComRequestWithCookie() async {
         let url = URL(string: "https://example.wordpress.com/some-page/")!
         let authenticator = dotComAuthenticator
 
         let cookieJar = MockCookieJar()
         cookieJar.setWordPressComCookie(username: dotComUser)
-        var authenticatedRequest: URLRequest? = nil
-        authenticator.request(url: url, cookieJar: cookieJar) {
-            authenticatedRequest = $0
-        }
-        guard let request = authenticatedRequest else {
-            XCTFail("The authenticator should return a valid request")
-            return
-        }
+
+        let request = await authenticator.request(url: url, cookieJar: cookieJar)
+
         XCTAssertEqual(request.url, url)
         XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
     }
 
-    func testPrivateAtomicRequestWithoutAccount() {
+    @MainActor
+    func testPrivateAtomicRequestWithoutAccount() async {
         let contextManager = ContextManager.forTesting()
         contextManager.useAsSharedInstance(untilTestFinished: self)
 
@@ -115,8 +99,20 @@ class RequestAuthenticatorTests: XCTestCase {
         let authenticator = RequestAuthenticator(
             credentials: .dotCom(username: dotComUser, authToken: dotComToken, authenticationType: .privateAtomic(blogID: 1)))
 
+        let request = await authenticator.request(url: url, cookieJar: MockCookieJar())
+
+        XCTAssertEqual(request.url, url)
+    }
+
+    func testRequestCompletionHandlerIsCalled() {
+        let url = URL(string: "https://example.wordpress.com/some-page/")!
+        let authenticator = dotComAuthenticator
+        let cookieJar = MockCookieJar()
+        cookieJar.setWordPressComCookie(username: dotComUser)
+
         let expectation = self.expectation(description: "Completion handler called")
-        authenticator.request(url: url, cookieJar: MockCookieJar()) { request in
+        authenticator.request(url: url, cookieJar: cookieJar) { request in
+            XCTAssertTrue(Thread.isMainThread)
             XCTAssertEqual(request.url, url)
             expectation.fulfill()
         }
@@ -124,7 +120,7 @@ class RequestAuthenticatorTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testDecideActionForNavigationResponse() {
+    func testDecideActionForNavigationResponse() async {
         let url = URL(string: "https://example.wordpress.com/some-page/")!
         let authenticator = dotComAuthenticator
         let cookieJar = MockCookieJar()
@@ -132,16 +128,12 @@ class RequestAuthenticatorTests: XCTestCase {
 
         let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
 
-        let expectation = self.expectation(description: "Action Should be decided")
-        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
-            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.allow)
-            expectation.fulfill()
-        }
+        let action = await authenticator.decideActionFor(response: response, cookieJar: cookieJar)
 
-        waitForExpectations(timeout: 0.2)
+        XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.allow)
     }
 
-    func testDecideActionForNavigationResponse_RemoteLoginError() {
+    func testDecideActionForNavigationResponse_RemoteLoginError() async {
         let url = URL(string: "https://r-login.wordpress.com/remote-login.php?action=auth")!
         let authenticator = dotComAuthenticator
         let cookieJar = MockCookieJar()
@@ -149,16 +141,12 @@ class RequestAuthenticatorTests: XCTestCase {
 
         let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
 
-        let expectation = self.expectation(description: "Action Should be decided")
-        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
-            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.reload)
-            expectation.fulfill()
-        }
+        let action = await authenticator.decideActionFor(response: response, cookieJar: cookieJar)
 
-        waitForExpectations(timeout: 0.2)
+        XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.reload)
     }
 
-    func testDecideActionForNavigationResponse_ClientError() {
+    func testDecideActionForNavigationResponse_ClientError() async {
         let url = URL(string: "https://example.wordpress.com/some-page/")!
         let authenticator = dotComAuthenticator
         let cookieJar = MockCookieJar()
@@ -166,12 +154,37 @@ class RequestAuthenticatorTests: XCTestCase {
 
         let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)!
 
-        let expectation = self.expectation(description: "Action Should be decided")
-        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
-            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.reload)
+        let action = await authenticator.decideActionFor(response: response, cookieJar: cookieJar)
+
+        XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.reload)
+    }
+
+    func testDecideActionCompletionHandlerAllowsSynchronously() {
+        let url = URL(string: "https://example.wordpress.com/some-page/")!
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+
+        var action: RequestAuthenticator.WPNavigationActionType?
+        dotComAuthenticator.decideActionFor(response: response, cookieJar: MockCookieJar()) {
+            action = $0
+        }
+
+        XCTAssertEqual(action, .allow)
+    }
+
+    func testDecideActionCompletionHandlerReloadsAfterRemovingCookies() {
+        let url = URL(string: "https://example.wordpress.com/some-page/")!
+        let cookieJar = MockCookieJar()
+        cookieJar.setWordPressComCookie(username: dotComUser)
+        let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)!
+
+        let expectation = self.expectation(description: "Completion handler called")
+        dotComAuthenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertEqual(action, .reload)
+            XCTAssertEqual(cookieJar.cookies, [])
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 0.2)
+        waitForExpectations(timeout: 1)
     }
 }
