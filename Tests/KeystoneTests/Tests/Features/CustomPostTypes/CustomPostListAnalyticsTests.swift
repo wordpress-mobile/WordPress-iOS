@@ -15,6 +15,50 @@ struct CustomPostListAnalyticsTests {
     }
 
     @Test(arguments: [
+        ("post", "posts"),
+        ("page", "pages"),
+        ("job_listing", "job_listing")
+    ])
+    func postTypeIsSlug(slug: String, restBase: String) {
+        let properties = CustomPostListViewModel.analyticsProperties(
+            details: makeTestPostType(slug: slug, restBase: restBase),
+            filter: CustomPostListFilter(tab: .all),
+            hierarchyEligible: false,
+            hasCachedContent: false
+        )
+        #expect(properties["post_type"] as? String == slug)
+    }
+
+    @Test(arguments: [
+        (CustomPostTab.all, "all"),
+        (.published, "published"),
+        (.drafts, "drafts"),
+        (.scheduled, "scheduled"),
+        (.trash, "trash")
+    ])
+    func tab(tab: CustomPostTab, expected: String) {
+        let properties = CustomPostListViewModel.analyticsProperties(
+            details: makeTestPostType(slug: "job_listing"),
+            filter: CustomPostListFilter(tab: tab),
+            hierarchyEligible: true,
+            hasCachedContent: true
+        )
+        #expect(properties["tab"] as? String == expected)
+        #expect(properties["hierarchy_eligible"] as? Bool == true)
+        #expect(properties["has_cached_content"] as? Bool == true)
+    }
+
+    @Test func searchTab() {
+        let properties = CustomPostListViewModel.analyticsProperties(
+            details: makeTestPostType(slug: "job_listing"),
+            filter: .search(input: "hello"),
+            hierarchyEligible: false,
+            hasCachedContent: false
+        )
+        #expect(properties["tab"] as? String == "search")
+    }
+
+    @Test(arguments: [
         (UInt64(0), UInt64(0), "success"),
         (20, 0, "success"),
         (20, 5, "partial_failure"),
