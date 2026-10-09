@@ -7,13 +7,19 @@ struct ReaderUserProfileView: View {
     let viewModel: ReaderUserProfileViewModel
 
     var body: some View {
-        // Scrolls only when the profile is taller than the sheet, e.g. at the largest text sizes
+        // Scrolls only when the profile is taller than the sheet, e.g. with a long bio or at the largest text sizes
         ScrollView {
             VStack(spacing: 30) {
                 header
                     .frame(maxWidth: .infinity, alignment: .center)
-                site
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(spacing: 20) {
+                    site
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if let bio = viewModel.bio {
+                        about(bio)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
             }
             .padding(.horizontal, 16)
             .padding(.top, 12)
@@ -38,6 +44,15 @@ struct ReaderUserProfileView: View {
                 Text(verbatim: "–")
                     .foregroundStyle(.secondary)
             }
+        }
+    }
+
+    private func about(_ bio: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(Strings.about.uppercased())
+                .font(.footnote.weight(.medium))
+            Text(bio)
+                .textSelection(.enabled)
         }
     }
 
@@ -66,23 +81,27 @@ struct ReaderUserProfileViewModel {
     let avatarURL: URL?
     let name: String
     let siteURL: URL?
+    let bio: String?
 
     init(comment: Comment) {
         self.avatarURL = comment.avatarURLForDisplay()
         self.name = comment.author
         self.siteURL = URL(string: comment.author_url)
+        self.bio = nil
     }
 
     init(post: ReaderPost) {
         self.avatarURL = post.avatarURLForDisplay()
         self.name = post.authorForDisplay() ?? ""
         self.siteURL = post.blogURL.flatMap(URL.init(string:))
+        self.bio = nil
     }
 
     init(profile: ReaderUserProfile) {
         self.avatarURL = profile.avatarURL
         self.name = profile.displayName
         self.siteURL = profile.siteURL
+        self.bio = profile.bio
     }
 }
 
@@ -152,4 +171,9 @@ private final class ReaderUserProfileViewController: UIHostingController<ReaderU
 
 private enum Strings {
     static let site = NSLocalizedString("reader.userProfile.site", value: "Site", comment: "Field title")
+    static let about = NSLocalizedString(
+        "reader.userProfile.about",
+        value: "About",
+        comment: "Title of the field that shows a user's bio in the Reader profile sheet"
+    )
 }
