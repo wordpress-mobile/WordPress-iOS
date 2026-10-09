@@ -28,14 +28,14 @@ public final class HTTPRequestBuilder {
     private(set) var multipartForm: [MultipartFormField]?
     private(set) var xmlrpcRequest: XMLRPCRequest?
 
-    init(url: URL) {
+    public init(url: URL) {
         assert(url.scheme == "http" || url.scheme == "https")
         assert(url.host != nil)
 
         original = URLComponents(url: url, resolvingAgainstBaseURL: true)!
     }
 
-    func method(_ method: Method) -> Self {
+    public func method(_ method: Method) -> Self {
         self.method = method
         return self
     }
@@ -89,7 +89,7 @@ public final class HTTPRequestBuilder {
         append(query: [URLQueryItem(name: name, value: value)], override: override)
     }
 
-    func query(_ parameters: [String: Any]) -> Self {
+    public func query(_ parameters: [String: Any]) -> Self {
         append(query: parameters.flatten(), override: false)
     }
 
@@ -104,7 +104,7 @@ public final class HTTPRequestBuilder {
         return self
     }
 
-    func body(form: [String: Any]) -> Self {
+    public func body(form: [String: Any]) -> Self {
         headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
         bodyBuilder = { req in
             let content = form.flatten().percentEncoded
@@ -148,7 +148,7 @@ public final class HTTPRequestBuilder {
         return self
     }
 
-    func build(encodeBody: Bool = false) throws -> URLRequest {
+    public func build(encodeBody: Bool = false) throws -> URLRequest {
         var components = original
 
         var newPath = Self.join(components.percentEncodedPath, appendedPath)

@@ -1,4 +1,3 @@
-import Alamofire
 import AuthenticationServices
 import Foundation
 import UIKit
@@ -247,12 +246,11 @@ struct WordPressDotComAuthenticator {
             queries["user_email"] = accountEmail
         }
 
-        // Using Alamofire instead of URL to encode query string because URL do not encoded "+" (which may present
-        // in user's email) in query. WP.com treat "+" in URL query as a whitespace, which cause the login page to
-        // prepopulate the email address incorrectly, i.e. "foo+bar@baz.com" shows as "foo bar@baz.com"
-        let authorizeURL = try? URLEncoding.queryString
-            .encode(URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/authorize")!), with: queries)
-            .url
+        // Using `HTTPRequestBuilder` instead of `URLQueryItem` to encode query string because `URLQueryItem` does not
+        // encode "+" (which may present in user's email). WP.com treat "+" in URL query as a whitespace, which cause
+        // the login page to prepopulate the email address incorrectly, i.e. "foo+bar@baz.com" shows as "foo bar@baz.com"
+        let authorizeEndpoint = URL(string: "https://public-api.wordpress.com/oauth2/authorize")!
+        let authorizeURL = try? HTTPRequestBuilder(url: authorizeEndpoint).query(queries).build().url
         guard let authorizeURL else { throw .urlError(URLError(.badURL)) }
 
         let callbackURL = try await authorize(
@@ -389,8 +387,6 @@ struct WordPressDotComAuthenticator {
             throw .invalidCallbackURL
         }
 
-        var tokenRequest = URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/token")!)
-        tokenRequest.httpMethod = "POST"
         let parameters: [String: String] = [
             "grant_type": "authorization_code",
             "client_id": clientId,
@@ -399,8 +395,12 @@ struct WordPressDotComAuthenticator {
             "code": code
         ]
 
+        let tokenRequest: URLRequest
         do {
-            tokenRequest = try URLEncodedFormParameterEncoder().encode(parameters, into: tokenRequest)
+            tokenRequest = try HTTPRequestBuilder(url: URL(string: "https://public-api.wordpress.com/oauth2/token")!)
+                .method(.post)
+                .body(form: parameters)
+                .build()
         } catch {
             wpAssertionFailure("Unexpected form encoding error", userInfo: ["error": "\(error)"])
             throw .unknown(error)
