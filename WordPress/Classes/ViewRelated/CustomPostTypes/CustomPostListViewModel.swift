@@ -824,29 +824,28 @@ struct CustomPostCollectionDisplayPost: Equatable {
         return string.capitalized(with: .current)
     }
 
-    /// Combined status badges (e.g. "Private · Sticky") matching the regular
-    /// posts list. Returns nil when there is nothing to display.
-    var statusBadges: String? {
-        var badges: [String] = []
+    /// The badges shown under the excerpt, in display order: the status, then
+    /// Sticky, then the page role.
+    var badges: [PostListBadge] {
+        var badges: [PostListBadge] = []
 
-        // Show a status badge when the post's status isn't one of the filter's
-        // statuses, since it would be redundant otherwise.
-        let showStatus = status != primaryStatus
-        if showStatus {
-            badges.append(status.localizedLabel())
+        // The status is redundant when it is the filter's primary status,
+        // e.g. "Draft" on every row of the Drafts tab.
+        if status != primaryStatus {
+            badges.append(status.badge)
         }
         if sticky {
-            badges.append(Strings.sticky)
+            badges.append(PostListBadge(text: Strings.sticky, systemImage: "pin", tint: .neutral))
         }
-
-        return badges.isEmpty ? nil : badges.joined(separator: " · ")
-    }
-
-    var statusColor: Color {
-        if status == .trash {
-            return .red
+        switch pageRole {
+        case .homepage:
+            badges.append(PostListBadge(text: Strings.homepageBadge, systemImage: "house.fill", tint: .neutral))
+        case .postsPage:
+            badges.append(PostListBadge(text: Strings.postsPageBadge, systemImage: "paragraphsign", tint: .neutral))
+        case nil:
+            break
         }
-        return .secondary
+        return badges
     }
 
     static let placeholder = CustomPostCollectionDisplayPost(
@@ -856,26 +855,43 @@ struct CustomPostCollectionDisplayPost: Equatable {
     )
 }
 
+/// A short icon-and-text label under a post row's excerpt.
+struct PostListBadge: Equatable {
+    /// A semantic color the view resolves to a `Color`, so the status mapping
+    /// can be tested without comparing colors.
+    enum Tint: Equatable {
+        case neutral
+        case success
+        case warning
+        case error
+        case info
+    }
+
+    let text: String
+    let systemImage: String?
+    let tint: Tint
+}
+
 extension PostStatus {
-    func localizedLabel() -> String {
+    var badge: PostListBadge {
         switch self {
         case .publish:
-            return SharedStrings.PostStatus.published
+            PostListBadge(text: SharedStrings.PostStatus.published, systemImage: "checkmark.circle", tint: .success)
         case .draft:
-            return SharedStrings.PostStatus.draft
+            PostListBadge(text: SharedStrings.PostStatus.draft, systemImage: "pencil", tint: .neutral)
         case .future:
-            return SharedStrings.PostStatus.scheduled
+            PostListBadge(text: SharedStrings.PostStatus.scheduled, systemImage: "calendar", tint: .info)
         case .pending:
-            return SharedStrings.PostStatus.pending
+            PostListBadge(text: SharedStrings.PostStatus.pending, systemImage: "clock", tint: .warning)
         case .private:
-            return SharedStrings.PostStatus.privatePost
+            PostListBadge(text: SharedStrings.PostStatus.privatePost, systemImage: "lock", tint: .neutral)
         case .trash:
-            return SharedStrings.PostStatus.trash
+            PostListBadge(text: Strings.trashed, systemImage: "trash", tint: .error)
         case .any:
-            // This branch should never happen, since "any" is magic filter and no post would have this status.
-            return SharedStrings.PostStatus.any
+            // "any" is a filter value, not a status a post can have.
+            PostListBadge(text: SharedStrings.PostStatus.any, systemImage: nil, tint: .neutral)
         case .custom(let value):
-            return value
+            PostListBadge(text: value, systemImage: nil, tint: .neutral)
         }
     }
 }
@@ -993,6 +1009,21 @@ private enum Strings {
         "customPostList.badge.sticky",
         value: "Sticky",
         comment: "Badge shown in the post list for sticky posts"
+    )
+    static let trashed = NSLocalizedString(
+        "customPostList.badge.trashed",
+        value: "Trashed",
+        comment: "Badge shown in the post list for a post that has been moved to the trash"
+    )
+    static let homepageBadge = NSLocalizedString(
+        "customPostList.badge.homepage",
+        value: "Homepage",
+        comment: "Badge label shown on the homepage row in the custom post list for pages"
+    )
+    static let postsPageBadge = NSLocalizedString(
+        "customPostList.badge.postsPage",
+        value: "Posts page",
+        comment: "Badge label shown on the posts page row in the custom post list for pages"
     )
     static let blaze = NSLocalizedString(
         "customPostList.action.blaze",

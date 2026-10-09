@@ -63,6 +63,77 @@ struct CustomPostCollectionDisplayPostTests {
         #expect(entity.title?.raw == nil)
     }
 
+    @Test
+    func hidesStatusMatchingThePrimaryStatus() {
+        let post = makeDisplayPost(status: .draft, primaryStatus: .draft)
+
+        #expect(post.badges.isEmpty)
+    }
+
+    @Test(arguments: [
+        (PostStatus.publish, "Published", "checkmark.circle", PostListBadge.Tint.success),
+        (.draft, "Draft", "pencil", .neutral),
+        (.future, "Scheduled", "calendar", .info),
+        (.pending, "Pending", "clock", .warning),
+        (.private, "Private", "lock", .neutral),
+        (.trash, "Trashed", "trash", .error)
+    ])
+    func statusBadge(status: PostStatus, text: String, systemImage: String, tint: PostListBadge.Tint) {
+        let post = makeDisplayPost(status: status, primaryStatus: .any)
+
+        #expect(post.badges == [PostListBadge(text: text, systemImage: systemImage, tint: tint)])
+    }
+
+    @Test
+    func customStatusIsShownVerbatimWithoutAnIcon() {
+        let post = makeDisplayPost(status: .custom("archived"))
+
+        #expect(post.badges == [PostListBadge(text: "archived", systemImage: nil, tint: .neutral)])
+    }
+
+    @Test
+    func stickyBadgeFollowsTheStatus() {
+        let post = makeDisplayPost(status: .private, sticky: true)
+
+        #expect(post.badges.map(\.text) == ["Private", "Sticky"])
+        #expect(post.badges[1] == PostListBadge(text: "Sticky", systemImage: "pin", tint: .neutral))
+    }
+
+    @Test
+    func stickyBadgeAloneWhenStatusIsHidden() {
+        let post = makeDisplayPost(status: .publish, sticky: true)
+
+        #expect(post.badges.map(\.text) == ["Sticky"])
+    }
+
+    @Test(arguments: [
+        (PageRole.homepage, "Homepage", "house.fill"),
+        (.postsPage, "Posts page", "paragraphsign")
+    ])
+    func pageRoleBadgeComesLast(pageRole: PageRole, text: String, systemImage: String) {
+        let post = makeDisplayPost(status: .draft, pageRole: pageRole)
+
+        #expect(post.badges.map(\.text) == ["Draft", text])
+        #expect(post.badges[1] == PostListBadge(text: text, systemImage: systemImage, tint: .neutral))
+    }
+
+    private func makeDisplayPost(
+        status: PostStatus,
+        sticky: Bool = false,
+        primaryStatus: PostStatus = .publish,
+        pageRole: PageRole? = nil
+    ) -> CustomPostCollectionDisplayPost {
+        CustomPostCollectionDisplayPost(
+            date: Date(timeIntervalSince1970: 0),
+            title: "Title",
+            content: nil,
+            status: status,
+            sticky: sticky,
+            primaryStatus: primaryStatus,
+            pageRole: pageRole
+        )
+    }
+
     private func makePost(title: PostTitleWithEditContext?) -> AnyPostWithEditContext {
         AnyPostWithEditContext(
             id: PostId(1),

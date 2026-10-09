@@ -1,3 +1,4 @@
+import DesignSystem
 import Foundation
 import SwiftUI
 import WordPressAPI
@@ -627,7 +628,6 @@ private struct PostContent: View {
             header
             content
             footer
-            pageRoleBadge
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
@@ -667,32 +667,54 @@ private struct PostContent: View {
 
     @ViewBuilder
     private var footer: some View {
-        if let badges = post.statusBadges {
-            Text(verbatim: badges)
-                .font(.footnote)
-                .foregroundStyle(post.statusColor)
+        let badges = post.badges
+        if !badges.isEmpty {
+            HStack(spacing: 10) {
+                ForEach(badges, id: \.text) { badge in
+                    PostListBadgeView(badge: badge)
+                }
+            }
         }
     }
+}
 
-    @ViewBuilder
-    private var pageRoleBadge: some View {
-        switch post.pageRole {
-        case .homepage:
-            HStack(spacing: 2) {
-                Image(systemName: "house.fill")
-                Text(verbatim: Strings.homepageBadge)
+private struct PostListBadgeView: View {
+    let badge: PostListBadge
+
+    var body: some View {
+        Label {
+            Text(verbatim: badge.text)
+        } icon: {
+            if let systemImage = badge.systemImage {
+                Image(systemName: systemImage)
             }
-            .font(.footnote)
-            .foregroundStyle(.secondary)
-        case .postsPage:
-            HStack(spacing: 2) {
-                Image(systemName: "paragraphsign")
-                Text(verbatim: Strings.postsPageBadge)
-            }
-            .font(.footnote)
-            .foregroundStyle(.secondary)
-        case nil:
-            EmptyView()
+        }
+        .labelStyle(CompactLabelStyle())
+        .font(.footnote)
+        .foregroundStyle(tint)
+        // Without this, the SF Symbol is exposed as its own element with the
+        // symbol's generic name, e.g. "Edit" for the pencil.
+        .accessibilityLabel(badge.text)
+    }
+
+    private var tint: Color {
+        switch badge.tint {
+        case .neutral: .secondary
+        case .success: Color(UIAppColor.success)
+        case .warning: Color(UIAppColor.warning)
+        case .error: Color(UIAppColor.error)
+        case .info: Color(UIAppColor.blue)
+        }
+    }
+}
+
+/// Keeps the icon snug against the text. The automatic style inside a `List`
+/// reserves a wide icon column, which pushes the text away from the icon.
+private struct CompactLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 5) {
+            configuration.icon
+            configuration.title
         }
     }
 }
@@ -719,11 +741,6 @@ private enum Strings {
         value: "No %1$@",
         comment:
             "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
-    )
-    static let homepageBadge = NSLocalizedString(
-        "customPostList.badge.homepage",
-        value: "Homepage",
-        comment: "Badge label shown on the homepage row in the custom post list for pages"
     )
     static let publish = NSLocalizedString(
         "customPostList.action.publish",
@@ -800,11 +817,6 @@ private enum Strings {
         value: "Page Attributes",
         comment: "Label for the page attributes submenu in the context menu"
     )
-    static let postsPageBadge = NSLocalizedString(
-        "customPostList.badge.postsPage",
-        value: "Posts page",
-        comment: "Badge label shown on the posts page row in the custom post list for pages"
-    )
 }
 
 // MARK: - Previews
@@ -833,10 +845,41 @@ private enum Strings {
         )
         PostContent(
             post: CustomPostCollectionDisplayPost(
+                date: .now.addingTimeInterval(-86400 * 2),
+                title: "Awaiting Review",
+                content: "This post is waiting for an editor.",
+                status: .pending
+            ),
+            client: nil,
+            mediaHost: nil
+        )
+        PostContent(
+            post: CustomPostCollectionDisplayPost(
+                date: .now.addingTimeInterval(-86400 * 3),
+                title: "Private Sticky Post",
+                content: "Only site members can read this one.",
+                status: .private,
+                sticky: true
+            ),
+            client: nil,
+            mediaHost: nil
+        )
+        PostContent(
+            post: CustomPostCollectionDisplayPost(
                 date: .now.addingTimeInterval(-86400 * 7),
                 title: "Trashed Post",
                 content: "This post was moved to trash.",
                 status: .trash
+            ),
+            client: nil,
+            mediaHost: nil
+        )
+        PostContent(
+            post: CustomPostCollectionDisplayPost(
+                date: .now.addingTimeInterval(-86400 * 30),
+                title: "Home",
+                content: "Welcome to the site.",
+                pageRole: .homepage
             ),
             client: nil,
             mediaHost: nil
