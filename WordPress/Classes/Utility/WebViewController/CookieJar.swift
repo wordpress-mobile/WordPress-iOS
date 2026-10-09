@@ -7,10 +7,7 @@ import WebKit
 protocol CookieJar: AnyObject {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
-    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void)
-    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void)
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
-    func removeWordPressComCookies(completion: @escaping () -> Void)
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
 }
 
@@ -143,23 +140,6 @@ extension WKHTTPCookieStore: CookieJar {
         }
     }
 }
-
-#if DEBUG
-func __removeAllWordPressComCookies() {
-    var jars = [CookieJar]()
-    jars.append(HTTPCookieStorage.shared)
-    jars.append(WKWebsiteDataStore.default().httpCookieStore)
-
-    let group = DispatchGroup()
-    jars.forEach({ jar in
-        group.enter()
-        jar.removeWordPressComCookies {
-            group.leave()
-        }
-    })
-    _ = group.wait(timeout: .now() + .seconds(5))
-}
-#endif
 
 private let atomicLoggedInCookieNamePrefix = "wordpress_logged_in_"
 private let loggedInCookieName = "wordpress_logged_in"
