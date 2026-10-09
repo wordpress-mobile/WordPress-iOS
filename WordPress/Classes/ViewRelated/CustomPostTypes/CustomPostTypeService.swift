@@ -1,39 +1,44 @@
+import Combine
 import Foundation
 import WordPressCore
 import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
 
-class CustomPostTypeService {
-    let blog: TaggedManagedObjectID<Blog>
+/// The part of ``CustomPostTypeService`` the site menu depends on.
+protocol CustomPostTypeServiceProtocol {
+    /// Emits whenever the cache records a change that may affect ``customTypes()``.
+    func customTypesUpdates() async throws -> AnyPublisher<Void, Never>
+    func customTypes() async throws -> [PostTypeDetailsWithEditContext]
+}
+
+class CustomPostTypeService: CustomPostTypeServiceProtocol {
     let client: WordPressClient
 
-    private(set) var wpService: WpService?
+    private var wpService: WpService?
     private var collection: PostTypeCollectionWithEditContext?
 
-    init(client: WordPressClient, blog: Blog) {
+    init(client: WordPressClient) {
         self.client = client
-        self.blog = TaggedManagedObjectID(blog)
     }
 
     init?(blog: Blog) {
         guard blog.supportsCoreRESTAPI, let site = try? WordPressSite(blog: blog) else { return nil }
-        self.blog = TaggedManagedObjectID(blog)
         self.client = WordPressClientFactory.shared.instance(for: site)
     }
 
     func refresh() async throws {
         let service = try await resolveService()
         _ = try await service.postTypes().syncPostTypes()
+    }
 
-        // If the user has not manually pinned any post types (typically right after first fetching post types),
-        // we automatically pin 3 post types, so that the user can see their content straight from the top-level screens.
-        if !SiteStorageAccess.pinnedPostTypesUpdated(for: blog) {
-            let pinned = try await customTypes()
-                .prefix(3)
-                .map { PinnedPostType(slug: $0.slug, name: $0.name, icon: $0.icon) }
-            SiteStorageAccess.writePinnedPostTypes(pinned, for: blog)
-        }
+    func customTypesUpdates() async throws -> AnyPublisher<Void, Never> {
+        let collection = try await resolveCollection()
+        return await client.cache.databaseUpdatesPublisher()
+            .filter { collection.isRelevantUpdate(hook: $0) }
+            .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
+            .map { _ in }
+            .eraseToAnyPublisher()
     }
 
     func customTypes() async throws -> [PostTypeDetailsWithEditContext] {
