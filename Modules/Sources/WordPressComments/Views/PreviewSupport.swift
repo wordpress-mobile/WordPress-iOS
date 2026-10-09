@@ -14,6 +14,10 @@ final class PreviewCommentsService: CommentsServiceProtocol {
         self.replyCount = numberOfReplies
     }
 
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage {
+        CommentsPage(items: [], nextPage: nil)
+    }
+
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         CommentsPage(items: [], nextPage: nil)
     }

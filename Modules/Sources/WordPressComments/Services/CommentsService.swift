@@ -11,7 +11,7 @@ import WordPressCore
 /// changes between requests the window shifts, so a page can re-serve an item
 /// (deduplicated by the view model) or skip one (inherent to offset paging;
 /// pull-to-refresh is the recovery).
-struct CommentsPageToken: Sendable {
+struct CommentsPageToken: Equatable, Sendable {
     let params: CommentListParams
 }
 
@@ -26,6 +26,9 @@ protocol CommentsServiceProtocol: Sendable {
     /// end of the list. Post titles are not part of this call; they resolve
     /// asynchronously through `PostTitleResolver`.
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage
+
+    /// Searches Approved and Pending comments using the server continuation unchanged.
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage
 
     /// Fetches full comment detail. When `allowsEditContext` is true, tries
     /// edit context first (adds author email/IP) and falls back to view
@@ -80,7 +83,14 @@ final class CommentsService: CommentsServiceProtocol {
     }
 
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
-        let params = nextPage?.params ?? filter.firstPageParams
+        try await listComments(params: nextPage?.params ?? filter.firstPageParams())
+    }
+
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage {
+        try await listComments(params: nextPage?.params ?? CommentsListFilter.all.firstPageParams(search: query))
+    }
+
+    private func listComments(params: CommentListParams) async throws -> CommentsPage {
         let response = try await client.api.comments.listWithViewContext(params: params)
         return CommentsPage(
             items: response.data.map(CommentListItem.init),
@@ -217,9 +227,11 @@ extension WpApiError {
 extension CommentsListFilter {
     static let pageSize: UInt32 = 20
 
-    var firstPageParams: CommentListParams {
+    /// Page-one params; `search` narrows the results to matching comments.
+    func firstPageParams(search: String? = nil) -> CommentListParams {
         CommentListParams(
             perPage: Self.pageSize,
+            search: search,
             order: .desc,
             orderby: .dateGmt,
             status: queryStatus
