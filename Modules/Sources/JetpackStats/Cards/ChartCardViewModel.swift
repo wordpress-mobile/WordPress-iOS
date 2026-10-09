@@ -72,6 +72,24 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
+    private var cachedPlaceholderChartData: ChartData?
+
+    /// Mock chart data for the redacted placeholder. Generated once per date range and
+    /// granularity so re-renders keep the same random values instead of redrawing the chart.
+    var placeholderChartData: ChartData {
+        let range = effectiveDateRange
+        let granularity = effectiveGranularity
+        if let cached = cachedPlaceholderChartData,
+            cached.dateInterval == range.dateInterval,
+            cached.granularity == granularity
+        {
+            return cached
+        }
+        let data = ChartData.mock(metric: .views, granularity: granularity, range: range)
+        cachedPlaceholderChartData = data
+        return data
+    }
+
     init(
         configuration: ChartCardConfiguration,
         dateRange: StatsDateRange,
