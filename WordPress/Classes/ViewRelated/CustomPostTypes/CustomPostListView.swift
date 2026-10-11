@@ -703,7 +703,10 @@ private struct PostListBadgeView: View {
         case .success: Color(UIAppColor.success)
         case .warning: Color(UIAppColor.warning)
         case .error: Color(UIAppColor.error)
-        case .info: Color(UIAppColor.blue)
+        // `UIAppColor.blue` is the same shade in light and dark mode, and that
+        // shade is hard to read as small text on a dark background. `link` is
+        // the same blue in light mode and a lighter one in dark mode.
+        case .info: Color(UIAppColor.link)
         }
     }
 }
