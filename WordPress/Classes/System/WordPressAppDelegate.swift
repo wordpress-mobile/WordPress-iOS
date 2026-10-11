@@ -631,6 +631,8 @@ extension WordPressAppDelegate {
         }
     }
 
+    /// Tracks a logout when removing a self-hosted site leaves the user with no account or sites.
+    /// WordPress.com logouts are tracked by `AccountHelper.logOutDefaultWordPressComAccount()`.
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
@@ -791,7 +793,6 @@ extension WordPressAppDelegate {
             setupWordPressExtensions()
             AccountService.loadDefaultAccountCookies()
         } else {
-            trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             // Skip when the UI was never built (e.g. the account is removed during a
