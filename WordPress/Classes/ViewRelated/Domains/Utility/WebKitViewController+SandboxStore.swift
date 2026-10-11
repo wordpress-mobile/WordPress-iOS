@@ -14,14 +14,8 @@ extension WebKitViewController {
             // this code will only run if a store sandbox cookie has been set
             let webView = self.webView
             let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-            cookieStore.getAllCookies { cookies in
-
-                    var newCookies = cookies
-                    newCookies.append(storeSandboxCookie)
-
-                    cookieStore.setCookies(newCookies) {
-                        completion()
-                    }
+            cookieStore.setCookie(storeSandboxCookie) {
+                completion()
             }
         } else {
             completion()
