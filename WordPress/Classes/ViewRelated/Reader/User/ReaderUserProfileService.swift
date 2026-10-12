@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressKit
+import WordPressShared
 
 struct ReaderUserProfile: Equatable {
     let username: String
@@ -59,15 +60,9 @@ final class WordPressComReaderUserProfileService: ReaderUserProfileService {
 
         return ReaderUserProfile(
             username: username,
-            displayName: displayName?.nilIfEmpty ?? username,
+            displayName: displayName?.nonEmptyString() ?? username,
             avatarURL: avatarURL,
             siteURL: siteURL.flatMap(URL.init(string:))
         )
-    }
-}
-
-private extension String {
-    var nilIfEmpty: String? {
-        isEmpty ? nil : self
     }
 }
