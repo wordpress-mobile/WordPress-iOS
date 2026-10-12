@@ -93,7 +93,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - accountUUID: The account `dotcomAPI` belongs to. When set, results are
     ///       not written once another account becomes the default.
     ///
-    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi, accountUUID: String? = nil) {
+    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi, accountUUID: String?) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }

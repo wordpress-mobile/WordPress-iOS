@@ -27,7 +27,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         super.setUp()
 
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
-        mediator = NotificationSyncMediator(manager: contextManager, dotcomAPI: dotcomAPI)
+        mediator = NotificationSyncMediator(manager: contextManager, dotcomAPI: dotcomAPI, accountUUID: nil)
     }
 
     override func tearDown() {
