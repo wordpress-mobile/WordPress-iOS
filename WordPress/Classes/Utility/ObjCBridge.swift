@@ -6,8 +6,9 @@ import WordPressData
 ///
 /// FIXME: Remove when remaining Objective-C usages are gone.
 @objc public final class ObjCBridge: NSObject {
+    /// Asks the sign-in gate (`SignInGateCoordinator`) to show itself if the default account has no token.
     @objc public class func showSigninForWPComFixingAuthToken() {
-        WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+        NotificationCenter.default.post(name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken, object: nil)
     }
 
     @objc public class func showSupportTableViewController() {
