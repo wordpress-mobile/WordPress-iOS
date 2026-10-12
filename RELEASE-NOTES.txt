@@ -2,6 +2,7 @@
 -----
 * [*] Fix tab bar titles showing truncated and misaligned on iOS 26 [#26162]
 * [*] Reader: Show a name for every subscription, including sites the app cannot load [#26274]
+* [**] Fix an issue where the app could be used without a valid WordPress.com sign-in. The app now asks you to sign in again or log out. [#26130]
 * [*] Share Extension: Fix a crash when sharing a photo [#26251]
 * [*] Site Creation: Keep the design list's place when the iPad window is resized [#26224]
 * [*] iPad: Fix an open editor or Site Creation closing the first time the window is narrowed [#26223]
