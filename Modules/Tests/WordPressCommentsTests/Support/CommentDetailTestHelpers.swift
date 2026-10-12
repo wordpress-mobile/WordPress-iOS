@@ -8,11 +8,11 @@ func makeResolver() -> PostTitleResolver {
 }
 
 @MainActor
-func makeRouter(
+func makeDetailContext(
     service: FakeCommentsService = FakeCommentsService(),
     capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities()
-) -> CommentsDetailRouter {
-    CommentsDetailRouter(
+) -> CommentDetailContext {
+    CommentDetailContext(
         service: service,
         capabilities: capabilities,
         coordinator: CommentsModerationCoordinator(service: service),
@@ -60,7 +60,7 @@ func makeVM(
 }
 
 /// A resolver whose lookup has already landed with `canModerate`, standing in
-/// for the router's prefetch finishing before a detail screen opens.
+/// for the context's prefetch finishing before a detail screen opens.
 @MainActor
 func makeResolvedCapabilities(canModerate: Bool) async -> CommentsCapabilityResolver {
     let capabilities = FakeCommentsCapabilities()

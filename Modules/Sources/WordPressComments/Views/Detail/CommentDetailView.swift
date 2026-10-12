@@ -10,24 +10,24 @@ struct CommentDetailView: View {
     @StateObject private var viewModel: CommentDetailViewModel
     @ObservedObject private var titleResolver: PostTitleResolver
 
-    private let router: CommentsDetailRouter
+    private let context: CommentDetailContext
     @StateObject private var contentRenderer: ContentRenderer
 
     @Environment(\.dismiss) private var dismiss
 
-    init(commentID: Int64, seed: CommentListItem?, router: CommentsDetailRouter) {
-        self.router = router
-        _viewModel = StateObject(wrappedValue: router.makeViewModel(id: commentID, seed: seed))
-        titleResolver = router.titleResolver
-        _contentRenderer = StateObject(wrappedValue: ContentRenderer(router: router))
+    init(commentID: Int64, seed: CommentListItem?, context: CommentDetailContext) {
+        self.context = context
+        _viewModel = StateObject(wrappedValue: context.makeViewModel(id: commentID, seed: seed))
+        titleResolver = context.titleResolver
+        _contentRenderer = StateObject(wrappedValue: ContentRenderer(context: context))
     }
 
     @MainActor
     private final class ContentRenderer: ObservableObject {
         let renderer: any CommentContentRendering
 
-        init(router: CommentsDetailRouter) {
-            renderer = router.makeRenderer()
+        init(context: CommentDetailContext) {
+            renderer = context.makeRenderer()
         }
     }
 
@@ -60,7 +60,7 @@ struct CommentDetailView: View {
             if let parent = viewModel.parentPreview {
                 Divider()
                 NavigationLink {
-                    CommentDetailView(commentID: parent.id, seed: parent, router: router)
+                    CommentDetailView(commentID: parent.id, seed: parent, context: context)
                 } label: {
                     CommentParentStrip(parent: parent)
                 }
@@ -182,7 +182,7 @@ private struct PreviewNoticePresenter: NoticePresenting {
     let titleResolver = PostTitleResolver(fetcher: { _ in
         PostTitleResolver.FetchResult(titles: [10: "Reviewing the 2027 Upgrade"])
     })
-    let router = CommentsDetailRouter(
+    let context = CommentDetailContext(
         service: service,
         capabilities: PreviewCapabilities(),
         coordinator: coordinator,
@@ -192,7 +192,7 @@ private struct PreviewNoticePresenter: NoticePresenting {
         makeContentRenderer: { StubContentRenderer() }
     )
     return NavigationStack {
-        CommentDetailView(commentID: 1, seed: nil, router: router)
+        CommentDetailView(commentID: 1, seed: nil, context: context)
     }
 }
 #endif
