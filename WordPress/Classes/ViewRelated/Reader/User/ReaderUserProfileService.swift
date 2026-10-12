@@ -33,11 +33,7 @@ final class WordPressComReaderUserProfileService: ReaderUserProfileService {
             return nil
         }
 
-        let result = await wordPressComRestApi.perform(
-            .get,
-            URLString: "rest/v1.1/users/\(encodedHandle)",
-            parameters: ["meta": "site"]
-        )
+        let result = await wordPressComRestApi.perform(.get, URLString: "rest/v1.1/users/\(encodedHandle)")
         guard case .success(let response) = result else {
             return nil
         }
