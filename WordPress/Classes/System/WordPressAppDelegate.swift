@@ -175,6 +175,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func showInitialUI(in windowScene: UIWindowScene) {
         if hasConfiguredInitialUI {
             window?.windowScene = windowScene
+            // Without this, the overlaying window (which can show the sign-in gate) stays on the disconnected scene.
+            windowManager.reattachOverlayingWindow(to: windowScene)
             window?.makeKeyAndVisible()
             return
         }
@@ -304,6 +306,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             isInitialSceneConnect = false
             return
         }
+
+        // Catches a token cleared while the app was suspended, without waiting for a request to fail.
+        signInGate?.evaluate(source: .foreground)
 
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
@@ -545,6 +550,10 @@ extension WordPressAppDelegate {
 
     func presentDefaultAccountPrimarySite(from navigationController: UINavigationController) {
         self.authManager?.presentDefaultAccountPrimarySite(from: navigationController)
+    }
+
+    var signInGate: SignInGateCoordinator? {
+        authManager?.signInGate
     }
 
     func present(selfHostedSite blog: Blog, from navigationController: UINavigationController) {
