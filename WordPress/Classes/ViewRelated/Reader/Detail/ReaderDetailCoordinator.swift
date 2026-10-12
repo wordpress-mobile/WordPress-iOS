@@ -621,13 +621,11 @@ class ReaderDetailCoordinator {
             permaLinkURL?.isHostAndPathEqual(to: url) == true || ReaderWebView.baseURL.isHostAndPathEqual(to: url)
         if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment, isInDocumentAnchor {
             view?.scroll(to: hash)
-        } else if let mention = findMention(matching: url) {
+        } else if let mention = findMention(matching: url),
+            let profile = mentionProfiles[Self.normalizedMentionHandle(mention.handle)]
+        {
             WPAnalytics.trackReader(.readerArticleLinkTapped)
-            if let profile = mentionProfiles[Self.normalizedMentionHandle(mention.handle)] {
-                presentMentionProfile(profile)
-            } else {
-                presentWebViewController(url)
-            }
+            presentMentionProfile(profile)
         } else if let (gallery, index) = findGallery(containing: url) {
             presentGallery(gallery, startingAt: index)
         } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg")
