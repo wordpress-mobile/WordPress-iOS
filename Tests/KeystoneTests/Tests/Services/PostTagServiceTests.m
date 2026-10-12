@@ -7,6 +7,12 @@
 @import WordPressKit;
 @import OCMock;
 
+@interface PostTagService (RemoteSelection)
+
+- (nullable id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog;
+
+@end
+
 @interface PostTagServiceForStubbing : PostTagService
 
 @property (nonatomic, strong) TaxonomyServiceRemoteREST *remoteForStubbing;
@@ -114,6 +120,36 @@
                                 blog:self.blog
                              success:^(NSArray<PostTag *> * _Nonnull __unused tags) {}
                              failure:^(NSError * _Nonnull __unused error) {}];
+}
+
+#pragma mark - Remote selection
+
+- (void)testRemoteForDotComBlogWithTokenUsesCoreREST
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:@"token" context:self.manager.mainContext];
+    PostTagService *service = [[PostTagService alloc] initWithManagedObjectContext:self.manager.mainContext];
+    XCTAssertTrue([[service remoteForBlog:blog] isKindOfClass:[TaxonomyServiceRemoteCoreREST class]]);
+}
+
+- (void)testNoRemoteForDotComBlogWithoutToken
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:nil context:self.manager.mainContext];
+    PostTagService *service = [[PostTagService alloc] initWithManagedObjectContext:self.manager.mainContext];
+    XCTAssertNil([service remoteForBlog:blog]);
+}
+
+- (void)testRemoteForJetpackBlogWithoutTokenUsesStoredXMLRPCCredentials
+{
+    Blog *blog = [RemoteSelectionBlogFixture jetpackBlogWithAuthToken:nil xmlrpcPassword:@"password" context:self.manager.mainContext];
+    PostTagService *service = [[PostTagService alloc] initWithManagedObjectContext:self.manager.mainContext];
+    XCTAssertTrue([[service remoteForBlog:blog] isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]);
+}
+
+- (void)testRemoteForSelfHostedBlogIsUnaffected
+{
+    Blog *blog = [RemoteSelectionBlogFixture selfHostedBlogWithContext:self.manager.mainContext];
+    PostTagService *service = [[PostTagService alloc] initWithManagedObjectContext:self.manager.mainContext];
+    XCTAssertTrue([[service remoteForBlog:blog] isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]);
 }
 
 @end
