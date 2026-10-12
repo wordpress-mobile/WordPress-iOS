@@ -20,18 +20,32 @@ import WordPressData
 @MainActor
 enum CommentsRouting {
     static func makeViewController(for blog: Blog) -> UIViewController? {
-        guard FeatureFlag.commentsV2.enabled,
-            let site = try? WordPressSite(blog: blog),
-            case .selfHosted = site.flavor
-        else {
-            return nil
-        }
-        let client = WordPressClientFactory.shared.instance(for: site)
+        guard let client = makeClient(for: blog) else { return nil }
         return CommentsHostingController.make(
             client: client,
             makeContentRenderer: { CommentsWebContentRendererAdapter() },
             tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
             noticePresenter: NoticePresenterAdapter()
         )
+    }
+
+    static func makeView(for blog: Blog) -> CommentsView? {
+        guard let client = makeClient(for: blog) else { return nil }
+        return CommentsView(
+            client: client,
+            makeContentRenderer: { CommentsWebContentRendererAdapter() },
+            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
+            noticePresenter: NoticePresenterAdapter()
+        )
+    }
+
+    private static func makeClient(for blog: Blog) -> WordPressClient? {
+        guard FeatureFlag.commentsV2.enabled,
+            let site = try? WordPressSite(blog: blog),
+            case .selfHosted = site.flavor
+        else {
+            return nil
+        }
+        return WordPressClientFactory.shared.instance(for: site)
     }
 }

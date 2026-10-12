@@ -1,20 +1,14 @@
-import SwiftUI
 import UIKit
 
-/// Owns the shared detail dependencies and pushes comment detail screens onto
-/// the navigation stack of `host`, the comments list controller.
+/// Shares dependencies across comment detail and parent destinations.
 @MainActor
 final class CommentsDetailRouter {
-    /// The list's hosting controller; detail screens push onto its navigation
-    /// controller. Weak: the controller retains this router through the tab view.
-    weak var host: UIViewController?
-
     private let service: any CommentsServiceProtocol
     /// Shared by every detail view model, so the capability resolves once
     /// while the list loads and later screens read it synchronously.
     private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
-    private let titleResolver: PostTitleResolver
+    let titleResolver: PostTitleResolver
     private let tracker: (any CommentsTracker)?
     private let noticePresenter: any NoticePresenting
     private let makeContentRenderer: @MainActor () -> any CommentContentRendering
@@ -38,11 +32,9 @@ final class CommentsDetailRouter {
         self.capabilities.prefetch()
     }
 
-    /// Builds the detail view model and screen for `id` (seeded from the list
-    /// row when available) and pushes it onto the shared navigation stack.
-    func open(id: Int64, seed: CommentListItem?) {
+    func makeViewModel(id: Int64, seed: CommentListItem?) -> CommentDetailViewModel {
         capabilities.prefetch()
-        let viewModel = CommentDetailViewModel(
+        return CommentDetailViewModel(
             commentID: id,
             seed: seed,
             service: service,
@@ -52,18 +44,13 @@ final class CommentsDetailRouter {
             tracker: tracker,
             noticePresenter: noticePresenter
         )
+    }
+
+    func makeRenderer() -> any CommentContentRendering {
         let renderer = makeContentRenderer()
         renderer.onLinkTapped = { url in
             UIApplication.shared.open(url)
         }
-        let detail = CommentDetailView(
-            viewModel: viewModel,
-            titleResolver: titleResolver,
-            renderer: renderer,
-            openComment: { [weak self] id, seed in self?.open(id: id, seed: seed) }
-        )
-        let controller = UIHostingController(rootView: detail)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        host?.navigationController?.pushViewController(controller, animated: true)
+        return renderer
     }
 }

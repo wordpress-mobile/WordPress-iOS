@@ -266,12 +266,7 @@ extension BlogDetailsViewController {
 
     public func showComments(from source: BlogDetailsNavigationSource) {
         if let v2 = CommentsRouting.makeViewController(for: blog) {
-            let properties: [String: Any] = [
-                WPAppAnalyticsKeyTapSource: source.string,
-                WPAppAnalyticsKeyTabSource: "site_menu",
-                "is_v2": "1"
-            ]
-            WPAppAnalytics.track(.openedComments, properties: properties, blog: blog)
+            trackCommentsV2Opened(from: source)
             presentationDelegate?.presentBlogDetailsViewController(v2)
             return
         }
@@ -305,6 +300,15 @@ extension BlogDetailsViewController {
         } else {
             presentationDelegate?.presentBlogDetailsViewController(commentsVC)
         }
+    }
+
+    func trackCommentsV2Opened(from source: BlogDetailsNavigationSource) {
+        let properties: [String: Any] = [
+            WPAppAnalyticsKeyTapSource: source.string,
+            WPAppAnalyticsKeyTabSource: "site_menu",
+            "is_v2": "1"
+        ]
+        WPAppAnalytics.track(.openedComments, properties: properties, blog: blog)
     }
 
     public func showPlugins() {
