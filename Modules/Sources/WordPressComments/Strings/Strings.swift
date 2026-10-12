@@ -255,6 +255,12 @@ enum Strings {
         comment: "Button label to send a new reply"
     )
 
+    static let composerSending = NSLocalizedString(
+        "commentComposer.accessibility.sending",
+        value: "Sending reply",
+        comment: "VoiceOver announcement made when a reply starts sending"
+    )
+
     static let composerCancel = NSLocalizedString(
         "commentComposer.action.cancel",
         value: "Cancel",

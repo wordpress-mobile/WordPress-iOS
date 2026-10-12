@@ -26,6 +26,12 @@ struct CommentComposerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarContent }
             .onAppear { editorFocused = true }
+            .onChange(of: viewModel.isSending) { _, isSending in
+                if isSending { announce(Strings.composerSending) }
+            }
+            .onChange(of: viewModel.errorMessage) { _, message in
+                if let message { announce(message) }
+            }
         }
         .interactiveDismissDisabled(viewModel.isDirty || viewModel.isSending)
         .onDisappear { viewModel.deleteDraftIfBlank() }
@@ -58,6 +64,7 @@ struct CommentComposerView: View {
         TextEditor(text: $viewModel.text)
             .focused($editorFocused)
             .disabled(viewModel.isSending)
+            .accessibilityLabel(viewModel.title)
             .padding(.horizontal, 12)
             .overlay(alignment: .topLeading) {
                 if viewModel.text.isEmpty {
@@ -66,6 +73,7 @@ struct CommentComposerView: View {
                         .padding(.horizontal, 16)
                         .padding(.top, 8)
                         .allowsHitTesting(false)
+                        .accessibilityHidden(true)
                 }
             }
     }
@@ -90,20 +98,34 @@ struct CommentComposerView: View {
                 }
         }
         ToolbarItem(placement: .confirmationAction) {
-            if viewModel.isSending {
-                ProgressView()
-                    .accessibilityLabel(viewModel.sendButtonTitle)
-            } else {
-                Button(viewModel.sendButtonTitle) {
-                    Task {
-                        if let outcome = await viewModel.send() {
-                            onFinished(outcome)
-                        }
+            // One button for both states: swapping it for a bare spinner
+            // removes the element VoiceOver is focused on.
+            Button {
+                Task {
+                    if let outcome = await viewModel.send() {
+                        onFinished(outcome)
                     }
                 }
-                .disabled(!viewModel.canSend)
+            } label: {
+                Text(viewModel.sendButtonTitle)
+                    .opacity(viewModel.isSending ? 0 : 1)
+                    .overlay {
+                        if viewModel.isSending {
+                            ProgressView()
+                        }
+                    }
             }
+            .accessibilityLabel(viewModel.sendButtonTitle)
+            .disabled(!viewModel.canSend || viewModel.isSending)
         }
+    }
+
+    /// High priority, so VoiceOver's own speech after the button is activated
+    /// can't talk over it.
+    private func announce(_ message: String) {
+        var announcement = AttributedString(message)
+        announcement.accessibilitySpeechAnnouncementPriority = .high
+        AccessibilityNotification.Announcement(announcement).post()
     }
 
     /// A dirty reply offers to keep or discard its draft.
