@@ -29,9 +29,6 @@ struct CommentComposerView: View {
         }
         .interactiveDismissDisabled(viewModel.isDirty || viewModel.isSending)
         .onDisappear { viewModel.deleteDraftIfBlank() }
-        .confirmationDialog("", isPresented: $isCancelConfirmationPresented) {
-            cancelConfirmationActions
-        }
     }
 
     @ViewBuilder
@@ -84,8 +81,13 @@ struct CommentComposerView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
+            // Attached to the button so the iOS 26+ popover anchors to Cancel
+            // instead of the sheet's center.
             Button(Strings.composerCancel) { handleCancel() }
                 .disabled(viewModel.isSending)
+                .confirmationDialog("", isPresented: $isCancelConfirmationPresented) {
+                    cancelConfirmationActions
+                }
         }
         ToolbarItem(placement: .confirmationAction) {
             if viewModel.isSending {
