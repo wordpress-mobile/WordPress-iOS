@@ -103,12 +103,23 @@ public enum ReaderPostParser {
             !href.isEmpty,
             let url = URL(string: href),
             let scheme = url.scheme?.lowercased(),
-            scheme == "http" || scheme == "https"
+            scheme == "http" || scheme == "https",
+            isMentionPath(url.pathComponents, for: handle)
         else {
             return nil
         }
 
         return Mention(handle: handle, url: url)
+    }
+
+    /// `data-username` is not tied to the href by the markup, so an anchor could show one user and name another.
+    /// Requiring the href to point at the mention page of the same user keeps the native profile sheet consistent
+    /// with the page the web view fallback would open.
+    private static func isMentionPath(_ components: [String], for handle: String) -> Bool {
+        guard components.count == 3, components[0] == "/", components[1] == "mentions" else {
+            return false
+        }
+        return components[2].caseInsensitiveCompare(handle) == .orderedSame
     }
 
     private static func parseImages(from container: Element) -> [GalleryImage] {
