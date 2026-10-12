@@ -123,7 +123,12 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                 return
             }
 
-            self.deleteLocalMissingNotes(from: remoteHashes) {
+            self.deleteLocalMissingNotes(from: remoteHashes) { didDelete in
+                // Another account is the default now, so this sync has nothing left to write.
+                guard didDelete else {
+                    completion?(nil, false)
+                    return
+                }
 
                 self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
                     guard outdatedNoteIds.isEmpty == false else {
@@ -453,14 +458,20 @@ private extension NotificationSyncMediator {
     /// Deletes the collection of local notifications that cannot be found in a given collection of
     /// remote hashes.
     ///
-    /// - Parameter remoteHashes: Collection of remoteNotifications.
+    /// - Parameters:
+    ///     - remoteHashes: Collection of remoteNotifications.
+    ///     - completion: Callback to be executed on completion, with whether the
+    ///       delete ran. It does not once another account is the default.
     ///
-    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
+    func deleteLocalMissingNotes(
+        from remoteHashes: [RemoteNotification],
+        completion: @escaping ((_ didDelete: Bool) -> Void)
+    ) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager, accountUUID] operationCompletion in
             contextManager.performAndSave({ context in
                 // A replaced account's hashes would delete the new account's notes.
                 guard Self.isDefaultAccount(accountUUID) else {
-                    return
+                    return false
                 }
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
@@ -468,10 +479,11 @@ private extension NotificationSyncMediator {
                 for orphan in context.allObjects(ofType: Notification.self, matching: predicate) {
                     context.deleteObject(orphan)
                 }
-            }, completion: {
+                return true
+            }, completion: { didDelete in
                 operationCompletion()
                 DispatchQueue.main.async {
-                    completion()
+                    completion(didDelete)
                 }
             }, on: .global())
         })

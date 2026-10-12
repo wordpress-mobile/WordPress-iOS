@@ -77,6 +77,32 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         XCTAssertTrue(result.hasNewData)
     }
 
+    /// Verifies that syncing a single note bound to an account that is no longer the default does not write it.
+    /// Unlike `sync`, `syncNote` reaches the write without going through the delete first.
+    ///
+    func testSyncNoteDoesNotWriteOnceItsAccountIsReplaced() {
+        let previousDefault = UserSettings.defaultDotComUUID
+        UserSettings.defaultDotComUUID = "account-B"
+        defer { UserSettings.defaultDotComUUID = previousDefault }
+
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
+        HTTPStubs.stubRequest(forEndpoint: "notifications/", withFileAtPath: stubPath)
+        let mediator = NotificationSyncMediator(
+            manager: contextManager,
+            dotcomAPI: dotcomAPI,
+            accountUUID: "account-A"
+        )!
+
+        let expect = expectation(description: "Sync")
+        mediator.syncNote(with: "2674124016") { error, note in
+            XCTAssertNil(error)
+            XCTAssertNil(note)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+        XCTAssertEqual(mainContext.countObjects(ofType: Notification.self), 0)
+    }
+
     private func sync(boundTo accountUUID: String, defaultAccount: String) -> (noteCount: Int, hasNewData: Bool) {
         let previousDefault = UserSettings.defaultDotComUUID
         UserSettings.defaultDotComUUID = defaultAccount
@@ -92,7 +118,8 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         let expect = expectation(description: "Sync")
         var hasNewData = false
-        mediator.sync { _, newData in
+        mediator.sync { error, newData in
+            XCTAssertNil(error)
             hasNewData = newData
             expect.fulfill()
         }
