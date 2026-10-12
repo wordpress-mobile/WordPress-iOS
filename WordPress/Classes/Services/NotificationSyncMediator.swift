@@ -430,19 +430,18 @@ private extension NotificationSyncMediator {
         completion: ((_ didWrite: Bool) -> Void)? = nil
     ) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager, accountUUID] operationCompletion in
-            var didWrite = false
             contextManager.performAndSave({ context in
                 guard Self.isDefaultAccount(accountUUID) else {
-                    return
+                    return false
                 }
-                didWrite = true
                 for remoteNote in remoteNotes {
                     let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
                     let localNote = context.firstObject(ofType: Notification.self, matching: predicate) ?? context.insertNewObject(ofType: Notification.self)
 
                     localNote.update(with: remoteNote)
                 }
-            }, completion: {
+                return true
+            }, completion: { didWrite in
                 operationCompletion()
                 DispatchQueue.main.async {
                     completion?(didWrite)
