@@ -263,7 +263,7 @@ struct CommentDetailViewModelTests {
         let contentBeforeEvent = vm.content
         let headerBeforeEvent = vm.header
 
-        coordinator.events.send(.replyCreated(parentID: vm.commentID, replyStatus: .approved))
+        coordinator.events.send(.replyCreated(parentID: vm.commentID, reply: makeItem(id: 99)))
 
         #expect(vm.content == contentBeforeEvent)
         #expect(vm.header == headerBeforeEvent)
@@ -338,7 +338,7 @@ struct CommentDetailViewModelTests {
         // This screen's own comment just gained a reply: the cached count must
         // be bumped, or a parent that just went from 0 to 1 replies could be
         // trashed with no confirmation.
-        coordinator.events.send(.replyCreated(parentID: vm.commentID, replyStatus: .approved))
+        coordinator.events.send(.replyCreated(parentID: vm.commentID, reply: makeItem(id: 99)))
 
         #expect(vm.numberOfReplies == 1)
         #expect(vm.trashConfirmation == .withReplies)

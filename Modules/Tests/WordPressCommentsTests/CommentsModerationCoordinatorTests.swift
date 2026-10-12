@@ -275,7 +275,8 @@ struct CommentsModerationCoordinatorTests {
 
     @Test func replyEmitsReplyCreatedWithLandedStatus() async throws {
         let service = FakeCommentsService()
-        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        let reply = makeDetail(id: 99, status: .approved)
+        service.createReplyResult = .success(reply)
         let spy = SpyCommentsTracker()
         let coordinator = CommentsModerationCoordinator(service: service, tracker: spy)
         let recorder = EventRecorder(coordinator)
@@ -285,14 +286,15 @@ struct CommentsModerationCoordinatorTests {
 
         #expect(outcome.replyStatus == .approved)
         #expect(!outcome.alreadyPosted)
-        #expect(recorder.events == [.replyCreated(parentID: 1, replyStatus: .approved)])
+        #expect(recorder.events == [.replyCreated(parentID: 1, reply: CommentListItem(detail: reply))])
         #expect(spy.trackedEvents == [.repliedTo(commentID: 1, postID: 10)])
         #expect(!coordinator.isMutating(id: 1))
     }
 
     @Test func replyWithApproveParentInvokesSetStatus() async throws {
         let service = FakeCommentsService()
-        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        let reply = makeDetail(id: 99, status: .approved)
+        service.createReplyResult = .success(reply)
         service.setStatusResult = .success(makeDetail(id: 1, status: .approved))
         let spy = SpyCommentsTracker()
         let coordinator = CommentsModerationCoordinator(service: service, tracker: spy)
@@ -303,11 +305,11 @@ struct CommentsModerationCoordinatorTests {
 
         #expect(outcome.replyStatus == .approved)
         // The approve's statusChanged lands first so loaded list tabs update
-        // the parent row in place before replyCreated marks them stale.
+        // the parent row in place before replyCreated inserts the reply row.
         #expect(
             recorder.events == [
                 .statusChanged(id: 1, to: .approved),
-                .replyCreated(parentID: 1, replyStatus: .approved)
+                .replyCreated(parentID: 1, reply: CommentListItem(detail: reply))
             ]
         )
         // Regression test: a naive nested `perform(.approve, on: parent)` call
@@ -345,14 +347,15 @@ struct CommentsModerationCoordinatorTests {
 
         #expect(outcome.alreadyPosted)
         #expect(outcome.replyStatus == .approved)
-        #expect(recorder.events.contains(.replyCreated(parentID: 1, replyStatus: .approved)))
-        #expect(recorder.events.contains(.statusChanged(id: 1, to: .approved)))
+        // No reply row came back, so only the parent approval is broadcast.
+        #expect(recorder.events == [.statusChanged(id: 1, to: .approved)])
         #expect(service.setStatusInvocations.map(\.status) == [.approved])
     }
 
     @Test func replyApproveFailureStillSucceedsWithoutStatusEvent() async throws {
         let service = FakeCommentsService()
-        service.createReplyResult = .success(makeDetail(id: 99, status: .approved))
+        let reply = makeDetail(id: 99, status: .approved)
+        service.createReplyResult = .success(reply)
         service.setStatusResult = .failure(FakeServiceError())
         let coordinator = CommentsModerationCoordinator(service: service)
         let recorder = EventRecorder(coordinator)
@@ -365,7 +368,7 @@ struct CommentsModerationCoordinatorTests {
         let outcome = try await coordinator.reply(to: parent, content: "hi")
 
         #expect(outcome.replyStatus == .approved)
-        #expect(recorder.events == [.replyCreated(parentID: 1, replyStatus: .approved)])
+        #expect(recorder.events == [.replyCreated(parentID: 1, reply: CommentListItem(detail: reply))])
     }
 
     @Test func toolbarActionDuringReplyChainIsDropped() async throws {
@@ -383,11 +386,12 @@ struct CommentsModerationCoordinatorTests {
         #expect(recorder.events.isEmpty)
         #expect(coordinator.isMutating(id: 1))
 
-        service.resolveCreateReply(callIndex: 0, with: makeDetail(id: 99, status: .approved))
+        let reply = makeDetail(id: 99, status: .approved)
+        service.resolveCreateReply(callIndex: 0, with: reply)
         let outcome = try await replyOutcome
 
         #expect(outcome.replyStatus == .approved)
-        #expect(recorder.events == [.replyCreated(parentID: 1, replyStatus: .approved)])
+        #expect(recorder.events == [.replyCreated(parentID: 1, reply: CommentListItem(detail: reply))])
     }
 
     @Test func replyAwaitsPendingMutationOnParent() async throws {

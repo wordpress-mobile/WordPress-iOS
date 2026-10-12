@@ -113,15 +113,17 @@ final class CommentsModerationCoordinator {
             }
             // Reply is moderator-gated, so core auto-approves our replies; a
             // duplicate (unknown landed status) assumes approved on the same
-            // basis. A plugin forcing moderation is corrected by the next
-            // list refetch (the event only marks tabs stale).
+            // basis. A duplicate also carries no comment to insert, so no
+            // event is sent: the loaded tabs pick the reply up on their next
+            // refresh.
             //
-            // Emitted after the approve so its statusChanged lands first: a
-            // loaded list tab then updates the parent row in place with
-            // nothing in flight, instead of invalidating the page-one fetch
-            // that replyCreated's stale mark would already have started.
+            // Emitted after the approve so its statusChanged lands first and
+            // loaded list tabs correct the parent row before inserting the
+            // reply row.
+            if let created {
+                self.events.send(.replyCreated(parentID: parent.id, reply: CommentListItem(detail: created)))
+            }
             let replyStatus = created?.status ?? .approved
-            self.events.send(.replyCreated(parentID: parent.id, replyStatus: replyStatus))
             return ReplyOutcome(replyStatus: replyStatus, alreadyPosted: created == nil)
         }
     }

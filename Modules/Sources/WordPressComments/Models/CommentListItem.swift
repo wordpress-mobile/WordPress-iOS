@@ -50,8 +50,8 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
         status = Status(comment.status)
     }
 
-    /// Row-shaped projection of a fetched detail (used for the parent preview
-    /// strip), so the snippet rule stays in one place.
+    /// Row-shaped projection of a fetched detail (parent preview strip,
+    /// created reply rows), so the snippet rule stays in one place.
     init(detail: CommentDetail) {
         self.init(
             id: detail.id,

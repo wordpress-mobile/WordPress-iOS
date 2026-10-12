@@ -6,11 +6,9 @@ import Foundation
 enum CommentChangeEvent: Equatable, Sendable {
     case statusChanged(id: Int64, to: CommentListItem.Status)
     case deleted(id: Int64)
-    /// A reply was created under `parentID`. Carries the reply's own status
-    /// (not the parent's) so loaded tabs can decide whether it belongs to
-    /// them; stales rather than inserts because a paged list cannot know the
-    /// reply's correct position.
-    case replyCreated(parentID: Int64, replyStatus: CommentListItem.Status)
+    /// A reply was created under `parentID`. Loaded tabs matching the reply's
+    /// own status (not the parent's) insert the row at the top.
+    case replyCreated(parentID: Int64, reply: CommentListItem)
 }
 
 extension CommentChangeEvent {

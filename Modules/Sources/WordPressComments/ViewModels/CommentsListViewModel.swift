@@ -136,17 +136,24 @@ final class CommentsListViewModel: ObservableObject {
             }
         case .deleted(let id):
             removeItem(id: id)
-        case .replyCreated(_, let replyStatus):
-            guard hasLoaded, filter.matches(replyStatus) else { return }
-            // A new reply belongs at some position in the tabs matching its
-            // status; a paged list cannot insert at the right position, so
-            // mark those tabs stale (same reasoning as restore above). The
-            // reload waits for the next appearance: a reply is only sent from
-            // the detail screen, so no list tab is visible, and reloading
-            // right away would cost one fetch per reply while the list is
-            // hidden instead of one on return.
-            markStale(reloadNow: false)
+        case .replyCreated(_, let reply):
+            guard hasLoaded, filter.matches(reply.status) else { return }
+            insertAtTop(reply)
         }
+    }
+
+    /// A just-created reply is the newest comment, so on a date-descending
+    /// page one it belongs at row 0, unlike a restored comment (see
+    /// `statusChanged` in `apply`) whose date is arbitrary. A comment posted
+    /// elsewhere meanwhile can shift it by a row; the next refresh corrects
+    /// that.
+    private func insertAtTop(_ item: CommentListItem) {
+        guard !seenIDs.contains(item.id) else { return }
+        items.insert(item, at: 0)
+        seenIDs.insert(item.id)
+        // A page-one fetch that predates the row would land without it.
+        invalidateInFlightFetches()
+        onItemsAppended?([item])
     }
 
     private func removeItem(id: Int64) {
@@ -159,20 +166,16 @@ final class CommentsListViewModel: ObservableObject {
         invalidateInFlightFetches()
     }
 
-    /// Marks the tab stale and, with `reloadNow`, reloads page one right away
-    /// so a visible tab doesn't wait for a tab switch; otherwise the reload
-    /// runs on the next appearance (`reloadIfStale`). Callers guard
-    /// `hasLoaded`. A reload already in flight keeps its state: its fetch is
-    /// invalidated below and refetches itself, and `onAppear` ignores the
-    /// extra kick.
-    private func markStale(reloadNow: Bool = true) {
+    /// Marks the tab stale and reloads page one right away so a visible tab
+    /// doesn't wait for a tab switch. Callers guard `hasLoaded`. A reload
+    /// already in flight keeps its state: its fetch is invalidated below and
+    /// refetches itself, and `onAppear` ignores the extra kick.
+    private func markStale() {
         if state == .loaded {
             state = .awaitingReload
         }
         invalidateInFlightFetches()
-        if reloadNow {
-            Task { await onAppear() }
-        }
+        Task { await onAppear() }
     }
 
     /// Bumps `generation` so any list fetch already in flight (which captured
