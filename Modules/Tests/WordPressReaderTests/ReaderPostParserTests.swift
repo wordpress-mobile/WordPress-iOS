@@ -342,6 +342,31 @@ struct ReaderPostParserTests {
         #expect(ReaderPostParser.parse(html).isEmpty)
     }
 
+    @Test func parseMentionRequiresHREFToMatchUsername() {
+        let html = """
+            <a href="https://example.wordpress.com/mentions/other-user/"
+               data-type="fragment-mention" data-username="shown-user">@shown-user</a>
+            <a href="https://example.wordpress.com/example-user/"
+               data-type="fragment-mention" data-username="example-user">@example-user</a>
+            <a href="https://example.wordpress.com/mentions/example-user/extra/"
+               data-type="fragment-mention" data-username="example-user">@example-user</a>
+            <a href="https://example.wordpress.com/mentions/Example-User"
+               data-type="fragment-mention" data-username="example-user">@example-user</a>
+            <a href="https://example.wordpress.com/mentions/caf%C3%A9/"
+               data-type="fragment-mention" data-username="café">@café</a>
+            """
+
+        let mentions = ReaderPostParser.parse(html)
+            .compactMap { element -> ReaderPostParser.Mention? in
+                guard case .mention(let mention) = element else {
+                    return nil
+                }
+                return mention
+            }
+
+        #expect(mentions.map(\.handle) == ["example-user", "café"])
+    }
+
     @Test func parseDuplicateMentionsAndMentionInsideGallery() {
         let html = """
             <a href="https://example.wordpress.com/mentions/person/"
