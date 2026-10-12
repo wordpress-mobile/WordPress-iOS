@@ -622,10 +622,10 @@ class ReaderDetailCoordinator {
         if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment, isInDocumentAnchor {
             view?.scroll(to: hash)
         } else if let mention = findMention(matching: url) {
+            WPAnalytics.trackReader(.readerArticleLinkTapped)
             if let profile = mentionProfiles[Self.normalizedMentionHandle(mention.handle)] {
                 presentMentionProfile(profile)
             } else {
-                WPAnalytics.trackReader(.readerArticleLinkTapped)
                 presentWebViewController(url)
             }
         } else if let (gallery, index) = findGallery(containing: url) {
