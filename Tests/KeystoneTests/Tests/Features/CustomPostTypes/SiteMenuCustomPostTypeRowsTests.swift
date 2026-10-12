@@ -9,12 +9,12 @@ import WordPressAPIInternal
 @MainActor
 @Suite("Site menu custom post type rows")
 struct SiteMenuCustomPostTypeRowsTests {
+    private let contextManager = ContextManager.forTesting()
     private let blog: Blog
     private let viewController: BlogDetailsViewController
 
     init() {
-        let contextManager = ContextManager.forTesting()
-        blog = BlogBuilder(contextManager.mainContext).build()
+        blog = BlogBuilder(contextManager.mainContext).with(isAdmin: true).build()
         viewController = BlogDetailsViewController(blog: blog)
     }
 
@@ -47,6 +47,7 @@ struct SiteMenuCustomPostTypeRowsTests {
 
         viewModel.configureTableViewData()
         let positionsWithoutCustomTypes = builtInRows.map(viewModel.indexPath(for:))
+        #expect(!positionsWithoutCustomTypes.contains(nil))
         let comments = try #require(viewModel.indexPath(for: .comments))
         #expect(viewModel.tableView(tableView, numberOfRowsInSection: comments.section) == comments.row + 1)
 
