@@ -7,56 +7,29 @@ import WordPressUI
 import Support
 import SwiftUI
 
-private struct Section {
-    let title: String?
-    let rows: [Row]
-    let footerTitle: String?
-    let category: SectionCategory
+private typealias Row = BlogDetailsTableViewModel.Row
 
-    init(
-        title: String? = nil,
-        rows: [Row],
-        footerTitle: String? = nil,
-        category: SectionCategory
-    ) {
-        self.title = title
-        self.rows = rows
-        self.footerTitle = footerTitle
-        self.category = category
+extension BlogDetailsTableViewModel {
+    struct Section {
+        var title: String?
+        let rows: [Row]
+        var footerTitle: String?
+        let category: SectionCategory
     }
 }
 
-@objc public final class BlogDetailsTableViewModel: NSObject {
+@MainActor
+@objc public final class BlogDetailsTableViewModel: NSObject, ObservableObject {
     var blog: Blog
-    private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
-    private var sections: [Section] = []
-
-    var restorableSelectedRow: BlogDetailsRowKind? {
-        didSet {
-            if let row = restorableSelectedRow,
-                let section = sections.first(where: { $0.rows.contains { $0.kind == row } }),
-                [.jetpackBrandingCard, .domainCredit].contains(section.category)
-            {
-                restorableSelectedRow = nil
-            }
-        }
-    }
-
-    var restorableSelectedIndexPath: IndexPath? {
-        restorableSelectedRow.flatMap(indexPath(for:))
-    }
+    @Published private(set) var sections: [Section] = []
+    @Published private(set) var selectedRowID: Row.ID?
 
     var gravatarIcon: UIImage? {
-        didSet {
-            if let indexPath = self.indexPath(for: .me) {
-                tableView?.reloadRows(at: [indexPath], with: .automatic)
-            }
-        }
+        didSet { configureTableViewData() }
     }
 
     var hasCustomPostTypes = false
-    var useSiteMenuStyle = false
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
         self.blog = blog
@@ -64,41 +37,9 @@ private struct Section {
         super.init()
     }
 
-    @objc public func configure(tableView: UITableView) {
-        self.tableView = tableView
-
-        // Register standard cells
-        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.standard)
-        tableView.register(WPTableViewCellValue1.self, forCellReuseIdentifier: CellIdentifiers.plan)
-        tableView.register(WPTableViewCellValue1.self, forCellReuseIdentifier: CellIdentifiers.settings)
-        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.removeSite)
-
-        // Register header/footer views
-        tableView.register(
-            BlogDetailsSectionFooterView.self,
-            forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionFooter
-        )
-
-        // Register special card cells
-        tableView.register(MigrationSuccessCell.self, forCellReuseIdentifier: CellIdentifiers.migrationSuccess)
-        tableView.register(
-            JetpackBrandingMenuCardCell.self,
-            forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard
-        )
-        tableView.register(
-            JetpackRemoteInstallTableViewCell.self,
-            forCellReuseIdentifier: CellIdentifiers.jetpackInstall
-        )
-        tableView.register(ExtensiveLoggingCell.self, forCellReuseIdentifier: CellIdentifiers.extensiveLogging)
-        tableView.register(XMLRPCDisabledCell.self, forCellReuseIdentifier: CellIdentifiers.xmlrpcDisabled)
-
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
-
     @objc public func viewWillAppear() {
         if !isSplitViewDisplayed {
-            restorableSelectedRow = nil
+            selectedRowID = nil
         }
     }
 
@@ -165,7 +106,7 @@ private struct Section {
         sections = newSections
     }
 
-    private var isSplitViewDisplayed: Bool {
+    var isSplitViewDisplayed: Bool {
         viewController?.isSidebarModeEnabled ?? false
     }
 
@@ -179,25 +120,15 @@ private struct Section {
         return .stats
     }
 
-    func optimumScrollPosition(for indexPath: IndexPath) -> UITableView.ScrollPosition {
-        guard let tableView, !isSplitViewDisplayed else { return .none }
-
-        let cellRect = tableView.rectForRow(at: indexPath)
-        return CGRectContainsRect(tableView.bounds, cellRect) ? .none : .middle
+    func clearSelection() {
+        selectedRowID = nil
     }
 
-    @objc public func reloadTableViewPreservingSelection() {
-        guard let tableView else { return }
-
-        let previousSelection = tableView.indexPathForSelectedRow
-        tableView.reloadData()
-
-        if isSplitViewDisplayed, let indexPath = restorableSelectedIndexPath {
-            tableView.selectRow(at: indexPath, animated: false, scrollPosition: optimumScrollPosition(for: indexPath))
-
-            if previousSelection != indexPath {
-                sections[indexPath.section].rows[indexPath.row].action?([:])
-            }
+    func select(_ row: Row) {
+        guard !isSplitViewDisplayed || selectedRowID != row.id else { return }
+        row.action?([:])
+        if row.showsSelectionState {
+            selectedRowID = row.id
         }
     }
 
@@ -205,13 +136,8 @@ private struct Section {
         guard isSplitViewDisplayed else { return }
 
         let row = defaultSubsection()
-        self.restorableSelectedRow = row
 
         self.showDetailView(for: row)
-    }
-
-    @objc func numberOfSections() -> Int {
-        sections.count
     }
 
     func showDetailViewForMe(userInfo: [String: Any]) -> MeViewController {
@@ -219,333 +145,53 @@ private struct Section {
             wpAssertionFailure("The view controller should not be nil")
             return MeViewController()
         }
-        restorableSelectedRow = .me
+        selectedRowID = .row(.me)
         return viewController.showMe()
     }
 
     func showDetailView(for row: BlogDetailsRowKind, userInfo: [String: Any] = [:]) {
-        for (sectionIndex, section) in sections.enumerated() {
-            for (rowIndex, rowItem) in section.rows.enumerated() where rowItem.kind == row {
-                let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
-
-                if rowItem.showsSelectionState {
-                    restorableSelectedRow = row
-
-                    tableView?
-                        .selectRow(
-                            at: indexPath,
-                            animated: false,
-                            scrollPosition: optimumScrollPosition(for: indexPath)
-                        )
-                }
-
-                // Call the row's action
-                rowItem.action?(userInfo)
-                return
-            }
+        guard let item = sections.lazy.flatMap(\.rows).first(where: { $0.kind == row }) else { return }
+        if item.showsSelectionState {
+            selectedRowID = item.id
         }
+        item.action?(userInfo)
     }
 
-    func indexPath(for row: BlogDetailsRowKind) -> IndexPath? {
-        for (sectionIndex, section) in sections.enumerated() {
-            for (rowIndex, rowItem) in section.rows.enumerated() where rowItem.kind == row {
-                return IndexPath(row: rowIndex, section: sectionIndex)
-            }
-        }
-        return nil
-    }
-}
-
-extension BlogDetailsTableViewModel: UITableViewDataSource {
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard section < sections.count else { return 0 }
-
-        switch sections[section].category {
-        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging, .xmlrpcDisabled:
-            // The "card" sections do not set the `rows` property. It's hard-coded to show specific types of cards.
-            wpAssert(sections[section].rows.isEmpty)
-            return 1
-        default:
-            return sections[section].rows.count
-        }
-    }
-
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard indexPath.section < sections.count else {
-            return UITableViewCell()
-        }
-
-        let section = sections[indexPath.section]
-        let cell: UITableViewCell
-
-        switch section.category {
-        case .jetpackInstallCard:
-            cell = configureJetpackInstallCell(tableView: tableView)
-        case .migrationSuccess:
-            cell = configureMigrationSuccessCell(tableView: tableView)
-        case .jetpackBrandingCard:
-            cell = configureJetpackBrandingCell(tableView: tableView)
-        case .extensiveLogging:
-            cell = configureExtensiveLoggingCell(tableView: tableView)
-        case .xmlrpcDisabled:
-            cell = configureXMLRPCDisabledCell(tableView: tableView)
-        default:
-            if indexPath.row < section.rows.count {
-                let row = section.rows[indexPath.row]
-                cell = configureStandardCell(tableView: tableView, indexPath: indexPath, row: row)
-            } else {
-                cell = UITableViewCell()
-            }
-        }
-
-        if useSiteMenuStyle {
-            configureForDisplayingOnSiteMenu(cell)
-        }
-
-        return cell
-    }
-
-    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard section < sections.count else { return nil }
-        return sections[section].title
-    }
-
-    private func configureForDisplayingOnSiteMenu(_ cell: UITableViewCell) {
-        cell.textLabel?.font = .preferredFont(forTextStyle: .body)
+    func makeCard(for category: SectionCategory) -> UITableViewCell {
+        let cell = makeConfiguredCard(for: category)
         cell.backgroundColor = .clear
-        cell.selectedBackgroundView = {
-            let backgroundView = UIView()
-            backgroundView.backgroundColor = .secondarySystemFill
-            backgroundView.layer.cornerRadius = DesignConstants.radius(.large)
-            backgroundView.layer.cornerCurve = .continuous
-
-            let container = UIView()
-            container.addSubview(backgroundView)
-            backgroundView.pinEdges(insets: UIEdgeInsets(.horizontal, 16))
-            return container
-        }()
-        cell.focusStyle = .custom
-        cell.focusEffect = nil
+        return cell
     }
-}
 
-extension BlogDetailsTableViewModel: UITableViewDelegate {
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section < sections.count else { return }
-        let section = sections[indexPath.section]
-
-        guard indexPath.row < section.rows.count else { return }
-        let row = section.rows[indexPath.row]
-
-        row.action?([:])
-
-        if row.showsSelectionState {
-            restorableSelectedRow = row.kind
-        } else {
-            if !isSplitViewDisplayed {
-                tableView.deselectRow(at: indexPath, animated: true)
-            } else if let indexPath = restorableSelectedIndexPath {
-                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+    private func makeConfiguredCard(for category: SectionCategory) -> UITableViewCell {
+        guard let viewController else { return UITableViewCell() }
+        switch category {
+        case .jetpackInstallCard:
+            let cell = JetpackRemoteInstallTableViewCell()
+            cell.configure(blog: blog, viewController: viewController)
+            return cell
+        case .migrationSuccess:
+            let cell = MigrationSuccessCell()
+            if isSplitViewDisplayed {
+                cell.configureForSidebarMode()
             }
-        }
-    }
-
-    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let isNewSelection = (indexPath != tableView.indexPathForSelectedRow)
-        return isNewSelection ? indexPath : nil
-    }
-
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard section < sections.count else { return 0 }
-        let detailSection = sections[section]
-        let isLastSection = section == sections.count - 1
-        let hasTitle = !(detailSection.footerTitle?.isEmpty ?? true)
-
-        if hasTitle {
-            return UITableView.automaticDimension
-        }
-        if isLastSection {
-            return 40.0
-        }
-        return 0
-    }
-
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section < sections.count else { return 0 }
-        let detailSection = sections[section]
-        let hasTitle = !(detailSection.title?.isEmpty ?? true)
-
-        if useSiteMenuStyle {
-            return hasTitle ? 48 : 0
-        }
-
-        return hasTitle ? 40.0 : 20.0
-    }
-
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard useSiteMenuStyle else { return nil }
-
-        guard let title = self.tableView(tableView, titleForHeaderInSection: section) else { return nil }
-
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.text = title
-
-        let headerView = UIView()
-        headerView.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
-            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8),
-            label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: 20)
-        ])
-        return headerView
-    }
-
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard section < sections.count,
-            let footerTitle = sections[section].footerTitle,
-            !footerTitle.isEmpty
-        else {
-            return nil
-        }
-
-        guard
-            let footerView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: CellIdentifiers.sectionFooterIdentifier
-            ) as? BlogDetailsSectionFooterView
-        else {
-            return nil
-        }
-
-        let shouldShowExtraSpacing = (section + 1 < sections.count) && (sections[section + 1].title != nil)
-        footerView.updateUI(title: footerTitle, shouldShowExtraSpacing: shouldShowExtraSpacing)
-        return footerView
-    }
-}
-
-private extension BlogDetailsTableViewModel {
-    func configureStandardCell(
-        tableView: UITableView,
-        indexPath: IndexPath,
-        row: Row
-    ) -> UITableViewCell {
-        let identifier =
-            switch row.kind {
-            case .removeSite:
-                CellIdentifiers.removeSite
-            case .jetpackSettings, .siteSettings, .domain:
-                CellIdentifiers.settings
-            default:
-                CellIdentifiers.standard
-            }
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-
-        cell.accessibilityHint = row.accessibilityHint
-        cell.accessoryView = nil
-        cell.textLabel?.textAlignment = .natural
-
-        if row.kind == .removeSite {
-            cell.accessoryType = .none
-            WPStyleGuide.configureTableViewDestructiveActionCell(cell)
-        } else {
-            if row.showsDisclosureIndicator {
-                cell.accessoryType = isSplitViewDisplayed ? .none : .disclosureIndicator
-            } else {
-                cell.accessoryType = .none
-            }
-            WPStyleGuide.configureTableViewCell(cell)
-        }
-
-        cell.textLabel?.text = row.title
-        cell.accessibilityIdentifier = row.accessibilityIdentifier ?? identifier
-        cell.detailTextLabel?.text = row.detail
-        cell.imageView?.image = row.image
-        cell.imageView?.tintColor = row.imageColor
-
-        if let accessoryView = row.accessoryView {
-            cell.accessoryView = accessoryView
-        }
-
-        return cell
-    }
-
-    func configureJetpackInstallCell(tableView: UITableView) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: CellIdentifiers.jetpackInstall
-            ) as? JetpackRemoteInstallTableViewCell,
-            let viewController
-        else {
+            cell.configure(with: viewController)
+            return cell
+        case .jetpackBrandingCard:
+            let cell = JetpackBrandingMenuCardCell()
+            cell.configure(with: viewController)
+            return cell
+        case .extensiveLogging:
+            let cell = ExtensiveLoggingCell()
+            cell.configure(with: viewController)
+            return cell
+        case .xmlrpcDisabled:
+            let cell = XMLRPCDisabledCell()
+            cell.onTapped = { [weak self] in self?.presentXMLRPCDisabledAlert() }
+            return cell
+        default:
             return UITableViewCell()
         }
-
-        cell.configure(blog: blog, viewController: viewController)
-        return cell
-    }
-
-    func configureMigrationSuccessCell(tableView: UITableView) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: CellIdentifiers.migrationSuccess
-            ) as? MigrationSuccessCell,
-            let viewController
-        else {
-            return UITableViewCell()
-        }
-
-        if viewController.isSidebarModeEnabled {
-            cell.configureForSidebarMode()
-        }
-        cell.configure(with: viewController)
-        return cell
-    }
-
-    func configureJetpackBrandingCell(tableView: UITableView) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: CellIdentifiers.jetpackBrandingCard
-            ) as? JetpackBrandingMenuCardCell,
-            let viewController
-        else {
-            return UITableViewCell()
-        }
-
-        cell.configure(with: viewController)
-        return cell
-    }
-
-    func configureExtensiveLoggingCell(tableView: UITableView) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: CellIdentifiers.extensiveLogging
-            ) as? ExtensiveLoggingCell,
-            let viewController
-        else {
-            return UITableViewCell()
-        }
-
-        cell.configure(with: viewController)
-        return cell
-    }
-
-    func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: CellIdentifiers.xmlrpcDisabled
-            ) as? XMLRPCDisabledCell
-        else {
-            return UITableViewCell()
-        }
-
-        cell.onTapped = { [weak self] in
-            self?.presentXMLRPCDisabledAlert()
-        }
-        return cell
     }
 
     private func presentXMLRPCDisabledAlert() {
@@ -966,27 +612,29 @@ enum BlogDetailsUserInfoKeys {
 
 // MARK: - Table view content
 
-private enum SectionCategory {
-    case reminders
-    case domainCredit
-    case extensiveLogging
-    case xmlrpcDisabled
-    case home
-    case general
-    case jetpack
-    case personalize
-    case configure
-    case external
-    case removeSite
-    case migrationSuccess
-    case jetpackBrandingCard
-    case jetpackInstallCard
-    case content
-    case traffic
-    case maintenance
+extension BlogDetailsTableViewModel {
+    enum SectionCategory: Hashable {
+        case reminders
+        case domainCredit
+        case extensiveLogging
+        case xmlrpcDisabled
+        case home
+        case general
+        case jetpack
+        case personalize
+        case configure
+        case external
+        case removeSite
+        case migrationSuccess
+        case jetpackBrandingCard
+        case jetpackInstallCard
+        case content
+        case traffic
+        case maintenance
+    }
 }
 
-enum BlogDetailsRowKind {
+enum BlogDetailsRowKind: Hashable {
     case reminders
     case domain
     case stats
@@ -1020,47 +668,57 @@ enum BlogDetailsRowKind {
     case removeSite
 }
 
-private struct Row {
-    let kind: BlogDetailsRowKind
-    let title: String
-    let accessibilityIdentifier: String?
-    let accessibilityHint: String?
-    let image: UIImage?
-    let imageColor: UIColor?
-    let accessoryView: UIView?
-    let detail: String?
-    let showsSelectionState: Bool
-    let showsDisclosureIndicator: Bool
-    let action: (([String: Any]) -> Void)?
+extension BlogDetailsTableViewModel {
+    struct Row: Identifiable {
+        enum ID: Hashable {
+            case row(BlogDetailsRowKind)
+            case pinnedPostType(String)
+        }
 
-    init(
-        kind: BlogDetailsRowKind,
-        title: String,
-        accessibilityIdentifier: String? = nil,
-        accessibilityHint: String? = nil,
-        image: UIImage?,
-        imageColor: UIColor? = .label,
-        accessoryView: UIView? = nil,
-        detail: String? = nil,
-        showsSelectionState: Bool = true,
-        showsDisclosureIndicator: Bool = true,
-        action: (([String: Any]) -> Void)? = nil,
-    ) {
-        self.title = title
-        self.accessibilityIdentifier = accessibilityIdentifier
-        self.accessibilityHint = accessibilityHint
-        self.image = imageColor == nil ? image : image?.withRenderingMode(.alwaysTemplate)
-        self.imageColor = imageColor
-        self.accessoryView = accessoryView
-        self.detail = detail
-        self.showsSelectionState = showsSelectionState
-        self.showsDisclosureIndicator = showsDisclosureIndicator
-        self.action = action
-        self.kind = kind
+        let id: ID
+        let kind: BlogDetailsRowKind
+        let title: String
+        let accessibilityIdentifier: String?
+        let accessibilityHint: String?
+        let image: UIImage?
+        let imageColor: UIColor?
+        let accessoryImage: UIImage?
+        let detail: String?
+        let showsSelectionState: Bool
+        let showsDisclosureIndicator: Bool
+        let action: (@MainActor ([String: Any]) -> Void)?
+
+        init(
+            kind: BlogDetailsRowKind,
+            id: ID? = nil,
+            title: String,
+            accessibilityIdentifier: String? = nil,
+            accessibilityHint: String? = nil,
+            image: UIImage?,
+            imageColor: UIColor? = .label,
+            accessoryImage: UIImage? = nil,
+            detail: String? = nil,
+            showsSelectionState: Bool = true,
+            showsDisclosureIndicator: Bool = true,
+            action: (@MainActor ([String: Any]) -> Void)? = nil,
+        ) {
+            self.title = title
+            self.accessibilityIdentifier = accessibilityIdentifier
+            self.accessibilityHint = accessibilityHint
+            self.image = imageColor == nil ? image : image?.withRenderingMode(.alwaysTemplate)
+            self.imageColor = imageColor
+            self.accessoryImage = accessoryImage
+            self.detail = detail
+            self.showsSelectionState = showsSelectionState
+            self.showsDisclosureIndicator = showsDisclosureIndicator
+            self.action = action
+            self.kind = kind
+            self.id = id ?? .row(kind)
+        }
     }
 }
 
-extension Row {
+private extension BlogDetailsTableViewModel.Row {
     static func home(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .home,
@@ -1117,6 +775,7 @@ extension Row {
     static func pinnedPostType(_ type: PinnedPostType, viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .pinnedPostType,
+            id: .pinnedPostType(type.slug),
             title: type.name,
             image: UIImage(dashicon: type.icon),
             action: { [weak viewController] _ in
@@ -1159,7 +818,6 @@ extension Row {
             image: nil,
             showsSelectionState: false,
             action: { [weak viewController] _ in
-                viewController?.tableView?.deselectSelectedRowWithAnimation(true)
                 viewController?.showRemoveSiteAlert()
             }
         )
@@ -1409,18 +1067,15 @@ extension Row {
 
         let iconSize = CGSize(width: 17.0, height: 17.0)
         let accessoryImage = UIImage.gridicon(.external, size: iconSize).imageFlippedForRightToLeftLayoutDirection()
-        let accessoryView = UIImageView(image: accessoryImage)
-        accessoryView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
 
         return Row(
             kind: .admin,
             title: adminTitle,
             image: UIImage.gridicon(.mySites),
-            accessoryView: accessoryView,
+            accessoryImage: accessoryImage,
             showsSelectionState: false,
             action: { [weak viewController] _ in
                 viewController?.showViewAdmin()
-                viewController?.tableView?.deselectSelectedRowWithAnimation(true)
             }
         )
     }
@@ -1651,20 +1306,6 @@ private enum Strings {
         value: "Subscribers",
         comment: "Title for the menu item"
     )
-}
-
-private enum CellIdentifiers {
-    static let standard = "BlogDetailsCell"
-    static let plan = "BlogDetailsPlanCell"
-    static let settings = "BlogDetailsSettingsCell"
-    static let removeSite = "BlogDetailsRemoveSiteCell"
-    static let sectionFooter = "BlogDetailsSectionFooterView"
-    static let sectionFooterIdentifier = "BlogDetailsSectionFooterIdentifier"
-    static let migrationSuccess = "BlogDetailsMigrationSuccessCellIdentifier"
-    static let jetpackBrandingCard = "BlogDetailsJetpackBrandingCardCellIdentifier"
-    static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
-    static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
-    static let xmlrpcDisabled = "BlogDetailsXMLRPCDisabledCellIdentifier"
 }
 
 private enum XMLRPCDisabledAlertStrings {
