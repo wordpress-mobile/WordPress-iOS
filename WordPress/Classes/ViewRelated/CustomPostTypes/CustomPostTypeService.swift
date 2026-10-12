@@ -7,12 +7,29 @@ import WordPressAPIInternal
 
 /// The part of ``CustomPostTypeService`` the site menu depends on.
 protocol CustomPostTypeServiceProtocol {
+    func refresh() async throws
     /// Emits whenever the cache records a change that may affect ``customTypes()``.
     func customTypesUpdates() async throws -> AnyPublisher<Void, Never>
     func customTypes() async throws -> [PostTypeDetailsWithEditContext]
 }
 
 class CustomPostTypeService: CustomPostTypeServiceProtocol {
+    /// Identifies a site's record in the wordpress-rs cache. The cache keeps one record per way of
+    /// reaching the site, so a sync over one transport does not update the record of another.
+    enum CacheIdentity: Hashable {
+        case dotComProxy(siteId: Int)
+        case direct(siteURL: URL, apiRootURL: String)
+
+        init(site: WordPressSite) {
+            switch site.transport {
+            case let .direct(credentials):
+                self = .direct(siteURL: site.siteURL, apiRootURL: credentials.apiRootURL.url())
+            case let .dotComProxy(siteId, _):
+                self = .dotComProxy(siteId: siteId)
+            }
+        }
+    }
+
     let client: WordPressClient
 
     private var wpService: WpService?
@@ -22,9 +39,26 @@ class CustomPostTypeService: CustomPostTypeServiceProtocol {
         self.client = client
     }
 
-    init?(blog: Blog) {
-        guard blog.supportsCoreRESTAPI, let site = try? WordPressSite(blog: blog) else { return nil }
-        self.client = WordPressClientFactory.shared.instance(for: site)
+    convenience init?(blog: Blog) {
+        guard let site = Self.site(for: blog) else { return nil }
+        self.init(site: site)
+    }
+
+    private convenience init(site: WordPressSite) {
+        self.init(client: WordPressClientFactory.shared.instance(for: site))
+    }
+
+    /// A service for the site menu, along with the cache record that the service reads.
+    typealias SiteMenuService = (cacheIdentity: CacheIdentity, service: any CustomPostTypeServiceProtocol)
+
+    static func makeForSiteMenu(blog: Blog) -> SiteMenuService? {
+        guard let site = site(for: blog) else { return nil }
+        return (CacheIdentity(site: site), CustomPostTypeService(site: site))
+    }
+
+    private static func site(for blog: Blog) -> WordPressSite? {
+        guard blog.supportsCoreRESTAPI else { return nil }
+        return try? WordPressSite(blog: blog)
     }
 
     func refresh() async throws {

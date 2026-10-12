@@ -159,6 +159,7 @@ public class BlogDetailsViewController: UIViewController {
             }
         }
 
+        tableViewModel?.updateCustomPostTypesObservationIfNeeded()
         configureTableViewData()
         reloadTableViewPreservingSelection()
     }

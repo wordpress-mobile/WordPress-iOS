@@ -70,16 +70,17 @@ private struct Section {
     var useSiteMenuStyle = false
 
     private let usesWordPressLayout: Bool
-    private let makeCustomPostTypeService: (Blog) -> (any CustomPostTypeServiceProtocol)?
-    private var customPostTypesObservation: Task<Void, Never>?
+    private let makeCustomPostTypeService: (Blog) -> CustomPostTypeService.SiteMenuService?
+    private var customPostTypesObservation:
+        (cacheIdentity: CustomPostTypeService.CacheIdentity, task: Task<Void, Never>)?
     private var credentialChangeObservation: AnyCancellable?
 
     init(
         blog: Blog,
         viewController: BlogDetailsViewController,
         usesWordPressLayout: Bool = AppConfiguration.isWordPress,
-        makeCustomPostTypeService: @escaping (Blog) -> (any CustomPostTypeServiceProtocol)? =
-            CustomPostTypeService.init(blog:),
+        makeCustomPostTypeService: @escaping (Blog) -> CustomPostTypeService.SiteMenuService? =
+            CustomPostTypeService.makeForSiteMenu(blog:),
         notificationCenter: NotificationCenter = .default
     ) {
         self.blog = blog
@@ -88,21 +89,20 @@ private struct Section {
         self.makeCustomPostTypeService = makeCustomPostTypeService
         super.init()
 
-        // A new application password can change how the site is reached, and the cache keys a
-        // site's data by its transport: a WordPress.com Atomic site moves from its site ID to its
-        // URL. A source built before the change keeps reading data that no sync updates anymore.
+        // A new application password can change how the site is reached. The notification does not
+        // say which site changed, so every site menu checks whether its own cache record moved.
         let passwordUpdates = notificationCenter.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated)
         credentialChangeObservation =
             passwordUpdates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.restartCustomPostTypesObservation()
+                self?.updateCustomPostTypesObservationIfNeeded()
             }
         restartCustomPostTypesObservation()
     }
 
     deinit {
-        customPostTypesObservation?.cancel()
+        customPostTypesObservation?.task.cancel()
     }
 
     @objc public func configure(tableView: UITableView) {
@@ -299,21 +299,45 @@ private struct Section {
 
 // MARK: - Custom post types
 
+extension BlogDetailsTableViewModel {
+    /// Moves the observation of the site's custom post types to the site's current cache record,
+    /// if the record changed. Call it after anything that can change how the site is reached,
+    /// such as a metadata sync: the site can switch from the WordPress.com proxy to direct access
+    /// without an `applicationPasswordUpdated` notification.
+    func updateCustomPostTypesObservationIfNeeded() {
+        let siteMenuService = makeCustomPostTypeService(blog)
+        guard siteMenuService?.cacheIdentity != customPostTypesObservation?.cacheIdentity else { return }
+        // No sync has written to the new record yet: its first read would remove every row.
+        startCustomPostTypesObservation(with: siteMenuService, syncingFirst: true)
+    }
+}
+
 private extension BlogDetailsTableViewModel {
-    /// Replaces the observation of the site's custom post types with a new one built from the
-    /// site's current transport. The rows stay as they are until the new observation's first read.
     func restartCustomPostTypesObservation() {
-        customPostTypesObservation?.cancel()
+        startCustomPostTypesObservation(with: makeCustomPostTypeService(blog), syncingFirst: false)
+    }
+
+    /// Replaces the observation of the site's custom post types. The rows stay as they are until
+    /// the new observation's first read.
+    ///
+    /// - Parameter syncingFirst: Whether to sync the post types before the first read. If the sync
+    ///   fails, the first read waits for the next cache update.
+    func startCustomPostTypesObservation(
+        with siteMenuService: CustomPostTypeService.SiteMenuService?,
+        syncingFirst: Bool
+    ) {
+        customPostTypesObservation?.task.cancel()
         customPostTypesObservation = nil
 
-        guard let service = makeCustomPostTypeService(blog) else {
+        guard let siteMenuService else {
             if !customPostTypes.isEmpty {
                 applyCustomPostTypes([])
             }
             return
         }
+        let service = siteMenuService.service
 
-        customPostTypesObservation = Task { [weak self] in
+        let task = Task { [weak self] in
             let updates: AnyPublisher<Void, Never>
             do {
                 updates = try await service.customTypesUpdates()
@@ -328,7 +352,15 @@ private extension BlogDetailsTableViewModel {
             let (signals, continuation) = AsyncStream.makeStream(of: Void.self, bufferingPolicy: .bufferingNewest(1))
             let subscription = updates.sink { continuation.yield() }
             defer { subscription.cancel() }
-            continuation.yield()
+
+            do {
+                if syncingFirst {
+                    try await service.refresh()
+                }
+                continuation.yield()
+            } catch {
+                Loggers.app.error("Failed to sync custom post types: \(error)")
+            }
 
             for await _ in signals {
                 guard !Task.isCancelled else { return }
@@ -341,6 +373,7 @@ private extension BlogDetailsTableViewModel {
                 }
             }
         }
+        customPostTypesObservation = (siteMenuService.cacheIdentity, task)
     }
 
     func applyCustomPostTypes(_ types: [PostTypeDetailsWithEditContext]) {
