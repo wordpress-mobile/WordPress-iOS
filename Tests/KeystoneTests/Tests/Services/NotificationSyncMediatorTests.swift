@@ -69,6 +69,20 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         XCTAssertFalse(result.hasNewData)
     }
 
+    /// Verifies that a sync bound to an account that is no longer the default does not delete local notes, so a
+    /// late result from a replaced account cannot purge the new account's list.
+    ///
+    func testSyncDoesNotDeleteNotesOnceItsAccountIsReplaced() {
+        let noteID = "new-account-note"
+        mainContext.insertNewObject(ofType: Notification.self).notificationId = noteID
+        contextManager.saveContextAndWait(mainContext)
+
+        _ = sync(boundTo: "account-A", defaultAccount: "account-B")
+
+        let predicate = NSPredicate(format: "notificationId == %@", noteID)
+        XCTAssertNotNil(mainContext.firstObject(ofType: Notification.self, matching: predicate))
+    }
+
     /// Verifies that a sync bound to the current default account still writes its notes.
     ///
     func testSyncWritesNotesForTheDefaultAccount() {
