@@ -2,6 +2,7 @@
 -----
 * [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
 * [*] iPad: Fix the app getting stuck in the compact tab bar layout after resizing or switching apps [#26123]
+* [**] Fix an issue where the app could be used without a valid WordPress.com sign-in. The app now asks you to sign in again or log out. [#26130]
 
 27.3
 -----
