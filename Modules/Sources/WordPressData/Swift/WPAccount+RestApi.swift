@@ -43,8 +43,12 @@ extension WPAccount {
             // We use a static function here because it's not safe to access `self` in this closure.
             // The `WPAccount` instance can be bound to any context object. There is no guarantee that the thread
             // from which this closure is called is the same as the one in the context object.
-            context?.perform {
-                WPAccount.handleInvalidToken(accountID: accountID, context: context)
+            //
+            // `WordPressComRestApi` calls this handler on the main queue. Waiting for the context blocks the main
+            // queue, where sign-in stores replacement tokens, so a replacement cannot be written between the
+            // comparison and the clear.
+            context?.performAndWait {
+                WPAccount.handleInvalidToken(accountID: accountID, rejectedToken: authToken, context: context)
             }
         }
 
@@ -69,30 +73,34 @@ extension WPAccount {
         return account?.wordPressComRestApi
     }
 
-    static func handleInvalidToken(accountID: TaggedManagedObjectID<WPAccount>, context: NSManagedObjectContext?) {
-        let account = try? context?.existingObject(with: accountID)
-        account?.authToken = nil
+    /// Clears the account's token after the server rejected it, and asks for the WordPress.com sign-in.
+    ///
+    /// This does not post `wpAccountDefaultWordPressComAccountChanged`: the account and its sites still exist, and
+    /// observers treat that notification without an object as a logout.
+    static func handleInvalidToken(
+        accountID: TaggedManagedObjectID<WPAccount>,
+        rejectedToken: String,
+        context: NSManagedObjectContext?
+    ) {
+        guard let account = try? context?.existingObject(with: accountID) else {
+            return
+        }
+
+        // Storing a new token does not cancel requests made with the previous one. A late rejection of the
+        // previous token must not erase its replacement. This instance may still cache the previous token, if the
+        // replacement was stored through another context, so make it read the replacement next time.
+        guard account.authTokenInKeychain == rejectedToken else {
+            WPLogInfo("Ignoring a rejection of a WordPress.com token that is no longer current")
+            account.discardCachedToken()
+            return
+        }
+
+        account.authToken = nil
 
         NotificationCenter.default.post(
             name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
             object: account
         )
-
-        if account?.isDefaultWordPressComAccount == true {
-            // At the time of writing, there is an implicit assumption on what the object parameter value means.
-            // For example, the WordPressAppDelegate.handleDefaultAccountChangedNotification(_:) subscriber inspects the object parameter to decide whether the notification was sent as a result of a login.
-            // If the object is non-nil, then the method considers the source a login.
-            //
-            // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
-            // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .wpAccountDefaultWordPressComAccountChanged,
-                    object: nil
-                )
-            }
-        }
     }
 }
 
