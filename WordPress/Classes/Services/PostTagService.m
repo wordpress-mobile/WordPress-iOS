@@ -172,11 +172,13 @@ static const NSInteger PostTagIdDefaultValue = -1;
         return instance;
     }
 
-    if ([blog supports:BlogFeatureWpComRESTAPI]) {
-        if (blog.wordPressComRestApi) {
-            return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
-        }
-    } else if (blog.xmlrpcApi) {
+    if ([blog supports:BlogFeatureWpComRESTAPI] && blog.wordPressComRestApi) {
+        return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
+    }
+    if (blog.isMissingRequiredWordPressComToken) {
+        return nil;
+    }
+    if (blog.xmlrpcApi) {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return nil;
