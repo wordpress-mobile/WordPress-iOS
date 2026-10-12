@@ -154,8 +154,21 @@ private extension HTTPCookie {
     }
 
     private func isWordPressLoggedIn(username: String) -> Bool {
-        name.hasPrefix(loggedInCookieName)
-            && value.components(separatedBy: "%").first == username
+        guard name.hasPrefix(loggedInCookieName) else {
+            return false
+        }
+
+        // WordPress sets the cookie value to `username|expiration|token|hmac`, and
+        // PHP's `setcookie()` URL-encodes it: `|` becomes `%7C`, and characters like
+        // `@` inside the username become percent escapes (spaces become `+`).
+        // Split on the encoded delimiter first, then decode the username component,
+        // so encoded characters in the username don't break the comparison.
+        let encodedUsername = value.components(separatedBy: "%7C").first ?? value
+        let decodedUsername = encodedUsername
+            .replacingOccurrences(of: "+", with: " ")
+            .removingPercentEncoding ?? encodedUsername
+
+        return decodedUsername == username
     }
 
     private func isWordPressLoggedInAtomic(username: String) -> Bool {
