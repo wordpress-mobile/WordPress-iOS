@@ -62,22 +62,31 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSManagedObjectID * __block accountObjectID = nil;
     [self.coreDataStack.mainContext performBlockAndWait:^{
-        accountObjectID = [[WPAccount lookupWithUsername:remoteUser.username context:self.coreDataStack.mainContext] objectID];
+        accountObjectID = [[self existingAccountForRemoteUser:remoteUser inContext:self.coreDataStack.mainContext] objectID];
     }];
 
+    BOOL __block replacedDefaultAccountToken = NO;
     if (accountObjectID) {
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
             WPAccount *account = [context existingObjectWithID:accountObjectID error:nil];
+            // Setting a changed username moves the stored token to it, so do it before replacing the token.
+            account.username = remoteUser.username;
+            NSString *previousToken = account.authToken;
             // Even if we find an account via its userID we should still update
             // its authtoken, otherwise the Authenticator's authtoken fixer won't
             // work.
             account.authToken = authToken;
+            replacedDefaultAccountToken = account.isDefaultWordPressComAccount && ![previousToken isEqualToString:authToken];
         }];
     } else {
         accountObjectID = [self createOrUpdateAccountWithUsername:remoteUser.username authToken:authToken];
     }
 
     [self updateAccountWithID:accountObjectID withUserDetails:remoteUser];
+
+    if (replacedDefaultAccountToken) {
+        [self postDefaultAccountTokenReplacedForAccountID:accountObjectID];
+    }
 
     return accountObjectID;
 }
