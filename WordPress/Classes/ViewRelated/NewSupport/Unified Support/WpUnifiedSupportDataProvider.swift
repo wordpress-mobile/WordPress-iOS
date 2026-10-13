@@ -97,8 +97,7 @@ actor WpUnifiedSupportDataProvider: UnifiedSupportDataProvider {
         let params = ReplyToUnifiedConversationParams(
             message: message,
             encryptedLogIds: encryptedLogIds,
-            // wordpress-rs reads the files from disk, so it needs file system paths without percent-encoding.
-            attachments: attachments.map { $0.path(percentEncoded: false) }
+            attachmentURLs: attachments
         )
 
         return try await Self.performRequest {
@@ -132,5 +131,21 @@ actor WpUnifiedSupportDataProvider: UnifiedSupportDataProvider {
             }
             throw error
         }
+    }
+}
+
+// Not `private`: the file-path handling below is covered by `UnifiedSupportAttachmentFilePathTests`.
+//
+// `attachments` carries filesystem paths, which `wordpress-rs` turns into `MultipartFormFile.file_path`
+// and opens directly. `URL.path()` percent-encodes by default, so a filename with a space — a macOS
+// screenshot, say — becomes a path that doesn't exist on disk and the whole reply fails with
+// `MediaFileNotFound`. This initializer owns that conversion so the call site can pass URLs.
+extension ReplyToUnifiedConversationParams {
+    init(message: String, encryptedLogIds: [String], attachmentURLs: [URL]) {
+        self.init(
+            message: message,
+            encryptedLogIds: encryptedLogIds,
+            attachments: attachmentURLs.map { $0.path(percentEncoded: false) }
+        )
     }
 }

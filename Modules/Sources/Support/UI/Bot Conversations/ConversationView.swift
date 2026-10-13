@@ -42,14 +42,6 @@ public struct ConversationView: View {
             }
         }
 
-        var userWantsHumanSupport: Bool {
-            switch self {
-            case .partiallyLoaded(let conversation, _): conversation.userWantsHumanSupport
-            case .loaded(conversation: let conversation, _): conversation.userWantsHumanSupport
-            default: false
-            }
-        }
-
         var shouldCauseScrollToBottom: Bool {
             switch self {
             case .loaded, .partiallyLoaded: true
@@ -282,8 +274,6 @@ public struct ConversationView: View {
 
                     sendingMessageError
 
-                    switchToHumanSupport
-
                     Text(verbatim: "").padding(.bottom, 4)
                         .listRowInsets(.zero)
                         .listRowBackground(Color.clear)
@@ -372,38 +362,6 @@ public struct ConversationView: View {
                     removal: .opacity
                 ))
             }
-        }
-    }
-
-    @ViewBuilder
-    var switchToHumanSupport: some View {
-
-        if state.userWantsHumanSupport {
-            Section {
-                // Deliberately left empty
-            } footer: {
-                if #available(iOS 26.0, *) {
-                    openSupportTicketButton
-                    .buttonStyle(.glassProminent)
-                } else {
-                    openSupportTicketButton
-                    .buttonStyle(.borderedProminent)
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    var openSupportTicketButton: some View {
-        NavigationLink {
-            SupportForm(
-                supportIdentity: self.currentUser
-            ).environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-        } label: {
-            Text(Localization.openSupportTicket)
-                .font(.headline)
-                .padding(.vertical)
-                .frame(maxWidth: .infinity)
         }
     }
 
