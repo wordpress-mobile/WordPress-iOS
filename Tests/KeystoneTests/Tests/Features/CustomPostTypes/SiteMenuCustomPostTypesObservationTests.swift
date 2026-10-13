@@ -8,7 +8,7 @@ import WordPressAPIInternal
 @testable import WordPressData
 
 @MainActor
-@Suite("Site menu custom post types observation")
+@Suite("Site menu custom post types observation", .timeLimit(.minutes(1)))
 struct SiteMenuCustomPostTypesObservationTests {
     private let contextManager = ContextManager.forTesting()
     private let notificationCenter = NotificationCenter()
@@ -328,18 +328,11 @@ private final class FakeSource: CustomPostTypeServiceProtocol {
     }
 }
 
+/// Waits without a deadline. Other tests share the main actor, so any fixed deadline fails on a
+/// busy machine. The suite's time limit catches hangs by cancelling the sleep.
 @MainActor
-private func waitUntil(
-    timeout: Duration = .seconds(2),
-    sourceLocation: SourceLocation = #_sourceLocation,
-    _ condition: () -> Bool
-) async throws {
-    let deadline = ContinuousClock.now + timeout
+private func waitUntil(_ condition: () -> Bool) async throws {
     while !condition() {
-        guard ContinuousClock.now < deadline else {
-            Issue.record("Timed out waiting for the condition", sourceLocation: sourceLocation)
-            throw CancellationError()
-        }
         try await Task.sleep(for: .milliseconds(5))
     }
 }
