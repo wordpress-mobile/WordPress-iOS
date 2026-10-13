@@ -92,24 +92,40 @@ struct ReaderUserProfileViewModel {
     let bio: String?
 
     init(comment: Comment) {
-        self.avatarURL = comment.avatarURLForDisplay()
-        self.name = comment.author
-        self.siteURL = URL(string: comment.author_url)
-        self.bio = nil
+        self.init(
+            avatarURL: comment.avatarURLForDisplay(),
+            name: comment.authorForDisplay(),
+            siteURL: comment.authorURL(),
+            bio: nil
+        )
     }
 
     init(post: ReaderPost) {
-        self.avatarURL = post.avatarURLForDisplay()
-        self.name = post.authorForDisplay() ?? ""
-        self.siteURL = post.blogURL.flatMap(URL.init(string:))
-        self.bio = nil
+        self.init(
+            avatarURL: post.avatarURLForDisplay(),
+            name: post.authorForDisplay() ?? "",
+            siteURL: post.blogURL.flatMap(URL.init(string:)),
+            bio: nil
+        )
     }
 
     init(profile: ReaderUserProfile) {
-        self.avatarURL = profile.avatarURL
-        self.name = profile.displayName
-        self.siteURL = profile.siteURL
-        self.bio = profile.bio
+        self.init(
+            avatarURL: profile.avatarURL,
+            name: profile.displayName,
+            siteURL: profile.siteURL,
+            bio: profile.bio
+        )
+    }
+
+    private init(avatarURL: URL?, name: String, siteURL: URL?, bio: String?) {
+        self.avatarURL = avatarURL
+        self.name = name
+        // A comment's address is whatever its author entered, so only offer one that opens a website
+        let scheme = siteURL?.scheme?.lowercased()
+        let isWebAddress = (scheme == "http" || scheme == "https") && siteURL?.host?.isEmpty == false
+        self.siteURL = isWebAddress ? siteURL : nil
+        self.bio = bio
     }
 }
 
