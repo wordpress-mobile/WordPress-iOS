@@ -1,4 +1,5 @@
 import SwiftUI
+import WebKit
 
 struct StoreSandboxSecretScreen: View {
     @Environment(\.presentationMode) var presentationMode
@@ -22,6 +23,9 @@ struct StoreSandboxSecretScreen: View {
             DispatchQueue.main.async {
                 if self.presentationMode.wrappedValue.isPresented == false {
                     StoreSandboxCookie.update(secret: secret, in: cookieJar)
+                    // Web views keep their own copy of the cookie in the default data store.
+                    let webCookieStore = WKWebsiteDataStore.default().httpCookieStore
+                    StoreSandboxCookie.synchronize(from: cookieJar, to: webCookieStore) {}
                 }
             }
         }

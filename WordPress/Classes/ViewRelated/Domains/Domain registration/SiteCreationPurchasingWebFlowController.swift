@@ -147,8 +147,7 @@ final class SiteCreationPurchasingWebFlowController {
 
         // 1. Inject sandbox store cookie
         // 2. Present a new web view instance or reload the existing one.
-        let cookieStore = webViewController.webView.configuration.websiteDataStore.httpCookieStore
-        self.injectSandboxStoreCookie(into: cookieStore) { [weak self] in
+        webViewController.configureSandboxStore { [weak self] in
             guard let self else {
                 return
             }
@@ -171,11 +170,6 @@ final class SiteCreationPurchasingWebFlowController {
     private func completeSiteCreationPurchasing(result: Result<String, SiteCreationPurchasingError>, completion: CompletionHandler? = nil) {
         self.cleanupExecutionVariables()
         completion?(result)
-    }
-
-    /// Synchronizes the sandbox store cookie with the cookie store.
-    private func injectSandboxStoreCookie(into cookieStore: WKHTTPCookieStore, completion: @escaping () -> Void) {
-        StoreSandboxCookie.synchronize(from: .shared, to: cookieStore, completion: completion)
     }
 
     /// Handles URL changes in the web view. We only allow the user to stay within certain URLs. Falling outside these URLs

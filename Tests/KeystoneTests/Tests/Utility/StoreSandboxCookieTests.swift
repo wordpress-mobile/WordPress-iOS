@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import WebKit
 @testable import WordPress
 
 @Suite(.serialized)
@@ -48,15 +49,41 @@ struct StoreSandboxCookieTests {
         }
     }
 
-    private func withCookieStorage(_ body: (HTTPCookieStorage) -> Void) {
-        let cookieStorage = HTTPCookieStorage.shared
-        removeSandboxCookies(from: cookieStorage)
-        defer { removeSandboxCookies(from: cookieStorage) }
-        body(cookieStorage)
+    @Test
+    func whitespaceOnlySecretRemovesPreviouslyStoredCookie() {
+        withCookieStorage { cookieStorage in
+            cookieStorage.setCookie(sandboxCookie(value: "secret"))
+
+            StoreSandboxCookie.update(secret: " \n\t", in: cookieStorage)
+
+            #expect(StoreSandboxCookie.cookiesToRemove(from: cookieStorage.cookies ?? []).isEmpty)
+        }
     }
 
-    private func removeSandboxCookies(from storage: HTTPCookieStorage) {
-        StoreSandboxCookie.cookiesToRemove(from: storage.cookies ?? []).forEach(storage.deleteCookie)
+    @Test @MainActor
+    func synchronizeRemovesStaleCookieFromWebCookieStore() async {
+        let dataStore = WKWebsiteDataStore.nonPersistent()
+        let loggedInCookie = HTTPCookie(properties: [
+            .name: "wordpress_logged_in",
+            .value: "user",
+            .domain: StoreSandboxCookie.domain,
+            .path: "/"
+        ])!
+        await dataStore.httpCookieStore.setCookie(sandboxCookie(value: "secret"))
+        await dataStore.httpCookieStore.setCookie(loggedInCookie)
+
+        await withCheckedContinuation { continuation in
+            StoreSandboxCookie.synchronize(from: MockCookieJar(), to: dataStore.httpCookieStore) {
+                continuation.resume()
+            }
+        }
+
+        let remainingCookies = await dataStore.httpCookieStore.allCookies()
+        #expect(remainingCookies.map(\.name) == ["wordpress_logged_in"])
+    }
+
+    private func withCookieStorage(_ body: (HTTPCookieStorage) -> Void) {
+        body(MockCookieJar())
     }
 
     private func sandboxCookie(value: String) -> HTTPCookie {
