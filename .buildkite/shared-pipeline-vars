@@ -7,8 +7,10 @@
 XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
 CI_TOOLKIT_PLUGIN_VERSION="6.3.0"
 TEST_COLLECTOR_PLUGIN_VERSION="1.11.0"
+RUBY_VERSION=$(cat .ruby-version)
 
 export IMAGE_ID="xcode-$XCODE_VERSION"
+export DOCKER_RUBY_IMAGE="public.ecr.aws/docker/library/ruby:$RUBY_VERSION"
 export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
 export TEST_COLLECTOR="test-collector#v$TEST_COLLECTOR_PLUGIN_VERSION"
 export CLAUDE_PLUGIN="iangmaia/claude-summarize#ce99c67dd57cdf236c3daca82b86a335fd5e9cc2"

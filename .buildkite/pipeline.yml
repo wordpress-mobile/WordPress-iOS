@@ -172,7 +172,14 @@ steps:
 
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        # Pure Ruby, so it runs in a Ruby container on the Linux queue instead of booting a Mac VM.
+        agents:
+          queue: "default"
+        plugins:
+          - docker#v5.13.0:
+              image: "$DOCKER_RUBY_IMAGE"
+              propagate-environment: true
+              mount-buildkite-agent: true
         notify:
           - github_commit_status:
               context: "Localization Tooling Unit Tests"
