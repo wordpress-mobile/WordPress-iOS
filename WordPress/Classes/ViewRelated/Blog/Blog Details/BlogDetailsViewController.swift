@@ -159,12 +159,7 @@ public class BlogDetailsViewController: UIViewController {
             }
         }
 
-        if let service = CustomPostTypeService(blog: blog) {
-            tableViewModel?.hasCustomPostTypes = (try? await service.customTypes())?.isEmpty == false
-        } else {
-            tableViewModel?.hasCustomPostTypes = false
-        }
-
+        tableViewModel?.updateCustomPostTypesObservationIfNeeded()
         configureTableViewData()
         reloadTableViewPreservingSelection()
     }
