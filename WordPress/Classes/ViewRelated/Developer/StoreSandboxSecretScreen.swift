@@ -1,8 +1,7 @@
 import SwiftUI
+import WebKit
 
 struct StoreSandboxSecretScreen: View {
-    private static let storeSandboxSecretKey = "store_sandbox"
-
     @Environment(\.presentationMode) var presentationMode
     @State private var secret: String
     private let cookieJar: HTTPCookieStorage
@@ -22,14 +21,11 @@ struct StoreSandboxSecretScreen: View {
             // This seems to be necessary due to an iOS bug where
             // accessing presentationMode.wrappedValue crashes.
             DispatchQueue.main.async {
-                if self.presentationMode.wrappedValue.isPresented == false,
-                  let cookie = HTTPCookie(properties: [
-                    .name: StoreSandboxSecretScreen.storeSandboxSecretKey,
-                    .value: secret,
-                    .domain: ".wordpress.com",
-                    .path: "/"
-                  ]) {
-                    cookieJar.setCookie(cookie)
+                if self.presentationMode.wrappedValue.isPresented == false {
+                    StoreSandboxCookie.update(secret: secret, in: cookieJar)
+                    // Web views keep their own copy of the cookie in the default data store.
+                    let webCookieStore = WKWebsiteDataStore.default().httpCookieStore
+                    StoreSandboxCookie.synchronize(from: cookieJar, to: webCookieStore) {}
                 }
             }
         }
@@ -38,7 +34,7 @@ struct StoreSandboxSecretScreen: View {
     init(cookieJar: HTTPCookieStorage) {
         self.cookieJar = cookieJar
 
-        if let cookie = cookieJar.cookies?.first(where: { $0.name == StoreSandboxSecretScreen.storeSandboxSecretKey }) {
+        if let cookie = StoreSandboxCookie.cookie(in: cookieJar) {
             _secret = State(initialValue: cookie.value)
         } else {
             _secret = State(initialValue: "")

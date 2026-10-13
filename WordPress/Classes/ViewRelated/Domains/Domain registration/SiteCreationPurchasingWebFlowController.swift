@@ -14,8 +14,6 @@ final class SiteCreationPurchasingWebFlowController {
         static let wordpressBaseURL = "https://wordpress.com"
         static let checkoutWebAddress = "\(wordpressBaseURL)/checkout"
         static let checkoutSuccessURLPrefix = "\(checkoutWebAddress)/thank-you/"
-        static let storeSandboxCookieName = "store_sandbox"
-        static let storeSandboxCookieDomain = ".wordpress.com"
     }
 
     // MARK: - Dependencies
@@ -149,8 +147,7 @@ final class SiteCreationPurchasingWebFlowController {
 
         // 1. Inject sandbox store cookie
         // 2. Present a new web view instance or reload the existing one.
-        let cookieStore = webViewController.webView.configuration.websiteDataStore.httpCookieStore
-        self.injectSandboxStoreCookie(into: cookieStore) { [weak self] _ in
+        webViewController.configureSandboxStore { [weak self] in
             guard let self else {
                 return
             }
@@ -173,20 +170,6 @@ final class SiteCreationPurchasingWebFlowController {
     private func completeSiteCreationPurchasing(result: Result<String, SiteCreationPurchasingError>, completion: CompletionHandler? = nil) {
         self.cleanupExecutionVariables()
         completion?(result)
-    }
-
-    /// Injects the sandbox store cookie into the cookie store.
-    private func injectSandboxStoreCookie(into cookieStore: WKHTTPCookieStore, completion: @escaping (Bool) -> Void) {
-        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
-            $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
-            $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
-        }) {
-            cookieStore.setCookie(storeSandboxCookie) {
-                completion(true)
-            }
-        } else {
-            completion(false)
-        }
     }
 
     /// Handles URL changes in the web view. We only allow the user to stay within certain URLs. Falling outside these URLs
