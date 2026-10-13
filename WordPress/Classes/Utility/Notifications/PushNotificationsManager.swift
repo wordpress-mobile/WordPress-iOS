@@ -199,9 +199,11 @@ public final class PushNotificationsManager: NSObject {
         DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
-        // Badge: Update
+        // Badge: Update. Only WordPress pushes carry a badge (support pushes omit
+        // it), so it is also the signal that the bell may need a refresh.
         if let badgeCountNumber = userInfo.number(forKeyPath: Notification.badgePath)?.intValue {
             sharedApplication.applicationIconBadgeNumber = badgeCountNumber
+            NotificationActivityService.pushDidArrive()
         }
 
         // Badge: Reset

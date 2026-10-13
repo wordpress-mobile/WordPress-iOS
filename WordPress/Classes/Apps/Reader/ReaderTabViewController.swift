@@ -119,8 +119,8 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         notificationsVC.enableLargeTitles()
 
-        notificationsButtonViewModel.$counter.sink { [weak notificationsVC] count in
-            let image = UIImage(named: count == 0 ? "tab-bar-notifications" : "tab-bar-notifications-unread")
+        notificationsButtonViewModel.$hasNewActivity.sink { [weak notificationsVC] hasNewActivity in
+            let image = UIImage(named: hasNewActivity ? "tab-bar-notifications-unread" : "tab-bar-notifications")
             notificationsVC?.tabBarItem.image = image
             notificationsVC?.tabBarItem.selectedImage = image
         }.store(in: &cancellables)

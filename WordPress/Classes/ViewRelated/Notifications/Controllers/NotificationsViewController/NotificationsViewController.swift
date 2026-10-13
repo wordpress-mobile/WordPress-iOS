@@ -109,11 +109,18 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     lazy var viewModel: NotificationsViewModel = {
-        NotificationsViewModel(userDefaults: userDefaults)
+        NotificationsViewModel()
     }()
 
     var isSidebarModeEnabled = false
     var isReaderAppModeEnabled = false
+
+    /// The account whose notifications the list shows. Passed with every
+    /// activity-service callback so it can reject a list that has not rebound
+    /// after an account change.
+    private var boundAccountUUID: String?
+
+    var activityService = NotificationActivityService.shared
 
     private var isNavigationItemsConfigured = false
 
@@ -153,6 +160,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         startListeningToAccountNotifications()
         startListeningToTimeChangeNotifications()
+        bindToCurrentAccount()
     }
 
     override func viewDidLoad() {
@@ -224,7 +232,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         // Notifications
         startListeningToNotifications()
         resetApplicationBadge()
-        updateLastSeenTime()
+        notificationsBecameVisible()
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
@@ -278,6 +286,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
+        activityService.notificationsResignedVisible(self)
 
         dismissNoNetworkAlert()
 
@@ -681,15 +690,18 @@ private extension NotificationsViewController {
         )
         nc.addObserver(
             self,
-            selector: #selector(notificationsWereUpdated),
-            name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
-            object: nil
-        )
-        nc.addObserver(
-            self,
             selector: #selector(dynamicTypeDidChange),
             name: UIContentSizeCategory.didChangeNotification,
             object: nil
+        )
+        // Observe the context, not the table's results controller: that sees only
+        // notes matching the selected filter, and the single-note sync posts no
+        // update notification.
+        nc.addObserver(
+            self,
+            selector: #selector(managedObjectContextObjectsDidChange),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: mainContext
         )
     }
 
@@ -731,9 +743,19 @@ private extension NotificationsViewController {
         )
         nc.removeObserver(
             self,
-            name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
-            object: nil
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: mainContext
         )
+    }
+
+    @objc func managedObjectContextObjectsDidChange(_ note: Foundation.Notification) {
+        let keys = [NSInsertedObjectsKey, NSUpdatedObjectsKey, NSRefreshedObjectsKey]
+        let changesNotifications = keys.contains { key in
+            (note.userInfo?[key] as? Set<NSManagedObject>)?.contains { $0 is WordPressData.Notification } ?? false
+        }
+        if changesNotifications {
+            notificationsListDidUpdate()
+        }
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
@@ -743,13 +765,17 @@ private extension NotificationsViewController {
         }
 
         resetApplicationBadge()
-        updateLastSeenTime()
+        notificationsBecameVisible()
         reloadResultsControllerIfNeeded()
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
+        // The account-scoped bell state is owned by NotificationActivityService,
+        // which observes the same notification. It keeps a visible list's
+        // visibility, so rebinding here is enough for the new account's content
+        // to be marked seen, whichever observer runs first.
         resetNotifications()
-        viewModel.didChangeDefaultAccount()
+        bindToCurrentAccount()
         resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
@@ -757,16 +783,6 @@ private extension NotificationsViewController {
         }
         reloadResultsController()
         syncNewNotifications()
-    }
-
-    @objc func notificationsWereUpdated(_ note: Foundation.Notification) {
-        // If we're onscreen, don't leave the badge updated behind
-        guard UIApplication.shared.applicationState == .active else {
-            return
-        }
-
-        resetApplicationBadge()
-        updateLastSeenTime()
     }
 
     @objc func significantTimeChange(_ note: Foundation.Notification) {
@@ -1249,6 +1265,8 @@ private extension NotificationsViewController {
         if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
+            // The tab-bar unread state also depends on this flag, so re-render it.
+            activityService.refreshIndicators()
         }
     }
 }
@@ -1841,13 +1859,47 @@ private extension NotificationsViewController {
             }
     }
 
-    func updateLastSeenTime() {
-        guard let note = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification
-        else {
+    /// Notifications became visible: hand the newest observed timestamp to the
+    /// activity service, which clears the bell, clears the icon, and submits seen.
+    func notificationsBecameVisible() {
+        activityService.notificationsBecameVisible(
+            self,
+            accountUUID: boundAccountUUID,
+            newestTimestamp: newestNotificationTimestamp()
+        )
+    }
+
+    /// While the list is visible, hands its newest timestamp to the activity
+    /// service to submit as seen. The context observer that calls this exists
+    /// only while the list is on screen.
+    func notificationsListDidUpdate() {
+        guard UIApplication.shared.applicationState == .active else {
             return
         }
+        activityService.notificationsListDidUpdate(
+            self,
+            accountUUID: boundAccountUUID,
+            newestTimestamp: newestNotificationTimestamp()
+        )
+    }
 
-        viewModel.lastSeenChanged(timestamp: note.timestamp)
+    func bindToCurrentAccount() {
+        boundAccountUUID = (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext))?.uuid
+    }
+
+    /// The newest stored notification timestamp, if any. Ignores the selected
+    /// filter: the backend clears its unseen flag only when the newest
+    /// notification is marked seen.
+    func newestNotificationTimestamp() -> Date? {
+        let request = NSFetchRequest<WordPressData.Notification>(entityName: entityName())
+        request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
+        request.fetchLimit = 1
+        // Not `timestampAsDate`: it substitutes the current date when the stored
+        // string does not parse, which would mark unseen notifications seen.
+        guard let timestamp = (try? mainContext.fetch(request))?.first?.timestamp else {
+            return nil
+        }
+        return Date.dateWithISO8601String(timestamp)
     }
 
     func loadNotification(with noteId: String) -> WordPressData.Notification? {
