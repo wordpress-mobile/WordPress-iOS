@@ -224,6 +224,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
+        SiteStorageAccess.removePinnedPostTypes()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)

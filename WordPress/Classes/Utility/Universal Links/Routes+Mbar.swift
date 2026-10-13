@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 
 /// Handles mbar redirects. These are marketing redirects to URLs that mobile should handle.
 ///
@@ -82,16 +81,20 @@ extension MbarRoute: NavigationAction {
 
         // If we're handling the link in the app, fire off a request to the
         // original URL so that any necessary tracking takes places.
-        AF.request(url)
-            .validate()
-            .responseData { response in
-                switch response.result {
-                case .success:
-                    DDLogInfo("Mbar deep link request successful.")
-                case .failure(let error):
-                    DDLogError("Mbar deep link request failed: \(error.localizedDescription)")
+        if let trackingURL = URL(string: url) {
+            URLSession.shared
+                .dataTask(with: trackingURL) { _, response, error in
+                    let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                    if error == nil, (200..<300).contains(statusCode) {
+                        Loggers.app.info("Mbar deep link request successful.")
+                    } else {
+                        Loggers.app.error(
+                            "Mbar deep link request failed: \(error?.localizedDescription ?? "HTTP \(statusCode)")"
+                        )
+                    }
                 }
-            }
+                .resume()
+        }
 
         router.handle(url: redirectUrl, shouldTrack: true, source: .email(campaign: campaign(from: url)))
     }

@@ -248,22 +248,22 @@ enum UnifiedSupportLocalization {
     static let attachments = NSLocalizedString(
         "com.jetpack.support.unified.reply.attachments",
         value: "Attachments",
-        comment: "Title of the part of the reply form where images and videos are attached."
+        comment: "Title of the part of the reply form where files are attached."
     )
     static let attachmentsDescription = NSLocalizedString(
-        "com.jetpack.support.unified.reply.attachments.description",
-        value: "Add images or videos that show the problem.",
+        "com.jetpack.support.unified.reply.attachments.anyTypeDescription",
+        value: "Add screenshots, videos, or documents that show the problem.",
         comment: "Explains what to attach to a reply to the support team."
     )
-    static let addAttachments = NSLocalizedString(
-        "com.jetpack.support.unified.reply.attachments.add",
-        value: "Add Images or Videos",
-        comment: "Button that picks the images and videos to send with a reply."
+    static let attachFromPhotoLibrary = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.fromPhotoLibrary",
+        value: "Photo Library",
+        comment: "Option that attaches photos and videos from the photo library to a reply."
     )
-    static let addMoreAttachments = NSLocalizedString(
-        "com.jetpack.support.unified.reply.attachments.addMore",
-        value: "Add More",
-        comment: "Button that picks more images and videos to send with a reply."
+    static let attachFromFiles = NSLocalizedString(
+        "com.jetpack.support.unified.reply.attachments.fromFiles",
+        value: "Browse Files",
+        comment: "Option that attaches documents and other files to a reply by browsing the device."
     )
     static let attachmentsPartial = NSLocalizedString(
         "com.jetpack.support.unified.reply.attachments.partial",
@@ -283,7 +283,7 @@ enum UnifiedSupportLocalization {
     static let attachmentsFailedTitle = NSLocalizedString(
         "com.jetpack.support.unified.reply.attachments.failed",
         value: "Unable to attach the file",
-        comment: "Title of the message shown when a picked image or video can't be attached to a reply."
+        comment: "Title of the message shown when a picked file can't be attached to a reply."
     )
     static let removeAttachment = NSLocalizedString(
         "com.jetpack.support.unified.reply.attachments.remove",

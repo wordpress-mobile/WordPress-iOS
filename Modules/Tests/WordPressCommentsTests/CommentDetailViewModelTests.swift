@@ -289,7 +289,7 @@ struct CommentDetailViewModelTests {
         async let appear: Void = vm.onAppear()
         await waitUntil { !service.fetchCommentInvocations.isEmpty }
         service.resolveFetch(callIndex: 0, with: detail)
-        await waitUntil { !service.numberOfRepliesInvocations.isEmpty }
+        await waitUntil { vm.content == .loaded(detail) && !service.numberOfRepliesInvocations.isEmpty }
 
         // The comment is on screen while the count is still in flight, but
         // actions wait for it so a reply can't race a stale count.

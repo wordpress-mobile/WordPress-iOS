@@ -151,7 +151,7 @@ enum PostEditorRouter {
         context.trackAnalytics(for: blog)
         switch destination(for: blog) {
         case .coreREST:
-            presentCoreRESTEditor(blog: blog, postType: .posts, context: context, from: presenter)
+            presentCoreRESTEditor(blog: blog, postType: .post, context: context, from: presenter)
         case .legacy:
             let post = blog.createDraftPost()
             context.applyLegacyValues(to: post)
@@ -172,7 +172,7 @@ enum PostEditorRouter {
         context.trackAnalytics(for: blog)
         switch destination(for: blog) {
         case .coreREST:
-            presentCoreRESTEditor(blog: blog, postType: .pages, context: context, from: presenter)
+            presentCoreRESTEditor(blog: blog, postType: .page, context: context, from: presenter)
         case .legacy:
             let editor = EditPageViewController(
                 blog: blog,
@@ -187,7 +187,7 @@ enum PostEditorRouter {
 
     private static func presentCoreRESTEditor(
         blog: Blog,
-        postType: PinnedPostType,
+        postType: PostTypeReference,
         context: NewPostEditorContext,
         from presenter: UIViewController
     ) {
@@ -212,7 +212,7 @@ enum PostEditorRouter {
 
     static func makeCoreRESTRoute(
         blog: Blog,
-        postType: PinnedPostType,
+        postType: PostTypeReference,
         context: NewPostEditorContext,
         presentingViewController: UIViewController
     ) throws -> CoreRESTPostEditorRoute {

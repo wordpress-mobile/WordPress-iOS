@@ -5,7 +5,7 @@ struct StoreSandboxSecretScreen: View {
 
     @Environment(\.presentationMode) var presentationMode
     @State private var secret: String
-    private let cookieJar: CookieJar
+    private let cookieJar: HTTPCookieStorage
 
     var body: some View {
         NavigationView {
@@ -29,22 +29,16 @@ struct StoreSandboxSecretScreen: View {
                     .domain: ".wordpress.com",
                     .path: "/"
                   ]) {
-                    cookieJar.setCookies([cookie]) {}
+                    cookieJar.setCookie(cookie)
                 }
             }
         }
     }
 
-    init(cookieJar: CookieJar) {
-        var cookies: [HTTPCookie] = []
-
+    init(cookieJar: HTTPCookieStorage) {
         self.cookieJar = cookieJar
 
-        cookieJar.getCookies { jarCookies in
-            cookies = jarCookies
-        }
-
-        if let cookie = cookies.first(where: { $0.name == StoreSandboxSecretScreen.storeSandboxSecretKey }) {
+        if let cookie = cookieJar.cookies?.first(where: { $0.name == StoreSandboxSecretScreen.storeSandboxSecretKey }) {
             _secret = State(initialValue: cookie.value)
         } else {
             _secret = State(initialValue: "")

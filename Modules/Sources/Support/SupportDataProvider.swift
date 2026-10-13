@@ -16,13 +16,6 @@ public enum SupportFormAction {
     case failToCreateBotConversation(Error)
     case failToReplyToBotConversation(Error)
 
-    case viewSupportTicketList
-    case viewSupportTicket(ticketId: UInt64)
-    case createSupportTicket
-    case replyToSupportTicket(ticketId: UInt64)
-    case failToCreateSupportTicket(Error)
-    case failToReplyToSupportTicket(Error)
-
     case viewDiagnostics
     case emptyDiskCache(bytesSaved: Int64)
 }
@@ -33,7 +26,6 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     private let applicationLogProvider: ApplicationLogDataProvider
     private let botConversationDataProvider: BotConversationDataProvider
     private let userDataProvider: CurrentUserDataProvider
-    private let supportConversationDataProvider: SupportConversationDataProvider
     private let diagnosticsDataProvider: DiagnosticsDataProvider
     let mediaHost: MediaHostProtocol
 
@@ -43,7 +35,6 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         applicationLogProvider: ApplicationLogDataProvider,
         botConversationDataProvider: BotConversationDataProvider,
         userDataProvider: CurrentUserDataProvider,
-        supportConversationDataProvider: SupportConversationDataProvider,
         diagnosticsDataProvider: DiagnosticsDataProvider,
         mediaHost: MediaHostProtocol,
         delegate: SupportDelegate? = nil
@@ -51,7 +42,6 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         self.applicationLogProvider = applicationLogProvider
         self.botConversationDataProvider = botConversationDataProvider
         self.userDataProvider = userDataProvider
-        self.supportConversationDataProvider = supportConversationDataProvider
         self.diagnosticsDataProvider = diagnosticsDataProvider
         self.mediaHost = mediaHost
         self.supportDelegate = delegate
@@ -104,61 +94,6 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         }
     }
 
-    // Support Conversations Data Source
-    public func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]> {
-        try self.supportConversationDataProvider.loadSupportConversations()
-    }
-
-    public func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation> {
-        try self.supportConversationDataProvider.loadSupportConversation(id: id)
-    }
-
-    public func replyToSupportConversation(
-        id: UInt64,
-        message: String,
-        user: SupportUser,
-        attachments: [URL]
-    ) async throws -> Conversation {
-        self.userDid(.replyToSupportTicket(ticketId: id))
-
-        do {
-            return try await self.supportConversationDataProvider.replyToSupportConversation(
-                id: id,
-                message: message,
-                user: user,
-                attachments: attachments
-            )
-        } catch {
-            self.userDid(.failToReplyToSupportTicket(error))
-            throw error
-        }
-    }
-
-    public func createSupportConversation(
-        subject: String,
-        message: String,
-        user: SupportUser,
-        attachments: [URL]
-    ) async throws -> Conversation {
-        self.userDid(.createSupportTicket)
-
-        do {
-            return try await self.supportConversationDataProvider.createSupportConversation(
-                subject: subject,
-                message: message,
-                user: user,
-                attachments: attachments
-            )
-        } catch {
-            self.userDid(.failToCreateSupportTicket(error))
-            throw error
-        }
-    }
-
-    var maximumUploadSize: CGFloat {
-        CGFloat(self.supportConversationDataProvider.maximumUploadSize)
-    }
-
     // Application Logs
     public var canShareApplicationLogs: Bool {
         self.applicationLogProvider.canShareApplicationLogs
@@ -191,41 +126,6 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         progress: (@escaping @Sendable (CacheDeletionProgress) async throws -> Void)
     ) async throws {
         try await self.diagnosticsDataProvider.clearDiskCache(progress: progress)
-    }
-}
-
-public protocol SupportFormDataProvider {
-    /// The user-selectable category
-    var areas: [SupportFormArea] { get }
-
-    ///
-    var areasTitle: String { get }
-
-    var formTitle: String { get }
-
-    var formDescription: String { get }
-}
-
-extension SupportFormDataProvider {
-    var areasTitle: String {
-        NSLocalizedString(
-            "I need help with",
-            comment: "Text on the support form to refer to what area the user has problem with."
-        )
-    }
-
-    var formTitle: String {
-        NSLocalizedString(
-            "Let’s get this sorted",
-            comment: "Title to let the user know what do we want on the support screen."
-        )
-    }
-
-    var formDescription: String {
-        NSLocalizedString(
-            "Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon.",
-            comment: "Message info on the support screen."
-        )
     }
 }
 
@@ -280,25 +180,4 @@ public protocol BotConversationDataProvider: Actor {
 
     func sendMessage(message: String, in conversation: BotConversation?) async throws -> BotConversation
     func delete(conversationIds: [UInt64]) async throws
-}
-
-public protocol SupportConversationDataProvider: Actor {
-    nonisolated var maximumUploadSize: UInt64 { get }
-
-    nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]>
-    nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation>
-
-    func replyToSupportConversation(
-        id: UInt64,
-        message: String,
-        user: SupportUser,
-        attachments: [URL]
-    ) async throws -> Conversation
-
-    func createSupportConversation(
-        subject: String,
-        message: String,
-        user: SupportUser,
-        attachments: [URL]
-    ) async throws -> Conversation
 }

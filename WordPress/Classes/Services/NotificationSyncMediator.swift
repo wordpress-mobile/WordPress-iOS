@@ -48,6 +48,12 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///
     fileprivate let maximumNotes = 100
 
+    /// UUID of the account whose credentials this mediator uses, or `nil` when
+    /// unknown (tests). Notes are not tagged with an account, so late results
+    /// from a replaced account would otherwise repopulate the new account's list.
+    ///
+    private let accountUUID: String?
+
     /// Main CoreData Context
     ///
     fileprivate var mainContext: NSManagedObjectContext {
@@ -70,11 +76,13 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     convenience init?() {
         let manager = ContextManager.shared
 
-        guard let dotcomAPI = try? WPAccount.lookupDefaultWordPressComAccount(in: manager.mainContext)?.wordPressComRestApi else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: manager.mainContext),
+            let dotcomAPI = account.wordPressComRestApi
+        else {
             return nil
         }
 
-        self.init(manager: manager, dotcomAPI: dotcomAPI)
+        self.init(manager: manager, dotcomAPI: dotcomAPI, accountUUID: account.uuid)
     }
 
     /// Initializer: Useful for Unit Testing
@@ -82,12 +90,15 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// - Parameters:
     ///     - manager: ContextManager Instance
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
+    ///     - accountUUID: The account `dotcomAPI` belongs to. When set, results are
+    ///       not written once another account becomes the default.
     ///
-    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi) {
+    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi, accountUUID: String?) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }
 
+        self.accountUUID = accountUUID
         contextManager = manager
         restAPI = dotcomAPI
         remote = NotificationSyncServiceRemote(wordPressComRestApi: restAPI)
@@ -112,7 +123,12 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                 return
             }
 
-            self.deleteLocalMissingNotes(from: remoteHashes) {
+            self.deleteLocalMissingNotes(from: remoteHashes) { didDelete in
+                // Another account is the default now, so this sync has nothing left to write.
+                guard didDelete else {
+                    completion?(nil, false)
+                    return
+                }
 
                 self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
                     guard outdatedNoteIds.isEmpty == false else {
@@ -126,7 +142,12 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                             return
                         }
 
-                        self.updateLocalNotes(with: remoteNotes) {
+                        self.updateLocalNotes(with: remoteNotes) { didWrite in
+                            // The write is skipped once another account is the default.
+                            guard didWrite else {
+                                completion?(nil, false)
+                                return
+                            }
                             self.notifyNotificationsWereUpdated()
                             completion?(nil, true)
                         }
@@ -153,7 +174,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                 return
             }
 
-            self.updateLocalNotes(with: remoteNotes) {
+            self.updateLocalNotes(with: remoteNotes) { _ in
                 let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
                 let note = self.mainContext.firstObject(ofType: Notification.self, matching: predicate)
 
@@ -406,21 +427,29 @@ private extension NotificationSyncMediator {
     ///
     /// - Parameters:
     ///     - remoteNotes: Collection of Remote Notes
-    ///     - completion: Callback to be executed on completion
+    ///     - completion: Callback to be executed on completion, with whether the
+    ///       notes were written. They are not once another account is the default.
     ///
-    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
+    func updateLocalNotes(
+        with remoteNotes: [RemoteNotification],
+        completion: ((_ didWrite: Bool) -> Void)? = nil
+    ) {
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager, accountUUID] operationCompletion in
             contextManager.performAndSave({ context in
+                guard Self.isDefaultAccount(accountUUID) else {
+                    return false
+                }
                 for remoteNote in remoteNotes {
                     let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
                     let localNote = context.firstObject(ofType: Notification.self, matching: predicate) ?? context.insertNewObject(ofType: Notification.self)
 
                     localNote.update(with: remoteNote)
                 }
-            }, completion: {
+                return true
+            }, completion: { didWrite in
                 operationCompletion()
                 DispatchQueue.main.async {
-                    completion?()
+                    completion?(didWrite)
                 }
             }, on: .global())
         })
@@ -429,24 +458,48 @@ private extension NotificationSyncMediator {
     /// Deletes the collection of local notifications that cannot be found in a given collection of
     /// remote hashes.
     ///
-    /// - Parameter remoteHashes: Collection of remoteNotifications.
+    /// - Parameters:
+    ///     - remoteHashes: Collection of remoteNotifications.
+    ///     - completion: Callback to be executed on completion, with whether the
+    ///       delete ran. It does not once another account is the default.
     ///
-    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
+    func deleteLocalMissingNotes(
+        from remoteHashes: [RemoteNotification],
+        completion: @escaping ((_ didDelete: Bool) -> Void)
+    ) {
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager, accountUUID] operationCompletion in
             contextManager.performAndSave({ context in
+                // A replaced account's hashes would delete the new account's notes.
+                guard Self.isDefaultAccount(accountUUID) else {
+                    return false
+                }
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
 
                 for orphan in context.allObjects(ofType: Notification.self, matching: predicate) {
                     context.deleteObject(orphan)
                 }
-            }, completion: {
+                return true
+            }, completion: { didDelete in
                 operationCompletion()
                 DispatchQueue.main.async {
-                    completion()
+                    completion(didDelete)
                 }
             }, on: .global())
         })
+    }
+
+    /// Whether `accountUUID` is still the default account. Checked inside the
+    /// write block, so a sync that outlives an account change does not write the
+    /// previous account's notes.
+    ///
+    /// This narrows the race but cannot close it: an account change can still
+    /// land while the block runs, and notes carry no account to filter on.
+    private static func isDefaultAccount(_ accountUUID: String?) -> Bool {
+        guard let accountUUID else {
+            return true
+        }
+        return UserSettings.defaultDotComUUID == accountUUID
     }
 
     /// Updates the Read status, of a given Notification, as specified.

@@ -33,7 +33,10 @@ struct UnifiedSupportErrorMessageTests {
     @Test func detectsCancellations() {
         #expect(CancellationError().isUnifiedSupportCancellation)
         #expect(URLError(.cancelled).isUnifiedSupportCancellation)
+        // Backing out of the file browser, which isn't a failure worth a message
+        #expect(CocoaError(.userCancelled).isUnifiedSupportCancellation)
         #expect(!MockError.failure.isUnifiedSupportCancellation)
         #expect(!UnifiedSupportError.offline.isUnifiedSupportCancellation)
+        #expect(!CocoaError(.fileNoSuchFile).isUnifiedSupportCancellation)
     }
 }

@@ -147,6 +147,58 @@ extension ShareExtensionAbstractViewController {
         present(alertController, animated: true)
     }
 
+    /// Presents an error and then cancels the extension request — used when nothing usable
+    /// could be extracted from the shared content.
+    func presentContentExtractionFailure() {
+        let title = AppLocalizedString(
+            "shareExtension.contentError.title",
+            value: "Unable to load shared content",
+            comment: "Share extension error dialog title, shown when nothing could be read from what the user shared."
+        )
+        let message = AppLocalizedString(
+            "shareExtension.contentError.message",
+            value: "Something went wrong reading what you shared. Please try again.",
+            comment: "Share extension error dialog message, shown when nothing could be read from what the user shared."
+        )
+        let dismiss = AppLocalizedString(
+            "shareExtension.contentError.dismiss",
+            value: "Cancel sharing",
+            comment: "Share extension error dialog dismiss button, which closes the extension."
+        )
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: dismiss, style: .default) { [weak self] _ in
+            self?.cleanUpSharedContainerAndCache()
+            self?.dismissalCompletionBlock?(false)
+        }
+        alertController.addAction(alertAction)
+        present(alertController, animated: true)
+    }
+
+    /// Presents a non-blocking notice that some shared attachments were skipped, then lets the
+    /// user keep editing whatever did load.
+    func presentSkippedAttachmentsNotice() {
+        let title = AppLocalizedString(
+            "shareExtension.partialError.title",
+            value: "Some content was skipped",
+            comment: "Share extension notice title, shown when some — but not all — shared items failed to load."
+        )
+        let message = AppLocalizedString(
+            "shareExtension.partialError.message",
+            value: "One or more shared items could not be loaded and were skipped.",
+            comment: "Share extension notice message, shown when some — but not all — shared items failed to load."
+        )
+        let dismiss = AppLocalizedString(
+            "shareExtension.partialError.dismiss",
+            value: "OK",
+            comment: "Share extension notice dismiss button."
+        )
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: dismiss, style: .default))
+        present(alertController, animated: true)
+    }
+
     func cleanUpSharedContainerAndCache() {
         ShareExtensionAbstractViewController.clearCache()
 

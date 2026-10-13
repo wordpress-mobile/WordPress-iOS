@@ -35,23 +35,6 @@ struct SiteStorage<Value: Codable>: DynamicProperty {
 }
 
 enum SiteStorageAccess {
-    static func read<T: Decodable>(_ type: T.Type, key: String, blog: TaggedManagedObjectID<Blog>) -> T? {
-        let scopedKey = scopedKey(key, blog: blog)
-        guard let data = UserDefaults.standard.data(forKey: scopedKey) else { return nil }
-        return try? JSONDecoder().decode(T.self, from: data)
-    }
-
-    static func write<T: Encodable>(_ value: T, key: String, blog: TaggedManagedObjectID<Blog>) {
-        let scopedKey = scopedKey(key, blog: blog)
-        let data = (try? JSONEncoder().encode(value)) ?? Data()
-        UserDefaults.standard.set(data, forKey: scopedKey)
-    }
-
-    static func exists(key: String, blog: TaggedManagedObjectID<Blog>) -> Bool {
-        let scopedKey = scopedKey(key, blog: blog)
-        return UserDefaults.standard.object(forKey: scopedKey) != nil
-    }
-
     fileprivate static var prefix: String { "site-storage" }
     fileprivate static var separator: String { "|" }
 
@@ -69,6 +52,21 @@ enum SiteStorageAccess {
     ) -> String {
         [prefix, scope, key]
             .joined(separator: separator)
+    }
+}
+
+extension SiteStorageAccess {
+    /// Removes the custom post types that earlier versions pinned to the site menu. The site menu
+    /// has listed every custom post type since 27.4.
+    ///
+    /// TODO: Delete in 27.6, when few users still update from a version that wrote these keys.
+    static func removePinnedPostTypes(from defaults: UserDefaults = .standard) {
+        let keyPrefix = prefix + separator
+        let keySuffix = separator + "pinned-post-types"
+        for key in defaults.dictionaryRepresentation().keys
+        where key.hasPrefix(keyPrefix) && key.hasSuffix(keySuffix) {
+            defaults.removeObject(forKey: key)
+        }
     }
 }
 

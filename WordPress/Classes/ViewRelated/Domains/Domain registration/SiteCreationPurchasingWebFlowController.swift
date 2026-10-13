@@ -181,12 +181,8 @@ final class SiteCreationPurchasingWebFlowController {
             $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
             $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
         }) {
-            cookieStore.getAllCookies { cookies in
-                var newCookies = cookies
-                newCookies.append(storeSandboxCookie)
-                cookieStore.setCookies(newCookies) {
-                    completion(true)
-                }
+            cookieStore.setCookie(storeSandboxCookie) {
+                completion(true)
             }
         } else {
             completion(false)
