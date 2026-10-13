@@ -146,10 +146,11 @@ final class NotificationActivityService: ObservableObject {
         setActivity(false)
 
         // An explicit sign-out or account change (restore == false) clears the
-        // icon; a process restart (restore == true) never does, so a badge iOS is
-        // showing from earlier pushes survives a relaunch.
+        // icon and the previous account's delivered pushes; a process restart
+        // (restore == true) never does, so a badge iOS is showing from earlier
+        // pushes survives a relaunch.
         if !restore {
-            iconBadge.setBadgeCount(0)
+            iconBadge.clearBadgeAndDeliveredPushes()
         }
 
         guard let account = resolver.defaultAccount() else {
@@ -223,13 +224,16 @@ final class NotificationActivityService: ObservableObject {
     // MARK: - Opening Notifications and seen updates
 
     /// The Notifications list `list`, bound to the account identified by
-    /// `accountUUID`, became visible: publish the clear, persist it, request an
-    /// icon clear, and submit the newest observed timestamp as seen.
+    /// `accountUUID`, became visible: clear the icon and delivered pushes,
+    /// publish the bell clear, persist it, and submit the newest observed
+    /// timestamp as seen.
     func notificationsBecameVisible(_ list: AnyObject, accountUUID: String?, newestTimestamp: Date?) {
         resolveAccountIfNeeded()
+        // Not gated on a session: a badge can outlive the account (pushes that
+        // still arrive after a sign-out), and opening Notifications clears it.
+        iconBadge.clearBadgeAndDeliveredPushes()
         guard let session = session(for: accountUUID) else { return }
         visibleLists.insert(ObjectIdentifier(list))
-        iconBadge.setBadgeCount(0)
         session.listBecameVisible(newestTimestamp: newestTimestamp)
     }
 
@@ -258,19 +262,27 @@ final class NotificationActivityService: ObservableObject {
 
     // MARK: - Home-screen icon
 
-    /// Applies a WordPress push badge count. A push processed while Notifications
-    /// is visible in the foreground keeps the icon at zero. When the app is not
-    /// in the foreground the push count is applied as-is, so backgrounding with
-    /// Notifications on screen does not clear a badge iOS just set.
+    /// Applies a WordPress push badge count. A zero from the server means nothing
+    /// is unread, so it also removes the delivered pushes. A push processed while
+    /// Notifications is visible in the foreground keeps the icon at zero without
+    /// touching Notification Center: the push is not presented in the foreground,
+    /// and the list's own appearance already cleared the earlier ones. When the
+    /// app is not in the foreground the push count is applied as-is, so
+    /// backgrounding with Notifications on screen does not clear a badge iOS
+    /// just set.
     func applyPushBadgeCount(_ count: Int) {
+        guard count > 0 else {
+            iconBadge.clearBadgeAndDeliveredPushes()
+            return
+        }
         let suppress = isForeground() && isNotificationsVisible
         iconBadge.setBadgeCount(suppress ? 0 : count)
     }
 
-    /// Requests an icon count of zero (sign-out, disabling notifications, or a
+    /// Clears the icon and delivered pushes (disabling notifications, or a
     /// welcome-notification clear).
     func requestIconClear() {
-        iconBadge.setBadgeCount(0)
+        iconBadge.clearBadgeAndDeliveredPushes()
     }
 
     /// Re-evaluates indicators that also depend on inputs outside this service,
@@ -322,7 +334,8 @@ extension NotificationActivityService {
         }
     }
 
-    /// Clears the home-screen icon badge. Safe to call from non-main-actor code.
+    /// Clears the home-screen icon badge and the delivered pushes. Safe to call
+    /// from non-main-actor code.
     nonisolated static func clearAppIconBadge() {
         Task { @MainActor in shared.requestIconClear() }
     }

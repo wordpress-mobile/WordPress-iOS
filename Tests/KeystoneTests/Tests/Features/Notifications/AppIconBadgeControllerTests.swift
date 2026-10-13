@@ -24,8 +24,18 @@ struct AppIconBadgeControllerTests {
         }
     }
 
-    func makeController(_ setter: FakeSetter) -> AppIconBadgeController {
-        AppIconBadgeController(retryDelay: 0) { setter.set($0, $1) }
+    /// Counts delivered-push removal requests.
+    final class RemovalCounter {
+        private(set) var requests = 0
+        func remove() { requests += 1 }
+    }
+
+    func makeController(_ setter: FakeSetter, removals: RemovalCounter = RemovalCounter()) -> AppIconBadgeController {
+        AppIconBadgeController(
+            retryDelay: 0,
+            setSystemBadgeCount: { setter.set($0, $1) },
+            removeDeliveredPushes: { removals.remove() }
+        )
     }
 
     /// Waits for main-queue hops (completion handling and retries) to land.
@@ -70,6 +80,22 @@ struct AppIconBadgeControllerTests {
         controller.setBadgeCount(0)
         await waitUntil { setter.writes.count == 2 }
         #expect(setter.writes == [0, 0])
+        withExtendedLifetime(controller) {} // completions hold it weakly
+    }
+
+    @Test func clearWritesZeroAndRemovesDeliveredPushesOnce() async {
+        let setter = FakeSetter()
+        let removals = RemovalCounter()
+        let controller = makeController(setter, removals: removals)
+        controller.setBadgeCount(4)
+        #expect(removals.requests == 0) // a plain write leaves Notification Center alone
+
+        controller.clearBadgeAndDeliveredPushes()
+        #expect(removals.requests == 1)
+
+        setter.complete()
+        await waitUntil { setter.writes.count == 2 }
+        #expect(setter.writes == [4, 0])
         withExtendedLifetime(controller) {} // completions hold it weakly
     }
 
