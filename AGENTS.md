@@ -48,15 +48,25 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Accessibility**: Use proper accessibility labels and traits
 - **Localization**: follow best practices from @docs/localization.md. For how strings flow through GlotPress and the AI translation tier (the `human ?? AI ?? English` floor), see @docs/localization-pipeline.md.
 
-## Libraries
+## Build Troubleshooting
 
-### wordpress-rs
+Stale build artifacts in DerivedData can cause the build errors below. Neither error means the source is wrong.
+
+### Modified wordpress-rs header
 
 The `wordpress-rs` Swift package provides the `WordPressAPI` and `WordPressAPIInternal` modules and includes an xcframework target. Builds occasionally fail with an error like:
 
 > File '/path/to/libwordpressFFI/wp_api_uniffi.h' has been modified since the module file '/path/to/libwordpressFFI-[random].pcm' was built.
 
 To recover, delete all `*.pcm` files in the directory reported by the error and rebuild.
+
+### Missing member in a `Modules` package
+
+DerivedData can hold two copies of a `Modules` package module: `Build/Products/Debug-iphonesimulator/<Module>.swiftmodule` (with `<Module>.o`) and `Build/Products/Debug-iphonesimulator/PackageFrameworks/<Module>.framework`. With Xcode 27, after you switch to a branch that changes a module's API, the build can use the stale copy and fail with an error like:
+
+> type 'BlogFeature' has no member 'applicationPasswords'
+
+Other branches can fail the same way, so the error can look pre-existing. To recover, delete the top-level `<Module>.swiftmodule` and `<Module>.o` of the module named in the error, then rebuild. A full DerivedData wipe is not necessary.
 
 ## Coding Standards
 - Before writing code, read and follow the [best practice guidelines](./docs/best-practices.md).

@@ -1263,25 +1263,38 @@ private extension ShareExtensionEditorViewController {
         }
 
         ShareExtractor(extensionContext: extensionContext)
-            .loadShare { [weak self] share in
-                self?.setTitleText(share.title)
-                self?.richTextView.setHTML(share.combinedContentHTML)
+            .loadShare { [weak self] outcome in
+                guard let self else {
+                    return
+                }
+
+                guard !outcome.extractionDidFail else {
+                    self.presentContentExtractionFailure()
+                    return
+                }
+
+                let share = outcome.share
+                self.setTitleText(share.title)
+                self.richTextView.setHTML(share.combinedContentHTML)
 
                 share.images.forEach({ extractedImage in
                     if extractedImage.insertionState == .requiresInsertion {
-                        self?.insertImageAttachment(with: extractedImage.url)
+                        self.insertImageAttachment(with: extractedImage.url)
                     } else {
-                        self?.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: extractedImage.url)
+                        self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: extractedImage.url)
                     }
                 })
 
                 // Lets an extra <p> at the bottom to make editing a little easier
-                if let currentHTML = self?.richTextView.getHTML() {
-                    self?.richTextView.setHTML(currentHTML + "<p></p>")
-                }
+                let currentHTML = self.richTextView.getHTML()
+                self.richTextView.setHTML(currentHTML + "<p></p>")
 
                 // Clear out the extension context after loading it once. We don't need it anymore.
-                self?.context = nil
+                self.context = nil
+
+                if !outcome.failures.isEmpty {
+                    self.presentSkippedAttachmentsNotice()
+                }
         }
     }
 }

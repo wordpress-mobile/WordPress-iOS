@@ -28,12 +28,18 @@ class MockCookieJar: HTTPCookieStorage {
 }
 
 fileprivate func wordPressCookie(username: String, domain: String) -> HTTPCookie {
+    // Mirrors the real cookie format: WordPress sets `username|expiration|token|hmac`
+    // and PHP's `setcookie()` URL-encodes the value, so `|` arrives as `%7C` and the
+    // username itself is percent-encoded (with spaces as `+`).
+    let encodedUsername = username
+        .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?
+        .replacingOccurrences(of: "%20", with: "+") ?? username
     return HTTPCookie(properties: [
         .domain: domain,
         .path: "/",
         .secure: true,
         .name: "wordpress_logged_in",
-        .value: "\(username)%00000"
+        .value: "\(encodedUsername)%7C00000"
     ])!
 }
 

@@ -2,6 +2,14 @@ import UIKit
 import WordPressData
 import WordPressShared
 
+extension Foundation.Notification.Name {
+    /// Posted when PingHub reports a notification change or reconnects. The
+    /// change need not produce a full-sync update: a single-note sync never
+    /// posts one, and a reconnect with unchanged notes posts nothing. Observers
+    /// that track notification activity listen for this as well.
+    static let pingHubActivity = Foundation.Notification.Name("PingHubActivityNotification")
+}
+
 // This is added as a top level function to avoid cluttering PingHubManager.init
 private func defaultAccountToken() -> String? {
     guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
@@ -231,6 +239,7 @@ extension PingHubManager: PinghubClientDelegate {
         state.connected = true
         // Trigger a full sync, since we might have missed notes while PingHub was disconnected
         NotificationSyncMediator()?.sync()
+        NotificationCenter.default.post(name: .pingHubActivity, object: nil)
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
@@ -254,6 +263,7 @@ extension PingHubManager: PinghubClientDelegate {
             DDLogInfo("PingHub push, syncing note \(noteID)")
             mediator.syncNote(with: String(noteID))
         }
+        NotificationCenter.default.post(name: .pingHubActivity, object: nil)
     }
 
     func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {

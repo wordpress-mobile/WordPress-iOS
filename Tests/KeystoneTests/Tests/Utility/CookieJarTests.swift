@@ -46,6 +46,43 @@ class CookieJarTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    func testHasCookieMatchingUsernameWithEncodedCharacters() {
+        // Usernames containing characters that PHP URL-encodes (e.g. `@` in
+        // `user@example.com`) arrive percent-encoded in the cookie value.
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/26115
+        mockCookieJar.setWordPressCookie(username: "user@example.com", domain: "example.com")
+
+        let expectation = self.expectation(description: "hasCookie completion called")
+        cookieJar.hasWordPressSelfHostedAuthCookie(for: URL(string: "https://example.com/")!, username: "user@example.com") { matches in
+            XCTAssertTrue(matches)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testHasCookieMatchingUsernameWithSpaces() {
+        // PHP's urlencode turns spaces into `+`.
+        mockCookieJar.setWordPressCookie(username: "john doe", domain: "example.com")
+
+        let expectation = self.expectation(description: "hasCookie completion called")
+        cookieJar.hasWordPressSelfHostedAuthCookie(for: URL(string: "https://example.com/")!, username: "john doe") { matches in
+            XCTAssertTrue(matches)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testHasCookieNotMatchingDifferentUsernameWithEncodedCharacters() {
+        mockCookieJar.setWordPressCookie(username: "user@example.com", domain: "example.com")
+
+        let expectation = self.expectation(description: "hasCookie completion called")
+        cookieJar.hasWordPressSelfHostedAuthCookie(for: URL(string: "https://example.com/")!, username: "other@example.com") { matches in
+            XCTAssertFalse(matches)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     func testRemoveCookies() {
         addCookies()
 

@@ -38,10 +38,6 @@ class AuthenticationService {
                     cookieJar.setCookies(cookies) {
                         success()
                     }
-
-                    cookieJar.hasWordPressSelfHostedAuthCookie(for: loginURL, username: username) { hasCookie in
-                        print("Has cookie: \(hasCookie)")
-                    }
                 }) { error in
                     // Make sure this error scenario isn't silently ignored.
                     WordPressAppDelegate.crashLogging?.logError(error)

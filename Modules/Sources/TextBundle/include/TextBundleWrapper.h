@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, TextBundleError)
  @param error If an error occurs, upon return contains an NSError object that describes the problem. Pass NULL if you do not want error information.
  @return A new TextBundleWrapper for the content at url.
  */
-- (instancetype)initWithContentsOfURL:(NSURL *)url options:(NSFileWrapperReadingOptions)options error:(NSError **)error;
+- (nullable instancetype)initWithContentsOfURL:(NSURL *)url options:(NSFileWrapperReadingOptions)options error:(NSError **)error;
 
 
 /**
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, TextBundleError)
  @param error If an error occurs, upon return contains an NSError object that describes the problem. Pass NULL if you do not want error information.
  @return A new TextBundleWrapper for the content of the fileWrapper.
  */
-- (instancetype)initWithFileWrapper:(NSFileWrapper *)fileWrapper error:(NSError **)error;
+- (nullable instancetype)initWithFileWrapper:(NSFileWrapper *)fileWrapper error:(NSError **)error;
 
 
 /**
@@ -122,7 +122,7 @@ typedef NS_ENUM(NSInteger, TextBundleError)
  @param filename A filename in the asset/ folder
  @return A NSFilewrapper represeting filename or nil it the file doesn't exist
  */
-- (NSFileWrapper *)fileWrapperForAssetFilename:(NSString *)filename;
+- (nullable NSFileWrapper *)fileWrapperForAssetFilename:(NSString *)filename;
 
 
 

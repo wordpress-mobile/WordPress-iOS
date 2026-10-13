@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import WordPressData
 @testable import WordPress
 
 // MARK: - NotificationSyncMediatorTests
@@ -26,7 +27,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         super.setUp()
 
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
-        mediator = NotificationSyncMediator(manager: contextManager, dotcomAPI: dotcomAPI)
+        mediator = NotificationSyncMediator(manager: contextManager, dotcomAPI: dotcomAPI, accountUUID: nil)
     }
 
     override func tearDown() {
@@ -57,6 +58,87 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         }
 
         wait(for: [expect], timeout: timeout)
+    }
+
+    /// Verifies that a sync bound to an account that is no longer the default does not write its notes, so a
+    /// late result from a replaced account cannot repopulate the new account's list, and does not report new data.
+    ///
+    func testSyncDoesNotWriteNotesOnceItsAccountIsReplaced() {
+        let result = sync(boundTo: "account-A", defaultAccount: "account-B")
+        XCTAssertEqual(result.noteCount, 0)
+        XCTAssertFalse(result.hasNewData)
+    }
+
+    /// Verifies that a sync bound to an account that is no longer the default does not delete local notes, so a
+    /// late result from a replaced account cannot purge the new account's list.
+    ///
+    func testSyncDoesNotDeleteNotesOnceItsAccountIsReplaced() {
+        let noteID = "new-account-note"
+        mainContext.insertNewObject(ofType: Notification.self).notificationId = noteID
+        contextManager.saveContextAndWait(mainContext)
+
+        _ = sync(boundTo: "account-A", defaultAccount: "account-B")
+
+        let predicate = NSPredicate(format: "notificationId == %@", noteID)
+        XCTAssertNotNil(mainContext.firstObject(ofType: Notification.self, matching: predicate))
+    }
+
+    /// Verifies that a sync bound to the current default account still writes its notes.
+    ///
+    func testSyncWritesNotesForTheDefaultAccount() {
+        let result = sync(boundTo: "account-A", defaultAccount: "account-A")
+        XCTAssertEqual(result.noteCount, 1)
+        XCTAssertTrue(result.hasNewData)
+    }
+
+    /// Verifies that syncing a single note bound to an account that is no longer the default does not write it.
+    /// Unlike `sync`, `syncNote` reaches the write without going through the delete first.
+    ///
+    func testSyncNoteDoesNotWriteOnceItsAccountIsReplaced() {
+        let previousDefault = UserSettings.defaultDotComUUID
+        UserSettings.defaultDotComUUID = "account-B"
+        defer { UserSettings.defaultDotComUUID = previousDefault }
+
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
+        HTTPStubs.stubRequest(forEndpoint: "notifications/", withFileAtPath: stubPath)
+        let mediator = NotificationSyncMediator(
+            manager: contextManager,
+            dotcomAPI: dotcomAPI,
+            accountUUID: "account-A"
+        )!
+
+        let expect = expectation(description: "Sync")
+        mediator.syncNote(with: "2674124016") { error, note in
+            XCTAssertNil(error)
+            XCTAssertNil(note)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+        XCTAssertEqual(mainContext.countObjects(ofType: Notification.self), 0)
+    }
+
+    private func sync(boundTo accountUUID: String, defaultAccount: String) -> (noteCount: Int, hasNewData: Bool) {
+        let previousDefault = UserSettings.defaultDotComUUID
+        UserSettings.defaultDotComUUID = defaultAccount
+        defer { UserSettings.defaultDotComUUID = previousDefault }
+
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
+        HTTPStubs.stubRequest(forEndpoint: "notifications/", withFileAtPath: stubPath)
+        let mediator = NotificationSyncMediator(
+            manager: contextManager,
+            dotcomAPI: dotcomAPI,
+            accountUUID: accountUUID
+        )!
+
+        let expect = expectation(description: "Sync")
+        var hasNewData = false
+        mediator.sync { error, newData in
+            XCTAssertNil(error)
+            hasNewData = newData
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+        return (mainContext.countObjects(ofType: Notification.self), hasNewData)
     }
 
     /// Verifies that the Sync call, when called repeatedly, won't duplicate our local dataset.
