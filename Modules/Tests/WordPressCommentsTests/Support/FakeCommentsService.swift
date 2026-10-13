@@ -30,6 +30,9 @@ final class FakeCommentsService: CommentsServiceProtocol {
     var numberOfRepliesResult: Result<Int, Error>?
     private(set) var numberOfRepliesInvocations: [Int64] = []
 
+    var createReplyResult: Result<CommentDetail, Error>?
+    private(set) var createReplyInvocations: [(postID: Int64, parentID: Int64, content: String)] = []
+
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         requests.append((filter, nextPage))
         guard !queuedResults.isEmpty else {
@@ -77,6 +80,12 @@ final class FakeCommentsService: CommentsServiceProtocol {
         numberOfRepliesInvocations.append(id)
         guard let numberOfRepliesResult else { throw FakeServiceError() }
         return try numberOfRepliesResult.get()
+    }
+
+    func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail {
+        createReplyInvocations.append((postID, parentID, content))
+        guard let createReplyResult else { throw FakeServiceError() }
+        return try createReplyResult.get()
     }
 }
 

@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import WordPressAPI
 @testable import WordPressComments
 
 @MainActor
@@ -449,5 +450,71 @@ struct CommentsListViewModelEventTests {
         await viewModel.onAppear()
         #expect(viewModel.state == .loaded)
         #expect(viewModel.items.map(\.id) == [1])
+    }
+
+    // MARK: - Reply created: inserts at the top of tabs matching the reply's status
+
+    @Test(arguments: [
+        (CommentStatus.approved, [CommentsListFilter.approved, .all]),
+        (.hold, [.pending, .all])
+    ])
+    func replyCreatedInsertsAtTopOfTabsMatchingItsStatus(
+        status: CommentStatus,
+        matchingFilters: [CommentsListFilter]
+    ) async {
+        for filter in CommentsListFilter.allCases {
+            let service = FakeCommentsService()
+            service.queuedResults = [.success(makePage(items: [makeItem(id: 1, status: status)], hasNext: false))]
+            let viewModel = CommentsListViewModel(filter: filter, service: service)
+            await viewModel.onAppear()
+
+            viewModel.apply(.replyCreated(parentID: 1, reply: makeItem(id: 99, status: status)))
+
+            #expect(viewModel.state == .loaded)
+            let expectedIDs: [Int64] = matchingFilters.contains(filter) ? [99, 1] : [1]
+            #expect(viewModel.items.map(\.id) == expectedIDs)
+        }
+    }
+
+    @Test func replyCreatedResolvesPostTitleWithoutRefetch() async {
+        let service = FakeCommentsService()
+        service.queuedResults = [.success(makePage(items: [makeItem(id: 1, post: 5)], hasNext: true))]
+        var appended: [[Int64]] = []
+        let viewModel = CommentsListViewModel(
+            filter: .all,
+            service: service,
+            onItemsAppended: { items in
+                appended.append(items.map(\.postID))
+            }
+        )
+        await viewModel.onAppear()
+
+        viewModel.apply(.replyCreated(parentID: 1, reply: makeItem(id: 99, post: 7)))
+
+        // Still loaded (no stale mark, so no reload on return) and the
+        // inserted row's post title resolves like a fetched one.
+        #expect(viewModel.state == .loaded)
+        #expect(appended == [[5], [7]])
+    }
+
+    @Test func replyCreatedAlreadyPresentIsIgnored() async {
+        let service = FakeCommentsService()
+        service.queuedResults = [.success(makePage(items: [makeItem(id: 99), makeItem(id: 1)], hasNext: false))]
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+        await viewModel.onAppear()
+
+        viewModel.apply(.replyCreated(parentID: 1, reply: makeItem(id: 99)))
+
+        #expect(viewModel.items.map(\.id) == [99, 1])
+    }
+
+    @Test func replyCreatedBeforeLoadIsIgnored() async {
+        let service = FakeCommentsService()
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+
+        viewModel.apply(.replyCreated(parentID: 1, reply: makeItem(id: 99)))
+
+        #expect(viewModel.state == .idle)
+        #expect(viewModel.items.isEmpty)
     }
 }

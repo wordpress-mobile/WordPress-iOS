@@ -39,6 +39,7 @@ struct CommentsDetailRouterTests {
             service: FakeCommentsService(),
             capabilities: capabilities,
             coordinator: CommentsModerationCoordinator(service: FakeCommentsService()),
+            draftStore: FakeCommentDraftStore(),
             titleResolver: PostTitleResolver(fetcher: { _ in .init(titles: [:]) }),
             tracker: nil,
             noticePresenter: FakeNoticePresenter(),

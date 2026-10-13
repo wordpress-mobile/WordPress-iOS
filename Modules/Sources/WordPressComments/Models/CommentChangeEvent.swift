@@ -6,6 +6,9 @@ import Foundation
 enum CommentChangeEvent: Equatable, Sendable {
     case statusChanged(id: Int64, to: CommentListItem.Status)
     case deleted(id: Int64)
+    /// A reply was created under `parentID`. Loaded tabs matching the reply's
+    /// own status (not the parent's) insert the row at the top.
+    case replyCreated(parentID: Int64, reply: CommentListItem)
 }
 
 extension CommentChangeEvent {
@@ -15,6 +18,7 @@ extension CommentChangeEvent {
         switch self {
         case .statusChanged(let id, _): id
         case .deleted(let id): id
+        case .replyCreated(let parentID, _): parentID
         }
     }
 }
