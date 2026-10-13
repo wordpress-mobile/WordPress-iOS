@@ -71,6 +71,11 @@ struct NotificationActivityServiceTests {
         private(set) var counts: [Int] = []
         var last: Int? { counts.last }
         func setBadgeCount(_ count: Int) { counts.append(count) }
+        private(set) var deliveredRemovalCount = 0
+        func clearBadgeAndDeliveredPushes() {
+            setBadgeCount(0)
+            deliveredRemovalCount += 1
+        }
         private(set) var retryCount = 0
         func retryPendingWrite() { retryCount += 1 }
     }
@@ -456,6 +461,42 @@ struct NotificationActivityServiceTests {
         await settle(f)
 
         #expect(f.icon.retryCount == 1)
+    }
+
+    @Test func explicitClearsAlsoRemoveDeliveredPushes() async {
+        // Opening Notifications, a server zero, and signing out remove the
+        // delivered pushes, as the deprecated setter did. A push count the app
+        // suppresses to zero does not.
+        let f = await started()
+        #expect(f.icon.deliveredRemovalCount == 0) // launch leaves them alone
+
+        openList(f, newestTimestamp: nil)
+        #expect(f.icon.deliveredRemovalCount == 1)
+
+        f.service.applyPushBadgeCount(9)
+        #expect(f.icon.last == 0)
+        #expect(f.icon.deliveredRemovalCount == 1)
+
+        f.service.applyPushBadgeCount(0)
+        #expect(f.icon.deliveredRemovalCount == 2)
+
+        f.switchAccount(to: nil)
+        await settle(f)
+        #expect(f.icon.deliveredRemovalCount == 3)
+    }
+
+    @Test func openingNotificationsWhileSignedOutStillClears() async {
+        // A badge can outlive the account (pushes that still arrive after a
+        // sign-out), and opening Notifications is how the user clears it.
+        let f = await started()
+        f.switchAccount(to: nil)
+        await settle(f)
+        let removalsBefore = f.icon.deliveredRemovalCount
+
+        f.service.notificationsBecameVisible(f.list, accountUUID: nil, newestTimestamp: nil)
+
+        #expect(f.icon.last == 0)
+        #expect(f.icon.deliveredRemovalCount == removalsBefore + 1)
     }
 
     // MARK: - Seen retries

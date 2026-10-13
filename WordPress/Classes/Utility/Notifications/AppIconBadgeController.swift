@@ -4,11 +4,18 @@ import UserNotifications
 
 /// Writes the home-screen app icon badge through the supported UserNotifications
 /// API (`setBadgeCount`). Replaces the deprecated `applicationIconBadgeNumber`
-/// setter.
+/// setter, which also emptied Notification Center when it took the badge to
+/// zero; `setBadgeCount(0)` leaves delivered notifications alone, so that half
+/// is a separate request here.
 protocol AppIconBadgeWriting {
     /// Requests the icon badge show `count`, coalescing to the latest requested
     /// value so a slow older write cannot restore an earlier one.
     func setBadgeCount(_ count: Int)
+
+    /// Requests an icon count of zero and removes the delivered push
+    /// notifications from Notification Center. Local notifications such as
+    /// blogging reminders stay.
+    func clearBadgeAndDeliveredPushes()
 
     /// Retries a retained request whose automatic retries ran out, with a fresh
     /// retry budget. Does nothing when no request is waiting.
@@ -23,6 +30,7 @@ final class AppIconBadgeController: AppIconBadgeWriting {
     typealias BadgeCountSetter = (_ count: Int, _ completion: @escaping (Error?) -> Void) -> Void
 
     private let setSystemBadgeCount: BadgeCountSetter
+    private let removeDeliveredPushes: () -> Void
     private var isWriting = false
     // The count waiting to be written, if any. Every `setBadgeCount` issues a
     // real write: the controller does not track the OS badge state, because iOS
@@ -37,16 +45,25 @@ final class AppIconBadgeController: AppIconBadgeWriting {
         retryDelay: TimeInterval = 2,
         setSystemBadgeCount: @escaping BadgeCountSetter = { count, completion in
             UNUserNotificationCenter.current().setBadgeCount(count) { completion($0) }
-        }
+        },
+        removeDeliveredPushes: @escaping () -> Void = AppIconBadgeController.removeDeliveredPushesFromNotificationCenter
     ) {
         self.retryDelay = retryDelay
         self.setSystemBadgeCount = setSystemBadgeCount
+        self.removeDeliveredPushes = removeDeliveredPushes
     }
 
     func setBadgeCount(_ count: Int) {
         pendingCount = max(0, count)
         retryCount = 0 // A fresh intent gets a full retry budget.
         pump()
+    }
+
+    func clearBadgeAndDeliveredPushes() {
+        setBadgeCount(0)
+        // Not retried: unlike the badge, nothing applies a push behind the
+        // controller's back between the request and the next explicit clear.
+        removeDeliveredPushes()
     }
 
     func retryPendingWrite() {
@@ -89,6 +106,22 @@ final class AppIconBadgeController: AppIconBadgeWriting {
         retryCount += 1
         DispatchQueue.main.asyncAfter(deadline: .now() + retryDelay) { [weak self] in
             self?.pump()
+        }
+    }
+
+    /// Every push arrives through the device token registered for the signed-in
+    /// WordPress.com account, so a push trigger is what identifies the account's
+    /// notifications. Local notifications are tied to sites, which can outlive
+    /// the account (self-hosted sites survive a WordPress.com sign-out), so they
+    /// are not removed.
+    private static func removeDeliveredPushesFromNotificationCenter() {
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications { delivered in
+            let pushes = delivered.filter { $0.request.trigger is UNPushNotificationTrigger }
+            guard !pushes.isEmpty else {
+                return
+            }
+            center.removeDeliveredNotifications(withIdentifiers: pushes.map(\.request.identifier))
         }
     }
 }
