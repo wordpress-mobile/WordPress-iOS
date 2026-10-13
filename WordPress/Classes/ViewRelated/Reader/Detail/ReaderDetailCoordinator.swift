@@ -1,7 +1,6 @@
 import AsyncImageKit
 import Foundation
 import SafariServices
-import SwiftUI
 import WordPressData
 import WordPressReader
 import WordPressShared
@@ -848,15 +847,8 @@ extension ReaderDetailCoordinator: ReaderPostHeaderViewDelegate {
     }
 
     private func showAuthorProfile() {
-        guard let post else { return }
-        let viewModel = ReaderUserProfileViewModel(post: post)
-        let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
-        let navigationVC = UINavigationController(rootViewController: profileVC)
-        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak profileVC] _ in
-            profileVC?.presentingViewController?.dismiss(animated: true)
-        })
-        navigationVC.sheetPresentationController?.detents = [.medium()]
-        viewController?.present(navigationVC, animated: true)
+        guard let post, let viewController else { return }
+        ReaderUserProfilePresenter.present(ReaderUserProfileViewModel(post: post), from: viewController)
     }
 }
 
