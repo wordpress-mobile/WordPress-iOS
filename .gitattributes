@@ -1,4 +1,4 @@
 RELEASE-NOTES.txt merge=union
 *.strings diff=localizablestrings
 
-.configure-files/*.enc binary
+.a8c-secrets/*.age binary
