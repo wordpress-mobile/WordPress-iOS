@@ -15,18 +15,33 @@ steps:
   - group: "🛠 Prototype Builds"
     key: prototype_builds_group
     steps:
+      - input: Create WordPress Prototype Build?
+        prompt: Build and share this WordPress commit via Firebase App Distribution?
+        key: wordpress_prototype_triggered
+        if: build.pull_request.id != null
+        # Unrequested prototypes must not keep the GitHub build status pending.
+        blocked_state: passed
+
       - label: "🛠 WordPress Prototype Build"
+        depends_on: wordpress_prototype_triggered
         command: ".buildkite/commands/prototype-build-wordpress.sh"
         plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
+        if: build.pull_request.id != null
         notify:
           - github_commit_status:
               context: "WordPress Prototype Build"
 
+      - input: Create Jetpack Prototype Build?
+        prompt: Build and share this Jetpack commit via Firebase App Distribution?
+        key: jetpack_prototype_triggered
+        if: build.pull_request.id != null
+        blocked_state: passed
+
       - label: "🛠 Jetpack Prototype Build"
+        depends_on: jetpack_prototype_triggered
         command: ".buildkite/commands/prototype-build-jetpack.sh"
         plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
+        if: build.pull_request.id != null
         notify:
           - github_commit_status:
               context: "Jetpack Prototype Build"
@@ -191,10 +206,10 @@ steps:
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
     command: .buildkite/commands/upload-claude-analysis.sh
-    # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
+    # Optional prototypes must not prevent analysis of automatic build/test failures.
     depends_on:
       - linters_group
-      - prototype_builds_group
+      - build_jetpack
       - unit_tests_group
     allow_dependency_failure: true
     agents:
