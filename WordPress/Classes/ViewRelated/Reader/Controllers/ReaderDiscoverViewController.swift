@@ -15,8 +15,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private let tags: ManagedObjectsObserver<ReaderTagTopic>
     private let viewContext: NSManagedObjectContext
     private var cancellables: [AnyCancellable] = []
-    private let notificationsButtonViewModel = NotificationsButtonViewModel()
-    private var notificationsButtonCancellable: AnyCancellable?
+    private let notificationsBarButton = ReaderNotificationsBarButton()
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
@@ -61,18 +60,26 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         setupNotificationsBarButtonItem()
     }
 
+    /// The bell for the current layout. The tap reads it too, so it acts on the layout the
+    /// bell is shown in.
+    private var notificationsBell: ReaderNotificationsBell {
+        ReaderNotificationsBell(
+            showsPopoverInRegularWidth: true,
+            horizontalSizeClass: traitCollection.horizontalSizeClass
+        )
+    }
+
     private func setupNotificationsBarButtonItem() {
-        notificationsButtonCancellable = nil
-        if traitCollection.horizontalSizeClass == .regular {
-            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
-                guard let self else { return }
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
-            }
-        }
+        let item = notificationsBarButton.makeItem(
+            for: notificationsBell,
+            target: self,
+            action: #selector(buttonShowNotificationsTapped)
+        )
+        navigationItem.rightBarButtonItems = item.map { [$0] }
     }
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
-        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
+        notificationsBell.open(from: self, sourceItem: sender)
     }
 
     private func setupHeaderView() {

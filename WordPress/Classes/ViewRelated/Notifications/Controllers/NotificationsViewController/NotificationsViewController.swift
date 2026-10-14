@@ -147,7 +147,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: - View Lifecycle
 
-    /// Creates the list shown by the app's navigation: the tab bar, the iPad sidebar, and the popover.
+    /// Creates the list shown by the app's navigation: the tab bar, the iPad sidebar, the popover,
+    /// and the Reader bell.
     @objc static func makeForAppNavigation() -> NotificationsViewController {
         let notificationsVC = Notifications.instantiateInitialViewController()
         notificationsVC.scope = .forAppNavigation()
@@ -276,7 +277,11 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
-        registerUserActivity()
+        // The searchable "Notifications" activity opens the account-level list, which a
+        // Reader notifications list is not.
+        if scope == .all {
+            registerUserActivity()
+        }
 
         markWelcomeNotificationAsSeenIfNeeded()
 
@@ -521,7 +526,8 @@ private extension NotificationsViewController {
 
     func setupNavigationBar() {
         if !isReaderAppModeEnabled {
-            navigationController?.navigationBar.prefersLargeTitles = false
+            // Only the list's own item: the Reader bell pushes the list onto Reader's stack,
+            // and turning off the bar's large titles would remove them from Reader's screens too.
             navigationItem.largeTitleDisplayMode = .never
         }
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
