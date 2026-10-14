@@ -1,6 +1,8 @@
 import XCTest
-import WordPressData
+import OHHTTPStubs
+import OHHTTPStubsSwift
 @testable import WordPress
+@testable import WordPressData
 
 final class NotificationsViewControllerTests: XCTestCase {
 
@@ -13,12 +15,18 @@ final class NotificationsViewControllerTests: XCTestCase {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         utility = NotificationUtility(coreDataStack: contextManager)
         controller = NotificationsViewController.loadFromStoryboard()
+        stub(condition: isHost("public-api.wordpress.com")) { _ in
+            HTTPStubsResponse(jsonObject: ["success": true], statusCode: 200, headers: nil)
+        }
     }
 
     override func tearDownWithError() throws {
         controller = nil
         contextManager = nil
         utility = nil
+        UserSettings.defaultDotComUUID = nil
+        HTTPStubs.removeAllStubs()
+        FeatureFlagOverrideStore().removeOverride(for: FeatureFlag.readerInWordPressApp)
     }
 
     func testResetNotificationsWhenAccountChange() throws {
@@ -74,12 +82,120 @@ final class NotificationsViewControllerTests: XCTestCase {
         // The fixture's timestamp, 2015-03-28T00:23:41+00:00, in Unix seconds.
         XCTAssertEqual(fixture.remote.seenTimestamps, [Date(timeIntervalSince1970: 1_427_502_221)])
     }
+
+    // MARK: - Reader scope
+
+    func testReaderScopeShowsAllAndUnreadFilters() {
+        // Given
+        controller.scope = .reader
+
+        // When
+        controller.loadViewIfNeeded()
+
+        // Then
+        XCTAssertEqual(controller.filterTabBar.items.map(\.title), ["All", "Unread"])
+    }
+
+    func testAllScopeShowsEveryFilter() {
+        // When
+        controller.loadViewIfNeeded()
+
+        // Then
+        XCTAssertEqual(controller.filterTabBar.items.count, 5)
+    }
+
+    func testReaderScopeMenuOffersMarkAllAsReadOnly() throws {
+        // Given
+        signInToWordPressDotCom()
+        _ = try utility.loadNewPostNotification()
+        controller.scope = .reader
+
+        // When
+        controller.loadViewIfNeeded()
+
+        // Then
+        XCTAssertEqual(controller.makeMoreMenuElements().map(\.title), ["Mark All As Read"])
+    }
+
+    func testAllScopeMenuOffersMarkAllAsReadAndSettings() throws {
+        // Given
+        signInToWordPressDotCom()
+        _ = try utility.loadNewPostNotification()
+
+        // When
+        controller.loadViewIfNeeded()
+
+        // Then
+        XCTAssertEqual(controller.makeMoreMenuElements().map(\.title), ["Mark All As Read", "Notification Settings"])
+    }
+
+    func testReaderScopeUnreadFilterShowsUnreadReaderNotifications() throws {
+        // Given
+        let newPost = try utility.loadNewPostNotification() // unread
+        _ = try utility.loadMentionMatchNotification() // read
+        let commentLike = try utility.loadCommentLikeNotification() // unread
+        _ = try utility.loadLikeNotification() // unread, not Reader-related
+        controller.scope = .reader
+        controller.loadViewIfNeeded()
+
+        // When
+        controller.filterTabBar.setSelectedIndex(1)
+        controller.selectedFilterDidChange(controller.filterTabBar)
+
+        // Then
+        XCTAssertEqual(fetchNotifications(matching: controller.predicateForFetchRequest()), [newPost, commentLike])
+    }
+
+    func testReaderScopeMarkAllAsReadMarksOnlyReaderNotifications() throws {
+        // Given
+        signInToWordPressDotCom()
+        let newPost = try utility.loadNewPostNotification()
+        let like = try utility.loadLikeNotification()
+        XCTAssertFalse(newPost.read)
+        XCTAssertFalse(like.read)
+        controller.scope = .reader
+        controller.loadViewIfNeeded()
+
+        // When
+        controller.markAllAsRead()
+
+        // Then
+        let isNewPostRead = keyValueObservingExpectation(for: newPost, keyPath: "read", expectedValue: true)
+        wait(for: [isNewPostRead], timeout: 2)
+        XCTAssertFalse(like.read)
+    }
+
+    func testAppNavigationListsAreReaderScopedWhenFlagIsOn() {
+        // Given
+        FeatureFlagOverrideStore().override(FeatureFlag.readerInWordPressApp, withValue: true)
+
+        // Then
+        XCTAssertEqual(NotificationsViewController.makeForAppNavigation().scope, .reader)
+        XCTAssertEqual(NotificationsSplitViewContent().notificationsViewController.scope, .reader)
+        XCTAssertEqual(WPTabBarController(staticScreens: false).notificationsViewController?.scope, .reader)
+    }
 }
 
 private extension NotificationsViewControllerTests {
 
     enum Constants {
         static let entityName = "Notification"
+    }
+
+    func signInToWordPressDotCom() {
+        let account = AccountBuilder(contextManager.mainContext)
+            .with(username: "NotificationsViewControllerTests")
+            .with(authToken: "token")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+    }
+
+    func fetchNotifications(matching predicate: NSPredicate) -> [WordPressData.Notification] {
+        contextManager.mainContext.allObjects(
+            ofType: WordPressData.Notification.self,
+            matching: predicate,
+            sortedBy: [NSSortDescriptor(key: "timestamp", ascending: true)]
+        )
     }
 
     var notificationCount: Int? {
