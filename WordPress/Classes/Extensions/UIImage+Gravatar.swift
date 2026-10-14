@@ -34,4 +34,16 @@ extension UIImage {
         }
         return imageWithAlpha.withRenderingMode(.alwaysOriginal)
     }
+
+    /// Returns the image centered on a transparent canvas of the given size.
+    func padded(to canvasSize: CGSize) -> UIImage {
+        let origin = CGPoint(
+            x: (canvasSize.width - size.width) / 2,
+            y: (canvasSize.height - size.height) / 2
+        )
+        let image = UIGraphicsImageRenderer(size: canvasSize, format: imageRendererFormat).image { _ in
+            draw(at: origin)
+        }
+        return image.withRenderingMode(.alwaysOriginal)
+    }
 }

@@ -67,13 +67,19 @@ extension WPTabBarController {
 extension UITabBarItem {
 
     func configureGravatarImage(_ image: UIImage) {
+        // Pad the 26pt avatar onto the same 32×32 canvas as the other tab bar
+        // icons (32×32 vector PDFs). Equal image sizes keep the tab bar layout
+        // stable — a differently sized Me icon makes the bar recompute tab
+        // widths, truncating and misaligning the titles.
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/26004
+        let canvasSize = CGSize(width: 32, height: 32)
         let gravatarIcon = image.gravatarIcon(size: 26.0)
         if #available(iOS 26, *) {
-            self.image = gravatarIcon
+            self.image = gravatarIcon?.padded(to: canvasSize)
         } else {
-            self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
+            self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36).padded(to: canvasSize)
         }
-        self.selectedImage = gravatarIcon
+        self.selectedImage = gravatarIcon?.padded(to: canvasSize)
     }
 }
 
