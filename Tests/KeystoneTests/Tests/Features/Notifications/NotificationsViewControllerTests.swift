@@ -180,6 +180,43 @@ final class NotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(WPTabBarController(staticScreens: false).notificationsViewController?.scope, .reader)
     }
 
+    func testReaderScopedListRegistersNoSpotlightActivity() {
+        // Given
+        controller.scope = .reader
+
+        // When
+        showController()
+
+        // Then
+        XCTAssertNil(controller.userActivity)
+    }
+
+    func testUnscopedListRegistersTheNotificationsSpotlightActivity() throws {
+        // When
+        showController()
+
+        // Then
+        let activity = try XCTUnwrap(controller.userActivity)
+        XCTAssertEqual(activity.activityType, WPActivityType.notifications.rawValue)
+        XCTAssertTrue(activity.isEligibleForSearch)
+    }
+
+    func testPushedListKeepsTheLargeTitlesOfTheNavigationBar() {
+        // Given a navigation stack whose screens use large titles, as Reader's does
+        let navigationController = UINavigationController(rootViewController: UIViewController())
+        navigationController.navigationBar.prefersLargeTitles = true
+        let list = NotificationsViewController.makeForAppNavigation()
+
+        // When
+        navigationController.pushViewController(list, animated: false)
+        list.loadViewIfNeeded()
+
+        // Then the list uses an inline title without changing the bar
+        XCTAssertTrue(navigationController.navigationBar.prefersLargeTitles)
+        XCTAssertEqual(list.navigationItem.largeTitleDisplayMode, .never)
+        XCTAssertEqual(list.navigationItem.title, "Notifications")
+    }
+
     // MARK: - Permission primers
 
     // The primer alert and the inline primer only appear after the system reports an undetermined
@@ -302,6 +339,15 @@ private extension NotificationsViewControllerTests {
         let service = JetpackNotificationMigrationServiceMock()
         service.shouldPresentNotificationsToReturn = shouldPresentNotifications
         return service
+    }
+
+    /// Runs the controller's appearance callbacks without the permission primers.
+    func showController() {
+        signInToWordPressDotCom()
+        controller.notificationMigrationService = makeMigrationService(shouldPresentNotifications: false)
+        controller.loadViewIfNeeded()
+        controller.beginAppearanceTransition(true, animated: false)
+        controller.endAppearanceTransition()
     }
 
     /// Signs in and makes the second alert due, as it is after a sync adds notifications. The

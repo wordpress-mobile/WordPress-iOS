@@ -30,3 +30,17 @@ final class NotificationsButtonViewModel: ObservableObject {
         }
     }
 }
+
+/// The bell icon for SwiftUI surfaces, with a badge when there is new activity.
+struct NotificationsBellImage: View {
+    let hasNewActivity: Bool
+
+    var body: some View {
+        if hasNewActivity {
+            Image(systemName: "bell.badge")
+                .foregroundStyle(.red, .primary)
+        } else {
+            Image(systemName: "bell")
+        }
+    }
+}

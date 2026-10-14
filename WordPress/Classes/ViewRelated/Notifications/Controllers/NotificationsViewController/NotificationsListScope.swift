@@ -22,7 +22,7 @@ enum NotificationsListScope {
     static let readerKinds: [NotificationKind] = [.newPost, .matcher, .commentLike]
 
     /// The scope of the lists that the app's navigation creates: the tab bar, the iPad sidebar,
-    /// and the notifications popover.
+    /// the notifications popover, and the Reader bell.
     ///
     /// It depends on the brand and the flag rather than on the resolved app UI type: a list can
     /// be built before a WordPress.com account exists, as the iPad compact tab bar is, when the

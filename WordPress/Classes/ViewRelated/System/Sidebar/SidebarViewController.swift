@@ -168,12 +168,7 @@ struct SidebarView: View {
         Label {
             Text(Strings.notifications)
         } icon: {
-            if notificationsButtonViewModel.hasNewActivity {
-                Image(systemName: "bell.badge")
-                    .foregroundStyle(.red, .primary)
-            } else {
-                Image(systemName: "bell")
-            }
+            NotificationsBellImage(hasNewActivity: notificationsButtonViewModel.hasNewActivity)
         }
         .accessibilityIdentifier("sidebar_notifications")
         .tag(SidebarSelection.notifications)
