@@ -2,24 +2,29 @@ import WordPressAPI
 import WordPressAPIInternal
 
 extension PostTypeDetailsWithEditContext {
-    static func fixture(slug: String, name: String) -> PostTypeDetailsWithEditContext {
+    static func fixture(
+        slug: String = "test_post_type",
+        name: String = "Test Post Type",
+        restBase: String? = nil,
+        viewable: Bool = true,
+        showUi: Bool = true,
+        // `supports(feature:)` checks key presence, as the REST API omits unsupported features.
+        supports: [PostTypeSupports: JsonValue] = [.title: .bool(true), .editor: .bool(true)]
+    ) -> PostTypeDetailsWithEditContext {
         PostTypeDetailsWithEditContext(
             capabilities: [:],
             description: "",
             hierarchical: false,
-            viewable: true,
+            viewable: viewable,
             labels: .empty,
             name: name,
             slug: slug,
-            supports: PostTypeSupportsMap(map: [
-                .title: .bool(true),
-                .editor: .bool(true)
-            ]),
+            supports: PostTypeSupportsMap(map: supports),
             hasArchive: .bool(false),
             taxonomies: [],
-            restBase: slug,
+            restBase: restBase ?? slug,
             restNamespace: "wp/v2",
-            visibility: PostTypeVisibility(showInNavMenus: true, showUi: true),
+            visibility: PostTypeVisibility(showInNavMenus: true, showUi: showUi),
             icon: nil
         )
     }
