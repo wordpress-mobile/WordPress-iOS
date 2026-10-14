@@ -444,9 +444,9 @@ class ApplicationPasswordsRepositoryTests {
         defer { HTTPStubs.removeAllStubs() }
 
         // The site URL is https, so validation proceeds through an unauthenticated discovery over
-        // https. But login_url, admin_url, and the wp-json base are derived from the http xmlrpc
-        // endpoint, so self-hosted password creation is rejected before any credential-bearing
-        // request reaches the insecure host.
+        // https. But login_url and admin_url fall back to the http xmlrpc endpoint, so self-hosted
+        // password creation is rejected before any credential-bearing request reaches the insecure
+        // host.
         let secureHost = "secure-site.example.com"
         let insecureHost = "insecure-xmlrpc.example.com"
         stubApiDiscovery(siteHost: secureHost)
@@ -468,6 +468,41 @@ class ApplicationPasswordsRepositoryTests {
         await #expect(throws: ApplicationPasswordRepositoryError.insecureConnection) {
             try await repository.createPasswordIfNeeded(for: blog)
         }
+    }
+
+    @Test
+    func httpsSiteWithInsecureXMLRPCCreatesPassword() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        // Only the persisted `xmlrpc` string is http, as an older app version could save it for an
+        // https site (GHSA-qxpr-7v78-mh5g). The discovered REST root, login_url, and admin_url are
+        // https, so no credential leaves over http and creation must not be refused.
+        let host = "https-site-http-xmlrpc.example.com"
+        let blog = try await coreDataStack.performAndSave { context in
+            let blog = Blog(context: context)
+            blog.url = "https://\(host)"
+            blog.xmlrpc = "http://\(host)/xmlrpc.php"
+            blog.setValue("https://\(host)/wp-login.php", forOption: "login_url")
+            blog.setValue("https://\(host)/wp-admin/", forOption: "admin_url")
+            blog.username = "demo"
+            blog.password = "pass"
+            return TaggedManagedObjectID(blog)
+        }
+
+        stubApiDiscovery(siteHost: host)
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: "abcd efgh")
+        // Added last so it is checked first.
+        stub(condition: isHost(host) && isScheme("http")) { _ in
+            Issue.record("No request should be sent over http")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let password = await password(of: blog)
+        #expect(password == "abcd efgh")
     }
 
     @Test

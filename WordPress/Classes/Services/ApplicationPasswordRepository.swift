@@ -92,13 +92,13 @@ actor ApplicationPasswordRepository {
     /// This function must never transmit credentials over an unencrypted connection on its own, so
     /// each path checks the destinations it contacts and throws `insecureConnection` for a
     /// non-loopback http one. Validation, which every path performs, contacts the site URL and REST
-    /// root, so those are checked up front. Self-hosted password creation additionally contacts the
-    /// cookie/nonce URLs (`login_url`, `admin_url`, wp-json, all derived from `xmlrpc` and
-    /// independently http-capable), checked before creating. A Jetpack-connected site creates its
-    /// password through the WordPress.com proxy over https, so it is not gated on the site's own
-    /// scheme. Getting an application password for an insecure site instead goes through the
-    /// interactive sign-in flow, which shows an insecure-connection warning. The REST root discovered
-    /// at runtime is validated in `updateRestAPIURLIfNeeded`.
+    /// root, so those are checked up front. Self-hosted password creation additionally sends
+    /// credentials to the REST root, `login_url`, and `admin_url`, each independently http-capable.
+    /// The `WordPressOrgRestApi` reports those destinations and they are checked before creating.
+    /// A Jetpack-connected site creates its password through the WordPress.com proxy over https, so
+    /// it is not gated on the site's own scheme. Getting an application password for an insecure
+    /// site instead goes through the interactive sign-in flow, which shows an insecure-connection
+    /// warning. The REST root discovered at runtime is validated in `updateRestAPIURLIfNeeded`.
     ///
     /// This function is safe to call multiple times, but every call performs real work, including
     /// HTTP requests (password validation, and REST API root rediscovery when the stored root is
@@ -289,28 +289,12 @@ private extension ApplicationPasswordRepository {
                 parameters: parameters
             )
         } else if let dotOrgApi {
-            // Creating a password here uses cookie and nonce authentication, contacting the site's
-            // login_url, admin_url, and wp-json base. Each derives from `xmlrpc` (or its own option),
-            // so each can use http independently. Gate on every credential destination before
-            // sending anything.
-            let destinations = try await coreDataStack.performQuery { context in
-                let blog = try context.existingObject(with: blogId)
-                var destinations: [URL] = [try blog.getUrl()]
-                if let restApiRootURL = blog.restApiRootURL, let parsed = URL(string: restApiRootURL) {
-                    destinations.append(parsed)
-                }
-                if let restBase = blog.url(withPath: "wp-json/"), let parsed = URL(string: restBase) {
-                    destinations.append(parsed)
-                }
-                if let loginURL = blog.loginURL {
-                    destinations.append(loginURL)
-                }
-                if let adminURL = blog.makeAdminURL() {
-                    destinations.append(adminURL)
-                }
-                return destinations
-            }
-            try Self.checkInsecureURL(destinations)
+            // Creating a password here uses cookie and nonce authentication, so credentials go to the
+            // REST root, login_url, and admin_url, each of which can use http independently. Ask the
+            // client which URLs it will contact instead of re-deriving them from `Blog`: a separate
+            // derivation once included an `xmlrpc`-based wp-json URL the client never uses, which
+            // wrongly refused https sites whose stored `xmlrpc` was http.
+            try Self.checkInsecureURL(dotOrgApi.credentialDestinations)
             password = try await createPasswordOnSelfHostedSites(api: dotOrgApi, parameters: parameters)
         } else {
             // This error should never happen since a blog is accessible via either dot-com or a dot-org API.
