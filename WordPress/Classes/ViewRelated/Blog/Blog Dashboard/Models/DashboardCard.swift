@@ -92,7 +92,7 @@ enum DashboardCard: String, CaseIterable, Sendable {
     func shouldShow(
         for blog: Blog,
         apiResponse: BlogDashboardRemoteEntity? = nil,
-        // The following three parameter should not have default values.
+        // The following three parameters should not have default values.
         // Unfortunately, this method is called many times because the type is an enum with many cases^.
         //
         // At the time of writing, the priority is addressing a test failure and pave the way for better testability.
@@ -128,7 +128,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return JetpackBrandingVisibility.all.isEnabled(
                 isWordPress: isJetpack == false,
                 isDotComAvailable: isDotComAvailable,
-                shouldShowJetpackFeatures: shouldShowJetpackFeatures
+                shouldShowJetpackFeatures: shouldShowJetpackFeatures,
+                isStaticScreensWithReader: JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
             )
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)

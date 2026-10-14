@@ -34,7 +34,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     init() {
-        tabBarVC = WPTabBarController(staticScreens: false)
+        // Outside `staticScreensWithReader`, the compact layout shows live tabs whatever the app UI
+        // type is. That predates `staticScreensWithReader` and is kept as is.
+        tabBarVC = WPTabBarController(
+            staticReader: false,
+            staticNotifications: JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
+        )
 
         splitVC.delegate = self
         splitVC.view.accessibilityIdentifier = "root_vc"
@@ -278,8 +283,27 @@ final class SplitViewRootPresenter: RootViewPresenter {
     // MARK: RootViewPresenter (Notifications)
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
+        // These requests come from account-level entrances (Spotlight, links, settings).
+        // `staticScreensWithReader` has no account-level list: the tab bar lands on its poster,
+        // and the split view, which has no poster, takes the simplified UI's fallback.
+        if JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
+            if splitVC.isCollapsed {
+                tabBarVC.showNotificationsTab(completion: completion)
+            } else {
+                showJetpackOverlayForDisabledEntryPoint()
+                WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: ["calling_function": #function])
+            }
+            return
+        }
+
         sidebarViewModel.selection = .notifications
         completion?(notificationsContent.notificationsViewController)
+    }
+
+    func appUITypeDidChange() {
+        // Signing in from the sidebar can switch to `staticScreensWithReader` without rebuilding
+        // this presenter, and a failed site sync skips the sign-in completion that reloads the tabs.
+        tabBarVC.shouldUseStaticNotifications = JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
     }
 
     // MARK: RootViewPresenter (Me)
