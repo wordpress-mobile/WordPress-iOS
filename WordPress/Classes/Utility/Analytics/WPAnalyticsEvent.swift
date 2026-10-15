@@ -421,6 +421,9 @@ import WordPressShared
     case enhancedSiteCreationSiteNameEntered
     case enhancedSiteCreationSiteNameViewed
 
+    // Site Creation Domains
+    case enhancedSiteCreationDomainsSkipped
+
     // Quick Start
     case quickStartStarted
     case quickStartTapped
@@ -1458,6 +1461,10 @@ import WordPressShared
             return "enhanced_site_creation_site_name_entered"
         case .enhancedSiteCreationSiteNameViewed:
             return "enhanced_site_creation_site_name_viewed"
+
+        // Site Creation Domains
+        case .enhancedSiteCreationDomainsSkipped:
+            return "enhanced_site_creation_domains_skipped"
 
         // QR Login
         case .qrLoginScannerDisplayed:
