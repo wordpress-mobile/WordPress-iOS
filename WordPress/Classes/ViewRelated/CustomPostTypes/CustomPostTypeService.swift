@@ -75,34 +75,22 @@ class CustomPostTypeService: CustomPostTypeServiceProtocol {
             .eraseToAnyPublisher()
     }
 
+    /// Every cached post type, including ones the app does not list. Reads the cache only.
+    func allPostTypes() async throws -> [PostTypeDetailsWithEditContext] {
+        let service = try await resolveService()
+        return try await service.postTypes()
+            .createPostTypeCollectionWithEditContextFiltered(
+                filter: PostTypeFilter(viewable: nil, showUi: nil, hierarchical: nil)
+            )
+            .loadData()
+            .map(\.data)
+    }
+
     func customTypes() async throws -> [PostTypeDetailsWithEditContext] {
         let collection = try await resolveCollection()
         return try await collection.loadData()
-            .compactMap { entry -> PostTypeDetailsWithEditContext? in
-                let details = entry.data
-
-                // TODO: Determine if we should support post types without "editor"
-                // (title-only posts, e.g. GiveWP's `give_forms`).
-                //
-                // Currently wordpress-rs requires the `content` field in API responses,
-                // which is absent for post types that don't support "editor".
-                //
-                // For these post types, the app also needs to hide "open in editor"
-                // options since there is no content body to edit.
-                //
-                // Most plugins that set `show_in_rest = true` do so for block editor
-                // support, which requires "editor". Plugins with data-only post types
-                // (e.g. WooCommerce orders) typically keep `show_in_rest = false` and
-                // use custom REST routes instead. So this may not be worth supporting.
-                guard details.supports.supports(feature: .editor) else {
-                    return nil
-                }
-
-                if case .custom = details.toPostEndpointType(), details.slug != "attachment" {
-                    return details
-                }
-                return nil
-            }
+            .map(\.data)
+            .filter(\.isCustomPostType)
             .sorted(using: KeyPathComparator(\.name))
     }
 
@@ -136,5 +124,36 @@ class CustomPostTypeService: CustomPostTypeServiceProtocol {
         let collection = service.postTypes().createPostTypeCollectionWithEditContext()
         self.collection = collection
         return collection
+    }
+}
+
+extension PostTypeDetailsWithEditContext {
+    /// Whether the app lists this post type as a custom post type.
+    var isCustomPostType: Bool {
+        guard viewable, visibility.showUi else {
+            return false
+        }
+
+        // TODO: Determine if we should support post types without "editor"
+        // (title-only posts, e.g. GiveWP's `give_forms`).
+        //
+        // Currently wordpress-rs requires the `content` field in API responses,
+        // which is absent for post types that don't support "editor".
+        //
+        // For these post types, the app also needs to hide "open in editor"
+        // options since there is no content body to edit.
+        //
+        // Most plugins that set `show_in_rest = true` do so for block editor
+        // support, which requires "editor". Plugins with data-only post types
+        // (e.g. WooCommerce orders) typically keep `show_in_rest = false` and
+        // use custom REST routes instead. So this may not be worth supporting.
+        guard supports.supports(feature: .editor) else {
+            return false
+        }
+
+        guard case .custom = toPostEndpointType() else {
+            return false
+        }
+        return slug != "attachment"
     }
 }
