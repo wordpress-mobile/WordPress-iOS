@@ -5,6 +5,7 @@ import Foundation
 enum AppIntentOpenError: Error, CustomLocalizedStringResourceConvertible {
     case notLoggedIn
     case siteNotFound
+    case postNotFound
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
@@ -23,6 +24,14 @@ enum AppIntentOpenError: Error, CustomLocalizedStringResourceConvertible {
                 table: "AppIntents",
                 comment:
                     "Error shown by Siri or the Shortcuts app when the site an App Intent should act on no longer exists."
+            )
+        case .postNotFound:
+            return LocalizedStringResource(
+                "ios-appintents.openError.postNotFound",
+                defaultValue: "The post could not be found.",
+                table: "AppIntents",
+                comment:
+                    "Error shown by Siri or the Shortcuts app when the post an App Intent should act on no longer exists."
             )
         }
     }
