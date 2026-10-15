@@ -45,7 +45,7 @@ final class ReaderHomeViewController: ReaderStreamViewController {
             return wpAssertionFailure("something went wrong")
         }
         present(wizard, animated: true)
-        SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: "home")
+        SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: "home", flow: wizardLauncher.flow)
     }
 
     private func showCreatePostScreen(blog: Blog) {
