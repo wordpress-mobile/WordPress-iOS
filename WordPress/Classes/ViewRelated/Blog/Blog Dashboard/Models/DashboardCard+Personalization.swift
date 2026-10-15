@@ -30,7 +30,7 @@ extension DashboardCard: BlogDashboardPersonalizable {
         case .pages:
             return "pages-card-enabled-site-settings"
         case .dynamic, .jetpackBadge, .jetpackInstall, .failure, .ghost, .personalize, .empty,
-            .extensiveLogging:
+            .extensiveLogging, .design:
             return nil
         }
     }

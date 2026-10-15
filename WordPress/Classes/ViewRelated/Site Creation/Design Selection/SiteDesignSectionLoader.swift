@@ -5,6 +5,8 @@ import WordPressSharedUI
 
 struct SiteDesignSectionLoader {
     typealias Assembler = ((SiteIntentVertical?) -> [SiteDesignSection])
+    /// Loads a design catalog for a screen with the given native scale and returns its assembler.
+    typealias AssemblerLoader = (_ scale: CGFloat, _ completion: @escaping (Result<Assembler, Error>) -> Void) -> Void
 
     /// Builds a site design section assembler based on data fetched from the API.
     ///
