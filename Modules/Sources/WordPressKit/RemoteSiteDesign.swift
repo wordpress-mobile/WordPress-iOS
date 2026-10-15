@@ -50,6 +50,30 @@ public struct RemoteSiteDesign: Codable {
         case categories
     }
 
+    public init(
+        slug: String,
+        title: String,
+        demoURL: String,
+        screenshot: String?,
+        mobileScreenshot: String?,
+        tabletScreenshot: String?,
+        themeSlug: String?,
+        group: [String]?,
+        segmentID: Int64?,
+        categories: [RemoteSiteDesignCategory]
+    ) {
+        self.slug = slug
+        self.title = title
+        self.demoURL = demoURL
+        self.screenshot = screenshot
+        self.mobileScreenshot = mobileScreenshot
+        self.tabletScreenshot = tabletScreenshot
+        self.themeSlug = themeSlug
+        self.group = group
+        self.segmentID = segmentID
+        self.categories = categories
+    }
+
     public init(from decoder: Decoder) throws {
         let map = try decoder.container(keyedBy: CodingKeys.self)
         slug = try map.decode(String.self, forKey: .slug)
