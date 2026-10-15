@@ -16,6 +16,7 @@ final class PlanWizardContent: WebKitViewController {
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
         configuration.displayStatusInNavigationBar = false
+        configuration.analyticsSource = "site_creation_plan"
         super.init(configuration: configuration)
     }
 
