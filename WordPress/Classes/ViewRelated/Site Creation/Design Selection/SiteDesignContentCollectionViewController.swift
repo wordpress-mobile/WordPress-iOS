@@ -6,8 +6,9 @@ import WordPressUI
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
-    private let creator: SiteCreator
-    private let createsSite: Bool
+    private let context: SiteDesignPickerContext
+    private let vertical: () -> SiteIntentVertical?
+    private let loadAssembler: SiteDesignSectionLoader.AssemblerLoader
     private let tableView: UITableView
     private let completion: SiteDesignStep.SiteDesignSelection
     private var sectionAssembler: SiteDesignSectionLoader.Assembler?
@@ -139,9 +140,18 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     let selectedPreviewDevice = PreviewDevice.mobile
 
-    init(creator: SiteCreator, createsSite: Bool, completion: @escaping SiteDesignStep.SiteDesignSelection) {
-        self.creator = creator
-        self.createsSite = createsSite
+    /// - Parameters:
+    ///   - vertical: The site intent whose designs form the recommended section, read each time the screen appears.
+    ///   - loadAssembler: Loads the catalog once and returns the function that builds the sections from it.
+    init(
+        context: SiteDesignPickerContext,
+        vertical: @escaping () -> SiteIntentVertical?,
+        loadAssembler: @escaping SiteDesignSectionLoader.AssemblerLoader,
+        completion: @escaping SiteDesignStep.SiteDesignSelection
+    ) {
+        self.context = context
+        self.vertical = vertical
+        self.loadAssembler = loadAssembler
         self.completion = completion
         tableView = UITableView(frame: .zero, style: .plain)
 
@@ -173,7 +183,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         configureHeaderStyling()
         configureCloseButton()
         configureSkipButton()
-        SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
+        SiteCreationAnalyticsHelper.trackSiteDesignViewed(
+            previewMode: selectedPreviewDevice,
+            source: context.analyticsSource
+        )
 
         // The base class handles the header traits. This subclass owns only the
         // helper footer, which hides at accessibility text sizes.
@@ -216,21 +229,22 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func fetchSiteDesigns() {
         if let sectionAssembler {
-            self.sections = sectionAssembler(creator.vertical)
+            self.sections = sectionAssembler(vertical())
             return
         }
 
         isLoading = true
 
+        let loadAssembler = self.loadAssembler
         DispatchQueue.main.async { [weak self] in
-            SiteDesignSectionLoader.buildAssembler { result in
+            loadAssembler { result in
                 guard let self else { return }
 
                 switch result {
                 case .success(let assembler):
                     self.sectionAssembler = assembler
                     self.dismissNoResultsController()
-                    self.sections = assembler(self.creator.vertical)
+                    self.sections = assembler(self.vertical())
                     self.setupHelperView()
                 case .failure(let error):
                     self.handleError(error)
@@ -247,6 +261,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureSkipButton() {
+        guard case .siteCreation = context else {
+            return
+        }
+
         let skip = UIBarButtonItem(
             title: TextContent.skipButtonTitle,
             style: .plain,
@@ -391,7 +409,7 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
         let previewVC = SiteDesignPreviewViewController(
             siteDesign: design,
             selectedPreviewDevice: previewViewSelectedPreviewDevice,
-            createsSite: createsSite,
+            context: context,
             sectionType: sectionType,
             onDismissWithDeviceSelected: { [weak self] device in
                 self?.previewViewSelectedPreviewDevice = device
