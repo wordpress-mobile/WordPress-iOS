@@ -105,9 +105,11 @@ struct RootSupportView: View {
 
         Task { @MainActor in
             let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .default)
-            if account != nil {
-                await reloadIdentity()
-            }
+            guard account != nil else { return }
+
+            // Signing in rebuilds the navigation stack this screen sits on, so it's gone by the time we get
+            // here. Navigate back to it, now with an identity, so the user lands where they can get help.
+            RootViewCoordinator.sharedPresenter.navigateToSupport()
         }
     }
 
