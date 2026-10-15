@@ -153,10 +153,14 @@ class RootViewCoordinator {
             return
         }
 
-        isFullScreenOverlayBeingDisplayed = true
         let viewController = BlurredEmptyViewController()
-
-        windowManager.displayOverlayingWindow(with: viewController)
+        let isDisplayed = windowManager.displayOverlayingWindow(with: viewController) { [weak self] in
+            self?.isFullScreenOverlayBeingDisplayed = false
+        }
+        guard isDisplayed else {
+            return
+        }
+        isFullScreenOverlayBeingDisplayed = true
 
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
             in: viewController,
