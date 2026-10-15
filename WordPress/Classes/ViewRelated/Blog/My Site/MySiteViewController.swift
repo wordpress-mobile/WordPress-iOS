@@ -672,7 +672,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                 }
                 RootViewCoordinator.shared.isSiteCreationActive = true
                 self.present(wizard, animated: true)
-                SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
+                SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source, flow: wizardLauncher.flow)
             }
         )
     }

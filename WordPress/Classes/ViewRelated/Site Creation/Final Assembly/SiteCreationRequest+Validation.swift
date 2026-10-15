@@ -22,6 +22,7 @@ extension SiteCreationRequest {
     ///   - isPublic: whether or not the pending site should be public
     ///   - siteCreationFlow: string that identifies the site creation flow
     ///   - findAvailableURL: true if the site creation should find an available url from the provided `siteURLString`
+    ///   - defaultAnnotationAsPrimaryFallback: true to get WordPress.com's default starter content for the theme
     ///
     init(segmentIdentifier: Int64?,
          siteDesign: String?,
@@ -32,6 +33,7 @@ extension SiteCreationRequest {
          isPublic: Bool,
          siteCreationFlow: String?,
          findAvailableURL: Bool,
+         defaultAnnotationAsPrimaryFallback: Bool = false,
          clientIdentifier: String = BuildSettings.current.secrets.oauth.client,
          clientSecret: String = BuildSettings.current.secrets.oauth.secret
     ) {
@@ -49,7 +51,8 @@ extension SiteCreationRequest {
                   clientSecret: clientSecret,
                   timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
                   siteCreationFlow: siteCreationFlow,
-                  findAvailableURL: findAvailableURL
+                  findAvailableURL: findAvailableURL,
+                  defaultAnnotationAsPrimaryFallback: defaultAnnotationAsPrimaryFallback
         )
     }
 
@@ -73,7 +76,8 @@ extension SiteCreationRequest {
                   clientSecret: request.clientSecret,
                   timezoneIdentifier: request.timezoneIdentifier,
                   siteCreationFlow: request.siteCreationFlow,
-                  findAvailableURL: request.findAvailableURL
+                  findAvailableURL: request.findAvailableURL,
+                  defaultAnnotationAsPrimaryFallback: request.defaultAnnotationAsPrimaryFallback
         )
     }
 }
