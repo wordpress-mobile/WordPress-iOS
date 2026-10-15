@@ -55,20 +55,12 @@ struct CustomPostTabView: View {
         self.blog = blog
         self.presentingViewController = presentingViewController
 
-        var allFilter = CustomPostListFilter(tab: .all)
-        // WP Admin's default Posts list sorts by post date, so editing an
-        // older post must not move it above newer ones. Hierarchical types
-        // keep the modified order: the page tree preserves incoming root
-        // order, and changing it is out of scope for this fix.
-        if !details.hierarchical {
-            allFilter.orderby = .date
-        }
         _allViewModel = State(
             initialValue: CustomPostListViewModel(
                 client: client,
                 service: service,
                 details: details,
-                filter: allFilter,
+                filter: CustomPostListFilter(tab: .all),
                 blog: blog,
                 showsHierarchyIfApplicable: true,
                 presentingViewController: presentingViewController
@@ -324,8 +316,13 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
 
     var orderby: WpApiParamPostsOrderBy {
         switch self {
-        case .all, .drafts: return .modified
-        case .published, .scheduled, .trash: return .date
+        case .drafts: return .modified
+        // Sort All by post date, like WP Admin's Posts list, so editing a
+        // published post doesn't move it to the top. Drafts without a fixed
+        // date still move, because WordPress resets their date on save.
+        // Pages use post date too: WP Admin sorts them by menu order, then
+        // title, but the REST API accepts only one orderby value.
+        case .all, .published, .scheduled, .trash: return .date
         }
     }
 
