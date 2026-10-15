@@ -23,7 +23,11 @@ struct SiteDesignContentCollectionViewControllerTests {
 
         let scene = try #require(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
-        let designStep = SiteDesignContentCollectionViewController(creator: SiteCreator(), createsSite: true) { _ in }
+        let designStep = SiteDesignContentCollectionViewController(
+            context: .siteCreation(createsSite: true),
+            vertical: { nil },
+            loadAssembler: SiteDesignSectionLoader.buildAssembler(scale:completion:)
+        ) { _ in }
         let navigation = UINavigationController(rootViewController: designStep)
         window.rootViewController = navigation
         window.makeKeyAndVisible()
