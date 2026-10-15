@@ -1,0 +1,374 @@
+[
+    {
+        "domain_name": "bluebirdbakery3.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "bluebirdbakery.blog",
+        "relevance": 0.99,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common",
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 76,
+        "product_slug": "dotblog_domain",
+        "cost": "A$33",
+        "renew_cost": "A$33",
+        "renew_raw_price": 33,
+        "raw_price": 33,
+        "currency_code": "AUD",
+        "sale_cost": 3.3
+    },
+    {
+        "domain_name": "blue-bird-bakery.org",
+        "relevance": 0.98,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common",
+            "similar-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 5126,
+        "product_slug": "dotorg_domain",
+        "cost": "A$18",
+        "renew_cost": "A$18",
+        "renew_raw_price": 18,
+        "raw_price": 18,
+        "currency_code": "AUD",
+        "sale_cost": 11.7
+    },
+    {
+        "domain_name": "bluebirdbakery.art",
+        "relevance": 0.6,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 355,
+        "product_slug": "dotart_domain",
+        "cost": "A$37",
+        "renew_cost": "A$37",
+        "renew_raw_price": 37,
+        "raw_price": 37,
+        "currency_code": "AUD",
+        "sale_cost": 5.55
+    },
+    {
+        "domain_name": "blue-bird-bakery.tech",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "similar-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 275,
+        "product_slug": "dottech_domain",
+        "cost": "A$80",
+        "renew_cost": "A$80",
+        "renew_raw_price": 80,
+        "raw_price": 80,
+        "currency_code": "AUD",
+        "sale_cost": 16
+    },
+    {
+        "domain_name": "blue-bird-bakery.club",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common",
+            "similar-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 80,
+        "product_slug": "dotclub_domain",
+        "cost": "A$26",
+        "renew_cost": "A$26",
+        "renew_raw_price": 26,
+        "raw_price": 26,
+        "currency_code": "AUD"
+    },
+    {
+        "domain_name": "bluebirdbakery.app",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "hsts_required": true,
+        "policy_notices": [
+            {
+                "type": "hsts",
+                "label": "HSTS required",
+                "message": "All domains with this ending require an SSL certificate to host a website."
+            }
+        ],
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 372,
+        "product_slug": "dotapp_domain",
+        "cost": "A$26",
+        "renew_cost": "A$26",
+        "renew_raw_price": 26,
+        "raw_price": 26,
+        "currency_code": "AUD",
+        "sale_cost": 14.3
+    },
+    {
+        "domain_name": "bluebirdbakery.shop",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 87,
+        "product_slug": "dotshop_domain",
+        "cost": "A$55",
+        "renew_cost": "A$55",
+        "renew_raw_price": 55,
+        "raw_price": 55,
+        "currency_code": "AUD",
+        "sale_cost": 2.2
+    },
+    {
+        "domain_name": "bluebirdbakery.store",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 274,
+        "product_slug": "dotstore_domain",
+        "cost": "A$68",
+        "renew_cost": "A$68",
+        "renew_raw_price": 68,
+        "raw_price": 68,
+        "currency_code": "AUD",
+        "sale_cost": 1.36
+    },
+    {
+        "domain_name": "bluebirdbakery.site",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common",
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 78,
+        "product_slug": "dotsite_domain",
+        "cost": "A$46",
+        "renew_cost": "A$46",
+        "renew_raw_price": 46,
+        "raw_price": 46,
+        "currency_code": "AUD",
+        "sale_cost": 2.76
+    },
+    {
+        "domain_name": "bluebirdbakery.online",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 271,
+        "product_slug": "dotonline_domain",
+        "cost": "A$46",
+        "renew_cost": "A$46",
+        "renew_raw_price": 46,
+        "raw_price": 46,
+        "currency_code": "AUD",
+        "sale_cost": 1.84
+    },
+    {
+        "domain_name": "bluebirdbakery.design",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 358,
+        "product_slug": "dotdesign_domain",
+        "cost": "A$77",
+        "renew_cost": "A$77",
+        "renew_raw_price": 77,
+        "raw_price": 77,
+        "currency_code": "AUD"
+    },
+    {
+        "domain_name": "bluebirdbakery.press",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 272,
+        "product_slug": "dotpress_domain",
+        "cost": "A$101",
+        "renew_cost": "A$101",
+        "renew_raw_price": 101,
+        "raw_price": 101,
+        "currency_code": "AUD",
+        "sale_cost": 8.08
+    },
+    {
+        "domain_name": "bluebirdbakery.tech",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 275,
+        "product_slug": "dottech_domain",
+        "cost": "A$80",
+        "renew_cost": "A$80",
+        "renew_raw_price": 80,
+        "raw_price": 80,
+        "currency_code": "AUD",
+        "sale_cost": 16
+    },
+    {
+        "domain_name": "bluebirdbakery.club",
+        "relevance": 0.4,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common",
+            "exact-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 80,
+        "product_slug": "dotclub_domain",
+        "cost": "A$26",
+        "renew_cost": "A$26",
+        "renew_raw_price": 26,
+        "raw_price": 26,
+        "currency_code": "AUD"
+    },
+    {
+        "domain_name": "bluebirdbakeries.tech",
+        "relevance": 0.14,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 275,
+        "product_slug": "dottech_domain",
+        "cost": "A$80",
+        "renew_cost": "A$80",
+        "renew_raw_price": 80,
+        "raw_price": 80,
+        "currency_code": "AUD",
+        "sale_cost": 16
+    },
+    {
+        "domain_name": "bluebirdbakeries.club",
+        "relevance": 0.14,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 80,
+        "product_slug": "dotclub_domain",
+        "cost": "A$26",
+        "renew_cost": "A$26",
+        "renew_raw_price": 26,
+        "raw_price": 26,
+        "currency_code": "AUD"
+    },
+    {
+        "domain_name": "blue-bird-bakery.shop",
+        "relevance": 0.14,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "similar-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 87,
+        "product_slug": "dotshop_domain",
+        "cost": "A$55",
+        "renew_cost": "A$55",
+        "renew_raw_price": 55,
+        "raw_price": 55,
+        "currency_code": "AUD",
+        "sale_cost": 2.2
+    },
+    {
+        "domain_name": "blue-bird-bakery.design",
+        "relevance": 0.12,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "similar-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 358,
+        "product_slug": "dotdesign_domain",
+        "cost": "A$77",
+        "renew_cost": "A$77",
+        "renew_raw_price": 77,
+        "raw_price": 77,
+        "currency_code": "AUD"
+    },
+    {
+        "domain_name": "blue-bird-bakery.blog",
+        "relevance": 0.12,
+        "supports_privacy": true,
+        "vendor": "donuts",
+        "match_reasons": [
+            "tld-common",
+            "similar-match"
+        ],
+        "max_reg_years": 10,
+        "multi_year_reg_allowed": true,
+        "product_id": 76,
+        "product_slug": "dotblog_domain",
+        "cost": "A$33",
+        "renew_cost": "A$33",
+        "renew_raw_price": 33,
+        "raw_price": 33,
+        "currency_code": "AUD",
+        "sale_cost": 3.3
+    }
+]
