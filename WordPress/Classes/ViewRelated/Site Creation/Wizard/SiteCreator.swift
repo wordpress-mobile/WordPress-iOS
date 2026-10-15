@@ -8,6 +8,7 @@ import WordPressKit
 final class SiteCreator {
 
     // MARK: Properties
+    let flow: SiteCreationFlow
     var design: RemoteSiteDesign?
     var vertical: SiteIntentVertical?
     var information: SiteInformation?
@@ -16,24 +17,39 @@ final class SiteCreator {
     /// Users can opt for a free domain name in Plans selection
     var addressFromPlanSelection: String?
 
+    init(flow: SiteCreationFlow = .current) {
+        self.flow = flow
+    }
+
     /// Generates the final object that will be posted to the backend
     ///
     /// - Returns: an Encodable object
     ///
     func build() -> SiteCreationRequest {
-
-        let request = SiteCreationRequest(
+        let isBlank = flow == .short
+        return SiteCreationRequest(
             segmentIdentifier: nil,
-            siteDesign: design?.slug ?? Strings.defaultDesignSlug,
-            verticalIdentifier: vertical?.slug,
+            siteDesign: isBlank ? nil : (design?.slug ?? Strings.defaultDesignSlug),
+            verticalIdentifier: isBlank ? nil : vertical?.slug,
             title: information?.title ?? "",
             tagline: information?.tagLine ?? "",
             siteURLString: siteURLString,
             isPublic: true,
-            siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
-            findAvailableURL: !(address?.isFree ?? false)
+            siteCreationFlow: requestFlowName,
+            findAvailableURL: !(address?.isFree ?? false),
+            defaultAnnotationAsPrimaryFallback: isBlank
         )
-        return request
+    }
+
+    /// WordPress.com applies the mobile starter design only to the `mobile` flow, which it assigns to requests
+    /// without a name. Any other name skips the design and, with the default annotation fallback, yields what web
+    /// onboarding creates: a blank site on the current default theme with its starter content. The short flow sends
+    /// its own name instead of `onboarding` because WordPress.com stores the name on the site for attribution.
+    private var requestFlowName: String? {
+        switch flow {
+        case .current: address == nil ? Strings.siteCreationFlowForNoAddress : nil
+        case .short: flow.name
+        }
     }
 
     var hasSiteTitle: Bool {
