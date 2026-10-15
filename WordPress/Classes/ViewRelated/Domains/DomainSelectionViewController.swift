@@ -55,13 +55,16 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private let domainSelectionType: DomainSelectionType
     private let includeSupportButton: Bool
 
-    /// The underlying data represented by the provider
-    var data: [DomainSuggestion] {
+    /// The free address shown on its own card in Site Creation, and the suggestions listed below it.
+    private var suggestions: (free: DomainSuggestion?, rows: [DomainSuggestion]) = (nil, []) {
         didSet {
             contentSizeWillChange()
             table.reloadData()
         }
     }
+
+    /// The suggestions listed in the table, below the free address card when there is one.
+    private var data: [DomainSuggestion] { suggestions.rows }
 
     /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
@@ -132,7 +135,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         self.includeSupportButton = includeSupportButton
         self.selection = selection
         self.coordinator = coordinator
-        self.data = []
         self.noResultsLabel = {
             let label = UILabel()
 
@@ -243,10 +245,13 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
 
     override func estimatedContentSize() -> CGSize {
         guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
-        guard !data.isEmpty else { return .zero }
+        guard !data.isEmpty || suggestions.free != nil else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
+        let estimatedFreeAddressCardHeight: CGFloat = suggestions.free == nil ? 0 : 160
         let cellCount = data.count
-        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
+        let height =
+            estimatedSectionHeaderHeight + estimatedFreeAddressCardHeight
+            + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
     }
 
@@ -254,7 +259,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private func clearContent() {
         throttle.cancel()
         itemSelectionChanged(false)
-        data = []
+        suggestions = (nil, [])
         lastSearchQuery = nil
         setAddressHintVisibility(isHidden: false)
         noResultsLabel.isHidden = true
@@ -300,17 +305,20 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         }
     }
 
-    private func handleData(_ data: [DomainSuggestion], _ invalidQuery: Bool) {
-        let data = sortFreeAndPaidSuggestions(data)
+    private func handleData(_ results: [DomainSuggestion], _ invalidQuery: Bool) {
+        let suggestions =
+            domainSelectionType == .siteCreation
+            ? DomainSuggestionSorting.partitioned(results)
+            : (free: nil, rows: DomainSuggestionSorting.sorted(results))
 
         setAddressHintVisibility(isHidden: true)
-        let resultsHavePreviousSelection = data.contains { suggestion -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
+        let resultsHavePreviousSelection = suggestions.rows.contains { $0.domainName == selectedDomain?.domainName }
         if !resultsHavePreviousSelection {
             clearSelectionAndCreateSiteButton()
         }
 
-        self.data = data
-        if data.isEmpty {
+        self.suggestions = suggestions
+        if results.isEmpty {
             if invalidQuery {
                 noResultsLabel.text = Strings.invalidQuery
             } else {
@@ -320,7 +328,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         } else {
             noResultsLabel.isHidden = true
         }
-        postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty, invalidQuery: invalidQuery)
+        postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: results.isEmpty, invalidQuery: invalidQuery)
     }
 
     private func handleError(_ error: Error) {
@@ -386,6 +394,16 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         }
     }
 
+    private func startFree(with suggestion: DomainSuggestion) {
+        searchBar.resignFirstResponder()
+        clearSelectionAndCreateSiteButton()
+
+        trackDomainsSelection(suggestion)
+        WPAnalytics.track(.enhancedSiteCreationDomainsSkipped)
+
+        selection?(suggestion)
+    }
+
     private func setPrimaryButtonLoading(_ isLoading: Bool, afterDelay delay: Double = 0.0) {
         // We're dispatching here so that we can wait until after the webview has been
         // fully presented before we switch the button back to its default state.
@@ -403,6 +421,10 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         let cellName = String(describing: AddressTableViewCell.self)
         table.register(AddressTableViewCell.self, forCellReuseIdentifier: cellName)
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
+        table.register(
+            UITableViewHeaderFooterView.self,
+            forHeaderFooterViewReuseIdentifier: Self.freeAddressCardReuseIdentifier
+        )
         table.cellLayoutMarginsFollowReadableWidth = true
     }
 
@@ -449,6 +471,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
+        table.keyboardDismissMode = .onDrag
         table.accessibilityIdentifier = "DomainSelectionTable"
     }
 
@@ -575,34 +598,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 }
 
-// MARK: - Sorting
-
-private extension DomainSelectionViewController {
-    // Mimics the sorting on the web - two top domains, one free domain, and other domains
-    private func sortFreeAndPaidSuggestions(_ suggestions: [DomainSuggestion]) -> [DomainSuggestion] {
-        var topDomains: [DomainSuggestion] = []
-        var freeDomains: [DomainSuggestion] = []
-        var otherDomains: [DomainSuggestion] = []
-
-        for i in 0..<suggestions.count {
-            let suggestion = suggestions[i]
-            if freeDomains.isEmpty && suggestion.isFree {
-                freeDomains.append(suggestion)
-                continue
-            }
-
-            if topDomains.count < 2 && !suggestion.isFree {
-                topDomains.append(suggestion)
-                continue
-            }
-
-            otherDomains.append(suggestion)
-        }
-
-        return topDomains + freeDomains + otherDomains
-    }
-}
-
 // MARK: - NetworkStatusDelegate
 
 extension DomainSelectionViewController: NetworkStatusDelegate {
@@ -634,6 +629,11 @@ extension DomainSelectionViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         search(searchText)
     }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search-as-you-type already requested the results, so the Search key only gets the keyboard out of the way.
+        searchBar.resignFirstResponder()
+    }
 }
 
 // MARK: - VoiceOver
@@ -655,14 +655,42 @@ private extension DomainSelectionViewController {
 }
 
 // MARK: UITableViewDataSource
+
+private extension DomainSelectionViewController {
+    enum Section {
+        case error
+        case freeAddress(DomainSuggestion)
+        case suggestions
+    }
+
+    static let freeAddressCardReuseIdentifier = "FreeAddressCard"
+
+    var sections: [Section] {
+        if isShowingError {
+            return [.error]
+        }
+        guard let free = suggestions.free else {
+            return [.suggestions]
+        }
+        return [.freeAddress(free), .suggestions]
+    }
+}
+
 extension DomainSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard !isShowingError else { return 1 }
-        return data.count
+        switch sections[section] {
+        case .error:
+            return 1
+        case .freeAddress:
+            // The card is the section's header: a grouped table draws full-width lines around a section's rows.
+            return 0
+        case .suggestions:
+            return data.count
+        }
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard !data.isEmpty else { return nil }
+        guard case .suggestions = sections[section], !data.isEmpty else { return nil }
         return Strings.suggestions
     }
 
@@ -671,17 +699,22 @@ extension DomainSelectionViewController: UITableViewDataSource {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
+        guard case .freeAddress(let suggestion) = sections[section] else { return nil }
+        return configureFreeAddressHeader(tableView, suggestion: suggestion)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isShowingError {
+        switch sections[indexPath.section] {
+        case .error:
             return configureErrorCell(tableView, cellForRowAt: indexPath)
-        } else {
+        case .freeAddress:
+            assertionFailure("This is a programming error - the free address section has no rows!")
+            return UITableViewCell()
+        case .suggestions:
             return configureAddressCell(tableView, cellForRowAt: indexPath)
         }
     }
@@ -698,6 +731,20 @@ extension DomainSelectionViewController: UITableViewDataSource {
         cell.update(with: viewModel)
 
         return cell
+    }
+
+    func configureFreeAddressHeader(_ tableView: UITableView, suggestion: DomainSuggestion) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Self.freeAddressCardReuseIdentifier)
+        header?.backgroundConfiguration = .clear()
+        header?.contentConfiguration = UIHostingConfiguration {
+            FreeAddressCard(address: suggestion.domainName) { [weak self] in
+                self?.startFree(with: suggestion)
+            }
+            // A header view hands its content the gray header text color.
+            .foregroundStyle(Color.primary)
+        }
+        .margins(.vertical, 0)
+        return header
     }
 
     func configureErrorCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -717,6 +764,12 @@ extension DomainSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // Prevent selection if it's the no matches cell
         return indexPath
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Without a footer, the card sits as close to the suggestions as the suggestions header allows.
+        guard case .freeAddress = sections[section] else { return UITableView.automaticDimension }
+        return .leastNonzeroMagnitude
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
