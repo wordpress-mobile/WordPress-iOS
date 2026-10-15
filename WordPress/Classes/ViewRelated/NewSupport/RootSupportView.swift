@@ -1,6 +1,9 @@
 import SwiftUI
 import Support
+import UIKit
 import WordPressAPIInternal
+import WordPressShared
+import WordPressUI
 import WebKit
 
 struct RootSupportView: View {
@@ -54,6 +57,8 @@ struct RootSupportView: View {
                         .listRowBackground(Color(.secondarySystemGroupedBackground))
                         .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
+            } else {
+                signInSection
             }
 
             Section("How can we help?") {
@@ -71,6 +76,39 @@ struct RootSupportView: View {
         .listStyle(.insetGrouped)
         .listRowBackground(Color(.secondarySystemGroupedBackground))
         .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+    }
+
+    /// Shown in place of the profile when there's no WordPress.com identity — the support conversations need
+    /// one, so offer the sign-in that unlocks them rather than leaving the user with documentation alone.
+    @ViewBuilder
+    private var signInSection: some View {
+        Section {
+            Button(action: signIn) {
+                Text(Strings.signInTitle)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+        } footer: {
+            Text(Strings.signInDetail)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    private func signIn() {
+        guard let viewController = UIViewController.topViewController else {
+            return wpAssertionFailure("support sign-in requires a presenting view controller")
+        }
+
+        Task { @MainActor in
+            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .default)
+            if account != nil {
+                await reloadIdentity()
+            }
+        }
     }
 
     @ViewBuilder
@@ -208,5 +246,15 @@ private enum Strings {
         "support.root.getHelp.detail",
         value: "Get answers from our support team, anytime",
         comment: "Description of the row that opens the support conversations."
+    )
+    static let signInTitle = NSLocalizedString(
+        "support.root.signIn.title",
+        value: "Log into WordPress.com",
+        comment: "Title of the button that starts WordPress.com sign-in from the support screen."
+    )
+    static let signInDetail = NSLocalizedString(
+        "support.root.signIn.detail",
+        value: "Log into WordPress.com to access support chat.",
+        comment: "Explains why signing in to WordPress.com is needed to reach the support conversations."
     )
 }
