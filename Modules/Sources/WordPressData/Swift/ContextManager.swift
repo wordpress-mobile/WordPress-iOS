@@ -61,15 +61,25 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         NullBlogPropertySanitizer(context: mainContext).sanitize()
     }
 
-    public func newDerivedContext() -> NSManagedObjectContext {
+    /// Creates a fresh private-queue background context backed by this stack's
+    /// persistent container, using the object-trump merge policy.
+    ///
+    /// Shared by the deprecated `newDerivedContext()`, the background query
+    /// overloads, and the write implementations so every background context is
+    /// created identically.
+    private func newPrivateContext() -> NSManagedObjectContext {
         let context = persistentContainer.newBackgroundContext()
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
 
+    public func newDerivedContext() -> NSManagedObjectContext {
+        newPrivateContext()
+    }
+
     @objc(performAndSaveUsingBlock:)
     public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        let context = newDerivedContext()
+        let context = newPrivateContext()
         context.performAndWait {
             block(context)
 
@@ -83,7 +93,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         completion: (() -> Void)?,
         on queue: DispatchQueue
     ) {
-        let context = newDerivedContext()
+        let context = newPrivateContext()
         self.writerQueue.addOperation(
             AsyncBlockOperation { done in
                 context.perform {
@@ -102,7 +112,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         completion: ((Result<T, Error>) -> Void)?,
         on queue: DispatchQueue
     ) {
-        let context = newDerivedContext()
+        let context = newPrivateContext()
         self.writerQueue.addOperation(
             AsyncBlockOperation { done in
                 context.perform {
@@ -135,6 +145,33 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             performAndSave(block, completion: { continuation.resume(with: $0) }, on: DispatchQueue.global())
+        }
+    }
+
+    // MARK: - Query
+
+    // Implemented on the concrete stack so protocol-typed (`CoreDataStackSwift`)
+    // and concrete callers dispatch to the same background/mainContext behavior.
+    // The background overloads no longer route through the deprecated
+    // `newDerivedContext()`.
+
+    public func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
+    }
+
+    public func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) rethrows -> T {
+        let context = newPrivateContext()
+        return try context.performAndWait {
+            try block(context)
+        }
+    }
+
+    public func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
+        let context = newPrivateContext()
+        return try await context.perform {
+            try block(context)
         }
     }
 
