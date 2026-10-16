@@ -2,6 +2,7 @@
 -----
 * [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
 * [*] iPad: Fix the app getting stuck in the compact tab bar layout after resizing or switching apps [#26123]
+* [*] Fix tab bar titles appearing misaligned or truncated after returning to the app [#26148]
 
 27.3
 -----

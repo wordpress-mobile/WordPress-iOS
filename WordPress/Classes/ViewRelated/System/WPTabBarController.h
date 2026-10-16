@@ -24,6 +24,8 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @property (nonatomic, strong, readonly, nonnull) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly, nullable) ReaderPresenter *readerPresenter;
 @property (nonatomic, assign) BOOL shouldUseStaticScreens;
+/// Tokens for the Me tab's notification observers, registered in Swift and removed in dealloc.
+@property (nonatomic, strong, nullable) NSArray<id<NSObject>> *meTabObservers;
 
 - (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens;
 
