@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 
 extension Button where Label == Text {
     @ViewBuilder
@@ -20,9 +21,24 @@ public enum BackportButtonRole {
 
     var title: String {
         switch self {
-        case .cancel: SharedStrings.Button.cancel
-        case .close: SharedStrings.Button.close
-        case .confirm: SharedStrings.Button.done
+        case .cancel:
+            AppLocalizedString(
+                "shared.button.cancel",
+                value: "Cancel",
+                comment: "A shared button title used in different contexts"
+            )
+        case .close:
+            AppLocalizedString(
+                "shared.button.close",
+                value: "Close",
+                comment: "A shared button title used in different contexts"
+            )
+        case .confirm:
+            AppLocalizedString(
+                "shared.button.done",
+                value: "Done",
+                comment: "A shared button title used in different contexts"
+            )
         }
     }
 }

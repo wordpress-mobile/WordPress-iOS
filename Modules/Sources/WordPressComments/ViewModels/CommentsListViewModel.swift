@@ -68,6 +68,17 @@ final class CommentsListViewModel: ObservableObject {
         hasLoaded && items.isEmpty
     }
 
+    /// Whether the Review button shows. Cheaper than `reviewBatch.isEmpty`
+    /// for a check that runs on every list render.
+    var canReview: Bool {
+        filter == .pending && hasLoaded && items.contains { $0.status == .pending }
+    }
+
+    var reviewBatch: [CommentListItem] {
+        guard filter == .pending, hasLoaded else { return [] }
+        return items.filter { $0.status == .pending }
+    }
+
     init(
         filter: CommentsListFilter,
         service: any CommentsServiceProtocol,
