@@ -104,12 +104,12 @@ struct RootSupportView: View {
         }
 
         Task { @MainActor in
-            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .default)
+            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .featureAccess)
             guard account != nil else { return }
 
-            // Signing in rebuilds the navigation stack this screen sits on, so it's gone by the time we get
-            // here. Navigate back to it, now with an identity, so the user lands where they can get help.
-            RootViewCoordinator.sharedPresenter.navigateToSupport()
+            // `featureAccess` leaves this screen on-screen, so pick up the new identity in place: the sign-in
+            // prompt gives way to the profile, and the support conversations become reachable.
+            await reloadIdentity()
         }
     }
 
