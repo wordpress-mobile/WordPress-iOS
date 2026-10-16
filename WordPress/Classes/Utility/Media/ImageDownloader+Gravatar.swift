@@ -5,7 +5,11 @@ import AsyncImageKit
 
 extension AsyncImageKit.ImageDownloader {
 
-    nonisolated func downloadGravatarImage(with email: String, forceRefresh: Bool = false, completion: @escaping (UIImage?) -> Void) {
+    nonisolated func downloadGravatarImage(
+        with email: String,
+        forceRefresh: Bool = false,
+        completion: @escaping (UIImage?) -> Void
+    ) {
 
         guard let url = AvatarURL.url(for: email) else {
             completion(nil)
