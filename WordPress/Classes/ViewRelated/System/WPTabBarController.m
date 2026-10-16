@@ -104,6 +104,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)dealloc
 {
     [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
+    for (id<NSObject> observer in self.meTabObservers) {
+        [[NSNotificationCenter defaultCenter] removeObserver:observer];
+    }
 }
 
 #pragma mark - Tab Bar Items

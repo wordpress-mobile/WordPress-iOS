@@ -259,8 +259,14 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         WPAccount *account = [context existingObjectWithID:objectID error:nil];
         [self updateDefaultBlogIfNeeded:account inContext:context];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:nil];
     }];
+
+    // Observers update UI (the Me tab bar item, for one), so post on the main
+    // thread instead of the context queue. `performAndSaveUsingBlock:` returns
+    // after saving, so observers see the updated account.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:nil];
+    });
 }
 
 - (void)updateDefaultBlogIfNeeded:(WPAccount *)account inContext:(NSManagedObjectContext *)context

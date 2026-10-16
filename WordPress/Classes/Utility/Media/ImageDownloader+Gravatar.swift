@@ -17,7 +17,14 @@ extension AsyncImageKit.ImageDownloader {
         }
 
         if !forceRefresh, let cachedImage = ImageCache.shared.getImage(forKey: url.absoluteString) {
-            completion(cachedImage)
+            // Callers apply the image to UIKit directly, and the download path
+            // below already completes on the main thread. A cache hit must not
+            // hand the image back on whichever thread looked it up.
+            if Thread.isMainThread {
+                completion(cachedImage)
+            } else {
+                DispatchQueue.main.async { completion(cachedImage) }
+            }
             return
         }
         var urlToDownload = url

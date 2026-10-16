@@ -11,33 +11,39 @@ extension WPTabBarController {
     }
 
     @objc public func observeGravatarImageUpdate() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(refreshAvatar(_:)),
-            name: .GravatarQEAvatarUpdateNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateGravatarImage(_:)),
-            name: .GravatarImageUpdateNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(accountDidChange),
-            name: .wpAccountDefaultWordPressComAccountChanged,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(accountDidChange),
-            name: .WPAccountEmailAndDefaultBlogUpdated,
-            object: nil
-        )
+        // The handlers update the tab bar item, and the account notifications
+        // can be posted from background threads, so deliver on the main queue.
+        let center = NotificationCenter.default
+        meTabObservers = [
+            center.addObserver(
+                forName: .GravatarQEAvatarUpdateNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                self?.refreshAvatar(notification)
+            },
+            center.addObserver(
+                forName: .GravatarImageUpdateNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                self?.updateGravatarImage(notification)
+            },
+            center.addObserver(
+                forName: .wpAccountDefaultWordPressComAccountChanged,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.accountDidChange()
+            },
+            center.addObserver(
+                forName: .WPAccountEmailAndDefaultBlogUpdated,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.accountDidChange()
+            }
+        ]
     }
 
     @objc public func configureMeTabImage(placeholderImage: UIImage?) {
@@ -62,14 +68,16 @@ extension WPTabBarController {
         }
     }
 
-    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+    private func refreshAvatar(_ notification: Foundation.Notification) {
+        assert(Thread.isMainThread)
         guard let email = defaultAccount()?.email,
             notification.userInfoHasEmail(email)
         else { return }
         downloadImage(forceRefresh: true)
     }
 
-    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
+    private func updateGravatarImage(_ notification: Foundation.Notification) {
+        assert(Thread.isMainThread)
         guard let userInfo = notification.userInfo,
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
@@ -82,7 +90,8 @@ extension WPTabBarController {
         meNavigationController.tabBarItem.configureGravatarImage(image)
     }
 
-    @objc private func accountDidChange() {
+    private func accountDidChange() {
+        assert(Thread.isMainThread)
         configureMeTabImage(placeholderImage: UIImage(named: "tab-bar-me"))
     }
 }
