@@ -197,6 +197,19 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         return currentAppUIType != .simplified
     }
 
+    /// Whether Reader is live rather than the Moved-to-Jetpack poster.
+    ///
+    /// Unlike `jetpackFeaturesEnabled()`, this is also true in `staticScreensWithReader`.
+    /// Use it only to decide whether to navigate into Reader, never to gate push notifications,
+    /// prompts, or other Jetpack features.
+    static func isReaderAvailable() -> Bool {
+        jetpackFeaturesEnabled() || isStaticScreensWithReader()
+    }
+
+    static func isStaticScreensWithReader() -> Bool {
+        currentAppUIType == .staticScreensWithReader
+    }
+
     /// Used to determine if the Jetpack features are to be displayed or not based on the removal phase regardless of the app UI state.
     private static func shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
         let phase = generalPhase(featureFlagStore: featureFlagStore)

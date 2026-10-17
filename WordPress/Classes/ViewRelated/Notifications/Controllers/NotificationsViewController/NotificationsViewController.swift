@@ -122,6 +122,13 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     var activityService = NotificationActivityService.shared
 
+    /// Set by the code that creates the list, before its view loads.
+    var scope: NotificationsListScope = .all
+
+    /// Decides whether the push notification permission primers may appear.
+    var notificationMigrationService: any JetpackNotificationMigrationServiceProtocol =
+        JetpackNotificationMigrationService.shared
+
     private var isNavigationItemsConfigured = false
 
     /// Whether the list is the supplementary column of an expanded split view, so it owns
@@ -140,11 +147,19 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: - View Lifecycle
 
+    /// Creates the list shown by the app's navigation: the tab bar, the iPad sidebar, the popover,
+    /// and the Reader bell.
+    @objc static func makeForAppNavigation() -> NotificationsViewController {
+        let notificationsVC = Notifications.instantiateInitialViewController()
+        notificationsVC.scope = .forAppNavigation()
+        return notificationsVC
+    }
+
     static func showInPopover(
         from presentingVC: UIViewController,
         sourceItem: UIPopoverPresentationControllerSourceItem
     ) {
-        let notificationsVC = Notifications.instantiateInitialViewController()
+        let notificationsVC = makeForAppNavigation()
         notificationsVC.isSidebarModeEnabled = true
 
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
@@ -262,7 +277,11 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
-        registerUserActivity()
+        // The searchable "Notifications" activity opens the account-level list, which a
+        // Reader notifications list is not.
+        if scope == .all {
+            registerUserActivity()
+        }
 
         markWelcomeNotificationAsSeenIfNeeded()
 
@@ -270,16 +289,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             userDefaults.notificationsTabAccessCount += 1
         }
 
-        // Don't show the notification primers if we already asked during onboarding
-        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
-            return
-        }
-
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
-        }
-        showNotificationPrimerAlertIfNeeded()
-        showSecondNotificationsAlertIfNeeded()
+        showNotificationPrimersIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -516,7 +526,8 @@ private extension NotificationsViewController {
 
     func setupNavigationBar() {
         if !isReaderAppModeEnabled {
-            navigationController?.navigationBar.prefersLargeTitles = false
+            // Only the list's own item: the Reader bell pushes the list onto Reader's stack,
+            // and turning off the bar's large titles would remove them from Reader's screens too.
             navigationItem.largeTitleDisplayMode = .never
         }
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
@@ -544,7 +555,9 @@ private extension NotificationsViewController {
             return button
         }()
     }
+}
 
+extension NotificationsViewController {
     func makeMoreMenuElements() -> [UIAction] {
         // Mark All As Read
         let markAllAsRead: UIAction? = { () -> UIAction? in
@@ -565,7 +578,7 @@ private extension NotificationsViewController {
 
         // Notifications Settings
         let settings: UIAction? = { () -> UIAction? in
-            guard shouldDisplaySettingsButton else {
+            guard shouldDisplaySettingsButton, scope == .all else {
                 return nil
             }
             return UIAction(
@@ -579,7 +592,9 @@ private extension NotificationsViewController {
         // Return
         return [markAllAsRead, settings].compactMap { $0 }
     }
+}
 
+private extension NotificationsViewController {
     @objc func closeNotificationSettings() {
         dismiss(animated: true, completion: nil)
     }
@@ -651,7 +666,7 @@ private extension NotificationsViewController {
         filterTabBar.superview?.backgroundColor = .systemBackground
         filterTabBar.backgroundColor = .systemBackground
 
-        filterTabBar.items = Filter.allCases
+        filterTabBar.items = filters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
@@ -1187,7 +1202,9 @@ private extension NotificationsViewController {
 
         NotificationSyncMediator()?.markAsRead(note)
     }
+}
 
+extension NotificationsViewController {
     /// Marks all messages as read under the selected filter.
     ///
     @objc func markAllAsRead() {
@@ -1213,7 +1230,9 @@ private extension NotificationsViewController {
                 }
             )
     }
+}
 
+private extension NotificationsViewController {
     /// Presents a confirmation action sheet for mark all as read action.
     @objc func showMarkAllAsReadConfirmation() {
         let title: String
@@ -1489,7 +1508,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     @objc func predicateForFetchRequest() -> NSPredicate {
         let deletedIdsPredicate = NSPredicate(format: "NOT (SELF IN %@)", Array(notificationIdsBeingDeleted))
         let selectedFilterPredicate = predicateForSelectedFilters()
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate])
+        return NSCompoundPredicate(
+            andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate, scope.predicate]
+        )
     }
 
     @objc func predicateForSelectedFilters() -> NSPredicate {
@@ -1985,13 +2006,24 @@ private extension NotificationsViewController {
         UserPersistentStoreFactory.instance()
     }
 
+    /// The filters installed in the filter bar. The bar's selected index is an index into this
+    /// array, not a `Filter` raw value.
+    var filters: [Filter] {
+        switch scope {
+        case .all: Filter.allCases
+        case .reader: [.none, .unread]
+        }
+    }
+
     var filter: Filter {
         get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
-            return Filter(rawValue: selectedIndex) ?? .none
+            guard let selectedIndex = filterTabBar?.selectedIndex, filters.indices.contains(selectedIndex) else {
+                return .none
+            }
+            return filters[selectedIndex]
         }
         set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
+            filterTabBar?.setSelectedIndex(filters.firstIndex(of: newValue) ?? 0)
             reloadResultsController()
         }
     }
@@ -2177,6 +2209,23 @@ private extension NotificationsViewController {
 
 // MARK: - Push Notifications Permission Alert
 extension NotificationsViewController {
+    func showNotificationPrimersIfNeeded() {
+        // Don't show the notification primers if we already asked during onboarding
+        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
+            return
+        }
+
+        guard canShowNotificationPrimers else {
+            return
+        }
+
+        if shouldShowPrimeForPush {
+            setupNotificationPrompt()
+        }
+        showNotificationPrimerAlertIfNeeded()
+        showSecondNotificationsAlertIfNeeded()
+    }
+
     private func showNotificationPrimerAlertIfNeeded() {
         guard shouldShowPrimeForPush, !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
@@ -2226,8 +2275,16 @@ extension NotificationsViewController {
         }
     }
 
+    /// False while the app doesn't present push notifications, as in the WordPress app, so that the
+    /// primers don't ask for a permission the app won't use.
+    private var canShowNotificationPrimers: Bool {
+        notificationMigrationService.shouldPresentNotifications()
+    }
+
     private func showSecondNotificationsAlertIfNeeded() {
-        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold else {
+        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold,
+            canShowNotificationPrimers
+        else {
             return
         }
         showSecondNotificationAlert()
