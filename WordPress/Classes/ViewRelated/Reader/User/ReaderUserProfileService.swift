@@ -8,6 +8,7 @@ struct ReaderUserProfile: Equatable {
     let displayName: String
     let avatarURL: URL?
     let siteURL: URL?
+    let bio: String?
 }
 
 protocol ReaderUserProfileService {
@@ -54,15 +55,20 @@ final class WordPressComReaderUserProfileService: ReaderUserProfileService {
         }
 
         let displayName = (response["display_name"] as? String)?
+            .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let avatarURL = (response["avatar_URL"] as? String).flatMap(URL.init(string:))
         let siteURL = (response["primary_blog"] as? [String: Any])?["URL"] as? String
+        let bio = (response["description"] as? String)?
+            .stringByDecodingXMLCharacters()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
 
         return ReaderUserProfile(
             username: username,
             displayName: displayName?.nonEmptyString() ?? username,
             avatarURL: avatarURL,
-            siteURL: siteURL.flatMap(URL.init(string:))
+            siteURL: siteURL.flatMap(URL.init(string:)),
+            bio: bio?.nonEmptyString()
         )
     }
 }
