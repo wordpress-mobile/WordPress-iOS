@@ -8,6 +8,7 @@ import GutenbergKit
 @testable import WordPress
 
 @Suite("EditorConfiguration Authentication Tests")
+@MainActor
 struct EditorConfigurationTests {
     private let contextManager = ContextManager.forTesting()
     private let keychain = TestKeychain()
