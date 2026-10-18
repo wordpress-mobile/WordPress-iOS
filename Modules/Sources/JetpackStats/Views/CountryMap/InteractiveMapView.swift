@@ -135,7 +135,7 @@ struct InteractiveMapView: View {
     private func wrapSVGInHTML(_ svg: String) -> String {
         // Load HTML template from resources
         guard let templatePath = Bundle.module.path(forResource: "interactive-map-template", ofType: "html"),
-              let template = try? String(contentsOfFile: templatePath) else {
+              let template = try? String(contentsOfFile: templatePath, encoding: .utf8) else {
             // Fallback to inline HTML if template not found
             return "<html><body>\(svg)</body></html>"
         }
@@ -156,7 +156,7 @@ struct MapStyle {
 private func loadSVG(resourceName: String) async -> String? {
     // Try multiple approaches to load the SVG
     if let svgPath = Bundle.module.path(forResource: resourceName, ofType: "svg"),
-       let content = try? String(contentsOfFile: svgPath) {
+       let content = try? String(contentsOfFile: svgPath, encoding: .utf8) {
         return content
     }
     return nil
