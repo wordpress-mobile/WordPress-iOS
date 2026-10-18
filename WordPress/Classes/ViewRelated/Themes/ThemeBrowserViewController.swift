@@ -1115,7 +1115,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
-        if #available(iOS 18, *), let indexPath = collectionView.indexPathsForSelectedItems?.first {
+        if let indexPath = collectionView.indexPathsForSelectedItems?.first {
             navigation.preferredTransition = .zoom(sourceViewProvider: { [weak self] _ in
                 self?.collectionView.cellForItem(at: indexPath)?.contentView
             })

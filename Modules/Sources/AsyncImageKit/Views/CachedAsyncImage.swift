@@ -189,7 +189,6 @@ fileprivate let videoURL = URL(
     }
 }
 
-@available(iOS 18.0, *)
 #Preview("Manual State Handling") {
 
     @Previewable let cases: [String: URL?] = [

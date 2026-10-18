@@ -1575,7 +1575,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
-        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+        if traitCollection.horizontalSizeClass == .regular {
             cell.selectionStyle = .none
         }
 
@@ -1673,7 +1673,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
-        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+        if traitCollection.horizontalSizeClass == .regular {
             controller.preferredTransition = .zoom { [weak self] _ in
                 guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
                     return nil
