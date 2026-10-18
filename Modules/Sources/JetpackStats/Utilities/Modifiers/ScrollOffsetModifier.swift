@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(iOS 18.0, *)
 struct ScrollOffsetModifier: ViewModifier {
     @Binding var isScrolled: Bool
 
@@ -17,12 +16,7 @@ struct ScrollOffsetModifier: ViewModifier {
 }
 
 extension View {
-    @ViewBuilder
     func trackScrollOffset(isScrolled: Binding<Bool>) -> some View {
-        if #available(iOS 18.0, *) {
-            modifier(ScrollOffsetModifier(isScrolled: isScrolled))
-        } else {
-            self
-        }
+        modifier(ScrollOffsetModifier(isScrolled: isScrolled))
     }
 }

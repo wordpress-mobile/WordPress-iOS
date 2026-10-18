@@ -129,5 +129,4 @@ public struct TranslationHostView: View {
     }
 }
 
-@available(iOS 18.0, *)
 extension TranslationSession: @retroactive @unchecked(Sendable) {}

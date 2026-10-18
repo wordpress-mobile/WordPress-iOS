@@ -158,10 +158,8 @@ final class CreateButtonCoordinator: NSObject {
             }
         ]
 
-        if #available(iOS 18.0, *) {
-            viewController.preferredTransition = .zoom { [weak self] _ in
-                self?.button
-            }
+        viewController.preferredTransition = .zoom { [weak self] _ in
+            self?.button
         }
     }
 
