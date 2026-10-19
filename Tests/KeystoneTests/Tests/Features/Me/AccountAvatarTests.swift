@@ -2,7 +2,6 @@ import Combine
 import Foundation
 import Testing
 import UIKit
-import WordPressShared
 
 @testable import WordPress
 @testable import WordPressData
@@ -57,7 +56,7 @@ struct AccountAvatarTests {
     func signOutCancelsLoad() async throws {
         let f = try await Fixture.launched(email: "a@example.com", avatar: avatarA)
 
-        f.notifyQuickEditorUpdate(email: "a@example.com")
+        f.quickEditorUpdatedAvatar(email: "a@example.com")
         try await f.fetch.waitForCalls(2)
 
         f.signOut()
@@ -149,7 +148,7 @@ struct AccountAvatarTests {
     func quickEditorUpdate() async throws {
         let f = try await Fixture.launched(email: "a@example.com", avatar: avatarA)
 
-        f.notifyQuickEditorUpdate(email: "a@example.com")
+        f.quickEditorUpdatedAvatar(email: "a@example.com")
         try await f.fetch.waitForCalls(2)
         #expect(f.fetch.calls.last == .init(email: "a@example.com", forceRefresh: true))
         #expect(f.published.isIdentical(to: [nil, avatarA]))
@@ -163,7 +162,7 @@ struct AccountAvatarTests {
     func quickEditorUpdateForAnotherEmail() async throws {
         let f = try await Fixture.launched(email: "a@example.com", avatar: avatarA)
 
-        f.notifyQuickEditorUpdate(email: "someone-else@example.com")
+        f.quickEditorUpdatedAvatar(email: "someone-else@example.com")
         try await settle()
         #expect(f.fetch.calls.count == 1)
         #expect(f.published.isIdentical(to: [nil, avatarA]))
@@ -213,7 +212,7 @@ struct AccountAvatarTests {
     func quickEditorRefreshFailureThenRecovery() async throws {
         let f = try await Fixture.launched(email: "a@example.com", avatar: avatarA)
 
-        f.notifyQuickEditorUpdate(email: "a@example.com")
+        f.quickEditorUpdatedAvatar(email: "a@example.com")
         try await f.fetch.waitForCalls(2)
         f.fetch.complete(1, with: .failure(URLError(.timedOut)))
         try await settle()
@@ -358,12 +357,9 @@ private final class Fixture {
         notificationCenter.post(name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
-    func notifyQuickEditorUpdate(email: String) {
-        notificationCenter.post(
-            name: .GravatarQEAvatarUpdateNotification,
-            object: nil,
-            userInfo: [GravatarQEAvatarUpdateNotificationKeys.email.rawValue: email]
-        )
+    /// Reports an avatar edit, as the Quick Editor presenter does.
+    func quickEditorUpdatedAvatar(email: String) {
+        owner?.refresh(email: email)
     }
 
     /// Posts the main context's objects-did-change notification for pending edits.
