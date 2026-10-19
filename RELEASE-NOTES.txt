@@ -12,6 +12,7 @@
 
 27.4
 -----
+* [*] Fix tab bar titles showing truncated and misaligned on iOS 26 [#26162]
 * [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
 * [*] iPad: Fix the app getting stuck in the compact tab bar layout after resizing or switching apps [#26123]
 * [*] Reader: Fix post tag outlines almost disappearing after switching between light and dark mode [#26168]
