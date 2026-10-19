@@ -31,8 +31,7 @@ struct UnifiedSupportTicketContentView: View {
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
-            ChipView(string: viewModel.status.title, color: viewModel.status.color)
-                .controlSize(.small)
+            UnifiedSupportStatusLabel(status: viewModel.status)
 
             Spacer(minLength: 8)
 

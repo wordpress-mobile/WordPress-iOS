@@ -218,7 +218,9 @@ let package = Package(
             name: "Support",
             dependencies: [
                 "AsyncImageKit",
-                "WordPressCoreProtocols"
+                "DesignSystem",
+                "WordPressCoreProtocols",
+                "WordPressUI"
             ]
         ),
         .target(name: "TextBundle"),
