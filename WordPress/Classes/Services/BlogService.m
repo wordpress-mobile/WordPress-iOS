@@ -523,7 +523,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         return restApi;
     }
 
-    if (blog.xmlrpcApi) {
+    if (blog.xmlrpcApi && blog.username.length > 0 && blog.password.length > 0) {
         return [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
 
