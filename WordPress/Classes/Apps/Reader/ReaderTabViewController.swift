@@ -136,18 +136,11 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "tab-bar-me"),
             selectedImage: UIImage(named: "tab-bar-me")
         )
-        // TODO: (reader) observe gravatar updates
-        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
-           let avatarURL = account.avatarURL.flatMap(URL.init) {
-            Task { @MainActor [weak meVC] in
-                do {
-                    let image = try await ImageDownloader.shared.image(from: avatarURL)
-                    meVC?.tabBarItem.configureGravatarImage(image)
-                } catch {
-                    // Do nothing
-                }
+        AccountAvatar.shared.$image
+            .sink { [weak meVC] avatar in
+                meVC?.tabBarItem.configureAccountAvatar(avatar)
             }
-        }
+            .store(in: &cancellables)
         return UINavigationController(rootViewController: meVC)
     }
 
