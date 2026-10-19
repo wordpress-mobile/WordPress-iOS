@@ -1,8 +1,9 @@
+import Combine
 import UIKit
-import WordPressData
 
 final class MyProfileIconView: UIImageView {
     private let hidesWhenEmpty: Bool
+    private var avatarSubscription: AnyCancellable?
 
     init(hidesWhenEmpty: Bool = false) {
         self.hidesWhenEmpty = hidesWhenEmpty
@@ -11,9 +12,9 @@ final class MyProfileIconView: UIImageView {
 
         backgroundColor = .secondarySystemBackground
 
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
-
-        refresh()
+        avatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
+            self?.updateAvatar(avatar)
+        }
 
         layer.masksToBounds = true
 
@@ -33,21 +34,8 @@ final class MyProfileIconView: UIImageView {
         layer.cornerRadius = bounds.width / 2
     }
 
-    private func refresh() {
-        if let email {
-            isHidden = false
-            downloadGravatar(for: email, gravatarRating: .x, forceRefresh: false)
-        } else {
-            isHidden = true
-        }
-    }
-
-    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
-        guard let email, notification.userInfoHasEmail(email) else { return }
-        downloadGravatar(for: email, gravatarRating: .x, forceRefresh: true)
-    }
-
-    private var email: String? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.email
+    private func updateAvatar(_ avatar: UIImage?) {
+        image = avatar
+        isHidden = avatar == nil && hidesWhenEmpty
     }
 }
