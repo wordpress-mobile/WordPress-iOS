@@ -112,20 +112,6 @@ public extension UIImageView {
         task.resume()
     }
 
-    /// Overrides the cached UIImage, for a given URL. This is useful for whenever we've just updated a remote resource,
-    /// and we need to prevent returning the (old) cached entry.
-    ///
-    @objc func overrideImageCache(for url: URL, with image: UIImage) {
-        ImageCache.shared.setImage(image, forKey: url.absoluteString)
-
-        // Remove all cached responses - removing an individual response does not work since iOS 7.
-        // This feels hacky to do but what else can we do...
-        //
-        // Update: Years have gone by (iOS 11 era). Still broken. Still ashamed about this. Thank you, Apple.
-        //
-        URLSession.shared.configuration.urlCache?.removeAllCachedResponses()
-    }
-
     /// Cancels the current download task and clear the downloadURL
     ///
     @objc func cancelImageDownload() {

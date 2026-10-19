@@ -99,19 +99,6 @@ final class MeHeaderView: UIView {
         downloadAvatar(forceRefresh: true)
     }
 
-    func overrideGravatarImage(_ image: UIImage) {
-        guard !RemoteFeatureFlag.gravatarQuickEditor.enabled() else { return }
-        iconView.image = image
-
-        // Note:
-        // We need to update the internal cache. Otherwise, any upcoming query to refresh the gravatar
-        // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
-        if let gravatarEmail = viewModel?.gravatarEmail {
-            iconView.overrideGravatarImageCache(image, gravatarRating: .x, email: gravatarEmail)
-            iconView.updateGravatar(image: image, email: gravatarEmail)
-        }
-    }
-
     func configureHorizontalMode() {
         stackView.axis = .horizontal
         stackView.spacing = 16
