@@ -914,6 +914,11 @@ private extension DomainSelectionViewController {
     }
 
     @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
+        if domainSelectionType == .siteCreation {
+            // The domain step is the first step of the short flow, so it ends site creation like the intent step does.
+            RootViewCoordinator.shared.isSiteCreationActive = false
+            RootViewCoordinator.shared.reloadUIIfNeeded(blog: nil)
+        }
         dismiss(animated: true)
     }
 }

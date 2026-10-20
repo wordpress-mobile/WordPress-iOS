@@ -27,7 +27,7 @@ struct AddSiteController {
             }
             RootViewCoordinator.shared.isSiteCreationActive = true
             viewController?.present(wizard, animated: true)
-            SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
+            SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source, flow: wizardLauncher.flow)
         })
     }
 
