@@ -5,6 +5,7 @@ import WordPressSharedUI
 
 struct SiteDesignSectionLoader {
     typealias Assembler = ((SiteIntentVertical?) -> [SiteDesignSection])
+    typealias AssemblerLoader = (_ completion: @escaping (Result<Assembler, Error>) -> Void) -> Void
 
     /// Builds a site design section assembler based on data fetched from the API.
     ///

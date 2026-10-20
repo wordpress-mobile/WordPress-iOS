@@ -1,0 +1,235 @@
+{
+    "filters": {
+        "subject": {
+            "blog": {
+                "name": "Blog",
+                "description": "Choose from a wide variety of styles and layouts for your personal or professional blog."
+            },
+            "portfolio": {
+                "name": "Portfolio",
+                "description": "Themes that support WordPress’ Portfolio post type, many with added features like front-page sliders, immersive slideshows, and elegant galleries to help viewers engage with your work."
+            },
+            "store": {
+                "name": "Store",
+                "description": ""
+            }
+        }
+    },
+    "static": {
+        "designs": [
+            {
+                "slug": "formwork",
+                "title": "Formwork",
+                "description": "Formwork is a brutalist theme for fashion magazines.",
+                "recipe": {
+                    "stylesheet": "pub/formwork"
+                },
+                "is_virtual": false,
+                "preview_data": null,
+                "categories": [
+                    {
+                        "slug": "blog",
+                        "name": "Blog"
+                    },
+                    {
+                        "slug": "magazine",
+                        "name": "Magazine"
+                    }
+                ],
+                "software_sets": [],
+                "theme_tier": {
+                    "slug": "premium",
+                    "feature": "premium-themes",
+                    "platform": "simple"
+                },
+                "theme_type": "hosted-internal",
+                "screenshot": "https://i0.wp.com/s2.wp.com/wp-content/themes/pub/formwork/screenshot.png?ssl=1",
+                "style_variations": []
+            },
+            {
+                "slug": "ury",
+                "title": "Ury",
+                "description": "Ury is a minimal blogging theme designed for comfortable, distraction-free reading.",
+                "recipe": {
+                    "stylesheet": "pub/ury"
+                },
+                "is_virtual": false,
+                "preview_data": null,
+                "categories": [
+                    {
+                        "slug": "blog",
+                        "name": "Blog"
+                    },
+                    {
+                        "slug": "art-design",
+                        "name": "Art & Design"
+                    }
+                ],
+                "software_sets": [],
+                "theme_tier": {
+                    "slug": "free",
+                    "feature": null,
+                    "platform": "simple"
+                },
+                "theme_type": "hosted-internal",
+                "screenshot": "https://i0.wp.com/s2.wp.com/wp-content/themes/pub/ury/screenshot.png?ssl=1",
+                "style_variations": []
+            },
+            {
+                "slug": "golazo",
+                "title": "Golazo",
+                "description": "Golazo is a blog theme with the energy of the beautiful game.",
+                "recipe": {
+                    "stylesheet": "pub/golazo"
+                },
+                "is_virtual": false,
+                "preview_data": null,
+                "categories": [
+                    {
+                        "slug": "blog",
+                        "name": "Blog"
+                    },
+                    {
+                        "slug": "sports-fitness",
+                        "name": "Sports & Fitness"
+                    }
+                ],
+                "software_sets": [],
+                "theme_tier": {
+                    "slug": "personal",
+                    "feature": "personal-themes",
+                    "platform": "simple"
+                },
+                "theme_type": "hosted-internal",
+                "screenshot": "https://i0.wp.com/s2.wp.com/wp-content/themes/pub/golazo/screenshot.jpg?ssl=1",
+                "style_variations": []
+            },
+            {
+                "slug": "primarium",
+                "title": "Primarium",
+                "description": "This theme is a text-first notebook that showcases handwriting-inspired typography through poetic, personal writing with a clean reading flow.",
+                "recipe": {
+                    "stylesheet": "pub/primarium"
+                },
+                "is_virtual": false,
+                "preview_data": null,
+                "categories": [
+                    {
+                        "slug": "blog",
+                        "name": "Blog"
+                    },
+                    {
+                        "slug": "authors-writers",
+                        "name": "Authors & Writers"
+                    }
+                ],
+                "software_sets": [],
+                "theme_tier": {
+                    "slug": "free",
+                    "feature": null,
+                    "platform": "simple"
+                },
+                "theme_type": "hosted-internal",
+                "screenshot": "https://i0.wp.com/s2.wp.com/wp-content/themes/pub/primarium/screenshot.png?ssl=1",
+                "style_variations": []
+            },
+            {
+                "slug": "archivist",
+                "title": "Archivist",
+                "description": "The Archivist is a typewriter-inspired theme designed for meticulous storytellers and memory-keepers of all kinds.",
+                "recipe": {
+                    "stylesheet": "pub/archivist"
+                },
+                "is_virtual": false,
+                "preview_data": null,
+                "categories": [
+                    {
+                        "slug": "blog",
+                        "name": "Blog"
+                    },
+                    {
+                        "slug": "about",
+                        "name": "About"
+                    },
+                    {
+                        "slug": "authors-writers",
+                        "name": "Authors & Writers"
+                    }
+                ],
+                "software_sets": [],
+                "theme_tier": {
+                    "slug": "free",
+                    "feature": null,
+                    "platform": "simple"
+                },
+                "theme_type": "hosted-internal",
+                "screenshot": "https://i0.wp.com/s2.wp.com/wp-content/themes/pub/archivist/screenshot.png?ssl=1",
+                "style_variations": []
+            },
+            {
+                "slug": "creatio-2",
+                "title": "Link in Bio: Big Picture",
+                "description": "Share curated links to all your sites and social media profiles.",
+                "recipe": {
+                    "slug": "creatio-2-link-in-bio-with-image-at-the-bottom",
+                    "pattern_ids": [
+                        "5851-174455321"
+                    ],
+                    "pattern_html": "<!-- wp:group {\"align\":\"full\",\"layout\":{\"inherit\":true,\"type\":\"constrained\"}} -->\n<div class=\"wp-block-group alignfull\"><!-- wp:group {\"style\":{\"spacing\":{\"padding\":{\"top\":\"128px\",\"bottom\":\"16px\",\"lef",
+                    "header_pattern_ids": [],
+                    "footer_pattern_ids": [],
+                    "stylesheet": "pub/creatio-2"
+                },
+                "is_virtual": true,
+                "preview_data": {
+                    "site_title": "Hi I’m Diego",
+                    "site_tagline": "Diego Morales is an artist living in Mexico City who has a passion for generative art in the 3D space. Currently accepting new clients.",
+                    "site_logo_url": "https://dotcompatterns.files.wordpress.com/2023/04/man-bw-portrait.jpg"
+                },
+                "categories": [
+                    {
+                        "slug": "about",
+                        "name": "About"
+                    },
+                    {
+                        "slug": "link-in-bio",
+                        "name": "Link in Bio"
+                    }
+                ],
+                "software_sets": [],
+                "theme_tier": {
+                    "slug": "free",
+                    "feature": null,
+                    "platform": "simple"
+                },
+                "design_type": "standard",
+                "theme_type": "hosted-internal",
+                "screenshot": "https://i0.wp.com/s2.wp.com/wp-content/themes/pub/creatio-2/screenshot.png?ssl=1",
+                "style_variations": []
+            }
+        ]
+    },
+    "theme_tiers": {
+        "free": {
+            "slug": "free",
+            "feature": null,
+            "platform": "simple",
+            "minimum_required_product_name_short": "Free",
+            "minimum_required_product_slug": "free_plan"
+        },
+        "personal": {
+            "slug": "personal",
+            "feature": "personal-themes",
+            "platform": "simple",
+            "minimum_required_product_name_short": "Personal",
+            "minimum_required_product_slug": "personal-bundle"
+        },
+        "premium": {
+            "slug": "premium",
+            "feature": "premium-themes",
+            "platform": "simple",
+            "minimum_required_product_name_short": "Personal",
+            "minimum_required_product_slug": "personal-bundle"
+        }
+    }
+}
