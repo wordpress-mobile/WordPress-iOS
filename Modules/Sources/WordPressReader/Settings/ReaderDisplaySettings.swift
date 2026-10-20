@@ -244,7 +244,7 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
             case .sans:
                 return "-apple-system, sans-serif"
             case .serif:
-                return "'Noto Serif', serif"
+                return "'Noto Serif', ui-serif, serif"
             case .mono:
                 return "'SF Mono', SFMono-Regular, ui-monospace, monospace"
             }
