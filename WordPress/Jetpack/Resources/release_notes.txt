@@ -1,6 +1,10 @@
-* [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
-* [*] Notifications: Improve the accuracy of notification badges in the app [#26077]
-* [*] Site menu: Show custom post types directly in the site menu [#26094]
-* [*] Media: Fix uploads failing when the file name contains spaces [#26005]
-* [*] Share extension: Fix a crash when sharing some text files [#25968]
-* [*] iPad: Fix the app getting stuck in the compact tab bar layout after resizing or switching apps [#26123]
+Have you heard? We made the Notifications tab and bell more accurate, even when system notifications or icon badges are disabled. Now you’re always in the know.
+
+Custom post types now appear directly in the site menu after Comments, sorted by name for extra convenience—no more need for custom pins.
+
+Finally, we took care of several bugs, just to make your app experience a little easier.
+
+- In the Reader, inline images won’t disappear on devices running iOS 27.
+- Uploads will no longer fail if the file name contains spaces. (good-news-everyone.jpg)
+- We fixed a crash caused by sharing certain kinds of text files.
+- iPad users rejoice—the app won’t get stuck in the compact tab bar layout when you resize the screen or switch apps.

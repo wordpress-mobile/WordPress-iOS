@@ -1,4 +1,7 @@
-* [*] Site menu: Show custom post types directly in the site menu [#26094]
-* [*] Media: Fix uploads failing when the file name contains spaces [#26005]
-* [*] Share extension: Fix a crash when sharing some text files [#25968]
-* [*] iPad: Fix the app getting stuck in the compact tab bar layout after resizing or switching apps [#26123]
+Custom post types now appear directly in the site menu after Comments, sorted by name for extra convenience—no more need for custom pins.
+
+We also took care of several bugs, just to make your app experience a little easier.
+
+- Uploads will no longer fail if the file name contains spaces. (good-news-everyone.jpg)
+- We fixed a crash caused by sharing certain kinds of text files.
+- iPad users rejoice—the app won’t get stuck in the compact tab bar layout when you resize the screen or switch apps.
