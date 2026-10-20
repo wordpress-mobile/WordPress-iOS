@@ -258,7 +258,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        toolbar.configure(for: post, in: self)
         updateToolbarItems()
         cachedExcerpt = post.getUserProvidedExcerpt()
         configureHeaderView(with: post)
@@ -784,8 +783,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func updateToolbarItems() {
         guard let post else { return }
-        let items = toolbar.createToolbarItems(for: post, in: self)
-        setToolbarItems(items, animated: false)
+        toolbar.configure(for: post, in: self)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {

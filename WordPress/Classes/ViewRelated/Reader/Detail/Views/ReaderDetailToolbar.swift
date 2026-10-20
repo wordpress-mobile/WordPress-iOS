@@ -14,6 +14,13 @@ class ReaderDetailToolbar {
     private var likeCountObserver: NSKeyValueObservation?
     private var commentCountObserver: NSKeyValueObservation?
 
+    /// The buttons currently shown in the toolbar.
+    ///
+    /// They are updated in place rather than recreated on every change. On iOS 26, while the toolbar
+    /// is over a dark image, new items can come up in the dark style while the toolbar and the other
+    /// items stay light, mixing black and white icons.
+    private var buttons: Buttons?
+
     weak var delegate: ReaderDetailToolbarDelegate?
 
     private var likeCount: Int {
@@ -40,127 +47,104 @@ class ReaderDetailToolbar {
         updateToolbarItems()
     }
 
-    func createToolbarItems(for post: ReaderPost, in viewController: UIViewController) -> [UIBarButtonItem] {
-        self.post = post
-        self.viewController = viewController
-
-        var items: [UIBarButtonItem] = []
-
-        if #unavailable(iOS 26) {
-            items.append(.flexibleSpace())
-        }
-
-        if let button = makeSaveForLaterButton() {
-            items.append(button)
-        }
-
-        if let button = makeReblogButton() {
-            if #unavailable(iOS 26) {
-                items.append(.flexibleSpace())
-            }
-            items.append(button)
-        }
-
-        items.append(.flexibleSpace())
-
-        if let button = makeCommentButton() {
-            items.append(button)
-        }
-
-        if let button = makeLikeButton() {
-            if #unavailable(iOS 26) {
-                items.append(.flexibleSpace())
-            }
-            items.append(button)
-        }
-
-        if #unavailable(iOS 26) {
-            items.append(.flexibleSpace())
-        }
-
-        return items
-    }
-
     private func updateToolbarItems() {
-        guard let viewController else { return }
-        if let post {
-            let items = createToolbarItems(for: post, in: viewController)
-            viewController.setToolbarItems(items, animated: false)
+        guard let viewController, let post else { return }
+
+        let showsCommentButton = shouldShowCommentActionButton
+        let showsLikeButton = post.isLikesEnabled
+
+        if let buttons, (buttons.comment != nil) == showsCommentButton, (buttons.like != nil) == showsLikeButton {
+            configure(buttons, for: post)
+            return
+        }
+
+        let buttons = Buttons(
+            saveForLater: UIBarButtonItem(
+                image: nil,
+                style: .plain,
+                target: self,
+                action: #selector(didTapSaveForLater)
+            ),
+            reblog: UIBarButtonItem(
+                image: WPStyleGuide.ReaderDetail.reblogToolbarIcon,
+                style: .plain,
+                target: self,
+                action: #selector(didTapReblog)
+            ),
+            comment: showsCommentButton ? makeCustomButton(action: #selector(didTapComment)) : nil,
+            like: showsLikeButton ? makeCustomButton(action: #selector(didTapLike)) : nil
+        )
+        configure(buttons, for: post)
+        self.buttons = buttons
+        viewController.setToolbarItems(buttons.toolbarItems, animated: false)
+    }
+
+    // MARK: - Configure Buttons
+
+    private func configure(_ buttons: Buttons, for post: ReaderPost) {
+        configureSaveForLaterButton(buttons.saveForLater, for: post)
+        configureReblogButton(buttons.reblog, for: post)
+        if let comment = buttons.comment {
+            configureCommentButton(comment, for: post)
+        }
+        if let like = buttons.like {
+            configureLikeButton(like, for: post)
         }
     }
 
-    // MARK: - Create Buttons
+    private func configureSaveForLaterButton(_ button: UIBarButtonItem, for post: ReaderPost) {
+        let isSaved = post.isSavedForLater
 
-    private func makeSaveForLaterButton() -> UIBarButtonItem? {
-        let isSaved = post?.isSavedForLater ?? false
-        let image = isSaved ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
-
-        let button = UIBarButtonItem(
-            image: image,
-            style: .plain,
-            target: self,
-            action: #selector(didTapSaveForLater)
-        )
-
+        button.image =
+            isSaved ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
         button.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
         button.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
         button.tintColor = isSaved ? UIAppColor.primary : .label
-
-        return button
     }
 
-    private func makeReblogButton() -> UIBarButtonItem? {
-        guard let post else { return nil }
-
-        let button = UIBarButtonItem(
-            image: WPStyleGuide.ReaderDetail.reblogToolbarIcon,
-            style: .plain,
-            target: self,
-            action: #selector(didTapReblog)
-        )
-
+    private func configureReblogButton(_ button: UIBarButtonItem, for post: ReaderPost) {
         button.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
         button.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         button.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         button.tintColor = .label
-
-        return button
     }
 
-    private func makeCommentButton() -> UIBarButtonItem? {
-        guard shouldShowCommentActionButton else { return nil }
+    private func configureCommentButton(_ button: UIBarButtonItem, for post: ReaderPost) {
+        let count = post.commentCount?.intValue ?? 0
 
-        let count = post?.commentCount?.intValue ?? 0
-
-        let customButton = makeCustomButton(
+        configureCustomButton(
+            button,
             image: WPStyleGuide.ReaderDetail.commentToolbarIcon,
-            title: count.formatted(.number.notation(.compactName)),
-            action: #selector(didTapComment)
+            title: count.formatted(.number.notation(.compactName))
         )
-
-        let button = UIBarButtonItem(customView: customButton)
-        return button
     }
 
-    private func makeLikeButton() -> UIBarButtonItem? {
-        guard let post, post.isLikesEnabled else { return nil }
-
+    private func configureLikeButton(_ button: UIBarButtonItem, for post: ReaderPost) {
         let isLiked = post.isLiked
 
-        let customButton = makeCustomButton(
+        configureCustomButton(
+            button,
             image: isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon,
             title: likeCount.formatted(.number.notation(.compactName)),
-            isSelected: isLiked,
-            action: #selector(didTapLike)
+            isSelected: isLiked
         )
-
-        let button = UIBarButtonItem(customView: customButton)
         button.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
-
-        return button
     }
 
-    private func makeCustomButton(image: UIImage?, title: String, isSelected: Bool = false, action: Selector) -> UIButton {
+    private func makeCustomButton(action: Selector) -> UIBarButtonItem {
+        let button = UIButton(configuration: .plain(), primaryAction: nil)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return UIBarButtonItem(customView: button)
+    }
+
+    private func configureCustomButton(
+        _ item: UIBarButtonItem,
+        image: UIImage?,
+        title: String,
+        isSelected: Bool = false
+    ) {
+        guard let button = item.customView as? UIButton else { return }
+
         var configuration = UIButton.Configuration.plain()
         configuration.image = image
         configuration.title = title
@@ -177,10 +161,10 @@ class ReaderDetailToolbar {
             return outgoing
         }
 
-        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.configuration = configuration
         button.tintColor = tintColor
-        button.addTarget(self, action: action, for: .touchUpInside)
-        return button
+        // The toolbar doesn't resize a custom view when its content changes, e.g. when the like count gets longer.
+        button.sizeToFit()
     }
 
     // MARK: - Actions
@@ -282,6 +266,47 @@ class ReaderDetailToolbar {
 // MARK: - Private Helpers
 
 private extension ReaderDetailToolbar {
+
+    struct Buttons {
+        let saveForLater: UIBarButtonItem
+        let reblog: UIBarButtonItem
+        let comment: UIBarButtonItem?
+        let like: UIBarButtonItem?
+
+        var toolbarItems: [UIBarButtonItem] {
+            var items: [UIBarButtonItem] = []
+
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+
+            items.append(saveForLater)
+
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+            items.append(reblog)
+
+            items.append(.flexibleSpace())
+
+            if let comment {
+                items.append(comment)
+            }
+
+            if let like {
+                if #unavailable(iOS 26) {
+                    items.append(.flexibleSpace())
+                }
+                items.append(like)
+            }
+
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+
+            return items
+        }
+    }
 
     struct Constants {
         // MARK: Strings
