@@ -50,10 +50,11 @@ class ReaderDetailToolbar {
     private func updateToolbarItems() {
         guard let viewController, let post else { return }
 
-        let showsCommentButton = shouldShowCommentActionButton
-        let showsLikeButton = post.isLikesEnabled
+        let layout = Layout(showsCommentButton: shouldShowCommentActionButton, showsLikeButton: post.isLikesEnabled)
 
-        if let buttons, (buttons.comment != nil) == showsCommentButton, (buttons.like != nil) == showsLikeButton {
+        // A like, a save or a new count keeps the same buttons, so update them in place.
+        // Rebuild the toolbar only when the comment or like button has to be added or removed.
+        if let buttons, buttons.layout == layout {
             configure(buttons, for: post)
             return
         }
@@ -71,8 +72,8 @@ class ReaderDetailToolbar {
                 target: self,
                 action: #selector(didTapReblog)
             ),
-            comment: showsCommentButton ? makeCustomButton(action: #selector(didTapComment)) : nil,
-            like: showsLikeButton ? makeCustomButton(action: #selector(didTapLike)) : nil
+            comment: layout.showsCommentButton ? makeCustomButton(action: #selector(didTapComment)) : nil,
+            like: layout.showsLikeButton ? makeCustomButton(action: #selector(didTapLike)) : nil
         )
         configure(buttons, for: post)
         self.buttons = buttons
@@ -267,11 +268,21 @@ class ReaderDetailToolbar {
 
 private extension ReaderDetailToolbar {
 
+    /// Which of the optional buttons the toolbar shows.
+    struct Layout: Equatable {
+        let showsCommentButton: Bool
+        let showsLikeButton: Bool
+    }
+
     struct Buttons {
         let saveForLater: UIBarButtonItem
         let reblog: UIBarButtonItem
         let comment: UIBarButtonItem?
         let like: UIBarButtonItem?
+
+        var layout: Layout {
+            Layout(showsCommentButton: comment != nil, showsLikeButton: like != nil)
+        }
 
         var toolbarItems: [UIBarButtonItem] {
             var items: [UIBarButtonItem] = []

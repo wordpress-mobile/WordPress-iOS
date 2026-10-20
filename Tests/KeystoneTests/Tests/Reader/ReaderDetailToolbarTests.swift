@@ -47,4 +47,26 @@ struct ReaderDetailToolbarTests {
         #expect(likeButton.frame.width < wideWidth)
         #expect(likeButton.frame.width == likeButton.intrinsicContentSize.width)
     }
+
+    @Test("the toolbar is rebuilt when the comment button has to appear")
+    func firstCommentAddsTheCommentButton() throws {
+        let context = ContextManager.forTesting().mainContext
+        let post = ReaderPostBuilder(context).build()
+        post.isWPCom = true
+        post.isLikesEnabled = false
+        post.commentsOpen = false
+        post.commentCount = 0
+        let viewController = UIViewController()
+        let toolbar = ReaderDetailToolbar()
+
+        toolbar.configure(for: post, in: viewController)
+        let itemsBefore = try #require(viewController.toolbarItems)
+        #expect(!itemsBefore.contains { $0.customView != nil })
+
+        post.commentCount = 1
+
+        let itemsAfter = try #require(viewController.toolbarItems)
+        let commentButton = try #require(itemsAfter.compactMap { $0.customView as? UIButton }.first)
+        #expect(commentButton.configuration?.title == 1.formatted(.number.notation(.compactName)))
+    }
 }
