@@ -198,6 +198,62 @@ class MediaImageServiceTests: CoreDataTestCase {
         XCTAssertEqual(cachedThumbnail.size.height, expectedSize.height, accuracy: 1.5)
     }
 
+    // MARK: - Thumbnail URL
+
+    func testThatSavedThumbnailURLPointsAtAFile() throws {
+        // GIVEN
+        let media = try makeLocalImageMedia()
+
+        // WHEN the URL is saved the way `MediaImportService` saves it
+        let thumbnailURL = try XCTUnwrap(getThumbnailURL(for: media))
+        media.absoluteThumbnailLocalURL = thumbnailURL
+
+        // THEN it has an extension, and the saved path points at a file
+        XCTAssertEqual(thumbnailURL.pathExtension, "jpeg")
+        let savedURL = try XCTUnwrap(media.absoluteThumbnailLocalURL)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: savedURL.path))
+    }
+
+    func testThatThumbnailURLIsReturnedForRepeatedCalls() throws {
+        // GIVEN
+        let media = try makeLocalImageMedia()
+
+        // WHEN the same media is requested twice
+        let firstURL = try XCTUnwrap(getThumbnailURL(for: media))
+        let secondURL = try XCTUnwrap(getThumbnailURL(for: media))
+
+        // THEN both calls return a file
+        XCTAssertTrue(FileManager.default.fileExists(atPath: firstURL.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: secondURL.path))
+    }
+
+    private func makeLocalImageMedia() throws -> Media {
+        let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
+        media.mediaType = .image
+        media.width = 1024
+        media.height = 680
+        media.absoluteLocalURL = try makeLocalURL(forResource: "test-image", fileExtension: "jpg")
+        try mainContext.save()
+        return media
+    }
+
+    /// Waits with a timeout, so a dropped completion fails the test instead of
+    /// hanging the test run.
+    private func getThumbnailURL(for media: Media) -> URL? {
+        let expectation = expectation(description: "thumbnail URL")
+        var thumbnailURL: URL?
+        sut.getThumbnailURL(for: media) {
+            thumbnailURL = $0
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
+        if let thumbnailURL {
+            addTeardownBlock { try? FileManager.default.removeItem(at: thumbnailURL) }
+        }
+        return thumbnailURL
+    }
+
     // MARK: - Target Size
 
     func testThatLandscapeImageIsResizedToFillTargetSize() {
