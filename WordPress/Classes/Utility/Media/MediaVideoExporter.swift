@@ -270,14 +270,19 @@ class MediaVideoExporter: MediaExporter {
     }
 }
 
-fileprivate class VideoSessionProgressObserver {
+final class VideoSessionProgressObserver {
 
-    let videoSession: AVAssetExportSession
+    private let sessionProgress: () -> Float
     let progressHandler: (Float) -> ()
     var interrupt: Bool
 
-    init(videoSession: AVAssetExportSession, progressHandler: @escaping (Float) -> ()) {
-        self.videoSession = videoSession
+    convenience init(videoSession: AVAssetExportSession, progressHandler: @escaping (Float) -> ()) {
+        self.init(sessionProgress: { videoSession.progress }, progressHandler: progressHandler)
+    }
+
+    /// - Parameter sessionProgress: Reads the export progress, from 0 to 1.
+    init(sessionProgress: @escaping () -> Float, progressHandler: @escaping (Float) -> ()) {
+        self.sessionProgress = sessionProgress
         self.progressHandler = progressHandler
         interrupt = false
         self.work()
@@ -285,10 +290,18 @@ fileprivate class VideoSessionProgressObserver {
 
     private func work() {
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100)) {
-            self.progressHandler(self.videoSession.progress)
-            if self.videoSession.progress != 1 && !self.interrupt {
-                self.work()
-            }
+            self.tick()
+        }
+    }
+
+    /// Reports the current progress and schedules the next tick.
+    func tick() {
+        // A tick that's already queued when `stop()` is called must not report,
+        // or it overwrites the progress set after the export ends.
+        guard !interrupt else { return }
+        progressHandler(sessionProgress())
+        if sessionProgress() != 1 {
+            work()
         }
     }
 
