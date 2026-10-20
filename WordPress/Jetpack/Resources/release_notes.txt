@@ -1,5 +1,2 @@
-Good news for accessibility: when you’re updating post settings, VoiceOver will tell you which categories are selected. We’ll put that in the “wins” category.
-
-We updated the new Stats screen to load faster. In the Insights tab, you can also open your latest post by tapping the Latest Post Summary card.
-
-Finally, we fixed an issue in the Reader and Me tabs. They now show the right information after you’ve logged out of the app.
+* [*] Reader: Fix inline images appearing blank on iOS 27 [#26120]
+* [*] iPad: Fix the app getting stuck in the compact tab bar layout after resizing or switching apps [#26123]
