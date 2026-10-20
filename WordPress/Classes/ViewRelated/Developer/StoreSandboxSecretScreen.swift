@@ -4,7 +4,10 @@ import WebKit
 struct StoreSandboxSecretScreen: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var secret: String
-    private let cookieJar: HTTPCookieStorage
+
+    /// Both consumers of the `store_sandbox` cookie read `HTTPCookieStorage.shared`
+    /// directly, so writing to any other storage would silently not apply the sandbox.
+    private let cookieStorage: HTTPCookieStorage = .shared
 
     var body: some View {
         NavigationView {
@@ -22,19 +25,17 @@ struct StoreSandboxSecretScreen: View {
             // accessing presentationMode.wrappedValue crashes.
             DispatchQueue.main.async {
                 if self.presentationMode.wrappedValue.isPresented == false {
-                    StoreSandboxCookie.update(secret: secret, in: cookieJar)
+                    StoreSandboxCookie.update(secret: secret, in: cookieStorage)
                     // Web views keep their own copy of the cookie in the default data store.
                     let webCookieStore = WKWebsiteDataStore.default().httpCookieStore
-                    StoreSandboxCookie.synchronize(from: cookieJar, to: webCookieStore) {}
+                    StoreSandboxCookie.synchronize(from: cookieStorage, to: webCookieStore) {}
                 }
             }
         }
     }
 
-    init(cookieJar: HTTPCookieStorage) {
-        self.cookieJar = cookieJar
-
-        if let cookie = StoreSandboxCookie.cookie(in: cookieJar) {
+    init() {
+        if let cookie = StoreSandboxCookie.cookie(in: cookieStorage) {
             _secret = State(initialValue: cookie.value)
         } else {
             _secret = State(initialValue: "")
@@ -44,6 +45,6 @@ struct StoreSandboxSecretScreen: View {
 
 struct StoreSandboxSecretScreen_Previews: PreviewProvider {
     static var previews: some View {
-        StoreSandboxSecretScreen(cookieJar: HTTPCookieStorage.shared)
+        StoreSandboxSecretScreen()
     }
 }
