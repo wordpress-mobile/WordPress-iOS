@@ -387,7 +387,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
         )
 
         cell.layer.borderWidth = interest.isSelected ? 0 : 1
-        cell.layer.borderColor = UIColor.separator.cgColor
+        cell.borderColor = .separator
         cell.layer.cornerRadius = Constants.cellCornerRadius
         cell.label.text = interest.title
         cell.label.accessibilityTraits = interest.isSelected ? [.selected, .button] : .button
