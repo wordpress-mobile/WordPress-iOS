@@ -30,7 +30,15 @@ class ReaderWebView: WKWebView {
 
     var isP2 = false
 
-    var displaySetting: ReaderDisplaySettings = .standard
+    var displaySetting: ReaderDisplaySettings = .standard {
+        didSet {
+            // Make `prefers-color-scheme` (and embeds) follow the theme, not the
+            // system appearance, so e.g. Sepia stays light when Dark Mode is on.
+            overrideUserInterfaceStyle = displaySetting.color.adaptsToInterfaceStyle
+                ? .unspecified
+                : (displaySetting.hasLightBackground ? .light : .dark)
+        }
+    }
 
     /// Make the webview transparent
     ///
