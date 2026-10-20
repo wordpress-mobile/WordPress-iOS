@@ -99,6 +99,11 @@ public class FormattableContentFormatter {
         newString = newString.replacingOccurrences(of: "\t.", with: "\u{200A}.") // tabs before a space
         newString = newString.replacingOccurrences(of: "\t,", with: "\u{200A},") // tabs cefore a comman
         newString = newString.replacingOccurrences(of: "\n\t\n\t", with: "\u{200A}\u{200A}\n\t") // extra newline-with-tab before a newline-with-tab
+        // Runs of consecutive spaces: the web collapses them into one (like HTML),
+        // so keep the first space and turn the rest into hairline spaces.
+        newString = newString.replacing(#/ {2,}/#) { match in
+            " " + String(repeating: "\u{200A}", count: match.output.count - 1)
+        }
 
         // if the length of the string changes the range-based formatting will break
         guard newString.count == baseString.count else {
