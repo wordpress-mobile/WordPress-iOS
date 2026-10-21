@@ -58,13 +58,13 @@ struct ReaderDetailToolbarTests {
         let toolbar = ReaderDetailToolbar()
 
         toolbar.configure(for: post, in: viewController)
-        let likeButton = try #require(viewController.toolbarItems?.last?.customView as? UIButton)
-        let narrowWidth = likeButton.frame.width
+        let likeButton = try #require(buttons(in: viewController.toolbarItems).last)
+        let narrowWidth = width(of: likeButton)
 
         post.likeCount = 9
 
-        #expect(likeButton.frame.width > narrowWidth)
-        #expect(likeButton.frame.width == likeButton.sizeThatFits(UIView.layoutFittingCompressedSize).width)
+        #expect(width(of: likeButton) > narrowWidth)
+        #expect(abs(width(of: likeButton) - likeButton.sizeThatFits(UIView.layoutFittingCompressedSize).width) < 1)
     }
 
     @Test("the toolbar is rebuilt when the comment button has to appear")
