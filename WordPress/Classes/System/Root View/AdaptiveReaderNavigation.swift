@@ -8,12 +8,12 @@ final class AdaptiveReaderNavigation {
     let tab: UITab
 
     init() {
-        let navigationController = presenter.prepareForTabBarPresentation()
+        let content = presenter.prepareForAdaptivePresentation()
         tab = UITab(
             title: SharedStrings.Reader.title,
             image: UIImage(systemName: "eyeglasses"),
             identifier: "reader"
-        ) { _ in navigationController }
+        ) { _ in content }
         tab.preferredPlacement = .fixed
         tab.accessibilityIdentifier = "tabbar_reader"
     }

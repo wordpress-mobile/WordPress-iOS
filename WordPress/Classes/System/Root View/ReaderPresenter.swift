@@ -22,6 +22,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private var selectionObserver: AnyCancellable?
+    private weak var adaptiveContent: AdaptiveListDetailViewController?
 
     /// Disabled for programmatic setup, like the initial screen or syncing tabs when the
     /// iPad split view collapses. A push still animating then prevents it from expanding again.
@@ -42,6 +43,17 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         supplementary.navigationBar.prefersLargeTitles = true
 
         super.init()
+    }
+
+    func prepareForAdaptivePresentation() -> UIViewController {
+        guard AccountHelper.isDotcomAvailable() else {
+            return UINavigationController(rootViewController: ReaderLoggedOutViewController())
+        }
+        let content = AdaptiveListDetailViewController(list: supplementary)
+        adaptiveContent = content
+        sidebar.navigationItem.backButtonDisplayMode = .minimal
+        sidebar.onViewDidLoad = { [weak self] in self?.showInitialSelection() }
+        return content
     }
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
@@ -90,7 +102,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         // -warning: List occasionally sets the selection to `nil` when switching items.
         selectionObserver = sidebarViewModel.$selection.compactMap { $0 }
             .removeDuplicates { [weak self] in
-                guard $0 == $1, let self, let splitViewController else { return false }
+                guard $0 == $1, let self else { return false }
+                if let adaptiveContent {
+                    adaptiveContent.detailNavigationController.popToRootViewController(animated: isNavigationAnimated)
+                    adaptiveContent.splitViewControllerForContent.show(.secondary)
+                    return true
+                }
+                guard let splitViewController else { return false }
                 self.popMainNavigationController(in: splitViewController)
                 return true
             }
@@ -129,6 +147,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func hideSupplementaryColumnIfNeeded() {
+        guard adaptiveContent == nil else { return }
         if sidebar.didAppear, let splitVC = sidebar.splitViewController, splitVC.splitBehavior == .overlay {
             DispatchQueue.main.async {
                 splitVC.hide(.supplementary)
@@ -227,7 +246,12 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// Shows the given view controller by either displaying it in the `.secondary`
     /// column (split view) or pushing to the navigation stack.
     private func show(_ viewController: UIViewController) {
-        if let splitViewController {
+        if let adaptiveContent {
+            guard !contentIsAlreadyDisplayed(viewController, in: adaptiveContent.detailNavigationController) else {
+                return
+            }
+            adaptiveContent.showDetail(viewController)
+        } else if let splitViewController {
             guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
                 DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping show")
                 return
@@ -250,7 +274,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// Pushes the view controller to either the existing navigation stack in
     /// the `.secondary` column (split view) or to the main navigation stack.
     private func push(_ viewController: UIViewController) {
-        if let splitViewController {
+        if let adaptiveContent {
+            adaptiveContent.loadViewIfNeeded()
+            guard !contentIsAlreadyDisplayed(viewController, in: adaptiveContent.detailNavigationController) else {
+                return
+            }
+            adaptiveContent.pushDetail(viewController, animated: isNavigationAnimated)
+        } else if let splitViewController {
             // Don't push a view controller on top of another with the same content
             guard !contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
                 DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping push")

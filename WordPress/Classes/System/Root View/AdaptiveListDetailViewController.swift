@@ -4,13 +4,13 @@ import UIKit
 final class AdaptiveListDetailViewController: UIViewController, UISplitViewControllerDelegate {
     let splitViewControllerForContent = UISplitViewController(style: .doubleColumn)
     let listNavigationController: UINavigationController
-    private let detailNavigationController = UINavigationController()
+    let detailNavigationController = UINavigationController()
     private let placeholder = UIViewController()
 
     var isShowingAlongsideDetail: Bool { !splitViewControllerForContent.isCollapsed }
 
     init(list: UIViewController) {
-        listNavigationController = UINavigationController(rootViewController: list)
+        listNavigationController = (list as? UINavigationController) ?? UINavigationController(rootViewController: list)
         super.init(nibName: nil, bundle: nil)
         title = list.title
         placeholder.view.backgroundColor = .systemBackground
@@ -56,6 +56,15 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
     func showDetail(_ controller: UIViewController) {
         detailNavigationController.setViewControllers([controller], animated: false)
         splitViewControllerForContent.show(.secondary)
+    }
+
+    func pushDetail(_ controller: UIViewController, animated: Bool) {
+        if detailNavigationController.viewControllers.first === placeholder {
+            showDetail(controller)
+        } else {
+            detailNavigationController.pushViewController(controller, animated: animated)
+            splitViewControllerForContent.show(.secondary)
+        }
     }
 
     func splitViewController(

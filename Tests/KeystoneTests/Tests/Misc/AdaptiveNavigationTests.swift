@@ -229,6 +229,41 @@ struct AdaptiveNavigationTests {
         }
     }
 
+    @Test func readerKeepsItsFeedAndArticleAcrossWidths() async throws {
+        try await withApp { root, context in
+            let account = AccountBuilder(context).build()
+            let previousAccount = UserSettings.defaultDotComUUID
+            UserSettings.defaultDotComUUID = account.uuid
+            defer { UserSettings.defaultDotComUUID = previousAccount }
+            let presenter = ReaderPresenter()
+            presenter.sidebar.viewModel.selection = .main(.saved)
+            let content = try #require(presenter.prepareForAdaptivePresentation() as? AdaptiveListDetailViewController)
+            let tab = UITab(title: "Reader", image: nil, identifier: "reader-test") { _ in content }
+            root.tabs.append(tab)
+            root.selectedTab = tab
+            await settleNavigation()
+            let navigation = content.detailNavigationController
+            let feed = try #require(navigation.topViewController as? ReaderStreamViewController)
+            presenter.navigate(to: .post(postID: 1, siteID: 1, isFeed: false), animated: false)
+            await settleNavigation()
+            let article = try #require(navigation.topViewController as? ReaderDetailViewController)
+
+            for width: UIUserInterfaceSizeClass in [.compact, .regular, .compact, .regular] {
+                root.traitOverrides.horizontalSizeClass = width
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                #expect(article.view.window != nil)
+                #expect(navigation.topViewController === article)
+                #expect(navigation.viewControllers.first === feed)
+                #expect(presenter.sidebar.viewModel.selection == .main(.saved))
+            }
+            presenter.sidebar.viewModel.selection = .main(.saved)
+            await settleNavigation()
+            #expect(navigation.topViewController === feed)
+            #expect(navigation.viewControllers.count == 1)
+        }
+    }
+
     private func siteNavigation(in root: AppTabBarController) throws -> UINavigationController {
         let navigation = try #require(root.tabs.first?.viewController as? UINavigationController)
         #expect(root.selectedViewController === navigation)
