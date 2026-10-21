@@ -192,6 +192,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureHeader()
         configureRelatedPosts()
         configureToolbar()
+        if #available(iOS 26, *) {
+            // The toolbar buttons sit on their own frosted capsules (see `ReaderDetailToolbar`). With them,
+            // the automatic edge effect draws a frosted band behind the whole toolbar on iOS 27.
+            scrollView.bottomEdgeEffect.isHidden = true
+        }
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
