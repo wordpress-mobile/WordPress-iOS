@@ -53,8 +53,6 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:NSNotification.ReachabilityUpdatedNotification object:nil];
 
-    [self registerForTraitChanges:@[UITraitHorizontalSizeClass.class] withAction:@selector(updateNavigationTitle)];
-
     [self initStats];
 }
 
@@ -67,11 +65,7 @@
 
 - (void)updateNavigationTitle
 {
-    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
-        self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
-    } else {
-        self.navigationItem.title = nil;
-    }
+    self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
 }
 
 - (void)setBlog:(Blog *)blog

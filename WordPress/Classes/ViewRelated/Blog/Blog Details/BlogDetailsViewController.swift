@@ -19,9 +19,8 @@ public class BlogDetailsViewController: UIViewController {
     public private(set) var tableViewModel: BlogDetailsTableViewModel?
     public var isScrollEnabled = false
     public weak var presentationDelegate: BlogDetailsPresentationDelegate?
-    // Site navigation retains this menu even when the dashboard replaces it.
-    weak var modalPresenter: UIViewController?
     public var isSidebarModeEnabled = false
+    var usesAdaptiveNavigation = false
     public weak var presentedSiteSettingsViewController: UIViewController?
 
     private lazy var blogService = BlogService(coreDataStack: ContextManager.shared)
@@ -35,26 +34,6 @@ public class BlogDetailsViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override public func present(
-        _ viewControllerToPresent: UIViewController,
-        animated: Bool,
-        completion: (() -> Void)? = nil
-    ) {
-        if viewIfLoaded?.window == nil, let modalPresenter {
-            modalPresenter.present(viewControllerToPresent, animated: animated, completion: completion)
-        } else {
-            super.present(viewControllerToPresent, animated: animated, completion: completion)
-        }
-    }
-
-    override public func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
-        if viewIfLoaded?.window == nil, let modalPresenter {
-            modalPresenter.dismiss(animated: animated, completion: completion)
-        } else {
-            super.dismiss(animated: animated, completion: completion)
-        }
     }
 
     override public func viewDidLoad() {

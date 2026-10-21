@@ -3,7 +3,10 @@ import WordPressData
 import WordPressUI
 
 protocol SiteMenuViewControllerDelegate: AnyObject {
-    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController)
+    func siteMenuViewController(
+        _ siteMenuViewController: SiteMenuViewController,
+        showDetailsViewController viewController: UIViewController
+    )
 }
 
 /// The site menu for the split view navigation.
@@ -17,9 +20,10 @@ final class SiteMenuViewController: UIViewController {
     private var didAppear = false
     private let tipAnchor = UIView()
 
-    init(blog: Blog) {
+    init(blog: Blog, usesAdaptiveNavigation: Bool = false) {
         self.blog = blog
         blogDetailsVC = SiteMenuListViewController(blog: blog)
+        blogDetailsVC.usesAdaptiveNavigation = usesAdaptiveNavigation
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,6 +43,7 @@ final class SiteMenuViewController: UIViewController {
         view.addSubview(blogDetailsVC.view)
         blogDetailsVC.view.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(blogDetailsVC.view)
+        blogDetailsVC.didMove(toParent: self)
 
         blogDetailsVC.showInitialDetailsForBlog()
 
@@ -99,7 +104,7 @@ extension SiteMenuViewController: BlogDetailsPresentationDelegate {
         // didAppear prevents it from being hidden on first show
         if didAppear, let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
             DispatchQueue.main.async {
-                splitVC.hide(.supplementary)
+                splitVC.hide(splitVC.style == .doubleColumn ? .primary : .supplementary)
             }
         }
     }

@@ -77,13 +77,17 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     var supportsDashboardInRegularWidth = false
     var onSiteSelected: ((Blog?) -> Void)?
-    var onSiteMenuCreated: ((BlogDetailsViewController) -> Void)?
 
     // MARK: - Initializers
 
-    @objc class func make(forBlog blog: Blog, isSidebarModeEnabled: Bool = false) -> MySiteViewController {
+    class func make(
+        forBlog blog: Blog,
+        isSidebarModeEnabled: Bool = false,
+        supportsDashboardInRegularWidth: Bool = false
+    ) -> MySiteViewController {
         let viewContoller = MySiteViewController()
         viewContoller.isSidebarModeEnabled = isSidebarModeEnabled
+        viewContoller.supportsDashboardInRegularWidth = supportsDashboardInRegularWidth
         viewContoller.blog = blog
         return viewContoller
     }
@@ -131,9 +135,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private(set) weak var blogDetailsViewController: BlogDetailsViewController? {
         didSet {
             blogDetailsViewController?.presentationDelegate = self
-            if let blogDetailsViewController {
-                onSiteMenuCreated?(blogDetailsViewController)
-            }
         }
     }
     private weak var blogDashboardViewController: BlogDashboardViewController?

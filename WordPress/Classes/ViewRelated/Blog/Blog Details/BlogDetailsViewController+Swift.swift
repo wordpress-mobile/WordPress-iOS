@@ -63,7 +63,11 @@ extension BlogDetailsViewController {
 
     public func showDashboard() {
         if isSidebarModeEnabled {
-            let controller = MySiteViewController.make(forBlog: blog, isSidebarModeEnabled: true)
+            let controller = MySiteViewController.make(
+                forBlog: blog,
+                isSidebarModeEnabled: true,
+                supportsDashboardInRegularWidth: usesAdaptiveNavigation
+            )
             presentationDelegate?.presentBlogDetailsViewController(controller)
         } else {
             let controller = BlogDashboardViewController(blog: blog, embeddedInScrollView: false)
@@ -258,7 +262,7 @@ extension BlogDetailsViewController {
         }
         commentsVC.navigationItem.largeTitleDisplayMode = .never
 
-        if isSidebarModeEnabled {
+        if isSidebarModeEnabled && !usesAdaptiveNavigation {
             commentsVC.isSidebarModeEnabled = true
 
             if #available(iOS 26, *) {
@@ -308,7 +312,7 @@ extension BlogDetailsViewController {
         // presents the stats view controller as modal instead of pushing it. As a
         // workaround for now, we'll manually decide whether to push or use `showDetail`.
         // @frosty 2016-09-05
-        if let splitViewController, splitViewController.isCollapsed {
+        if !usesAdaptiveNavigation, let splitViewController, splitViewController.isCollapsed {
             navigationController?.pushViewController(statsVC, animated: true)
         } else {
             presentationDelegate?.presentBlogDetailsViewController(statsVC)

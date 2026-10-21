@@ -1,57 +1,68 @@
 import UIKit
 import WordPressData
 
-/// Shares one site navigation stack across all window sizes.
+/// Keeps the site menu and selected content in one adaptive hierarchy.
 @MainActor
-final class AdaptiveSiteNavigation: BlogDetailsPresentationDelegate {
-    let landing = MySiteViewController()
-    let navigationController: UINavigationController
+final class AdaptiveSiteNavigation: SiteMenuViewControllerDelegate {
+    let blog: Blog?
     let tab: UITab
 
-    // The dashboard replaces the menu's view, but routes still use its screen factories.
-    private var menu: BlogDetailsViewController?
+    private let menu: SiteMenuViewController?
+    private let content: AdaptiveListDetailViewController?
+    private var isPushingDestination = false
 
     var onSiteSelected: ((Blog?) -> Void)?
 
-    var blog: Blog? { landing.blog }
-
     init(blog: Blog?) {
-        let navigationController = UINavigationController(rootViewController: landing)
-        self.navigationController = navigationController
-        // UIKit reconciles tabs by identifier. Distinct site identifiers reset navigation when switching sites.
+        self.blog = blog
+        let root: UIViewController
+        if let blog {
+            let menu = SiteMenuViewController(blog: blog, usesAdaptiveNavigation: true)
+            self.menu = menu
+            let content = AdaptiveListDetailViewController(list: menu)
+            self.content = content
+            root = content
+        } else {
+            menu = nil
+            content = nil
+            root = UINavigationController(rootViewController: MySiteViewController())
+        }
+        // UIKit reconciles tabs by identifier. A new site starts with a fresh hierarchy.
         let siteIdentifier = blog?.objectID.uriRepresentation().absoluteString ?? "none"
         tab = UITab(
             title: NSLocalizedString("My Site", comment: "The My Site tab"),
             image: UIImage(systemName: "house"),
             identifier: "site.\(siteIdentifier)"
-        ) { _ in navigationController }
+        ) { _ in root }
         tab.preferredPlacement = .fixed
         tab.accessibilityIdentifier = "tabbar_mysites"
-        navigationController.navigationBar.prefersLargeTitles = true
-        landing.navigationItem.backButtonDisplayMode = .minimal
-        landing.supportsDashboardInRegularWidth = true
-        landing.onSiteSelected = { [weak self] in self?.onSiteSelected?($0) }
-        landing.onSiteMenuCreated = { [weak self] in self?.configure(menu: $0) }
-        landing.loadViewIfNeeded()
-        if let blog { landing.blog = blog }
-    }
-
-    private func configure(menu: BlogDetailsViewController) {
-        self.menu = menu
-        menu.modalPresenter = navigationController
-        menu.loadViewIfNeeded()
-        menu.presentationDelegate = self
-    }
-
-    func show(_ kind: BlogDetailsRowKind, userInfo: [String: Any]) {
-        if kind == .home {
-            navigationController.popToRootViewController(animated: true)
-        } else {
-            menu?.showDetailView(for: kind, userInfo: userInfo)
+        menu?.navigationItem.backButtonDisplayMode = .minimal
+        menu?.delegate = self
+        menu?.loadViewIfNeeded()
+        if let landing = (root as? UINavigationController)?.viewControllers.first as? MySiteViewController {
+            landing.onSiteSelected = { [weak self] in self?.onSiteSelected?($0) }
         }
     }
 
-    func presentBlogDetailsViewController(_ viewController: UIViewController) {
-        navigationController.pushViewController(viewController, animated: true)
+    func show(_ kind: BlogDetailsRowKind, userInfo: [String: Any]) {
+        // Routes from dashboard cards belong to the current detail's Back history.
+        isPushingDestination = kind != .home
+        defer { isPushingDestination = false }
+        menu?.showSubsection(kind, userInfo: userInfo)
+    }
+
+    func siteMenuViewController(
+        _ siteMenuViewController: SiteMenuViewController,
+        showDetailsViewController viewController: UIViewController
+    ) {
+        if let home = viewController as? MySiteViewController {
+            home.navigationItem.backButtonDisplayMode = .minimal
+            home.onSiteSelected = { [weak self] in self?.onSiteSelected?($0) }
+        }
+        if isPushingDestination {
+            content?.pushDetail(viewController, animated: true)
+        } else {
+            content?.showDetail(viewController)
+        }
     }
 }

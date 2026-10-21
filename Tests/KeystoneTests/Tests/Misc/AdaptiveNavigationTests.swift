@@ -149,7 +149,9 @@ struct AdaptiveNavigationTests {
             root.showBlogDetails(for: blog, then: .media)
             await settleNavigation()
             let navigation = try siteNavigation(in: root)
-            let media = try #require(navigation.topViewController as? SiteMediaViewController)
+            let media = try #require(navigation.topViewController)
+            #expect(!(media is MySiteViewController))
+            #expect(navigation.viewControllers.count == 2)
             #expect(!(root.tabs.first is UITabGroup))
             #expect(navigation.viewControllers.first is MySiteViewController)
 
@@ -229,6 +231,44 @@ struct AdaptiveNavigationTests {
         }
     }
 
+    @Test func siteMenuSelectsContentInEitherWidth() async throws {
+        try await withApp { root, context in
+            root.showBlogDetails(for: makeBlog(in: context))
+            await settleNavigation()
+            let content = try #require(root.tabs.first?.viewController as? AdaptiveListDetailViewController)
+            let menu = try #require(content.listNavigationController.viewControllers.first as? SiteMenuViewController)
+            let navigation = content.detailNavigationController
+            for width: UIUserInterfaceSizeClass in [.regular, .compact] {
+                root.traitOverrides.horizontalSizeClass = width
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                menu.showSubsection(.posts, userInfo: [:])
+                await settleNavigation()
+                #expect(navigation.topViewController is PostListViewController)
+                #expect(navigation.viewControllers.count == 1)
+                #expect(navigation.topViewController?.view.window != nil)
+                menu.showSubsection(.stats, userInfo: [:])
+                await settleNavigation()
+                #expect(navigation.topViewController is StatsViewController)
+                #expect(navigation.viewControllers.count == 1)
+                #expect(content.listNavigationController.viewControllers.first === menu)
+                #expect(!content.listNavigationController.viewControllers.contains { $0 is StatsViewController })
+            }
+        }
+    }
+
+    @Test func selfHostedSiteUsesItsInitialScreen() async throws {
+        try await withApp { root, context in
+            JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
+            let blog = BlogBuilder(context).with(username: "navigation-test").with(password: "unused").build()
+            root.showBlogDetails(for: blog)
+            await settleNavigation()
+            let navigation = try siteNavigation(in: root)
+            #expect(navigation.viewControllers.count == 1)
+            #expect(navigation.topViewController is PostListViewController)
+        }
+    }
+
     @Test func readerKeepsItsFeedAndArticleAcrossWidths() async throws {
         try await withApp { root, context in
             let account = AccountBuilder(context).build()
@@ -265,16 +305,20 @@ struct AdaptiveNavigationTests {
     }
 
     private func siteNavigation(in root: AppTabBarController) throws -> UINavigationController {
-        let navigation = try #require(root.tabs.first?.viewController as? UINavigationController)
-        #expect(root.selectedViewController === navigation)
-        return navigation
+        let content = try #require(root.tabs.first?.viewController as? AdaptiveListDetailViewController)
+        #expect(root.selectedViewController === content)
+        return content.detailNavigationController
     }
 
     private func makeBlog(in context: NSManagedObjectContext) -> Blog {
-        BlogBuilder(context).with(username: "navigation-test").with(password: "unused").build()
+        BlogBuilder(context).with(isAdmin: true).with(isHostedAtWPCom: true).withAnAccount().build()
     }
 
     private func withApp(_ body: (AppTabBarController, NSManagedObjectContext) async throws -> Void) async throws {
+        _ = RootViewCoordinator.shared
+        let previousAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
+        defer { JetpackFeaturesRemovalCoordinator.currentAppUIType = previousAppUIType }
         let coreData = ContextManager.forTesting()
         let previousContext = ContextManager.overrideInstance
         ContextManager.overrideInstance = coreData
