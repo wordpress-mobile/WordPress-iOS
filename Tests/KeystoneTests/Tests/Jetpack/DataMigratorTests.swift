@@ -157,7 +157,7 @@ class DataMigratorTests: XCTestCase {
             .build()
         UserSettings.defaultDotComUUID = account.uuid
         appKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
-        sharedKeychain.setPasswordError = NSError(domain: "test", code: 1)
+        sharedKeychain.setPasswordError = KeychainError.failure(errSecInteractionNotAllowed)
 
         let expectation = expectation(description: "export completes")
         var exportResult: Result<Void, DataMigrationError>?
@@ -177,7 +177,7 @@ class DataMigratorTests: XCTestCase {
             .with(username: "exportuser")
             .build()
         UserSettings.defaultDotComUUID = account.uuid
-        appKeychain.getPasswordError = NSError(domain: "test", code: 1)
+        appKeychain.getPasswordError = KeychainError.notFound
 
         let expectation = expectation(description: "export completes")
         var exportResult: Result<Void, DataMigrationError>?
@@ -198,12 +198,9 @@ class DataMigratorTests: XCTestCase {
             .with(username: "exportuser")
             .build()
         UserSettings.defaultDotComUUID = account.uuid
-        // A real keychain failure carries SFHFKeychainUtils' error domain
-        // with the raw OSStatus, unlike the generic not-found error.
-        appKeychain.getPasswordError = NSError(
-            domain: "SFHFKeychainUtilsErrorDomain",
-            code: Int(errSecInteractionNotAllowed)
-        )
+        // A real keychain failure surfaces as a typed `.failure` carrying the
+        // raw OSStatus, unlike the not-found case.
+        appKeychain.getPasswordError = KeychainError.failure(errSecInteractionNotAllowed)
 
         let expectation = expectation(description: "export completes")
         var exportResult: Result<Void, DataMigrationError>?
