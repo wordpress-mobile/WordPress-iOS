@@ -64,7 +64,7 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
         NSLayoutConstraint.activate([
             split.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             split.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            split.view.topAnchor.constraint(equalTo: view.topAnchor),
+            split.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             split.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         split.didMove(toParent: self)
