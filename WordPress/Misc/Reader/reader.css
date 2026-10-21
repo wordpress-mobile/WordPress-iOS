@@ -77,9 +77,9 @@ figure.wp-block-embed.is-type-video {
 }
 
 /* workaround for CMM-1964 */
-.reader-full-post .reader-full-post__story-content {
-  a {
-    color: var(--main-link-color);
+@media (prefers-color-scheme: dark) {
+  .reader-full-post.reader-full-post__story-content a {
+      color: var(--main-link-color);
   }
 }
 
