@@ -196,6 +196,76 @@ struct AdaptiveNavigationTests {
         }
     }
 
+    @Test func sidebarStatsReturnsToDashboardAfterCollapsing() async throws {
+        try await withApp { root, context in
+            root.showBlogDetails(for: makeBlog(in: context))
+            await settleNavigation()
+            let content = try #require(root.tabs.first?.viewController as? AdaptiveListDetailViewController)
+            let navigation = content.detailNavigationController
+            let home = try #require(navigation.topViewController as? MySiteViewController)
+            let dashboard = try #require(home.children.compactMap { $0 as? BlogDashboardViewController }.first)
+            let dataSource = try #require(dashboard.collectionView.dataSource as? DashboardDataSource)
+            #expect(!dataSource.snapshot().sectionIdentifiers.contains(.quickActions))
+            let menu = try #require(content.listNavigationController.viewControllers.first as? SiteMenuViewController)
+            menu.showSubsection(.stats, userInfo: [:])
+            await settleNavigation()
+            let stats = try #require(navigation.topViewController as? StatsViewController)
+
+            root.traitOverrides.horizontalSizeClass = .compact
+            root.view.layoutIfNeeded()
+            await settleNavigation()
+            #expect(content.splitViewControllerForContent.isCollapsed)
+            #expect(stats.view.window != nil)
+            #expect(navigation.viewControllers.first === home)
+            navigation.popViewController(animated: false)
+            await settleNavigation()
+            #expect(navigation.topViewController === home)
+            #expect(home.view.window != nil)
+            #expect(navigation.viewControllers.count == 1)
+            #expect(navigation.navigationBar.backItem == nil)
+            #expect(content.listNavigationController.viewIfLoaded?.window == nil)
+            #expect(dataSource.snapshot().sectionIdentifiers.contains(.quickActions))
+
+            root.traitOverrides.horizontalSizeClass = .regular
+            root.view.layoutIfNeeded()
+            await settleNavigation()
+            #expect(home.view.window != nil)
+            #expect(menu.view.window != nil)
+            let menuList = try #require(menu.children.first as? BlogDetailsViewController)
+            #expect(menuList.tableView?.indexPathForSelectedRow == menuList.tableViewModel?.indexPath(for: .home))
+            #expect(menuList.tableViewModel?.restorableSelectedRow == .home)
+            #expect(!dataSource.snapshot().sectionIdentifiers.contains(.quickActions))
+        }
+    }
+
+    @Test func compactLaunchShowsDashboardAndAdaptsQuickActions() async throws {
+        try await withApp { root, context in
+            root.traitOverrides.horizontalSizeClass = .compact
+            root.showBlogDetails(for: makeBlog(in: context))
+            root.view.layoutIfNeeded()
+            await settleNavigation()
+            let navigation = try siteNavigation(in: root)
+            let home = try #require(navigation.topViewController as? MySiteViewController)
+            let dashboard = try #require(home.children.compactMap { $0 as? BlogDashboardViewController }.first)
+            let dataSource = try #require(dashboard.collectionView.dataSource as? DashboardDataSource)
+            for width: UIUserInterfaceSizeClass in [.compact, .regular, .compact, .regular] {
+                root.traitOverrides.horizontalSizeClass = width
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                #expect(navigation.topViewController === home)
+                #expect(home.view.window != nil)
+                #expect(dataSource.snapshot().sectionIdentifiers.contains(.quickActions) == (width == .compact))
+            }
+            let split = try #require(home.splitViewController)
+            split.hide(.primary)
+            await settleNavigation()
+            #expect(dataSource.snapshot().sectionIdentifiers.contains(.quickActions))
+            split.show(.primary)
+            await settleNavigation()
+            #expect(!dataSource.snapshot().sectionIdentifiers.contains(.quickActions))
+        }
+    }
+
     @Test func supportRouteWorksBeforeOpeningMe() async throws {
         try await withApp { root, _ in
             root.navigateToSupport()
@@ -276,12 +346,14 @@ struct AdaptiveNavigationTests {
                 menu.showSubsection(.posts, userInfo: [:])
                 await settleNavigation()
                 #expect(navigation.topViewController is PostListViewController)
-                #expect(navigation.viewControllers.count == 1)
+                #expect(navigation.viewControllers.count == 2)
+                #expect(navigation.viewControllers.first is MySiteViewController)
                 #expect(navigation.topViewController?.view.window != nil)
                 menu.showSubsection(.stats, userInfo: [:])
                 await settleNavigation()
                 #expect(navigation.topViewController is StatsViewController)
-                #expect(navigation.viewControllers.count == 1)
+                #expect(navigation.viewControllers.count == 2)
+                #expect(navigation.viewControllers.first is MySiteViewController)
                 #expect(content.listNavigationController.viewControllers.first === menu)
                 #expect(!content.listNavigationController.viewControllers.contains { $0 is StatsViewController })
             }
@@ -295,7 +367,8 @@ struct AdaptiveNavigationTests {
             root.showBlogDetails(for: blog)
             await settleNavigation()
             let navigation = try siteNavigation(in: root)
-            #expect(navigation.viewControllers.count == 1)
+            #expect(navigation.viewControllers.count == 2)
+            #expect(navigation.viewControllers.first is MySiteViewController)
             #expect(navigation.topViewController is PostListViewController)
         }
     }

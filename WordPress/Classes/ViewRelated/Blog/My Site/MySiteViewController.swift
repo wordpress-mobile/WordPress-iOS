@@ -76,6 +76,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     var isReaderAppModeEnabled = false
 
     var supportsDashboardInRegularWidth = false
+    var isSiteMenuVisible = false {
+        didSet { blogDashboardViewController?.showsQuickActions = !isSiteMenuVisible }
+    }
     var onSiteSelected: ((Blog?) -> Void)?
 
     // MARK: - Initializers
@@ -818,7 +821,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func showDashboard(for blog: Blog) {
         let blogDashboardViewController =
             self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog, embeddedInScrollView: true)
-        blogDashboardViewController.showsQuickActionsInRegularWidth = supportsDashboardInRegularWidth
+        if supportsDashboardInRegularWidth {
+            blogDashboardViewController.showsQuickActions = !isSiteMenuVisible
+        }
         blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController

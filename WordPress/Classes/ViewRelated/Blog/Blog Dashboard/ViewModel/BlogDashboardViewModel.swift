@@ -182,6 +182,10 @@ final class BlogDashboardViewModel {
         blazeViewModel.refresh()
     }
 
+    func updateQuickActions() {
+        applySnapshot(for: currentCards)
+    }
+
     @objc func loadCardsFromCache() {
         loadCardsFromCacheWithAnimation(animated: false)
     }
@@ -254,10 +258,9 @@ private extension BlogDashboardViewModel {
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
-        let isShowingQuickActions: Bool = {
-            viewController?.showsQuickActionsInRegularWidth == true
-                || viewController?.traitCollection.horizontalSizeClass == .compact
-        }()
+        let isShowingQuickActions =
+            viewController?.showsQuickActions
+            ?? (viewController?.traitCollection.horizontalSizeClass == .compact)
 
         let items = cards.map { DashboardItem.cards($0) }
         let dotComID = blog.dotComID?.intValue ?? 0

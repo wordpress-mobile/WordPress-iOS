@@ -84,6 +84,13 @@ final class SiteMenuViewController: UIViewController {
         tipObserver = nil
     }
 
+    func selectSubsection(_ subsection: BlogDetailsRowKind) {
+        let model = blogDetailsVC.tableViewModel
+        model?.restorableSelectedRow = subsection
+        blogDetailsVC.tableView?
+            .selectRow(at: model?.indexPath(for: subsection), animated: false, scrollPosition: .none)
+    }
+
     func showSubsection(_ subsection: BlogDetailsRowKind, userInfo: [String: Any]) {
         blogDetailsVC.showDetailView(for: subsection, userInfo: userInfo)
     }

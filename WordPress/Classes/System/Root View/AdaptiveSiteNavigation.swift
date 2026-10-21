@@ -3,13 +3,14 @@ import WordPressData
 
 /// Keeps the site menu and selected content in one adaptive hierarchy.
 @MainActor
-final class AdaptiveSiteNavigation: SiteMenuViewControllerDelegate {
+final class AdaptiveSiteNavigation: NSObject, SiteMenuViewControllerDelegate, UINavigationControllerDelegate {
     let blog: Blog?
     let tab: UITab
 
     private let menu: SiteMenuViewController?
     private let content: AdaptiveListDetailViewController?
     private var isPushingDestination = false
+    private var home: MySiteViewController?
 
     var onSiteSelected: ((Blog?) -> Void)?
 
@@ -19,7 +20,7 @@ final class AdaptiveSiteNavigation: SiteMenuViewControllerDelegate {
         if let blog {
             let menu = SiteMenuViewController(blog: blog, usesAdaptiveNavigation: true)
             self.menu = menu
-            let content = AdaptiveListDetailViewController(list: menu)
+            let content = AdaptiveListDetailViewController(list: menu, usesDetailForCompactWidth: true)
             self.content = content
             root = content
         } else {
@@ -34,10 +35,15 @@ final class AdaptiveSiteNavigation: SiteMenuViewControllerDelegate {
             image: UIImage(systemName: "house"),
             identifier: "site.\(siteIdentifier)"
         ) { _ in root }
+        super.init()
         tab.preferredPlacement = .fixed
         tab.accessibilityIdentifier = "tabbar_mysites"
         menu?.navigationItem.backButtonDisplayMode = .minimal
         menu?.delegate = self
+        content?.detailNavigationController.delegate = self
+        content?.onListVisibilityChanged = { [weak self] isVisible in
+            self?.home?.isSiteMenuVisible = isVisible
+        }
         menu?.loadViewIfNeeded()
         if let landing = (root as? UINavigationController)?.viewControllers.first as? MySiteViewController {
             landing.onSiteSelected = { [weak self] in self?.onSiteSelected?($0) }
@@ -51,18 +57,37 @@ final class AdaptiveSiteNavigation: SiteMenuViewControllerDelegate {
         menu?.showSubsection(kind, userInfo: userInfo)
     }
 
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        if viewController === home {
+            menu?.selectSubsection(.home)
+        }
+    }
+
     func siteMenuViewController(
         _ siteMenuViewController: SiteMenuViewController,
         showDetailsViewController viewController: UIViewController
     ) {
-        if let home = viewController as? MySiteViewController {
+        guard let content, let blog else { return }
+        if home == nil {
+            let home =
+                (viewController as? MySiteViewController)
+                ?? MySiteViewController.make(forBlog: blog, supportsDashboardInRegularWidth: true)
             home.navigationItem.backButtonDisplayMode = .minimal
             home.onSiteSelected = { [weak self] in self?.onSiteSelected?($0) }
+            home.isSiteMenuVisible = content.isListVisible
+            self.home = home
+            content.showDetail(home)
         }
-        if isPushingDestination {
-            content?.pushDetail(viewController, animated: true)
+        if viewController is MySiteViewController, let home {
+            content.showDetail(home)
+        } else if isPushingDestination {
+            content.pushDetail(viewController, animated: true)
         } else {
-            content?.showDetail(viewController)
+            content.showDetail(viewController, keeping: home)
         }
     }
 }

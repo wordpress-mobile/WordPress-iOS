@@ -8,7 +8,13 @@ final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
     var presentedPostStatus: String?
-    var showsQuickActionsInRegularWidth = false
+    var showsQuickActions: Bool? {
+        didSet {
+            if isViewLoaded, showsQuickActions != oldValue {
+                viewModel.updateQuickActions()
+            }
+        }
+    }
 
     private let embeddedInScrollView: Bool
 

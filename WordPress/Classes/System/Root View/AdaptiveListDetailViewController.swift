@@ -6,10 +6,15 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
     let listNavigationController: UINavigationController
     let detailNavigationController = UINavigationController()
     private let placeholder = UIViewController()
+    private let usesDetailForCompactWidth: Bool
+
+    var onListVisibilityChanged: ((Bool) -> Void)?
+    private(set) var isListVisible = false
 
     var isShowingAlongsideDetail: Bool { !splitViewControllerForContent.isCollapsed }
 
-    init(list: UIViewController) {
+    init(list: UIViewController, usesDetailForCompactWidth: Bool = false) {
+        self.usesDetailForCompactWidth = usesDetailForCompactWidth
         listNavigationController = (list as? UINavigationController) ?? UINavigationController(rootViewController: list)
         super.init(nibName: nil, bundle: nil)
         title = list.title
@@ -24,6 +29,10 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
         split.maximumPrimaryColumnWidth = 420
         split.setViewController(listNavigationController, for: .primary)
         split.setViewController(detailNavigationController, for: .secondary)
+        if usesDetailForCompactWidth {
+            // Reuse the content stack so compact Back navigation never exposes the site menu.
+            split.setViewController(detailNavigationController, for: .compact)
+        }
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -53,9 +62,29 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-    func showDetail(_ controller: UIViewController) {
-        detailNavigationController.setViewControllers([controller], animated: false)
-        splitViewControllerForContent.show(.secondary)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let split = splitViewControllerForContent
+        updateListVisibility(!split.isCollapsed && split.displayMode != .secondaryOnly)
+    }
+
+    private func updateListVisibility(_ isVisible: Bool) {
+        if isVisible != isListVisible {
+            isListVisible = isVisible
+            onListVisibilityChanged?(isVisible)
+        }
+    }
+
+    func showDetail(_ controller: UIViewController, keeping root: UIViewController? = nil) {
+        let controllers = root.map { [$0, controller] } ?? [controller]
+        detailNavigationController.setViewControllers(controllers, animated: false)
+        showDetailColumn()
+    }
+
+    private func showDetailColumn() {
+        if !usesDetailForCompactWidth || !splitViewControllerForContent.isCollapsed {
+            splitViewControllerForContent.show(.secondary)
+        }
     }
 
     func pushDetail(_ controller: UIViewController, animated: Bool) {
@@ -63,8 +92,23 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
             showDetail(controller)
         } else {
             detailNavigationController.pushViewController(controller, animated: animated)
-            splitViewControllerForContent.show(.secondary)
+            showDetailColumn()
         }
+    }
+
+    func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        updateListVisibility(false)
+    }
+
+    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+        updateListVisibility(svc.displayMode != .secondaryOnly)
+    }
+
+    func splitViewController(
+        _ svc: UISplitViewController,
+        willChangeTo displayMode: UISplitViewController.DisplayMode
+    ) {
+        updateListVisibility(!svc.isCollapsed && displayMode != .secondaryOnly)
     }
 
     func splitViewController(
