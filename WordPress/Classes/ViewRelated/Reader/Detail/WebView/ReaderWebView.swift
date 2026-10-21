@@ -34,9 +34,7 @@ class ReaderWebView: WKWebView {
         didSet {
             // Make `prefers-color-scheme` (and embeds) follow the theme, not the
             // system appearance, so e.g. Sepia stays light when Dark Mode is on.
-            overrideUserInterfaceStyle = displaySetting.color.adaptsToInterfaceStyle
-                ? .unspecified
-                : (displaySetting.hasLightBackground ? .light : .dark)
+            overrideUserInterfaceStyle = displaySetting.interfaceStyle
         }
     }
 

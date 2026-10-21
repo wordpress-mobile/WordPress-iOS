@@ -79,7 +79,7 @@ class ReaderDisplaySettingViewController: UIViewController {
 
     @MainActor
     private func updateNavigationBar(with setting: ReaderDisplaySettings) {
-        navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
+        navigationController?.navigationBar.overrideUserInterfaceStyle = setting.interfaceStyle
     }
 
     private struct Constants {

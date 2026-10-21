@@ -23,7 +23,8 @@ a { text-decoration: none; color: var(--main-link-color); }
 
 pre { overflow-x: scroll; background-color: var(--color-neutral-0); padding: 1em; }
 
-/* Broad defaults: the remote stylesheet's more specific rules win over these */
+/* Broad defaults: the remote stylesheet's more specific rules win over these.
+   This relies on the layer order declared in `ReaderWebView.formattedContent()`. */
 @layer reader-defaults {
   p, div, li { line-height: 1.6em; font-size: 100%; }
 }
