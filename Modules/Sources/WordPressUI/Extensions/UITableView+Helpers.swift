@@ -49,8 +49,17 @@ extension UITableView {
     ///     - scrollPosition:   The position in the table view to scroll the specified row. Use `.None` for no scrolling. Defaults to `.Middle`.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    @objc public func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableView.ScrollPosition = .middle, completion: (() -> Void)?) {
-        flashRowAtIndexPath(indexPath, scrollPosition: scrollPosition, flashLength: type(of: self).defaultFlashLength, completion: completion)
+    @objc public func flashRowAtIndexPath(
+        _ indexPath: IndexPath,
+        scrollPosition: UITableView.ScrollPosition = .middle,
+        completion: (() -> Void)?
+    ) {
+        flashRowAtIndexPath(
+            indexPath,
+            scrollPosition: scrollPosition,
+            flashLength: type(of: self).defaultFlashLength,
+            completion: completion
+        )
     }
 
     /// Flashes the specified row (selecting and then deselecting), and optionally scrolls to the specified position.
@@ -61,7 +70,12 @@ extension UITableView {
     ///     - flashLength:      The length of time (in seconds) to wait between selecting and deselecting the row.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    @objc public func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableView.ScrollPosition = .middle, flashLength: TimeInterval, completion: (() -> Void)?) {
+    @objc public func flashRowAtIndexPath(
+        _ indexPath: IndexPath,
+        scrollPosition: UITableView.ScrollPosition = .middle,
+        flashLength: TimeInterval,
+        completion: (() -> Void)?
+    ) {
         selectRow(at: indexPath, animated: true, scrollPosition: scrollPosition)
 
         let time = DispatchTime.now() + Double(Int64(flashLength * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -105,11 +119,15 @@ extension UITableView {
 
         // And convert it to the `tableView` coordinate space since that's where
         // `emptyStateView` belongs.
-        stateView.frame = self.convert(CGRect(
-            x: 0,
-            y: y,
-            width: view.bounds.width,
-            height: view.bounds.height - y - view.safeAreaInsets.bottom
-        ), from: view)
+        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
+        stateView.frame = self.convert(
+            CGRect(
+                x: safeAreaFrame.minX,
+                y: y,
+                width: safeAreaFrame.width,
+                height: view.bounds.height - y - view.safeAreaInsets.bottom
+            ),
+            from: view
+        )
     }
 }

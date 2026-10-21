@@ -1,4 +1,3 @@
-
 import UIKit
 
 extension UITableView {
@@ -36,7 +35,9 @@ extension UITableView {
         guard let tableHeaderView else {
             return
         }
-        let fittingSize = CGSize(width: bounds.width - (safeAreaInsets.left + safeAreaInsets.right), height: 0)
+        // The header's readable content guide already accounts for the safe area.
+        // Subtracting it again makes text wrap too narrowly in a split view.
+        let fittingSize = CGSize(width: bounds.width, height: 0)
         let size = tableHeaderView.systemLayoutSizeFitting(
             fittingSize,
             withHorizontalFittingPriority: .required,

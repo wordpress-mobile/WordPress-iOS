@@ -1,6 +1,7 @@
 import OHHTTPStubs
 import Testing
 import UIKit
+import WordPressUI
 
 @testable import WordPress
 @testable import WordPressData
@@ -297,6 +298,68 @@ struct AdaptiveNavigationTests {
                 #expect(detail.view.window != nil)
                 #expect(detail.navigationController === detailNavigation)
                 #expect(content.listNavigationController.viewControllers.first === list)
+            }
+        }
+    }
+
+    @Test func readerHeaderFitsItsVisibleTextAcrossWidths() async throws {
+        try await withApp { root, _ in
+            let detail = UITableViewController()
+            let content = AdaptiveListDetailViewController(list: UIViewController())
+            let tab = UITab(title: "Reader Header", image: nil, identifier: "reader-header") { _ in content }
+            root.tabs.append(tab)
+            root.selectedTab = tab
+            await settleNavigation()
+            content.showDetail(detail)
+            let header = ReaderHeaderView.makeForFollowing()
+            detail.tableView.tableHeaderView = header
+
+            for width: CGFloat in [820, 375, 820] {
+                root.view.window?.frame = CGRect(x: 0, y: 0, width: width, height: 1180)
+                root.traitOverrides.horizontalSizeClass = width == 375 ? .compact : .regular
+                header.isCompact = width == 375
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                detail.tableView.sizeToFitHeaderView()
+                detail.tableView.layoutIfNeeded()
+                let title = header.titleView.titleLabel
+                let description = header.titleView.detailsTextView
+                let textHeight =
+                    description.sizeThatFits(
+                        CGSize(width: description.bounds.width, height: .greatestFiniteMagnitude)
+                    )
+                    .height
+                let insets = ReaderBaseHeaderView.makeInsets(isCompact: header.isCompact)
+                let expectedHeight = title.intrinsicContentSize.height + textHeight + insets.top + insets.bottom
+                #expect(abs(header.frame.height - expectedHeight) < 1)
+            }
+        }
+    }
+
+    @Test func emptyStatesStayCenteredInTheVisibleColumnAcrossWidths() async throws {
+        try await withApp { root, _ in
+            let detail = UITableViewController()
+            let content = AdaptiveListDetailViewController(list: UIViewController())
+            let tab = UITab(title: "Empty State", image: nil, identifier: "empty-state") { _ in content }
+            root.tabs.append(tab)
+            root.selectedTab = tab
+            await settleNavigation()
+            content.showDetail(detail)
+            await settleNavigation()
+            let emptyState = UIView()
+            detail.tableView.addSubview(emptyState)
+
+            for width: UIUserInterfaceSizeClass in [.regular, .compact, .regular] {
+                root.traitOverrides.horizontalSizeClass = width
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                detail.tableView.layoutEmptyStateView(emptyState, in: detail)
+                let frame = detail.tableView.convert(emptyState.frame, to: detail.view)
+                let safeArea = detail.view.safeAreaLayoutGuide.layoutFrame
+                #expect(abs(frame.midX - safeArea.midX) < 1)
+                #expect(frame.minX >= safeArea.minX)
+                #expect(frame.maxX <= safeArea.maxX)
+                #expect(emptyState.window != nil)
             }
         }
     }
