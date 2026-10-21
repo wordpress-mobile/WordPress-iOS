@@ -25,7 +25,7 @@ struct ReaderDetailToolbarTests {
         #expect(itemsAfter.count == itemsBefore.count)
         #expect(zip(itemsBefore, itemsAfter).allSatisfy { $0 === $1 })
 
-        let likeButton = try #require(itemsAfter.last?.customView as? UIButton)
+        let likeButton = try #require(buttons(in: itemsAfter).last)
         #expect(likeButton.configuration?.title == 1234.formatted(.number.notation(.compactName)))
     }
 
@@ -39,13 +39,13 @@ struct ReaderDetailToolbarTests {
         let toolbar = ReaderDetailToolbar()
 
         toolbar.configure(for: post, in: viewController)
-        let likeButton = try #require(viewController.toolbarItems?.last?.customView as? UIButton)
-        let wideWidth = likeButton.frame.width
+        let likeButton = try #require(buttons(in: viewController.toolbarItems).last)
+        let wideWidth = width(of: likeButton)
 
         post.likeCount = 2
 
-        #expect(likeButton.frame.width < wideWidth)
-        #expect(likeButton.frame.width == likeButton.intrinsicContentSize.width)
+        #expect(width(of: likeButton) < wideWidth)
+        #expect(abs(width(of: likeButton) - likeButton.sizeThatFits(UIView.layoutFittingCompressedSize).width) < 1)
     }
 
     @Test("the like button grows when its count gets slightly wider")
@@ -79,13 +79,61 @@ struct ReaderDetailToolbarTests {
         let toolbar = ReaderDetailToolbar()
 
         toolbar.configure(for: post, in: viewController)
-        let itemsBefore = try #require(viewController.toolbarItems)
-        #expect(!itemsBefore.contains { $0.customView != nil })
+        #expect(buttons(in: viewController.toolbarItems).count == 2) // Save and reblog
 
         post.commentCount = 1
 
-        let itemsAfter = try #require(viewController.toolbarItems)
-        let commentButton = try #require(itemsAfter.compactMap { $0.customView as? UIButton }.first)
-        #expect(commentButton.configuration?.title == 1.formatted(.number.notation(.compactName)))
+        let buttonsAfter = buttons(in: viewController.toolbarItems)
+        #expect(buttonsAfter.count == 3)
+        #expect(buttonsAfter.last?.configuration?.title == 1.formatted(.number.notation(.compactName)))
+    }
+
+    @Test("a frosted capsule fits its buttons after a count changes width")
+    func capsuleFitsItsButtons() throws {
+        guard #available(iOS 26, *) else { return }
+
+        let context = ContextManager.forTesting().mainContext
+        let post = ReaderPostBuilder(context).build()
+        post.isLikesEnabled = true
+        post.likeCount = 3
+        let viewController = UIViewController()
+        let toolbar = ReaderDetailToolbar()
+
+        toolbar.configure(for: post, in: viewController)
+        let capsule = try #require(viewController.toolbarItems?.last?.customView)
+        let narrowWidth = capsule.intrinsicContentSize.width
+
+        post.likeCount = 1234
+
+        #expect(capsule.intrinsicContentSize.width > narrowWidth)
+        #expect(capsule.frame.width == capsule.intrinsicContentSize.width)
+        for button in buttons(in: capsule) {
+            #expect(width(of: button) >= button.sizeThatFits(UIView.layoutFittingCompressedSize).width)
+        }
+
+        post.likeCount = 3
+
+        #expect(capsule.intrinsicContentSize.width == narrowWidth)
+        #expect(capsule.frame.width == narrowWidth)
+    }
+
+    // MARK: - Helpers
+
+    /// The toolbar's buttons in order, whether each is its own item or they share a frosted capsule (iOS 26+).
+    private func buttons(in items: [UIBarButtonItem]?) -> [UIButton] {
+        (items ?? []).compactMap(\.customView).flatMap { buttons(in: $0) }
+    }
+
+    private func buttons(in view: UIView) -> [UIButton] {
+        if let button = view as? UIButton {
+            return [button]
+        }
+        return view.subviews.flatMap { buttons(in: $0) }
+    }
+
+    /// The width the toolbar gives a button: its pinned width on a frosted capsule (iOS 26+), or its frame.
+    private func width(of button: UIButton) -> CGFloat {
+        let pinned = button.constraints.first { $0.firstAttribute == .width && $0.secondItem == nil }
+        return pinned?.constant ?? button.frame.width
     }
 }

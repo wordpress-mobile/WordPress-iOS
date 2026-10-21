@@ -60,18 +60,9 @@ class ReaderDetailToolbar {
         }
 
         let buttons = Buttons(
-            saveForLater: UIBarButtonItem(
-                image: nil,
-                style: .plain,
-                target: self,
-                action: #selector(didTapSaveForLater)
-            ),
-            reblog: UIBarButtonItem(
-                image: WPStyleGuide.ReaderDetail.reblogToolbarIcon,
-                style: .plain,
-                target: self,
-                action: #selector(didTapReblog)
-            ),
+            // Custom views, so they can sit on the frosted capsules on iOS 26+.
+            saveForLater: makeCustomButton(action: #selector(didTapSaveForLater)),
+            reblog: makeCustomButton(action: #selector(didTapReblog)),
             comment: layout.showsCommentButton ? makeCustomButton(action: #selector(didTapComment)) : nil,
             like: layout.showsLikeButton ? makeCustomButton(action: #selector(didTapLike)) : nil
         )
@@ -91,23 +82,36 @@ class ReaderDetailToolbar {
         if let like = buttons.like {
             configureLikeButton(like, for: post)
         }
+        // A capsule doesn't resize by itself when a count changes, like a custom view button.
+        buttons.capsules.forEach { ($0.customView as? FrostedCapsule)?.contentDidChange() }
     }
 
     private func configureSaveForLaterButton(_ button: UIBarButtonItem, for post: ReaderPost) {
         let isSaved = post.isSavedForLater
 
-        button.image =
-            isSaved ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
-        button.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
-        button.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
-        button.tintColor = isSaved ? UIAppColor.primary : .label
+        configureCustomButton(
+            button,
+            image: isSaved
+                ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon,
+            title: nil,
+            isSelected: isSaved
+        )
+        button.customView?.accessibilityLabel =
+            isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
+        button.customView?.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
     }
 
     private func configureReblogButton(_ button: UIBarButtonItem, for post: ReaderPost) {
-        button.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
-        button.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
-        button.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
-        button.tintColor = .label
+        configureCustomButton(button, image: WPStyleGuide.ReaderDetail.reblogToolbarIcon, title: nil)
+        (button.customView as? UIButton)?.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
+        button.customView?.accessibilityLabel = NSLocalizedString(
+            "Reblog post",
+            comment: "Accessibility label for the reblog button."
+        )
+        button.customView?.accessibilityHint = NSLocalizedString(
+            "Reblog this post",
+            comment: "Accessibility hint for the reblog button."
+        )
     }
 
     private func configureCommentButton(_ button: UIBarButtonItem, for post: ReaderPost) {
@@ -129,7 +133,7 @@ class ReaderDetailToolbar {
             title: likeCount.formatted(.number.notation(.compactName)),
             isSelected: isLiked
         )
-        button.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
+        button.customView?.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
     }
 
     private func makeCustomButton(action: Selector) -> UIBarButtonItem {
@@ -141,7 +145,7 @@ class ReaderDetailToolbar {
     private func configureCustomButton(
         _ item: UIBarButtonItem,
         image: UIImage?,
-        title: String,
+        title: String?,
         isSelected: Bool = false
     ) {
         guard let button = item.customView as? UIButton else { return }
@@ -150,9 +154,16 @@ class ReaderDetailToolbar {
         configuration.image = image
         configuration.title = title
 
-        // Apply colors based on display settings and selection state
+        // Apply colors based on display settings and selection state. On the frosted capsules (iOS 26+),
+        // only the icon is green: green text on the light capsule is below the 4.5:1 contrast text needs.
         let tintColor = isSelected ? UIAppColor.primary : .label
-        configuration.baseForegroundColor = tintColor
+        if #available(iOS 26, *) {
+            let iconColor = isSelected ? FrostedCapsule.selectedColor : .label
+            configuration.baseForegroundColor = .label
+            configuration.imageColorTransformer = UIConfigurationColorTransformer { _ in iconColor }
+        } else {
+            configuration.baseForegroundColor = tintColor
+        }
         configuration.imagePadding = 5
 
         // Set font
@@ -282,11 +293,42 @@ private extension ReaderDetailToolbar {
         let comment: UIBarButtonItem?
         let like: UIBarButtonItem?
 
+        /// iOS 26+: the buttons grouped on frosted capsules, which replace the shared Liquid Glass background.
+        let capsules: [UIBarButtonItem]
+
+        init(
+            saveForLater: UIBarButtonItem,
+            reblog: UIBarButtonItem,
+            comment: UIBarButtonItem?,
+            like: UIBarButtonItem?
+        ) {
+            self.saveForLater = saveForLater
+            self.reblog = reblog
+            self.comment = comment
+            self.like = like
+
+            if #available(iOS 26, *) {
+                capsules = [[saveForLater, reblog], [comment, like].compactMap { $0 }]
+                    .filter { !$0.isEmpty }
+                    .map { group in
+                        let item = UIBarButtonItem(customView: FrostedCapsule(views: group.compactMap(\.customView)))
+                        item.hidesSharedBackground = true
+                        return item
+                    }
+            } else {
+                capsules = []
+            }
+        }
+
         var layout: Layout {
             Layout(showsCommentButton: comment != nil, showsLikeButton: like != nil)
         }
 
         var toolbarItems: [UIBarButtonItem] {
+            if #available(iOS 26, *) {
+                return [capsules[0], .flexibleSpace()] + capsules.dropFirst()
+            }
+
             var items: [UIBarButtonItem] = []
 
             if #unavailable(iOS 26) {
@@ -394,6 +436,86 @@ private extension ReaderDetailToolbar {
                 Note: Since the display space is limited, a short or concise translation is preferred.
                 """
         )
+    }
+}
+
+// MARK: - Frosted Capsule
+
+/// A frosted background for a group of toolbar buttons (iOS 26+).
+///
+/// The shared Liquid Glass background takes its colour from the content under it, and over some images
+/// it ends up close in brightness to the icons. This material stays near white or near black, and switches
+/// together with the icons, so they stay legible over any content.
+private final class FrostedCapsule: UIView {
+    private static let height: CGFloat = 48
+    private static let spacing: CGFloat = 6
+    private static let inset: CGFloat = 8
+
+    /// The color of a selected icon (liked, saved). One shade darker than the regular light mode color,
+    /// which falls just below 3:1 on the light capsule over dark or saturated content.
+    static let selectedColor = UIColor(light: UIAppColor.primary(.shade50), dark: UIAppColor.primary(.shade30))
+
+    private let views: [UIView]
+    private let widths: [NSLayoutConstraint]
+
+    init(views: [UIView]) {
+        self.views = views
+        self.widths = views.map { $0.widthAnchor.constraint(equalToConstant: 0) }
+        super.init(frame: .zero)
+
+        let background = UIVisualEffectView(effect: UIBlurEffect(style: .systemThickMaterial))
+        background.clipsToBounds = true
+        background.layer.cornerRadius = Self.height / 2
+        background.layer.cornerCurve = .continuous
+
+        let stack = UIStackView(arrangedSubviews: views)
+        stack.spacing = Self.spacing
+        stack.alignment = .center
+
+        addSubview(background)
+        addSubview(stack)
+        background.translatesAutoresizingMaskIntoConstraints = false
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(
+            widths + [
+                background.leadingAnchor.constraint(equalTo: leadingAnchor),
+                background.trailingAnchor.constraint(equalTo: trailingAnchor),
+                background.topAnchor.constraint(equalTo: topAnchor),
+                background.bottomAnchor.constraint(equalTo: bottomAnchor),
+                stack.centerYAnchor.constraint(equalTo: centerYAnchor),
+                stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.inset),
+                stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.inset),
+                heightAnchor.constraint(equalToConstant: Self.height)
+            ]
+        )
+        contentDidChange()
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let content = widths.reduce(0) { $0 + $1.constant } + Self.spacing * CGFloat(max(0, widths.count - 1))
+        return CGSize(width: content + 2 * Self.inset, height: Self.height)
+    }
+
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        intrinsicContentSize
+    }
+
+    /// Resizes the capsule after its buttons change, e.g. when a count gets wider.
+    ///
+    /// A button's intrinsic content size lags behind a new configuration until its next layout pass, and the
+    /// stack view would size it from that stale value and clip the new title. `sizeThatFits(_:)` is current,
+    /// so pin each button to it.
+    func contentDidChange() {
+        for (view, width) in zip(views, widths) {
+            width.constant = ceil(view.sizeThatFits(UIView.layoutFittingCompressedSize).width)
+        }
+        invalidateIntrinsicContentSize()
+        sizeToFit()
     }
 }
 
