@@ -19,8 +19,18 @@ enum StatsTabType: Int, AdaptiveTabBarItem, CaseIterable {
     var localizedTitle: String {
         switch self {
         case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
-        case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
-        case .subscribers: return NSLocalizedString("stats.dashboard.tab.subscribers", value: "Subscribers", comment: "Title of Subscribers stats tab.")
+        case .traffic:
+            return NSLocalizedString(
+                "stats.dashboard.tab.traffic",
+                value: "Traffic",
+                comment: "Title of Traffic stats tab."
+            )
+        case .subscribers:
+            return NSLocalizedString(
+                "stats.dashboard.tab.subscribers",
+                value: "Subscribers",
+                comment: "Title of Subscribers stats tab."
+            )
         case .ads: return NSLocalizedString("stats.dashboard.tab.ads", value: "Ads", comment: "Title of Ads stats tab.")
         }
     }
@@ -58,7 +68,8 @@ public class SiteStatsDashboardViewController: UIViewController {
     /// Returns the current blog from SiteStatsInformation if available
     private static func currentBlog() -> Blog? {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext)
+        else {
             return nil
         }
         return blog
@@ -74,8 +85,9 @@ public class SiteStatsDashboardViewController: UIViewController {
 
         // Add Ads tab if feature flag is enabled and WordAds is active on the site
         if FeatureFlag.statsAds.enabled,
-           let blog = Self.currentBlog(),
-           blog.isWordAdsActive() {
+            let blog = Self.currentBlog(),
+            blog.isWordAdsActive()
+        {
             tabs.append(.ads)
         }
 
@@ -88,11 +100,15 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
-                image: UIImage(systemName: "gearshape"),
-                style: .plain,
-                target: self,
-                action: #selector(manageInsightsButtonTapped))
-        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+            image: UIImage(systemName: "gearshape"),
+            style: .plain,
+            target: self,
+            action: #selector(manageInsightsButtonTapped)
+        )
+        button.accessibilityHint = NSLocalizedString(
+            "Tap to customize insights",
+            comment: "Accessibility hint to customize insights"
+        )
         return button
     }()
 
@@ -120,12 +136,20 @@ public class SiteStatsDashboardViewController: UIViewController {
     private func createNewTrafficViewController() -> UIViewController? {
         if isUsingMockData {
             // Create with demo context for mock data
-            return StatsHostingViewController.makeNewTrafficViewController(blog: nil, parentViewController: self, isDemo: true)
+            return StatsHostingViewController.makeNewTrafficViewController(
+                blog: nil,
+                parentViewController: self,
+                isDemo: true
+            )
         } else {
             guard let blog = Self.currentBlog() else {
                 return nil
             }
-            return StatsHostingViewController.makeNewTrafficViewController(blog: blog, parentViewController: self, isDemo: false)
+            return StatsHostingViewController.makeNewTrafficViewController(
+                blog: blog,
+                parentViewController: self,
+                isDemo: false
+            )
         }
     }
 
@@ -208,7 +232,10 @@ public class SiteStatsDashboardViewController: UIViewController {
             statsMenuButton.menu = createStatsMenu()
 
             // Set up observer for navigation item changes
-            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] _, _ in
+            navigationItemObserver = trafficTableViewController.navigationItem.observe(
+                \.trailingItemGroups,
+                options: [.initial, .new]
+            ) { [weak self] _, _ in
                 guard let self else { return }
                 DispatchQueue.main.async {
                     self.updateParentNavigationItems(with: self.trafficTableViewController)
@@ -222,9 +249,10 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func updateParentNavigationItems(with childVC: UIViewController) {
-        parent?.navigationItem.trailingItemGroups = childVC.navigationItem.trailingItemGroups + [
-            UIBarButtonItemGroup.fixedGroup(items: [statsMenuButton])
-        ]
+        parent?.navigationItem.trailingItemGroups =
+            childVC.navigationItem.trailingItemGroups + [
+                UIBarButtonItemGroup.fixedGroup(items: [statsMenuButton])
+            ]
     }
 
     @objc public func manageInsightsButtonTapped() {
@@ -374,6 +402,8 @@ private extension SiteStatsDashboardViewController {
     func setupFilterBar() {
         wpAssert(parent != nil)
         filterBarController.navigationItem = parent?.navigationItem
+        // The app tab bar shares the navigation bar, leaving too little room for the Stats filters.
+        filterBarController.placement = .content
         filterBarController.configure(displayedTabs, in: self) { [weak self] in
             self?.selectedFilterDidChange($0)
         }
@@ -556,11 +586,11 @@ struct SiteStatsDashboardPreferences {
     // MARK: - Keys
 
     private static func lastSelectedStatsTabTypeKey(forSiteID siteID: Int) -> String {
-        return "LastSelectedStatsTabType-\(siteID)"
+        "LastSelectedStatsTabType-\(siteID)"
     }
 
     private static func lastSelectedStatsUnitTypeKey(forSiteID siteID: Int) -> String {
-        return "LastSelectedStatsUnitType-\(siteID)"
+        "LastSelectedStatsUnitType-\(siteID)"
     }
 
     private static let lastSelectedStatsDateKey = "LastSelectedStatsDate"

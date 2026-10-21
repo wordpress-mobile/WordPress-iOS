@@ -45,16 +45,30 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
 
     public var navigationItem: UINavigationItem?
 
+    public enum Placement {
+        case automatic
+        case content
+    }
+
+    public var placement: Placement = .automatic {
+        didSet { refresh() }
+    }
+
     public init() {
         setupFilterBar()
         setupSegmentedControl()
     }
 
     private func setupFilterBar() {
-//        filterBarContainer.backgroundColor = .systemGroupedBackground // .secondarySystemGroupedBackground
+        //        filterBarContainer.backgroundColor = .systemGroupedBackground // .secondarySystemGroupedBackground
         filterBarContainer.contentView.addSubview(filterBar)
-        filterBar.pinEdges(.top, to: filterBarContainer.safeAreaLayoutGuide, insets: UIEdgeInsets(.top, -AdaptiveTabBar.tabBarHeight))
-        filterBar.pinEdges([.horizontal, .bottom])
+        filterBar.pinEdges(
+            .top,
+            to: filterBarContainer.safeAreaLayoutGuide,
+            insets: UIEdgeInsets(.top, -AdaptiveTabBar.tabBarHeight)
+        )
+        filterBar.pinEdges(.horizontal, to: filterBarContainer.safeAreaLayoutGuide)
+        filterBar.pinEdges(.bottom)
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange), for: .valueChanged)
     }
@@ -63,7 +77,11 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
     }
 
-    public func configure(_ items: [Item], in viewController: UIViewController, onSelectionChanged: @escaping (Item) -> Void) {
+    public func configure(
+        _ items: [Item],
+        in viewController: UIViewController,
+        onSelectionChanged: @escaping (Item) -> Void
+    ) {
         self.items = items
         self.selection = items.first
         self.viewController = viewController
@@ -84,7 +102,7 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     private func refresh() {
         guard let viewController else { return }
 
-        if viewController.traitCollection.horizontalSizeClass == .regular {
+        if placement == .automatic, viewController.traitCollection.horizontalSizeClass == .regular {
             filterBarContainer.removeFromSuperview()
             (navigationItem ?? viewController.navigationItem).leftBarButtonItem = {
                 let button = UIBarButtonItem(customView: segmentedControl)
@@ -95,6 +113,9 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
             }()
             viewController.additionalSafeAreaInsets = .zero
         } else {
+            if placement == .content {
+                (navigationItem ?? viewController.navigationItem).leftBarButtonItem = nil
+            }
             viewController.navigationItem.titleView = nil
             viewController.view.addSubview(filterBarContainer)
             filterBarContainer.pinEdges([.top, .horizontal])
@@ -103,7 +124,8 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     }
 
     private func setupTraitObserver(for viewController: UIViewController) {
-        traitObserver = viewController.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { [weak self] (_: UIViewController, _: UITraitCollection) in
+        traitObserver = viewController.registerForTraitChanges([UITraitHorizontalSizeClass.self]) {
+            [weak self] (_: UIViewController, _: UITraitCollection) in
             self?.refresh()
         }
     }
@@ -155,9 +177,15 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
         self.isFilterBarHidden = isHidden
 
         // Only animate filter bar, not segmented control in navigation bar
-        guard viewController?.traitCollection.horizontalSizeClass != .regular else { return }
+        guard filterBarContainer.superview != nil else { return }
 
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut]) {
+        UIView.animate(
+            withDuration: 0.25,
+            delay: 0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0.0,
+            options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut]
+        ) {
             self.filterBarContainer.transform = isHidden ? CGAffineTransform(translationX: 0, y: -44) : .identity
             self.filterBarContainer.alpha = isHidden ? 0 : 1
         }

@@ -8,6 +8,7 @@ final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
     var presentedPostStatus: String?
+    var showsQuickActionsInRegularWidth = false
 
     private let embeddedInScrollView: Bool
 
@@ -32,7 +33,7 @@ final class BlogDashboardViewController: UIViewController {
 
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
-        return view.superview?.superview as? UIScrollView
+        view.superview?.superview as? UIScrollView
     }
 
     // MARK: - Init
@@ -99,12 +100,12 @@ final class BlogDashboardViewController: UIViewController {
     /// started loading just change this method.
     /// For not, it will be transparent
     ///
-    func showLoading() { }
+    func showLoading() {}
 
     /// If you want to give any feedback when the dashboard
     /// stops loading just change this method.
     ///
-    func stopLoading() { }
+    func stopLoading() {}
 
     func update(blog: Blog) {
         guard self.blog.dotComID != blog.dotComID else {
@@ -134,8 +135,14 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .systemGroupedBackground
-        collectionView.register(DashboardMigrationSuccessCell.self, forCellWithReuseIdentifier: DashboardMigrationSuccessCell.self.defaultReuseID)
-        collectionView.register(DashboardQuickActionsCardCell.self, forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID)
+        collectionView.register(
+            DashboardMigrationSuccessCell.self,
+            forCellWithReuseIdentifier: DashboardMigrationSuccessCell.self.defaultReuseID
+        )
+        collectionView.register(
+            DashboardQuickActionsCardCell.self,
+            forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID
+        )
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
         }
@@ -145,14 +152,21 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addHeightObservers() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.updateCollectionViewHeight(notification:)),
-                                               name: .dashboardCardTableViewSizeChanged,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateCollectionViewHeight(notification:)),
+            name: .dashboardCardTableViewSizeChanged,
+            object: nil
+        )
     }
 
     private func addWillEnterForegroundObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(willEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     @objc private func updateCollectionViewHeight(notification: Foundation.Notification) {
@@ -197,8 +211,10 @@ extension BlogDashboardViewController {
     }
 
     private func createLayoutSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .estimated(Constants.estimatedHeight))
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(Constants.estimatedHeight)
+        )
 
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
@@ -227,7 +243,10 @@ extension BlogDashboardViewController {
 
     private enum Strings {
         static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
-        static let failureTitle = NSLocalizedString("Couldn't load data. Please refresh again later.", comment: "Content show when the dashboard fails to load")
+        static let failureTitle = NSLocalizedString(
+            "Couldn't load data. Please refresh again later.",
+            comment: "Content show when the dashboard fails to load"
+        )
         static let dismiss = NSLocalizedString(
             "blogDashboard.dismiss",
             value: "Dismiss",

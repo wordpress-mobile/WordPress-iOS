@@ -75,6 +75,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     // TODO: (reader) factor if out of `MySiteVC` for a production version
     var isReaderAppModeEnabled = false
 
+    var supportsDashboardInRegularWidth = false
+    var onSiteSelected: ((Blog?) -> Void)?
+    var onSiteMenuCreated: ((BlogDetailsViewController) -> Void)?
+
     // MARK: - Initializers
 
     @objc class func make(forBlog blog: Blog, isSidebarModeEnabled: Bool = false) -> MySiteViewController {
@@ -127,6 +131,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private(set) weak var blogDetailsViewController: BlogDetailsViewController? {
         didSet {
             blogDetailsViewController?.presentationDelegate = self
+            if let blogDetailsViewController {
+                onSiteMenuCreated?(blogDetailsViewController)
+            }
         }
     }
     private weak var blogDashboardViewController: BlogDashboardViewController?
@@ -400,7 +407,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             : viewModel.getSection(
                 for: blog,
                 jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-                splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
+                splitViewControllerIsHorizontallyCompact: supportsDashboardInRegularWidth
+                    || splitViewControllerIsHorizontallyCompact
             )
 
         self.currentSection = section
@@ -743,6 +751,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         headerVC.onBlogSwitched = { [weak self] blog in
             guard let self else { return }
 
+            if let onSiteSelected {
+                self.dismiss(animated: true) { onSiteSelected(blog) }
+                return
+            }
+
             if self.isSidebarModeEnabled {
                 self.dismiss(animated: true)
                 NotificationCenter.default.post(
@@ -804,6 +817,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func showDashboard(for blog: Blog) {
         let blogDashboardViewController =
             self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog, embeddedInScrollView: true)
+        blogDashboardViewController.showsQuickActionsInRegularWidth = supportsDashboardInRegularWidth
         blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
@@ -857,7 +871,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        self.blog = nil
+        if let onSiteSelected {
+            onSiteSelected(Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext))
+        } else {
+            self.blog = nil
+        }
     }
 
     // MARK: - Model Changes: Blog Creation
@@ -897,7 +915,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        self.blog = blog
+        if let onSiteSelected {
+            onSiteSelected(blog)
+        } else {
+            self.blog = blog
+        }
     }
 
     // MARK: - Blogging Prompts

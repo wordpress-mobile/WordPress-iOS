@@ -113,6 +113,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     }()
 
     var isSidebarModeEnabled = false
+    var adaptiveDetailHandler: ((UIViewController) -> Void)?
+    var isAdaptiveDetailVisible: (() -> Bool)?
     var isReaderAppModeEnabled = false
 
     /// The account whose notifications the list shows. Passed with every
@@ -132,6 +134,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     /// instance in the compact layout's tab bar becomes regular when the split view expands
     /// (as does a large iPhone in landscape) without having a detail column of its own.
     private var isShowingAlongsideDetailColumn: Bool {
+        if let isAdaptiveDetailVisible { return isAdaptiveDetailVisible() }
         guard let splitViewController, !splitViewController.isCollapsed else {
             return false
         }
@@ -218,7 +221,9 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
 
-            selectedNotification = nil
+            if adaptiveDetailHandler == nil {
+                selectedNotification = nil
+            }
         }
 
         // While we're onscreen, please, update rows with animations
@@ -956,7 +961,9 @@ extension NotificationsViewController {
     }
 
     private func displayViewController(_ controller: UIViewController) {
-        if isShowingAlongsideDetailColumn, let splitViewController {
+        if let adaptiveDetailHandler {
+            adaptiveDetailHandler(controller)
+        } else if isShowingAlongsideDetailColumn, let splitViewController {
             splitViewController.setViewController(controller, for: .secondary)
         } else {
             navigationController?.pushViewController(controller, animated: true)

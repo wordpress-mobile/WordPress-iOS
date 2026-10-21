@@ -19,6 +19,8 @@ public class BlogDetailsViewController: UIViewController {
     public private(set) var tableViewModel: BlogDetailsTableViewModel?
     public var isScrollEnabled = false
     public weak var presentationDelegate: BlogDetailsPresentationDelegate?
+    // Site navigation retains this menu even when the dashboard replaces it.
+    weak var modalPresenter: UIViewController?
     public var isSidebarModeEnabled = false
     public weak var presentedSiteSettingsViewController: UIViewController?
 
@@ -33,6 +35,26 @@ public class BlogDetailsViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override public func present(
+        _ viewControllerToPresent: UIViewController,
+        animated: Bool,
+        completion: (() -> Void)? = nil
+    ) {
+        if viewIfLoaded?.window == nil, let modalPresenter {
+            modalPresenter.present(viewControllerToPresent, animated: animated, completion: completion)
+        } else {
+            super.present(viewControllerToPresent, animated: animated, completion: completion)
+        }
+    }
+
+    override public func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
+        if viewIfLoaded?.window == nil, let modalPresenter {
+            modalPresenter.dismiss(animated: animated, completion: completion)
+        } else {
+            super.dismiss(animated: animated, completion: completion)
+        }
     }
 
     override public func viewDidLoad() {
@@ -114,7 +136,10 @@ public class BlogDetailsViewController: UIViewController {
         )
 
         if shouldShowJetpackInstallCard() {
-            WPAnalytics.track(.jetpackInstallFullPluginCardViewed, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
+            WPAnalytics.track(
+                .jetpackInstallFullPluginCardViewed,
+                properties: [WPAppAnalyticsKeyTabSource: "site_menu"]
+            )
         }
 
         if shouldShowBlaze() {
@@ -216,10 +241,13 @@ public class BlogDetailsViewController: UIViewController {
 
     public func showRemoveSiteAlert() {
         let model = UIDevice.current.localizedModel
-        let message = String(format: NSLocalizedString(
-            "Are you sure you want to continue?\n All site data will be removed from your %@.",
-            comment: "Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"
-        ), model)
+        let message = String(
+            format: NSLocalizedString(
+                "Are you sure you want to continue?\n All site data will be removed from your %@.",
+                comment: "Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"
+            ),
+            model
+        )
 
         let destructiveTitle = NSLocalizedString("Remove Site", comment: "Button to remove a site from the app")
 

@@ -98,17 +98,7 @@ class RootViewCoordinator {
         if app == .reader {
             return ReaderRootViewPresenter()
         }
-        if UIDevice.isPad() {
-            return SplitViewRootPresenter()
-        }
-        switch appType {
-        case .normal:
-            return WPTabBarController(staticScreens: false)
-        case .simplified:
-            return MySitesCoordinator(onBecomeActiveTab: {})
-        case .staticScreens:
-            return StaticScreensTabBarWrapper()
-        }
+        return AppTabBarController(appUIType: appType)
     }
 
     // MARK: JP Features State

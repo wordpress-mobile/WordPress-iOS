@@ -37,19 +37,19 @@ final class BlogDashboardViewModel {
     private var currentCards: [DashboardCardModel] = []
 
     private lazy var draftStatusesToSync: [BasePost.Status] = {
-        return PostListFilter.draftFilter().statuses
+        PostListFilter.draftFilter().statuses
     }()
 
     private lazy var scheduledStatusesToSync: [BasePost.Status] = {
-        return PostListFilter.scheduledFilter().statuses
+        PostListFilter.scheduledFilter().statuses
     }()
 
     private lazy var pageStatusesToSync: [BasePost.Status] = {
-        return PostListFilter.allNonTrashedFilter().statuses
+        PostListFilter.allNonTrashedFilter().statuses
     }()
 
     private lazy var service: BlogDashboardService = {
-        return BlogDashboardService(
+        BlogDashboardService(
             managedObjectContext: managedObjectContext,
             isJetpack: AppConfiguration.isJetpack,
             isDotComAvailable: AccountHelper.isDotcomAvailable(),
@@ -62,7 +62,8 @@ final class BlogDashboardViewModel {
             return nil
         }
 
-        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self, unowned viewController] collectionView, indexPath, item in
+        return DashboardDataSource(collectionView: viewController.collectionView) {
+            [unowned self, unowned viewController] collectionView, indexPath, item in
 
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
@@ -71,12 +72,17 @@ final class BlogDashboardViewModel {
             switch item {
             case .quickActions:
                 let cellType = DashboardQuickActionsCardCell.self
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as! DashboardQuickActionsCardCell
+                let cell =
+                    collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
+                    as! DashboardQuickActionsCardCell
                 cell.configure(viewModel: quickActionsViewModel, viewController: viewController)
                 return cell
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: cellType.defaultReuseID,
+                    for: indexPath
+                )
                 if var cellConfigurable = cell as? BlogDashboardCardConfigurable {
                     cellConfigurable.row = indexPath.row
                     cellConfigurable.configure(blog: blog, viewController: viewController, model: cardModel)
@@ -85,7 +91,9 @@ final class BlogDashboardViewModel {
                 return cell
             case .migrationSuccess:
                 let cellType = DashboardMigrationSuccessCell.self
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as? DashboardMigrationSuccessCell
+                let cell =
+                    collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
+                    as? DashboardMigrationSuccessCell
                 cell?.configure(with: viewController)
                 return cell
             }
@@ -106,7 +114,10 @@ final class BlogDashboardViewModel {
         self.blog = blog
         self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
-        self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
+        self.quickActionsViewModel = DashboardQuickActionsViewModel(
+            blog: blog,
+            personalizationService: personalizationService
+        )
 
         var _error: Error?
 
@@ -141,7 +152,10 @@ final class BlogDashboardViewModel {
         self.blog = blog
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
         self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
-        self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
+        self.quickActionsViewModel = DashboardQuickActionsViewModel(
+            blog: blog,
+            personalizationService: personalizationService
+        )
         self.loadCardsFromCache()
         self.loadCards()
     }
@@ -150,16 +164,20 @@ final class BlogDashboardViewModel {
     func loadCards(completion: (([DashboardCardModel]) -> Void)? = nil) {
         viewController?.showLoading()
 
-        service.fetch(blog: blog, completion: { [weak self] cards in
-            self?.viewController?.stopLoading()
-            self?.updateCurrentCards(cards: cards)
-            completion?(cards)
-        }, failure: { [weak self] cards in
-            self?.viewController?.stopLoading()
-            self?.updateCurrentCards(cards: cards)
+        service.fetch(
+            blog: blog,
+            completion: { [weak self] cards in
+                self?.viewController?.stopLoading()
+                self?.updateCurrentCards(cards: cards)
+                completion?(cards)
+            },
+            failure: { [weak self] cards in
+                self?.viewController?.stopLoading()
+                self?.updateCurrentCards(cards: cards)
 
-            completion?(cards)
-        })
+                completion?(cards)
+            }
+        )
 
         blazeViewModel.refresh()
     }
@@ -179,10 +197,30 @@ final class BlogDashboardViewModel {
 private extension BlogDashboardViewModel {
 
     func registerNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showDraftsCardIfNeeded),
+            name: .newPostCreated,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showScheduledCardIfNeeded),
+            name: .newPostScheduled,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(loadCardsFromCache),
+            name: .blogDashboardPersonalizationSettingsChanged,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(loadCardsFromCache),
+            name: .domainsServiceDomainsRefreshed,
+            object: nil
+        )
     }
 
     func updateCurrentCards(cards: [DashboardCardModel], animated: Bool = false) {
@@ -217,7 +255,8 @@ private extension BlogDashboardViewModel {
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
         let isShowingQuickActions: Bool = {
-            viewController?.traitCollection.horizontalSizeClass == .compact
+            viewController?.showsQuickActionsInRegularWidth == true
+                || viewController?.traitCollection.horizontalSizeClass == .compact
         }()
 
         let items = cards.map { DashboardItem.cards($0) }
@@ -257,14 +296,14 @@ private extension BlogDashboardViewModel {
 
 private extension Collection where Element == DashboardCardModel {
     var hasDrafts: Bool {
-        return contains(where: { $0.cardType == .draftPosts })
+        contains(where: { $0.cardType == .draftPosts })
     }
 
     var hasScheduled: Bool {
-        return contains(where: { $0.cardType == .scheduledPosts })
+        contains(where: { $0.cardType == .scheduledPosts })
     }
 
     var hasPages: Bool {
-        return contains(where: { $0.cardType == .pages })
+        contains(where: { $0.cardType == .pages })
     }
 }
