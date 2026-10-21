@@ -157,6 +157,17 @@ final class AppTabBarController: UITabBarController, RootViewPresenter, UITabBar
         presentSidebarSheet(domains)
     }
 
+    private func presentAccountSheet() {
+        let profile = MeViewController()
+        profile.isSidebarModeEnabled = true
+        profile.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            systemItem: .done,
+            primaryAction: UIAction { [weak profile] _ in profile?.dismiss(animated: true) }
+        )
+        profile.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "close-button"
+        presentSidebarSheet(profile)
+    }
+
     private func presentSidebarSheet(_ viewController: UIViewController) {
         let navigation = UINavigationController(rootViewController: viewController)
         navigation.modalPresentationStyle = .formSheet
@@ -190,7 +201,7 @@ final class AppTabBarController: UITabBarController, RootViewPresenter, UITabBar
         let host = UIHostingController(
             rootView: AdaptiveSidebarAccountView(
                 model: sidebarModel,
-                onSelect: { [weak self] in self?.showMeScreen(completion: nil) },
+                onSelect: { [weak self] in self?.presentAccountSheet() },
                 onSignIn: { [weak self] in self?.signIn() }
             )
         )
