@@ -221,10 +221,18 @@ class MediaVideoExporter: MediaExporter {
                                                         exporter.options = imageOptions
                                                     }
                                                     exporter.mediaDirectoryType = self.mediaDirectoryType
-                                                    let imageProgress = exporter.export(
-                                                                         onCompletion: onCompletion,
-                                                                         onError: onError)
-                                                    progress.addChild(imageProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
+                                                    // The image export is synchronous and resumes the awaiting task via
+                                                    // `onCompletion`/`onError`, so finish all `progress` bookkeeping *before*
+                                                    // those callbacks fire. Mutating the `progress` object graph afterwards
+                                                    // would race the resumed task, which can cancel `progress` from another
+                                                    // thread (see the cancellation handler above).
+                                                    exporter.export(onCompletion: { export in
+                                                        progress.completedUnitCount = MediaExportProgressUnits.done
+                                                        onCompletion(export)
+                                                    }, onError: { error in
+                                                        progress.completedUnitCount = MediaExportProgressUnits.done
+                                                        onError(error)
+                                                    })
         })
         return progress
     }
