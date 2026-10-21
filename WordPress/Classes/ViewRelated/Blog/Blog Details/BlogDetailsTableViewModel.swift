@@ -527,9 +527,9 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
         headerView.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
+            label.leadingAnchor.constraint(equalTo: headerView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8),
-            label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: 20)
+            label.trailingAnchor.constraint(equalTo: headerView.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
         return headerView
     }
