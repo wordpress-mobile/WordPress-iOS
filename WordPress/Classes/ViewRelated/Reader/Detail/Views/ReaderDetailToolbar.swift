@@ -165,7 +165,9 @@ class ReaderDetailToolbar {
         button.configuration = configuration
         button.tintColor = tintColor
         // The toolbar doesn't resize a custom view when its content changes, e.g. when the like count gets longer.
-        button.sizeToFit()
+        // Not `sizeToFit()`: it measures the button at its current width, so a slightly wider count gets clipped
+        // to that width instead of the button growing.
+        button.frame.size = button.sizeThatFits(UIView.layoutFittingCompressedSize)
     }
 
     // MARK: - Actions
