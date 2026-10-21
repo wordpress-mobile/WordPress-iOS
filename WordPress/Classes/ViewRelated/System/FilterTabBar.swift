@@ -16,16 +16,16 @@ protocol FilterTabBarItem {
 }
 
 extension FilterTabBarItem {
-    var attributedTitle: NSAttributedString? { return nil }
-    var accessibilityLabel: String? { return nil }
-    var accessibilityValue: String? { return nil }
-    var accessibilityHint: String? { return nil }
+    var attributedTitle: NSAttributedString? { nil }
+    var accessibilityLabel: String? { nil }
+    var accessibilityValue: String? { nil }
+    var accessibilityHint: String? { nil }
 }
 
 extension FilterTabBarItem where Self: RawRepresentable {
 
     var accessibilityIdentifier: String {
-        return "\(self)"
+        "\(self)"
     }
 }
 
@@ -115,10 +115,14 @@ public class FilterTabBar: UIControl {
                 $0.setTitleColor(titleColorForSelected, for: .selected)
                 $0.setTitleColor(titleColorForSelected, for: .highlighted)
 
-                $0.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
-                                      for: .selected)
-                $0.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
-                                      for: .highlighted)
+                $0.setAttributedTitle(
+                    addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
+                    for: .selected
+                )
+                $0.setAttributedTitle(
+                    addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
+                    for: .highlighted
+                )
             })
             selectionIndicator.backgroundColor = tintColor
         }
@@ -136,7 +140,7 @@ public class FilterTabBar: UIControl {
     }
 
     private var titleColorForSelected: UIColor {
-        return selectedTitleColor ?? tintColor
+        selectedTitleColor ?? tintColor
     }
 
     var deselectedTabColor: UIColor = .lightGray {
@@ -220,13 +224,13 @@ public class FilterTabBar: UIControl {
 
     var tabsSelectedFont: UIFont = TabBarButton.defaultSelectedFont {
         didSet {
-            tabs.forEach { ($0 as? TabBarButton)?.selectedFont = tabsSelectedFont  }
+            tabs.forEach { ($0 as? TabBarButton)?.selectedFont = tabsSelectedFont }
         }
     }
 
     var tabsFont: UIFont = TabBarButton.defaultFont {
         didSet {
-            tabs.forEach { ($0 as? TabBarButton)?.font = tabsFont  }
+            tabs.forEach { ($0 as? TabBarButton)?.font = tabsFont }
         }
     }
 
@@ -261,8 +265,8 @@ public class FilterTabBar: UIControl {
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
 
         scrollView.addSubview(stackView)
@@ -324,7 +328,10 @@ public class FilterTabBar: UIControl {
         tab.titleLabel?.lineBreakMode = .byWordWrapping
         tab.titleLabel?.textAlignment = .center
         tab.titleLabel?.numberOfLines = 0
-        tab.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: item.attributedTitle), for: .selected)
+        tab.setAttributedTitle(
+            addColor(titleColorForSelected, toAttributedString: item.attributedTitle),
+            for: .selected
+        )
         tab.setAttributedTitle(addColor(deselectedTabColor, toAttributedString: item.attributedTitle), for: .normal)
 
         tab.accessibilityIdentifier = item.accessibilityIdentifier
@@ -333,9 +340,7 @@ public class FilterTabBar: UIControl {
         tab.accessibilityHint = item.accessibilityHint
 
         var configuration = tab.configuration ?? UIButton.Configuration.plain()
-        configuration.contentInsets = item.attributedTitle != nil ?
-            tabAttributedButtonInsets :
-            tabButtonInsets
+        configuration.contentInsets = item.attributedTitle != nil ? tabAttributedButtonInsets : tabButtonInsets
         tab.configuration = configuration
         updateTitleLineBreakMode(tab)
 
@@ -356,7 +361,10 @@ public class FilterTabBar: UIControl {
         tab.configuration?.titleLineBreakMode = tabSizingStyle == .equalWidths ? .byWordWrapping : .byTruncatingTail
     }
 
-    private func addColor(_ color: UIColor, toAttributedString attributedString: NSAttributedString?) -> NSAttributedString? {
+    private func addColor(
+        _ color: UIColor,
+        toAttributedString attributedString: NSAttributedString?
+    ) -> NSAttributedString? {
 
         guard let attributedString else {
             return nil
@@ -452,7 +460,7 @@ public class FilterTabBar: UIControl {
     }
 
     var currentlySelectedItem: FilterTabBarItem? {
-        return items[safe: selectedIndex]
+        items[safe: selectedIndex]
     }
 
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
@@ -498,14 +506,16 @@ public class FilterTabBar: UIControl {
             selectionIndicator.isHidden = false
             selectionIndicator.layoutIfNeeded()
         } else {
-            UIView.animate(withDuration: SelectionAnimation.duration,
-                           delay: 0,
-                           usingSpringWithDamping: SelectionAnimation.springDamping,
-                           initialSpringVelocity: SelectionAnimation.initialVelocity,
-                           options: .curveEaseInOut,
-                           animations: {
-                self.layoutIfNeeded()
-            })
+            UIView.animate(
+                withDuration: SelectionAnimation.duration,
+                delay: 0,
+                usingSpringWithDamping: SelectionAnimation.springDamping,
+                initialSpringVelocity: SelectionAnimation.initialVelocity,
+                options: .curveEaseInOut,
+                animations: {
+                    self.layoutIfNeeded()
+                }
+            )
         }
     }
 
@@ -530,7 +540,10 @@ public class FilterTabBar: UIControl {
             scrollView.setContentOffset(.zero, animated: animated)
         } else if tabCenterX > scrollView.contentSize.width - bounds.midX {
             // If the tab is within the last half width of the bar, scroll to the end
-            scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width - bounds.width, y: 0), animated: animated)
+            scrollView.setContentOffset(
+                CGPoint(x: scrollView.contentSize.width - bounds.width, y: 0),
+                animated: animated
+            )
         } else {
             // Otherwise scroll so the tab is centered
             let centerPoint = CGPoint(x: tabCenterX - bounds.midX, y: 0)
@@ -544,16 +557,22 @@ public class FilterTabBar: UIControl {
         selectionIndicatorLeadingConstraint?.isActive = false
         selectionIndicatorTrailingConstraint?.isActive = false
 
-        let buttonInsets = tab.currentAttributedTitle != nil ?
-            AppearanceMetrics.buttonInsetsAttributedTitle :
-            tabButtonInsets
+        let buttonInsets =
+            tab.currentAttributedTitle != nil ? AppearanceMetrics.buttonInsetsAttributedTitle : tabButtonInsets
 
         let contentInsets = tab.configuration?.contentInsets ?? .zero
         let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (contentInsets.leading - buttonInsets.leading)
-        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-contentInsets.trailing + buttonInsets.trailing)
+        let trailingConstant =
+            (tabSizingStyle == .equalWidths) ? 0.0 : (-contentInsets.trailing + buttonInsets.trailing)
 
-        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant + tabSeparatorPadding)
-        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant - tabSeparatorPadding)
+        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(
+            equalTo: tab.leadingAnchor,
+            constant: leadingConstant + tabSeparatorPadding
+        )
+        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(
+            equalTo: tab.trailingAnchor,
+            constant: trailingConstant - tabSeparatorPadding
+        )
 
         selectionIndicatorLeadingConstraint?.isActive = true
         selectionIndicatorTrailingConstraint?.isActive = true
@@ -566,7 +585,12 @@ public class FilterTabBar: UIControl {
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = NSDirectionalEdgeInsets(top: 14.0, leading: 12.0, bottom: 14.0, trailing: 12.0)
         static let buttonPadding: CGFloat = 0.0
-        static let buttonInsetsAttributedTitle = NSDirectionalEdgeInsets(top: 10.0, leading: 2.0, bottom: 10.0, trailing: 2.0)
+        static let buttonInsetsAttributedTitle = NSDirectionalEdgeInsets(
+            top: 10.0,
+            leading: 2.0,
+            bottom: 10.0,
+            trailing: 2.0
+        )
     }
 
     private enum SelectionAnimation {
@@ -591,7 +615,11 @@ public class FilterTabBar: UIControl {
 }
 
 private class TabBarButton: UIButton {
-    static let defaultSelectedFont = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+    static let defaultSelectedFont = WPStyleGuide.fontForTextStyle(
+        .subheadline,
+        symbolicTraits: .traitBold,
+        maximumPointSize: TabFont.maxSize
+    )
     static let defaultFont = WPStyleGuide.fontForTextStyle(.subheadline, maximumPointSize: TabFont.maxSize)
 
     var selectedFont: UIFont = TabBarButton.defaultSelectedFont {
@@ -646,7 +674,8 @@ private class TabBarButton: UIButton {
     /// through the title attributes. An attributed title keeps its own fonts.
     private func setFont() {
         var configuration = self.configuration ?? UIButton.Configuration.plain()
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { [weak self] attributes in
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+            [weak self] attributes in
             guard let self, currentAttributedTitle == nil else {
                 return attributes
             }

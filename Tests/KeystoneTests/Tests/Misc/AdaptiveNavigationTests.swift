@@ -231,6 +231,37 @@ struct AdaptiveNavigationTests {
         }
     }
 
+    @Test func postFiltersFillTheVisibleColumnAndKeepSelection() async throws {
+        try await withApp { root, context in
+            root.showBlogDetails(for: makeBlog(in: context), then: .posts)
+            await settleNavigation()
+            let navigation = try siteNavigation(in: root)
+            let posts = try #require(navigation.topViewController as? PostListViewController)
+            let filters = posts.filterTabBar
+            filters.setSelectedIndex(1, animated: false)
+            filters.sendActions(for: .valueChanged)
+            for width: UIUserInterfaceSizeClass in [.regular, .compact, .regular] {
+                root.traitOverrides.horizontalSizeClass = width
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                #expect(filters.selectedIndex == 1)
+                if width == .regular {
+                    let button = try #require(findView(withIdentifier: "published", in: filters) as? UIButton)
+                    let visibleWidth = filters.bounds.inset(by: filters.safeAreaInsets).width
+                    #expect(abs(button.bounds.width - visibleWidth / CGFloat(filters.items.count)) < 1)
+                }
+            }
+        }
+    }
+
+    private func findView(withIdentifier identifier: String, in view: UIView) -> UIView? {
+        if view.accessibilityIdentifier == identifier { return view }
+        for subview in view.subviews {
+            if let match = findView(withIdentifier: identifier, in: subview) { return match }
+        }
+        return nil
+    }
+
     @Test func siteMenuSelectsContentInEitherWidth() async throws {
         try await withApp { root, context in
             root.showBlogDetails(for: makeBlog(in: context))
