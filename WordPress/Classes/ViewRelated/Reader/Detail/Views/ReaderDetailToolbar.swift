@@ -23,6 +23,13 @@ class ReaderDetailToolbar {
 
     weak var delegate: ReaderDetailToolbarDelegate?
 
+    /// Whether the user is signed in to WordPress.com.
+    private let isLoggedIn: () -> Bool
+
+    init(isLoggedIn: @escaping () -> Bool = { ReaderHelpers.isLoggedIn() }) {
+        self.isLoggedIn = isLoggedIn
+    }
+
     private var likeCount: Int {
         post?.likeCount?.intValue ?? 0
     }
@@ -50,10 +57,14 @@ class ReaderDetailToolbar {
     private func updateToolbarItems() {
         guard let viewController, let post else { return }
 
-        let layout = Layout(showsCommentButton: shouldShowCommentActionButton, showsLikeButton: post.isLikesEnabled)
+        let layout = Layout(
+            showsReblogButton: isLoggedIn() && !post.isBlogPrivate,
+            showsCommentButton: shouldShowCommentActionButton,
+            showsLikeButton: post.isLikesEnabled
+        )
 
         // A like, a save or a new count keeps the same buttons, so update them in place.
-        // Rebuild the toolbar only when the comment or like button has to be added or removed.
+        // Rebuild the toolbar only when a button has to be added or removed.
         if let buttons, buttons.layout == layout {
             configure(buttons, for: post)
             return
@@ -62,7 +73,7 @@ class ReaderDetailToolbar {
         let buttons = Buttons(
             // Custom views, so they can sit on the frosted capsules on iOS 26+.
             saveForLater: makeCustomButton(action: #selector(didTapSaveForLater)),
-            reblog: makeCustomButton(action: #selector(didTapReblog)),
+            reblog: layout.showsReblogButton ? makeCustomButton(action: #selector(didTapReblog)) : nil,
             comment: layout.showsCommentButton ? makeCustomButton(action: #selector(didTapComment)) : nil,
             like: layout.showsLikeButton ? makeCustomButton(action: #selector(didTapLike)) : nil
         )
@@ -75,7 +86,9 @@ class ReaderDetailToolbar {
 
     private func configure(_ buttons: Buttons, for post: ReaderPost) {
         configureSaveForLaterButton(buttons.saveForLater, for: post)
-        configureReblogButton(buttons.reblog, for: post)
+        if let reblog = buttons.reblog {
+            configureReblogButton(reblog)
+        }
         if let comment = buttons.comment {
             configureCommentButton(comment, for: post)
         }
@@ -101,9 +114,8 @@ class ReaderDetailToolbar {
         button.customView?.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
     }
 
-    private func configureReblogButton(_ button: UIBarButtonItem, for post: ReaderPost) {
+    private func configureReblogButton(_ button: UIBarButtonItem) {
         configureCustomButton(button, image: WPStyleGuide.ReaderDetail.reblogToolbarIcon, title: nil)
-        (button.customView as? UIButton)?.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
         button.customView?.accessibilityLabel = NSLocalizedString(
             "Reblog post",
             comment: "Accessibility label for the reblog button."
@@ -253,7 +265,7 @@ class ReaderDetailToolbar {
 
         if post.isWPCom || post.isJetpack {
             let commentCount = post.commentCount?.intValue ?? 0
-            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
+            if (isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 return true
             }
         }
@@ -283,13 +295,15 @@ private extension ReaderDetailToolbar {
 
     /// Which of the optional buttons the toolbar shows.
     struct Layout: Equatable {
+        /// Hidden when the user can't reblog the post: signed out, or a private site.
+        let showsReblogButton: Bool
         let showsCommentButton: Bool
         let showsLikeButton: Bool
     }
 
     struct Buttons {
         let saveForLater: UIBarButtonItem
-        let reblog: UIBarButtonItem
+        let reblog: UIBarButtonItem?
         let comment: UIBarButtonItem?
         let like: UIBarButtonItem?
 
@@ -298,7 +312,7 @@ private extension ReaderDetailToolbar {
 
         init(
             saveForLater: UIBarButtonItem,
-            reblog: UIBarButtonItem,
+            reblog: UIBarButtonItem?,
             comment: UIBarButtonItem?,
             like: UIBarButtonItem?
         ) {
@@ -308,7 +322,7 @@ private extension ReaderDetailToolbar {
             self.like = like
 
             if #available(iOS 26, *) {
-                capsules = [[saveForLater, reblog], [comment, like].compactMap { $0 }]
+                capsules = [[saveForLater, reblog].compactMap { $0 }, [comment, like].compactMap { $0 }]
                     .filter { !$0.isEmpty }
                     .map { group in
                         let item = UIBarButtonItem(customView: FrostedCapsule(views: group.compactMap(\.customView)))
@@ -321,7 +335,7 @@ private extension ReaderDetailToolbar {
         }
 
         var layout: Layout {
-            Layout(showsCommentButton: comment != nil, showsLikeButton: like != nil)
+            Layout(showsReblogButton: reblog != nil, showsCommentButton: comment != nil, showsLikeButton: like != nil)
         }
 
         var toolbarItems: [UIBarButtonItem] {
@@ -337,10 +351,12 @@ private extension ReaderDetailToolbar {
 
             items.append(saveForLater)
 
-            if #unavailable(iOS 26) {
-                items.append(.flexibleSpace())
+            if let reblog {
+                if #unavailable(iOS 26) {
+                    items.append(.flexibleSpace())
+                }
+                items.append(reblog)
             }
-            items.append(reblog)
 
             items.append(.flexibleSpace())
 

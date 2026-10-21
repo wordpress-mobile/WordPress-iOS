@@ -76,7 +76,7 @@ struct ReaderDetailToolbarTests {
         post.commentsOpen = false
         post.commentCount = 0
         let viewController = UIViewController()
-        let toolbar = ReaderDetailToolbar()
+        let toolbar = ReaderDetailToolbar(isLoggedIn: { true })
 
         toolbar.configure(for: post, in: viewController)
         #expect(buttons(in: viewController.toolbarItems).count == 2) // Save and reblog
@@ -86,6 +86,31 @@ struct ReaderDetailToolbarTests {
         let buttonsAfter = buttons(in: viewController.toolbarItems)
         #expect(buttonsAfter.count == 3)
         #expect(buttonsAfter.last?.configuration?.title == 1.formatted(.number.notation(.compactName)))
+    }
+
+    @Test(
+        "the reblog button is shown only when the post can be reblogged",
+        arguments: [
+            (isLoggedIn: true, isBlogPrivate: false, showsReblog: true),
+            (isLoggedIn: true, isBlogPrivate: true, showsReblog: false),
+            (isLoggedIn: false, isBlogPrivate: false, showsReblog: false)
+        ]
+    )
+    func reblogButtonVisibility(isLoggedIn: Bool, isBlogPrivate: Bool, showsReblog: Bool) throws {
+        let context = ContextManager.forTesting().mainContext
+        let post = ReaderPostBuilder(context).build()
+        post.isBlogPrivate = isBlogPrivate
+        post.isLikesEnabled = false
+        post.commentsOpen = false
+        post.commentCount = 0
+        let viewController = UIViewController()
+        let toolbar = ReaderDetailToolbar(isLoggedIn: { isLoggedIn })
+
+        toolbar.configure(for: post, in: viewController)
+
+        let labels = buttons(in: viewController.toolbarItems).map(\.accessibilityLabel)
+        #expect(labels.contains("Reblog post") == showsReblog)
+        #expect(labels.count == (showsReblog ? 2 : 1)) // Save, and reblog when shown
     }
 
     @Test("a frosted capsule fits its buttons after a count changes width")
