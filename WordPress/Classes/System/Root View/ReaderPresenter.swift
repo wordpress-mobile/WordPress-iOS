@@ -49,7 +49,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         guard AccountHelper.isDotcomAvailable() else {
             return UINavigationController(rootViewController: ReaderLoggedOutViewController())
         }
-        let content = AdaptiveListDetailViewController(list: supplementary)
+        let content = AdaptiveListDetailViewController(list: supplementary, automaticallyHidesTabBar: true)
         adaptiveContent = content
         sidebar.navigationItem.backButtonDisplayMode = .minimal
         sidebar.onViewDidLoad = { [weak self] in self?.showInitialSelection() }

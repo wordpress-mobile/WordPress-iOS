@@ -49,6 +49,24 @@ final class AppTabBarController: UITabBarController, RootViewPresenter, UITabBar
         sidebarModel.onAppear()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateTabBarVisibility(animated: false)
+    }
+
+    func updateTabBarVisibility(animated: Bool) {
+        let requestsHiddenBottomBar: Bool
+        if let content = selectedViewController as? AdaptiveListDetailViewController {
+            requestsHiddenBottomBar = content.requestsHiddenBottomBar
+        } else {
+            requestsHiddenBottomBar =
+                (selectedViewController as? UINavigationController)?.requestsHiddenBottomBar ?? false
+        }
+        let isHidden = traitCollection.horizontalSizeClass == .compact && requestsHiddenBottomBar
+        guard isTabBarHidden != isHidden else { return }
+        setTabBarHidden(isHidden, animated: animated)
+    }
+
     private func makeSiteNavigation(blog: Blog?) -> AdaptiveSiteNavigation {
         let site = AdaptiveSiteNavigation(blog: blog)
         site.onSiteSelected = { [weak self] blog in
@@ -348,6 +366,7 @@ final class AppTabBarController: UITabBarController, RootViewPresenter, UITabBar
         didSelectTab selectedTab: UITab,
         previousTab: UITab?
     ) {
+        updateTabBarVisibility(animated: false)
         switch selectedTab.rootIdentifier {
         case "site": WPAnalytics.track(.mySitesTabAccessed)
         case "reader": WPAnalytics.track(.readerAccessed)

@@ -7,16 +7,33 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
     let detailNavigationController = UINavigationController()
     private let placeholder = UIViewController()
     private let usesDetailForCompactWidth: Bool
+    private let automaticallyHidesTabBar: Bool
 
+    var onDetailDidShow: ((UIViewController) -> Void)?
     var onListVisibilityChanged: ((Bool) -> Void)?
     private(set) var isListVisible = false
 
     var isShowingAlongsideDetail: Bool { !splitViewControllerForContent.isCollapsed }
 
-    init(list: UIViewController, usesDetailForCompactWidth: Bool = false) {
+    var requestsHiddenBottomBar: Bool {
+        guard automaticallyHidesTabBar else { return false }
+        let navigation =
+            usesDetailForCompactWidth || !splitViewControllerForContent.isCollapsed
+            ? detailNavigationController : listNavigationController
+        return navigation.requestsHiddenBottomBar
+    }
+
+    init(
+        list: UIViewController,
+        usesDetailForCompactWidth: Bool = false,
+        automaticallyHidesTabBar: Bool = false
+    ) {
         self.usesDetailForCompactWidth = usesDetailForCompactWidth
+        self.automaticallyHidesTabBar = automaticallyHidesTabBar
         listNavigationController = (list as? UINavigationController) ?? UINavigationController(rootViewController: list)
         super.init(nibName: nil, bundle: nil)
+        listNavigationController.delegate = self
+        detailNavigationController.delegate = self
         title = list.title
         placeholder.view.backgroundColor = .systemBackground
         detailNavigationController.setViewControllers([placeholder], animated: false)
@@ -56,6 +73,7 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        updateTabBarVisibility(animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,6 +85,11 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
         super.viewDidLayoutSubviews()
         let split = splitViewControllerForContent
         updateListVisibility(!split.isCollapsed && split.displayMode != .secondaryOnly)
+        updateTabBarVisibility(animated: false)
+    }
+
+    private func updateTabBarVisibility(animated: Bool) {
+        (tabBarController as? AppTabBarController)?.updateTabBarVisibility(animated: animated)
     }
 
     private func updateListVisibility(_ isVisible: Bool) {
@@ -117,5 +140,36 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
         topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column
     ) -> UISplitViewController.Column {
         detailNavigationController.viewControllers.first === placeholder ? .primary : .secondary
+    }
+}
+
+extension AdaptiveListDetailViewController: UINavigationControllerDelegate {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        updateTabBarVisibility(animated: animated)
+    }
+
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        // A cancelled interactive pop restores the original stack.
+        updateTabBarVisibility(animated: animated)
+        if navigationController === detailNavigationController {
+            onDetailDidShow?(viewController)
+        }
+    }
+}
+
+extension UINavigationController {
+    var requestsHiddenBottomBar: Bool {
+        // UIKit can embed the detail navigation controller in the primary stack when collapsing.
+        viewControllers.contains {
+            $0.hidesBottomBarWhenPushed || ($0 as? UINavigationController)?.requestsHiddenBottomBar == true
+        }
     }
 }

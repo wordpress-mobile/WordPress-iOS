@@ -3,7 +3,7 @@ import WordPressData
 
 /// Keeps the site menu and selected content in one adaptive hierarchy.
 @MainActor
-final class AdaptiveSiteNavigation: NSObject, SiteMenuViewControllerDelegate, UINavigationControllerDelegate {
+final class AdaptiveSiteNavigation: NSObject, SiteMenuViewControllerDelegate {
     let blog: Blog?
     let tab: UITab
 
@@ -20,6 +20,7 @@ final class AdaptiveSiteNavigation: NSObject, SiteMenuViewControllerDelegate, UI
         if let blog {
             let menu = SiteMenuViewController(blog: blog, usesAdaptiveNavigation: true)
             self.menu = menu
+            // TODO: Hiding tabs here leaves a stale top inset after expansion on iPadOS 27.
             let content = AdaptiveListDetailViewController(list: menu, usesDetailForCompactWidth: true)
             self.content = content
             root = content
@@ -40,7 +41,10 @@ final class AdaptiveSiteNavigation: NSObject, SiteMenuViewControllerDelegate, UI
         tab.accessibilityIdentifier = "tabbar_mysites"
         menu?.navigationItem.backButtonDisplayMode = .minimal
         menu?.delegate = self
-        content?.detailNavigationController.delegate = self
+        content?.onDetailDidShow = { [weak self] viewController in
+            guard let self, viewController === self.home else { return }
+            self.menu?.selectSubsection(.home)
+        }
         content?.onListVisibilityChanged = { [weak self] isVisible in
             self?.home?.isSiteMenuVisible = isVisible
         }
@@ -55,16 +59,6 @@ final class AdaptiveSiteNavigation: NSObject, SiteMenuViewControllerDelegate, UI
         isPushingDestination = kind != .home
         defer { isPushingDestination = false }
         menu?.showSubsection(kind, userInfo: userInfo)
-    }
-
-    func navigationController(
-        _ navigationController: UINavigationController,
-        didShow viewController: UIViewController,
-        animated: Bool
-    ) {
-        if viewController === home {
-            menu?.selectSubsection(.home)
-        }
     }
 
     func siteMenuViewController(

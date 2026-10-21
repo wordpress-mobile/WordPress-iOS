@@ -9,6 +9,65 @@ import WordPressUI
 @MainActor
 @Suite(.serialized)
 struct AdaptiveNavigationTests {
+    @Test func tabVisibilityFollowsTheReaderStackAcrossWidths() async throws {
+        try await withApp { root, _ in
+            let content = AdaptiveListDetailViewController(
+                list: UIViewController(),
+                automaticallyHidesTabBar: true
+            )
+            let tab = UITab(title: "Content", image: nil, identifier: "content-test") { _ in content }
+            root.tabs.append(tab)
+            root.selectedTab = tab
+            await settleNavigation()
+            let feed = UIViewController()
+            content.showDetail(feed)
+            let article = UIViewController()
+            article.hidesBottomBarWhenPushed = true
+            content.pushDetail(article, animated: false)
+            await settleNavigation()
+            #expect(!root.isTabBarHidden)
+            let navigationBar = content.detailNavigationController.navigationBar
+            let regularNavigationBarY = navigationBar.convert(navigationBar.bounds, to: root.view).minY
+
+            for width: UIUserInterfaceSizeClass in [.compact, .regular, .compact] {
+                root.traitOverrides.horizontalSizeClass = width
+                root.view.layoutIfNeeded()
+                await settleNavigation()
+                #expect(root.isTabBarHidden == (width == .compact))
+                #expect(content.detailNavigationController.topViewController === article)
+                if width == .regular {
+                    #expect(navigationBar.convert(navigationBar.bounds, to: root.view).minY == regularNavigationBarY)
+                }
+            }
+
+            root.showMeScreen()
+            await settleNavigation()
+            #expect(!root.isTabBarHidden)
+            root.selectedTab = tab
+            await settleNavigation()
+            #expect(root.isTabBarHidden)
+
+            // Descendants keep the bar hidden until the requesting screen is popped.
+            content.pushDetail(UIViewController(), animated: false)
+            await settleNavigation()
+            #expect(root.isTabBarHidden)
+            content.detailNavigationController.popToViewController(feed, animated: false)
+            await settleNavigation()
+            #expect(!root.isTabBarHidden)
+            content.pushDetail(article, animated: false)
+            await settleNavigation()
+            #expect(root.isTabBarHidden)
+            root.showMeScreen()
+            await settleNavigation()
+            content.detailNavigationController.popToRootViewController(animated: false)
+            await settleNavigation()
+            #expect(!root.isTabBarHidden)
+            root.selectedTab = tab
+            await settleNavigation()
+            #expect(!root.isTabBarHidden)
+        }
+    }
+
     @Test func widthChangesKeepTheSelectedScreenAndBackHistory() async throws {
         try await withApp { root, context in
             let blog = makeBlog(in: context)
@@ -188,6 +247,7 @@ struct AdaptiveNavigationTests {
                 root.view.layoutIfNeeded()
                 await settleNavigation()
                 #expect(navigation.topViewController === stats)
+                #expect(!root.isTabBarHidden)
                 #expect(navigation.navigationBar.backItem === home.navigationItem)
                 #expect(stats.navigationItem.leftBarButtonItem == nil)
             }
@@ -460,6 +520,7 @@ struct AdaptiveNavigationTests {
                 root.view.layoutIfNeeded()
                 await settleNavigation()
                 #expect(article.view.window != nil)
+                #expect(root.isTabBarHidden == (width == .compact))
                 #expect(navigation.topViewController === article)
                 #expect(navigation.viewControllers.first === feed)
                 #expect(presenter.sidebar.viewModel.selection == .main(.saved))
