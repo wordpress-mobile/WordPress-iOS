@@ -5,24 +5,32 @@ import Testing
 @testable import WordPressShared
 
 struct KeychainErrorClassificationTests {
-    @Test func realSFHFFailureIsReal() {
+    @Test func realSFHFFailureMapsToFailure() {
         let error = NSError(domain: sfhfKeychainErrorDomain, code: Int(errSecInteractionNotAllowed))
-        #expect(isRealKeychainFailure(error))
+        #expect(keychainError(from: error) == .failure(errSecInteractionNotAllowed))
     }
 
-    @Test func sfhfNotFoundIsBenign() {
+    @Test func sfhfNotFoundMapsToNotFound() {
         let error = NSError(domain: sfhfKeychainErrorDomain, code: Int(errSecItemNotFound))
-        #expect(!isRealKeychainFailure(error))
+        #expect(keychainError(from: error) == .notFound)
     }
 
-    @Test func synthesizedReadNotFoundIsBenign() {
+    @Test func synthesizedReadNotFoundMapsToNotFound() {
         enum ReadError: Error { case notFound }
-        #expect(!isRealKeychainFailure(ReadError.notFound))
+        #expect(keychainError(from: ReadError.notFound) == .notFound)
     }
 
-    @Test func entitlementMismatchIsRealFailure() {
+    @Test func entitlementMismatchMapsToFailure() {
         let error = NSError(domain: sfhfKeychainErrorDomain, code: Int(errSecMissingEntitlement))
-        #expect(isRealKeychainFailure(error))
+        #expect(keychainError(from: error) == .failure(errSecMissingEntitlement))
+    }
+
+    /// `-1999` ("item present, no password data") is a deliberate `.failure`:
+    /// rethrowing it preserves the previous behavior, where such an item does
+    /// not fall back to another access group.
+    @Test func malformedItemMapsToFailure() {
+        let error = NSError(domain: sfhfKeychainErrorDomain, code: -1999)
+        #expect(keychainError(from: error) == .failure(-1999))
     }
 
     @Test func keychainErrorCodeReturnsStatusForSFHFError() {

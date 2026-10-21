@@ -10,19 +10,15 @@ class TestKeychain: KeychainAccessible {
         let password: String
     }
 
-    enum TestKeychainErrors: Error {
-        case keychainItemNotFound
-    }
-
-    func getPassword(for username: String, serviceName: String) throws -> String {
+    func getPassword(for username: String, serviceName: String) throws(KeychainError) -> String {
         guard let keychainItem = keychain[serviceName], keychainItem.username == username else {
-            throw TestKeychainErrors.keychainItemNotFound
+            throw KeychainError.notFound
         }
 
         return keychainItem.password
     }
 
-    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws(KeychainError) {
         if let newValue {
             keychain[serviceName] = KeychainItem(username: username, password: newValue)
         } else {
