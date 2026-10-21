@@ -23,6 +23,7 @@ final class AdaptiveListDetailViewController: UIViewController, UISplitViewContr
         let split = splitViewControllerForContent
         split.delegate = self
         split.preferredDisplayMode = .oneBesideSecondary
+        split.displayModeButtonVisibility = .never
         split.preferredSplitBehavior = .tile
         split.preferredPrimaryColumnWidth = 360
         split.minimumPrimaryColumnWidth = 300
