@@ -48,6 +48,25 @@ struct ReaderDetailToolbarTests {
         #expect(likeButton.frame.width == likeButton.intrinsicContentSize.width)
     }
 
+    @Test("the like button grows when its count gets slightly wider")
+    func likeButtonGrowsToItsCount() throws {
+        let context = ContextManager.forTesting().mainContext
+        let post = ReaderPostBuilder(context).build()
+        post.isLikesEnabled = true
+        post.likeCount = 1
+        let viewController = UIViewController()
+        let toolbar = ReaderDetailToolbar()
+
+        toolbar.configure(for: post, in: viewController)
+        let likeButton = try #require(viewController.toolbarItems?.last?.customView as? UIButton)
+        let narrowWidth = likeButton.frame.width
+
+        post.likeCount = 9
+
+        #expect(likeButton.frame.width > narrowWidth)
+        #expect(likeButton.frame.width == likeButton.sizeThatFits(UIView.layoutFittingCompressedSize).width)
+    }
+
     @Test("the toolbar is rebuilt when the comment button has to appear")
     func firstCommentAddsTheCommentButton() throws {
         let context = ContextManager.forTesting().mainContext
