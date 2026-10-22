@@ -56,14 +56,14 @@ class AccountSettingsService {
 
     var stallTimer: Timer?
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
 
     convenience init(userID: Int, api: WordPressComRestApi) {
         let remote = AccountSettingsRemote.remoteWithApi(api)
         self.init(userID: userID, remote: remote)
     }
 
-    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStack = ContextManager.shared) {
         self.userID = userID
         self.remote = remote
         self.coreDataStack = coreDataStack
