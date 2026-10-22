@@ -400,10 +400,18 @@ class MediaCoordinator: NSObject {
 
     @discardableResult
     private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
+        // The last unit is reserved for the success/failure callbacks below.
+        // The upload task's own progress completes as soon as the server
+        // responds, but a rejection (e.g. a video on a plan without video
+        // support) only becomes known from the response body — after the bytes
+        // were sent. Without the reserved unit, the progress coordinator could
+        // finish and post a success notice before the failure was attached.
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/24557
         let resultProgress = Progress.discreteProgress(totalUnitCount: 100)
 
         let success: () -> Void = {
             self.end(media)
+            resultProgress.completedUnitCount += 1
         }
         let failure: (Error?) -> Void = { error in
             // Ideally the upload service should always return an error. This may be easier to enforce
@@ -427,6 +435,7 @@ class MediaCoordinator: NSObject {
 
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
+            resultProgress.completedUnitCount += 1
         }
 
         // For some reason, this `MediaService` instance has to be created with the main context, otherwise
@@ -442,7 +451,8 @@ class MediaCoordinator: NSObject {
             failure: failure
         )
         if let progress {
-            resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
+            // Reserve the final unit for the success/failure callback above.
+            resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount - 1)
         }
 
         uploading(media, progress: resultProgress)
