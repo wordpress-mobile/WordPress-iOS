@@ -104,10 +104,10 @@ struct RootSupportView: View {
         }
 
         Task { @MainActor in
-            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .featureAccess)
+            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .support)
             guard account != nil else { return }
 
-            // `featureAccess` leaves this screen on-screen, so pick up the new identity in place: the sign-in
+            // `support` leaves this screen on-screen, so pick up the new identity in place: the sign-in
             // prompt gives way to the profile, and the support conversations become reachable.
             await reloadIdentity()
         }

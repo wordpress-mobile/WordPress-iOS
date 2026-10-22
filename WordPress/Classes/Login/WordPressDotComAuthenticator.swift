@@ -22,13 +22,13 @@ struct WordPressDotComAuthenticator {
         case reauthentication(accountEmail: String?)
         // Connect a site to Jetpack or sign in to an already connected site.
         case jetpackSite(accountEmail: String?)
-        // Sign in from a feature that needs a WordPress.com account, such as support.
-        // Unlike `default`, the app isn't reloaded, so the user stays on the screen they signed in from.
-        case featureAccess
+        // Sign in from the support screen, which needs a WordPress.com account.
+        // Unlike `default`, the app isn't reloaded, so the user stays on the support screen.
+        case support
 
         func accountEmail(in context: NSManagedObjectContext) -> String? {
             switch self {
-            case .default, .featureAccess:
+            case .default, .support:
                 return nil
             case let .reauthentication(email), let .jetpackSite(email):
                 return email
