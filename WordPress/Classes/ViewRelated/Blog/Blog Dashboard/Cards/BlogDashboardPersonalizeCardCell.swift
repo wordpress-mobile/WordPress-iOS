@@ -36,7 +36,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         contents.isUserInteractionEnabled = false
 
         personalizeButton.accessibilityLabel = Strings.buttonTitle
-        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill), for: .normal)
+        refreshButtonBackgroundImage()
         personalizeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
         let container = UIView()
@@ -50,11 +50,16 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         container.pinEdges(.horizontal, relation: .lessThanOrEqual)
         container.pinEdges(.vertical)
         container.pinCenter()
+
+        registerForTraitChanges([
+            UITraitUserInterfaceStyle.self,
+            UITraitDisplayScale.self
+        ]) { (self: Self, _: UITraitCollection) in
+            self.refreshButtonBackgroundImage()
+        }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func refreshButtonBackgroundImage() {
         personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill, cornerRadius: DesignConstants.radius(.large)), for: .normal)
     }
 
