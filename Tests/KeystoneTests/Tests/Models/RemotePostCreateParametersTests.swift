@@ -3,6 +3,7 @@ import Testing
 @testable import WordPressData
 
 @Suite("RemotePostCreateParameters Tests")
+@MainActor
 struct RemotePostCreateParametersTests {
 
     private let contextManager = ContextManager.forTesting()

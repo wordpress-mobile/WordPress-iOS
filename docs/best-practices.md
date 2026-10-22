@@ -86,6 +86,8 @@ contextManager.useAsSharedInstance(untilTestFinished: self)
 
 Prefer injecting that test stack into the type under test. Override `ContextManager.shared` only when the code under test cannot accept an injected `CoreDataStack` dependency.
 
+Mark Swift Testing suites and async XCTest classes `@MainActor` when they use `mainContext`, including through helpers such as `BlogBuilder`. Otherwise they run off the main thread and crash intermittently.
+
 ### Share Extension Data
 
 The share extension uses its own shared-store stack. Keep share-extension Core Data code on that stack and do not mix objects or contexts between the main app stack and the share-extension stack.
