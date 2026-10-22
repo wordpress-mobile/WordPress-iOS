@@ -90,8 +90,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                       forKeyPath:WPTabBarFrameKeyPath
                          options:NSKeyValueObservingOptionNew
                          context:nil];
-
-        [self observeGravatarImageUpdate];
     }
     return self;
 }
@@ -160,7 +158,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"tab-bar-me"]];
+        [self observeAccountAvatar];
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
