@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-25 09:54:21+0000 */
+/* Translation-Revision-Date: 2026-10-09 09:54:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: he_IL */
@@ -993,7 +993,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1497,7 +1496,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "ליצור עמוד";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "יצירת אתר";
 
@@ -2515,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "העבודות של הצלם קמרון קרסטן הן השראה עצומה עבורי. את הטכניקות האלה אביא לידי ביטוי בפעם הבאה שאצור";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "דרושה לי עזרה לגבי";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "כתובת IP";
 
@@ -2894,12 +2889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "הודיעו לי כאשר הפעולה מסתיימת!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "אנחנו מבקשים לדעת את כתובת האתר שלך (כתובת ה-URL) וכמה שיותר פרטים לגבי הבעיה. לאחר שליחת הבקשה, ניצור קשר בהקדם.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "ננסה לתקן את הבעיה עכשיו";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "לייף סטייל";
 
@@ -3086,9 +3075,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "ניהול תובנות";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "ניהול אתר";
 
 /* No comment provided by engineer. */
 "Manual" = "ידני";
@@ -5171,9 +5157,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "טכנולוגיה";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "איזה סוג אתר ברצונך ליצור?";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "תנאים והתניות";
 
@@ -5248,9 +5231,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "לא ניתן להוסיף את התמונה לספריית המדיה.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "סוגי האתרים שאפשר ליצור";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "השפה העיקרית שבה נכתב האתר.";
@@ -5416,9 +5396,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "הקובץ גדול מדי להעלאה לאתר שלך או שהפורמט של הקובץ אינו נתמך.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "המידע יעזור לנו לתת לך המלצות. אנחנו לא משאירים אותך מחוץ לעניינים – כל האתרים מתפתחים!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "המידע הזה עוזר לנו לשפר את המוצרים שלנו, להציג שיווק רלוונטי יותר, לספק לך חוויית שימוש אישית ב-WordPress.com ועוד, כפי שמפורט במדיניות הפרטיות שלנו.";
@@ -6701,9 +6678,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "לא ניתן היה למצור את כתובת ה-URL של האתר הנוכחי";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "האתר שצוין לא תומך בסיסמאות אפליקציה.";
-
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "עליך להתחבר באמצעות המשתמש \"%@\"";
 
@@ -6912,6 +6886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the XML-RPC disabled card on blog details */
 "blogDetails.xmlrpcDisabled.card.title" = "XML-RPC מושבת";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "ביקור באתר";
+
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "שכפול אתר";
 
@@ -6963,12 +6940,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "לשמור טיוטה";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "להוסיף עוד צילומי מסך";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "להוסיף צילומי מסך";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "יומני אפליקציה";
 
@@ -6977,12 +6948,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "יומני אפליקציה";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "קובץ מצורף %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "מגבלה לקובץ המצורף: %1$@ \/ %2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "אהלן, %1$@!";
@@ -7017,23 +6982,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "הושלם";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "האם ברצונך לבטל את ההודעה הזאת? כל הנתונים שהזנת יאבדו";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "אשר ביטול";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "האם ברצונך למחוק את כל יומני הפעילות?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "פרטים ליצירת קשר";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "להמשיך לכתוב";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "השיחה הסתיימה. אין אפשרות לתשובות נוספות.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "שיחות";
@@ -7047,20 +6997,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "אבחונים";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "לבטל את השינויים";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "אנו נשלח לך תכתובות לכתובת האימייל הזאת.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "שגיאה בטעינה של יומני הפעילות";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "שגיאה בטעינה של השיחות עם התמיכה";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "שגיאה";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "לייצא כקובץ";
@@ -7080,20 +7018,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "יומני רישום נרחבים";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "הבנתי";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "דרושה לי עזרה לגבי";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "לכלול את יומני האפליקציה";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "פרטי הבעיה";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "עדכון אחרון: %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "טוען הודעות";
@@ -7101,14 +7027,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "טוען שיחות עם הבוט";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "טוען שיחות";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "טוען שימוש בדיסק";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "טוען את התמונה";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "טוען את התכנים האחרונים";
@@ -7118,9 +7038,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "טוען את יומני הרישום...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "טוען הודעות";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "טוען את הווידאו";
@@ -7133,15 +7050,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "אנחנו שומרים קובצי יומן עד שבעה ימים אחורה.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "הודעה";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "הודעה נשלחה";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d הודעות";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "צ'אט חדש עם הבוט";
@@ -7158,35 +7066,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "לא נמצאו יומני פעילות";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "לפתוח פנייה לתמיכה";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(אופציונלי)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "להגיב";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "לשמור כקובץ לשיתוף או לאחסון";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "צילומי מסך";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "הוספה של צילומי מסך תעזר לצוות שלנו לפתור את הבעיה מהר יותר.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "לשלוח";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "לשלוח יומנים ישירות לצוות התמיכה";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "שולח";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "שולח את ההודעה";
 
 /* Button to share content */
 "com.jetpack.support.share" = "לשתף";
@@ -7197,44 +7081,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "משתף עם התמיכה!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "כתובת האתר";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "אפשר להתחיל שיחה חדשה באמצעות הכפתור שלמעלה";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "נושא";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "סיכום קצר של הבעיה";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "לשלוח בקשת תמיכה";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "שיחות עם התמיכה";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "הבקשה נשלחה!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "בקשת התמיכה שלך נשלחה בהצלחה. אנחנו נשלח מענה באימייל בהקדם האפשרי.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "מנסה למצוא תשובה...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "לפנות לתמיכה";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "יש לנסות שוב";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "לא ניתן למחוק את יומני הפעילות";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "אין אפשרות להציג את השיחה";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "אין אפשרות להציג את הווידאו";
@@ -7247,12 +7104,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "אין אפשרות לטעון את ההודעה";
-
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "לא ניתן לשלוח את ההודעה";
-
-/* Button to view an attachment */
-"com.jetpack.support.view" = "להציג";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "בעבודה";
@@ -7365,17 +7216,14 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "בתגובה ל-%@";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "אושר";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "בהמתנה";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "תגובת זבל";
-
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "פח";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "לבטל את השינויים";
@@ -7427,9 +7275,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "%1$@ על %2$@";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "בהמתנה";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "תגובות";
@@ -7616,18 +7461,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "בטא";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "אין סוגי תוכן מותאמים";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "לנעוץ";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "עוד";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "להסיר את הנעץ";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "ניתן ליצור לוח בקרה מותאם ולבחור אילו דוחות ברצונך להציג. להתמקד במידע שהכי חשוב לך.";
@@ -10418,7 +10251,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "אזהרה";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\"%1$@\" לא זמין באתר זה.";
 
 /* Title for the plan selection view */
@@ -11054,6 +10887,9 @@ Example: Reply to Pamela Nguyen */
 /* Post status title used in different contexts */
 "postStatus.pending.title" = "בהמתנה";
 
+/* Post status details */
+"postStatus.private.details" = "זמין רק למנהלי אתר ולעורכים";
+
 /* Post status title used in different contexts */
 "postStatus.private.title" = "פרטי";
 
@@ -11535,9 +11371,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "רשום לעדכונים";
-
-/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "⁦{2026}⁩הצגת פריטים נוספים";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "פעולות נוספות";
