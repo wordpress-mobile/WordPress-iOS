@@ -53,13 +53,27 @@ class MediaVideoExporter: MediaExporter {
         var description: String {
             switch self {
             case .failedGeneratingVideoPreviewImage:
-                return NSLocalizedString("Video Preview Unavailable", comment: "Message shown if a video preview image is unavailable while the video is being uploaded.")
+                return NSLocalizedString(
+                    "Video Preview Unavailable",
+                    comment: "Message shown if a video preview image is unavailable while the video is being uploaded."
+                )
             case .videoExportSessionCancelled:
-                return NSLocalizedString("Video export canceled.", comment: "Message shown if a video export is canceled by the user.")
+                return NSLocalizedString(
+                    "Video export canceled.",
+                    comment: "Message shown if a video export is canceled by the user."
+                )
             case .videoLimitExceeded:
-                return NSLocalizedString("mediaExporter.videoLimitExceededError", value: "Uploading videos longer than 5 minutes requires a paid plan.", comment: "Message of an alert informing users that the video they are trying to select is not allowed.")
+                return NSLocalizedString(
+                    "mediaExporter.videoLimitExceededError",
+                    value: "Uploading videos longer than 5 minutes requires a paid plan.",
+                    comment:
+                        "Message of an alert informing users that the video they are trying to select is not allowed."
+                )
             default:
-                return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
+                return NSLocalizedString(
+                    "The video could not be added to the Media Library.",
+                    comment: "Message shown when a video failed to load while trying to add it to the Media library."
+                )
             }
         }
     }
@@ -82,7 +96,10 @@ class MediaVideoExporter: MediaExporter {
         self.init(url: nil, session: session, filename: filename)
     }
 
-    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
+    @discardableResult public func export(
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping (MediaExportError) -> Void
+    ) -> Progress {
         if let url {
             return exportVideo(atURL: url, onCompletion: onCompletion, onError: onError)
         } else if let session {
@@ -93,7 +110,11 @@ class MediaVideoExporter: MediaExporter {
 
     /// Exports a known video at a URL asynchronously.
     ///
-    @discardableResult func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    @discardableResult func exportVideo(
+        atURL url: URL,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         report(progress: progress, onCompletion: onCompletion, onError: onError) {
             let asset = AVURLAsset(url: url)
@@ -110,7 +131,12 @@ class MediaVideoExporter: MediaExporter {
 
     /// Configures an AVAssetExportSession and exports the video asynchronously.
     ///
-    @discardableResult func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    @discardableResult func exportVideo(
+        with session: AVAssetExportSession,
+        filename: String?,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         report(progress: progress, onCompletion: onCompletion, onError: onError) {
             try await self.exportVideo(with: session, filename: filename, progress: progress)
@@ -121,7 +147,12 @@ class MediaVideoExporter: MediaExporter {
     /// Runs `export` in a task and reports its result through the callbacks.
     ///
     /// Cancelling `progress` cancels the task.
-    private func report(progress: Progress, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError, export: @escaping () async throws -> MediaExport) {
+    private func report(
+        progress: Progress,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError,
+        export: @escaping () async throws -> MediaExport
+    ) {
         let task = Task {
             do {
                 onCompletion(try await export())
@@ -130,7 +161,9 @@ class MediaVideoExporter: MediaExporter {
                 // e.g. a cancelled `isExportable` load reads as "not exportable".
                 // Callers such as Aztec only treat `videoExportSessionCancelled`
                 // as a cancellation.
-                let exportError: MediaExportError = progress.isCancelled ? VideoExportError.videoExportSessionCancelled : exporterErrorWith(error: error)
+                let exportError: MediaExportError =
+                    progress.isCancelled
+                    ? VideoExportError.videoExportSessionCancelled : exporterErrorWith(error: error)
                 fail(progress, with: exportError, onError: onError)
             }
         }
@@ -139,7 +172,11 @@ class MediaVideoExporter: MediaExporter {
         }
     }
 
-    private func exportVideo(with session: AVAssetExportSession, filename: String?, progress: Progress) async throws -> MediaExport {
+    private func exportVideo(
+        with session: AVAssetExportSession,
+        filename: String?,
+        progress: Progress
+    ) async throws -> MediaExport {
         // The synchronous `AVAsset.duration` this replaces returned zero when the
         // asset couldn't be read, which let the export go ahead.
         let duration = (try? await session.asset.load(.duration)) ?? .zero
@@ -155,7 +192,11 @@ class MediaVideoExporter: MediaExporter {
              of the exporter's own supported types within the session's.
              Ideally we return the first type, as an order of preference from supportedExportFileTypes.
             */
-            guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains(AVFileType(rawValue: $0)) }) else {
+            guard
+                let supportedType = supportedExportFileTypes.first(where: {
+                    session.supportedFileTypes.contains(AVFileType(rawValue: $0))
+                })
+            else {
                 // No supported types available, throw an error.
                 throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
             }
@@ -174,19 +215,29 @@ class MediaVideoExporter: MediaExporter {
             session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         }
 
-        let observer = VideoSessionProgressObserver(videoSession: session, progressHandler: { value in
-            progress.completedUnitCount = Int64(Float(MediaExportProgressUnits.done) * value)
-        })
-        defer { observer.stop() }
-        try await session.export(to: mediaURL, as: AVFileType(rawValue: outputType))
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask {
+                for await state in session.states(updateInterval: 0.1) {
+                    if case .exporting(let exportProgress) = state {
+                        progress.completedUnitCount = Int64(
+                            Double(MediaExportProgressUnits.done) * exportProgress.fractionCompleted
+                        )
+                    }
+                }
+            }
+            defer { group.cancelAll() }
+            try await session.export(to: mediaURL, as: AVFileType(rawValue: outputType))
+        }
 
         let pixelSize = await mediaURL.videoPixelSize
         progress.completedUnitCount = MediaExportProgressUnits.done
-        return MediaExport(url: mediaURL,
-                           fileSize: mediaURL.fileSize,
-                           width: pixelSize.width,
-                           height: pixelSize.height,
-                           duration: CMTimeGetSeconds(duration))
+        return MediaExport(
+            url: mediaURL,
+            fileSize: mediaURL.fileSize,
+            width: pixelSize.width,
+            height: pixelSize.height,
+            duration: CMTimeGetSeconds(duration)
+        )
     }
 
     /// Reports a failure and marks the progress as finished.
@@ -205,21 +256,42 @@ class MediaVideoExporter: MediaExporter {
     /// - imageOptions: ImageExporter options for the generated thumbnail image.
     ///
     @discardableResult
-    func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    func exportPreviewImageForVideo(
+        atURL url: URL,
+        imageOptions: MediaImageExporter.Options?,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         Task {
             let asset = AVURLAsset(url: url)
             guard let isExportable = try? await asset.load(.isExportable), isExportable else {
-                self.fail(progress, with: self.exporterErrorWith(error: VideoExportError.videoAssetWasDetectedAsNotExportable), onError: onError)
+                self.fail(
+                    progress,
+                    with: self.exporterErrorWith(error: VideoExportError.videoAssetWasDetectedAsNotExportable),
+                    onError: onError
+                )
                 return
             }
-            self.generatePreviewImage(for: asset, imageOptions: imageOptions, progress: progress, onCompletion: onCompletion, onError: onError)
+            self.generatePreviewImage(
+                for: asset,
+                imageOptions: imageOptions,
+                progress: progress,
+                onCompletion: onCompletion,
+                onError: onError
+            )
         }
         return progress
     }
 
-    private func generatePreviewImage(for asset: AVAsset, imageOptions: MediaImageExporter.Options?, progress: Progress, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+    private func generatePreviewImage(
+        for asset: AVAsset,
+        imageOptions: MediaImageExporter.Options?,
+        progress: Progress,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) {
         let generator = AVAssetImageGenerator(asset: asset)
         if let imageOptions, let maxSize = imageOptions.maximumImageSize {
             generator.maximumSize = CGSize(width: maxSize, height: maxSize)
@@ -234,24 +306,27 @@ class MediaVideoExporter: MediaExporter {
             fail(progress, with: VideoExportError.failedGeneratingVideoPreviewImage, onError: onError)
             return
         }
-        generator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(value: 0, timescale: 1))],
-                                                 completionHandler: { _, cgImage, _, _, _ in
-                                                    progress.completedUnitCount = MediaExportProgressUnits.halfDone
-                                                    guard let cgImage else {
-                                                        onError(VideoExportError.failedGeneratingVideoPreviewImage)
-                                                        return
-                                                    }
-                                                    let image = UIImage(cgImage: cgImage)
-                                                    let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
-                                                    if let imageOptions {
-                                                        exporter.options = imageOptions
-                                                    }
-                                                    exporter.mediaDirectoryType = self.mediaDirectoryType
-                                                    let imageProgress = exporter.export(
-                                                                         onCompletion: onCompletion,
-                                                                         onError: onError)
-                                                    progress.addChild(imageProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
-        })
+        generator.generateCGImagesAsynchronously(
+            forTimes: [NSValue(time: CMTimeMake(value: 0, timescale: 1))],
+            completionHandler: { _, cgImage, _, _, _ in
+                progress.completedUnitCount = MediaExportProgressUnits.halfDone
+                guard let cgImage else {
+                    onError(VideoExportError.failedGeneratingVideoPreviewImage)
+                    return
+                }
+                let image = UIImage(cgImage: cgImage)
+                let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
+                if let imageOptions {
+                    exporter.options = imageOptions
+                }
+                exporter.mediaDirectoryType = self.mediaDirectoryType
+                let imageProgress = exporter.export(
+                    onCompletion: onCompletion,
+                    onError: onError
+                )
+                progress.addChild(imageProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
+            }
+        )
     }
 
     /// Returns the supported UTType identifiers for the video exporter.
@@ -267,36 +342,5 @@ class MediaVideoExporter: MediaExporter {
             .avi
         ]
         return types.map(\.identifier)
-    }
-}
-
-fileprivate class VideoSessionProgressObserver {
-
-    let videoSession: AVAssetExportSession
-    let progressHandler: (Float) -> ()
-    var interrupt: Bool
-
-    init(videoSession: AVAssetExportSession, progressHandler: @escaping (Float) -> ()) {
-        self.videoSession = videoSession
-        self.progressHandler = progressHandler
-        interrupt = false
-        self.work()
-    }
-
-    private func work() {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100)) {
-            self.progressHandler(self.videoSession.progress)
-            if self.videoSession.progress != 1 && !self.interrupt {
-                self.work()
-            }
-        }
-    }
-
-    func stop() {
-        interrupt = true
-    }
-
-    deinit {
-        interrupt = true
     }
 }
