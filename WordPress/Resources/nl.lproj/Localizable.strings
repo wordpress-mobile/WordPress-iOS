@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-21 06:36:41+0000 */
+/* Translation-Revision-Date: 2026-10-20 10:07:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: nl */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1500,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Maak pagina";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Maak een site";
 
@@ -2518,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Ik ben zo geïnspireerd door het werk van fotograaf Cameron Karsten. Ik ga deze technieken zeker proberen bij mijn volgende";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Ik heb hulp nodig met";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP-adres";
 
@@ -2897,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Laat het mij weten als het klaar is!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Laat ons je siteadres (URL) weten en vertel ons zoveel mogelijk over het probleem, dan nemen we snel contact met je op.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Laten we dit regelen";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Lifestyle";
 
@@ -3089,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Insight beheren";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Beheer site";
 
 /* No comment provided by engineer. */
 "Manual" = "Handmatig";
@@ -5174,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Technologie";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Laat ons weten wat voor soort site je wilt maken";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Voorwaarden en condities";
 
@@ -5251,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "De afbeelding kon niet aan de mediabibliotheek toegevoegd worden.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Soorten sites die gemaakt kunnen worden";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "De taal waarin deze site hoofdzakelijk is geschreven.";
@@ -5419,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Dit bestand is te groot om te uploaden naar je site of ondersteunt deze media-indeling niet.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Dit helpt ons om aanbevelingen te maken. Maar je zit nergens aan vast -- alle sites blijven zich ontwikkelen!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Deze informatie helpt ons onze producten te verbeteren, marketing relevanter te maken en de WordPress.com ervaring op je af te stemmen. Je vindt hierover meer informatie in ons privacybeleid.";
@@ -6707,8 +6684,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Kan de URL van de huidige site niet vinden";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Deze site ondersteunt geen applicatie wachtwoorden.";
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "WordPress.com sites worden beheerd via je WordPress.com account, dus applicatie wachtwoorden zijn niet beschikbaar.";
 
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Je moet je aanmelden met gebruiker \"%@\"";
@@ -6972,12 +6949,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Concept opslaan";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Meer schermafbeeldingen toevoegen";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Schermafbeeldingen toevoegen";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Applicatielogs";
 
@@ -6986,12 +6957,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Applicatielogs";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Bijlage %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Bijlage limiet: %1$@\/%2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Hallo %1$@!";
@@ -7026,23 +6991,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Afgerond";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Weet je zeker dat je dit bericht wilt annuleren? Je verliest alle gegevens die je hebt ingevoerd";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Annulering bevestigen";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Weet je zeker dat je alle logs wil verwijderen?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Contactgegevens";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Doorgaan met schrijven";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Einde conversatie. Verdere antwoorden zijn niet mogelijk.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Conversaties";
@@ -7056,20 +7006,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnostiek";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Wijzigingen negeren";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "We e-mailen je op dit adres.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Fout bij het laden van logs";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Fout bij het laden van ondersteunende gesprekken";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Fout";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Exporteren als bestand";
@@ -7089,20 +7027,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Uitgebreide logs";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Ik snap het";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Ik heb hulp nodig met";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Applicatielogs opnemen";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Probleem details";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Laatst geüpdatet %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Berichten aan het laden";
@@ -7110,14 +7036,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Bot conversaties aan het laden";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Conversaties aan het laden";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Schijfgebruik aan het laden";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Afbeelding aan het laden";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Nieuwste inhoud aan het laden";
@@ -7127,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Logs aan het laden...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Berichten aan het laden";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Video aan het laden";
@@ -7142,15 +7059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Logs worden zeven dagen lang opgeslagen.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Bericht";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Bericht verzonden";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d berichten";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Nieuwe bot chat";
@@ -7167,35 +7075,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Geen logs gevonden";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Open een ondersteuningsticket";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(Optioneel)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Beantwoorden";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Als bestand opslaan om te delen of op te slaan";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Schermafbeeldingen";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Door schermafbeeldingen toe te voegen kunnen we je probleem sneller begrijpen en oplossen.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Verzenden";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Verzend logs rechtstreeks naar het ondersteuningsteam";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Aan het verzenden";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Bericht aan het verzenden";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Delen";
@@ -7206,47 +7090,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Delen met steun!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Site adres";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Begin een nieuwe conversatie via de knop hierboven";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Onderwerp";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Korte samenvatting van je probleem";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Ondersteuningsverzoek indienen";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Conversaties ondersteunen";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Aanvraag verzonden!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Je ondersteuningsverzoek is succesvol verzonden. We reageren zo snel mogelijk via e-mail.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Aan het denken ...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Neem contact op met ondersteuning";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Opnieuw proberen";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Kan geen logs verwijderen";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Kan conversatie niet tonen";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Kan video niet tonen";
@@ -7260,11 +7114,167 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Kan berichten niet laden";
 
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Kan bericht niet verzenden";
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Meer info toevoegen";
 
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Weergeven";
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Bijlage aan het laden…";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%1$d%% overeenkomst";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Link openen: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "Gerelateerd:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Deze conversatie is gesloten. Je kunt er niet meer op antwoorden.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Laatst geüpdatet %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Conversatie aan het laden...";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Typ een bericht...";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Verzenden";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "Overgedragen aan menselijke ondersteuning";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "De AI-assistent is aan het typen";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Begin een conversatie met ons ondersteuningsteam om hulp te krijgen bij je vragen.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Nog geen conversaties";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Conversaties aan het laden...";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Verkrijg hulp";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Er ging iets fout, probeer later opnieuw.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Er is iets fout gegaan";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "Zojuist";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "De applicatie logs zijn nu niet beschikbaar.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Nieuwe conversatie";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Login bij WordPress.com om hulp van ons ondersteuningsteam te krijgen.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Controleer je internetverbinding en probeer het nogmaals.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Geen netwerk beschikbaar";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Beantwoorden";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Bijlages";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Voeg schermafbeeldingen, video's of documenten toe die het probleem laten zien.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Kan het bestand niet toevoegen";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Blader door bestanden";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Fotobibliotheek";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Maximumgrootte bereikt. Alleen %1$d van %2$d bestanden zullen worden verzonden";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "%1$@ verwijderen";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Dit bestand is te groot om te verzenden.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Deze bestanden zijn te groot om te verzenden.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Annuleren";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Blijf schrijven";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Negeren";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Je bericht en de bijlagen ervan gaan verloren.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Dit antwoord negeren?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Je antwoord is niet verzonden";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Opnieuw proberen";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Bericht";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "OK";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Optioneel";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Verzenden";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Aan het verzenden...";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "Je antwoord is verzonden. Controleer je e-mail voor updates.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Conversatie starten";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "AI-assistent";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "Gesloten";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "Lopend";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Opgelost";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Onbekend";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Opnieuw proberen";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Werkend";
@@ -7286,6 +7296,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reageer op %1$@";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Antwoord aan het verzenden";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Annuleren";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Concept verwijderen";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Blijf bewerken";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Concept opslaan";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Verzenden";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "Verzenden zal deze reactie ook goedkeuren.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "Reacties zijn gesloten voor dit bericht.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Antwoord verzenden mislukt.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Dit antwoord is al geplaatst.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Antwoord ingediend voor moderatie.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Antwoord verzonden.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Laat een reactie achter…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Beantwoorden";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Concept verwijderen";
@@ -7328,6 +7380,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "Naar in behandeling verplaatsen";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Beantwoorden";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "Terugzetten";
@@ -7377,17 +7432,17 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "In antwoord op %@";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "Goedgekeurd";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "In afwachting";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "Spam";
 
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "Prullenbak";
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Naar prullenbak verplaatst";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Wijzigingen negeren";
@@ -7439,9 +7494,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "%1$@ op %2$@";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "In afwachting";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "Reacties";
@@ -7575,6 +7627,9 @@ Example: Reply to Pamela Nguyen */
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "Sticky";
 
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Naar prullenbak verplaatst";
+
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Deze actie kan niet ongedaan worden gemaakt.";
 
@@ -7628,18 +7683,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "BÈTA";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Geen extra berichttypen";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Vastpinnen";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Meer";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Losmaken";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Maak je eigen aangepaste dashboard en kies welke rapporten moeten worden weergegeven. Richt je op de gegevens die het meest van belang zijn.";
@@ -10448,7 +10491,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Waarschuwing";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\"%1$@\" is niet beschikbaar op deze site.";
 
 /* Title for the plan selection view */
@@ -11573,7 +11616,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.header.subscribed" = "Geabonneerd";
 
 /* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}bekijk meer";
+"reader.post.header.viewMore" = "…meer bekijken";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Meer acties";
@@ -12020,6 +12063,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Revisies";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Delen annuleren";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Er ging iets mis bij het lezen van wat je hebt gedeeld. Probeer het opnieuw.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Kan gedeelde content niet laden";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Negeren";
 
@@ -12028,6 +12080,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Media opties";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "OK";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Een of meer gedeelde items konden niet worden geladen en zijn overgeslagen.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "Een deel van de content is overgeslagen";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Opnieuw proberen";
@@ -12956,6 +13017,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transcriptie Jetpack Mobile Bot";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Stel een vraag en krijg hulp van onze groep vrijwilligers.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Communityforums";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Je kunt altijd antwoorden krijgen van ons ondersteuningsteam";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Verkrijg hulp";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Stel een vraag in het communityforum en krijg hulp van onze groep vrijwilligers.";
 
@@ -13044,6 +13117,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Tags";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Activeren";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
 
@@ -13128,6 +13204,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Fout";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Er was een fout bij het updaten van het wachtwoord.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Fout";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Biografische informatie";

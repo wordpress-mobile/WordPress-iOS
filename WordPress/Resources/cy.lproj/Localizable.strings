@@ -264,7 +264,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -425,7 +424,6 @@
 "Country" = "Gwlad";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Creu Gwefan";
 
@@ -834,9 +832,6 @@
    Screen title, where users can see all their installed plugins.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Rheoli";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Rheoli'r wefan";
 
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Parth wedi ei Fapio";

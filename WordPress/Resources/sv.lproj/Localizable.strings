@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-25 09:57:55+0000 */
+/* Translation-Revision-Date: 2026-10-20 11:20:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: sv_SE */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1500,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Skapa sida";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Skapa webbplats";
 
@@ -2518,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jag är så inspirerad av fotografen Cameron Karstens arbete. Jag kommer att prova dessa tekniker nästa gång";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Jag behöver hjälp med";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP-adress";
 
@@ -2897,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Berätta för mig när det är klart!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Meddela oss din webbplatsadress (URL) och berätta så mycket du kan om problemet, så kommer vi att kontakta dig snart.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Låt oss ordna detta";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Livsstil";
 
@@ -3089,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Hantera insikter";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Hantera webbplats";
 
 /* No comment provided by engineer. */
 "Manual" = "Manuell";
@@ -5174,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Teknologi";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Berätta för oss vilken typ av webbplats du vill göra";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Villkor";
 
@@ -5251,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Bilden kunde inte läggas till i mediabiblioteket.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "De typer av webbplatser som kan skapas";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Det språk på vilket denna webbplats i första hand är skrivet.";
@@ -5419,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Filen är för stor för att laddas upp till din webbplats, eller så saknas stöd för detta mediaformat.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Det hjälper oss att ge dig olika rekommendationer. Men du är aldrig fastlåst. Alla webbplatser utvecklas!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Denna information hjälper oss att förbättra våra produkter, se till att marknadsföringen till dig är mer relevant, anpassa din upplevelse av WordPress.com och annat som finns beskrivet i vår integritetspolicy.";
@@ -6707,9 +6684,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Det gick inte att hitta den aktuella webbplatsens URL";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Denna webbplats stöder inte applikationslösenord.";
-
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Du måste logga in med användare ”%@”";
 
@@ -6972,12 +6946,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Spara utkast";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Lägg till fler skärmdumpar";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Lägg till skärmdumpar";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Applikationsloggar";
 
@@ -6986,12 +6954,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Applikationsloggar";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Bilaga %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Gräns för bilagor: %1$@ \/ %2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Hej %1$@!";
@@ -7026,23 +6988,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Slutförd";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Är du säker på att du vill avbryta detta meddelande? Du kommer att förlora alla data du har angett";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Bekräfta avslut";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Är du säker på att du vill ta bort alla loggar?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Kontaktinformation";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Fortsätt skriva";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Slut på konversation. Inga ytterligare svar är möjliga.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Konversationer";
@@ -7056,20 +7003,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnostik";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Ignorera ändringarna";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Vi skickar ett e-postmeddelande till den här adressen.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Fel vid inläsning av loggar";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Fel vid inläsning av supportkonversationer";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Fel";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Exportera som fil";
@@ -7089,20 +7024,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Omfattande loggar";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Jag förstår";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Jag behöver hjälp med";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Inkludera applikationsloggar";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Probleminformation";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Senaste uppdatering %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Läser in meddelanden";
@@ -7110,14 +7033,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Läser in robotkonversationer";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Laddar in konversationer";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Läser in diskanvändning";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Laddar in bild";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Läser in senaste innehåll";
@@ -7127,9 +7044,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Laddar in loggar …";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Laddar in meddelanden";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Laddar in videoklipp";
@@ -7142,15 +7056,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Upp till sju dagar med loggar sparas.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Meddelande";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Meddelande skickat";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d meddelanden";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Ny robotchatt";
@@ -7167,35 +7072,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Inga loggar hittades";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Öppna ett supportärende";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(Valfritt)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Svara";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Spara som en fil för att dela eller lagra";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Skärmdumpar";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Att lägga till skärmbilder kan hjälpa oss att förstå och lösa ditt problem snabbare.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Skicka";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Skicka loggar direkt till supportteamet";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Skickar";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Skickar meddelande";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Dela";
@@ -7206,47 +7087,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Delar med support!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Webbplatsadress";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Starta en ny konversation med hjälp av knappen ovan";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Ämne";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Kort sammanfattning av ditt problem";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Skicka supportförfrågan";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Supportkonversationer";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Förfrågan skickad!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Din supportförfrågan har skickats. Vi kommer att svara via e-post så snart vi kan.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Tänker …";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Kontakta support";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Försök igen";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Kan inte ta bort loggar";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Det gick inte att visa konversationen";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Det gick inte att spela upp videoklippet";
@@ -7260,11 +7111,50 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Det gick inte att läsa in meddelandena";
 
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Kan inte skicka meddelande";
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Få hjälp";
 
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Visa";
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Något blev fel. Försök igen senare.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Något gick fel";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "Just nu";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Ny konversation";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Fotobibliotek";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "Ta bort %1$@";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Avbryt";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Försök igen";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Meddelande";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "OK";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Valfritt";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "Pågående";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Okänt";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Försök igen";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Arbetar";
@@ -7286,6 +7176,21 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Svar till %1$@";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Avbryt";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Ta bort utkast";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Fortsätt redigera";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Spara utkast";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Skicka";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Ta bort utkast";
@@ -7377,17 +7282,14 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "Som svar till %@";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "Godkänd";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "Inväntar granskning";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "Skräppost";
-
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "Papperskorg";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Kasta ändringar";
@@ -7439,9 +7341,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "%1$@ på %2$@";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "Inväntar granskning";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "Kommentarer";
@@ -7628,18 +7527,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "BETA";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Inga anpassade inläggstyper";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Fäst";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Mer";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Lossa";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Skapa din egen anpassade adminpanel och välj vilka rapporter du vill se. Fokusera på den data du bryr dig mest om.";
@@ -10448,7 +10335,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Varning";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "”%1$@” är inte tillgänglig på den här webbplatsen.";
 
 /* Title for the plan selection view */
@@ -11572,9 +11459,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "Prenumererar";
 
-/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "{2026}visa mer";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Fler åtgärder";
 
@@ -12028,6 +11912,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Mediaalternativ";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "OK";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Försök igen";
@@ -12956,6 +12843,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot-kopia";
 
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Få hjälp";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ställ en fråga i communityforumet och få hjälp av vår grupp med volontärer.";
 
@@ -13044,6 +12934,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Etiketter";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Aktiverar";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Dessa saker kommer att raderas:";
 
@@ -13128,6 +13021,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Fel";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Fel";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Biografisk information";
