@@ -70,11 +70,7 @@ struct SimpleBarChartView: View {
     }
 
     private func lighten(_ color: Color) -> Color {
-        if #available(iOS 18, *) {
-            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.2 : 0.1)
-        } else {
-            color.opacity(0.5)
-        }
+        color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.2 : 0.1)
     }
 
     private func getBarOpacity(for point: DataPoint) -> CGFloat {

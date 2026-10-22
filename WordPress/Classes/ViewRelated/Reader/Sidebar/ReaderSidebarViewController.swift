@@ -89,7 +89,7 @@ private struct ReaderSidebarView: View {
             .toolbar {
                 EditButton()
             }
-            .tint(preferredTintColor)
+            .tint(AppColor.tint)
             .accessibilityIdentifier("reader_sidebar")
     }
 
@@ -186,18 +186,6 @@ private struct ReaderSidebarView: View {
         }
         .accessibilityElement()
         .accessibilityLabel(title)
-    }
-
-    private var preferredTintColor: Color {
-        if #available(iOS 18, *) {
-            return AppColor.tint
-        } else {
-            // This is a workaround for an iOS issue where it will not apply the
-            // correrect colors in dark mode when the sidebar is displayed in a
-            // supplementary column. If use use black as a tint color, it
-            // displays white text on white background
-            return Color(UIColor(light: UIAppColor.tint, dark: .secondaryLabel))
-        }
     }
 
     private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {

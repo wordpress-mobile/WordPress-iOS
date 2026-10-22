@@ -8,7 +8,7 @@ This repository builds the WordPress and Jetpack apps for iOS.
 
 WordPress for iOS is the official WordPress mobile app. It lets users create, manage, and publish content on their WordPress sites from an iPhone or iPad. Jetpack for iOS includes those capabilities along with Jetpack and WordPress.com features.
 
-Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
+Minimum requires iOS version is iOS 18. The latest iOS version is iOS 26.
 
 ## Bootstrap
 

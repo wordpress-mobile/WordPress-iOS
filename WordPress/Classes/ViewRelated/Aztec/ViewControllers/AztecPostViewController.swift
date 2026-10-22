@@ -1275,8 +1275,9 @@ private extension AztecPostViewController {
                 guard let strongSelf = self else { return }
 
                 let text: String
+                var encoding = String.Encoding.utf8
                 do {
-                    text = try String(contentsOf: documentURL)
+                    text = try String(contentsOf: documentURL, usedEncoding: &encoding)
                 } catch {
                     text = ""
                 }

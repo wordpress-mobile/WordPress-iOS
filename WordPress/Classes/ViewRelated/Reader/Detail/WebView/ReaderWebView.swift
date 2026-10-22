@@ -185,7 +185,7 @@ class ReaderWebView: WKWebView {
             return ""
         }
 
-        let cssContent = try? String(contentsOf: cssURL)
+        let cssContent = try? String(contentsOf: cssURL, encoding: .utf8)
         return cssContent ?? ""
     }
 
