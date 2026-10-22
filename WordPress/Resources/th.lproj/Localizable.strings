@@ -172,7 +172,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -283,7 +282,6 @@
 "Country" = "ประเทศ";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "สร้างเว็บไซต์";
 
@@ -582,9 +580,6 @@
    Screen title, where users can see all their installed plugins.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "จัดการ";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "จัดการเว็บ";
 
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "ขนาดรูปภาพอัปโหลดใหญ่สุด";

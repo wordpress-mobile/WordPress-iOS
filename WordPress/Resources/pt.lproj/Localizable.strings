@@ -321,7 +321,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -509,7 +508,6 @@
 "Create Page" = "Criar página";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Criar site";
 
@@ -1045,9 +1043,6 @@
 /* Jetpack Settings: Manage Connection
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Gerir ligação";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Gerir site";
 
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Domínio mapeado";

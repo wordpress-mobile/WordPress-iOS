@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-25 09:57:43+0000 */
+/* Translation-Revision-Date: 2026-10-09 09:54:21+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: zh_TW */
@@ -993,7 +993,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1497,7 +1496,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "建立頁面";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "建立網站";
 
@@ -2512,9 +2510,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "攝影師 Cameron Karsten 的作品讓我深受啟發。 我下次會嘗試這些技巧";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "我需要協助處理";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP 位址";
 
@@ -2891,12 +2886,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "完成時通知我！";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "請告訴我們你的網站位址 (URL)，並盡可能詳盡描述你的問題，我們會盡速與你聯絡。";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "讓我們準備好所需資訊";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "生活風格";
 
@@ -3083,9 +3072,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "管理洞察報告";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "管理網站";
 
 /* No comment provided by engineer. */
 "Manual" = "手動";
@@ -5165,9 +5151,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "科技";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "告訴我們你希望建立什麼類型的網站";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "條款與條件";
 
@@ -5242,9 +5225,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "無法將圖片新增到媒體庫。";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "可建立的網站類型";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "此網站主要使用的語言。";
@@ -5410,9 +5390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "由於檔案太大，或你的網站不支援此媒體格式，因此無法上傳此檔案至網站。";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "這有助於讓我們為你推薦相關選項。但你不應裹足不前，所有網站都會不斷進步！";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "這類資訊有助我們改進產品、提供與你更加相關的行銷活動、帶來更為個人化的 WordPress.com 使用體驗；若要瞭解更多詳細內容，請參見我們的「隱私權政策」。";
@@ -6695,9 +6672,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "找不到目前的網站 URL";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "網站不支援「應用程式密碼」。";
-
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "請以使用者「%@」登入";
 
@@ -6954,12 +6928,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "儲存草稿";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "新增更多螢幕截圖";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "新增螢幕截圖";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "應用程式記錄檔";
 
@@ -6968,12 +6936,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "應用程式記錄檔";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "附件 %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "附件大小上限：%1$@\/%2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "%1$@，您好！";
@@ -7008,23 +6970,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "完成";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "你確定要取消此訊息？ 您輸入的任何資料都會遺失";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "確認取消";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "你確定要刪除所有記錄嗎？";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "聯絡資訊";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "繼續撰寫";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "對談結束。 無法進一步回覆。";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "對談";
@@ -7038,20 +6985,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "診斷";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "捨棄變更";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "我們會傳送電子郵件到這個地址。";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "載入記錄檔時發生錯誤";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "載入支援對談時發生錯誤";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "錯誤";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "匯出為檔案";
@@ -7071,20 +7006,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "詳細記錄";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "收到";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "我需要協助處理";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "包含應用程式記錄檔";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "問題詳細資料";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "最近更新：%@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "正在載入訊息";
@@ -7092,14 +7015,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "正在載入 Bot 對談";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "正在載入對談";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "正在載入磁碟使用量";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "正在載入圖片";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "正在載入最新內容";
@@ -7109,9 +7026,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "正在載入記錄檔...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "正在載入訊息";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "正在載入影片";
@@ -7124,15 +7038,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "可儲存最多七天的記錄。";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "訊息";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "已傳送的訊息";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d 則訊息";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "新的 Bot 對談";
@@ -7149,35 +7054,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "找不到記錄";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "開立客服支援單";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(非必要)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "回覆";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "儲存為可分享或儲存的檔案";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "螢幕截圖";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "若新增螢幕截圖，就能協助我們迅速瞭解並加快問題解決速度。";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "傳送";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "將記錄直送支援團隊";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "正在傳送";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "傳送訊息";
 
 /* Button to share content */
 "com.jetpack.support.share" = "分享";
@@ -7188,44 +7069,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "與支援團隊分享！";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "網站位址";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "使用上方按鈕開始新的對談";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "主旨";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "問題的簡短摘要";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "提交支援請求";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "支援對談";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "已傳送要求！";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "已成功傳送你的支援申請。 會盡快透過電子郵件回覆你。";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "正在思考...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "聯絡支援團隊";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "請再試一次";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "無法刪除記錄檔";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "無法顯示對談";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "無法顯示影片";
@@ -7238,12 +7092,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "無法載入訊息";
-
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "無法傳送訊息";
-
-/* Button to view an attachment */
-"com.jetpack.support.view" = "檢視";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "處理中";
@@ -7356,17 +7204,14 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "回覆：%@";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "已核准";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "待確認";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "垃圾訊息";
-
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "垃圾桶";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "捨棄變更";
@@ -7418,9 +7263,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "「%1$@」回覆「%2$@」";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "待確認";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "留言";
@@ -7604,18 +7446,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "測試版";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "沒有自訂文章類型";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "釘選";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "更多";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "取消釘選";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "建立你專屬的自訂儀表板，並選擇要查看的報告。 把重心放在你最關心的資料。";
@@ -9350,6 +9180,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "搜尋字詞";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "影片";
 
@@ -10028,6 +9861,9 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "備份";
 
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "留言";
 
@@ -10045,6 +9881,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Noun. Links to a blog's dashboard screen. */
 "mySite.menu.home" = "首頁";
+
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.jetpackSettings" = "Jetpack 設定";
@@ -10403,7 +10242,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "警告";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "此網站無法使用「%1$@」。";
 
 /* Title for the plan selection view */
@@ -11515,9 +11354,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "已訂閱";
 
-/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}檢視更多內容";
-
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "更多動作";
 
@@ -11583,6 +11419,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Name for the h4x0r color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.h4x0r" = "h4x0r";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
 
 /* Name for the Sepia color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.sepia" = "深褐色";
@@ -11761,6 +11600,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Reader sidebar section title */
 "reader.sidebar.section.organization.title" = "組織";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.title" = "方案";
 
 /* Reader sidebar button */
 "reader.sidebar.section.tags.addTag" = "新增標籤";

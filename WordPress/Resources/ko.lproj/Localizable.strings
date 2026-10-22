@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-25 09:56:14+0000 */
+/* Translation-Revision-Date: 2026-10-09 09:57:21+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ko_KR */
@@ -993,7 +993,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1497,7 +1496,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "페이지 만들기";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "사이트 만들기";
 
@@ -2515,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "저는 사진 작가 Cameron Karsten의 작업에서 많은 영감을 받았습니다. 다음 작업에서 이러한 기법을 시도해볼 생각합니다.";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "도움말이 필요한 영역";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP 주소";
 
@@ -2894,12 +2889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "완료되면 알려주세요!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "사이트 주소(URL)를 알려주고 문제를 최대한 자세히 설명해 주시면 곧 연락드리겠습니다.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "상황 정리";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "라이프스타일";
 
@@ -3086,9 +3075,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "인사이트 관리";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "사이트 관리";
 
 /* No comment provided by engineer. */
 "Manual" = "수동";
@@ -5171,9 +5157,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "기술";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "어떤 종류의 사이트를 만들고 싶으신가요?";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "이용 약관";
 
@@ -5248,9 +5231,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "이미지를 미디어 라이브러리에 추가할 수 없었습니다.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "만들 수 있는 사이트 종류";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "이 사이트의 기본 언어입니다.";
@@ -5416,9 +5396,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "이 파일은 너무 커서 사이트에 업로드할 수 없거나 이 미디어 형식을 지원하지 않습니다.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "의견을 제시해주시는 것이 저희에게 도움이 되지만 절대 고정되어 있는 것은 아닙니다. 모든 사이트는 진화합니다.";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "이 정보는 개인정보 취급방침에 명시된 것처럼 제품을 개선하고, 보다 관련된 마케팅을 제공하며, 워드프레스닷컴 환경을 개인 설정하는 데 도움을 줍니다.";
@@ -6704,9 +6681,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "현재 사이트의 URL을 찾을 수 없습니다.";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "이 사이트에서는 애플리케이션 비밀번호가 지원되지 않습니다.";
-
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "사용자 \"%@\"(으)로 로그인해야 합니다.";
 
@@ -6969,12 +6943,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "임시글 저장";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "스크린샷 더 추가";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "스크린샷 추가";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "애플리케이션 로그";
 
@@ -6983,12 +6951,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "애플리케이션 로그";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "첨부 파일 %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "첨부 파일 한도: %1$@\/%2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "%1$@ 님, 안녕하세요!";
@@ -7023,23 +6985,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "완료";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "이 메시지를 취소하시겠습니까? 입력한 모든 데이터가 손실됩니다.";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "취소 확정";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "모든 로그를 삭제하시겠습니까?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "연락처 정보";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "계속 작성";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "대화의 끝입니다. 더는 답글을 달 수 없습니다.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "대화";
@@ -7053,20 +7000,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "진단";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "변경 사항 취소";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "이 주소로 이메일을 보내드리겠습니다.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "로그 로드 중 오류 발생";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "지원 대화 로드 중 오류 발생";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "오류";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "파일로 내보내기";
@@ -7086,20 +7021,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "상세 로그";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "확인";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "도움말이 필요한 영역";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "애플리케이션 로그 포함";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "문제 상세 정보";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "마지막 업데이트 %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "메시지 로드 중";
@@ -7107,14 +7030,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "봇 대화 로드 중";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "대화 로드 중";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "디스크 사용량 로드 중";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "이미지 로드 중";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "마지막 콘텐츠 로드 중";
@@ -7124,9 +7041,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "로그 로드 중...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "메시지 로드 중";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "비디오 로드 중";
@@ -7139,15 +7053,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "최대 7일 상당의 로그가 저장됩니다.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "메시지";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "메시지 발송됨";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "메시지 %d개";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "새 봇 채팅";
@@ -7164,35 +7069,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "로그를 찾을 수 없음";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "지원 티켓 접수";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(선택 사항)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "답글";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "공유 또는 저장할 파일로 저장";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "스크린샷";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "스크린샷을 추가하면 문제를 더 빨리 이해하고 해결하는 데 도움이 될 수 있습니다.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "보내기";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "지원팀에 직접 로그 보내기";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "보내는 중";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "메시지 보내는 중";
 
 /* Button to share content */
 "com.jetpack.support.share" = "공유";
@@ -7203,47 +7084,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "지원팀과 공유 중입니다!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "사이트 주소";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "위의 버튼을 사용하여 새 대화 시작";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "주제";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "간략한 문제 요약";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "지원 요청 제출";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "지원 대화";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "요청이 발송되었습니다!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "지원 요청이 발송되었습니다. 최대한 빨리 이메일로 회신하겠습니다.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "생각 중...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "지원 문의";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "다시 시도";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "로그를 삭제할 수 없음";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "대화를 표시할 수 없음";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "비디오를 표시할 수 없음";
@@ -7256,12 +7107,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "메시지를 로드할 수 없음";
-
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "메시지를 보낼 수 없음";
-
-/* Button to view an attachment */
-"com.jetpack.support.view" = "보기";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "작업 중";
@@ -7374,17 +7219,14 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "%@에 대한 답글 내용";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "승인됨";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "대기 중";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "스팸";
-
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "휴지통";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "변경 사항 취소";
@@ -7436,9 +7278,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "%1$@(%2$@)";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "대기 중";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "댓글";
@@ -7625,18 +7464,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "베타";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "사용자 정의 글 유형 없음";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "고정";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "더 보기";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "고정 해제";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
@@ -9371,6 +9198,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "검색어";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "비디오";
 
@@ -9592,6 +9422,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "5분을 초과하는 비디오를 업로드하려면 유료 요금제가 필요합니다.";
+
+/* Accessibility label for an audio cell. %1$@ is the creation date. */
+"mediaLibrary.accessibility.audio" = "오디오, %1$@";
+
+/* Accessibility label for a document cell. %1$@ is the filename, or the creation date if filename can't be derived. */
+"mediaLibrary.accessibility.document" = "문서, %1$@";
 
 /* Accessibility label for a cell whose underlying media couldn't be loaded */
 "mediaLibrary.accessibility.error" = "미디어 로드 실패";
@@ -9827,6 +9663,9 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "선택한 파일을 찾을 수 없습니다.";
 
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "업로드용 사진을 변환할 수 없습니다.";
+
 /* Error shown when picked or downloaded bytes do not decode as an image. */
 "mediaLibrary.upload.error.invalidImage" = "선택한 파일은 유효한 이미지가 아닙니다.";
 
@@ -10042,6 +9881,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "백업";
+
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
 
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "댓글";
@@ -10415,7 +10257,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "경고";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\"%1$@\"은(는) 이 사이트에서 사용할 수 없습니다.";
 
 /* Title for the plan selection view */
@@ -11538,9 +11380,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "구독됨";
-
-/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}더 보기";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "추가 작업";
