@@ -1,8 +1,9 @@
-import BuildSettingsKit
 import DesignSystem
 import SwiftUI
 import Support
+import UIKit
 import WordPressAPIInternal
+import WordPressShared
 import WordPressUI
 import WebKit
 
@@ -54,14 +55,14 @@ struct RootSupportView: View {
                 Section(Strings.profileHeader) {
                     ProfileView(user: identity)
                 }
+            } else {
+                signInSection
             }
 
             Section(Strings.helpHeader) {
                 communitySupportLink
-                if let identity, isUnifiedSupportAvailable {
+                if let identity {
                     unifiedSupportLink(for: identity)
-                } else {
-                    communityForumLink
                 }
             }
 
@@ -71,6 +72,41 @@ struct RootSupportView: View {
             }
         }
         .listStyle(.insetGrouped)
+    }
+
+    /// Shown in place of the profile when there's no WordPress.com identity — the support conversations need
+    /// one, so offer the sign-in that unlocks them rather than leaving the user with documentation alone.
+    @ViewBuilder
+    private var signInSection: some View {
+        Section {
+            Button(action: signIn) {
+                Text(Strings.signInTitle)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+        } footer: {
+            Text(Strings.signInDetail)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    private func signIn() {
+        guard let viewController = UIViewController.topViewController else {
+            return wpAssertionFailure("support sign-in requires a presenting view controller")
+        }
+
+        Task { @MainActor in
+            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .support)
+            guard account != nil else { return }
+
+            // `support` leaves this screen on-screen, so pick up the new identity in place: the sign-in
+            // prompt gives way to the profile, and the support conversations become reachable.
+            await reloadIdentity()
+        }
     }
 
     @ViewBuilder
@@ -87,11 +123,6 @@ struct RootSupportView: View {
         }
     }
 
-    /// The unified support flow is only available in the Jetpack app.
-    private var isUnifiedSupportAvailable: Bool {
-        BuildSettings.current.brand == .jetpack
-    }
-
     @ViewBuilder
     private func unifiedSupportLink(for identity: SupportUser) -> some View {
         NavigationLink {
@@ -101,23 +132,6 @@ struct RootSupportView: View {
                 imageName: "questionmark.bubble",
                 title: Strings.getHelpTitle,
                 detail: Strings.getHelpDetail
-            )
-        }
-    }
-
-    /// Offered wherever the unified support flow isn't — a brand with no Happiness Engineer channel, or a user
-    /// we have no WP.com identity for — so nobody is left with documentation alone. It's the same place the
-    /// support screen this one replaces sends them.
-    @ViewBuilder
-    private var communityForumLink: some View {
-        NavigationLink {
-            let url = URL(string: "https://wordpress.org/support/forum/mobile/")!
-            WebKitView(configuration: WebViewControllerConfiguration(url: url))
-        } label: {
-            SupportAreaRow(
-                imageName: "person.2",
-                title: Strings.communityForumTitle,
-                detail: Strings.communityForumDetail
             )
         }
     }
@@ -287,15 +301,15 @@ private enum Strings {
         value: "Get answers from our support team, anytime",
         comment: "Description of the row that opens the support conversations."
     )
-    static let communityForumTitle = NSLocalizedString(
-        "support.root.communityForum.title",
-        value: "Community Forums",
-        comment: "Title of the row that opens the WordPress.org support forums."
+    static let signInTitle = NSLocalizedString(
+        "support.root.signIn.title",
+        value: "Log into WordPress.com",
+        comment: "Title of the button that starts WordPress.com sign-in from the support screen."
     )
-    static let communityForumDetail = NSLocalizedString(
-        "support.root.communityForum.detail",
-        value: "Ask a question and get help from our group of volunteers.",
-        comment: "Description of the row that opens the WordPress.org support forums."
+    static let signInDetail = NSLocalizedString(
+        "support.root.signIn.detail",
+        value: "Log into WordPress.com to access support chat.",
+        comment: "Explains why signing in to WordPress.com is needed to reach the support conversations."
     )
     static let applicationLogsTitle = NSLocalizedString(
         "support.root.applicationLogs.title",
