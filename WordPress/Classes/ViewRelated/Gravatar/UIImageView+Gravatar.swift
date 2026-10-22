@@ -8,20 +8,16 @@ extension UIImageView {
     /// Downloads and sets the User's Gravatar, given his email.
     /// - Parameters:
     ///   - email: The user's email
-    ///   - gravatarRating: Expected image rating
     ///   - placeholderImage: Image to be used as Placeholder
-    ///   - forceRefresh: Skip the cache and fetch the latest version of the avatar.
     public func downloadGravatar(
         for email: String,
-        gravatarRating: Rating = .general,
-        placeholderImage: UIImage = .gravatarPlaceholderImage,
-        forceRefresh: Bool = false
+        placeholderImage: UIImage = .gravatarPlaceholderImage
     ) {
-        let avatarURL = AvatarURL.url(for: email, preferredSize: gravatarDefaultSize(), gravatarRating: gravatarRating)
-        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false, forceRefresh: forceRefresh)
+        let avatarURL = AvatarURL.url(for: email, preferredSize: gravatarDefaultSize(), gravatarRating: .general)
+        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false)
     }
 
-    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
+    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool) {
         guard let gravatar else {
             self.image = placeholder
             return
@@ -35,30 +31,13 @@ extension UIImageView {
 
         let size = Int(ceil(max(28, frame.width) * traitCollection.displayScale))
         guard let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url else { return }
-        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate, forceRefresh: forceRefresh)
+        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate)
     }
 
-    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
+    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool) {
         wp.prepareForReuse()
         if let fullURL {
-            var urlToDownload = fullURL
-            if forceRefresh {
-                urlToDownload = fullURL.appendingGravatarCacheBusterParam()
-            }
-
-            wp.setImage(with: urlToDownload)
-
-            if forceRefresh {
-                // If this is a `forceRefresh`, the cache for the original URL should be updated too.
-                // Because the cache buster parameter modifies the download URL.
-                Task {
-                    await wp.controller.task?.value // Wait until setting the new image is done.
-                    if let image {
-                        ImageCache.shared.setImage(image, forKey: fullURL.absoluteString) // Update the cache for the original URL
-                    }
-                }
-            }
-
+            wp.setImage(with: fullURL)
             if image == nil { // If image wasn't found synchronously in memory cache
                 image = placeholder
             }

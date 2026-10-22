@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 
 /// a circular image view with an auto-updating gravatar image
@@ -6,6 +7,9 @@ class GravatarButtonView: CircularImageView {
     private let tappableWidth: CGFloat
 
     var adjustView: ((GravatarButtonView) -> Void)?
+
+    /// Keeps the image in sync with its source for the lifetime of the view.
+    var avatarSubscription: AnyCancellable?
 
     override var image: UIImage? {
         didSet {
