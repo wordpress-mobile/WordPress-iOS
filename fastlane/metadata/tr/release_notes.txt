@@ -1,1 +1,7 @@
-Erişilebilirlik için güzel haber: yazı ayarlarını güncellerken, Ekran Okuyucusu size hangi kategorilerin seçili olduğunu söyleyecek. Biz bunu "zaferler" kategorisine koyduk.
+Özel yazı türleri artık site menüsünde “Yorumlar”ın hemen altında, daha fazla kolaylık sağlamak amacıyla ada göre sıralanmış olarak görünüyor — artık özel sabitlemeye gerek yok.
+
+Ayrıca, uygulama deneyiminizi biraz daha kolaylaştırmak için birkaç hatayı da giderdik.
+
+- Dosya adında boşluk olsa bile yüklemeler artık başarısız olmayacak. (good-news-everyone.jpg)
+- Belirli türdeki metin dosyalarının paylaşılması nedeniyle meydana gelen bir çökme sorunu giderildi.
+- iPad kullanıcıları sevinebilir: Ekran boyutunu değiştirdiğinizde veya uygulamalar arasında geçiş yaptığınızda uygulama artık kompakt sekme çubuğu düzeninde takılmayacak.
