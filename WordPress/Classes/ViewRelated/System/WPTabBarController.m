@@ -50,6 +50,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
 @property (nonatomic, assign) CGFloat tabBarHeight;
+@property (nonatomic, assign) BOOL hasCompletedFirstAppearance;
+@property (nonatomic, strong) NSMutableArray<void (^)(void)> *pendingTabBarItemUpdates;
 
 @end
 
@@ -62,6 +64,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self = [super init];
     if (self) {
         _shouldUseStaticScreens = shouldUseStaticScreens;
+        _pendingTabBarItemUpdates = [NSMutableArray new];
         [self setDelegate:self];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
@@ -360,6 +363,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)updateNotificationBadgeVisibility
 {
+    __weak __typeof(self) weakSelf = self;
+    [self performTabBarItemUpdate:^{
+        [weakSelf applyNotificationBadgeVisibility];
+    }];
+}
+
+- (void)applyNotificationBadgeVisibility
+{
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
     
     if (self.shouldUseStaticScreens) {
@@ -390,6 +401,35 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSUserDefaults *standardUserDefaults = [UserPersistentStoreFactory userDefaultsInstance];
     NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
+}
+
+#pragma mark - Tab Bar Item Updates
+
+- (void)performTabBarItemUpdate:(void (^)(void))update
+{
+    // iOS 26 measures each tab button's title once, in the tab bar's first layout
+    // pass after it joins a window, and never again. An item image that changes
+    // between the attach and that pass makes the measurement run against
+    // icon-only buttons, so every title stays truncated and bottom-anchored until
+    // the user taps a tab (FB24250687). Changes before the view is attached are
+    // safe and set the initial images; changes in `viewWillAppear:` or the first
+    // `viewDidLayoutSubviews` are not. So a change in between waits for
+    // `viewDidAppear:`.
+    BOOL isAwaitingFirstLayout = self.viewIfLoaded.window != nil && !self.hasCompletedFirstAppearance;
+    if (isAwaitingFirstLayout) {
+        [self.pendingTabBarItemUpdates addObject:[update copy]];
+        return;
+    }
+    update();
+}
+
+- (void)flushPendingTabBarItemUpdates
+{
+    NSArray<void (^)(void)> *updates = [self.pendingTabBarItemUpdates copy];
+    [self.pendingTabBarItemUpdates removeAllObjects];
+    for (void (^update)(void) in updates) {
+        update();
+    }
 }
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
@@ -448,6 +488,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    self.hasCompletedFirstAppearance = YES;
+    [self flushPendingTabBarItemUpdates];
     [self updateNotificationBadgeVisibility];
 
     [self trackTabAccessOnViewDidAppear];
