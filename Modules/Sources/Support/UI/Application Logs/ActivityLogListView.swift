@@ -110,7 +110,7 @@ public struct ActivityLogListView: View {
                                 .environmentObject(dataProvider)
                         ) {
                             SubtitledListViewItem(
-                                title: logFile.createdAt.description,
+                                title: logFile.createdAt.formatted(date: .abbreviated, time: .shortened),
                                 subtitle: logFile.path.lastPathComponent
                             )
                         }

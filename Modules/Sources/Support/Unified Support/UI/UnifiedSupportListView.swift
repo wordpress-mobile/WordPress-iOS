@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 /// The "Get help" screen, listing the user's AI Assistant conversations and support tickets.
 public struct UnifiedSupportListView: View {
@@ -19,7 +20,7 @@ public struct UnifiedSupportListView: View {
     public var body: some View {
         content
             .navigationTitle(UnifiedSupportLocalization.conversationsTitle)
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     newConversationLink {
@@ -81,7 +82,7 @@ public struct UnifiedSupportListView: View {
     }
 
     private var emptyView: some View {
-        ContentUnavailableView {
+        EmptyStateView {
             Label(UnifiedSupportLocalization.emptyConversationsTitle, systemImage: "bubble.left.and.text.bubble.right")
         } description: {
             Text(UnifiedSupportLocalization.emptyConversationsMessage)
@@ -91,6 +92,8 @@ public struct UnifiedSupportListView: View {
             }
             .buttonStyle(.borderedProminent)
         }
+        // `EmptyStateView` sizes itself to its content, unlike `ContentUnavailableView`.
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func newConversationLink<Label: View>(@ViewBuilder label: () -> Label) -> some View {
@@ -117,8 +120,10 @@ public struct UnifiedSupportListView: View {
         .environmentObject(context)
     }
 
+    /// Built from the three-closure initializer rather than `EmptyStateView.failure(error:)` so the caller's
+    /// Support-specific message survives — the convenience initializer substitutes `localizedDescription`.
     private func unavailableView(title: String, message: String, systemImage: String) -> some View {
-        ContentUnavailableView {
+        EmptyStateView {
             Label(title, systemImage: systemImage)
         } description: {
             Text(message)
@@ -130,6 +135,7 @@ public struct UnifiedSupportListView: View {
             }
             .buttonStyle(.bordered)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

@@ -10,9 +10,6 @@ struct UnifiedSupportConversationRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            ChipView(string: conversation.status.title, color: conversation.status.color)
-                .controlSize(.mini)
-
             titleAndTime
 
             if let description = conversation.displayDescription {
@@ -21,6 +18,8 @@ struct UnifiedSupportConversationRow: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
             }
+
+            UnifiedSupportStatusLabel(status: conversation.status)
         }
         .padding(.vertical, 4)
         .accessibilityElement(children: .combine)
@@ -34,7 +33,7 @@ struct UnifiedSupportConversationRow: View {
 
         return layout {
             Text(conversation.displayTitle)
-                .font(.headline)
+                .font(.subheadline.weight(.semibold))
                 .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : 1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
