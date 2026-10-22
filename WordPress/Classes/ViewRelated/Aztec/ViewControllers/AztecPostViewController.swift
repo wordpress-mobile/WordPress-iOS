@@ -3313,11 +3313,13 @@ extension AztecPostViewController: ImagePickerControllerDelegate {
                 guard let videoURL = info[.mediaURL] as? URL else {
                     return
                 }
-                guard self.post.blog.canUploadVideo(from: videoURL) else {
-                    self.presentVideoLimitExceededAfterCapture(on: self)
-                    return
+                Task { @MainActor in
+                    guard await self.post.blog.canUploadVideo(from: videoURL) else {
+                        self.presentVideoLimitExceededAfterCapture(on: self)
+                        return
+                    }
+                    self.insert(exportableAsset: videoURL as NSURL, source: .camera)
                 }
-                self.insert(exportableAsset: videoURL as NSURL, source: .camera)
             default:
                 break
             }
