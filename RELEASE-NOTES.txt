@@ -1,6 +1,6 @@
 27.5
 -----
-
+* [*] [internal] self-hosted Jetpack sites now use core REST API to access Media Library [#25588]
 
 27.4
 -----

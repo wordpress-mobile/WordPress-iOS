@@ -19,7 +19,10 @@ final class MediaRepository {
     }
 
     /// Get the Media object from the server using the blog and the mediaID as the identifier of the resource
-    func getMedia(withID mediaID: NSNumber, in blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<Media> {
+    func getMedia(
+        withID mediaID: NSNumber,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> TaggedManagedObjectID<Media> {
         let remote = try await remote(for: blogID)
         let remoteMedia: RemoteMedia? = try await withCheckedThrowingContinuation { continuation in
             remote.getMediaWithID(mediaID) {
@@ -43,7 +46,8 @@ final class MediaRepository {
     /// Deletes the Media object from the server. Note the Media is deleted, not trashed.
     func delete(_ mediaID: TaggedManagedObjectID<Media>) async throws {
         // Delete the media from WordPress Media Library
-        let queryResult: (MediaServiceRemote, RemoteMedia)? = try await coreDataStack.performQuery { [remoteFactory] context in
+        let queryResult: (MediaServiceRemote, RemoteMedia)? = try await coreDataStack.performQuery {
+            [remoteFactory] context in
             guard let media = try? context.existingObject(with: mediaID) else {
                 return nil
             }
@@ -88,17 +92,29 @@ private extension MediaRepository {
 
 @objc public class MediaServiceRemoteFactory: NSObject {
 
+    /// Picks the media remote based on the site type and the credentials available:
+    ///
+    ///     Site                                       API used
+    ///     -----------------------------------------  --------------------------------------
+    ///     WordPress.com Simple / Atomic              WordPress.com REST (MediaServiceRemoteREST)
+    ///     Self-hosted (incl. Jetpack), app password  Site REST       (MediaServiceRemoteCoreREST)
+    ///     Self-hosted (incl. Jetpack), no app pw     WordPress.com REST (MediaServiceRemoteREST)
+    ///     Self-hosted, no WP.com account, no app pw  XML-RPC         (MediaServiceRemoteXMLRPC)
+    ///
+    /// Self-hosted sites prefer their own REST API via an application password so media bypasses the
+    /// WordPress.com Jetpack proxy, which some hosts block. WordPress.com-managed sites (Simple and
+    /// Atomic) stay on the WordPress.com REST API, where WordPress.com-specific features such as video
+    /// upload restrictions and storage limits based on the site's plan are enforced.
     @objc(remoteForBlog:error:)
     public func remote(for blog: Blog) throws -> MediaServiceRemote {
-        if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi {
-            return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
+        if !(blog.isHostedAtWPcom || blog.isAtomic),
+            let site = try? WordPressSite(blog: blog), case .selfHosted = site
+        {
+            return MediaServiceRemoteCoreREST(client: WordPressClientFactory.shared.instance(for: site))
         }
 
-        // We use WordPress.com API for media management instead of WordPress core REST API to ensure
-        // compatibility with WordPress.com-specific features such as video upload restrictions
-        // and storage limits based on the site's plan.
-        if let site = try? WordPressSite(blog: blog) {
-            return MediaServiceRemoteCoreREST(client: WordPressClientFactory.shared.instance(for: site))
+        if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi {
+            return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 
         if let username = blog.username, let password = blog.password, let api = blog.xmlrpcApi {
