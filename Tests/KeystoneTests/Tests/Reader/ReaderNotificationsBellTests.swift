@@ -5,15 +5,37 @@ import UIKit
 
 struct ReaderNotificationsBellTests {
     @Test(arguments: [NotificationsListScope.all, .reader])
-    func regularWidthShowsThePopoverOnlyWhereTheScreenAllowsIt(scope: NotificationsListScope) {
-        #expect(bell(showsPopoverInRegularWidth: true, .regular, scope: scope) == .popover)
-        #expect(bell(showsPopoverInRegularWidth: false, .regular, scope: scope) == .hidden)
+    func iPadRegularWidthShowsThePopoverOnlyWhereTheScreenAllowsIt(scope: NotificationsListScope) {
+        #expect(bell(showsPopoverInRegularWidth: true, .regular, isPad: true, scope: scope) == .popover)
+        #expect(bell(showsPopoverInRegularWidth: false, .regular, isPad: true, scope: scope) == .hidden)
     }
 
     @Test(arguments: [false, true])
-    func compactWidthPushesOnlyForTheReaderScope(showsPopoverInRegularWidth: Bool) {
-        #expect(bell(showsPopoverInRegularWidth: showsPopoverInRegularWidth, .compact, scope: .reader) == .push)
-        #expect(bell(showsPopoverInRegularWidth: showsPopoverInRegularWidth, .compact, scope: .all) == .hidden)
+    func iPhoneRegularWidthPushesForTheReaderScope(showsPopoverInRegularWidth: Bool) {
+        #expect(
+            bell(showsPopoverInRegularWidth: showsPopoverInRegularWidth, .regular, isPad: false, scope: .reader)
+                == .push
+        )
+    }
+
+    @Test
+    func iPhoneRegularWidthKeepsThePopoverForTheAllScope() {
+        #expect(bell(showsPopoverInRegularWidth: true, .regular, isPad: false, scope: .all) == .popover)
+        #expect(bell(showsPopoverInRegularWidth: false, .regular, isPad: false, scope: .all) == .hidden)
+    }
+
+    @Test(arguments: [false, true])
+    func compactWidthPushesOnlyForTheReaderScope(isPad: Bool) {
+        for showsPopoverInRegularWidth in [false, true] {
+            #expect(
+                bell(showsPopoverInRegularWidth: showsPopoverInRegularWidth, .compact, isPad: isPad, scope: .reader)
+                    == .push
+            )
+            #expect(
+                bell(showsPopoverInRegularWidth: showsPopoverInRegularWidth, .compact, isPad: isPad, scope: .all)
+                    == .hidden
+            )
+        }
     }
 
     @Test
@@ -44,11 +66,13 @@ struct ReaderNotificationsBellTests {
     private func bell(
         showsPopoverInRegularWidth: Bool,
         _ sizeClass: UIUserInterfaceSizeClass,
+        isPad: Bool,
         scope: NotificationsListScope
     ) -> ReaderNotificationsBell {
         ReaderNotificationsBell(
             showsPopoverInRegularWidth: showsPopoverInRegularWidth,
             horizontalSizeClass: sizeClass,
+            isPad: isPad,
             scope: scope
         )
     }

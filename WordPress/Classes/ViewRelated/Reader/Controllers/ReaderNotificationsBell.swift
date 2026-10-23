@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import WordPressShared
+import WordPressUI
 
 /// Whether a Reader screen shows the Notifications bell, and what tapping it does.
 enum ReaderNotificationsBell: Equatable {
@@ -19,18 +20,24 @@ enum ReaderNotificationsBell: Equatable {
     ///     column, where the Jetpack app shows no bell either.
     ///   - horizontalSizeClass: The size class of the screen's layout. On iPad, this is
     ///     `.regular` for a screen in the expanded split view even when its column is compact.
+    ///   - isPad: Whether the device is an iPad. Only an iPad shows Reader in the split view:
+    ///     larger iPhones are regular width in landscape, with Reader still on a navigation stack.
     ///   - scope: The scope of the list the bell opens.
     init(
         showsPopoverInRegularWidth: Bool,
         horizontalSizeClass: UIUserInterfaceSizeClass,
+        isPad: Bool = UIDevice.isPad(),
         scope: NotificationsListScope = .forAppNavigation()
     ) {
         switch horizontalSizeClass {
-        case .regular:
+        case .regular where isPad || scope == .all:
+            // The Jetpack app keeps the popover on larger iPhones in landscape: its Notifications
+            // tab is another entrance to the list.
             self = showsPopoverInRegularWidth ? .popover : .hidden
-        case .compact:
-            // The compact-width bell is the only entrance to the Reader notifications list, which
-            // the WordPress app shows because its Notifications tab shows a poster.
+        case .regular, .compact:
+            // Reader is on a navigation stack. The bell is the only entrance to the Reader
+            // notifications list, which the WordPress app shows because its Notifications tab
+            // shows a poster.
             self = scope == .reader ? .push : .hidden
         case .unspecified:
             self = .hidden
