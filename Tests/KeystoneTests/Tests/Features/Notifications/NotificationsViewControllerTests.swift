@@ -217,6 +217,55 @@ final class NotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(list.navigationItem.title, "Notifications")
     }
 
+    @MainActor
+    func testReaderScopedListSubmitsNoSeen() async throws {
+        let seenTimestamps = try await seenTimestampsWhileShowingList(scope: .reader)
+
+        XCTAssertEqual(seenTimestamps, [])
+    }
+
+    @MainActor
+    func testUnscopedListSubmitsSeen() async throws {
+        let seenTimestamps = try await seenTimestampsWhileShowingList(scope: .all)
+
+        // The new post fixture's timestamp, 2015-03-31T10:00:00+00:00, in Unix seconds.
+        XCTAssertEqual(seenTimestamps.last, Date(timeIntervalSince1970: 1_427_796_000))
+    }
+
+    /// Shows a list with `scope` that has a Reader notification, then stores a like while the
+    /// list is visible. Returns the timestamps the list submitted as seen.
+    @MainActor
+    private func seenTimestampsWhileShowingList(scope: NotificationsListScope) async throws -> [Date] {
+        let uuid = "account-A"
+        AccountBuilder(contextManager.mainContext).with(uuid: uuid).build()
+        let previousDefaultDotComUUID = UserSettings.defaultDotComUUID
+        UserSettings.defaultDotComUUID = uuid
+        addTeardownBlock { UserSettings.defaultDotComUUID = previousDefaultDotComUUID }
+
+        let serviceTests = NotificationActivityServiceTests()
+        let fixture = await serviceTests.started(uuid: uuid)
+        _ = try utility.loadNewPostNotification()
+        controller = NotificationsViewController.loadFromStoryboard()
+        controller.activityService = fixture.service
+        controller.scope = scope
+
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        addTeardownBlock { window.isHidden = true }
+
+        _ = try utility.loadLikeNotification()
+        contextManager.mainContext.processPendingChanges()
+        await serviceTests.settle(fixture)
+
+        // The list can outlive the test. With notifications still in it, resetting the test's
+        // Core Data stack trips the "Notification Timestamp should not be nil" assertion.
+        contextManager.mainContext.deleteAllObjects(ofType: WordPressData.Notification.self)
+        contextManager.mainContext.processPendingChanges()
+
+        return fixture.remote.seenTimestamps
+    }
+
     // MARK: - Permission primers
 
     // The primer alert and the inline primer only appear after the system reports an undetermined

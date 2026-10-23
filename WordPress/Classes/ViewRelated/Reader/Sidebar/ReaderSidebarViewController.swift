@@ -66,7 +66,7 @@ extension ReaderSidebarViewController: ScrollableViewController {
 private struct ReaderSidebarNotificationsButton: View {
     let action: () -> Void
 
-    @StateObject private var viewModel = NotificationsButtonViewModel()
+    @StateObject private var viewModel = NotificationsButtonViewModel(scope: .forAppNavigation())
 
     var body: some View {
         Button(action: action) {

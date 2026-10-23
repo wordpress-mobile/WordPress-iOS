@@ -67,10 +67,10 @@ enum ReaderNotificationsBell: Equatable {
 }
 
 /// Makes the bell bar button item of a Reader screen and keeps its image current with the
-/// account's activity indicator.
+/// account's activity indicator, if the list the bell opens tracks it.
 @MainActor
 final class ReaderNotificationsBarButton {
-    private lazy var viewModel = NotificationsButtonViewModel()
+    private lazy var viewModel = NotificationsButtonViewModel(scope: .forAppNavigation())
     private var cancellable: AnyCancellable?
 
     /// Returns nil when `bell` is hidden. The previous item, if any, stops updating.

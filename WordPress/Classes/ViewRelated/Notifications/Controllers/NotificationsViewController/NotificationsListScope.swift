@@ -34,6 +34,21 @@ enum NotificationsListScope {
         app == .wordpress && isReaderInWordPressAppEnabled ? .reader : .all
     }
 
+    /// Whether a list with this scope, and the bell that opens it, use the account's new-activity
+    /// state: the bell's badge, and the last-seen time that a visible list submits.
+    ///
+    /// That state covers every kind of notification, and the server keeps one last-seen time per
+    /// account. A Reader list would badge its bell for activity it doesn't show, and opening it
+    /// would mark that activity seen in the Jetpack app and on the web.
+    var tracksAccountActivity: Bool {
+        switch self {
+        case .all:
+            return true
+        case .reader:
+            return false
+        }
+    }
+
     /// The fetch predicate that limits notifications to this scope.
     var predicate: NSPredicate {
         switch self {
