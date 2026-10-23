@@ -178,8 +178,17 @@ class ReaderWebView: WKWebView {
         var content = htmlContent
 
         for element in elements {
-            content = content.replacingMatches(of: "<\(element)", with: "<\(element)-placeholder")
-            content = content.replacingMatches(of: "</\(element)\\s*>", with: "</\(element)-placeholder>")
+            // HTML tag names are case-insensitive. Renaming only one tag of a pair leaves the element open.
+            content = content.replacingMatches(
+                of: "<\(element)",
+                with: "<\(element)-placeholder",
+                options: .caseInsensitive
+            )
+            content = content.replacingMatches(
+                of: "</\(element)\\s*>",
+                with: "</\(element)-placeholder>",
+                options: .caseInsensitive
+            )
         }
 
         return content

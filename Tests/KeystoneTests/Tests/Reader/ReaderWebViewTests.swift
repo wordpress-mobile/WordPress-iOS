@@ -23,6 +23,14 @@ struct ReaderWebViewTests {
         #expect(ReaderWebView.addPlaceholder(html) == expected)
     }
 
+    /// Both tags of a pair must be renamed whatever their case, or the element never closes.
+    @Test func placeholderIgnoresTagCase() {
+        let html = "<IFRAME src=\"a\"></iframe><Script></SCRIPT>"
+        let expected = "<iframe-placeholder src=\"a\"></iframe-placeholder><script-placeholder></script-placeholder>"
+
+        #expect(ReaderWebView.addPlaceholder(html) == expected)
+    }
+
     @Test func placeholderRenamesVoidElements() {
         let html = "<p><img src=\"a.png\" /><input type=\"text\"></p>"
         let expected = "<p><img-placeholder src=\"a.png\" /><input-placeholder type=\"text\"></p>"
