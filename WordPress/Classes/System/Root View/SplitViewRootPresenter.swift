@@ -284,20 +284,34 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         // These requests come from account-level entrances (Spotlight, links, settings).
-        // `staticScreensWithReader` has no account-level list: the tab bar lands on its poster,
-        // and the split view, which has no poster, takes the simplified UI's fallback.
+        // `staticScreensWithReader` has no account-level list, so they land on the Moved-to-Jetpack
+        // poster: the tab bar's Notifications tab, or a sheet in the split view, which has no
+        // Notifications row.
         if JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
             if splitVC.isCollapsed {
                 tabBarVC.showNotificationsTab(completion: completion)
             } else {
-                showJetpackOverlayForDisabledEntryPoint()
-                WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: ["calling_function": #function])
+                showNotificationsPoster()
             }
             return
         }
 
         sidebarViewModel.selection = .notifications
         completion?(notificationsContent.notificationsViewController)
+    }
+
+    private func showNotificationsPoster() {
+        let posterVC = MovedToJetpackViewController(source: .notifications)
+        let navigationVC = UINavigationController(rootViewController: posterVC)
+        posterVC.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction { [weak navigationVC] _ in
+                navigationVC?.dismiss(animated: true)
+            }
+        )
+        navigationVC.modalPresentationStyle = .formSheet
+        // An entrance such as the iOS Settings link can arrive while a sheet is up.
+        splitVC.topmostPresentedViewController.present(navigationVC, animated: true)
     }
 
     func appUITypeDidChange() {

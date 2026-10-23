@@ -191,10 +191,8 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
     }
 
-    func testSplitViewShowNotificationsInStaticScreensWithReaderTakesTheUnsupportedFeatureFallback() throws {
+    func testSplitViewShowNotificationsInStaticScreensWithReaderPresentsThePoster() throws {
         // Given
-        TestAnalyticsTracker.setup()
-        addTeardownBlock { TestAnalyticsTracker.tearDown() }
         JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
         let presenter = SplitViewRootPresenter()
         try showExpanded(presenter)
@@ -206,11 +204,8 @@ final class RootViewCoordinatorTests: XCTestCase {
         // Then
         XCTAssertFalse(didRunCompletion)
         XCTAssertNotEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenNotifications)
-        XCTAssertTrue(
-            TestAnalyticsTracker.tracked.contains {
-                $0.event == WPAnalyticsEvent.jetpackFeatureIncorrectlyAccessed.value
-            }
-        )
+        let sheet = try XCTUnwrap(presenter.rootViewController.presentedViewController as? UINavigationController)
+        XCTAssertTrue(sheet.viewControllers.first is MovedToJetpackViewController)
     }
 
     func testSplitViewShowNotificationsInNormalUISelectsNotifications() throws {
