@@ -1,5 +1,6 @@
 27.5
 -----
+* [*] Self-hosted sites: Ask to sign in again when a site's password is missing, for example after moving to a new device [#26195]
 
 
 27.4

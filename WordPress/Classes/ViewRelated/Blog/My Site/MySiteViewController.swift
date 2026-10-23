@@ -424,11 +424,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         Task { [blogID = TaggedManagedObjectID(blog)] in
-            do {
-                try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogID)
-            } catch {
-                Loggers.app.error("Failed to create an application password: \(error)")
-            }
+            await WordPressAuthenticationManager.createApplicationPasswordOrSignIn(for: blogID)
         }
     }
 

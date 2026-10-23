@@ -106,6 +106,8 @@ class AbstractPostListViewController: UIViewController,
         NotificationCenter.default.addObserver(self, selector: #selector(postListEditorPresenterWillShowEditor), name: .postListEditorPresenterWillShowEditor, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(postListEditorPresenterDidHideEditor), name: .postListEditorPresenterDidHideEditor, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationPasswordUpdated), name: SelfHostedSiteAuthenticator.applicationPasswordUpdated, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -219,6 +221,11 @@ class AbstractPostListViewController: UIViewController,
     }
 
     // MARK: - Notifications
+
+    /// Syncs again after the user signs in from the prompt for a missing or rejected password.
+    @objc private func applicationPasswordUpdated() {
+        syncItemsWithUserInteraction(false)
+    }
 
     @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
@@ -604,6 +611,19 @@ class AbstractPostListViewController: UIViewController,
         if error.domain == WordPressOrgXMLRPCApi.errorDomain &&
             error.code == type(of: self).httpErrorCodeForbidden {
             WordPressAppDelegate.shared?.showPasswordInvalidPrompt(for: blog)
+            return
+        }
+
+        // With no saved password, the sync fails before the site is contacted, so the site never
+        // rejects a password and the prompt above never appears.
+        if let blog, blog.isMissingSelfHostedCredentials() {
+            hideRefreshingIndicator()
+            refreshResults()
+            Task { [weak self, blogID = TaggedManagedObjectID(blog)] in
+                if await WordPressAuthenticationManager.createApplicationPasswordOrSignIn(for: blogID) {
+                    self?.syncItemsWithUserInteraction(false)
+                }
+            }
             return
         }
 

@@ -6,8 +6,17 @@ import WordPressData
 import WordPressShared
 
 struct ApplicationPasswordReAuthenticationView: View {
+    /// Why the app needs the user to sign in again.
+    enum Reason {
+        /// The site rejected the saved application password.
+        case invalid
+        /// No application password is saved on this device, e.g. after a backup is restored to a new device.
+        case missing
+    }
+
     let blog: Blog
     let presenter: UIViewController
+    let reason: Reason
 
     @Environment(\.dismiss) private var dismiss
     @State private var error: String?
@@ -19,10 +28,10 @@ struct ApplicationPasswordReAuthenticationView: View {
                     .font(.system(size: 50))
                     .foregroundColor(.gray)
 
-                Text(Strings.title)
+                Text(reason.title)
                     .font(.headline)
 
-                Text(Strings.description)
+                Text(reason.description)
                     .font(.body)
                     .frame(maxWidth: .infinity)
 
@@ -87,9 +96,32 @@ struct ApplicationPasswordReAuthenticationView: View {
         .onAppear {
             WPAnalytics.track(
                 .applicationPasswordReauthPrompted,
-                properties: [:] as [String: Any],
+                properties: ["reason": reason.analyticsValue] as [String: Any],
                 blog: blog
             )
+        }
+    }
+}
+
+private extension ApplicationPasswordReAuthenticationView.Reason {
+    var title: String {
+        switch self {
+        case .invalid: Strings.title
+        case .missing: Strings.missingTitle
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .invalid: Strings.description
+        case .missing: Strings.missingDescription
+        }
+    }
+
+    var analyticsValue: String {
+        switch self {
+        case .invalid: "invalid"
+        case .missing: "missing"
         }
     }
 }
@@ -97,6 +129,18 @@ struct ApplicationPasswordReAuthenticationView: View {
 private enum Strings {
     static let title: String = NSLocalizedString("login.appPasswordReAuth.title", value: "Invalid application password", comment: "Title shown when the application password is invalid")
     static let description: String = NSLocalizedString("login.appPasswordReAuth.description", value: "The application password assigned to the app no longer exists in your profile.\nPlease sign in again to create a new application password for the app to use.", comment: "Description explaining why the user needs to re-authenticate")
+    static let missingTitle: String = NSLocalizedString(
+        "login.appPasswordReAuth.missing.title",
+        value: "Sign in again",
+        comment: "Title shown when the app has no application password for a site on this device"
+    )
+    static let missingDescription: String = NSLocalizedString(
+        "login.appPasswordReAuth.missing.description",
+        value:
+            "This device doesn't have the application password the app uses for this site. This can happen after moving to a new device.\nPlease sign in again to create a new application password for the app to use.",
+        comment:
+            "Description explaining why the user needs to sign in again when the app has no application password for a site on this device"
+    )
     static let signInButton: String = NSLocalizedString("login.appPasswordReAuth.signInButton", value: "Sign In", comment: "Button to start the re-authentication process")
     static let cancelButton: String = NSLocalizedString("login.appPasswordReAuth.cancelButton", value: "Cancel", comment: "Button to dismiss the re-authentication view")
 }
