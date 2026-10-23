@@ -83,7 +83,8 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         blogLabel.adjustsFontSizeToFitWidth = false
 
         applyFonts()
-        // The block fonts follow the horizontal size class, so they are re-applied when it changes.
+        // The block fonts follow the window's horizontal size class. The cell's own size class changes when
+        // it enters a window, and on the notification detail screen it changes along with the window's.
         registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
             self.applyFonts()
         }
@@ -92,9 +93,10 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
 
     private func applyFonts() {
-        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont(for: traitCollection)
-        nameLabel.font = WPStyleGuide.Notifications.blockBoldFont(for: traitCollection)
-        blogLabel.font = WPStyleGuide.Notifications.blockRegularFont(for: traitCollection)
+        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: self)
+        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont(for: horizontalSizeClass)
+        nameLabel.font = WPStyleGuide.Notifications.blockBoldFont(for: horizontalSizeClass)
+        blogLabel.font = WPStyleGuide.Notifications.blockRegularFont(for: horizontalSizeClass)
     }
 
     // MARK: - IBActions

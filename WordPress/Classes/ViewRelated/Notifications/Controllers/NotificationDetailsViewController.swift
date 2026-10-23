@@ -137,6 +137,12 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupTableView()
         setupTableViewCells()
         setupTableDelegates()
+
+        // The text metrics follow the window's horizontal size class. This screen's own size class changes
+        // along with the window's (it's the detail column of the iPad split view, or full width on iPhone).
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.refreshInterfaceIfNeeded()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -507,8 +513,15 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
+        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: view)
+        cell.attributedHeaderTitle = formatter.render(
+            content: gravatarBlock,
+            with: HeaderContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
+        cell.attributedHeaderDetails = formatter.render(
+            content: snippetBlock,
+            with: HeaderDetailsContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
 
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
@@ -521,7 +534,10 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        cell.attributedText = formatter.render(content: textBlock, with: FooterContentStyles())
+        cell.attributedText = formatter.render(
+            content: textBlock,
+            with: FooterContentStyles(horizontalSizeClass: WPStyleGuide.Notifications.horizontalSizeClass(for: view))
+        )
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
     }
@@ -585,16 +601,24 @@ private extension NotificationDetailsViewController {
 
         // Load the attributedText
         let text: NSAttributedString
+        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: view)
 
         if note.isBadge {
             let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
             text = formatter.render(
                 content: textBlock,
-                with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup)
+                with: BadgeContentStyles(
+                    cachingKey: "Badge-\(indexPath)",
+                    isTitle: isFirstTextGroup,
+                    horizontalSizeClass: horizontalSizeClass
+                )
             )
             cell.isTitle = isFirstTextGroup
         } else {
-            text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+            text = formatter.render(
+                content: textBlock,
+                with: RichTextContentStyles(horizontalSizeClass: horizontalSizeClass, key: "Rich-Text-\(indexPath)")
+            )
         }
 
         // Setup: Properties
