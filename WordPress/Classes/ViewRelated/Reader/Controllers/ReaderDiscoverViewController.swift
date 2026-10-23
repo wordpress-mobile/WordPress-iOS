@@ -16,6 +16,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private let viewContext: NSManagedObjectContext
     private var cancellables: [AnyCancellable] = []
     private let notificationsBarButton = ReaderNotificationsBarButton()
+    private weak var notificationsItem: UIBarButtonItem?
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
@@ -69,13 +70,19 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         )
     }
 
+    /// Replaces only the bell, keeping the items that subclasses add.
     private func setupNotificationsBarButtonItem() {
-        let item = notificationsBarButton.makeItem(
+        var items = navigationItem.rightBarButtonItems ?? []
+        items.removeAll { $0 === notificationsItem }
+        notificationsItem = notificationsBarButton.makeItem(
             for: notificationsBell,
             target: self,
             action: #selector(buttonShowNotificationsTapped)
         )
-        navigationItem.rightBarButtonItems = item.map { [$0] }
+        if let notificationsItem {
+            items.insert(notificationsItem, at: 0)
+        }
+        navigationItem.rightBarButtonItems = items
     }
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {

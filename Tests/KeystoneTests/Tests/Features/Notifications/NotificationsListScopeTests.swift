@@ -30,6 +30,17 @@ struct NotificationsListScopeTests {
         #expect(Set(fetched) == Set(notes.readerRelated + notes.others))
     }
 
+    @Test func onlyTheUnscopedBellShowsNewActivity() async {
+        let fixture = await NotificationActivityServiceTests().started(fetch: .success(true))
+        #expect(fixture.service.hasNewActivity)
+
+        let unscopedBell = NotificationsButtonViewModel(scope: .all, activityService: fixture.service)
+        let readerBell = NotificationsButtonViewModel(scope: .reader, activityService: fixture.service)
+
+        #expect(unscopedBell.hasNewActivity)
+        #expect(!readerBell.hasNewActivity)
+    }
+
     // MARK: - Helpers
 
     private struct Notes {
