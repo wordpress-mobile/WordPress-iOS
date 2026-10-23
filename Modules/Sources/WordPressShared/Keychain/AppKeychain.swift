@@ -124,6 +124,18 @@ public final class AppKeychain: KeychainAccessible {
         }
     }
 
+    /// Deletes this app's private copy only, leaving the shared group's copy for the other app.
+    func deletePrivateCopy(for username: String, serviceName: String) throws {
+        try deleteIgnoringNotFound(username, serviceName: serviceName, accessGroup: privateGroup)
+    }
+
+    public var synchronizable: any KeychainAccessible {
+        SynchronizableAppKeychain(
+            store: SecItemSynchronizableKeychainStore(accessGroup: privateGroup),
+            deviceOnly: self
+        )
+    }
+
     private func deleteIgnoringNotFound(_ username: String, serviceName: String, accessGroup: String) throws {
         do {
             try keychainUtils.deleteItem(

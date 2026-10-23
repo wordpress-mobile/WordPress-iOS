@@ -7,16 +7,18 @@ import Security
 let sfhfKeychainErrorDomain = "SFHFKeychainUtilsErrorDomain"
 
 /// The underlying Keychain `OSStatus` for an error produced by
-/// `SFHFKeychainUtils`, or `nil` when the error is not from that domain.
+/// `SFHFKeychainUtils` or `SynchronizableAppKeychain`, or `nil` when the error
+/// is not from one of their domains.
 ///
 /// `SFHFKeychainUtils` reports real failures as an `NSError` in its own domain,
 /// carrying the raw Keychain `OSStatus` as the code. A not-found read instead
-/// bridges to a generic error in another domain. Centralizing the domain check
+/// bridges to a generic error in another domain. `SynchronizableAppKeychain`
+/// reports failures in `NSOSStatusErrorDomain`. Centralizing the domain check
 /// and the `Int` -> `OSStatus` conversion here lets callers compare directly
 /// against the `errSec*` constants.
 func keychainErrorCode(error: Error) -> OSStatus? {
     let nsError = error as NSError
-    guard nsError.domain == sfhfKeychainErrorDomain else { return nil }
+    guard nsError.domain == sfhfKeychainErrorDomain || nsError.domain == NSOSStatusErrorDomain else { return nil }
     return OSStatus(truncatingIfNeeded: nsError.code)
 }
 

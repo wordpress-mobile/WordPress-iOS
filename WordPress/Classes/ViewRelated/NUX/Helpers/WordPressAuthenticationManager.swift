@@ -157,7 +157,11 @@ extension WordPressAuthenticationManager {
             return
         }
 
-        try? currentBlog.deleteApplicationToken()
+        // Application passwords sync through iCloud Keychain, so deleting one deletes it on every device.
+        // A missing password has nothing to delete, and one that has just arrived through sync may be valid.
+        if reason == .invalid {
+            try? currentBlog.deleteApplicationToken()
+        }
 
         let rootView = ApplicationPasswordReAuthenticationView(blog: currentBlog, presenter: presenter, reason: reason)
         let viewController = UIHostingController(rootView: rootView)

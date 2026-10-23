@@ -28,6 +28,8 @@ import WordPressCore
 ///
 /// The same application password is also added as a separate Keychain item, to keep `Blog.getApplicationToken`
 /// continuing to work as it is. The `createPasswordIfNeeded` function ensures the `Blog.getApplicationToken` returns the valid one.
+///
+/// Both Keychain items sync through iCloud Keychain (see `SynchronizableAppKeychain`), so a new device has them too.
 
 actor ApplicationPasswordRepository {
     static let shared: ApplicationPasswordRepository = .init(
@@ -458,11 +460,11 @@ private actor ApplicationPasswordStorage {
     let keychain: KeychainAccessible
 
     init(keychain: KeychainAccessible) {
-        self.keychain = keychain
+        self.keychain = keychain.synchronizable
     }
 
     func save(_ entry: Entry) throws {
-        var entries = getAll()
+        var entries = try getAllForUpdate()
         if let index = entries.firstIndex(where: { $0.id == entry.id }) {
             entries[index] = entry
         } else {
@@ -475,14 +477,24 @@ private actor ApplicationPasswordStorage {
         guard !passwords.isEmpty else { return }
 
         let uuids = passwords.reduce(into: Set()) { $0.insert($1.uuid) }
-        var entries = getAll()
+        var entries = try getAllForUpdate()
         entries.removeAll { uuids.contains($0.password.uuid) }
         try saveAll(entries)
     }
 
     func getAll() -> [Entry] {
-        guard let value = try? keychain.getPassword(for: username, serviceName: service) else {
-            return []
+        (try? getAllForUpdate()) ?? []
+    }
+
+    /// Throws when the keychain can't be read, so a write never replaces the list with a partial one.
+    /// The list syncs through iCloud Keychain, so that would reach every device.
+    private func getAllForUpdate() throws -> [Entry] {
+        let value: String
+        do {
+            value = try keychain.getPassword(for: username, serviceName: service)
+        } catch {
+            guard isRealKeychainFailure(error) else { return [] }
+            throw error
         }
 
         return (try? JSONDecoder().decode([Entry].self, from: Data(value.utf8))) ?? []
