@@ -64,6 +64,10 @@ final class BlogListSiteViewModel: Identifiable {
         let color: Color
     }
 
+    // TODO: Modernization - `SiteIconViewModel(blog:size:)` resolves the display scale from shared
+    // state. This view model feeds SwiftUI views, which have no `UITraitCollection`; thread the
+    // view's `@Environment(\.displayScale)` into `SiteIconViewModel` instead and call
+    // `init(blog:size:traitCollection:)` or a scale-based equivalent.
     func makeIcon(with size: SiteIconViewModel.Size) -> SiteIconViewModel {
         SiteIconViewModel(blog: blog, size: size)
     }

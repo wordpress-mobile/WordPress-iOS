@@ -567,8 +567,8 @@ private extension BloggingRemindersFlowSettingsViewController {
             button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
-            topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
-            bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            topDivider.makeHairlineConstraint(for: topDivider.heightAnchor),
+            bottomDivider.makeHairlineConstraint(for: bottomDivider.heightAnchor),
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
