@@ -208,6 +208,25 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertTrue(sheet.viewControllers.first is MovedToJetpackViewController)
     }
 
+    func testSplitViewShowNotificationsAgainInStaticScreensWithReaderKeepsOnePoster() throws {
+        // Given
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
+        let presenter = SplitViewRootPresenter()
+        try showExpanded(presenter)
+        presenter.showNotificationsTab(completion: nil)
+        let poster = try XCTUnwrap(presenter.rootViewController.presentedViewController)
+        // UIKit refuses to present while another presentation is in progress, which would hide
+        // a second poster. Wait until the first one is on screen.
+        let appeared = NSPredicate { _, _ in poster.viewIfLoaded?.window != nil && !poster.isBeingPresented }
+        wait(for: [expectation(for: appeared, evaluatedWith: nil)], timeout: 5)
+
+        // When
+        presenter.showNotificationsTab(completion: nil)
+
+        // Then
+        XCTAssertNil(poster.presentedViewController)
+    }
+
     func testSplitViewShowNotificationsInNormalUISelectsNotifications() throws {
         // Given
         JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal

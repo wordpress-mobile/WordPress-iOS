@@ -12,6 +12,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private let splitVC = UISplitViewController(style: .tripleColumn)
     private let tabBarVC: WPTabBarController
     private weak var sitePickerPopoverVC: UIViewController?
+    private weak var notificationsPosterVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
     private var siteContent: SiteSplitViewContent?
@@ -301,6 +302,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func showNotificationsPoster() {
+        // Each account-level entrance would otherwise stack another poster.
+        guard notificationsPosterVC?.presentingViewController == nil else {
+            return
+        }
         let posterVC = MovedToJetpackViewController(source: .notifications)
         let navigationVC = UINavigationController(rootViewController: posterVC)
         posterVC.navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -310,6 +315,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         )
         navigationVC.modalPresentationStyle = .formSheet
+        notificationsPosterVC = navigationVC
         // An entrance such as the iOS Settings link can arrive while a sheet is up.
         splitVC.topmostPresentedViewController.present(navigationVC, animated: true)
     }
