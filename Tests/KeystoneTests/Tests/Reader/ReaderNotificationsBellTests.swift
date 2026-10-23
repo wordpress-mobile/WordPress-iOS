@@ -32,6 +32,15 @@ struct ReaderNotificationsBellTests {
         #expect(item == nil)
     }
 
+    @Test
+    @MainActor
+    func streamItemTagsDifferFromTheDefaultTag() {
+        let defaultTag = UIBarButtonItem().tag
+        for tag in ReaderStreamViewController.NavigationItemTag.allCases {
+            #expect(tag.rawValue != defaultTag)
+        }
+    }
+
     private func bell(
         showsPopoverInRegularWidth: Bool,
         _ sizeClass: UIUserInterfaceSizeClass,

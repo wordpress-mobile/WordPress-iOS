@@ -91,8 +91,10 @@ import AutomatticTracks
 
     private let prefetcher = ImagePrefetcher()
 
-    enum NavigationItemTag: Int {
-        case notifications
+    /// Tags start at 1 because 0 is every bar button's default tag: removing the items tagged 0
+    /// would also remove untagged items that subclasses add.
+    enum NavigationItemTag: Int, CaseIterable {
+        case notifications = 1
         case share
         case savedPostsSettings
     }
