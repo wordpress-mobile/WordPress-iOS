@@ -38,9 +38,13 @@ class NoticePresenter {
         let notice: Notice
         let containerView: NoticeContainerView?
     }
-    /// Used to determine if the keyboard is currently shown and what its height is.
+    /// Used to determine if the keyboard is currently shown and where it is.
     private enum KeyboardPresentation {
-        case present(height: CGFloat)
+        /// - Parameters:
+        ///   - frame: The keyboard's end frame, in the coordinate space of the screen that posted it.
+        ///   - screenCoordinateSpace: That screen's coordinate space, or `nil` if the notification
+        ///     didn't say which screen the keyboard is on.
+        case present(frame: CGRect, screenCoordinateSpace: UICoordinateSpace?)
         case notPresent
     }
 
@@ -113,18 +117,13 @@ class NoticePresenter {
                     return
                 }
 
-                // The keyboard frame is in screen coordinates. Convert it into the notice
-                // window and measure how much of the window it covers; the window may not
-                // fill the screen (split view, Stage Manager).
-                let keyboardFrame = keyboardFrameValue.cgRectValue
-                let keyboardHeight: CGFloat
-                if let window = self.window, let screen = notification.object as? UIScreen {
-                    let frameInWindow = screen.coordinateSpace.convert(keyboardFrame, to: window)
-                    keyboardHeight = max(0, window.bounds.maxY - frameInWindow.minY)
-                } else {
-                    keyboardHeight = keyboardFrame.height
-                }
-                self.currentKeyboardPresentation = .present(height: keyboardHeight)
+                // Keep the frame in screen coordinates: how much of the notice window it covers
+                // is worked out when a notice is laid out (`keyboardHeight`), once the window
+                // exists and has the app window's current size.
+                self.currentKeyboardPresentation = .present(
+                    frame: keyboardFrameValue.cgRectValue,
+                    screenCoordinateSpace: (notification.object as? UIScreen)?.coordinateSpace
+                )
 
                 guard let currentContainer = self.currentNoticePresentation?.containerView else {
                     return
@@ -353,6 +352,15 @@ class NoticePresenter {
             if let scene = UIApplication.shared.mainWindow?.windowScene, window.windowScene !== scene {
                 window.windowScene = scene
             }
+            // The app window may have been resized (split view, Stage Manager) since the last
+            // notice. The overlay has an explicit frame, so it doesn't follow the scene by itself.
+            if let mainWindow = UIApplication.shared.mainWindow {
+                window.frame = mainWindow.offsetToAvoidStatusBar()
+            }
+            // UIKit passes a new size class down to the window's views at their next layout, and the
+            // overlay may not have been laid out since the resize. The notice reads the size class
+            // when it's built, so pass it down now.
+            window.updateTraitsIfNeeded()
             return window
         }
         guard let mainWindow = UIApplication.shared.mainWindow,
@@ -438,22 +446,33 @@ class NoticePresenter {
 
     // MARK: - Animations
 
-    private var onScreenNoticeContainerBottomConstraintConstant: CGFloat {
-        switch self.currentKeyboardPresentation {
-        case .present(let keyboardHeight):
-            return -keyboardHeight
-        case .notPresent:
-            return -(window?.untouchableViewController.offsetOnscreen ?? 0)
+    /// How much of the notice window the keyboard covers, or `nil` if the keyboard is hidden.
+    ///
+    /// The window may not fill the screen (split view, Stage Manager), so the keyboard can cover
+    /// only part of it, or none of it.
+    private var keyboardHeight: CGFloat? {
+        guard case .present(let frame, let screenCoordinateSpace) = currentKeyboardPresentation else {
+            return nil
         }
+        guard let window, let screenCoordinateSpace else {
+            return frame.height
+        }
+        let frameInWindow = screenCoordinateSpace.convert(frame, to: window)
+        return max(0, window.bounds.maxY - frameInWindow.minY)
+    }
+
+    private var onScreenNoticeContainerBottomConstraintConstant: CGFloat {
+        if let keyboardHeight {
+            return -keyboardHeight
+        }
+        return -(window?.untouchableViewController.offsetOnscreen ?? 0)
     }
 
     private func offScreenNoticeContainerBottomOffset(for container: UIView) -> CGFloat {
-        switch self.currentKeyboardPresentation {
-        case .present(let keyboardHeight):
+        if let keyboardHeight {
             return -keyboardHeight + container.bounds.height
-        case .notPresent:
-            return window?.untouchableViewController.offsetOffscreen ?? 0
         }
+        return window?.untouchableViewController.offsetOffscreen ?? 0
     }
 
     private enum Animations {
