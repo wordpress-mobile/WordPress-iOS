@@ -144,6 +144,38 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(parentCoordinator.trackStack, expectedTrackStack)
     }
 
+    func testConfirmFromWaitingForUserVerificationAndAuthenticationRejected() {
+        let view = QRLoginVerifyViewMock()
+        let parentCoordinator = ParentCoorinatorMock()
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
+        let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
+
+        let coordinator = QRLoginVerifyCoordinator(token: testToken,
+                                                   view: view,
+                                                   parentCoordinator: parentCoordinator,
+                                                   connectionChecker: connectionChecker,
+                                                   service: service,
+                                                   coreDataStack: contextManager)
+
+        // Configure the mocks — server responds but rejects authentication
+        coordinator.state = .waitingForUserVerification
+        service.responseExpectation = .authenticationRejected
+
+        // Trigger the action
+        coordinator.confirm()
+
+        // Verify the coordinator is in the error state, not done
+        XCTAssertEqual(coordinator.state, .error)
+
+        // Check the view stack
+        let expectedStack: [QRLoginVerifyViewMock.LoginState] = [.showAuthenticating, .showAuthenticationFailedError]
+        XCTAssertEqual(view.stateStack, expectedStack)
+
+        // Verify tracks are being recorded correctly
+        let expectedTrackStack: [WPAnalyticsEvent] = [.qrLoginVerifyCodeApproved, .qrLoginVerifyCodeFailed]
+        XCTAssertEqual(parentCoordinator.trackStack, expectedTrackStack)
+    }
+
     func testConfirmFromWaitingForUserVerificationAndFails() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
@@ -376,6 +408,7 @@ private class QRLoginVerifyViewMock: QRLoginVerifyView {
 private class QRLoginServiceMock: QRLoginService {
     enum ResponseExpectation {
         case success
+        case authenticationRejected
         case failure
     }
 
@@ -383,7 +416,7 @@ private class QRLoginServiceMock: QRLoginService {
 
     override func validate(token: QRLoginToken, success: @escaping(QRLoginValidationResponse) -> Void, failure: @escaping(Error?, QRLoginError?) -> Void) {
         switch responseExpectation {
-        case .success:
+        case .success, .authenticationRejected:
             let json = "{\"browser\": \"browser\",\"location\": \"location\"}"
             let data = json.data(using: .utf8) ?? Data()
             let jsonDecoder = JSONDecoder()
@@ -403,6 +436,9 @@ private class QRLoginServiceMock: QRLoginService {
         switch responseExpectation {
         case .success:
             success(true)
+
+        case .authenticationRejected:
+            success(false)
 
         case .failure:
             failure(NSError.testInstance())
