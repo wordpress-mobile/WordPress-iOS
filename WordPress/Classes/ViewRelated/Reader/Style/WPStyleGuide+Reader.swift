@@ -7,11 +7,14 @@ import WordPressUI
 extension WPStyleGuide {
     // MARK: - Original Post/Site Attribution Styles.
 
-    @objc public class func originalAttributionParagraphAttributes() -> [NSAttributedString.Key: Any] {
+    /// - Parameter traitCollection: The trait collection of the view that displays the attribution.
+    @objc public class func originalAttributionParagraphAttributes(
+        for traitCollection: UITraitCollection
+    ) -> [NSAttributedString.Key: Any] {
         let font = WPStyleGuide.fontForTextStyle(originalAttributionTextStyle())
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
+        paragraphStyle.lineSpacing = Cards.defaultLineSpacing(for: traitCollection)
 
         return [
             .paragraphStyle: paragraphStyle,
@@ -194,7 +197,9 @@ extension WPStyleGuide {
     // MARK: - Metrics
 
     public struct Cards {
-        public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
+        public static func defaultLineSpacing(for traitCollection: UITraitCollection) -> CGFloat {
+            traitCollection.horizontalSizeClass == .regular ? 6.0 : 3.0
+        }
         public static let contentTextStyle: UIFont.TextStyle = .footnote
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline
         public static let loadMoreButtonTextStyle: UIFont.TextStyle = .subheadline

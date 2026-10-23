@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 /// This class simply exists to coordinate the display of various sections of
 /// the app in response to actions taken by the user from Post notifications.
@@ -31,7 +32,7 @@ class PostNoticeNavigationCoordinator {
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
         let navigationController = UINavigationController(rootViewController: controller)
-        if presenter.traitCollection.userInterfaceIdiom == .pad {
+        if presenter.windowHorizontalSizeClass == .regular {
             navigationController.modalPresentationStyle = .fullScreen
         }
         presenter.present(navigationController, animated: true)
@@ -47,7 +48,7 @@ class PostNoticeNavigationCoordinator {
             presenter.dismiss(animated: true)
         }
         let viewController = UIHostingController(rootView: view)
-        if UIDevice.current.userInterfaceIdiom == .phone {
+        if presenter.windowHorizontalSizeClass == .compact {
             if let sheetController = viewController.sheetPresentationController {
                 sheetController.detents = [.custom { _ in 420 }]
                 sheetController.preferredCornerRadius = 20

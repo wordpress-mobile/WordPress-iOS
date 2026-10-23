@@ -83,9 +83,9 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         accessoryType = .disclosureIndicator
         backgroundColor = Style.blockBackgroundColor
 
-        headerTitleLabel.font = Style.headerTitleBoldFont
+        // No label fonts here: the attributed header title and details carry their own fonts, which
+        // depend on the window the cell is displayed in.
         headerTitleLabel.textColor = Style.headerTitleColor
-        headerDetailsLabel.font = Style.headerDetailsRegularFont
         headerDetailsLabel.textColor = Style.headerDetailsColor
         authorAvatarImageView.image = .gravatarPlaceholderImage
     }

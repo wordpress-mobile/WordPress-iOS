@@ -6,6 +6,7 @@ import WordPressData
 import WordPressShared
 import WordPressAPI
 import WordPressCore
+import WordPressUI
 
 // MARK: - BlogDetailsViewController (Misc)
 
@@ -37,7 +38,7 @@ extension BlogDetailsViewController {
     }
 
     public func shouldShowJetpackInstallCard() -> Bool {
-        !WPDeviceIdentification.isiPad() && JetpackInstallPluginHelper.shouldShowCard(for: blog)
+        traitCollection.userInterfaceIdiom != .pad && JetpackInstallPluginHelper.shouldShowCard(for: blog)
     }
 
     public func shouldShowBlaze() -> Bool {
@@ -374,7 +375,8 @@ extension BlogDetailsViewController {
         )
 
         let navigationController = UINavigationController(rootViewController: webViewController)
-        if traitCollection.userInterfaceIdiom == .pad {
+        // Ask the window: on a full-screen iPad the site menu is a compact split view column.
+        if windowHorizontalSizeClass == .regular {
             navigationController.modalPresentationStyle = .fullScreen
         }
         present(navigationController, animated: true, completion: nil)
