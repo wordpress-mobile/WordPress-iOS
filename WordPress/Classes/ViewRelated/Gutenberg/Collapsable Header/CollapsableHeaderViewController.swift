@@ -110,7 +110,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var footerHeight: CGFloat {
         let verticalMargins: CGFloat = 16
         let buttonHeight: CGFloat = 44
-        let safeArea = (view.window?.safeAreaInsets.bottom ?? 0)
+        let safeArea = view.safeAreaInsets.bottom
 
         var height = verticalMargins + buttonHeight + verticalMargins + safeArea
 
@@ -267,6 +267,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillDisappear(_ animated: Bool) {
         stopObservingKeyboardChanges()
         super.viewWillDisappear(animated)
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        // `footerHeight` includes the bottom safe area inset, so the footer and the
+        // scrollable view's bottom inset go stale when the inset changes.
+        updateFooterInsets()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

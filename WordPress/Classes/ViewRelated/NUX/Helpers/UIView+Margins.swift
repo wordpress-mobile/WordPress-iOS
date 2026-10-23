@@ -8,7 +8,7 @@ extension UIView {
                   return compactMargin
               }
 
-        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isLandscape = bounds.width > bounds.height
         let multiplier: CGFloat = isLandscape ? .ipadLandscape : .ipadPortrait
 
         return frame.width * multiplier

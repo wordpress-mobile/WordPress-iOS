@@ -9,13 +9,13 @@ extension RegisterDomainDetailsViewController {
     func configureTableFooterView(width: CGFloat = 0) {
         let width = width > 0 ? width : view.frame.size.width
 
-        let safeAreaInset: CGFloat = tableView.safeAreaInsets.bottom
-
+        // The table view adjusts its own content inset for the bottom safe area, so the
+        // footer only needs the button container's height.
         //Creating a UIView with a custom frame because table tableFooterView doesn't support autolayout
         let footer = UIView(frame: CGRect(x: 0,
                                           y: 0,
                                           width: width,
-                                          height: Constants.buttonContainerHeight + safeAreaInset))
+                                          height: Constants.buttonContainerHeight))
         footerView.frame = footer.frame
         footer.addSubview(footerView)
 

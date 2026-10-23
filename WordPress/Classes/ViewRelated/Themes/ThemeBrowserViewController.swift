@@ -401,6 +401,11 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
         unregisterForKeyboardNotifications()
     }
 
+    // TODO: Replace these observers with `view.keyboardLayoutGuide`: constrain the
+    // collection view's bottom to `keyboardLayoutGuide.topAnchor` instead of
+    // converting the keyboard frame into a content inset. Not done here because
+    // the collection view is laid out from a storyboard and the swap needs its
+    // bottom constraint re-anchored there.
     fileprivate func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(
             self,
