@@ -20,6 +20,12 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
 
         secondary = UINavigationController()
         siteMenuVC.delegate = self
+
+        // Same as opening a site on iPhone (see `MySiteViewController`). The split view only creates
+        // `MySiteViewController` for sites that show a dashboard, so self-hosted sites would miss it.
+        Task { [blogID = TaggedManagedObjectID(blog)] in
+            await WordPressAuthenticationManager.createApplicationPasswordOrSignIn(for: blogID)
+        }
     }
 
     func displayed(in splitVC: UISplitViewController) {

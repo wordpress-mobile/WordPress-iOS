@@ -201,6 +201,33 @@ public extension Blog {
         }
         return site.applicationPasswordCredentials != nil
     }
+
+    /// Whether this is a self-hosted site with no saved password on this device.
+    ///
+    /// This happens after a backup is restored to a new device: the site list comes back, but the
+    /// keychain may not (an iCloud backup only restores the keychain to the device it was made on).
+    /// With no password, the app never sends a request, so the site never rejects one. Callers use
+    /// this to ask the user to sign in again instead.
+    ///
+    /// Returns `false` when the keychain can't be read, for example while the device is locked, so a
+    /// temporary failure never asks the user to sign in.
+    func isMissingSelfHostedCredentials(using keychainImplementation: KeychainAccessible? = nil) -> Bool {
+        guard account == nil, username?.isEmpty == false, url != nil else {
+            return false
+        }
+
+        func isMissing(_ read: () throws -> String) -> Bool {
+            do {
+                _ = try read()
+                return false
+            } catch {
+                return !isRealKeychainFailure(error)
+            }
+        }
+
+        return isMissing { try getApplicationToken(using: keychainImplementation) }
+            && isMissing { try getPassword(using: keychainImplementation) }
+    }
 }
 
 public extension WpApiApplicationPasswordDetails {

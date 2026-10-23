@@ -523,8 +523,10 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         return restApi;
     }
 
-    if (blog.xmlrpcApi) {
-        return [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
+    // The password can be missing from the keychain, e.g. after a backup is restored to a new device.
+    NSString *password = blog.password;
+    if (blog.xmlrpcApi && blog.username && password) {
+        return [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:password];
     }
 
     return nil;
