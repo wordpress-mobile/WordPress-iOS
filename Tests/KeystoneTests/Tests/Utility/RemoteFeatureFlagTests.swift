@@ -10,7 +10,8 @@ class RemoteFeatureFlagTests: XCTestCase {
     }
 
     func testThatDeviceIdIsTheSameForEveryInstanceOfTheStore() {
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        // Disable the refresh rate limit: this test expects both updates to fetch.
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults, minimumRefreshInterval: 0)
         let mock = MockFeatureFlagRemote()
         var deviceId = ""
 
@@ -62,12 +63,77 @@ class RemoteFeatureFlagTests: XCTestCase {
         XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature.remoteKey)!)
         XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature.remoteKey)!)
     }
+
+    // MARK: - Rate Limiting
+
+    func testThatSecondUpdateWithinMinimumRefreshIntervalIsSkipped() {
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let mock = MockFeatureFlagRemote()
+
+        let exp = expectation(description: "Both callbacks fire")
+        exp.expectedFulfillmentCount = 2
+
+        store.update(using: mock) { exp.fulfill() }
+        store.update(using: mock) { exp.fulfill() }
+
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(mock.fetchCount, 1)
+    }
+
+    func testThatForcedUpdateBypassesMinimumRefreshInterval() {
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let mock = MockFeatureFlagRemote()
+
+        let exp = expectation(description: "Both callbacks fire")
+        exp.expectedFulfillmentCount = 2
+
+        store.update(using: mock) { exp.fulfill() }
+        store.update(using: mock, force: true) { exp.fulfill() }
+
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(mock.fetchCount, 2)
+    }
+
+    func testThatUpdateWithRecentFetchIsSkipped() {
+        mockUserDefaults.set(Date(), forKey: RemoteFeatureFlagStore.Constants.LastFetchedDateKey)
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let mock = MockFeatureFlagRemote()
+
+        store.update(using: mock, waitOn: self)
+
+        XCTAssertEqual(mock.fetchCount, 0)
+    }
+
+    func testThatUpdateAfterMinimumRefreshIntervalFetchesAgain() {
+        mockUserDefaults.set(Date().addingTimeInterval(-600), forKey: RemoteFeatureFlagStore.Constants.LastFetchedDateKey)
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let mock = MockFeatureFlagRemote()
+
+        store.update(using: mock, waitOn: self)
+
+        XCTAssertEqual(mock.fetchCount, 1)
+    }
+
+    func testThatFailedUpdateDoesNotSuppressRetry() {
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let mock = MockFeatureFlagRemote()
+        mock.error = NSError(domain: "test", code: 0)
+
+        store.update(using: mock, waitOn: self)
+        // The failure must not stamp the last-fetched date, so the next
+        // update retries instead of being rate limited.
+        store.update(using: mock, waitOn: self)
+
+        XCTAssertEqual(mock.fetchCount, 2)
+    }
 }
 
 class MockFeatureFlagRemote: FeatureFlagRemote {
 
     var flags: FeatureFlagList
     var deviceIdCallback: ((String) -> Void)?
+    var fetchCount = 0
+    var error: Error?
 
     init(mockFlags: [MockFeatureFlag] = []) {
         self.flags = mockFlags
@@ -81,7 +147,12 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
     }
 
     public override func getRemoteFeatureFlags(forDeviceId deviceId: String, callback: @escaping FeatureFlagResponseCallback) {
+        fetchCount += 1
         deviceIdCallback?(deviceId)
-        callback(.success(flags))
+        if let error {
+            callback(.failure(error))
+        } else {
+            callback(.success(flags))
+        }
     }
 }

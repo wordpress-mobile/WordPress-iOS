@@ -7,6 +7,11 @@ class RemoteFeatureFlagStore {
     /// Thread Safety Coordinator
     private var lock = NSLock()
     private var persistenceStore: UserPersistentRepository
+
+    /// Minimum time between remote fetches. Calls to `update` within this
+    /// interval serve the cache instead of hitting the network, unless
+    /// forced (e.g. on account change).
+    private let minimumRefreshInterval: TimeInterval
     private lazy var operationQueue: OperationQueue = {
         var queue = OperationQueue()
         queue.name = "Feature Flags Refresh Queue"
@@ -33,22 +38,33 @@ class RemoteFeatureFlagStore {
         persistenceStore.string(forKey: Constants.DeviceIdKey) == nil
     }
 
-    init(persistenceStore: UserPersistentRepository = UserDefaults.standard) {
+    init(persistenceStore: UserPersistentRepository = UserDefaults.standard,
+         minimumRefreshInterval: TimeInterval = Constants.defaultMinimumRefreshInterval) {
         self.persistenceStore = persistenceStore
+        self.minimumRefreshInterval = minimumRefreshInterval
     }
 
     /// Fetches remote feature flags from the server.
     /// - Parameter remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
     /// to authenticate with the Remote Feature Flags endpoint – this allows customizing flags server-side on a per-user basis.
+    /// - Parameter force: When `true`, bypasses the minimum refresh interval. Use it when the authenticated user changes, since flags are customized per-user server-side.
     /// - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func update(using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
+                               force: Bool = false,
                                then callback: FetchCallback? = nil) {
+        guard force || shouldFetch else {
+            DDLogInfo("🚩 Skipping feature flags update – fetched recently, serving cached flags")
+            callback?()
+            return
+        }
+
         let refreshOperation = FetchRemoteFeatureFlagsOperation(remote: remote,
                                                                 deviceID: deviceID,
                                                                 completion: { [weak self] result in
             switch result {
             case .success(let flags):
                 self?.cache = flags
+                self?.lastFetchedDate = Date()
                 callback?()
             case .failure:
                 callback?()
@@ -56,6 +72,16 @@ class RemoteFeatureFlagStore {
         })
         operationQueue.cancelAllOperations()
         operationQueue.addOperation(refreshOperation)
+    }
+
+    /// Whether a remote fetch should happen now, given the last fetch time.
+    private var shouldFetch: Bool {
+        lock.withLock {
+            guard let lastFetchedDate = persistenceStore.object(forKey: Constants.LastFetchedDateKey) as? Date else {
+                return true
+            }
+            return Date().timeIntervalSince(lastFetchedDate) >= minimumRefreshInterval
+        }
     }
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
@@ -73,9 +99,25 @@ extension RemoteFeatureFlagStore {
     struct Constants {
         static let DeviceIdKey = "FeatureFlagDeviceId"
         static let CachedFlagsKey = "FeatureFlagStoreCache"
+        static let LastFetchedDateKey = "FeatureFlagStoreLastFetchedDate"
+        static let defaultMinimumRefreshInterval: TimeInterval = 5 * 60
     }
 
     typealias FetchCallback = () -> Void
+
+    /// The last time the flags were successfully fetched from the server.
+    private var lastFetchedDate: Date? {
+        get {
+            lock.withLock {
+                persistenceStore.object(forKey: Constants.LastFetchedDateKey) as? Date
+            }
+        }
+        set {
+            lock.withLock {
+                persistenceStore.set(newValue, forKey: Constants.LastFetchedDateKey)
+            }
+        }
+    }
 
     /// The local cache stores feature flags between runs so that the most recently fetched set are ready to go as soon as this object is instantiated.
     private var cache: [String: Bool] {
