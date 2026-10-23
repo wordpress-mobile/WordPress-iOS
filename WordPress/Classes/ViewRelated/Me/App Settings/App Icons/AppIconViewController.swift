@@ -35,6 +35,11 @@ open class AppIconViewController: UITableViewController {
         if isModal() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
         }
+
+        // The icon border width is one pixel of the current display, so rebuild the cells when the scale changes.
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: AppIconViewController, _) in
+            self.tableView.reloadData()
+        }
     }
 
     @objc
@@ -68,7 +73,7 @@ open class AppIconViewController: UITableViewController {
             imageView.layer.cornerRadius = Constants.cornerRadius
             imageView.layer.masksToBounds = true
             imageView.layer.borderColor = Constants.iconBorderColor?.cgColor
-            imageView.layer.borderWidth = icon.isBordered ? .hairlineBorderWidth : 0
+            imageView.layer.borderWidth = icon.isBordered ? .hairlineBorderWidth(traitCollection: traitCollection) : 0
             imageView.layer.cornerCurve = .continuous
         }
 

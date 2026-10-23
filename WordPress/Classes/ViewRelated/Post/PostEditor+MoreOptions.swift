@@ -101,7 +101,7 @@ extension PostEditor {
             }
             previewController.trackOpenEvent()
             let navWrapper = UINavigationController(rootViewController: previewController)
-            if self.navigationController?.traitCollection.userInterfaceIdiom == .pad {
+            if self.navigationController?.traitCollection.horizontalSizeClass == .regular {
                 navWrapper.modalPresentationStyle = .fullScreen
             }
             self.navigationController?.present(navWrapper, animated: true)

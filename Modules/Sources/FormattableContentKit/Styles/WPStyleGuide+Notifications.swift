@@ -253,12 +253,57 @@ extension WPStyleGuide {
         //
 
         public static let followButtonImagePadding = CGFloat(4)
+
+        // TODO: Modernization - these metrics are "bigger on iPad" layout values keyed on the device idiom
+        // rather than on the space the notification is rendered in. The trait-aware functions below are the
+        // replacement, but the paragraph styles and fonts derived from these constants feed the
+        // `FormattableContentStyles` implementations (`SubjectContentStyles`, `RichTextContentStyles`, ...),
+        // whose `attributes`/`rangeStylesMap` are properties with no trait collection, and the resulting
+        // attributed strings are cached on the `Notification` model. Switch these constants over once that
+        // protocol can be handed the trait collection of the view that renders the content.
         public static let subjectNoticonSize = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
         public static let subjectLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize = subjectLineSize
         public static let blockFontSize = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let blockLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
         public static let contentBlockLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
+
+        // MARK: - Trait-aware Constants
+        //
+        // The same metrics, driven by the horizontal size class of the view that displays the content
+        // instead of the device idiom. Prefer these wherever a trait collection is reachable.
+
+        public static func subjectNoticonSize(for traitCollection: UITraitCollection) -> CGFloat {
+            traitCollection.horizontalSizeClass == .regular ? CGFloat(15) : CGFloat(14)
+        }
+
+        public static func subjectLineSize(for traitCollection: UITraitCollection) -> CGFloat {
+            traitCollection.horizontalSizeClass == .regular ? CGFloat(24) : CGFloat(18)
+        }
+
+        public static func snippetLineSize(for traitCollection: UITraitCollection) -> CGFloat {
+            subjectLineSize(for: traitCollection)
+        }
+
+        public static func blockFontSize(for traitCollection: UITraitCollection) -> CGFloat {
+            traitCollection.horizontalSizeClass == .regular ? CGFloat(16) : CGFloat(14)
+        }
+
+        public static func blockLineSize(for traitCollection: UITraitCollection) -> CGFloat {
+            traitCollection.horizontalSizeClass == .regular ? CGFloat(24) : CGFloat(20)
+        }
+
+        public static func contentBlockLineSize(for traitCollection: UITraitCollection) -> CGFloat {
+            traitCollection.horizontalSizeClass == .regular ? CGFloat(24) : CGFloat(21)
+        }
+
+        public static func blockRegularFont(for traitCollection: UITraitCollection) -> UIFont {
+            WPFontManager.systemRegularFont(ofSize: blockFontSize(for: traitCollection))
+        }
+
+        public static func blockBoldFont(for traitCollection: UITraitCollection) -> UIFont {
+            WPFontManager.systemSemiBoldFont(ofSize: blockFontSize(for: traitCollection))
+        }
 
         // MARK: - Private Propreties
         //

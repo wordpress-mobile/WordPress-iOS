@@ -78,11 +78,17 @@ private extension ReferrerDetailsCell {
         separatorView.backgroundColor = Style.separatorColor
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(separatorView)
+        let separatorHeightConstraint = separatorView.heightAnchor.constraint(
+            equalToConstant: Style.separatorHeight(traitCollection: traitCollection)
+        )
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: Style.separatorHeight)
+            separatorHeightConstraint
         ])
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: ReferrerDetailsCell, _) in
+            separatorHeightConstraint.constant = Style.separatorHeight(traitCollection: self.traitCollection)
+        }
     }
 }

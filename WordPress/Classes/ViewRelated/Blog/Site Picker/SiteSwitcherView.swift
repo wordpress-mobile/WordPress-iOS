@@ -107,6 +107,7 @@ private struct SiteSwitcherToolbarView: View {
 
     /// - warning: It has to be defined in a view "below" the .searchable
     @Environment(\.isSearching) var isSearching
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
         if !isSearching {
@@ -124,7 +125,7 @@ private struct SiteSwitcherToolbarView: View {
         if #available(iOS 26, *) {
             return 20
         }
-        return UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0
+        return horizontalSizeClass == .regular ? 20 : 0
     }
 
     @ViewBuilder

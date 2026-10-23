@@ -33,6 +33,10 @@ struct NotificationSettingsSiteViewModel {
     init(blog: Blog) {
         self.title = blog.title ?? "–"
         self.details = blog.displayURL ?? ""
+        // TODO: Modernization - `SiteIconViewModel(blog:)` resolves the display scale from shared
+        // state. This view model feeds a SwiftUI view, which has no `UITraitCollection`; thread the
+        // view's `@Environment(\.displayScale)` into `SiteIconViewModel` instead and call
+        // `init(blog:size:traitCollection:)` or a scale-based equivalent.
         self.icon = SiteIconViewModel(blog: blog)
     }
 

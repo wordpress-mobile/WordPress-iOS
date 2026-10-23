@@ -23,6 +23,9 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
+    /// Bottom margin depends on the horizontal size class; kept so the constant can be updated on trait changes.
+    private var stackViewBottomConstraint: NSLayoutConstraint?
+
     private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Images.calendarImageName))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -293,6 +296,10 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
             self.imageView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.updateSizeClassDependentLayout()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -538,8 +545,15 @@ private extension BloggingRemindersFlowSettingsViewController {
         stackView.setCustomSpacing(Metrics.afterPromptLabelSpacing, after: promptLabel)
         stackView.setCustomSpacing(Metrics.afterTimeSelectionViewSpacing, after: timeSelectionView)
         stackView.setCustomSpacing(.zero, after: bloggingPromptsView)
-        stackView.setCustomSpacing(WPDeviceIdentification.isiPad() ? Metrics.stackSpacing : .zero,
+    }
+
+    /// Applies the spacing and bottom margin that depend on the horizontal size class.
+    /// Called once the constraints exist and again whenever the size class changes.
+    func updateSizeClassDependentLayout() {
+        let isRegularWidth = traitCollection.horizontalSizeClass == .regular
+        stackView.setCustomSpacing(isRegularWidth ? Metrics.stackSpacing : .zero,
                                    after: bloggingPromptsToConfirmationButtonSpacer)
+        stackViewBottomConstraint?.constant = isRegularWidth ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom
     }
 
     func configureConstraints() {
@@ -555,25 +569,28 @@ private extension BloggingRemindersFlowSettingsViewController {
         bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
         bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
 
+        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        self.stackViewBottomConstraint = stackViewBottomConstraint
+
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor,
-                                              constant: WPDeviceIdentification.isiPad() ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom),
+            stackViewBottomConstraint,
 
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
             button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
-            topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
-            bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            topDivider.makeHairlineConstraint(for: topDivider.heightAnchor),
+            bottomDivider.makeHairlineConstraint(for: bottomDivider.heightAnchor),
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
         ])
 
+        updateSizeClassDependentLayout()
         configureBloggingPromptsConstraints()
     }
 

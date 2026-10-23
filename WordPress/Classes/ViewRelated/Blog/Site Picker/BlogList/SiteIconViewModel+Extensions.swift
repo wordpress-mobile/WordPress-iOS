@@ -7,13 +7,28 @@ import AsyncImageKit
 import WordPressUI
 
 extension SiteIconViewModel {
+    @available(
+        *,
+        deprecated,
+        message: "use init(blog:size:traitCollection:) and pass the trait collection of the view that displays the icon"
+    )
     init(blog: Blog, size: Size = .regular) {
+        self.init(blog: blog, size: size, traitCollection: .current)
+    }
+
+    /// - parameter traitCollection: The trait collection of the view that displays the icon.
+    init(blog: Blog, size: Size = .regular, traitCollection: UITraitCollection) {
         self.init(size: size)
 
         self.firstLetter = blog.title?.first
 
         if let icon = blog.iconURL {
-            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size, isP2: blog.isAutomatticP2)
+            self.imageURL = SiteIconViewModel.optimizedURL(
+                for: icon,
+                imageSize: size.size,
+                isP2: blog.isAutomatticP2,
+                traitCollection: traitCollection
+            )
             self.host = MediaHost(blog)
         }
     }
@@ -34,10 +49,27 @@ extension SiteIconViewModel {
 
 extension SiteIconViewModel {
     /// Returns the size-optimized URL for a given URL.
+    @available(
+        *,
+        deprecated,
+        message:
+            "use optimizedURL(for:imageSize:isP2:traitCollection:) and pass the trait collection of the view that displays the icon"
+    )
     static func optimizedURL(
         for url: URL,
         imageSize: CGSize = SiteIconViewModel.Size.regular.size,
         isP2: Bool = false
+    ) -> URL? {
+        optimizedURL(for: url, imageSize: imageSize, isP2: isP2, traitCollection: .current)
+    }
+
+    /// Returns the size-optimized URL for a given URL.
+    /// - parameter traitCollection: The trait collection of the view that displays the icon.
+    static func optimizedURL(
+        for url: URL,
+        imageSize: CGSize = SiteIconViewModel.Size.regular.size,
+        isP2: Bool = false,
+        traitCollection: UITraitCollection
     ) -> URL? {
         if url.isWordPressComHost || isP2 {
             return optimizedDotcomURL(from: url, imageSize: imageSize)
@@ -45,7 +77,7 @@ extension SiteIconViewModel {
         if isBlavatarURL(url) {
             return optimizedBlavatarURL(from: url, imageSize: imageSize)
         }
-        return optimizedPhotonURL(from: url, imageSize: imageSize)
+        return optimizedPhotonURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
     }
 
     private static func optimizedDotcomURL(from url: URL, imageSize: CGSize) -> URL? {
@@ -60,8 +92,12 @@ extension SiteIconViewModel {
         return parseURL(url: url, query: query)
     }
 
-    private static func optimizedPhotonURL(from url: URL, imageSize: CGSize) -> URL? {
-        PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
+    private static func optimizedPhotonURL(
+        from url: URL,
+        imageSize: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url, traitCollection: traitCollection)
     }
 
     /// Indicates if the received URL is a Gravatar blavatar. Matches the host exactly or as

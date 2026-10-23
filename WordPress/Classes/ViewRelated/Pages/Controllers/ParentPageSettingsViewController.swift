@@ -110,6 +110,11 @@ class ParentPageSettingsViewController: UIViewController {
         tableView.delegate = self
     }
 
+    // TODO: Replace these observers with `view.keyboardLayoutGuide`: constrain the
+    // table view's bottom to `keyboardLayoutGuide.topAnchor` instead of converting
+    // the keyboard frame into a content inset. Not done here because the table view
+    // is laid out from a storyboard and the swap needs its bottom constraint
+    // re-anchored there.
     private func startListeningToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),

@@ -36,7 +36,10 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         contents.isUserInteractionEnabled = false
 
         personalizeButton.accessibilityLabel = Strings.buttonTitle
-        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill), for: .normal)
+        personalizeButton.setBackgroundImage(
+            .renderBackgroundImage(fill: .tertiarySystemFill, traitCollection: traitCollection),
+            for: .normal
+        )
         personalizeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
         let container = UIView()
@@ -55,7 +58,14 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill, cornerRadius: DesignConstants.radius(.large)), for: .normal)
+        personalizeButton.setBackgroundImage(
+            .renderBackgroundImage(
+                fill: .tertiarySystemFill,
+                cornerRadius: DesignConstants.radius(.large),
+                traitCollection: traitCollection
+            ),
+            for: .normal
+        )
     }
 
     // MARK: - BlogDashboardCardConfigurable

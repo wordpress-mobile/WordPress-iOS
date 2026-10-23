@@ -14,12 +14,22 @@ public struct SiteDesignRequest {
 
     public let parameters: [String: AnyObject]
 
+    @available(*, deprecated, message: "use init(withThumbnailSize:scale:withGroups:) and pass the native scale of the window scene's screen that will display the thumbnails")
     public init(withThumbnailSize thumbnailSize: CGSize, withGroups groups: [TemplateGroup] = []) {
+        self.init(withThumbnailSize: thumbnailSize, scale: Self.screenScale, withGroups: groups)
+    }
+
+    /// - Parameters:
+    ///   - thumbnailSize: The size of the thumbnails, in points.
+    ///   - scale: The native scale of the screen that will display the thumbnails,
+    ///     for example `view.window?.windowScene?.screen.nativeScale`.
+    ///   - groups: The template groups to request.
+    public init(withThumbnailSize thumbnailSize: CGSize, scale: CGFloat, withGroups groups: [TemplateGroup] = []) {
         var parameters: [String: AnyObject]
         parameters = [
             "preview_width": "\(thumbnailSize.width)" as AnyObject,
             "preview_height": "\(thumbnailSize.height)" as AnyObject,
-            "scale": Self.screenScale as AnyObject
+            "scale": scale as AnyObject
         ]
         if !groups.isEmpty {
             let groups = groups.map { $0.rawValue }
@@ -28,6 +38,10 @@ public struct SiteDesignRequest {
         self.parameters = parameters
     }
 
+    // TODO: Modernization - `UIScreen.main.nativeScale` assumes a single display and has no trait-collection
+    // equivalent. This bridge only backs the deprecated initializer; remove it once every caller passes the
+    // scale of its window scene's screen (`view.window?.windowScene?.screen.nativeScale`) to
+    // `init(withThumbnailSize:scale:withGroups:)`.
     private static var screenScale: CGFloat {
         #if canImport(UIKit)
         return UIScreen.main.nativeScale

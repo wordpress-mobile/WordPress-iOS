@@ -68,7 +68,7 @@ extension MySiteViewController {
         let view = VoiceToContentView(viewModel: viewModel)
         let host = UIHostingController(rootView: view)
 
-        if UIDevice.isPad() {
+        if traitCollection.horizontalSizeClass == .regular {
             host.modalPresentationStyle = .formSheet
             host.preferredContentSize = CGSize(width: 380, height: 480)
         } else {

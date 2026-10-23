@@ -1236,7 +1236,7 @@ private extension AztecPostViewController {
             comment: "Title displayed via UIAlertController when a user inserts a document into a post."
         )
 
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an alert.")
@@ -1703,9 +1703,11 @@ extension AztecPostViewController {
         let optionsTableViewController = OptionsTableViewController(options: listOptions)
 
         optionsTableViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
-        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor(
+            for: traitCollection
+        )
         optionsTableViewController.cellSelectedBackgroundColor =
-            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
+            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsTableViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
 
         optionsTablePresenter.present(
@@ -1823,7 +1825,7 @@ extension AztecPostViewController {
         navigationController.popoverPresentationController?.permittedArrowDirections = [.any]
         navigationController.popoverPresentationController?.sourceView = richTextView
         navigationController.popoverPresentationController?.backgroundColor =
-            WPStyleGuide.aztecFormatPickerBackgroundColor
+            WPStyleGuide.aztecFormatPickerBackgroundColor(for: traitCollection)
         if richTextView.selectedRange.length > 0, let textRange = richTextView.selectedTextRange,
             let selectionRect = richTextView.selectionRects(for: textRange).first
         {
@@ -1983,9 +1985,11 @@ extension AztecPostViewController {
         let optionsTableViewController = OptionsTableViewController(options: headerOptions)
 
         optionsTableViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
-        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor(
+            for: traitCollection
+        )
         optionsTableViewController.cellSelectedBackgroundColor =
-            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
+            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsTableViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
 
         optionsTablePresenter.present(
@@ -2309,11 +2313,11 @@ extension AztecPostViewController {
     private var mediaKeyboardHeight: CGFloat {
         var keyboardHeight: CGFloat
 
-        // Let's assume a sensible default for the keyboard height based on orientation
+        // Let's assume a sensible default for the keyboard height based on whether the view is taller than wide
         let keyboardFrameRatioDefault =
-            view.window?.windowScene?.interfaceOrientation.isPortrait ?? true
+            view.bounds.height > view.bounds.width
             ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
-        let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
+        let keyboardHeightDefault = (keyboardFrameRatioDefault * view.bounds.height)
 
         // we need to make an assumption the hardware keyboard is attached based on
         // the height of the current keyboard frame being less than our sensible default. If it is
@@ -3120,7 +3124,14 @@ extension AztecPostViewController {
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { _ in failure() })
+        let receipt = mediaUtility.downloadImage(
+            from: url,
+            post: post,
+            bounds: view.bounds,
+            traitCollection: traitCollection,
+            success: success,
+            onFailure: { _ in failure() }
+        )
         activeMediaRequests.append(receipt)
     }
 
@@ -3135,7 +3146,7 @@ extension AztecPostViewController {
         // iPads only...not the 12.9"
         // See http://www.openradar.me/radar?id=4972612522344448 for more details.
         //
-        if UIDevice.isPad() {
+        if traitCollection.userInterfaceIdiom == .pad {
             closeMediaPickerInputViewController()
         }
     }

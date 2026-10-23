@@ -71,6 +71,10 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
         applyStyles()
         setTextForLabels()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: ThemeBrowserHeaderView, _) in
+            self.applyStyles()
+        }
     }
 
     fileprivate func applyStyles() {
@@ -83,7 +87,7 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
         currentThemeBar.backgroundColor = .systemBackground
         currentThemeContainer.backgroundColor = .systemBackground
-        currentThemeDivider.backgroundColor = UIDevice.current.userInterfaceIdiom == .pad ? .clear : .separator
+        currentThemeDivider.backgroundColor = traitCollection.horizontalSizeClass == .regular ? .clear : .separator
 
         currentThemeLabel.font = .preferredFont(forTextStyle: .footnote)
         currentThemeLabel.textColor = .secondaryLabel

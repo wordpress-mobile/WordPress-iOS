@@ -18,7 +18,22 @@ class PageLayoutService {
     }
 
     typealias CompletionHandler = (Swift.Result<Void, Error>) -> Void
+
+    @available(*, deprecated, message: "use fetchLayouts(forBlog:withThumbnailSize:scale:completion:) and pass the native scale of the window scene's screen that will display the thumbnails")
     static func fetchLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler? = nil) {
+        // TODO: Modernization - `UIScreen.main.nativeScale` assumes a single display and has no trait-collection
+        // equivalent. Remove this wrapper once every caller passes `view.window?.windowScene?.screen.nativeScale`
+        // to `fetchLayouts(forBlog:withThumbnailSize:scale:completion:)`.
+        fetchLayouts(forBlog: blog, withThumbnailSize: thumbnailSize, scale: UIScreen.main.nativeScale, completion: completion)
+    }
+
+    /// - Parameters:
+    ///   - blog: The blog to fetch layouts for.
+    ///   - thumbnailSize: The size of the layout thumbnails, in points.
+    ///   - scale: The native scale of the screen that will display the thumbnails,
+    ///     for example `view.window?.windowScene?.screen.nativeScale`.
+    ///   - completion: Called when the layouts have been fetched and persisted.
+    static func fetchLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, scale: CGFloat, completion: CompletionHandler? = nil) {
         let blogPersistentID = blog.objectID
         let api: WordPressComRestApi
         let dotComID: Int?
@@ -32,11 +47,11 @@ class PageLayoutService {
             dotComID = nil
         }
 
-        fetchLayouts(api, dotComID, blogPersistentID, thumbnailSize, completion)
+        fetchLayouts(api, dotComID, blogPersistentID, thumbnailSize, scale, completion)
     }
 
-    private static func fetchLayouts(_ api: WordPressComRestApi, _ dotComID: Int?, _ blogPersistentID: NSManagedObjectID, _ thumbnailSize: CGSize, _ completion: CompletionHandler?) {
-        let params = parameters(thumbnailSize)
+    private static func fetchLayouts(_ api: WordPressComRestApi, _ dotComID: Int?, _ blogPersistentID: NSManagedObjectID, _ thumbnailSize: CGSize, _ scale: CGFloat, _ completion: CompletionHandler?) {
+        let params = parameters(thumbnailSize, scale: scale)
 
         PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { result in
             switch result {
@@ -56,7 +71,7 @@ class PageLayoutService {
     }
 
     // Parameter Generation
-    private static func parameters(_ thumbnailSize: CGSize) -> [String: AnyObject] {
+    private static func parameters(_ thumbnailSize: CGSize, scale: CGFloat) -> [String: AnyObject] {
         return [
             Parameters.supportedBlocks: supportedBlocks as AnyObject,
             Parameters.previewWidth: "\(thumbnailSize.width)" as AnyObject,
@@ -71,8 +86,6 @@ class PageLayoutService {
         let isDevMode = BuildConfiguration.current.isInternal
         return Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
     }()
-
-    private static let scale = UIScreen.main.nativeScale
 
     private static let type = "mobile"
 

@@ -31,7 +31,7 @@ class PostNoticeNavigationCoordinator {
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
         let navigationController = UINavigationController(rootViewController: controller)
-        if presenter.traitCollection.userInterfaceIdiom == .pad {
+        if presenter.traitCollection.horizontalSizeClass == .regular {
             navigationController.modalPresentationStyle = .fullScreen
         }
         presenter.present(navigationController, animated: true)
@@ -47,7 +47,7 @@ class PostNoticeNavigationCoordinator {
             presenter.dismiss(animated: true)
         }
         let viewController = UIHostingController(rootView: view)
-        if UIDevice.current.userInterfaceIdiom == .phone {
+        if presenter.traitCollection.horizontalSizeClass == .compact {
             if let sheetController = viewController.sheetPresentationController {
                 sheetController.detents = [.custom { _ in 420 }]
                 sheetController.preferredCornerRadius = 20

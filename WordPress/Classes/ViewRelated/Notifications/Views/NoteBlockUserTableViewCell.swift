@@ -74,18 +74,27 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         super.awakeFromNib()
 
         WPStyleGuide.Notifications.configureFollowButton(btnFollow)
-        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
 
-        nameLabel.font = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor = WPStyleGuide.Notifications.blockTextColor
 
-        blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
         blogLabel.textColor = UIAppColor.neutral(.shade50)
         blogLabel.adjustsFontSizeToFitWidth = false
 
+        applyFonts()
+        // The block fonts follow the horizontal size class, so they are re-applied when it changes.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.applyFonts()
+        }
+
         configureAccesibility()
+    }
+
+    private func applyFonts() {
+        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont(for: traitCollection)
+        nameLabel.font = WPStyleGuide.Notifications.blockBoldFont(for: traitCollection)
+        blogLabel.font = WPStyleGuide.Notifications.blockRegularFont(for: traitCollection)
     }
 
     // MARK: - IBActions

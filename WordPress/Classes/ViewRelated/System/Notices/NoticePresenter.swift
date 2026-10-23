@@ -95,6 +95,12 @@ class NoticePresenter {
 
     // MARK: - Events
 
+    // TODO: Replace these observers with the notice window's `keyboardLayoutGuide`:
+    // constrain the notice container's bottom to
+    // `untouchableViewController.view.keyboardLayoutGuide.topAnchor` instead of
+    // tracking the keyboard height here. Not done in this pass because the same
+    // height also feeds the off-screen start/end positions of the show/hide
+    // animations and the tab bar offset, so the swap touches the animator too.
     private func listenToKeyboardEvents() {
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillShowNotification)
@@ -107,7 +113,18 @@ class NoticePresenter {
                     return
                 }
 
-                self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
+                // The keyboard frame is in screen coordinates. Convert it into the notice
+                // window and measure how much of the window it covers; the window may not
+                // fill the screen (split view, Stage Manager).
+                let keyboardFrame = keyboardFrameValue.cgRectValue
+                let keyboardHeight: CGFloat
+                if let window = self.window, let screen = notification.object as? UIScreen {
+                    let frameInWindow = screen.coordinateSpace.convert(keyboardFrame, to: window)
+                    keyboardHeight = max(0, window.bounds.maxY - frameInWindow.minY)
+                } else {
+                    keyboardHeight = keyboardFrame.height
+                }
+                self.currentKeyboardPresentation = .present(height: keyboardHeight)
 
                 guard let currentContainer = self.currentNoticePresentation?.containerView else {
                     return

@@ -20,7 +20,25 @@ extension RichContentFormatter {
     ///
     /// - Returns: The formatted string.
     ///
+    @available(*, deprecated, message: "use formatContentString(_:isPrivateSite:bounds:traitCollection:) and pass the bounds and trait collection of the view that will display the content")
     @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+        // TODO: Modernization - `UIScreen.main` assumes a single display. Callers should pass the bounds and
+        // trait collection of the view that will display the content to the overload below.
+        return formatContentString(string, isPrivateSite: isPrivate, bounds: UIScreen.main.bounds, traitCollection: .current)
+    }
+
+    /// Formats the specified content string for display. Forbidden HTML tags are
+    /// removed, paragraphs are normalized, etc.
+    ///
+    /// - Parameters:
+    ///     - string: The content string to format.
+    ///     - isPrivate: Whether the content is from a private blog.
+    ///     - bounds: The bounds of the view that will display the content, used to size gallery images.
+    ///     - traitCollection: The trait collection of the view that will display the content.
+    ///
+    /// - Returns: The formatted string.
+    ///
+    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool, bounds: CGRect, traitCollection: UITraitCollection) -> String {
         guard !string.isEmpty else {
             return string
         }
@@ -31,7 +49,7 @@ extension RichContentFormatter {
         content = removeInlineStyles(content)
         content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
         content = formatGutenbergGallery(content)
-        content = resizeGalleryImageURL(content, isPrivateSite: isPrivate)
+        content = resizeGalleryImageURL(content, isPrivateSite: isPrivate, bounds: bounds, traitCollection: traitCollection)
         content = formatVideoTags(content)
         return content
     }
@@ -44,13 +62,30 @@ extension RichContentFormatter {
     ///
     /// - Returns: The formatted string.
     ///
+    @available(*, deprecated, message: "use resizeGalleryImageURL(_:isPrivateSite:bounds:traitCollection:) and pass the bounds and trait collection of the view that will display the content")
     @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+        // TODO: Modernization - `UIScreen.main` assumes a single display. Callers should pass the bounds and
+        // trait collection of the view that will display the content to the overload below.
+        return resizeGalleryImageURL(string, isPrivateSite: isPrivate, bounds: UIScreen.main.bounds, traitCollection: .current)
+    }
+
+    /// Mutates gallery image URLs to be correctly sized.
+    ///
+    /// - Parameters:
+    ///     - string: The content string to format.
+    ///     - isPrivate: Whether the content is from a private blog.
+    ///     - bounds: The bounds of the view that will display the content, used to size gallery images.
+    ///     - traitCollection: The trait collection of the view that will display the content.
+    ///
+    /// - Returns: The formatted string.
+    ///
+    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool, bounds: CGRect, traitCollection: UITraitCollection) -> String {
         guard !string.isEmpty else {
             return string
         }
 
-        let imageSize = UIScreen.main.bounds.size
-        let scale = UIScreen.main.scale
+        let imageSize = bounds.size
+        let scale = traitCollection.displayScale
         let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
 
         let mContent = NSMutableString(string: string)
@@ -74,7 +109,7 @@ extension RichContentFormatter {
             if isPrivate {
                 modifiedURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: originalURL)
             } else {
-                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL)
+                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL, traitCollection: traitCollection)
             }
 
             guard modifiedURL.absoluteString.isEmpty() == false else {
