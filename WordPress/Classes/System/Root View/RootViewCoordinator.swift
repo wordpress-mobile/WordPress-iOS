@@ -81,7 +81,7 @@ class RootViewCoordinator {
         featureFlagStore: RemoteFeatureFlagStore,
         windowManager: WindowManager?,
         app: AppBrand = BuildSettings.current.brand,
-        isReaderInWordPressAppEnabled: Bool = FeatureFlag.readerInWordPressApp.enabled
+        isReaderInWordPressAppEnabled: Bool = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
     ) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
