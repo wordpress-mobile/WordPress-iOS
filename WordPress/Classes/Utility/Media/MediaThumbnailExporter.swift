@@ -20,15 +20,6 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     struct Options {
 
-        @available(
-            *,
-            deprecated,
-            message: "use init(traitCollection:) and pass the trait collection of the view that displays the thumbnail"
-        )
-        init() {
-            self.init(traitCollection: .current)
-        }
-
         /// - parameter traitCollection: The trait collection of the view that displays
         ///   the thumbnail. Its `displayScale` becomes the default `scale`.
         init(traitCollection: UITraitCollection) {

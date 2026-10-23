@@ -34,17 +34,6 @@ extension UIImage {
 
     /// Renders the Background Image with the specified Background + Size + Insets parameters.
     ///
-    @available(*, deprecated, message: "use renderBackgroundImage(fill:border:size:cornerRadius:capInsets:traitCollection:) instead")
-    public class func renderBackgroundImage(fill: UIColor,
-                               border: UIColor? = nil,
-                               size: CGSize = DefaultRenderMetrics.backgroundImageSize,
-                               cornerRadius: CGFloat = DefaultRenderMetrics.backgroundCornerRadius,
-                               capInsets: UIEdgeInsets = DefaultRenderMetrics.backgroundCapInsets) -> UIImage {
-        return renderBackgroundImage(fill: fill, border: border, size: size, cornerRadius: cornerRadius, capInsets: capInsets, traitCollection: .current)
-    }
-
-    /// Renders the Background Image with the specified Background + Size + Insets parameters.
-    ///
     /// - Parameter traitCollection: The trait collection of the view that will display the image.
     ///
     public class func renderBackgroundImage(fill: UIColor,

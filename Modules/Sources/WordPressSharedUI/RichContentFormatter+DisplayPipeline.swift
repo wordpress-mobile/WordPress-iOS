@@ -59,21 +59,6 @@ extension RichContentFormatter {
     /// - Parameters:
     ///     - string: The content string to format.
     ///     - isPrivate: Whether the content is from a private blog.
-    ///
-    /// - Returns: The formatted string.
-    ///
-    @available(*, deprecated, message: "use resizeGalleryImageURL(_:isPrivateSite:bounds:traitCollection:) and pass the bounds and trait collection of the view that will display the content")
-    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        // TODO: Modernization - `UIScreen.main` assumes a single display. Callers should pass the bounds and
-        // trait collection of the view that will display the content to the overload below.
-        return resizeGalleryImageURL(string, isPrivateSite: isPrivate, bounds: UIScreen.main.bounds, traitCollection: .current)
-    }
-
-    /// Mutates gallery image URLs to be correctly sized.
-    ///
-    /// - Parameters:
-    ///     - string: The content string to format.
-    ///     - isPrivate: Whether the content is from a private blog.
     ///     - bounds: The bounds of the view that will display the content, used to size gallery images.
     ///     - traitCollection: The trait collection of the view that will display the content.
     ///

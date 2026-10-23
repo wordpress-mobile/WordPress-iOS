@@ -75,11 +75,6 @@ extension UIView {
 }
 
 extension CGFloat {
-    @available(*, deprecated, message: "use hairlineBorderWidth(traitCollection:) instead")
-    static var hairlineBorderWidth: CGFloat {
-        return hairlineBorderWidth(traitCollection: .current)
-    }
-
     /// The width of one pixel on the display described by the trait collection.
     ///
     static func hairlineBorderWidth(traitCollection: UITraitCollection) -> CGFloat {

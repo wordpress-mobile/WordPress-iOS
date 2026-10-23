@@ -33,16 +33,6 @@ class GutenbergMediaEditorImage: AsyncImage {
 
     var thumb: UIImage?
 
-    @available(
-        *,
-        deprecated,
-        message:
-            "use init(url:post:traitCollection:) and pass the trait collection of the view controller that presents the media editor"
-    )
-    convenience init(url: URL, post: AbstractPost) {
-        self.init(url: url, post: post, traitCollection: .current)
-    }
-
     init(url: URL, post: AbstractPost, traitCollection: UITraitCollection) {
         originalURL = url
         self.post = post

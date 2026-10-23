@@ -6,19 +6,9 @@ static const NSUInteger DefaultPhotonImageQuality = 80;
 static const NSInteger MaxPhotonImageQuality = 100;
 static const NSInteger MinPhotonImageQuality = 1;
 
-+ (NSURL *)photonURLWithSize:(CGSize)size forImageURL:(NSURL *)url
-{
-    return [self photonURLWithSize:size forImageURL:url traitCollection:[UITraitCollection currentTraitCollection]];
-}
-
 + (NSURL *)photonURLWithSize:(CGSize)size forImageURL:(NSURL *)url traitCollection:(UITraitCollection *)traitCollection
 {
     return [self photonURLWithSize:size forImageURL:url forceResize:YES imageQuality:DefaultPhotonImageQuality traitCollection:traitCollection];
-}
-
-+ (NSURL *)photonURLWithSize:(CGSize)size forImageURL:(NSURL *)url forceResize:(BOOL)forceResize imageQuality:(NSUInteger)quality
-{
-    return [self photonURLWithSize:size forImageURL:url forceResize:forceResize imageQuality:quality traitCollection:[UITraitCollection currentTraitCollection]];
 }
 
 + (NSURL *)photonURLWithSize:(CGSize)size forImageURL:(NSURL *)url forceResize:(BOOL)forceResize imageQuality:(NSUInteger)quality traitCollection:(UITraitCollection *)traitCollection

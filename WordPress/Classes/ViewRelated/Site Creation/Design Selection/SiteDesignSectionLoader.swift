@@ -9,24 +9,6 @@ struct SiteDesignSectionLoader {
 
     /// Builds a site design section assembler based on data fetched from the API.
     ///
-    /// - Parameter completion: A closure providing an assembler function or an error.
-    @available(
-        *,
-        deprecated,
-        message:
-            "use buildAssembler(scale:traitCollection:completion:) and pass the native scale and trait collection of the view that will display the thumbnails"
-    )
-    @MainActor
-    static func buildAssembler(completion: @escaping (Result<Assembler, Error>) -> Void) {
-        // TODO: Modernization - `UIScreen.main.nativeScale` assumes a single display and has no trait-collection
-        // equivalent, and `UITraitCollection.current` is not the trait collection of any particular view. Remove
-        // this wrapper once every caller passes `view.window?.windowScene?.screen.nativeScale` and its own
-        // `traitCollection` to `buildAssembler(scale:traitCollection:completion:)`.
-        buildAssembler(scale: UIScreen.main.nativeScale, traitCollection: .current, completion: completion)
-    }
-
-    /// Builds a site design section assembler based on data fetched from the API.
-    ///
     /// - Parameters:
     ///   - scale: The native scale of the screen that will display the thumbnails,
     ///     for example `view.window?.windowScene?.screen.nativeScale`.
@@ -60,24 +42,6 @@ struct SiteDesignSectionLoader {
                 completion(.failure(error))
             }
         }
-    }
-
-    /// Fetches remote designs from the API
-    ///
-    /// - Parameter completion: A closure providing remote site designs or an error.
-    @available(
-        *,
-        deprecated,
-        message:
-            "use fetchRemoteDesigns(scale:traitCollection:completion:) and pass the native scale and trait collection of the view that will display the thumbnails"
-    )
-    @MainActor
-    static func fetchRemoteDesigns(completion: @escaping (Result<RemoteSiteDesigns, Error>) -> Void) {
-        // TODO: Modernization - `UIScreen.main.nativeScale` assumes a single display and has no trait-collection
-        // equivalent, and `UITraitCollection.current` is not the trait collection of any particular view. Remove
-        // this wrapper once every caller passes `view.window?.windowScene?.screen.nativeScale` and its own
-        // `traitCollection` to `fetchRemoteDesigns(scale:traitCollection:completion:)`.
-        fetchRemoteDesigns(scale: UIScreen.main.nativeScale, traitCollection: .current, completion: completion)
     }
 
     /// Fetches remote designs from the API

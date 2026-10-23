@@ -225,10 +225,6 @@ extension WPStyleGuide {
         static let cellBackgroundColor = UIColor.secondarySystemGroupedBackground
         static let separatorColor = UIColor.separator
         static let dataBarColor = UIColor.tertiaryLabel
-        @available(*, deprecated, message: "use separatorHeight(traitCollection:) instead")
-        static var separatorHeight: CGFloat {
-            return separatorHeight(traitCollection: .current)
-        }
         static func separatorHeight(traitCollection: UITraitCollection) -> CGFloat {
             return 1.0 / traitCollection.displayScale
         }

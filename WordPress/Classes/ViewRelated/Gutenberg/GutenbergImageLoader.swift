@@ -15,15 +15,6 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
         return EditorMediaUtility()
     }()
 
-    @available(
-        *,
-        deprecated,
-        message: "use init(post:traitCollection:) and pass the trait collection of the view that displays the images"
-    )
-    public convenience init(post: AbstractPost) {
-        self.init(post: post, traitCollection: .current)
-    }
-
     public init(post: AbstractPost, traitCollection: UITraitCollection) {
         self.post = post
         self.traitCollection = traitCollection

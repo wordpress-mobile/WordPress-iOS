@@ -73,17 +73,6 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
         mediaUtility.fetchPosterImage(for: videoSrcURL, onSuccess: onSuccess, onFailure: onFailure)
     }
 
-    @available(
-        *,
-        deprecated,
-        message:
-            "use downloadImage(from:bounds:traitCollection:success:onFailure:) and pass the bounds and trait collection of the text view that displays the image"
-    )
-    func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { _ in failure()})
-        activeMediaRequests.append(receipt)
-    }
-
     /// - parameters:
     ///   - bounds: The bounds of the text view that displays the image.
     ///   - traitCollection: The trait collection of the text view that displays the image.

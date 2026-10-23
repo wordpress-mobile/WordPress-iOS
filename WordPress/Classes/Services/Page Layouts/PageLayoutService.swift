@@ -19,14 +19,6 @@ class PageLayoutService {
 
     typealias CompletionHandler = (Swift.Result<Void, Error>) -> Void
 
-    @available(*, deprecated, message: "use fetchLayouts(forBlog:withThumbnailSize:scale:completion:) and pass the native scale of the window scene's screen that will display the thumbnails")
-    static func fetchLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler? = nil) {
-        // TODO: Modernization - `UIScreen.main.nativeScale` assumes a single display and has no trait-collection
-        // equivalent. Remove this wrapper once every caller passes `view.window?.windowScene?.screen.nativeScale`
-        // to `fetchLayouts(forBlog:withThumbnailSize:scale:completion:)`.
-        fetchLayouts(forBlog: blog, withThumbnailSize: thumbnailSize, scale: UIScreen.main.nativeScale, completion: completion)
-    }
-
     /// - Parameters:
     ///   - blog: The blog to fetch layouts for.
     ///   - thumbnailSize: The size of the layout thumbnails, in points.

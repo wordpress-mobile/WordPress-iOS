@@ -54,31 +54,6 @@ class EditorMediaUtility {
         })
     }
 
-    @available(
-        *,
-        deprecated,
-        message:
-            "use downloadImage(from:post:bounds:traitCollection:success:onFailure:) and pass the bounds and trait collection of the view that displays the image"
-    )
-    func downloadImage(
-        from url: URL,
-        post: AbstractPost,
-        success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> ImageDownloaderTask {
-
-        // TODO: Modernization - `UIScreen.main` assumes a single, fixed display. Callers should
-        // pass the bounds and trait collection of the view that displays the image via
-        // downloadImage(from:post:bounds:traitCollection:success:onFailure:).
-        downloadImage(
-            from: url,
-            post: post,
-            bounds: UIScreen.main.bounds,
-            traitCollection: .current,
-            success: success,
-            onFailure: failure
-        )
-    }
-
     /// Downloads an image sized to fill the given bounds.
     ///
     /// - parameters:
@@ -105,31 +80,6 @@ class EditorMediaUtility {
             scale: scale,
             post: post,
             traitCollection: traitCollection,
-            success: success,
-            onFailure: failure
-        )
-    }
-
-    @available(
-        *,
-        deprecated,
-        message:
-            "use downloadImage(from:size:scale:post:traitCollection:success:onFailure:) and pass the trait collection of the view that displays the image"
-    )
-    func downloadImage(
-        from url: URL,
-        size requestSize: CGSize,
-        scale: CGFloat,
-        post: AbstractPost,
-        success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void
-    ) -> ImageDownloaderTask {
-        downloadImage(
-            from: url,
-            size: requestSize,
-            scale: scale,
-            post: post,
-            traitCollection: .current,
             success: success,
             onFailure: failure
         )
