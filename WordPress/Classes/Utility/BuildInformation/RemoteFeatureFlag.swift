@@ -30,6 +30,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case newGutenberg
     case newGutenbergPlugins
     case statsAds
+    case readerInWordPressApp
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
@@ -88,6 +89,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .newGutenbergPlugins:
             return false
         case .statsAds:
+            return false
+        case .readerInWordPressApp:
             return false
         }
     }
@@ -149,6 +152,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "gutenberg_kit_plugins"
         case .statsAds:
             return "stats_ads"
+        case .readerInWordPressApp:
+            return "wordpress_ios_reader"
         }
     }
 
@@ -208,6 +213,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Experimental Block Editor Plugins"
         case .statsAds:
             return "Stats Ads Tab"
+        case .readerInWordPressApp:
+            return "Reader in WordPress App"
         }
     }
 

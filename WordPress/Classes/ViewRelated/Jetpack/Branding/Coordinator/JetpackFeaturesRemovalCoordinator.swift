@@ -93,6 +93,14 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
 
     static var currentAppUIType: RootViewCoordinator.AppUIType?
 
+    /// `RemoteFeatureFlag.readerInWordPressApp`, read once per launch: a fetch that changes the
+    /// flag applies on the next launch.
+    ///
+    /// The flag decides both the app UI type and the scope of the Notifications lists. Reading it
+    /// live could make them disagree: a list created after a fetch would get the new scope while
+    /// the root UI kept the old type. Tests may set it.
+    static var isReaderInWordPressAppEnabled = RemoteFeatureFlag.readerInWordPressApp.enabled()
+
     static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
                              app: AppBrand = BuildSettings.current.brand) -> GeneralPhase {
         guard app == .wordpress else {
