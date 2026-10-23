@@ -9,6 +9,7 @@
 * [*] Reader: Fix post tag outlines almost disappearing after switching between light and dark mode [#26168]
 * [*] Reader: Fix some article toolbar icons turning white after liking a post on iOS 26 [#26169]
 * [*] Reader: Make the article toolbar buttons easier to see over images on iOS 26 and later [#26176]
+* [*] Reader: Fix the rest of a post disappearing after an iframe added without a wrapper, such as a Google Calendar embed in a Custom HTML block [#26181]
 
 27.3
 -----
