@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 extension MySiteViewController {
     /// Make a create button coordinator with
@@ -68,7 +69,7 @@ extension MySiteViewController {
         let view = VoiceToContentView(viewModel: viewModel)
         let host = UIHostingController(rootView: view)
 
-        if traitCollection.horizontalSizeClass == .regular {
+        if windowHorizontalSizeClass == .regular {
             host.modalPresentationStyle = .formSheet
             host.preferredContentSize = CGSize(width: 380, height: 480)
         } else {

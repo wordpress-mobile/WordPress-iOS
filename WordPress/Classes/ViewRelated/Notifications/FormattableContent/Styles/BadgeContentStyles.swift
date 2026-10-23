@@ -9,7 +9,7 @@ class BadgeContentStyles: FormattableContentStyles {
     private let horizontalSizeClass: UIUserInterfaceSizeClass
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the badge,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     init(cachingKey: String, isTitle: Bool, horizontalSizeClass: UIUserInterfaceSizeClass) {
         key = WPStyleGuide.Notifications.cacheKey(cachingKey, for: horizontalSizeClass)
         self.isTitle = isTitle

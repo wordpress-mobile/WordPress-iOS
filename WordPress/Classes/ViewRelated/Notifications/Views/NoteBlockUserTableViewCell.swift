@@ -93,7 +93,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
 
     private func applyFonts() {
-        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: self)
+        let horizontalSizeClass = windowHorizontalSizeClass
         btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont(for: horizontalSizeClass)
         nameLabel.font = WPStyleGuide.Notifications.blockBoldFont(for: horizontalSizeClass)
         blogLabel.font = WPStyleGuide.Notifications.blockRegularFont(for: horizontalSizeClass)

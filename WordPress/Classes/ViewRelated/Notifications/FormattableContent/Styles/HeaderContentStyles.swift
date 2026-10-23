@@ -23,7 +23,7 @@ class HeaderContentStyles: FormattableContentStyles {
     private let horizontalSizeClass: UIUserInterfaceSizeClass
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the header,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     init(horizontalSizeClass: UIUserInterfaceSizeClass) {
         self.horizontalSizeClass = horizontalSizeClass
         self.key = WPStyleGuide.Notifications.cacheKey("HeaderContentStyles", for: horizontalSizeClass)

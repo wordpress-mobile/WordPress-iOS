@@ -27,7 +27,7 @@ public class SubjectContentStyles: FormattableContentStyles {
     private let horizontalSizeClass: UIUserInterfaceSizeClass
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the subject,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     public init(
         horizontalSizeClass: UIUserInterfaceSizeClass,
         linkColor: UIColor? = nil,

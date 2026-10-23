@@ -296,10 +296,13 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
             self.imageView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
+    }
 
-        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
-            self.updateSizeClassDependentLayout()
-        }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // The layout follows the window's size class. This screen is a sheet, which keeps a compact size class
+        // when the window around it is resized, so re-check on every layout pass instead of on trait changes.
+        updateSizeClassDependentLayout()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -547,13 +550,18 @@ private extension BloggingRemindersFlowSettingsViewController {
         stackView.setCustomSpacing(.zero, after: bloggingPromptsView)
     }
 
-    /// Applies the spacing and bottom margin that depend on the horizontal size class.
-    /// Called once the constraints exist and again whenever the size class changes.
+    /// Applies the spacing and bottom margin that depend on the window's horizontal size class.
+    /// Called once the constraints exist and again on every layout pass; it only writes values that changed.
     func updateSizeClassDependentLayout() {
-        let isRegularWidth = traitCollection.horizontalSizeClass == .regular
-        stackView.setCustomSpacing(isRegularWidth ? Metrics.stackSpacing : .zero,
-                                   after: bloggingPromptsToConfirmationButtonSpacer)
-        stackViewBottomConstraint?.constant = isRegularWidth ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom
+        let isRegularWidth = windowHorizontalSizeClass == .regular
+        let spacing = isRegularWidth ? Metrics.stackSpacing : .zero
+        if stackView.customSpacing(after: bloggingPromptsToConfirmationButtonSpacer) != spacing {
+            stackView.setCustomSpacing(spacing, after: bloggingPromptsToConfirmationButtonSpacer)
+        }
+        let bottomMargin = isRegularWidth ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom
+        if let stackViewBottomConstraint, stackViewBottomConstraint.constant != bottomMargin {
+            stackViewBottomConstraint.constant = bottomMargin
+        }
     }
 
     func configureConstraints() {

@@ -17,7 +17,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     func configure(with viewModel: NotificationsViewModel, notification: WordPressData.Notification, parent: NotificationsViewController) {
         // The cell isn't in the table yet, so read the size class from the list's window.
-        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: parent.view)
+        let horizontalSizeClass = parent.view.windowHorizontalSizeClass
         let title: AttributedString? = {
             guard let attributedSubject = notification.renderSubject(horizontalSizeClass: horizontalSizeClass) else {
                 return nil

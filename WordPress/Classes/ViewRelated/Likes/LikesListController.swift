@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import WordPressData
 import WordPressShared
+import WordPressUI
 import WordPressKit
 import FormattableContentKit
 
@@ -391,7 +392,7 @@ private extension LikesListController {
                 return
         }
 
-        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: tableView)
+        let horizontalSizeClass = tableView.windowHorizontalSizeClass
         cell.attributedHeaderTitle = formatter.render(
             content: gravatarBlock,
             with: HeaderContentStyles(horizontalSizeClass: horizontalSizeClass)

@@ -17,7 +17,7 @@ public class SnippetsContentStyles: FormattableContentStyles {
     private let horizontalSizeClass: UIUserInterfaceSizeClass
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the snippet,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     public init(
         horizontalSizeClass: UIUserInterfaceSizeClass,
         quoteStyles: [NSAttributedString.Key: Any]? = nil,

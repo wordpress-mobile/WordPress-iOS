@@ -83,7 +83,7 @@ class SupportTableViewController: UITableViewController {
     func show(from presentingViewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: self)
 
-        if presentingViewController.traitCollection.horizontalSizeClass == .regular {
+        if presentingViewController.windowHorizontalSizeClass == .regular {
             navigationController.modalTransitionStyle = .crossDissolve
             navigationController.modalPresentationStyle = .formSheet
         }
@@ -98,7 +98,7 @@ class SupportTableViewController: UITableViewController {
         let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         let presentingViewController = rootViewController.presentedViewController ?? rootViewController
 
-        if presentingViewController.traitCollection.horizontalSizeClass == .regular {
+        if presentingViewController.windowHorizontalSizeClass == .regular {
             navigationController.modalTransitionStyle = .crossDissolve
             navigationController.modalPresentationStyle = .formSheet
         }

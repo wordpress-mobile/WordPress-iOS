@@ -295,16 +295,8 @@ extension WPStyleGuide {
         // MARK: - Metrics
         //
         // Notification text is larger in a wide window. Every metric below takes the horizontal size class of
-        // the window that displays the notification, from `horizontalSizeClass(for:)`.
-
-        /// The horizontal size class that picks the notification text metrics for content shown in `view`.
-        ///
-        /// This is the size class of the view's window, not of the view: on a full-screen iPad, the split view
-        /// gives its sidebar and list columns a compact size class even though the window is wide.
-        /// Falls back to the view's own size class while the view isn't in a window.
-        public static func horizontalSizeClass(for view: UIView) -> UIUserInterfaceSizeClass {
-            (view.window ?? view).traitCollection.horizontalSizeClass
-        }
+        // the window that displays the notification (`UIView.windowHorizontalSizeClass`), not of the view: on a
+        // full-screen iPad, the split view gives the notifications list column a compact size class.
 
         /// Appends the size class to a `FormattableContentStyles.key`, so text rendered for a wide window and
         /// text rendered for a narrow one are cached separately.

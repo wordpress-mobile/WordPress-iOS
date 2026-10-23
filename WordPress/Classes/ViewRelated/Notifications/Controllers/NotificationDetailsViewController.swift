@@ -513,7 +513,7 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: view)
+        let horizontalSizeClass = view.windowHorizontalSizeClass
         cell.attributedHeaderTitle = formatter.render(
             content: gravatarBlock,
             with: HeaderContentStyles(horizontalSizeClass: horizontalSizeClass)
@@ -536,7 +536,7 @@ private extension NotificationDetailsViewController {
 
         cell.attributedText = formatter.render(
             content: textBlock,
-            with: FooterContentStyles(horizontalSizeClass: WPStyleGuide.Notifications.horizontalSizeClass(for: view))
+            with: FooterContentStyles(horizontalSizeClass: view.windowHorizontalSizeClass)
         )
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
@@ -601,7 +601,7 @@ private extension NotificationDetailsViewController {
 
         // Load the attributedText
         let text: NSAttributedString
-        let horizontalSizeClass = WPStyleGuide.Notifications.horizontalSizeClass(for: view)
+        let horizontalSizeClass = view.windowHorizontalSizeClass
 
         if note.isBadge {
             let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)

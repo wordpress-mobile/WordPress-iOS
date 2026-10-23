@@ -1,5 +1,6 @@
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 class JetpackInstallPluginHelper: NSObject {
 
@@ -82,7 +83,7 @@ class JetpackInstallPluginHelper: NSObject {
                                                           installDelegate: delegate)
         }
         viewModel.coordinator = coordinator
-        let shouldUseFormSheet = presentingViewController.traitCollection.horizontalSizeClass == .regular
+        let shouldUseFormSheet = presentingViewController.windowHorizontalSizeClass == .regular
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
         presentingViewController.present(navigationViewController, animated: true) {
             helper.markOverlayAsShown()

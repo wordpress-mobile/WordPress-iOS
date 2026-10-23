@@ -6,7 +6,7 @@ import WordPressKit
 extension WordPressData.Notification {
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the subject,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     func renderSubject(horizontalSizeClass: UIUserInterfaceSizeClass) -> NSAttributedString? {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
             return nil
@@ -15,7 +15,7 @@ extension WordPressData.Notification {
     }
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the snippet,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     func renderSnippet(horizontalSizeClass: UIUserInterfaceSizeClass) -> NSAttributedString? {
         guard let snippetContent else {
             return nil

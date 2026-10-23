@@ -8,7 +8,7 @@ class RichTextContentStyles: FormattableContentStyles {
     private let horizontalSizeClass: UIUserInterfaceSizeClass
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the text,
-    ///   from `WPStyleGuide.Notifications.horizontalSizeClass(for:)`.
+    ///   from `UIView.windowHorizontalSizeClass`.
     init(horizontalSizeClass: UIUserInterfaceSizeClass, key: String = "RichTextContentStyles") {
         self.horizontalSizeClass = horizontalSizeClass
         self.key = WPStyleGuide.Notifications.cacheKey(key, for: horizontalSizeClass)
