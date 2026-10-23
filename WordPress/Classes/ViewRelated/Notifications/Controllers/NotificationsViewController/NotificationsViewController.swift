@@ -1880,6 +1880,9 @@ private extension NotificationsViewController {
     /// Notifications became visible: hand the newest observed timestamp to the
     /// activity service, which clears the bell, clears the icon, and submits seen.
     func notificationsBecameVisible() {
+        guard scope.tracksAccountActivity else {
+            return
+        }
         activityService.notificationsBecameVisible(
             self,
             accountUUID: boundAccountUUID,
@@ -1891,7 +1894,7 @@ private extension NotificationsViewController {
     /// service to submit as seen. The context observer that calls this exists
     /// only while the list is on screen.
     func notificationsListDidUpdate() {
-        guard UIApplication.shared.applicationState == .active else {
+        guard scope.tracksAccountActivity, UIApplication.shared.applicationState == .active else {
             return
         }
         activityService.notificationsListDidUpdate(
