@@ -60,6 +60,10 @@ extension SiteIconViewModel {
     init(feed: ReaderFeed, faviconURL: URL? = nil, size: Size = .regular) {
         self.init(size: size)
         if let iconURL = feed.iconURL {
+            // TODO: Modernization - `optimizedURL(for:imageSize:)` resolves the display scale from
+            // shared state. `ReaderFeedCell` is a SwiftUI view with no `UITraitCollection`; thread
+            // its `@Environment(\.displayScale)` into this initializer instead and call
+            // `optimizedURL(for:imageSize:isP2:traitCollection:)` or a scale-based equivalent.
             self.imageURL = SiteIconViewModel.optimizedURL(for: iconURL, imageSize: size.size)
         } else if let faviconURL {
             self.imageURL = faviconURL

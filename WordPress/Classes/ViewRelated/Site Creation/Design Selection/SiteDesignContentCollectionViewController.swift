@@ -125,7 +125,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         NSLayoutConstraint.activate([
             helperImageView.heightAnchor.constraint(equalToConstant: Metrics.helperImageWidth),
             helperImageView.widthAnchor.constraint(equalToConstant: Metrics.helperImageWidth),
-            helperSeparator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            helperSeparator.makeHairlineConstraint(for: helperSeparator.heightAnchor)
         ])
     }
 
