@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 import OHHTTPStubs
 import OHHTTPStubsSwift
 
@@ -104,6 +105,23 @@ class RequestAuthenticatorTests: XCTestCase {
         }
         XCTAssertEqual(request.url, url)
         XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
+    }
+
+    func testPrivateAtomicRequestWithoutAccount() {
+        let contextManager = ContextManager.forTesting()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
+
+        let url = URL(string: "https://example.wordpress.com/some-page/")!
+        let authenticator = RequestAuthenticator(
+            credentials: .dotCom(username: dotComUser, authToken: dotComToken, authenticationType: .privateAtomic(blogID: 1)))
+
+        let expectation = self.expectation(description: "Completion handler called")
+        authenticator.request(url: url, cookieJar: MockCookieJar()) { request in
+            XCTAssertEqual(request.url, url)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 
     func testDecideActionForNavigationResponse() {
