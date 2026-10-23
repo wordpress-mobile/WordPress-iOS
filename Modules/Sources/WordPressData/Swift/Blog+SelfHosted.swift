@@ -70,14 +70,14 @@ public extension Blog {
     /// Retrieve Application Tokens
     ///
     func getApplicationToken(using keychainImplementation: KeychainAccessible? = nil) throws -> String {
-        try (keychainImplementation ?? self.keychain)
+        try applicationPasswordKeychain(keychainImplementation)
             .getPassword(for: self.getUsername(), serviceName: self.getUrlString())
     }
 
     /// Delete Application Token
     ///
     func deleteApplicationToken(using keychainImplementation: KeychainAccessible? = nil) throws {
-        try? (keychainImplementation ?? self.keychain)
+        try? applicationPasswordKeychain(keychainImplementation)
             .setPassword(
                 for: self.getUsername(),
                 to: nil,
@@ -97,12 +97,17 @@ public extension Blog {
         _ newValue: String,
         using keychainImplementation: KeychainAccessible? = nil
     ) throws {
-        try (keychainImplementation ?? self.keychain)
+        try applicationPasswordKeychain(keychainImplementation)
             .setPassword(
                 for: self.getUsername(),
                 to: newValue,
                 serviceName: self.getUrlString()
             )
+    }
+
+    /// Application passwords sync through iCloud Keychain, so they are on a new device too.
+    private func applicationPasswordKeychain(_ keychainImplementation: KeychainAccessible?) -> KeychainAccessible {
+        (keychainImplementation ?? self.keychain).synchronizable
     }
 
     /// A null-safe wrapper for `Blog.username`

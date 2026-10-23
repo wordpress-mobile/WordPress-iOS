@@ -1,6 +1,7 @@
 27.5
 -----
 * [*] Self-hosted sites: Ask to sign in again when a site's password is missing, for example after moving to a new device [#26195]
+* [*] Self-hosted sites: Sync application passwords through iCloud Keychain, so a new device has them too [#26196]
 
 
 27.4

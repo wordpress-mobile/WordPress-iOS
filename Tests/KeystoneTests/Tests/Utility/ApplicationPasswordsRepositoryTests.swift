@@ -1,10 +1,12 @@
 import Foundation
 import Combine
+import Security
 import Testing
 import WordPressData
 import WordPressAPI
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import WordPressShared
 
 @testable import WordPress
 
@@ -222,6 +224,39 @@ class ApplicationPasswordsRepositoryTests {
 
         let password = await password(of: blog)
         #expect(password == uuid)
+    }
+
+    @Test
+    func savedPasswordsAreNotOverwrittenWhenTheyCannotBeRead() async throws {
+        defer { removeStubs() }
+
+        // The saved list syncs through iCloud Keychain, so replacing it after a failed read
+        // would remove every other site's password on every device.
+        let keychain = UnreadableSavedPasswordsKeychain()
+        try keychain.setPassword(
+            for: UnreadableSavedPasswordsKeychain.username,
+            to: "existing-list",
+            serviceName: UnreadableSavedPasswordsKeychain.service
+        )
+
+        let uuid = UUID().uuidString.lowercased()
+        let host = "\(uuid).example.com"
+        let blog = try await createSelfHostedSite(host: host)
+
+        stubApiDiscovery(siteHost: host)
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        await #expect(throws: (any Error).self) {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+
+        let savedList = keychain.storedValue(
+            for: UnreadableSavedPasswordsKeychain.username,
+            serviceName: UnreadableSavedPasswordsKeychain.service
+        )
+        #expect(savedList == "existing-list")
     }
 
     @Test
@@ -833,5 +868,32 @@ private extension Result {
             return error.isCancellationError()
         }
         return false
+    }
+}
+
+/// Fails to read the repository's saved-password list the way the real keychain does while the
+/// device is locked. Everything else behaves like `TestKeychain`.
+private final class UnreadableSavedPasswordsKeychain: KeychainAccessible {
+    static let username = "ApplicationPasswords"
+    static let service = "com.automattic.sites.ApplicationPasswords"
+
+    private var items: [String: String] = [:]
+
+    func getPassword(for username: String, serviceName: String) throws -> String {
+        if username == Self.username, serviceName == Self.service {
+            throw NSError(domain: "SFHFKeychainUtilsErrorDomain", code: Int(errSecInteractionNotAllowed))
+        }
+        guard let value = items["\(serviceName)|\(username)"] else {
+            throw TestKeychain.TestKeychainErrors.keychainItemNotFound
+        }
+        return value
+    }
+
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+        items["\(serviceName)|\(username)"] = newValue
+    }
+
+    func storedValue(for username: String, serviceName: String) -> String? {
+        items["\(serviceName)|\(username)"]
     }
 }
