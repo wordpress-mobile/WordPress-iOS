@@ -111,8 +111,8 @@ import WordPressData
         // Delete donated user activities (e.g., for Siri Shortcuts)
         NSUserActivity.deleteAllSavedUserActivities {}
 
-        // Refresh Remote Feature Flags
-        WordPressAppDelegate.shared?.updateFeatureFlags()
+        // Refresh Remote Feature Flags (forced: the account context changed)
+        WordPressAppDelegate.shared?.updateFeatureFlags(force: true)
 
         // Delete all the logs after logging out
         WPLogger.shared().deleteAllLogs()
