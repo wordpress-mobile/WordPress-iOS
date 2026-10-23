@@ -23,18 +23,24 @@ public final class TableViewKeyboardObserver {
     }
 
     @objc private func keyboardWillShow(_ notification: Foundation.Notification) {
-        let key = UIResponder.keyboardFrameBeginUserInfoKey
-        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
+        let key = UIResponder.keyboardFrameEndUserInfoKey
+        guard let tableView,
+              let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
             return
         }
 
-        var inset = originalInset
-        if tableView?.window?.windowScene?.interfaceOrientation.isPortrait == true {
-            inset.bottom += keyboardFrame.height
+        // The keyboard frame is in screen coordinates. Convert it into the table view and use the
+        // overlap height, which is correct for any window size, placement, or orientation.
+        let keyboardFrameInTableView: CGRect
+        if let screenCoordinateSpace = (notification.object as? UIScreen)?.coordinateSpace {
+            keyboardFrameInTableView = tableView.convert(keyboardFrame, from: screenCoordinateSpace)
         } else {
-            inset.bottom += keyboardFrame.width
+            keyboardFrameInTableView = tableView.convert(keyboardFrame, from: nil)
         }
-        tableView?.contentInset = inset
+
+        var inset = originalInset
+        inset.bottom += tableView.bounds.intersection(keyboardFrameInTableView).height
+        tableView.contentInset = inset
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {

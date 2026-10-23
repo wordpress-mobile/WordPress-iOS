@@ -148,6 +148,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     self.animatesAppearanceAfterSync = YES;
 
+    // TODO: Replace these observers with `self.view.keyboardLayoutGuide`: constrain the
+    // scroll view's bottom to `keyboardLayoutGuide.topAnchor` instead of converting the
+    // keyboard frame into a content inset. Not done here because the scroll view's bottom
+    // constraint comes from the storyboard and the swap needs it re-anchored there.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];

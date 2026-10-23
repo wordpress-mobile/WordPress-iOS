@@ -228,6 +228,11 @@ private extension ChangeUsernameViewController {
         }
         viewModel.reachabilityListener = reloadSaveButton
         viewModel.selectedUsernameListener = reloadSaveButton
+        // TODO: Replace the keyboard listener with `view.keyboardLayoutGuide`: constrain
+        // the table view's bottom to `keyboardLayoutGuide.topAnchor` instead of converting
+        // the keyboard frame into a content inset in `adjustForKeyboard`. Not done here
+        // because the observer lives in the view model and this is a `UITableViewController`,
+        // whose table view is the root view and has no bottom constraint to re-anchor.
         viewModel.keyboardListener = { [weak self] notification in
             self?.adjustForKeyboard(notification: notification)
         }

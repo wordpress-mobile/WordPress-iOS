@@ -127,15 +127,15 @@ private extension ExtensionPresentationController {
     }
 
     @objc func keyboardWasShown(notification: Notification) {
-        let keyboardFrame = notification.keyboardEndFrame() ?? .zero
+        let keyboardFrame = notification.keyboardEndFrame(in: containerView) ?? .zero
         let duration = notification.keyboardAnimationDuration() ?? Constants.defaultAnimationDuration
-        animateForWithKeyboardFrame(presentedView!.convert(keyboardFrame, from: nil), duration: duration, keyboardWasShown: true)
+        animateForWithKeyboardFrame(keyboardFrame, duration: duration, keyboardWasShown: true)
     }
 
     @objc func keyboardWillHide (notification: Notification) {
-        let keyboardFrame = notification.keyboardEndFrame() ?? .zero
+        let keyboardFrame = notification.keyboardEndFrame(in: containerView) ?? .zero
         let duration = notification.keyboardAnimationDuration() ?? Constants.defaultAnimationDuration
-        animateForWithKeyboardFrame(presentedView!.convert(keyboardFrame, from: nil), duration: duration)
+        animateForWithKeyboardFrame(keyboardFrame, duration: duration)
     }
 
     func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false, keyboardWasShown: Bool = false) {
@@ -150,8 +150,12 @@ private extension ExtensionPresentationController {
     }
 
     func getTranslationFrame(keyboardFrame: CGRect, presentedFrame: CGRect) -> CGRect {
+        guard let containerView else {
+            return presentedFrame
+        }
+
         let keyboardTopPadding = traitCollection.verticalSizeClass != .compact ? Constants.bottomKeyboardMarginPortrait : Constants.bottomKeyboardMarginLandscape
-        let keyboardTop = UIScreen.main.bounds.height - (keyboardFrame.size.height + keyboardTopPadding)
+        let keyboardTop = containerView.bounds.height - (keyboardFrame.size.height + keyboardTopPadding)
         let presentedViewBottom = presentedFrame.origin.y + presentedFrame.height
         let offset = presentedViewBottom - keyboardTop
 
@@ -193,6 +197,15 @@ private extension Notification {
     /// Gets the optional CGRect value of the UIKeyboardFrameEndUserInfoKey from a UIKeyboard notification
     func keyboardEndFrame () -> CGRect? {
         return (self.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+    }
+
+    /// Gets the keyboard end frame converted from the coordinate space of the screen that posted
+    /// the notification (the notification's `object`) into the given view's coordinate space.
+    func keyboardEndFrame(in view: UIView?) -> CGRect? {
+        guard let keyboardFrame = keyboardEndFrame(), let screen = object as? UIScreen, let view else {
+            return nil
+        }
+        return screen.coordinateSpace.convert(keyboardFrame, to: view)
     }
 
     /// Gets the optional AnimationDuration value of the UIKeyboardAnimationDurationUserInfoKey from a UIKeyboard notification
