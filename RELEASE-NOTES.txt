@@ -1,5 +1,6 @@
 27.5
 -----
+* [**] iPad: Screens now adapt to the app window's size in split view and Stage Manager, not the device type [#26190]
 
 
 27.4
