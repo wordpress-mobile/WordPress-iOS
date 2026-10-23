@@ -173,7 +173,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     private func promptToSave(from viewController: UIViewController?) {
-        let alertStyle: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+        let alertStyle: UIAlertController.Style = viewController?.traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         let alert = UIAlertController(title: nil, message: TextContent.savePromptMessage, preferredStyle: alertStyle)
         alert.addAction(UIAlertAction(title: TextContent.savePromptSaveButton, style: .default, handler: { _ in
             self.saveTapped()

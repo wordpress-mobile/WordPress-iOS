@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import WordPressKit
+import WordPressShared
 import WordPressUI
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
@@ -39,7 +40,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     private var ghostThumbnailSize: CGSize {
-        SiteDesignCategoryThumbnailSize.recommended.value
+        SiteDesignCategoryThumbnailSize.recommended.value(for: traitCollection)
     }
 
     // MARK: Helper Footer View
@@ -181,11 +182,18 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             self.helperSeparator.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
             self.helperContentView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
+
+        // The thumbnail sizes, and the previews the API renders at those sizes, follow the horizontal
+        // size class, so an assembler built for the previous size class is stale once it changes.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            guard self.sectionAssembler != nil, self.view.window != nil else { return }
+            self.sectionAssembler = nil
+            self.fetchSiteDesigns()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchSiteDesigns()
 
         // Disable the button temporarily during the transition animation.
         //
@@ -209,6 +217,13 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        // The design request needs the scale of the screen that displays the thumbnails,
+        // which is only known once the view is in a window.
+        fetchSiteDesigns()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.rightBarButtonItem?.isEnabled = true
@@ -220,10 +235,17 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             return
         }
 
+        guard let scale = view.window?.windowScene?.screen.nativeScale else {
+            return wpAssertionFailure(
+                "SiteDesignContentCollectionViewController.fetchSiteDesigns() requires the view to be in a window"
+            )
+        }
+
         isLoading = true
 
+        let traitCollection = traitCollection
         DispatchQueue.main.async { [weak self] in
-            SiteDesignSectionLoader.buildAssembler { result in
+            SiteDesignSectionLoader.buildAssembler(scale: scale, traitCollection: traitCollection) { result in
                 guard let self else { return }
 
                 switch result {

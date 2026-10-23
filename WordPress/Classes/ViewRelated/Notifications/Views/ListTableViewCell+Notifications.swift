@@ -1,6 +1,7 @@
 import UIKit
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 /// Encapsulates logic that configures `ListTableViewCell` with `Notification` models.
 ///
@@ -9,8 +10,9 @@ extension ListTableViewCell {
         indicatorColor = Style.unreadIndicatorColor
         showsIndicator = !notification.read
         configureImage(with: notification.iconURL)
-        attributedTitleText = notification.renderSubject()
-        snippetText = notification.renderSnippet()?.string ?? String()
+        let horizontalSizeClass = windowHorizontalSizeClass
+        attributedTitleText = notification.renderSubject(horizontalSizeClass: horizontalSizeClass)
+        snippetText = notification.renderSnippet(horizontalSizeClass: horizontalSizeClass)?.string ?? String()
     }
 
     /// Toggles an overlay view that presents an undo option for the user.

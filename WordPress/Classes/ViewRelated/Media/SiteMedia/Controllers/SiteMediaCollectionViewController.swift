@@ -551,7 +551,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     // MARK: - Menus
 
     private func showRetryOptions(for media: Media) {
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
         alertController.addDestructiveActionWithTitle(Strings.retryMenuDelete) { _ in
             self.coordinator.delete(media: [media])

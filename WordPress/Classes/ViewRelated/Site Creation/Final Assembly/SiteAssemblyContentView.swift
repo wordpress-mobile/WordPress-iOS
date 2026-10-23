@@ -26,6 +26,10 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the completion label as it animates into place.
     private var completionLabelTopConstraint: NSLayoutConstraint?
 
+    /// The constraints anchored to `prevailingLayoutGuide`, which follows the horizontal size class.
+    /// They are rebuilt whenever that size class changes.
+    private var layoutGuideConstraints: [NSLayoutConstraint] = []
+
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
 
@@ -326,35 +330,66 @@ final class SiteAssemblyContentView: UIView {
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusImageView)
 
-        let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
-        let completionLabelInitialTopConstraint = completionLabelsStack.topAnchor.constraint(
-            equalTo: prevailingLayoutGuide.topAnchor,
-            constant: completionLabelTopInsetInitial
-        )
-        self.completionLabelTopConstraint = completionLabelInitialTopConstraint
-
         NSLayoutConstraint.activate([
-            completionLabelInitialTopConstraint,
-            completionLabelsStack.leadingAnchor.constraint(
-                equalTo: prevailingLayoutGuide.leadingAnchor,
-                constant: Parameters.horizontalMargin
-            ),
-            prevailingLayoutGuide.trailingAnchor.constraint(
-                equalTo: completionLabelsStack.trailingAnchor,
-                constant: Parameters.horizontalMargin
-            ),
             completionLabelsStack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            statusStackView.leadingAnchor.constraint(
-                equalTo: prevailingLayoutGuide.leadingAnchor,
-                constant: Parameters.horizontalMargin
-            ),
-            prevailingLayoutGuide.trailingAnchor.constraint(
-                equalTo: statusStackView.trailingAnchor,
-                constant: Parameters.horizontalMargin
-            ),
             statusStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+        installLayoutGuideConstraints()
+
+        // `prevailingLayoutGuide` is unresolved until the view is in a window and changes with the
+        // horizontal size class, so the constraints anchored to it are rebuilt on each change.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.installLayoutGuideConstraints()
+        }
+    }
+
+    /// (Re)creates every constraint anchored to `prevailingLayoutGuide`, carrying over the current
+    /// constants of the animated top and bottom constraints.
+    private func installLayoutGuideConstraints() {
+        NSLayoutConstraint.deactivate(layoutGuideConstraints)
+        let layoutGuide = prevailingLayoutGuide
+
+        let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
+        let completionLabelTopConstraint = completionLabelsStack.topAnchor.constraint(
+            equalTo: layoutGuide.topAnchor,
+            constant: self.completionLabelTopConstraint?.constant ?? completionLabelTopInsetInitial
+        )
+        self.completionLabelTopConstraint = completionLabelTopConstraint
+
+        var constraints = [
+            completionLabelTopConstraint,
+            completionLabelsStack.leadingAnchor.constraint(
+                equalTo: layoutGuide.leadingAnchor,
+                constant: Parameters.horizontalMargin
+            ),
+            layoutGuide.trailingAnchor.constraint(
+                equalTo: completionLabelsStack.trailingAnchor,
+                constant: Parameters.horizontalMargin
+            ),
+            statusStackView.leadingAnchor.constraint(
+                equalTo: layoutGuide.leadingAnchor,
+                constant: Parameters.horizontalMargin
+            ),
+            layoutGuide.trailingAnchor.constraint(
+                equalTo: statusStackView.trailingAnchor,
+                constant: Parameters.horizontalMargin
+            )
+        ]
+
+        if let buttonContainerView, buttonContainerContainer != nil {
+            let buttonContainerHeight = buttonContainerView.bounds.height
+            let safelyOffscreen = Parameters.buttonContainerScaleFactor * buttonContainerHeight
+            let bottomConstraint = buttonContainerView.bottomAnchor.constraint(
+                equalTo: layoutGuide.bottomAnchor,
+                constant: buttonContainerBottomConstraint?.constant ?? safelyOffscreen
+            )
+            self.buttonContainerBottomConstraint = bottomConstraint
+            constraints.append(bottomConstraint)
+        }
+
+        NSLayoutConstraint.activate(constraints)
+        layoutGuideConstraints = constraints
     }
 
     private func installAssembledSiteView() {
@@ -433,14 +468,6 @@ final class SiteAssemblyContentView: UIView {
         addSubview(buttonContainerContainer)
         self.buttonContainerContainer = buttonContainerContainer
 
-        let buttonContainerHeight = buttonContainerView.bounds.height
-        let safelyOffscreen = Parameters.buttonContainerScaleFactor * buttonContainerHeight
-        let bottomConstraint = buttonContainerView.bottomAnchor.constraint(
-            equalTo: prevailingLayoutGuide.bottomAnchor,
-            constant: safelyOffscreen
-        )
-        self.buttonContainerBottomConstraint = bottomConstraint
-
         NSLayoutConstraint.activate([
             buttonContainerView.topAnchor.constraint(equalTo: buttonContainerContainer.topAnchor),
             buttonContainerView.leadingAnchor.constraint(equalTo: buttonContainerContainer.leadingAnchor),
@@ -450,9 +477,13 @@ final class SiteAssemblyContentView: UIView {
                 multiplier: Parameters.buttonContainerScaleFactor
             ),
             buttonContainerContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-            buttonContainerContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bottomConstraint
+            buttonContainerContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+
+        // The bottom constraint is anchored to `prevailingLayoutGuide` and lives with the other
+        // guide-anchored constraints so it is rebuilt alongside them.
+        self.buttonContainerBottomConstraint = nil
+        installLayoutGuideConstraints()
     }
 
     private func installErrorStateView() {

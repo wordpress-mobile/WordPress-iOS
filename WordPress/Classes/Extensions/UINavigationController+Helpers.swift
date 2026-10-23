@@ -23,8 +23,9 @@ extension UINavigationController {
     /// If this issue is addressed by Apple in following release we can remove this override.
     ///
     @objc override open func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        if UIDevice.current.userInterfaceIdiom == .phone,
-           let webKitVC = topViewController as? WebKitViewController {
+        if let webKitVC = topViewController as? WebKitViewController,
+            webKitVC.traitCollection.userInterfaceIdiom == .phone
+        {
             viewControllerToPresent.popoverPresentationController?.delegate = webKitVC
         }
         super.present(viewControllerToPresent, animated: flag, completion: completion)

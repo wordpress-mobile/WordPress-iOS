@@ -2,6 +2,7 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 import WordPressData
+import WordPressUI
 
 /// Encapsulates CoreSpotlight operations for WPiOS
 ///
@@ -460,7 +461,8 @@ fileprivate extension SearchManager {
         controller.trackOpenEvent()
         let navWrapper = UINavigationController(rootViewController: controller)
         let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
-        if rootViewController.traitCollection.userInterfaceIdiom == .pad {
+        // A page sheet floats as a narrow card in a regular-width window; the preview wants the whole window.
+        if rootViewController.windowHorizontalSizeClass == .regular {
             navWrapper.modalPresentationStyle = .fullScreen
         }
         rootViewController.present(navWrapper, animated: true)

@@ -20,9 +20,9 @@ private enum ReaderCardDiscoverAttribution: Int {
     @IBOutlet fileprivate weak var imageView: CircularImageView!
     @IBOutlet fileprivate weak var textLabel: UILabel!
 
-    fileprivate lazy var originalAttributionParagraphAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.originalAttributionParagraphAttributes()
-    }()
+    fileprivate var originalAttributionParagraphAttributes: [NSAttributedString.Key: Any] {
+        WPStyleGuide.originalAttributionParagraphAttributes(for: traitCollection)
+    }
 
     fileprivate var attributionAction: ReaderCardDiscoverAttribution = .none {
         didSet {
@@ -68,6 +68,12 @@ private enum ReaderCardDiscoverAttribution: Int {
 
         backgroundColor = .secondarySystemGroupedBackground
         applyOpaqueBackgroundColors()
+
+        // The attribution paragraph style follows the horizontal size class, so the text already
+        // set on the label is restyled when it changes.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.applyPrevailingParagraphStyle()
+        }
     }
 
     // MARK: - Configuration
@@ -78,6 +84,23 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func applyOpaqueBackgroundColors() {
         imageView?.backgroundColor = backgroundColor
         textLabel?.backgroundColor = backgroundColor
+    }
+
+    /// Re-applies the paragraph style from `originalAttributionParagraphAttributes` to the label's
+    /// current text, leaving the per-range fonts set during configuration untouched.
+    fileprivate func applyPrevailingParagraphStyle() {
+        guard let attributedText = textLabel?.attributedText, attributedText.length > 0,
+            let paragraphStyle = originalAttributionParagraphAttributes[.paragraphStyle]
+        else {
+            return
+        }
+        let restyled = NSMutableAttributedString(attributedString: attributedText)
+        restyled.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: restyled.length)
+        )
+        textLabel.attributedText = restyled
     }
 
     @objc open func configureView(_ post: ReaderPost?) {
