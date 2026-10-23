@@ -1,5 +1,6 @@
 27.5
 -----
+* [*] Reader: Fix the spacing around headings in posts [#26170]
 
 
 27.4
