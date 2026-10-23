@@ -228,12 +228,16 @@ final class NotificationsViewControllerTests: XCTestCase {
     func testUnscopedListSubmitsSeen() async throws {
         let seenTimestamps = try await seenTimestampsWhileShowingList(scope: .all)
 
-        // The new post fixture's timestamp, 2015-03-31T10:00:00+00:00, in Unix seconds.
-        XCTAssertEqual(seenTimestamps.last, Date(timeIntervalSince1970: 1_427_796_000))
+        // The fixtures' timestamps in Unix seconds: the new post, 2015-03-31T10:00:00+00:00,
+        // submitted when the list appears, then the comment like, 2015-03-31T12:00:00+00:00.
+        XCTAssertEqual(
+            seenTimestamps,
+            [Date(timeIntervalSince1970: 1_427_796_000), Date(timeIntervalSince1970: 1_427_803_200)]
+        )
     }
 
-    /// Shows a list with `scope` that has a Reader notification, then stores a like while the
-    /// list is visible. Returns the timestamps the list submitted as seen.
+    /// Shows a list with `scope` that has a Reader notification, then stores a newer Reader
+    /// notification while the list is visible. Returns the timestamps the list submitted as seen.
     @MainActor
     private func seenTimestampsWhileShowingList(scope: NotificationsListScope) async throws -> [Date] {
         let uuid = "account-A"
@@ -254,7 +258,7 @@ final class NotificationsViewControllerTests: XCTestCase {
         window.makeKeyAndVisible()
         addTeardownBlock { window.isHidden = true }
 
-        _ = try utility.loadLikeNotification()
+        _ = try utility.loadCommentLikeNotification()
         contextManager.mainContext.processPendingChanges()
         await serviceTests.settle(fixture)
 
