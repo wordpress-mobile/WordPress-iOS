@@ -31,7 +31,6 @@ final class NotificationsViewControllerTests: XCTestCase {
         primerDefaults = nil
         UserSettings.defaultDotComUUID = nil
         HTTPStubs.removeAllStubs()
-        FeatureFlagOverrideStore().removeOverride(for: FeatureFlag.readerInWordPressApp)
     }
 
     func testResetNotificationsWhenAccountChange() throws {
@@ -172,7 +171,11 @@ final class NotificationsViewControllerTests: XCTestCase {
 
     func testAppNavigationListsAreReaderScopedWhenFlagIsOn() {
         // Given
-        FeatureFlagOverrideStore().override(FeatureFlag.readerInWordPressApp, withValue: true)
+        let wasReaderInWordPressAppEnabled = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = true
+        addTeardownBlock {
+            JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = wasReaderInWordPressAppEnabled
+        }
 
         // Then
         XCTAssertEqual(NotificationsViewController.makeForAppNavigation().scope, .reader)

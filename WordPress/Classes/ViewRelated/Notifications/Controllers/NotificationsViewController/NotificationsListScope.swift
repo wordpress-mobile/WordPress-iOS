@@ -29,7 +29,7 @@ enum NotificationsListScope {
     /// UI type is still simplified, and the scope is set once at creation.
     static func forAppNavigation(
         app: AppBrand = BuildSettings.current.brand,
-        isReaderInWordPressAppEnabled: Bool = FeatureFlag.readerInWordPressApp.enabled
+        isReaderInWordPressAppEnabled: Bool = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
     ) -> NotificationsListScope {
         app == .wordpress && isReaderInWordPressAppEnabled ? .reader : .all
     }
