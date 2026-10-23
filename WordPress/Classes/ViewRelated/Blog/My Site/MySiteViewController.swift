@@ -301,7 +301,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
 
-        if isSidebarModeEnabled {
+        // `staticScreensWithReader` hides the bell so that Reader is the only entrance to the
+        // Reader notifications list.
+        if isSidebarModeEnabled && !JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
             notificationsButtonViewModel.$image
                 .sink { [weak self] in
                     guard let self else { return }
