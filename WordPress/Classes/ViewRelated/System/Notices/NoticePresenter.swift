@@ -64,6 +64,10 @@ class NoticePresenter {
 
     private var notificationObservers = Set<AnyCancellable>()
 
+    /// Watches the size of the scene the notice window is attached to, so a notice on screen
+    /// follows the app window when it's resized (split view, Stage Manager).
+    private var sceneGeometryObservation: NSKeyValueObservation?
+
     /// Set when a foreground notice could not be presented because no scene was
     /// connected (e.g. during launch). The notice stays at the head of the queue
     /// and presentation is retried when the app becomes active.
@@ -351,16 +355,10 @@ class NoticePresenter {
             // Reattach the cached window so it isn't bound to a dead scene.
             if let scene = UIApplication.shared.mainWindow?.windowScene, window.windowScene !== scene {
                 window.windowScene = scene
+                observeGeometry(of: scene)
             }
-            // The app window may have been resized (split view, Stage Manager) since the last
-            // notice. The overlay has an explicit frame, so it doesn't follow the scene by itself.
-            if let mainWindow = UIApplication.shared.mainWindow {
-                window.frame = mainWindow.offsetToAvoidStatusBar()
-            }
-            // UIKit passes a new size class down to the window's views at their next layout, and the
-            // overlay may not have been laid out since the resize. The notice reads the size class
-            // when it's built, so pass it down now.
-            window.updateTraitsIfNeeded()
+            // The app window may have been resized since the last notice.
+            matchAppWindow(window)
             return window
         }
         guard let mainWindow = UIApplication.shared.mainWindow,
@@ -370,6 +368,7 @@ class NoticePresenter {
         }
         let window = UntouchableWindow(windowScene: windowScene)
         window.frame = mainWindow.offsetToAvoidStatusBar()
+        observeGeometry(of: windowScene)
 
         // this window level may affect some UI elements like share sheets.
         // however, since the alerts aren't permanently on screen, this isn't
@@ -379,6 +378,41 @@ class NoticePresenter {
 
         self.window = window
         return window
+    }
+
+    /// Gives the notice window the app window's current frame and size class.
+    private func matchAppWindow(_ window: UntouchableWindow) {
+        // The notice window has an explicit frame, so it doesn't follow the app window by itself.
+        if let mainWindow = UIApplication.shared.mainWindow {
+            window.frame = mainWindow.offsetToAvoidStatusBar()
+        }
+        // UIKit passes a new size class down to the window's views at their next layout, and the
+        // notice window may not have been laid out since the resize. A notice reads the size class
+        // when it's built, so pass it down now.
+        window.updateTraitsIfNeeded()
+    }
+
+    private func observeGeometry(of windowScene: UIWindowScene) {
+        sceneGeometryObservation = windowScene.observe(\.effectiveGeometry) { [weak self] _, _ in
+            // Handle it on the next turn of the main queue, after UIKit has resized the app window.
+            DispatchQueue.main.async {
+                self?.appWindowDidResize()
+            }
+        }
+    }
+
+    /// Lays out the notice on screen again after the app window is resized.
+    private func appWindowDidResize() {
+        guard let window, !window.isHidden, let container = currentNoticePresentation?.containerView else {
+            return
+        }
+        matchAppWindow(window)
+        // The keyboard may now cover more or less of the window.
+        container.bottomConstraint?.constant = onScreenNoticeContainerBottomConstraintConstant
+        let view: UIView = window.untouchableViewController.view
+        view.mask?.setNeedsLayout()
+        view.mask?.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
 
     private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView, in view: UIView) {
