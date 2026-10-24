@@ -131,6 +131,29 @@ struct CommentsListViewModelConcurrencyTests {
         #expect(viewModel.items.map(\.id) == [99, 1])
     }
 
+    @Test func replyDuringInitialLoadInvalidatesItAndConverges() async {
+        let service = BlockingCommentsService()
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+
+        // Initial load (call 0) is in flight.
+        async let load: Void = viewModel.onAppear()
+        await waitUntil { service.callCount >= 1 }
+
+        // A reply lands before page one does.
+        viewModel.apply(.replyCreated(parentID: 1, reply: makeItem(id: 99)))
+
+        // The in-flight page predates the reply, so it is discarded and the
+        // load refetches a page that includes it.
+        service.resolve(callIndex: 0, with: makePage(items: [makeItem(id: 1)], hasNext: false))
+        await waitUntil { service.callCount >= 2 }
+        service.resolve(callIndex: 1, with: makePage(items: [makeItem(id: 99), makeItem(id: 1)], hasNext: false))
+        await load
+
+        #expect(viewModel.items.map(\.id) == [99, 1])
+        #expect(viewModel.state == .loaded)
+        #expect(service.callCount == 2)
+    }
+
     @Test func inFlightPageOneDoesNotOverwriteInPlaceStatusUpdate() async {
         let service = BlockingCommentsService()
         let viewModel = CommentsListViewModel(filter: .all, service: service)
