@@ -7,8 +7,10 @@ enum CommentChangeEvent: Equatable, Sendable {
     case statusChanged(id: Int64, to: CommentListItem.Status)
     case deleted(id: Int64)
     /// A reply was created under `parentID`. Loaded tabs matching the reply's
-    /// own status (not the parent's) insert the row at the top.
-    case replyCreated(parentID: Int64, reply: CommentListItem)
+    /// own status (not the parent's) insert the row at the top. `reply` is nil
+    /// when an earlier send already landed (`comment_duplicate`), so there is
+    /// no row to insert and matching tabs reload instead.
+    case replyCreated(parentID: Int64, reply: CommentListItem?)
 }
 
 extension CommentChangeEvent {

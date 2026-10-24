@@ -344,6 +344,23 @@ struct CommentDetailViewModelTests {
         #expect(vm.trashConfirmation == .withReplies)
     }
 
+    @Test func replyCreatedWithoutRowStillIncrementsReplyCount() async {
+        let service = FakeCommentsService()
+        service.fetchCommentResult = .success(makeDetail(id: 1, status: .approved, editContext: true))
+        service.numberOfRepliesResult = .success(0)
+        let coordinator = CommentsModerationCoordinator(service: FakeCommentsService())
+        let vm = makeVM(service: service, coordinator: coordinator)
+
+        await vm.onAppear()
+        #expect(vm.trashConfirmation == .none)
+
+        // A duplicate retry: the reply exists but no row came back.
+        coordinator.events.send(.replyCreated(parentID: vm.commentID, reply: nil))
+
+        #expect(vm.numberOfReplies == 1)
+        #expect(vm.trashConfirmation == .withReplies)
+    }
+
     @Test func parentPreviewLoadedForReply() async {
         let service = FakeCommentsService()
         service.fetchCommentResultsByID = [

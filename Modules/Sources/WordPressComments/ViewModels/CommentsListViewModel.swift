@@ -137,8 +137,19 @@ final class CommentsListViewModel: ObservableObject {
         case .deleted(let id):
             removeItem(id: id)
         case .replyCreated(_, let reply):
-            guard hasLoaded, filter.matches(reply.status) else { return }
-            insertAtTop(reply)
+            // A duplicate retry has no row; the coordinator assumes it landed
+            // approved.
+            guard filter.matches(reply?.status ?? .approved) else { return }
+            if !hasLoaded {
+                // An initial (seeded) page-one load still in flight predates the
+                // reply: invalidate it so it re-converges, as `statusChanged`
+                // does.
+                invalidateInFlightFetches()
+            } else if let reply {
+                insertAtTop(reply)
+            } else {
+                markStale()
+            }
         }
     }
 
