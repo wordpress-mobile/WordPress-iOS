@@ -24,7 +24,7 @@ struct ActivityLogsFiltersMenu: View {
             Image(systemName: "line.3.horizontal.decrease")
         }
         .sheet(isPresented: $isShowingActivityTypePicker) {
-            NavigationView {
+            NavigationStack {
                 ActivityTypeSelectionView(viewModel: viewModel)
             }
         }
@@ -109,7 +109,7 @@ private struct DatePickerSheet: View {
     @State private var date = Date()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             picker
                 .frame(maxHeight: .infinity, alignment: .top)
         }
