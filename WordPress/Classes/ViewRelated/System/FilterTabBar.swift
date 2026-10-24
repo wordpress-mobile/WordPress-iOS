@@ -253,16 +253,18 @@ public class FilterTabBar: UIControl {
 
         divider.backgroundColor = dividerColor
         addSubview(divider)
+        // Keep the divider and the tabs out of the horizontal safe area insets
+        // (landscape, the iPhone Duo's side bar).
         NSLayoutConstraint.activate([
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            divider.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             divider.makeHairlineConstraint(for: divider.heightAnchor)
         ])
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
 
         scrollView.addSubview(stackView)
@@ -524,16 +526,20 @@ public class FilterTabBar: UIControl {
         }
 
         let tabCenterX = scrollView.convert(tab.frame, from: stackView).midX
+        let visibleWidth = scrollView.frame.width
 
-        if tabCenterX <= bounds.midX {
+        if tabCenterX <= visibleWidth / 2 {
             // If the tab is within the first half width of the bar, scroll to the beginning
             scrollView.setContentOffset(.zero, animated: animated)
-        } else if tabCenterX > scrollView.contentSize.width - bounds.midX {
+        } else if tabCenterX > scrollView.contentSize.width - visibleWidth / 2 {
             // If the tab is within the last half width of the bar, scroll to the end
-            scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width - bounds.width, y: 0), animated: animated)
+            scrollView.setContentOffset(
+                CGPoint(x: scrollView.contentSize.width - visibleWidth, y: 0),
+                animated: animated
+            )
         } else {
             // Otherwise scroll so the tab is centered
-            let centerPoint = CGPoint(x: tabCenterX - bounds.midX, y: 0)
+            let centerPoint = CGPoint(x: tabCenterX - visibleWidth / 2, y: 0)
             scrollView.setContentOffset(centerPoint, animated: animated)
         }
     }
