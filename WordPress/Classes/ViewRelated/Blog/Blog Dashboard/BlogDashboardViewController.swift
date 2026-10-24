@@ -207,8 +207,9 @@ extension BlogDashboardViewController {
         let section = NSCollectionLayoutSection(group: group)
         let horizontalInset = Constants.horizontalSectionInset
         let isLast = (sectionIndex == collectionView.numberOfSections - 1)
-        // More on .compact to match the FAB.
-        let bottomInset = (isLast && traitCollection.horizontalSizeClass == .compact) ? 86 : 0
+        // More where the FAB is shown: every iPhone, and iPad in .compact.
+        let isShowingFAB = !UIDevice.isPad() || traitCollection.horizontalSizeClass == .compact
+        let bottomInset = (isLast && isShowingFAB) ? 86 : 0
         section.contentInsets = NSDirectionalEdgeInsets(
             top: Constants.verticalSectionInset,
             leading: horizontalInset,
