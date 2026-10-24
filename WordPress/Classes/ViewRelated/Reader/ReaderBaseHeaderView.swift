@@ -29,7 +29,11 @@ class ReaderBaseHeaderView: UIView {
         contentViewConstraints = []
 
         let insets = Self.makeInsets(isCompact: isCompact)
-        contentViewConstraints += contentView.pinEdges(.horizontal, to: isCompact ? self : readableContentGuide, insets: insets)
+        contentViewConstraints += contentView.pinEdges(
+            .horizontal,
+            to: isCompact ? safeAreaLayoutGuide : readableContentGuide,
+            insets: insets
+        )
         contentViewConstraints += contentView.pinEdges(.vertical, insets: insets)
 
         super.updateConstraints()
