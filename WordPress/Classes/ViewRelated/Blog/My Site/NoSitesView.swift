@@ -19,7 +19,8 @@ struct NoSitesView: View {
                 emptyStateView
                     .frame(maxHeight: .infinity, alignment: .center)
 
-                if viewModel.isShowingAccountAndSettings, horizontalSizeClass == .compact {
+                // On iPad the sidebar links to the account; on iPhone this is the only way there.
+                if viewModel.isShowingAccountAndSettings, !UIDevice.isPad() || horizontalSizeClass == .compact {
                     accountAndSettingsButton
                         .padding(.horizontal, .DS.Padding.large)
                         .padding(.bottom, .DS.Padding.medium)
