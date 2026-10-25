@@ -1,3 +1,4 @@
+import Testing
 import UIKit
 import XCTest
 import WordPressUI
@@ -155,5 +156,34 @@ final class SiteIconViewModelTests: XCTestCase {
         static let dotcomURL = URL(string: "https://fake.files.wordpress.com/fake.png")!
         static let gravatarURL = URL(string: "https://secure.gravatar.com/blavatar/123")!
         static let photonURL = URL(string: "https://fake.wp.com/fake.png")!
+    }
+}
+
+struct SiteIconViewModelDisplayScaleTests {
+
+    /// Each kind of icon URL is sized for the display scale that's passed in, not for the main screen.
+    @Test(arguments: [1.0, 2.0])
+    func iconURLsAreSizedForTheDisplayScale(displayScale: CGFloat) {
+        let traitCollection = UITraitCollection(displayScale: displayScale)
+        let size = Int(40 * displayScale)
+
+        let dotcomURL = URL(string: "https://fake.files.wordpress.com/fake.png")!
+        #expect(
+            SiteIconViewModel.optimizedURL(for: dotcomURL, traitCollection: traitCollection)
+                == URL(string: "https://fake.files.wordpress.com/fake.png?w=\(size)&h=\(size)")
+        )
+
+        let blavatarURL = URL(string: "https://secure.gravatar.com/blavatar/123")!
+        #expect(
+            SiteIconViewModel.optimizedURL(for: blavatarURL, traitCollection: traitCollection)
+                == URL(string: "https://secure.gravatar.com/blavatar/123?d=404&s=\(size)")
+        )
+
+        let photonURL = SiteIconViewModel.optimizedURL(
+            for: URL(string: "https://example.com/icon.png")!,
+            traitCollection: traitCollection
+        )
+        #expect(photonURL?.host == "i0.wp.com")
+        #expect(photonURL?.query?.contains("resize=\(size),\(size)") == true)
     }
 }

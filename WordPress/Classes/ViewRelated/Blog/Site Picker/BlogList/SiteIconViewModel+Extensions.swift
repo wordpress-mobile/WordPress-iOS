@@ -72,22 +72,30 @@ extension SiteIconViewModel {
         traitCollection: UITraitCollection
     ) -> URL? {
         if url.isWordPressComHost || isP2 {
-            return optimizedDotcomURL(from: url, imageSize: imageSize)
+            return optimizedDotcomURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
         }
         if isBlavatarURL(url) {
-            return optimizedBlavatarURL(from: url, imageSize: imageSize)
+            return optimizedBlavatarURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
         }
         return optimizedPhotonURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
     }
 
-    private static func optimizedDotcomURL(from url: URL, imageSize: CGSize) -> URL? {
-        let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
+    private static func optimizedDotcomURL(
+        from url: URL,
+        imageSize: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        let size = imageSize.scaled(by: traitCollection.displayScale)
         let query = String(format: "w=%d&h=%d", Int(size.width), Int(size.height))
         return parseURL(url: url, query: query)
     }
 
-    static func optimizedBlavatarURL(from url: URL, imageSize: CGSize) -> URL? {
-        let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
+    private static func optimizedBlavatarURL(
+        from url: URL,
+        imageSize: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        let size = imageSize.scaled(by: traitCollection.displayScale)
         let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
         return parseURL(url: url, query: query)
     }
@@ -141,7 +149,9 @@ extension SiteIconViewModel {
             return nil
         }
         if isBlavatarURL(url) {
-            return optimizedBlavatarURL(from: url, imageSize: size)
+            // TODO: Modernization - Reader callers don't pass the trait collection of the view that
+            // displays the icon yet, so this resolves the display scale from shared state.
+            return optimizedBlavatarURL(from: url, imageSize: size, traitCollection: .current)
         }
         return url
     }

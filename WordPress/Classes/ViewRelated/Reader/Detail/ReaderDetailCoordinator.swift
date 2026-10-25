@@ -321,7 +321,9 @@ class ReaderDetailCoordinator {
             return // Nothing to present the gallery from
         }
         let host = post.map(MediaHost.init)
-        let bounds = viewController.view.bounds
+        // The gallery covers the whole window, so size the images for the window rather than
+        // for the post's column, which is narrower in the iPad split view.
+        let bounds = viewController.view.window?.bounds ?? viewController.view.bounds
         let maxDimension = Int(max(bounds.width, bounds.height) * min(viewController.traitCollection.displayScale, 2))
         let assets = gallery.images.map { image in
             let sourceURL = image.bestURL(maxDimension: maxDimension) ?? image.originalFileURL ?? image.src

@@ -43,7 +43,8 @@ extension UIImage {
                                capInsets: UIEdgeInsets = DefaultRenderMetrics.backgroundCapInsets,
                                traitCollection: UITraitCollection) -> UIImage {
 
-        let renderer = UIGraphicsImageRenderer(size: size)
+        // The default format uses the main screen's scale, so ask for the display's own.
+        let renderer = UIGraphicsImageRenderer(size: size, format: UIGraphicsImageRendererFormat(for: traitCollection))
         let image = renderer.image { context in
 
             let lineWidthInPixels = 1 / traitCollection.displayScale
