@@ -71,7 +71,7 @@ extension NotificationsViewController {
         }
 
         hostVC.rootView = AnyView(alert)
-        hostVC.sheetPresentationController?.detents = [.medium()]
+        hostVC.sheetPresentationController?.detents = [.alertView(hostedBy: hostVC)]
         return hostVC
     }
 }

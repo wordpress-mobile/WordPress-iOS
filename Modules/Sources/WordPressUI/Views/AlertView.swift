@@ -23,6 +23,9 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
             header()
                 .padding(.horizontal, 8)
                 .padding(.bottom, 32)
+                // Give the text the height it needs before the image takes the rest. Otherwise
+                // the two split the spare height, and the text is cut off on a short screen.
+                .layoutPriority(1)
             VStack(spacing: 16) {
                 actions()
             }
@@ -36,8 +39,31 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
 extension AlertView {
     public func present(in presentingViewController: UIViewController) {
         let hostVC = UIHostingController(rootView: self)
-        hostVC.sheetPresentationController?.detents = [.medium()]
+        hostVC.sheetPresentationController?.detents = [.alertView(hostedBy: hostVC)]
         presentingViewController.present(hostVC, animated: true)
+    }
+}
+
+extension UISheetPresentationController.Detent {
+    /// The height for a sheet that shows an ``AlertView``: half the screen, or taller when the
+    /// alert needs more room, such as on the iPhone Duo's outer screen or with a large text size.
+    @MainActor
+    public static func alertView<Content: View>(
+        hostedBy hostVC: UIHostingController<Content>
+    ) -> UISheetPresentationController.Detent {
+        .custom(identifier: .medium) { [weak hostVC] context in
+            let halfHeight = context.maximumDetentValue / 2
+            let medium = UISheetPresentationController.Detent.medium().resolvedValue(in: context) ?? halfHeight
+            guard let hostVC else { return medium }
+            // The sheet's width is only known once it has been laid out.
+            let width = hostVC.view.bounds.inset(by: hostVC.view.safeAreaInsets).width
+            guard width > 0 else { return medium }
+            // Measure with a separate controller, because one on screen adds its safe area to the result.
+            let height = UIHostingController(rootView: hostVC.rootView)
+                .sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
+                .height
+            return min(max(medium, height), context.maximumDetentValue)
+        }
     }
 }
 
