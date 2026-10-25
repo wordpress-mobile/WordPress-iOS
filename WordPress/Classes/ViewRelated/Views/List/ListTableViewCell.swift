@@ -17,6 +17,9 @@ public class ListTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var snippetLabel: UILabel!
     @IBOutlet private weak var indicatorWidthConstraint: NSLayoutConstraint!
 
+    /// The separator's leading inset from the nib.
+    private var separatorLeadingInset: CGFloat = 0
+
     /// Convenience property to retain the overlay view when shown on top of the cell.
     /// The overlay can be shown or dismissed through `showOverlay` and `dismissOverlay` respectively.
     private var overlayView: UIView?
@@ -78,7 +81,13 @@ public class ListTableViewCell: UITableViewCell, NibReusable {
 
     public override func awakeFromNib() {
         super.awakeFromNib()
+        separatorLeadingInset = separatorInset.left
         configureSubviews()
+    }
+
+    public override func safeAreaInsetsDidChange() {
+        super.safeAreaInsetsDidChange()
+        separatorInset = separatorInsets(leading: separatorLeadingInset)
     }
 
     // MARK: Public Methods

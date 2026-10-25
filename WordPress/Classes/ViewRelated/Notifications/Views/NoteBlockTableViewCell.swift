@@ -4,9 +4,12 @@ import WordPressShared
 
 class NoteBlockTableViewCell: WPTableViewCell {
 
-    /// Represents the (full, side to side) Separator Insets
+    /// Represents the (full, side to side) Separator Insets. They stop at the safe area, so the
+    /// separator stays clear of the iPhone Duo's side strip and the sensor housing in landscape.
     ///
-    private let fullSeparatorInsets = UIEdgeInsets.zero
+    var fullSeparatorInsets: UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: safeAreaInsets.left, bottom: 0, right: safeAreaInsets.right)
+    }
 
     /// Indicates if the receiver represents a Badge Block
     ///
