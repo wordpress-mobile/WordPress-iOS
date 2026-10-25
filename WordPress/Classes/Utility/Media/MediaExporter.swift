@@ -123,10 +123,46 @@ extension MediaExporter {
     }
 
     func export() async throws -> MediaExport {
-        try await withUnsafeThrowingContinuation { continuation in
-            export(onCompletion: { continuation.resume(returning: $0) },
-                   onError: { continuation.resume(throwing: $0) })
+        try await withCheckedThrowingContinuation { continuation in
+            let once = ResumeOnce(continuation)
+            export(onCompletion: { once.resume(returning: $0) },
+                   onError: { once.resume(throwing: $0) })
         }
+    }
+}
+
+/// A thread-safe wrapper that guarantees a `CheckedContinuation` is resumed at
+/// most once, degrading any subsequent resume to a no-op.
+///
+/// The callback-based media export APIs can, on a cancellation race, deliver a
+/// second terminal callback (e.g. a stray `.cancelled` after a success). Bridging
+/// them to `async` with a raw continuation would make that second resume undefined
+/// behavior — a hard crash. Routing every resume through this type keeps the
+/// bridge safe regardless of how many times the callback fires.
+final class ResumeOnce<T> {
+    private let lock = NSLock()
+    private var continuation: CheckedContinuation<T, Error>?
+
+    init(_ continuation: CheckedContinuation<T, Error>) {
+        self.continuation = continuation
+    }
+
+    func resume(returning value: T) {
+        take()?.resume(returning: value)
+    }
+
+    func resume(throwing error: Error) {
+        take()?.resume(throwing: error)
+    }
+
+    /// Atomically hands out the continuation exactly once, niling it so any
+    /// later call returns `nil`.
+    private func take() -> CheckedContinuation<T, Error>? {
+        lock.lock()
+        defer { lock.unlock() }
+        let continuation = self.continuation
+        self.continuation = nil
+        return continuation
     }
 }
 
