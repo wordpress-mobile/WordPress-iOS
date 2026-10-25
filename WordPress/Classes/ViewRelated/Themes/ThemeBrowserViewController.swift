@@ -60,6 +60,22 @@ public protocol ThemePresenter: AnyObject {
 
 /// Invalidates the layout whenever the collection view's bounds change
 @objc open class ThemeBrowserCollectionViewLayout: UICollectionViewFlowLayout {
+    public override init() {
+        super.init()
+        configure()
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
+
+    private func configure() {
+        // Keep the themes inside the safe area, clear of the iPhone Duo's side strip and the
+        // sensor housing in landscape.
+        sectionInsetReference = .fromSafeArea
+    }
+
     open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         shouldInvalidateForNewBounds(newBounds)
     }
@@ -724,7 +740,8 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let parentViewWidth = collectionView.frame.size.width
+        // The layout's sections start at the safe area, so size the cells to fit inside it.
+        let parentViewWidth = collectionView.bounds.inset(by: collectionView.safeAreaInsets).width
 
         return Styles.cellSizeForFrameWidth(parentViewWidth)
     }
