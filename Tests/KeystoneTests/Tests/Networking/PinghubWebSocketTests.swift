@@ -87,9 +87,13 @@ class PinghubWebSocketTests: XCTestCase {
         let delegate = PinghubClientDelegateSpy()
         client.delegate = delegate
 
+        // Wait for both ends: the client can see the upgrade response before the server has
+        // registered the connection, and a broadcast sent in between would reach nobody.
         delegate.connected = expectation(description: "Connected to pinghub")
+        let registered = expectation(description: "Server registered the client")
+        server.onClientConnected = { registered.fulfill() }
         client.connect()
-        wait(for: [delegate.connected!], timeout: 2)
+        wait(for: [delegate.connected!, registered], timeout: 2)
 
         return (server, client, delegate)
     }
@@ -101,23 +105,20 @@ private class PinghubServer {
     let port: UInt16
 
     var clients: [ServerConnection] = []
+    var onClientConnected: (() -> Void)?
 
     init?() {
-        var server: WebSocketServer?
-        var port: UInt16 = 0
+        // Let the OS pick the port. `WebSocketServer.start` returns before the listener binds, so
+        // it can't report a port that's already taken (for example by a listener from an earlier
+        // test, which Starscream offers no way to stop), and the client would connect to that
+        // listener instead.
+        guard let port = Self.unusedPort() else { return nil }
 
-        var attempt = 5
-        while server == nil && attempt > 0 {
-            attempt -= 1
-
-            server = WebSocketServer()
-            port = (9000...9999).randomElement()!
-            if server!.start(address: "localhost", port: port) == nil {
-                break
-            }
+        let server = WebSocketServer()
+        if let error = server.start(address: "localhost", port: port) {
+            print("[Pinghub Server] failed to start at port \(port): \(error)")
+            return nil
         }
-
-        guard let server else { return nil }
 
         print("[Pinghub Server] started at port \(port)")
 
@@ -127,20 +128,51 @@ private class PinghubServer {
         server.onEvent = { [weak self] event in
             print("[Pinghub Server] received an event: \(event)")
 
-            guard let self else { return }
+            // Events arrive on the connection's queue; keep `clients` on the main thread, where
+            // the tests read it.
+            DispatchQueue.main.async {
+                guard let self else { return }
 
-            switch event {
-            case let .connected(client, _):
-                self.clients.append(client as! ServerConnection)
-            case let .disconnected(client, _, _):
-                if let index = self.clients.firstIndex(where: { $0 === (client as! ServerConnection) }) {
-                    self.clients.remove(at: index)
+                switch event {
+                case let .connected(client, _):
+                    self.clients.append(client as! ServerConnection)
+                    self.onClientConnected?()
+                case let .disconnected(client, _, _):
+                    if let index = self.clients.firstIndex(where: { $0 === (client as! ServerConnection) }) {
+                        self.clients.remove(at: index)
+                    }
+                default:
+                    break
                 }
-                break
-            default:
-                break
             }
         }
+    }
+
+    /// Binds a socket to port 0 so the OS assigns a free port, then releases it for the server.
+    private static func unusedPort() -> UInt16? {
+        let fd = socket(AF_INET6, SOCK_STREAM, 0)
+        guard fd >= 0 else { return nil }
+        defer { close(fd) }
+
+        // Accept IPv4 too, so the port is free on both stacks that "localhost" may resolve to.
+        var v6Only: Int32 = 0
+        setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, &v6Only, socklen_t(MemoryLayout<Int32>.size))
+
+        var address = sockaddr_in6()
+        address.sin6_len = UInt8(MemoryLayout<sockaddr_in6>.size)
+        address.sin6_family = sa_family_t(AF_INET6)
+        address.sin6_addr = in6addr_any
+        address.sin6_port = 0
+
+        var length = socklen_t(MemoryLayout<sockaddr_in6>.size)
+        let succeeded = withUnsafeMutablePointer(to: &address) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                bind(fd, $0, length) == 0 && getsockname(fd, $0, &length) == 0
+            }
+        }
+        guard succeeded else { return nil }
+
+        return UInt16(bigEndian: address.sin6_port)
     }
 
     func broadcast(message: String) {
