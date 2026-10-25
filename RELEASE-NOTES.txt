@@ -1,5 +1,6 @@
 27.5
 -----
+* [*] Site Creation: Keep the design list's place when the iPad window is resized [#26224]
 
 
 27.4
