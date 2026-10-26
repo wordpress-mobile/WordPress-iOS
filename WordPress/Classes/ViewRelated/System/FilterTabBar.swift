@@ -282,7 +282,8 @@ public class FilterTabBar: UIControl {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor)
         ])
 
-        addSubview(selectionIndicator)
+        // Inside the scroll view, so the indicator scrolls and clips with the tabs.
+        scrollView.addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
             selectionIndicator.heightAnchor.constraint(equalToConstant: AppearanceMetrics.selectionIndicatorHeight)
         ])
@@ -404,7 +405,7 @@ public class FilterTabBar: UIControl {
             scrollView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            selectionIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor)
+            selectionIndicator.topAnchor.constraint(equalTo: stackView.topAnchor)
         ]
     }
 
@@ -415,7 +416,7 @@ public class FilterTabBar: UIControl {
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: divider.topAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            selectionIndicator.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ]
     }
 
