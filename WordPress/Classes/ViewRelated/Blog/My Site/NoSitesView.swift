@@ -11,7 +11,8 @@ struct NoSitesView: View {
     let viewModel: NoSitesViewModel
     weak var delegate: NoSitesViewDelegate?
 
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    /// Whether the view is shown in an expanded split view, where the sidebar links to the account.
+    var isInExpandedSplitView = false
 
     var body: some View {
         ZStack {
@@ -19,8 +20,7 @@ struct NoSitesView: View {
                 emptyStateView
                     .frame(maxHeight: .infinity, alignment: .center)
 
-                // On iPad the sidebar links to the account; on iPhone this is the only way there.
-                if viewModel.isShowingAccountAndSettings, !UIDevice.isPad() || horizontalSizeClass == .compact {
+                if viewModel.isShowingAccountAndSettings, !isInExpandedSplitView {
                     accountAndSettingsButton
                         .padding(.horizontal, .DS.Padding.large)
                         .padding(.bottom, .DS.Padding.medium)
@@ -101,8 +101,43 @@ struct NoSitesView: View {
     }
 }
 
+/// Hosts `NoSitesView` and keeps `isInExpandedSplitView` up to date.
+final class NoSitesHostingController: UIHostingController<NoSitesView> {
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        updateIsInExpandedSplitView()
+    }
+
+    /// The split view collapses or expands after its size class changes, so a trait change
+    /// callback still sees the old `isCollapsed`. Layout runs after it has updated.
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateIsInExpandedSplitView()
+    }
+
+    private func updateIsInExpandedSplitView() {
+        let isInExpandedSplitView = splitViewController?.isCollapsed == false
+        if rootView.isInExpandedSplitView != isInExpandedSplitView {
+            rootView.isInExpandedSplitView = isInExpandedSplitView
+        }
+    }
+}
+
 private enum Strings {
-    static let title = NSLocalizedString("mySite.noSites.stateViewTitle", value: "Create Your First Site", comment: "Title description for when a user has no sites.")
-    static let description = NSLocalizedString("mySite.noSites.description", value: "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", comment: "Message description for when a user has no sites.")
-    static let accountAndSettings = NSLocalizedString("mySite.noSites.button.accountAndSettings", value: "Account and settings", comment: "Button title. Displays the account and setting screen.")
+    static let title = NSLocalizedString(
+        "mySite.noSites.stateViewTitle",
+        value: "Create Your First Site",
+        comment: "Title description for when a user has no sites."
+    )
+    static let description = NSLocalizedString(
+        "mySite.noSites.description",
+        value:
+            "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.",
+        comment: "Message description for when a user has no sites."
+    )
+    static let accountAndSettings = NSLocalizedString(
+        "mySite.noSites.button.accountAndSettings",
+        value: "Account and settings",
+        comment: "Button title. Displays the account and setting screen."
+    )
 }

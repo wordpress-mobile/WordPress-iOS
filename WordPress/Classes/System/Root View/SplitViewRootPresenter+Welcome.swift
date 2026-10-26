@@ -12,7 +12,7 @@ class WelcomeSplitViewContent: SplitViewDisplayable {
         let addSiteViewModel = AddSiteMenuViewModel(context: .shared, onSelection: addSite)
         let noSitesViewModel = NoSitesViewModel(appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType, account: nil)
         let noSiteView = NoSitesView(addSiteViewModel: addSiteViewModel, viewModel: noSitesViewModel)
-        let noSitesVC = UIHostingController(rootView: noSiteView)
+        let noSitesVC = NoSitesHostingController(rootView: noSiteView)
         noSitesVC.view.backgroundColor = .systemBackground
         secondary = UINavigationController(rootViewController: noSitesVC)
     }
