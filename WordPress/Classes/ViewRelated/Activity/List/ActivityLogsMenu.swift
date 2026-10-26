@@ -132,7 +132,7 @@ private struct DatePickerSheet: View {
                     }
                     .fontWeight(.semibold)
                 }
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button(role: .destructive) {
                         selection = nil
                         isPresented = false
