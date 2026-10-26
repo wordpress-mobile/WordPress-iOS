@@ -136,8 +136,7 @@ private extension NotificationCommentDetailViewController {
     func configureNavBarButtons() {
         var barButtonItems: [UIBarButtonItem] = []
 
-        // Only an expanded iPad split view shows the list next to the details.
-        if !UIDevice.isPad() || splitViewControllerIsHorizontallyCompact {
+        if splitViewControllerIsHorizontallyCompact {
             barButtonItems.append(contentsOf: [previousButton, nextButton])
         }
 

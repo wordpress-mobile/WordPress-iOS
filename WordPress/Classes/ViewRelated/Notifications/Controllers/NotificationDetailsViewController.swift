@@ -205,8 +205,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     fileprivate func refreshNavigationBar() {
         title = note.title
 
-        // Only an expanded iPad split view shows the list next to the details.
-        if !UIDevice.isPad() || splitViewControllerIsHorizontallyCompact {
+        if splitViewControllerIsHorizontallyCompact {
             enableNavigationRightBarButtonItems()
         } else {
             navigationItem.rightBarButtonItems = nil
