@@ -14,18 +14,21 @@ public final class TableViewKeyboardObserver {
             self,
             selector: #selector(TableViewKeyboardObserver.keyboardWillShow),
             name: UIResponder.keyboardWillShowNotification,
-            object: nil)
+            object: nil
+        )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(TableViewKeyboardObserver.keyboardWillHide),
             name: UIResponder.keyboardWillHideNotification,
-            object: nil)
+            object: nil
+        )
     }
 
     @objc private func keyboardWillShow(_ notification: Foundation.Notification) {
         let key = UIResponder.keyboardFrameEndUserInfoKey
         guard let tableView,
-              let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
+            let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue
+        else {
             return
         }
 
@@ -38,8 +41,13 @@ public final class TableViewKeyboardObserver {
             keyboardFrameInTableView = tableView.convert(keyboardFrame, from: nil)
         }
 
+        // UIKit already adds the bottom safe area to the table view's inset, and the keyboard
+        // covers that same strip, so only add the part of the overlap above it.
+        let overlap = tableView.bounds.intersection(keyboardFrameInTableView).height
+        let systemInset = tableView.adjustedContentInset.bottom - tableView.contentInset.bottom
+
         var inset = originalInset
-        inset.bottom += tableView.bounds.intersection(keyboardFrameInTableView).height
+        inset.bottom += max(0, overlap - systemInset)
         tableView.contentInset = inset
     }
 
