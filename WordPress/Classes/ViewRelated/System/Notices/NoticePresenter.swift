@@ -491,15 +491,40 @@ class NoticePresenter {
         guard let window, let screenCoordinateSpace else {
             return frame.height
         }
-        let frameInWindow = screenCoordinateSpace.convert(frame, to: window)
-        return max(0, window.bounds.maxY - frameInWindow.minY)
+        return Self.keyboardOverlap(
+            keyboardFrame: screenCoordinateSpace.convert(frame, to: window),
+            windowBounds: window.bounds
+        )
     }
 
     private var onScreenNoticeContainerBottomConstraintConstant: CGFloat {
-        if let keyboardHeight {
-            return -keyboardHeight
-        }
-        return -(window?.untouchableViewController.offsetOnscreen ?? 0)
+        -Self.onScreenBottomInset(
+            keyboardOverlap: keyboardHeight,
+            tabBarHeight: window?.untouchableViewController.offsetOnscreen ?? 0
+        )
+    }
+
+    /// How much of a window the keyboard covers.
+    ///
+    /// - Parameters:
+    ///   - keyboardFrame: The keyboard's frame, in the window's coordinate space.
+    ///   - windowBounds: The window's bounds.
+    static func keyboardOverlap(keyboardFrame: CGRect, windowBounds: CGRect) -> CGFloat {
+        // Only the part inside the window counts. A keyboard that isn't docked at the bottom of
+        // the screen can report a frame anywhere, for example `.zero`.
+        windowBounds.intersection(keyboardFrame).height
+    }
+
+    /// How far above the bottom of the notice window a notice on screen sits.
+    ///
+    /// - Parameters:
+    ///   - keyboardOverlap: How much of the window the keyboard covers, or `nil` if it's hidden.
+    ///   - tabBarHeight: The height of the tab bar at the bottom of the window. The notice
+    ///     window's mask always hides that strip (`MaskView`).
+    static func onScreenBottomInset(keyboardOverlap: CGFloat?, tabBarHeight: CGFloat) -> CGFloat {
+        // A keyboard that covers less of the window than the tab bar would leave the notice in
+        // the masked strip, partly or fully hidden.
+        max(keyboardOverlap ?? 0, tabBarHeight)
     }
 
     private func offScreenNoticeContainerBottomOffset(for container: UIView) -> CGFloat {
