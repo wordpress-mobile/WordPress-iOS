@@ -455,6 +455,9 @@ fileprivate extension SearchManager {
     func openPreview(for apost: AbstractPost) {
         RootViewCoordinator.sharedPresenter.showMySitesTab()
         closePreviewIfNeeded(for: apost)
+        // Open the list first: in the tab bar layout, opening a site's list closes anything presented,
+        // which would include the preview.
+        openListView(for: apost)
 
         let controller = PreviewWebKitViewController(post: apost, source: "spotlight_preview_post")
         controller.trackOpenEvent()
@@ -464,8 +467,6 @@ fileprivate extension SearchManager {
             navWrapper.modalPresentationStyle = .fullScreen
         }
         rootViewController.present(navWrapper, animated: true)
-
-        openListView(for: apost)
     }
 
     /// If there is a post preview window open and it is already displaying the provided
