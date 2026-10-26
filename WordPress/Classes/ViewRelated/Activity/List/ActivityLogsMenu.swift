@@ -110,8 +110,9 @@ private struct DatePickerSheet: View {
 
     var body: some View {
         NavigationStack {
-            picker
-                .frame(maxHeight: .infinity, alignment: .top)
+            ScrollView {
+                picker
+            }
         }
         .onAppear {
             date = selection ?? Date()
