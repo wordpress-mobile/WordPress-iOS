@@ -94,10 +94,11 @@ public class AdaptiveTabBar: UIControl {
         separator.pinEdges(.horizontal, to: safeAreaLayoutGuide)
         separator.pinEdges(.bottom)
 
-        addSubview(selectionIndicator)
+        // Inside the scroll view, so the indicator scrolls and clips with the tabs.
+        scrollView.addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
             selectionIndicator.heightAnchor.constraint(equalToConstant: 2),
-            selectionIndicator.bottomAnchor.constraint(equalTo: bottomAnchor)
+            selectionIndicator.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ])
 
         // Accessibility
