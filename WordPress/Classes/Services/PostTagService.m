@@ -176,8 +176,12 @@ static const NSInteger PostTagIdDefaultValue = -1;
         if (blog.wordPressComRestApi) {
             return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.xmlrpcApi) {
-        return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
+    } else {
+        // The password can be missing from the keychain, e.g. after a backup is restored to a new device.
+        NSString *password = blog.password;
+        if (blog.xmlrpcApi && blog.username && password) {
+            return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:password];
+        }
     }
     return nil;
 }

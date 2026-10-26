@@ -137,12 +137,16 @@ extension WordPressAuthenticationManager {
 
     static func showSigninForSelfHostedSiteFixingApplicationPassword(
         blogId: TaggedManagedObjectID<Blog>,
+        reason: ApplicationPasswordReAuthenticationView.Reason = .invalid,
         showNotice: Bool = true
     ) {
-        guard let presenter = UIViewController.topViewController,
-            !presenter.isApplicationReauthentication
-        else {
+        guard let presenter = UIViewController.topViewController else {
             assertionFailure()
+            return
+        }
+
+        // More than one request can ask for the sign-in screen while it is already showing.
+        guard !presenter.isApplicationReauthentication else {
             return
         }
 
@@ -155,11 +159,37 @@ extension WordPressAuthenticationManager {
 
         try? currentBlog.deleteApplicationToken()
 
-        let rootView = ApplicationPasswordReAuthenticationView(blog: currentBlog, presenter: presenter)
+        let rootView = ApplicationPasswordReAuthenticationView(blog: currentBlog, presenter: presenter, reason: reason)
         let viewController = UIHostingController(rootView: rootView)
         viewController.isModalInPresentation = true
         viewController.isApplicationReauthentication = true
         presenter.present(viewController, animated: true)
+    }
+
+    /// Makes sure the app has a working application password for a site. When a self-hosted site has
+    /// no saved password on this device, asks the user to sign in again.
+    ///
+    /// The password can be missing after a backup is restored to a new device. With no password, the
+    /// app never sends a request, so the site never rejects one, and the prompt for a rejected password
+    /// (see `WordPressClient.requestedWithInvalidAuthenticationNotification`) never appears.
+    ///
+    /// - Returns: `true` if the site has a working application password.
+    @MainActor
+    @discardableResult
+    static func createApplicationPasswordOrSignIn(for blogId: TaggedManagedObjectID<Blog>) async -> Bool {
+        do {
+            try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogId)
+            return true
+        } catch {
+            Loggers.app.error("Failed to create an application password: \(error)")
+        }
+
+        if let blog = try? ContextManager.shared.mainContext.existingObject(with: blogId),
+            blog.isMissingSelfHostedCredentials()
+        {
+            showSigninForSelfHostedSiteFixingApplicationPassword(blogId: blogId, reason: .missing)
+        }
+        return false
     }
 }
 
