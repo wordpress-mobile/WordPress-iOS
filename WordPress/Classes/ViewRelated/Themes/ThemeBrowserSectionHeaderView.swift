@@ -5,6 +5,7 @@ import WordPressUI
 class ThemeBrowserSectionHeaderView: UICollectionReusableView, NibLoadable {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var countLabel: UILabel!
+    @IBOutlet var stackView: UIStackView!
 
     // MARK: - Constants
 
@@ -24,6 +25,15 @@ class ThemeBrowserSectionHeaderView: UICollectionReusableView, NibLoadable {
     open override func awakeFromNib() {
         super.awakeFromNib()
         countLabel.isHidden = true
+
+        // Keep the heading inside the safe area, in line with the theme cards below it. The xib's
+        // side constraints are removed at build time.
+        let margin: CGFloat = 20
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: margin),
+            safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: margin)
+        ])
+
         applyStyles()
     }
 

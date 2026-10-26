@@ -60,22 +60,6 @@ public protocol ThemePresenter: AnyObject {
 
 /// Invalidates the layout whenever the collection view's bounds change
 @objc open class ThemeBrowserCollectionViewLayout: UICollectionViewFlowLayout {
-    public override init() {
-        super.init()
-        configure()
-    }
-
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configure()
-    }
-
-    private func configure() {
-        // Keep the themes inside the safe area, clear of the iPhone Duo's side strip and the
-        // sensor housing in landscape.
-        sectionInsetReference = .fromSafeArea
-    }
-
     open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         shouldInvalidateForNewBounds(newBounds)
     }
@@ -409,6 +393,13 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
             navigationItem.hidesSearchBarWhenScrolling = true
             isFirstAppearance = false
         }
+    }
+
+    open override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        // The theme insets and card sizes depend on the safe area.
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
 
     open override func viewWillDisappear(_ animated: Bool) {
@@ -768,12 +759,30 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
             if !blog.supports(BlogFeature.customThemes) {
                 return .zero
             }
-            return Styles.themeMargins
+            return themeInsets(in: collectionView)
         case .themes:
-            return Styles.themeMargins
+            return themeInsets(in: collectionView)
         case .info:
             return Styles.infoMargins
         }
+    }
+
+    /// Keeps the themes inside the safe area, clear of the iPhone Duo's side strip and the sensor
+    /// housing in landscape.
+    ///
+    /// The flow layout lays out right-to-left by mirroring its frames across the collection view's
+    /// full width, so the side insets are swapped in right-to-left layouts. This is also why the
+    /// layout's `sectionInsetReference` can't be `.fromSafeArea`: it would put the right-hand inset
+    /// on the left.
+    private func themeInsets(in collectionView: UICollectionView) -> UIEdgeInsets {
+        var safeArea = collectionView.safeAreaInsets
+        if collectionView.effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            swap(&safeArea.left, &safeArea.right)
+        }
+        var insets = Styles.themeMargins
+        insets.left += safeArea.left
+        insets.right += safeArea.right
+        return insets
     }
 
     // MARK: - Search support
