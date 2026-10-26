@@ -51,19 +51,40 @@ extension UISheetPresentationController.Detent {
     public static func alertView<Content: View>(
         hostedBy hostVC: UIHostingController<Content>
     ) -> UISheetPresentationController.Detent {
-        .custom(identifier: .medium) { [weak hostVC] context in
+        let cache = AlertViewHeightCache()
+        return .custom(identifier: .medium) { [weak hostVC] context in
             let halfHeight = context.maximumDetentValue / 2
             let medium = UISheetPresentationController.Detent.medium().resolvedValue(in: context) ?? halfHeight
             guard let hostVC else { return medium }
             // The sheet's width is only known once it has been laid out.
             let width = hostVC.view.bounds.inset(by: hostVC.view.safeAreaInsets).width
             guard width > 0 else { return medium }
-            // Measure with a separate controller, because one on screen adds its safe area to the result.
-            let height = UIHostingController(rootView: hostVC.rootView)
-                .sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
-                .height
+            let sizeCategory = context.containerTraitCollection.preferredContentSizeCategory
+            let height = cache.height(width: width, sizeCategory: sizeCategory) {
+                // Measure with a separate controller, because one on screen adds its safe area to the result.
+                UIHostingController(rootView: hostVC.rootView)
+                    .sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
+                    .height
+            }
             return min(max(medium, height), context.maximumDetentValue)
         }
+    }
+}
+
+/// UIKit resolves a custom detent on every frame while the sheet is dragged, so keep the last
+/// measurement and measure again only when the width or the text size changes.
+@MainActor
+private final class AlertViewHeightCache {
+    private var key: (width: CGFloat, sizeCategory: UIContentSizeCategory)?
+    private var height: CGFloat = 0
+
+    func height(width: CGFloat, sizeCategory: UIContentSizeCategory, measure: () -> CGFloat) -> CGFloat {
+        if let key, key.width == width, key.sizeCategory == sizeCategory {
+            return height
+        }
+        height = measure()
+        key = (width, sizeCategory)
+        return height
     }
 }
 
