@@ -324,8 +324,9 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
     // TODO: refactor this
     func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
         // Make sure the tab bar controller (displayed in compact mode) shows the same blog as the one in split view.
+        // This only keeps the layouts in sync, so it leaves an open editor or Site Creation on screen.
         if let blog = siteContent?.blog, tabBarVC.mySitesCoordinator.currentBlog != siteContent?.blog {
-            tabBarVC.mySitesCoordinator.showBlogDetails(for: blog)
+            tabBarVC.mySitesCoordinator.switchToBlog(blog)
         }
 
         switch sidebarViewModel.selection {

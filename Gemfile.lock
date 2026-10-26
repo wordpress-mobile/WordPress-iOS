@@ -5,7 +5,7 @@ GEM
     abbrev (0.1.2)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    anthropic (1.80.0)
+    anthropic (1.81.0)
       base64 (~> 0.1)
       connection_pool (>= 2, < 4)
       opentelemetry-api (>= 1.2.4, < 2)
@@ -410,7 +410,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anthropic (~> 1.80)
+  anthropic (~> 1.81)
   danger-dangermattic (~> 1.4)
   dotenv
   fastlane (~> 2.241)
