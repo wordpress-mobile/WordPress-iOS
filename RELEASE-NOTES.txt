@@ -1,6 +1,6 @@
 27.5
 -----
-
+* [*] iPad: Fix notices being cut off or covering the tab bar after resizing the app window [#26204]
 
 27.4
 -----
