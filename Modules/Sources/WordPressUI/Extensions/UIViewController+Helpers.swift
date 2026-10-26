@@ -55,12 +55,4 @@ extension UIViewController {
     public static var topViewController: UIViewController? {
         UIApplication.shared.delegate?.window??.topmostPresentedViewController
     }
-
-    /// Whether the app uses its compact layout here, with no list or sidebar shown alongside.
-    ///
-    /// Without a split view, this is always the compact layout, even at a regular width
-    /// (an iPhone Pro Max in landscape, or the iPhone Duo's inner screen).
-    @objc public var splitViewControllerIsHorizontallyCompact: Bool {
-        splitViewController?.hasHorizontallyCompactView() ?? true
-    }
 }

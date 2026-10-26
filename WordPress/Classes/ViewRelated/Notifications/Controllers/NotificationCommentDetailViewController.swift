@@ -136,7 +136,8 @@ private extension NotificationCommentDetailViewController {
     func configureNavBarButtons() {
         var barButtonItems: [UIBarButtonItem] = []
 
-        if splitViewControllerIsHorizontallyCompact {
+        // The list isn't visible next to the details, so show the arrows instead.
+        if splitViewController?.isCollapsed ?? true {
             barButtonItems.append(contentsOf: [previousButton, nextButton])
         }
 
