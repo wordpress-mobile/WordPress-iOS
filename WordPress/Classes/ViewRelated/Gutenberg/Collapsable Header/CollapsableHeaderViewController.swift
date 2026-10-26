@@ -284,6 +284,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             if self.shouldHideAccessoryBar, self.isShowingNoResults {
                 self.disableInitialLayoutHelpers()
                 self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
+            } else {
+                // `updateHeaderDisplay()` gives the header its full height so it can be measured, whatever the
+                // scroll position. Size it for the scroll position again: the next snap, which runs when the size
+                // class changes, reads the header and would otherwise scroll a full header back to the top.
+                self.scrollViewDidScroll(self.scrollableView)
             }
         }
     }
