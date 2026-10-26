@@ -69,6 +69,14 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
         let buttons = [customizeButton, detailsButton, supportButton]
         buttons.forEach { $0?.isExclusiveTouch = true }
 
+        // Keep the current theme card inside the safe area, like the theme cards below it. The
+        // storyboard's side constraints are removed at build time.
+        let margin = WPStyleGuide.Themes.columnMargin
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: margin),
+            safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: margin)
+        ])
+
         applyStyles()
         setTextForLabels()
     }
