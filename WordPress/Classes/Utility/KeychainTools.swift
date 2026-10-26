@@ -69,7 +69,9 @@ final class KeychainTools: NSObject {
 
     static fileprivate func removeAllKeychainItems() {
         let query: [NSString: AnyObject] = [
-            kSecClass: kSecClassGenericPassword
+            kSecClass: kSecClassGenericPassword,
+            // Include items that sync through iCloud Keychain, such as application passwords.
+            kSecAttrSynchronizable: kSecAttrSynchronizableAny
         ]
         let status = SecItemDelete(query as CFDictionary)
         switch status {

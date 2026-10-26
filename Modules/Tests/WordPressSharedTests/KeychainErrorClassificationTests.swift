@@ -30,6 +30,17 @@ struct KeychainErrorClassificationTests {
         #expect(keychainErrorCode(error: error) == errSecMissingEntitlement)
     }
 
+    @Test func osStatusFailureIsReal() {
+        let error = NSError(domain: NSOSStatusErrorDomain, code: Int(errSecInteractionNotAllowed))
+        #expect(isRealKeychainFailure(error))
+        #expect(keychainErrorCode(error: error) == errSecInteractionNotAllowed)
+    }
+
+    @Test func osStatusNotFoundIsBenign() {
+        let error = NSError(domain: NSOSStatusErrorDomain, code: Int(errSecItemNotFound))
+        #expect(!isRealKeychainFailure(error))
+    }
+
     @Test func keychainErrorCodeIsNilForForeignDomain() {
         let error = NSError(domain: NSCocoaErrorDomain, code: Int(errSecMissingEntitlement))
         #expect(keychainErrorCode(error: error) == nil)
