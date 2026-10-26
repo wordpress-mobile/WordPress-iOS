@@ -287,7 +287,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// `viewDidAppear(_:)` to quickly refresh the navigation bar so that it's expanded.
     ///
     private func workaroundLargeTitleCollapseBug() {
-        guard !splitViewControllerIsHorizontallyCompact else {
+        guard splitViewController?.isCollapsed == false else {
             return
         }
 
@@ -400,7 +400,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             : viewModel.getSection(
                 for: blog,
                 jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-                splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
+                showsSingleColumn: splitViewController?.isCollapsed ?? true
             )
 
         self.currentSection = section
