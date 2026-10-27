@@ -4,6 +4,8 @@
 * [*] iPad: Fix an open editor or Site Creation closing the first time the window is narrowed [#26223]
 * [*] Fix the preview of a self-hosted post opened from Spotlight closing a second after it opens [#26223]
 * [*] iPad: Fix notices being cut off or covering the tab bar after resizing the app window [#26204]
+* [*] Reader: Fix the spacing around headings in posts [#26170]
+* [*] Stats: Fix the back button missing on iPhone Duo and on Plus and Pro Max iPhones in landscape [#26207]
 
 
 27.4
