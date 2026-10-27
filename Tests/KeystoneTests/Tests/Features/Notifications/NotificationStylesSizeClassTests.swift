@@ -2,6 +2,7 @@ import Testing
 import UIKit
 @testable import WordPress
 @testable import FormattableContentKit
+import WordPressSharedUI
 
 @MainActor
 @Suite("Notification styles follow the window's horizontal size class")
@@ -42,6 +43,15 @@ struct NotificationStylesSizeClassTests {
         let font = try #require(text.attribute(.font, at: 0, effectiveRange: nil) as? UIFont)
         #expect(font.fontName == "Noticons")
         #expect(font.pointSize == iconSize)
+    }
+
+    @Test("fonts and paragraph styles are built once per size class", arguments: [UIUserInterfaceSizeClass.compact, .regular])
+    func stylesAreReused(sizeClass: UIUserInterfaceSizeClass) throws {
+        typealias Style = WPStyleGuide.Notifications
+        #expect(Style.contentBlockRegularFont(for: sizeClass) === Style.contentBlockRegularFont(for: sizeClass))
+        let first = try #require(Style.contentBlockRegularStyle(for: sizeClass)[.paragraphStyle] as? NSParagraphStyle)
+        let second = try #require(Style.contentBlockRegularStyle(for: sizeClass)[.paragraphStyle] as? NSParagraphStyle)
+        #expect(first === second)
     }
 
     @Test("one formatter keeps a separate cached rendering for each size class")

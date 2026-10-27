@@ -160,23 +160,23 @@ extension WPStyleGuide {
 
         // Blocks
         public static func contentBlockRegularFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            WPFontManager.notoRegularFont(ofSize: blockFontSize(for: sizeClass))
+            SizeClassResources.for(sizeClass).contentBlockRegularFont
         }
 
         public static func contentBlockBoldFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            WPFontManager.notoBoldFont(ofSize: blockFontSize(for: sizeClass))
+            SizeClassResources.for(sizeClass).contentBlockBoldFont
         }
 
         public static func contentBlockItalicFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            WPFontManager.notoItalicFont(ofSize: blockFontSize(for: sizeClass))
+            SizeClassResources.for(sizeClass).contentBlockItalicFont
         }
 
         public static func blockRegularFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            WPFontManager.systemRegularFont(ofSize: blockFontSize(for: sizeClass))
+            SizeClassResources.for(sizeClass).blockRegularFont
         }
 
         public static func blockBoldFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            WPFontManager.systemSemiBoldFont(ofSize: blockFontSize(for: sizeClass))
+            SizeClassResources.for(sizeClass).blockBoldFont
         }
 
         public static let blockTextColor = UIColor.label
@@ -333,34 +333,22 @@ extension WPStyleGuide {
 
         // ParagraphStyle's
         fileprivate static func subjectParagraph(for sizeClass: UIUserInterfaceSizeClass) -> NSParagraphStyle {
-            NSMutableParagraphStyle(
-                minLineHeight: subjectLineSize(for: sizeClass), lineBreakMode: .byWordWrapping, alignment: .natural
-            )
+            SizeClassResources.for(sizeClass).subjectParagraph
         }
         fileprivate static func snippetParagraph(for sizeClass: UIUserInterfaceSizeClass) -> NSParagraphStyle {
-            NSMutableParagraphStyle(
-                minLineHeight: snippetLineSize(for: sizeClass), lineBreakMode: .byWordWrapping, alignment: .natural
-            )
+            SizeClassResources.for(sizeClass).snippetParagraph
         }
         fileprivate static func snippetHeaderParagraph(for sizeClass: UIUserInterfaceSizeClass) -> NSParagraphStyle {
-            NSMutableParagraphStyle(
-                minLineHeight: snippetLineSize(for: sizeClass), lineBreakMode: .byTruncatingTail, alignment: .natural
-            )
+            SizeClassResources.for(sizeClass).snippetHeaderParagraph
         }
         fileprivate static func blockParagraph(for sizeClass: UIUserInterfaceSizeClass) -> NSParagraphStyle {
-            NSMutableParagraphStyle(
-                minLineHeight: blockLineSize(for: sizeClass), lineBreakMode: .byWordWrapping, alignment: .natural
-            )
+            SizeClassResources.for(sizeClass).blockParagraph
         }
         fileprivate static func contentBlockParagraph(for sizeClass: UIUserInterfaceSizeClass) -> NSParagraphStyle {
-            NSMutableParagraphStyle(
-                minLineHeight: contentBlockLineSize(for: sizeClass), lineBreakMode: .byWordWrapping, alignment: .natural
-            )
+            SizeClassResources.for(sizeClass).contentBlockParagraph
         }
         fileprivate static func badgeParagraph(for sizeClass: UIUserInterfaceSizeClass) -> NSParagraphStyle {
-            NSMutableParagraphStyle(
-                minLineHeight: blockLineSize(for: sizeClass), lineBreakMode: .byWordWrapping, alignment: .center
-            )
+            SizeClassResources.for(sizeClass).badgeParagraph
         }
 
         // Colors
@@ -383,7 +371,7 @@ extension WPStyleGuide {
         }
 
         fileprivate static func subjectNoticonFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            UIFont(name: "Noticons", size: subjectNoticonSize(for: sizeClass))!
+            SizeClassResources.for(sizeClass).subjectNoticonFont
         }
 
         fileprivate static func headerTitleRegularFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
@@ -395,7 +383,7 @@ extension WPStyleGuide {
         }
 
         fileprivate static func blockItalicsFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
-            WPFontManager.systemItalicFont(ofSize: blockFontSize(for: sizeClass))
+            SizeClassResources.for(sizeClass).blockItalicsFont
         }
 
         fileprivate static func blockNoticonFont(for sizeClass: UIUserInterfaceSizeClass) -> UIFont {
@@ -427,5 +415,66 @@ extension UIFont {
     private func withWeight(_ weight: UIFont.Weight) -> UIFont {
         let descriptor = fontDescriptor.addingAttributes([.traits: [UIFontDescriptor.TraitKey.weight: weight]])
         return UIFont(descriptor: descriptor, size: 0)
+    }
+}
+
+/// The fonts and paragraph styles of `WPStyleGuide.Notifications` for one horizontal size class.
+///
+/// Built once per size class: notification rows and detail blocks ask for them on every render.
+private struct SizeClassResources {
+    let subjectParagraph: NSParagraphStyle
+    let snippetParagraph: NSParagraphStyle
+    let snippetHeaderParagraph: NSParagraphStyle
+    let blockParagraph: NSParagraphStyle
+    let contentBlockParagraph: NSParagraphStyle
+    let badgeParagraph: NSParagraphStyle
+
+    let subjectNoticonFont: UIFont
+    let contentBlockRegularFont: UIFont
+    let contentBlockBoldFont: UIFont
+    let contentBlockItalicFont: UIFont
+    let blockRegularFont: UIFont
+    let blockBoldFont: UIFont
+    let blockItalicsFont: UIFont
+
+    private static let regular = SizeClassResources(sizeClass: .regular)
+    private static let compact = SizeClassResources(sizeClass: .compact)
+
+    /// The resources for a size class; anything but `.regular` gets the compact ones.
+    static func `for`(_ sizeClass: UIUserInterfaceSizeClass) -> SizeClassResources {
+        sizeClass == .regular ? regular : compact
+    }
+
+    private init(sizeClass: UIUserInterfaceSizeClass) {
+        typealias Style = WPStyleGuide.Notifications
+        func paragraph(lineHeight: CGFloat, lineBreakMode: NSLineBreakMode, alignment: NSTextAlignment) -> NSParagraphStyle {
+            NSMutableParagraphStyle(minLineHeight: lineHeight, lineBreakMode: lineBreakMode, alignment: alignment)
+        }
+        let subjectLineSize = Style.subjectLineSize(for: sizeClass)
+        let snippetLineSize = Style.snippetLineSize(for: sizeClass)
+        let blockLineSize = Style.blockLineSize(for: sizeClass)
+        subjectParagraph = paragraph(lineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .natural)
+        snippetParagraph = paragraph(lineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural)
+        snippetHeaderParagraph = paragraph(
+            lineHeight: snippetLineSize,
+            lineBreakMode: .byTruncatingTail,
+            alignment: .natural
+        )
+        blockParagraph = paragraph(lineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural)
+        contentBlockParagraph = paragraph(
+            lineHeight: Style.contentBlockLineSize(for: sizeClass),
+            lineBreakMode: .byWordWrapping,
+            alignment: .natural
+        )
+        badgeParagraph = paragraph(lineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center)
+
+        let blockFontSize = Style.blockFontSize(for: sizeClass)
+        subjectNoticonFont = UIFont(name: "Noticons", size: Style.subjectNoticonSize(for: sizeClass))!
+        contentBlockRegularFont = WPFontManager.notoRegularFont(ofSize: blockFontSize)
+        contentBlockBoldFont = WPFontManager.notoBoldFont(ofSize: blockFontSize)
+        contentBlockItalicFont = WPFontManager.notoItalicFont(ofSize: blockFontSize)
+        blockRegularFont = WPFontManager.systemRegularFont(ofSize: blockFontSize)
+        blockBoldFont = WPFontManager.systemSemiBoldFont(ofSize: blockFontSize)
+        blockItalicsFont = WPFontManager.systemItalicFont(ofSize: blockFontSize)
     }
 }
