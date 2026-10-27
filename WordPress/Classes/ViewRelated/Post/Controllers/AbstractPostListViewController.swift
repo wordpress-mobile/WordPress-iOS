@@ -658,7 +658,7 @@ class AbstractPostListViewController: UIViewController,
         // If the button title changes we should also update the title here.
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
         let navWrapper = UINavigationController(rootViewController: controller)
-        if navigationController?.traitCollection.userInterfaceIdiom == .pad {
+        if navigationController?.view.window?.traitCollection.horizontalSizeClass == .regular {
             navWrapper.modalPresentationStyle = .fullScreen
         }
         navigationController?.present(navWrapper, animated: true)

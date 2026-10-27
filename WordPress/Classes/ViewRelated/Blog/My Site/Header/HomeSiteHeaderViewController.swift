@@ -261,7 +261,7 @@ extension HomeSiteHeaderViewController {
 
         let navigationController = UINavigationController(rootViewController: webViewController)
 
-        if traitCollection.userInterfaceIdiom == .pad {
+        if view.window?.traitCollection.horizontalSizeClass == .regular {
             navigationController.modalPresentationStyle = .fullScreen
         }
 

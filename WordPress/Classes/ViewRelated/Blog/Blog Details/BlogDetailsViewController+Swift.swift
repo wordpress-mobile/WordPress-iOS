@@ -374,7 +374,8 @@ extension BlogDetailsViewController {
         )
 
         let navigationController = UINavigationController(rootViewController: webViewController)
-        if traitCollection.userInterfaceIdiom == .pad {
+        // Ask the window: on a full-screen iPad the site menu is a compact split view column.
+        if view.window?.traitCollection.horizontalSizeClass == .regular {
             navigationController.modalPresentationStyle = .fullScreen
         }
         present(navigationController, animated: true, completion: nil)

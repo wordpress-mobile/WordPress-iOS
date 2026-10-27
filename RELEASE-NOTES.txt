@@ -5,6 +5,7 @@
 * [*] Fix the preview of a self-hosted post opened from Spotlight closing a second after it opens [#26223]
 * [*] iPad: Fix notices being cut off or covering the tab bar after resizing the app window [#26204]
 * [*] Reader: Fix the spacing around headings in posts [#26170]
+* [**] iPad: Screens now adapt to the app window's size in split view and Stage Manager, not the device type [#26201]
 
 
 27.4

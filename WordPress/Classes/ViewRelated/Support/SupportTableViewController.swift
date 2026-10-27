@@ -83,7 +83,7 @@ class SupportTableViewController: UITableViewController {
     func show(from presentingViewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: self)
 
-        if WPDeviceIdentification.isiPad() {
+        if presentingViewController.view.window?.traitCollection.horizontalSizeClass == .regular {
             navigationController.modalTransitionStyle = .crossDissolve
             navigationController.modalPresentationStyle = .formSheet
         }
@@ -95,17 +95,15 @@ class SupportTableViewController: UITableViewController {
     func showFromTabBar() {
         let navigationController = UINavigationController(rootViewController: self)
 
-        if WPDeviceIdentification.isiPad() {
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
+        let presentingViewController = rootViewController.presentedViewController ?? rootViewController
+
+        if presentingViewController.view.window?.traitCollection.horizontalSizeClass == .regular {
             navigationController.modalTransitionStyle = .crossDissolve
             navigationController.modalPresentationStyle = .formSheet
         }
 
-        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
-        if let presentedVC = rootViewController.presentedViewController {
-            presentedVC.present(navigationController, animated: true)
-        } else {
-            rootViewController.present(navigationController, animated: true)
-        }
+        presentingViewController.present(navigationController, animated: true)
     }
 
     // MARK: - Button Actions

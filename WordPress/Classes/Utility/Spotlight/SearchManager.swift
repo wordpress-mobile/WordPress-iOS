@@ -463,7 +463,8 @@ fileprivate extension SearchManager {
         controller.trackOpenEvent()
         let navWrapper = UINavigationController(rootViewController: controller)
         let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
-        if rootViewController.traitCollection.userInterfaceIdiom == .pad {
+        // A page sheet floats as a narrow card in a regular-width window; the preview wants the whole window.
+        if rootViewController.view.window?.traitCollection.horizontalSizeClass == .regular {
             navWrapper.modalPresentationStyle = .fullScreen
         }
         rootViewController.present(navWrapper, animated: true)
