@@ -38,9 +38,13 @@ class NoticePresenter {
         let notice: Notice
         let containerView: NoticeContainerView?
     }
-    /// Used to determine if the keyboard is currently shown and what its height is.
+    /// Used to determine if the keyboard is currently shown and where it is.
     private enum KeyboardPresentation {
-        case present(height: CGFloat)
+        /// - Parameters:
+        ///   - frame: The keyboard's end frame, in the coordinate space of the screen that posted it.
+        ///   - screenCoordinateSpace: That screen's coordinate space, or `nil` if the notification
+        ///     didn't say which screen the keyboard is on.
+        case present(frame: CGRect, screenCoordinateSpace: UICoordinateSpace?)
         case notPresent
     }
 
@@ -59,6 +63,10 @@ class NoticePresenter {
     private var currentKeyboardPresentation: KeyboardPresentation = .notPresent
 
     private var notificationObservers = Set<AnyCancellable>()
+
+    /// Watches the size of the scene the notice window is attached to, so a notice on screen
+    /// follows the app window when it's resized (split view, Stage Manager).
+    private var sceneGeometryObservation: NSKeyValueObservation?
 
     /// Set when a foreground notice could not be presented because no scene was
     /// connected (e.g. during launch). The notice stays at the head of the queue
@@ -95,6 +103,12 @@ class NoticePresenter {
 
     // MARK: - Events
 
+    // TODO: Replace these observers with the notice window's `keyboardLayoutGuide`:
+    // constrain the notice container's bottom to
+    // `untouchableViewController.view.keyboardLayoutGuide.topAnchor` instead of
+    // tracking the keyboard height here. Not done in this pass because the same
+    // height also feeds the off-screen start/end positions of the show/hide
+    // animations and the tab bar offset, so the swap touches the animator too.
     private func listenToKeyboardEvents() {
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillShowNotification)
@@ -107,7 +121,13 @@ class NoticePresenter {
                     return
                 }
 
-                self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
+                // Keep the frame in screen coordinates: how much of the notice window it covers
+                // is worked out when a notice is laid out (`keyboardHeight`), once the window
+                // exists and has the app window's current size.
+                self.currentKeyboardPresentation = .present(
+                    frame: keyboardFrameValue.cgRectValue,
+                    screenCoordinateSpace: (notification.object as? UIScreen)?.coordinateSpace
+                )
 
                 guard let currentContainer = self.currentNoticePresentation?.containerView else {
                     return
@@ -335,7 +355,10 @@ class NoticePresenter {
             // Reattach the cached window so it isn't bound to a dead scene.
             if let scene = UIApplication.shared.mainWindow?.windowScene, window.windowScene !== scene {
                 window.windowScene = scene
+                observeGeometry(of: scene)
             }
+            // The app window may have been resized since the last notice.
+            matchAppWindow(window)
             return window
         }
         guard let mainWindow = UIApplication.shared.mainWindow,
@@ -345,6 +368,7 @@ class NoticePresenter {
         }
         let window = UntouchableWindow(windowScene: windowScene)
         window.frame = mainWindow.offsetToAvoidStatusBar()
+        observeGeometry(of: windowScene)
 
         // this window level may affect some UI elements like share sheets.
         // however, since the alerts aren't permanently on screen, this isn't
@@ -354,6 +378,41 @@ class NoticePresenter {
 
         self.window = window
         return window
+    }
+
+    /// Gives the notice window the app window's current frame and size class.
+    private func matchAppWindow(_ window: UntouchableWindow) {
+        // The notice window has an explicit frame, so it doesn't follow the app window by itself.
+        if let mainWindow = UIApplication.shared.mainWindow {
+            window.frame = mainWindow.offsetToAvoidStatusBar()
+        }
+        // UIKit passes a new size class down to the window's views at their next layout, and the
+        // notice window may not have been laid out since the resize. A notice reads the size class
+        // when it's built, so pass it down now.
+        window.updateTraitsIfNeeded()
+    }
+
+    private func observeGeometry(of windowScene: UIWindowScene) {
+        sceneGeometryObservation = windowScene.observe(\.effectiveGeometry) { [weak self] _, _ in
+            // Handle it on the next turn of the main queue, after UIKit has resized the app window.
+            DispatchQueue.main.async {
+                self?.appWindowDidResize()
+            }
+        }
+    }
+
+    /// Lays out the notice on screen again after the app window is resized.
+    private func appWindowDidResize() {
+        guard let window, !window.isHidden, let container = currentNoticePresentation?.containerView else {
+            return
+        }
+        matchAppWindow(window)
+        // The keyboard may now cover more or less of the window.
+        container.bottomConstraint?.constant = onScreenNoticeContainerBottomConstraintConstant
+        let view: UIView = window.untouchableViewController.view
+        view.mask?.setNeedsLayout()
+        view.mask?.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
 
     private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView, in view: UIView) {
@@ -421,22 +480,58 @@ class NoticePresenter {
 
     // MARK: - Animations
 
-    private var onScreenNoticeContainerBottomConstraintConstant: CGFloat {
-        switch self.currentKeyboardPresentation {
-        case .present(let keyboardHeight):
-            return -keyboardHeight
-        case .notPresent:
-            return -(window?.untouchableViewController.offsetOnscreen ?? 0)
+    /// How much of the notice window the keyboard covers, or `nil` if the keyboard is hidden.
+    ///
+    /// The window may not fill the screen (split view, Stage Manager), so the keyboard can cover
+    /// only part of it, or none of it.
+    private var keyboardHeight: CGFloat? {
+        guard case .present(let frame, let screenCoordinateSpace) = currentKeyboardPresentation else {
+            return nil
         }
+        guard let window, let screenCoordinateSpace else {
+            return frame.height
+        }
+        return Self.keyboardOverlap(
+            keyboardFrame: screenCoordinateSpace.convert(frame, to: window),
+            windowBounds: window.bounds
+        )
+    }
+
+    private var onScreenNoticeContainerBottomConstraintConstant: CGFloat {
+        -Self.onScreenBottomInset(
+            keyboardOverlap: keyboardHeight,
+            tabBarHeight: window?.untouchableViewController.offsetOnscreen ?? 0
+        )
+    }
+
+    /// How much of a window the keyboard covers.
+    ///
+    /// - Parameters:
+    ///   - keyboardFrame: The keyboard's frame, in the window's coordinate space.
+    ///   - windowBounds: The window's bounds.
+    static func keyboardOverlap(keyboardFrame: CGRect, windowBounds: CGRect) -> CGFloat {
+        // Only the part inside the window counts. A keyboard that isn't docked at the bottom of
+        // the screen can report a frame anywhere, for example `.zero`.
+        windowBounds.intersection(keyboardFrame).height
+    }
+
+    /// How far above the bottom of the notice window a notice on screen sits.
+    ///
+    /// - Parameters:
+    ///   - keyboardOverlap: How much of the window the keyboard covers, or `nil` if it's hidden.
+    ///   - tabBarHeight: The height of the tab bar at the bottom of the window. The notice
+    ///     window's mask always hides that strip (`MaskView`).
+    static func onScreenBottomInset(keyboardOverlap: CGFloat?, tabBarHeight: CGFloat) -> CGFloat {
+        // A keyboard that covers less of the window than the tab bar would leave the notice in
+        // the masked strip, partly or fully hidden.
+        max(keyboardOverlap ?? 0, tabBarHeight)
     }
 
     private func offScreenNoticeContainerBottomOffset(for container: UIView) -> CGFloat {
-        switch self.currentKeyboardPresentation {
-        case .present(let keyboardHeight):
+        if let keyboardHeight {
             return -keyboardHeight + container.bounds.height
-        case .notPresent:
-            return window?.untouchableViewController.offsetOffscreen ?? 0
         }
+        return window?.untouchableViewController.offsetOffscreen ?? 0
     }
 
     private enum Animations {
