@@ -1,3 +1,27 @@
+GIT
+  remote: https://github.com/wordpress-mobile/release-toolkit
+  revision: d4fca181c5b4b876deb929d07d4b13ff69b6d9c5
+  ref: d4fca181c5b4b876deb929d07d4b13ff69b6d9c5
+  specs:
+    fastlane-plugin-wpmreleasetoolkit (15.1.0)
+      buildkit (~> 1.5)
+      chroma (= 0.2.0)
+      diffy (~> 3.3)
+      dotenv (~> 2.8)
+      fastlane (~> 2.240)
+      gettext (~> 3.5)
+      git (~> 1.3)
+      google-cloud-storage (~> 1.31)
+      java-properties (~> 0.3.0)
+      nokogiri (~> 1.19, >= 1.19.4)
+      octokit (~> 6.1)
+      parallel (~> 1.14)
+      plist (~> 3.1)
+      progress_bar (~> 1.3)
+      rake (>= 12.3, < 14.0)
+      rake-compiler (~> 1.0)
+      xcodeproj (~> 1.22)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -168,24 +192,6 @@ GEM
       google-apis-firebaseappdistribution_v1alpha (>= 0.12.0)
     fastlane-plugin-sentry (2.8.0)
       os (~> 1.1, >= 1.1.4)
-    fastlane-plugin-wpmreleasetoolkit (15.1.0)
-      buildkit (~> 1.5)
-      chroma (= 0.2.0)
-      diffy (~> 3.3)
-      dotenv (~> 2.8)
-      fastlane (~> 2.240)
-      gettext (~> 3.5)
-      git (~> 1.3)
-      google-cloud-storage (~> 1.31)
-      java-properties (~> 0.3.0)
-      nokogiri (~> 1.19, >= 1.19.4)
-      octokit (~> 6.1)
-      parallel (~> 1.14)
-      plist (~> 3.1)
-      progress_bar (~> 1.3)
-      rake (>= 12.3, < 14.0)
-      rake-compiler (~> 1.0)
-      xcodeproj (~> 1.22)
     fastlane-sirp (1.1.0)
     fiddle (1.1.8)
     forwardable (1.4.0)
@@ -416,7 +422,7 @@ DEPENDENCIES
   fastlane (~> 2.241)
   fastlane-plugin-firebase_app_distribution (~> 1.0)
   fastlane-plugin-sentry
-  fastlane-plugin-wpmreleasetoolkit (~> 15.1)
+  fastlane-plugin-wpmreleasetoolkit!
   rake
   rmagick (~> 7.2)
   rubocop (~> 1.92)
