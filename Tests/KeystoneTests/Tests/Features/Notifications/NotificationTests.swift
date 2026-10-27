@@ -36,7 +36,7 @@ class NotificationTests: CoreDataTestCase {
 
         XCTAssert(note.subjectContentGroup?.blocks.count == 1)
         XCTAssertNotNil(note.subjectContentGroup?.blocks.first)
-        XCTAssertNotNil(note.renderSubject())
+        XCTAssertNotNil(note.renderSubject(horizontalSizeClass: .compact))
     }
 
     func testBadgeNotificationContainsOneImageContentGroup() throws {
@@ -152,8 +152,8 @@ class NotificationTests: CoreDataTestCase {
     func testCommentNotificationRendersSubjectWithSnippet() throws {
         let note = try loadCommentNotification()
 
-        XCTAssertNotNil(note.renderSubject())
-        XCTAssertNotNil(note.renderSnippet())
+        XCTAssertNotNil(note.renderSubject(horizontalSizeClass: .compact))
+        XCTAssertNotNil(note.renderSnippet(horizontalSizeClass: .compact))
     }
 
     func testCommentNotificationContainsHeaderContent() throws {

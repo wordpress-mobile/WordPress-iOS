@@ -9,8 +9,9 @@ extension ListTableViewCell {
         indicatorColor = Style.unreadIndicatorColor
         showsIndicator = !notification.read
         configureImage(with: notification.iconURL)
-        attributedTitleText = notification.renderSubject()
-        snippetText = notification.renderSnippet()?.string ?? String()
+        let horizontalSizeClass = (window ?? self).traitCollection.horizontalSizeClass
+        attributedTitleText = notification.renderSubject(horizontalSizeClass: horizontalSizeClass)
+        snippetText = notification.renderSnippet(horizontalSizeClass: horizontalSizeClass)?.string ?? String()
     }
 
     /// Toggles an overlay view that presents an undo option for the user.
