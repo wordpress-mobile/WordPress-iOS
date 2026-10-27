@@ -7,7 +7,7 @@ struct StoreSandboxSecretScreen: View {
     private let cookieJar: HTTPCookieStorage
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading) {
                 Text(verbatim: "Enter the Store Sandbox Cookie Secret:")
                 TextField("Secret", text: $secret)

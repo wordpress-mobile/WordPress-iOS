@@ -54,7 +54,7 @@ struct ApplicationTokenListView: View {
             }
         }
         .sheet(isPresented: $isShowingInfo) {
-            NavigationView {
+            NavigationStack {
                 ApplicationPasswordsInfoView()
             }
         }
