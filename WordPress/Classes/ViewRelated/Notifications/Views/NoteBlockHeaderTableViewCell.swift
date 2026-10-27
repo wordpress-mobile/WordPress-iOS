@@ -101,6 +101,6 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
     override func refreshSeparators() {
         separatorsView.bottomVisible = true
-        separatorsView.bottomInsets = UIEdgeInsets.zero
+        separatorsView.bottomInsets = fullSeparatorInsets
     }
 }

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class ReaderStreamBaseCell: UITableViewCell {
     static let insets = UIEdgeInsets(top: 0, left: 46, bottom: 0, right: 16)
@@ -35,7 +36,13 @@ class ReaderStreamBaseCell: UITableViewCell {
     }
 
     private func updateSeparatorsInsets() {
-        separatorInset = UIEdgeInsets(.leading, isSeparatorHidden ? 9999 : Self.insets.left + (isCompact ? 0 : contentView.readableContentGuide.layoutFrame.minX))
+        if isSeparatorHidden {
+            separatorInset = UIEdgeInsets(.leading, 9999)
+        } else {
+            separatorInset = separatorInsets(
+                leading: Self.insets.left + (isCompact ? 0 : contentView.readableContentGuide.layoutFrame.minX)
+            )
+        }
     }
 
     func didUpdateCompact(_ isCompact: Bool) {
