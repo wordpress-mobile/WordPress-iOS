@@ -152,6 +152,13 @@
         "identifier" : "4A8280FC2E5FE9B60037E180",
         "name" : "WordPressKitTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "765836562697A5DAAC03C8CA",
+        "name" : "ShareExtensionTests"
+      }
     }
   ],
   "version" : 1
