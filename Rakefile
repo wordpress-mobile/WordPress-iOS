@@ -448,14 +448,7 @@ def check_dependencies_hook
   end
 end
 
-# Runs SwiftLint via the BuildTools package plugin, which pins the SwiftLint version
-# to `swiftlint_version` in .swiftlint.yml. With no paths, lints the whole project.
-# SDKROOT is pinned to the macOS SDK so the plugin builds even when invoked from an
-# environment that targets iOS (e.g. an Xcode run script phase).
+# See Scripts/swiftlint.sh, which the SwiftLint build phase also calls.
 def run_swiftlint(paths: [], extra_args: [])
-  sh({ 'SDKROOT' => `xcrun --sdk macosx --show-sdk-path`.strip },
-     'swift', 'package', '--package-path', 'BuildTools', 'plugin',
-     '--allow-writing-to-directory', PROJECT_DIR, '--allow-writing-to-package-directory',
-     'swiftlint', '--working-directory', PROJECT_DIR, '--quiet',
-     *extra_args, *paths.map { |path| File.expand_path(path) })
+  sh(File.join(PROJECT_DIR, 'Scripts', 'swiftlint.sh'), *extra_args, *paths.map { |path| File.expand_path(path) })
 end
