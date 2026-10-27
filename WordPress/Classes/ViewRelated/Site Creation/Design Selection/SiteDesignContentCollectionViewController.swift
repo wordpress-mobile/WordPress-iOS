@@ -33,8 +33,17 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     private var ghostThumbnailSize: CGSize {
-        SiteDesignCategoryThumbnailSize.recommended.value(for: traitCollection)
+        SiteDesignCategoryThumbnailSize.recommended.value(for: windowSizeClass)
     }
+
+    /// The thumbnail sizes follow the window's horizontal size class: this screen is a page sheet, which
+    /// reports a compact size class in a wide iPad window.
+    private var windowSizeClass: UIUserInterfaceSizeClass {
+        viewIfLoaded?.window?.traitCollection.horizontalSizeClass ?? traitCollection.horizontalSizeClass
+    }
+
+    /// The window's horizontal size class at the last layout pass, to lay out the rows again when it changes.
+    private var laidOutWindowSizeClass: UIUserInterfaceSizeClass?
 
     // MARK: Helper Footer View
     override var allowCustomTableFooterView: Bool {
@@ -175,18 +184,26 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             self.helperSeparator.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
             self.helperContentView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
+    }
 
-        // The thumbnail sizes follow the horizontal size class. The designs that are already loaded are laid
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        // The page sheet's own size class doesn't change when the window is resized, but the sheet is laid
+        // out again. When the window's size class has changed, the designs that are already loaded are laid
         // out again at the new sizes, in the same order, without a new request. Their previews keep the size
         // they were requested at: the two sizes differ by 23 pt in width, and the thumbnails crop the previews
         // to fill.
-        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
-            if let sectionAssembler = self.sectionAssembler {
-                self.sections = sectionAssembler(self.creator.vertical, self.traitCollection)
+        guard view.window != nil else { return }
+        let sizeClass = windowSizeClass
+        if let laidOutWindowSizeClass, laidOutWindowSizeClass != sizeClass {
+            if let sectionAssembler {
+                sections = sectionAssembler(creator.vertical, sizeClass)
             }
-            self.contentSizeWillChange()
-            self.tableView.reloadData()
+            contentSizeWillChange()
+            tableView.reloadData()
         }
+        laidOutWindowSizeClass = sizeClass
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -228,7 +245,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func fetchSiteDesigns() {
         if let sectionAssembler {
-            showSections(sectionAssembler(creator.vertical, traitCollection))
+            showSections(sectionAssembler(creator.vertical, windowSizeClass))
             return
         }
 
@@ -240,9 +257,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         isLoading = true
 
-        let traitCollection = traitCollection
+        let windowSizeClass = self.windowSizeClass
         DispatchQueue.main.async { [weak self] in
-            SiteDesignSectionLoader.buildAssembler(scale: scale, traitCollection: traitCollection) { result in
+            SiteDesignSectionLoader.buildAssembler(scale: scale, windowSizeClass: windowSizeClass) { result in
                 guard let self else { return }
 
                 switch result {
@@ -250,7 +267,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                     self.sectionAssembler = assembler
                     self.dismissNoResultsController()
                     // The current size class, which can differ from the one the request was made for.
-                    self.showSections(assembler(self.creator.vertical, self.traitCollection))
+                    self.showSections(assembler(self.creator.vertical, self.windowSizeClass))
                     self.setupHelperView()
                 case .failure(let error):
                     self.handleError(error)

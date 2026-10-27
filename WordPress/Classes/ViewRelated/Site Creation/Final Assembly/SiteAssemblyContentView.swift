@@ -26,9 +26,12 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the completion label as it animates into place.
     private var completionLabelTopConstraint: NSLayoutConstraint?
 
-    /// The constraints anchored to `prevailingLayoutGuide`, which follows the horizontal size class.
+    /// The constraints anchored to `prevailingLayoutGuide`, which follows the window's horizontal size class.
     /// They are rebuilt whenever that size class changes.
     private var layoutGuideConstraints: [NSLayoutConstraint] = []
+
+    /// The window's horizontal size class when `layoutGuideConstraints` were last installed.
+    private var installedWindowSizeClass: UIUserInterfaceSizeClass?
 
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
@@ -299,6 +302,12 @@ final class SiteAssemblyContentView: UIView {
     }
 
     override func layoutSubviews() {
+        // `prevailingLayoutGuide` is unresolved until the view is in a window, and changes with the window's
+        // horizontal size class. This view's own size class stays compact in a page sheet, so check on layout.
+        if installedWindowSizeClass != (window ?? self).traitCollection.horizontalSizeClass {
+            installLayoutGuideConstraints()
+        }
+
         super.layoutSubviews()
 
         switch status {
@@ -336,18 +345,13 @@ final class SiteAssemblyContentView: UIView {
             statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         installLayoutGuideConstraints()
-
-        // `prevailingLayoutGuide` is unresolved until the view is in a window and changes with the
-        // horizontal size class, so the constraints anchored to it are rebuilt on each change.
-        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
-            self.installLayoutGuideConstraints()
-        }
     }
 
     /// (Re)creates every constraint anchored to `prevailingLayoutGuide`, carrying over the current
     /// constants of the animated top and bottom constraints.
     private func installLayoutGuideConstraints() {
         NSLayoutConstraint.deactivate(layoutGuideConstraints)
+        installedWindowSizeClass = (window ?? self).traitCollection.horizontalSizeClass
         let layoutGuide = prevailingLayoutGuide
 
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
