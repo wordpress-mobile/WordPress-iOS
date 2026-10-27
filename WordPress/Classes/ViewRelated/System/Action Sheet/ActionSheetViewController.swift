@@ -97,10 +97,13 @@ class ActionSheetViewController: UIViewController {
             return button(buttonInfo)
         })
 
+        // The buttons set the width of the scroll view's content, so match the scroll view, which
+        // stays inside the safe area. Otherwise the content is wider than the scroll view on the
+        // iPhone Duo's outer screen, and the header is cut off.
         let buttonConstraints = buttonViews.flatMap { button in
             [
                 button.heightAnchor.constraint(equalToConstant: Constants.Button.height),
-                button.widthAnchor.constraint(equalTo: view.widthAnchor),
+                button.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             ]
         }
 
