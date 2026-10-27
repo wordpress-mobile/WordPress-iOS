@@ -123,7 +123,7 @@ extension CommentDetailInfoViewController {
 
     private func makeCloseButton() -> UIBarButtonItem {
         UIBarButtonItem(
-            title: SharedStrings.Button.close,
+            systemItem: .close,
             primaryAction: UIAction { [weak self] _ in
                 self?.dismiss(animated: true)
             }
