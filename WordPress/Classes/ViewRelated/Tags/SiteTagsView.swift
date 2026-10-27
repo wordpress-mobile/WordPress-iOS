@@ -29,7 +29,7 @@ struct SiteTagsView: View {
         }
         .searchable(text: $viewModel.searchText, prompt: viewModel.labels.searchPlaceholder)
         .sheet(isPresented: $isShowingAddTagView) {
-            NavigationView {
+            NavigationStack {
                 EditTagView(term: nil, taxonomy: viewModel.taxonomy, tagsService: viewModel.tagsService)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
