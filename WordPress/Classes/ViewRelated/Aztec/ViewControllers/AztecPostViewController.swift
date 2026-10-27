@@ -2309,11 +2309,11 @@ extension AztecPostViewController {
     private var mediaKeyboardHeight: CGFloat {
         var keyboardHeight: CGFloat
 
-        // Let's assume a sensible default for the keyboard height based on orientation
+        // Let's assume a sensible default for the keyboard height based on whether the view is taller than wide
         let keyboardFrameRatioDefault =
-            view.window?.windowScene?.interfaceOrientation.isPortrait ?? true
+            view.bounds.height > view.bounds.width
             ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
-        let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
+        let keyboardHeightDefault = (keyboardFrameRatioDefault * view.bounds.height)
 
         // we need to make an assumption the hardware keyboard is attached based on
         // the height of the current keyboard frame being less than our sensible default. If it is
