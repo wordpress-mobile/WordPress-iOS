@@ -16,7 +16,7 @@ gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
 #
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 15.1'
+gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: 'd4fca181c5b4b876deb929d07d4b13ff69b6d9c5'
 gem 'rake'
 gem 'rubocop', '~> 1.92'
 gem 'rubocop-rake', '~> 0.7'
