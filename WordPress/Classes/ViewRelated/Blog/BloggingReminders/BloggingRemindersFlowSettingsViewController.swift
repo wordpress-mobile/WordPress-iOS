@@ -23,6 +23,9 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
+    /// Bottom margin depends on the window's horizontal size class; kept so the constant can be updated on layout.
+    private var stackViewBottomConstraint: NSLayoutConstraint?
+
     private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Images.calendarImageName))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -295,6 +298,13 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // The layout follows the window's size class. This screen is a sheet, which keeps a compact size class
+        // when the window around it is resized, so re-check on every layout pass instead of on trait changes.
+        updateSizeClassDependentLayout()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -538,8 +548,20 @@ private extension BloggingRemindersFlowSettingsViewController {
         stackView.setCustomSpacing(Metrics.afterPromptLabelSpacing, after: promptLabel)
         stackView.setCustomSpacing(Metrics.afterTimeSelectionViewSpacing, after: timeSelectionView)
         stackView.setCustomSpacing(.zero, after: bloggingPromptsView)
-        stackView.setCustomSpacing(WPDeviceIdentification.isiPad() ? Metrics.stackSpacing : .zero,
-                                   after: bloggingPromptsToConfirmationButtonSpacer)
+    }
+
+    /// Applies the spacing and bottom margin that depend on the window's horizontal size class.
+    /// Called once the constraints exist and again on every layout pass; it only writes values that changed.
+    func updateSizeClassDependentLayout() {
+        let isRegularWidth = view.window?.traitCollection.horizontalSizeClass == .regular
+        let spacing = isRegularWidth ? Metrics.stackSpacing : .zero
+        if stackView.customSpacing(after: bloggingPromptsToConfirmationButtonSpacer) != spacing {
+            stackView.setCustomSpacing(spacing, after: bloggingPromptsToConfirmationButtonSpacer)
+        }
+        let bottomMargin = isRegularWidth ? Metrics.regularWidthBottomMargin : -Metrics.edgeMargins.bottom
+        if let stackViewBottomConstraint, stackViewBottomConstraint.constant != bottomMargin {
+            stackViewBottomConstraint.constant = bottomMargin
+        }
     }
 
     func configureConstraints() {
@@ -555,12 +577,14 @@ private extension BloggingRemindersFlowSettingsViewController {
         bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
         bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
 
+        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        self.stackViewBottomConstraint = stackViewBottomConstraint
+
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor,
-                                              constant: WPDeviceIdentification.isiPad() ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom),
+            stackViewBottomConstraint,
 
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
@@ -574,6 +598,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
         ])
 
+        updateSizeClassDependentLayout()
         configureBloggingPromptsConstraints()
     }
 
@@ -816,7 +841,7 @@ private enum Images {
 
 private enum Metrics {
     static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 56, right: 20)
-    static let ipadBottomMargin: CGFloat = -20.0
+    static let regularWidthBottomMargin: CGFloat = -20.0
 
     static let stackSpacing: CGFloat = 24.0
     static let innerStackSpacing: CGFloat = 8.0

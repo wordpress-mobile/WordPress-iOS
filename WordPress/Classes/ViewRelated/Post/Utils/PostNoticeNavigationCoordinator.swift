@@ -43,16 +43,12 @@ class PostNoticeNavigationCoordinator {
             presenter.dismiss(animated: true)
         }
         let viewController = UIHostingController(rootView: view)
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            if let sheetController = viewController.sheetPresentationController {
-                sheetController.detents = [.custom { _ in 420 }]
-                sheetController.preferredCornerRadius = 20
-            }
-        } else {
-            viewController.modalPresentationStyle = .formSheet
-            viewController.preferredContentSize = CGSize(width: 460, height: 460)
-        }
-        presenter.present(viewController, animated: true)
+        presenter.presentAdaptiveSheet(
+            viewController,
+            formSheetSize: CGSize(width: 460, height: 460),
+            compactDetents: [.custom { _ in 420 }],
+            compactCornerRadius: 20
+        )
         context.viewController = viewController
     }
 
