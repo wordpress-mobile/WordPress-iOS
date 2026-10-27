@@ -12,7 +12,7 @@ Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
 ## Bootstrap
 
-Prepare a fresh clone or worktree for building with `rake dependencies`, the repository's canonical bootstrap command.
+A fresh clone or worktree builds and runs its unit tests with plain `xcodebuild` or Xcode. The `Jetpack`, `WordPress`, `Reader` and `Keystone` schemes download the Gutenberg frameworks into `WordPress/Frameworks` in a build pre-action. Run `rake dependencies` only when you need the Ruby tooling (fastlane, Danger, release lanes).
 
 ## High-Level Architecture
 

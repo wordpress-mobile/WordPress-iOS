@@ -31,9 +31,14 @@ namespace :dependencies do
         puts ''
         puts 'Refer to the WPiOS docs on setting the exact version with rbenv.'
         puts ''
-        puts 'Press enter to continue anyway'
-        puts '====================================================================================='
-        $stdin.gets.strip
+        # Only wait for confirmation in an interactive shell, so scripts and agents don't hang.
+        if $stdin.tty?
+          puts 'Press enter to continue anyway'
+          puts '====================================================================================='
+          $stdin.gets
+        else
+          puts '====================================================================================='
+        end
       end
     end
 
