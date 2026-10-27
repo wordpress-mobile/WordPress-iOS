@@ -677,7 +677,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -991,7 +990,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Lag side";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Lag side";
 
@@ -1958,9 +1956,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Administrer innsikter";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Administrer side";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manuell forskyvning";
@@ -3500,9 +3495,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint */
 "Tap to select the previous period" = "Trykk for å velge forrige periode";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Fortell oss hva slags nettside du vil lage";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Vilkår for bruk";
 
@@ -3553,9 +3545,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Bildet kunne ikke legges til i Mediebiblioteket.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Disse typen nettsteder kan opprettes";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Språket denne siden hovedsakelig er skrevet på.";
@@ -3670,9 +3659,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Denne filen er for stor til å lastes opp til siden din, eller så støttes ikke dette medieformatet.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Dette hjelper oss lage anbefalinger. Men du er ikke låst fats – alle nettsteder utvikler seg!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Denne informasjonen hjelper oss med å forbedre produktere våre, gjøre markedsføring mer relevant, personliggjøre din WordPress.com-opplevelse og mer, som detaljert i våre retningslinjer for personvern.";

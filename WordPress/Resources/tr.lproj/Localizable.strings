@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-24 12:55:20+0000 */
+/* Translation-Revision-Date: 2026-10-20 12:18:01+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: tr */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1500,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Sayfa oluştur";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Site oluştur";
 
@@ -2518,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Fotoğrafçı Cameron Karsten'in çalışmalarından çok ilham alıyorum. Bu teknikleri bir sonraki adımda deneyeceğim";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Şu konuda yardıma ihtiyacım var";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP adresi";
 
@@ -2897,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Bittiğinde bana haber ver!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Site adresinizi (URL) bize bildirin ve sorunla ilgili bize mümkün olduğunca çok şey anlatın, yakında sizinle iletişime geçeceğiz.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Bunu sıralayalım";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Yaşam tarzı";
 
@@ -3089,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Yönelim yönetimi";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Site yönetimi";
 
 /* No comment provided by engineer. */
 "Manual" = "El ile";
@@ -5174,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Teknoloji";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Ne tür bir site oluşturmak istediğinizi seçin";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Hükümler ve koşullar";
 
@@ -5251,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Görsel ortam kitaplığına eklenemedi.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Oluşturulabilecek site türleri";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Bu sitede kullanılan temel dil.";
@@ -5419,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Bu dosya sitenize yüklenemeyecek kadar büyük ya da bu ortam biçimi desteklenmiyor.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Bu bize tavsiyelerde bulunmamıza yardımcı oluyor. Ancak bu sizi asla kısıtlamaz; tüm siteler gelişir!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Bu bilgiler, ürünlerimizi geliştirmemize, sizin için daha iyi pazarlama yapmamıza, WordPress.com deneyiminizi kişiselleştirmemize ve ayrıntılı olarak gizlilik ilkemizde belirttiğimiz şekilde başka şeyler yapmamıza yardımcı olur.";
@@ -6707,8 +6684,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Mevcut site URL'si bulunamıyor";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Bu site Uygulama Şifrelerini desteklemiyor.";
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "WordPress.com siteleri WordPress.com hesabınız üzerinden yönetildiğinden uygulama parolaları kullanılamaz.";
 
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "\"%@\" adlı kullanıcı olarak oturum açmanız gerekir";
@@ -6972,12 +6949,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Taslağı Kaydet";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Daha Fazla Ekran Görüntüsü Ekle";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Ekran Görüntüleri Ekle";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Uygulama Günlükleri";
 
@@ -6986,12 +6957,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Uygulama Günlükleri";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Ek %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Ek Sınırı: %1$@\/%2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Selam %1$@!";
@@ -7026,23 +6991,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Tamamla";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Bu mesajı iptal etmek istediğinizden emin misiniz? Girdiğiniz tüm verileri kaybedeceksiniz";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "İptali Onayla";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Tüm günlükleri silmek istediğinizden emin misiniz?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "İletişim Bilgisi";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Yazmaya Devam Edin";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Sohbetin sonu. Başka yanıt mümkün değil.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Sohbetler";
@@ -7056,20 +7006,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Tanı";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Değişiklikleri İptal Et";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Size bu adresten e-posta göndereceğiz.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Günlükler yüklenirken hata oluştu";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Destek sohbetleri yüklenirken hata oluştu";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Hata";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Dosya olarak dışa aktar";
@@ -7089,20 +7027,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Kapsamlı Günlükler";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Anladım";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Şu konuda yardıma ihtiyacım var";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Uygulama günlüklerini dahil et";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Sorun Ayrıntıları";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Son güncellenme: %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Mesajlar Yükleniyor";
@@ -7110,14 +7036,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Robot Sohbetleri Yükleniyor";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Sohbetler Yükleniyor";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Disk Kullanımı Yükleniyor";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Görsel Yükleniyor";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "En son içerik yükleniyor";
@@ -7127,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Günlükler yükleniyor...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Mesajlar Yükleniyor";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Video Yükleniyor";
@@ -7142,15 +7059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Yedi güne kadar olan günlükler kaydedilir.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Mesaj";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Mesaj Gönderildi";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d Mesaj";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Yeni Robot Sohbeti";
@@ -7167,35 +7075,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Günlük Bulunamadı";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Bir Destek Bileti Aç";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(İsteğe bağlı)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Yanıtla";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Paylaşılacak veya depolanacak bir dosya olarak kaydet";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Ekran görüntüleri";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Ekran görüntüsü eklemek, sorununuzu daha hızlı anlamamıza ve çözmemize yardımcı olabilir.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Gönder";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Kayıtları doğrudan destek ekibine gönderin";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Gönderiliyor";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Mesaj Gönderiliyor";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Paylaş";
@@ -7206,47 +7090,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Destekle paylaşılıyor!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Site Adresi";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/siteniz.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Yukarıdaki düğmeyi kullanarak yeni bir sohbet başlatın";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Konu";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Sorununuzun kısa bir özeti";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Destek Talebi Gönder";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Destek Sohbetleri";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Talep gönderildi!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Destek talebiniz başarıyla gönderildi. Mümkün olan en kısa sürede e-posta yoluyla yanıt vereceğiz.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Düşünüyor...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Desteğe Başvurun";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Yeniden Dene";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Günlükler silinemedi";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Sohbet görüntülenemiyor";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Video görüntülenemiyor";
@@ -7260,11 +7114,167 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Mesajlar Yüklenemiyor";
 
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Mesaj gönderilemiyor";
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Daha fazla bilgi ekle";
 
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Görüntüle";
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Ek dosya yükleniyor…";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%%%1$d eşleşme";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Bağlantıyı aç: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "İlgili:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Bu sohbet kapatıldı. Artık yanıt veremezsiniz.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Son güncelleme: %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Sohbet yükleniyor…";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Bir ileti yazın…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Gönder";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "İnsan desteğine aktarıldı";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "AI asistanı yazıyor";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Sorularınızla ilgili yardım almak için destek ekibimizle bir sohbet başlatın.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Henüz sohbet yok";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Sohbetler yükleniyor…";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Yardım alın";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Bir şeyler ters gitti. Lütfen daha sonra tekrar deneyin.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Bir terslik çıktı";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "Şimdi";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "Uygulama günlükleri şu anda kullanılamıyor.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Yeni sohbet";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Destek ekibimizden yardım almak için WordPress.com'da oturum açın.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Kullanılabilir ağ yok";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Yanıtla";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Ekler";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Sorunu gösteren ekran görüntüleri, videolar veya belgeler ekleyin.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Dosya eklenemedi";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Dosyalara göz at";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Fotoğraf kütüphanesi";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Maksimum boyuta ulaşıldı. Seçilen %2$d dosyadan sadece %1$d dosya gönderilecek";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "Kaldır: %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Bu dosya gönderilemeyecek kadar büyük.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Bu dosyalar gönderilemeyecek kadar büyük.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "İptal";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Yazmaya devam et";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Vazgeç";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "İletiniz ve ekleri kaybolacak.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Bu yanıt silinsin mi?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Yanıtınız gönderilmedi";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Yeniden dene";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "İleti";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "TAMAM";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "İsteğe bağlı";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Gönder";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Gönderiliyor...";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "Yanıtınız gönderildi. Güncellemeler için e-postanızı kontrol edin.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Sohbeti başlat";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "AI asistanı";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "Kapalı";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "Devam ediyor";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Çözüldü";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Bilinmiyor";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Yeniden deneyin";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Çalışılıyor";
@@ -7286,6 +7296,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ için yanıt verin";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Yanıt gönderiliyor";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "İptal";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Taslağı sil";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Düzenlemeye devam et";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Taslak olarak kaydet";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Gönder";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "Göndermek bu yorumu da onaylar.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "Bu yazı için yorumlar kapalı.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Yanıt gönderilemedi.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Bu yanıt zaten gönderildi.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Yanıt denetime gönderildi.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Yanıt gönderildi.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Bir yanıt bırakın…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Yanıtla";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Taslağı Sil";
@@ -7328,6 +7380,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "Bekleyene taşı";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Yanıtla";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "Geri yükle";
@@ -7377,17 +7432,17 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "%@ kişisine yanıt olarak";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "Onaylanan";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "Onay bekleyen";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "İstenmeyen";
 
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "Çöp";
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Çöpe atıldı";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Değişiklikleri İptal Et";
@@ -7439,9 +7494,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "%2$@ için %1$@";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "Onay bekliyor";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "Yorumlar";
@@ -7575,6 +7627,9 @@ Example: Reply to Pamela Nguyen */
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "Yapışkan";
 
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Çöpe taşındı";
+
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Bu işlem geri alınamaz.";
 
@@ -7628,18 +7683,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "BETA";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Özel Gönderi Türü Yok";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Sabitle";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Daha Fazla";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Sabitlemeyi kaldır";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -10448,7 +10491,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Uyarı";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\"%1$@\" bu sitede kullanılamıyor.";
 
 /* Title for the plan selection view */
@@ -11573,7 +11616,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.header.subscribed" = "Abone olundu";
 
 /* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}daha fazlasını görüntüle";
+"reader.post.header.viewMore" = "…devamını görüntüle";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Daha fazla işlem";
@@ -12020,6 +12063,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Revizyonlar";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Paylaşımı iptal et";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Paylaştığınız içeriği okurken bir sorun oluştu. Lütfen yeniden deneyin.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Paylaşılan içerik yüklenemiyor";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Kapat";
 
@@ -12028,6 +12080,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Ortam seçenekleri";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "TAMAM";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Paylaşılan bir veya daha fazla öge yüklenemedi ve atlandı.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "Bazı içerikler atlandı";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Yeniden dene";
@@ -12956,6 +13017,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack Mobil Bot yazışması";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Bir soru sorun ve gönüllülerimizden yardım alın.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Topluluk forumları";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Destek ekibimizden istediğiniz zaman yanıt alın";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Yardım alın";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Topluluk forumunda bir soru sorun ve gönüllü grubumuzdan yardım alın.";
 
@@ -13044,6 +13117,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Etiketler";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Etkinleştiriliyor";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "şu ögeler silinecek:";
 
@@ -13128,6 +13204,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Hata";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Parola güncellenirken bir hata oluştu.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Hata";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Biyografik Bilgi";

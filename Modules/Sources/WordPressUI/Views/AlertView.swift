@@ -23,6 +23,9 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
             header()
                 .padding(.horizontal, 8)
                 .padding(.bottom, 32)
+                // Give the text the height it needs before the image takes the rest. Otherwise
+                // the two split the spare height, and the text is cut off on a short screen.
+                .layoutPriority(1)
             VStack(spacing: 16) {
                 actions()
             }
@@ -36,8 +39,52 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
 extension AlertView {
     public func present(in presentingViewController: UIViewController) {
         let hostVC = UIHostingController(rootView: self)
-        hostVC.sheetPresentationController?.detents = [.medium()]
+        hostVC.sheetPresentationController?.detents = [.alertView(hostedBy: hostVC)]
         presentingViewController.present(hostVC, animated: true)
+    }
+}
+
+extension UISheetPresentationController.Detent {
+    /// The height for a sheet that shows an ``AlertView``: half the screen, or taller when the
+    /// alert needs more room, such as on the iPhone Duo's outer screen or with a large text size.
+    @MainActor
+    public static func alertView<Content: View>(
+        hostedBy hostVC: UIHostingController<Content>
+    ) -> UISheetPresentationController.Detent {
+        let cache = AlertViewHeightCache()
+        return .custom(identifier: .medium) { [weak hostVC] context in
+            let halfHeight = context.maximumDetentValue / 2
+            let medium = UISheetPresentationController.Detent.medium().resolvedValue(in: context) ?? halfHeight
+            guard let hostVC else { return medium }
+            // The sheet's width is only known once it has been laid out.
+            let width = hostVC.view.bounds.inset(by: hostVC.view.safeAreaInsets).width
+            guard width > 0 else { return medium }
+            let sizeCategory = context.containerTraitCollection.preferredContentSizeCategory
+            let height = cache.height(width: width, sizeCategory: sizeCategory) {
+                // Measure with a separate controller, because one on screen adds its safe area to the result.
+                UIHostingController(rootView: hostVC.rootView)
+                    .sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
+                    .height
+            }
+            return min(max(medium, height), context.maximumDetentValue)
+        }
+    }
+}
+
+/// UIKit resolves a custom detent on every frame while the sheet is dragged, so keep the last
+/// measurement and measure again only when the width or the text size changes.
+@MainActor
+private final class AlertViewHeightCache {
+    private var key: (width: CGFloat, sizeCategory: UIContentSizeCategory)?
+    private var height: CGFloat = 0
+
+    func height(width: CGFloat, sizeCategory: UIContentSizeCategory, measure: () -> CGFloat) -> CGFloat {
+        if let key, key.width == width, key.sizeCategory == sizeCategory {
+            return height
+        }
+        height = measure()
+        key = (width, sizeCategory)
+        return height
     }
 }
 

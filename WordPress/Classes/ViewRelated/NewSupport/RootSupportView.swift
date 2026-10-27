@@ -1,7 +1,10 @@
-import BuildSettingsKit
+import DesignSystem
 import SwiftUI
 import Support
+import UIKit
 import WordPressAPIInternal
+import WordPressShared
+import WordPressUI
 import WebKit
 
 struct RootSupportView: View {
@@ -31,49 +34,79 @@ struct RootSupportView: View {
         VStack {
             switch self.state {
             case .loading:
-                ProgressView("Loading Support Profile")
+                ProgressView(Strings.loading)
             case .partiallyLoaded(user: let currentUser), .loaded(let currentUser):
                 listView(identity: currentUser)
             case .error(let error):
-                ErrorView(
-                    title: "Unable to load support",
-                    message: error.localizedDescription
-                )
+                EmptyStateView.failure(error: error) {
+                    Task { await self.reloadIdentity() }
+                }
             }
         }
         .task(self.loadIdentity)
         .refreshable(action: self.reloadIdentity)
-        .navigationTitle("Support")
+        .navigationTitle(Strings.title)
     }
 
     @ViewBuilder
     private func listView(identity: SupportUser?) -> some View {
         List {
             if let identity {
-                Section("Support Profile") {
+                Section(Strings.profileHeader) {
                     ProfileView(user: identity)
-                        .listRowBackground(Color(.secondarySystemGroupedBackground))
-                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
+            } else {
+                signInSection
             }
 
-            Section("How can we help?") {
+            Section(Strings.helpHeader) {
                 communitySupportLink
-                if let identity, isUnifiedSupportAvailable {
+                if let identity {
                     unifiedSupportLink(for: identity)
-                } else {
-                    communityForumLink
                 }
             }
 
-            Section("Diagnostics") {
+            Section(Strings.diagnosticsHeader) {
                 applicationLogLink
                 diagnosticsLink
             }
         }
         .listStyle(.insetGrouped)
-        .listRowBackground(Color(.secondarySystemGroupedBackground))
-        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+    }
+
+    /// Shown in place of the profile when there's no WordPress.com identity — the support conversations need
+    /// one, so offer the sign-in that unlocks them rather than leaving the user with documentation alone.
+    @ViewBuilder
+    private var signInSection: some View {
+        Section {
+            Button(action: signIn) {
+                Text(Strings.signInTitle)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+        } footer: {
+            Text(Strings.signInDetail)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    private func signIn() {
+        guard let viewController = UIViewController.topViewController else {
+            return wpAssertionFailure("support sign-in requires a presenting view controller")
+        }
+
+        Task { @MainActor in
+            let account = await WordPressDotComAuthenticator().signIn(from: viewController, context: .support)
+            guard account != nil else { return }
+
+            // `support` leaves this screen on-screen, so pick up the new identity in place: the sign-in
+            // prompt gives way to the profile, and the support conversations become reachable.
+            await reloadIdentity()
+        }
     }
 
     @ViewBuilder
@@ -84,15 +117,10 @@ struct RootSupportView: View {
         } label: {
             SupportAreaRow(
                 imageName: "book.pages",
-                title: "Help Center",
-                detail: "Documentation and tutorials to help you get started."
+                title: Strings.helpCenterTitle,
+                detail: Strings.helpCenterDetail
             )
         }
-    }
-
-    /// The unified support flow is only available in the Jetpack app.
-    private var isUnifiedSupportAvailable: Bool {
-        BuildSettings.current.brand == .jetpack
     }
 
     @ViewBuilder
@@ -108,23 +136,6 @@ struct RootSupportView: View {
         }
     }
 
-    /// Offered wherever the unified support flow isn't — a brand with no Happiness Engineer channel, or a user
-    /// we have no WP.com identity for — so nobody is left with documentation alone. It's the same place the
-    /// support screen this one replaces sends them.
-    @ViewBuilder
-    private var communityForumLink: some View {
-        NavigationLink {
-            let url = URL(string: "https://wordpress.org/support/forum/mobile/")!
-            WebKitView(configuration: WebViewControllerConfiguration(url: url))
-        } label: {
-            SupportAreaRow(
-                imageName: "person.2",
-                title: Strings.communityForumTitle,
-                detail: Strings.communityForumDetail
-            )
-        }
-    }
-
     @ViewBuilder
     private var applicationLogLink: some View {
         NavigationLink {
@@ -133,8 +144,8 @@ struct RootSupportView: View {
         } label: {
             SupportAreaRow(
                 imageName: "wrench.and.screwdriver",
-                title: "Application Logs",
-                detail: "Find out what the app is doing under the hood."
+                title: Strings.applicationLogsTitle,
+                detail: Strings.applicationLogsDetail
             )
         }
     }
@@ -147,8 +158,8 @@ struct RootSupportView: View {
         } label: {
             SupportAreaRow(
                 imageName: "doc.text.magnifyingglass",
-                title: "System Status Report",
-                detail: "Tools to help diagnose issues"
+                title: Strings.systemStatusTitle,
+                detail: Strings.systemStatusDetail
             )
         }
     }
@@ -187,16 +198,20 @@ struct SupportAreaRow: View {
     let title: String
     let detail: String
 
+    /// Matches the icon column the Me screen's rows use, and keeps it growing with the text.
+    @ScaledMetric(relativeTo: .callout)
+    private var iconWidth: CGFloat = 24
+
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 12) {
             Image(systemName: imageName)
-                .frame(width: 24)
-                .foregroundColor(.accentColor)
+                .frame(width: iconWidth)
+                .foregroundStyle(AppColor.tint)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.headline)
+                    .font(.callout)
                 Text(detail)
-                    .font(.subheadline)
+                    .font(.footnote)
                     .foregroundStyle(.secondary)
             }
         }
@@ -218,12 +233,64 @@ class RootSupportViewController: UIHostingController<AnyView> {
         fatalError("init(coder:) has not been implemented")
     }
 }
-//
-//#Preview {
-//    RootSupportView()
-//}
+
+#Preview {
+    NavigationStack {
+        List {
+            Section(Strings.helpHeader) {
+                SupportAreaRow(
+                    imageName: "questionmark.bubble",
+                    title: Strings.getHelpTitle,
+                    detail: Strings.getHelpDetail
+                )
+                SupportAreaRow(
+                    imageName: "book.pages",
+                    title: Strings.helpCenterTitle,
+                    detail: Strings.helpCenterDetail
+                )
+            }
+        }
+        .listStyle(.insetGrouped)
+        .navigationTitle(Strings.title)
+    }
+}
 
 private enum Strings {
+    static let title = NSLocalizedString(
+        "support.root.title",
+        value: "Support",
+        comment: "Title of the support screen."
+    )
+    static let loading = NSLocalizedString(
+        "support.root.loading",
+        value: "Loading Support Profile",
+        comment: "Shown while the support screen loads the signed-in user's profile."
+    )
+    static let profileHeader = NSLocalizedString(
+        "support.root.profile.header",
+        value: "Support Profile",
+        comment: "Header of the section showing the signed-in user's support profile."
+    )
+    static let helpHeader = NSLocalizedString(
+        "support.root.help.header",
+        value: "How can we help?",
+        comment: "Header of the section listing the ways to get help."
+    )
+    static let diagnosticsHeader = NSLocalizedString(
+        "support.root.diagnostics.header",
+        value: "Diagnostics",
+        comment: "Header of the section listing the app's diagnostic tools."
+    )
+    static let helpCenterTitle = NSLocalizedString(
+        "support.root.helpCenter.title",
+        value: "Help Center",
+        comment: "Title of the row that opens the mobile apps support documentation."
+    )
+    static let helpCenterDetail = NSLocalizedString(
+        "support.root.helpCenter.detail",
+        value: "Documentation and tutorials to help you get started.",
+        comment: "Description of the row that opens the mobile apps support documentation."
+    )
     static let getHelpTitle = NSLocalizedString(
         "support.root.getHelp.title",
         value: "Get help",
@@ -234,14 +301,34 @@ private enum Strings {
         value: "Get answers from our support team, anytime",
         comment: "Description of the row that opens the support conversations."
     )
-    static let communityForumTitle = NSLocalizedString(
-        "support.root.communityForum.title",
-        value: "Community Forums",
-        comment: "Title of the row that opens the WordPress.org support forums."
+    static let signInTitle = NSLocalizedString(
+        "support.root.signIn.title",
+        value: "Log into WordPress.com",
+        comment: "Title of the button that starts WordPress.com sign-in from the support screen."
     )
-    static let communityForumDetail = NSLocalizedString(
-        "support.root.communityForum.detail",
-        value: "Ask a question and get help from our group of volunteers.",
-        comment: "Description of the row that opens the WordPress.org support forums."
+    static let signInDetail = NSLocalizedString(
+        "support.root.signIn.detail",
+        value: "Log into WordPress.com to access support chat.",
+        comment: "Explains why signing in to WordPress.com is needed to reach the support conversations."
+    )
+    static let applicationLogsTitle = NSLocalizedString(
+        "support.root.applicationLogs.title",
+        value: "Application Logs",
+        comment: "Title of the row that opens the app's logs."
+    )
+    static let applicationLogsDetail = NSLocalizedString(
+        "support.root.applicationLogs.detail",
+        value: "Find out what the app is doing under the hood.",
+        comment: "Description of the row that opens the app's logs."
+    )
+    static let systemStatusTitle = NSLocalizedString(
+        "support.root.systemStatus.title",
+        value: "System Status Report",
+        comment: "Title of the row that opens the app's diagnostic tools."
+    )
+    static let systemStatusDetail = NSLocalizedString(
+        "support.root.systemStatus.detail",
+        value: "Tools to help diagnose issues",
+        comment: "Description of the row that opens the app's diagnostic tools."
     )
 }

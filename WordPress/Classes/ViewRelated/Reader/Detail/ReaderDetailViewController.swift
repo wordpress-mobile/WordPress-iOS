@@ -192,6 +192,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureHeader()
         configureRelatedPosts()
         configureToolbar()
+        if #available(iOS 26, *) {
+            // The toolbar buttons sit on their own frosted capsules (see `ReaderDetailToolbar`). With them,
+            // the automatic edge effect draws a frosted band behind the whole toolbar on iOS 27.
+            scrollView.bottomEdgeEffect.isHidden = true
+        }
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
@@ -258,7 +263,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        toolbar.configure(for: post, in: self)
         updateToolbarItems()
         cachedExcerpt = post.getUserProvidedExcerpt()
         configureHeaderView(with: post)
@@ -784,8 +788,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func updateToolbarItems() {
         guard let post else { return }
-        let items = toolbar.createToolbarItems(for: post, in: self)
-        setToolbarItems(items, animated: false)
+        toolbar.configure(for: post, in: self)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {

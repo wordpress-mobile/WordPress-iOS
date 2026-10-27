@@ -1,3 +1,4 @@
+import DesignSystem
 import Foundation
 import SwiftUI
 
@@ -33,13 +34,24 @@ public enum UnifiedSupportConversationStatus: String, Sendable, Codable, Hashabl
         }
     }
 
-    var color: Color {
+    /// Drawn from the app's semantic palette rather than SwiftUI's saturated base colors, which don't shift
+    /// between light and dark.
+    var tint: Color {
         switch self {
-        case .bot: .purple
-        case .ongoing: .blue
-        case .solved: .green
-        case .closed: .gray
-        case .unknown: .orange
+        case .bot: AppColor.primary
+        case .ongoing: Color(UIAppColor.warning)
+        case .solved: Color(UIAppColor.success)
+        case .closed, .unknown: .secondary
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .bot: "sparkles"
+        case .ongoing: "clock"
+        case .solved: "checkmark.circle"
+        case .closed: "lock"
+        case .unknown: "questionmark.circle"
         }
     }
 }

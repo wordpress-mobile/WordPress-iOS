@@ -1,1 +1,7 @@
-Good news for accessibility: when you’re updating post settings, VoiceOver will tell you which categories are selected. We’ll put that in the “wins” category.
+Custom post types now appear directly in the site menu after Comments, sorted by name for extra convenience—no more need for custom pins.
+
+We also took care of several bugs, just to make your app experience a little easier.
+
+- Uploads will no longer fail if the file name contains spaces. (good-news-everyone.jpg)
+- We fixed a crash caused by sharing certain kinds of text files.
+- iPad users rejoice—the app won’t get stuck in the compact tab bar layout when you resize the screen or switch apps.

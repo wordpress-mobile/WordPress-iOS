@@ -289,9 +289,9 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="4cE-G3-dPY" firstAttribute="leading" secondItem="47y-8d-jwn" secondAttribute="leading" constant="12" id="UAc-zp-gNX"/>
+                                        <constraint firstItem="4cE-G3-dPY" firstAttribute="leading" secondItem="47y-8d-jwn" secondAttribute="leading" constant="12" placeholder="YES" id="UAc-zp-gNX"/>
                                         <constraint firstItem="4cE-G3-dPY" firstAttribute="top" secondItem="47y-8d-jwn" secondAttribute="top" constant="8" id="WUt-IB-AWs"/>
-                                        <constraint firstAttribute="trailing" secondItem="4cE-G3-dPY" secondAttribute="trailing" constant="12" id="cGG-Rn-1rH"/>
+                                        <constraint firstAttribute="trailing" secondItem="4cE-G3-dPY" secondAttribute="trailing" constant="12" placeholder="YES" id="cGG-Rn-1rH"/>
                                         <constraint firstAttribute="bottom" secondItem="4cE-G3-dPY" secondAttribute="bottom" constant="8" id="gia-rj-ncG"/>
                                     </constraints>
                                     <connections>
