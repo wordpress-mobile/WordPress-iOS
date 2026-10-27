@@ -204,7 +204,7 @@ final class MediaImageService {
 
     @MainActor
     private func makeThumbnailExporter(for media: SafeMedia, size: ImageSize) -> MediaThumbnailExporter {
-        let exporter = MediaThumbnailExporter()
+        let exporter = MediaThumbnailExporter(traitCollection: .largestDisplayScale)
         exporter.mediaDirectoryType = .cache
         exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
         exporter.options.scale = 1 // In pixels
@@ -272,7 +272,13 @@ final class MediaImageService {
         let targetSize = await MediaImageService.getThumbnailSize(for: media, size: size)
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
-            guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize, blog: blog) else { return nil }
+            guard
+                let imageURL = media.getRemoteThumbnailURL(
+                    targetSize: targetSize,
+                    blog: blog,
+                    traitCollection: .largestDisplayScale
+                )
+            else { return nil }
             return RemoteImageInfo(imageURL: imageURL, host: MediaHost(blog))
         }
     }
@@ -335,122 +341,44 @@ extension MediaImageService {
         case original
     }
 
-    @available(
-        *,
-        deprecated,
-        message:
-            "use getThumbnailSize(for:size:bounds:traitCollection:) and pass the bounds and trait collection of the view that displays the thumbnail"
-    )
     @MainActor
     static func getThumbnailSize(for media: Media, size: ImageSize) -> CGSize {
         getThumbnailSize(for: SafeMedia(media), size: size)
     }
 
     @MainActor
-    static func getThumbnailSize(
-        for media: Media,
-        size: ImageSize,
-        bounds: CGRect,
-        traitCollection: UITraitCollection
-    ) -> CGSize {
-        getThumbnailSize(for: SafeMedia(media), size: size, bounds: bounds, traitCollection: traitCollection)
-    }
-
-    @available(
-        *,
-        deprecated,
-        message:
-            "use getThumbnailSize(for:size:bounds:traitCollection:) and pass the bounds and trait collection of the view that displays the thumbnail"
-    )
-    @MainActor
     fileprivate static func getThumbnailSize(for media: SafeMedia, size: ImageSize) -> CGSize {
         let mediaSize = media.size ?? CGSize(width: 1024, height: 1024) // rhs should never happen
         return MediaImageService.getThumbnailSize(for: mediaSize, size: size)
     }
 
-    @MainActor
-    fileprivate static func getThumbnailSize(
-        for media: SafeMedia,
-        size: ImageSize,
-        bounds: CGRect,
-        traitCollection: UITraitCollection
-    ) -> CGSize {
-        let mediaSize = media.size ?? CGSize(width: 1024, height: 1024) // rhs should never happen
-        return MediaImageService.getThumbnailSize(
-            for: mediaSize,
-            size: size,
-            bounds: bounds,
-            traitCollection: traitCollection
-        )
-    }
-
     /// Returns an optimal target size in pixels for a thumbnail of the given
     /// size for the given media asset.
-    @available(
-        *,
-        deprecated,
-        message:
-            "use getThumbnailSize(for:size:bounds:traitCollection:) and pass the bounds and trait collection of the view that displays the thumbnail"
-    )
     @MainActor
     static func getThumbnailSize(for mediaSize: CGSize, size: ImageSize) -> CGSize {
-        // TODO: Modernization - `UIScreen.main` assumes a single, fixed display. The thumbnail
-        // pipeline (`image(for:size:)`, `getThumbnailURL(for:)`) has no view context yet, so it
-        // still relies on this wrapper. Thread `bounds` and `traitCollection` from the calling
-        // view/view controller through `image(for:size:)` and remove this wrapper once every
-        // caller passes them.
-        getThumbnailSize(for: mediaSize, size: size, bounds: UIScreen.main.bounds, traitCollection: .current)
-    }
-
-    /// Returns an optimal target size in pixels for a thumbnail of the given
-    /// size for the given media asset.
-    ///
-    /// - parameters:
-    ///   - bounds: The bounds of the window (or view) that displays the thumbnail.
-    ///   - traitCollection: The trait collection of the view that displays the thumbnail.
-    @MainActor
-    static func getThumbnailSize(
-        for mediaSize: CGSize,
-        size: ImageSize,
-        bounds: CGRect,
-        traitCollection: UITraitCollection
-    ) -> CGSize {
-        let targetSize = MediaImageService.getPreferredThumbnailSize(
-            for: size,
-            bounds: bounds,
-            traitCollection: traitCollection
-        )
+        let targetSize = MediaImageService.getPreferredThumbnailSize(for: size)
         return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
     }
 
-    /// Returns a preferred thumbnail size (in pixels) optimized for the device.
+    /// Returns a preferred thumbnail size (in pixels).
+    ///
+    /// The sizes are fixed, so they don't depend on the screen or the window
+    /// that displays the thumbnail. Each one is large enough for the largest
+    /// display it's used on, so thumbnails are sharp everywhere.
     ///
     /// - important: It makes sure the app uses the same thumbnails across
     /// different screens and presentation modes to avoid fetching and caching
     /// more than one version of the same image.
-    @MainActor
-    private static func getPreferredThumbnailSize(
-        for thumbnail: ImageSize,
-        bounds: CGRect,
-        traitCollection: UITraitCollection
-    ) -> CGSize {
-        let minScreenSide = min(bounds.width, bounds.height)
+    private static func getPreferredThumbnailSize(for thumbnail: ImageSize) -> CGSize {
         switch thumbnail {
         case .small:
-            /// The size is calculated to fill a collection view cell, assuming the app
-            /// displays a 4 or 5 cells in one row. The cell size can vary depending
-            /// on whether the device is in landscape or portrait mode, but the thumbnail size is
-            /// guaranteed to always be the same across app launches and optimized for
-            /// a portraint (dominant) mode. The row count mirrors the width rule in
-            /// `SiteMediaCollectionViewController.updateFlowLayoutItemSize()`.
-            let itemPerRow = minScreenSide < 500 ? 4 : 5
-            let availableWidth = minScreenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
-            let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
-            let targetSize = CGSize(width: targetSide, height: targetSide)
-            return targetSize.scaled(by: traitCollection.displayScale)
+            /// Fills a cell of the media grid in `SiteMediaCollectionViewController`.
+            /// The largest cell is on a 13-inch iPad in portrait: 204 pt at 2x.
+            /// iPhone cells are 92–108 pt at 3x, or 276–324 px.
+            return CGSize(width: 408, height: 408)
         case .large:
-            let side = min(1024, minScreenSide * traitCollection.displayScale)
-            return CGSize(width: side, height: side)
+            /// Fills the screen of an iPhone, or a large part of an iPad's.
+            return CGSize(width: 1024, height: 1024)
         case .original:
             assertionFailure("Unsupported thumbnail size")
             return CGSize(width: 2048, height: 2048)
@@ -515,14 +443,21 @@ private final class SafeMedia {
     /// Returns the thumbnail remote URL with a given target size. It uses
     /// Image CDN (formerly Photon) if available.
     ///
-    /// - parameter targetSize: Target size in pixels.
-    func getRemoteThumbnailURL(targetSize: CGSize, blog: Blog) -> URL? {
+    /// - parameters:
+    ///   - targetSize: Target size in pixels.
+    ///   - traitCollection: The trait collection that provides the display scale.
+    func getRemoteThumbnailURL(targetSize: CGSize, blog: Blog, traitCollection: UITraitCollection) -> URL? {
         switch mediaType {
         case .image:
             guard let remoteURL = remoteURL.flatMap(URL.init) else {
                 return nil
             }
-            return MediaImageService.getResizedImageURL(for: remoteURL, blog: blog, size: targetSize)
+            return MediaImageService.getResizedImageURL(
+                for: remoteURL,
+                blog: blog,
+                size: targetSize,
+                traitCollection: traitCollection
+            )
         default:
             return remoteThumbnailURL.flatMap(URL.init)
         }

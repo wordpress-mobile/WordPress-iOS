@@ -57,7 +57,7 @@ class BlogDetailHeaderView: UIView {
     @objc func refreshIconImage() {
         guard let blog else { return }
 
-        let viewModel = SiteIconViewModel(blog: blog, traitCollection: traitCollection)
+        let viewModel = SiteIconViewModel(blog: blog)
         titleView.siteIconView.imageView.setIcon(with: viewModel)
     }
 
@@ -90,9 +90,6 @@ class BlogDetailHeaderView: UIView {
 
         self.delegate = delegate
         setupChildViews()
-        registerForTraitChanges([UITraitDisplayScale.self]) { (self: BlogDetailHeaderView, _) in
-            self.refreshIconImage()
-        }
     }
 
     required init?(coder: NSCoder) {

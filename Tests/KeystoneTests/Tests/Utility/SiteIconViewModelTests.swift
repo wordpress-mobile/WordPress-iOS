@@ -13,10 +13,10 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = Constants.dotcomURL
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
-        let size = 40 * Int(UIScreen.main.scale)
+        let size = 40 * Int(Constants.traitCollection.displayScale)
         let expectedURL = URL(string: "\(url.absoluteString)?w=\(size)&h=\(size)")
         XCTAssertEqual(optimizedURL, expectedURL)
     }
@@ -27,10 +27,10 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = Constants.gravatarURL
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
-        let size = 40 * Int(UIScreen.main.scale)
+        let size = 40 * Int(Constants.traitCollection.displayScale)
         let expectedURL = URL(string: "\(url.absoluteString)?d=404&s=\(size)")
         XCTAssertEqual(optimizedURL, expectedURL)
     }
@@ -41,10 +41,10 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = Constants.photonURL
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
-        let size = 40 * Int(UIScreen.main.scale)
+        let size = 40 * Int(Constants.traitCollection.displayScale)
         let expectedURL = URL(string: "\(url.absoluteString)?w=\(size)&h=\(size)")
         XCTAssertEqual(optimizedURL, expectedURL)
     }
@@ -56,10 +56,14 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = Constants.dotcomURL
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, imageSize: sizeInPoints)
+        let optimizedURL = SiteIconViewModel.optimizedURL(
+            for: url,
+            imageSize: sizeInPoints,
+            traitCollection: Constants.traitCollection
+        )
 
         // Then
-        let size = Int(sizeInPoints.width) * Int(UIScreen.main.scale)
+        let size = Int(sizeInPoints.width) * Int(Constants.traitCollection.displayScale)
         let expectedURL = URL(string: "\(url.absoluteString)?w=\(size)&h=\(size)")
         XCTAssertEqual(optimizedURL, expectedURL)
     }
@@ -71,10 +75,14 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = Constants.gravatarURL
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, imageSize: sizeInPoints)
+        let optimizedURL = SiteIconViewModel.optimizedURL(
+            for: url,
+            imageSize: sizeInPoints,
+            traitCollection: Constants.traitCollection
+        )
 
         // Then
-        let size = Int(sizeInPoints.width) * Int(UIScreen.main.scale)
+        let size = Int(sizeInPoints.width) * Int(Constants.traitCollection.displayScale)
         let expectedURL = URL(string: "\(url.absoluteString)?d=404&s=\(size)")
         XCTAssertEqual(optimizedURL, expectedURL)
     }
@@ -86,10 +94,14 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = Constants.photonURL
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, imageSize: sizeInPoints)
+        let optimizedURL = SiteIconViewModel.optimizedURL(
+            for: url,
+            imageSize: sizeInPoints,
+            traitCollection: Constants.traitCollection
+        )
 
         // Then
-        let size = Int(sizeInPoints.width) * Int(UIScreen.main.scale)
+        let size = Int(sizeInPoints.width) * Int(Constants.traitCollection.displayScale)
         let expectedURL = URL(string: "\(url.absoluteString)?w=\(size)&h=\(size)")
         XCTAssertEqual(optimizedURL, expectedURL)
     }
@@ -102,7 +114,7 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = URL(string: "https://attacker.example.com/icon.png?u=.files.wordpress.com")!
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
         XCTAssertEqual(optimizedURL?.host, "i0.wp.com")
@@ -116,7 +128,7 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = URL(string: "https://attacker.example.com/gravatar.com/blavatar/123.png")!
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
         XCTAssertEqual(optimizedURL?.host, "i0.wp.com")
@@ -128,10 +140,10 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = URL(string: "https://example.wordpress.com/icon.png")!
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
-        let size = 40 * Int(UIScreen.main.scale)
+        let size = 40 * Int(Constants.traitCollection.displayScale)
         XCTAssertEqual(optimizedURL, URL(string: "\(url.absoluteString)?w=\(size)&h=\(size)"))
     }
 
@@ -142,16 +154,17 @@ final class SiteIconViewModelTests: XCTestCase {
         let url = URL(string: "icon.png?existing=value", relativeTo: baseURL)!
 
         // When
-        let optimizedURL = SiteIconViewModel.optimizedURL(for: url)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: url, traitCollection: Constants.traitCollection)
 
         // Then
-        let size = 40 * Int(UIScreen.main.scale)
+        let size = 40 * Int(Constants.traitCollection.displayScale)
         XCTAssertEqual(optimizedURL, URL(string: "https://example.wordpress.com/icon.png?w=\(size)&h=\(size)"))
     }
 
     // MARK: - Constants
 
     private struct Constants {
+        static let traitCollection = UITraitCollection(displayScale: 3)
         static let customImageSize = CGSize(width: 60, height: 60)
         static let dotcomURL = URL(string: "https://fake.files.wordpress.com/fake.png")!
         static let gravatarURL = URL(string: "https://secure.gravatar.com/blavatar/123")!

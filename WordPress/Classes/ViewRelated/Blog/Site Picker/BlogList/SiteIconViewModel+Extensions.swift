@@ -7,28 +7,22 @@ import AsyncImageKit
 import WordPressUI
 
 extension SiteIconViewModel {
-    @available(
-        *,
-        deprecated,
-        message: "use init(blog:size:traitCollection:) and pass the trait collection of the view that displays the icon"
-    )
     init(blog: Blog, size: Size = .regular) {
-        self.init(blog: blog, size: size, traitCollection: .current)
-    }
-
-    /// - parameter traitCollection: The trait collection of the view that displays the icon.
-    init(blog: Blog, size: Size = .regular, traitCollection: UITraitCollection) {
         self.init(size: size)
 
         self.firstLetter = blog.title?.first
 
         if let icon = blog.iconURL {
-            self.imageURL = SiteIconViewModel.optimizedURL(
-                for: icon,
-                imageSize: size.size,
-                isP2: blog.isAutomatticP2,
-                traitCollection: traitCollection
-            )
+            let isP2 = blog.isAutomatticP2
+            self.imageURL = icon
+            self.sizeImageURL = { url, displayScale in
+                SiteIconViewModel.optimizedURL(
+                    for: url,
+                    imageSize: size.size,
+                    isP2: isP2,
+                    traitCollection: UITraitCollection(displayScale: displayScale)
+                )
+            }
             self.host = MediaHost(blog)
         }
     }
@@ -39,9 +33,17 @@ extension SiteIconViewModel {
         self.firstLetter = readerSiteTopic.title.first
         self.imageURL = SiteIconViewModel.makeReaderSiteIconURL(
             iconURL: readerSiteTopic.siteBlavatar,
-            siteID: readerSiteTopic.siteID.intValue,
-            size: size.size
+            siteID: readerSiteTopic.siteID.intValue
         )
+        if imageURL != nil {
+            self.sizeImageURL = { url, displayScale in
+                SiteIconViewModel.sizeReaderSiteIconURL(
+                    url,
+                    size: size.size,
+                    traitCollection: UITraitCollection(displayScale: displayScale)
+                )
+            }
+        }
     }
 }
 
@@ -136,24 +138,42 @@ extension SiteIconViewModel {
 // MARK: - SiteIconViewModel (Reader)
 
 extension SiteIconViewModel {
-    /// - parameter isBlavatar: A hint to skip the "is icon blavatar" check.
-    /// - parameter size: Size in points.
-    static func makeReaderSiteIconURL(iconURL: String?, isBlavatar: Bool = false, siteID: Int?, size: CGSize) -> URL? {
+    /// - parameters:
+    ///   - size: Size in points.
+    ///   - traitCollection: The trait collection of the view that displays the icon.
+    static func makeReaderSiteIconURL(
+        iconURL: String?,
+        siteID: Int?,
+        size: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        guard let url = makeReaderSiteIconURL(iconURL: iconURL, siteID: siteID) else {
+            return nil
+        }
+        return sizeReaderSiteIconURL(url, size: size, traitCollection: traitCollection)
+    }
+
+    /// Returns the URL of the site icon before it's sized for a display.
+    private static func makeReaderSiteIconURL(iconURL: String?, siteID: Int?) -> URL? {
         guard let iconURL, !iconURL.isEmpty else {
             if let siteID {
                 return getHardcodedSiteIconURL(siteID: siteID)
             }
             return nil
         }
-        guard let url = URL(string: iconURL) else {
-            return nil
+        return URL(string: iconURL)
+    }
+
+    /// Sizes Gravatar blavatars for the display. Other URLs are returned as is.
+    private static func sizeReaderSiteIconURL(
+        _ url: URL,
+        size: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        guard isBlavatarURL(url) else {
+            return url
         }
-        if isBlavatarURL(url) {
-            // TODO: Modernization - Reader callers don't pass the trait collection of the view that
-            // displays the icon yet, so this resolves the display scale from shared state.
-            return optimizedBlavatarURL(from: url, imageSize: size, traitCollection: .current)
-        }
-        return url
+        return optimizedBlavatarURL(from: url, imageSize: size, traitCollection: traitCollection)
     }
 
     private static func getHardcodedSiteIconURL(siteID: Int) -> URL? {

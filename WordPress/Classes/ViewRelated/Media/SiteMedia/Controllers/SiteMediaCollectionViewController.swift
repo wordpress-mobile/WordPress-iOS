@@ -502,7 +502,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func makePreviewViewController(for media: Media) -> UIViewController? {
-        SiteMediaPreviewViewController(media: media, bounds: view.bounds)
+        SiteMediaPreviewViewController(media: media)
     }
 
     // MARK: - UICollectionViewDataSourcePrefetching

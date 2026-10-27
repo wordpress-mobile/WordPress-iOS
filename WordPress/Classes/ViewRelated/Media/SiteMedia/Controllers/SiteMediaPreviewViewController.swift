@@ -8,10 +8,6 @@ struct SiteMediaPreviewView: UIViewControllerRepresentable {
     let media: Media
 
     func makeUIViewController(context: Context) -> SiteMediaPreviewViewController {
-        // TODO: Modernization - The preview size is derived from `UIScreen.main` inside the
-        // deprecated `init(media:)`. Read the available size with `GeometryReader` in the
-        // SwiftUI view that presents this preview (`PostMediaUploadsView`) and pass it via
-        // `init(media:bounds:)`.
         SiteMediaPreviewViewController(media: media)
     }
 
@@ -23,21 +19,10 @@ struct SiteMediaPreviewView: UIViewControllerRepresentable {
 final class SiteMediaPreviewViewController: UIViewController {
     private let imageView = GIFImageView()
     private let media: Media
-    private let bounds: CGRect
     private let service = MediaImageService.shared
 
-    @available(*, deprecated, message: "use init(media:bounds:) and pass the bounds of the presenting view")
-    convenience init(media: Media) {
-        // TODO: Modernization - `UIScreen.main` assumes a single, fixed display. Pass the
-        // presenting view's bounds via `init(media:bounds:)` instead.
-        self.init(media: media, bounds: UIScreen.main.bounds)
-    }
-
-    /// - parameter bounds: The bounds of the view that presents the preview.
-    /// They determine the size of the thumbnail the preview loads.
-    init(media: Media, bounds: CGRect) {
+    init(media: Media) {
         self.media = media
-        self.bounds = bounds
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -52,20 +37,10 @@ final class SiteMediaPreviewViewController: UIViewController {
 
         switch media.mediaType {
         case .image:
-            preferredContentSize = MediaImageService.getThumbnailSize(
-                for: media,
-                size: .large,
-                bounds: bounds,
-                traitCollection: traitCollection
-            )
+            preferredContentSize = MediaImageService.getThumbnailSize(for: media, size: .large)
             configureImagePreview()
         case .video:
-            preferredContentSize = MediaImageService.getThumbnailSize(
-                for: media,
-                size: .large,
-                bounds: bounds,
-                traitCollection: traitCollection
-            )
+            preferredContentSize = MediaImageService.getThumbnailSize(for: media, size: .large)
             configureVideoPreview()
         case .document, .audio:
             preferredContentSize = CGSize(width: 180, height: 180)

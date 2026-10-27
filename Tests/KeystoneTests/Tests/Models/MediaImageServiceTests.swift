@@ -286,6 +286,19 @@ class MediaImageServiceTests: CoreDataTestCase {
         )
     }
 
+    @MainActor
+    func testThatThumbnailSizesAreFixed() {
+        let mediaSize = CGSize(width: 4000, height: 3000)
+        XCTAssertEqual(
+            MediaImageService.getThumbnailSize(for: mediaSize, size: .small),
+            CGSize(width: 544, height: 408)
+        )
+        XCTAssertEqual(
+            MediaImageService.getThumbnailSize(for: mediaSize, size: .large),
+            CGSize(width: 1365, height: 1024)
+        )
+    }
+
     func testThatImagesAreNotUpscaled() {
         XCTAssertEqual(
             MediaImageService.targetSize(
