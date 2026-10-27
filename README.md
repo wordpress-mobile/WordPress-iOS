@@ -22,7 +22,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 1. Check that your local version of Ruby matches the one in [.ruby-version](./.ruby-version). We recommend installing a tool like [rbenv](https://github.com/rbenv/rbenv) so your system will always use the version defined in that file. Once installed, simply run `rbenv install` in the repo to match the version.
 1. Return to the command line and run `rake init:oss` to set up your own WordPress.com API credentials, so you can log in to WordPress.com in the app
-1. Once completed, run `rake xcode` to open the project in Xcode.
+1. Once completed, run `open WordPress.xcworkspace` to open the project in Xcode.
 
 If all went well you can now compile to your iOS device or simulator, and log into the WordPress app.
 
@@ -38,13 +38,7 @@ We use a few Ruby tools for release and CI, such as fastlane and Danger. Run `bu
 
 ### Open Xcode
 
-Launch the workspace by running the following from the command line:
-
-`rake xcode`
-
-This will ensure any dependencies are ready before launching Xcode.
-
-You can also open the project by double clicking on `WordPress.xcworkspace` file, or launching Xcode and choose `File` > `Open` and browse to `WordPress.xcworkspace`.
+Launch the workspace by running `open WordPress.xcworkspace` from the command line, by double clicking on the `WordPress.xcworkspace` file, or by launching Xcode and choosing `File` > `Open` and browsing to `WordPress.xcworkspace`. The first build downloads the Gutenberg frameworks the app needs.
 
 ### Setup Credentials
 
