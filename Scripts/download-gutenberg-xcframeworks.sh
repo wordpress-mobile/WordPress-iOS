@@ -7,7 +7,7 @@ set -euo pipefail
 # Usage: download-gutenberg-xcframeworks.sh [frameworks_dir]
 #   frameworks_dir defaults to WordPress/Frameworks in the repository root.
 #
-# Runs from `rake dependencies` and from the build pre-action of the app schemes,
+# Runs from CI's shared set-up and from the build pre-action of the app schemes,
 # so it exits immediately when the frameworks are already installed.
 
 VERSION="v1.121.0"
