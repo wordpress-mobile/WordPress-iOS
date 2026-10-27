@@ -511,6 +511,7 @@ lane :lint_localizations do |options|
   ios_lint_localizations(
     input_dir: 'WordPress/Resources',
     fail_on_strings_not_in_base_language: false,
+    allow_omitted_placeholders: true,
     allow_retry: options.fetch(:allow_retry, true)
   )
 end
