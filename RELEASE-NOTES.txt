@@ -1,5 +1,6 @@
 27.5
 -----
+* [*] Share Extension: Fix a crash when sharing a photo [#26251]
 * [*] Site Creation: Keep the design list's place when the iPad window is resized [#26224]
 * [*] iPad: Fix an open editor or Site Creation closing the first time the window is narrowed [#26223]
 * [*] Fix the preview of a self-hosted post opened from Spotlight closing a second after it opens [#26223]
