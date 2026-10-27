@@ -447,7 +447,11 @@ private struct SizeClassResources {
 
     private init(sizeClass: UIUserInterfaceSizeClass) {
         typealias Style = WPStyleGuide.Notifications
-        func paragraph(lineHeight: CGFloat, lineBreakMode: NSLineBreakMode, alignment: NSTextAlignment) -> NSParagraphStyle {
+        func paragraph(
+            lineHeight: CGFloat,
+            lineBreakMode: NSLineBreakMode,
+            alignment: NSTextAlignment
+        ) -> NSParagraphStyle {
             NSMutableParagraphStyle(minLineHeight: lineHeight, lineBreakMode: lineBreakMode, alignment: alignment)
         }
         let subjectLineSize = Style.subjectLineSize(for: sizeClass)

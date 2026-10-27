@@ -45,7 +45,10 @@ struct NotificationStylesSizeClassTests {
         #expect(font.pointSize == iconSize)
     }
 
-    @Test("fonts and paragraph styles are built once per size class", arguments: [UIUserInterfaceSizeClass.compact, .regular])
+    @Test(
+        "fonts and paragraph styles are built once per size class",
+        arguments: [UIUserInterfaceSizeClass.compact, .regular]
+    )
     func stylesAreReused(sizeClass: UIUserInterfaceSizeClass) throws {
         typealias Style = WPStyleGuide.Notifications
         #expect(Style.contentBlockRegularFont(for: sizeClass) === Style.contentBlockRegularFont(for: sizeClass))

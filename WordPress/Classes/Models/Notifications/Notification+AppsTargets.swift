@@ -10,7 +10,10 @@ extension WordPressData.Notification {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
             return nil
         }
-        return formatter.render(content: subjectContent, with: SubjectContentStyles(horizontalSizeClass: horizontalSizeClass))
+        return formatter.render(
+            content: subjectContent,
+            with: SubjectContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
     }
 
     /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the snippet.
@@ -18,7 +21,10 @@ extension WordPressData.Notification {
         guard let snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: SnippetsContentStyles(horizontalSizeClass: horizontalSizeClass))
+        return formatter.render(
+            content: snippetContent,
+            with: SnippetsContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
     }
 
     /// Returns the first BlockGroup of the specified type, if any.
