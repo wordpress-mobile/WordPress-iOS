@@ -357,9 +357,6 @@ GEM
     rubocop-ast (1.50.0)
       parser (>= 3.3.7.2)
       prism (~> 1.7)
-    rubocop-rake (0.7.1)
-      lint_roller (~> 1.1)
-      rubocop (>= 1.72.1)
     ruby-progressbar (1.13.0)
     rubyzip (3.7.0)
     sawyer (0.9.3)
@@ -417,10 +414,8 @@ DEPENDENCIES
   fastlane-plugin-firebase_app_distribution (~> 1.0)
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit (~> 15.1)
-  rake
   rmagick (~> 7.2)
   rubocop (~> 1.92)
-  rubocop-rake (~> 0.7)
 
 BUNDLED WITH
   4.0.17
