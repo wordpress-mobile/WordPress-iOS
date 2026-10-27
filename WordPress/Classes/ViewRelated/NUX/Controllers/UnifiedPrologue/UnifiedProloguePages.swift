@@ -94,9 +94,12 @@ class UnifiedProloguePageViewController: UIViewController {
         }
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        // change the aspect ratio of the content in regular horizontal size class (iPad) depending on the orientation
-        guard mainStackViewAspectConstraint?.isActive == true else {
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // change the aspect ratio of the content in regular horizontal size class (iPad) depending on the available space
+        guard let aspectConstraint = mainStackViewAspectConstraint,
+              aspectConstraint.isActive,
+              aspectConstraint.multiplier != iPadAspectRatio else {
             return
         }
         mainStackViewAspectConstraint?.isActive = false
@@ -203,9 +206,9 @@ class UnifiedProloguePageViewController: UIViewController {
         mainStackViewCenterAnchor = mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
     }
 
-    // use different aspect ratios on iPad depending on the orientation
+    // use different aspect ratios on iPad depending on whether the available space is taller than wide
     private var iPadAspectRatio: CGFloat {
-        UIDevice.current.orientation.isPortrait ? 1.78 : 1.4
+        view.bounds.height > view.bounds.width ? 1.78 : 1.4
     }
 
     private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
