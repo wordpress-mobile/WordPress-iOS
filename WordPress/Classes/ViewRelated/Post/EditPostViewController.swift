@@ -12,8 +12,6 @@ class EditPostViewController: UIViewController {
 
     /// appear instantly, without animations
     @objc var showImmediately: Bool = false
-    /// appear with media pre-inserted into the post
-    var insertedMedia: [Media]? = nil
     /// is editing a reblogged post
     var postIsReblogged = false
     /// the entry point for the editor
@@ -210,10 +208,6 @@ class EditPostViewController: UIViewController {
         present(navController, animated: !showImmediately) {
             if !(editor is NewGutenbergViewController) {
                 generator.impactOccurred()
-            }
-
-            if let insertedMedia = self.insertedMedia {
-                editor.prepopulateMediaItems(insertedMedia)
             }
         }
     }
