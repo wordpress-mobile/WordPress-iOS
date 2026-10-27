@@ -2,6 +2,7 @@ import Security
 import XCTest
 @testable import WordPress
 @testable import WordPressData
+import WordPressShared
 
 class DataMigratorTests: XCTestCase {
 
@@ -210,10 +211,13 @@ class DataMigratorTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        guard case .failure = exportResult else {
+        guard case .failure(let error) = exportResult else {
             return XCTFail("export should fail when the token read fails with a real keychain error")
         }
         XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+        // The reported error must keep the OSStatus so Sentry can tell failures apart.
+        XCTAssertEqual(error.errorCode, 3000 + Int(errSecInteractionNotAllowed))
+        XCTAssertEqual(error.errorUserInfo["underlying-error-code"] as? Int, Int(errSecInteractionNotAllowed))
     }
 
     func testDeleteExportedDataRemovesPublishedToken() {

@@ -16,6 +16,20 @@ public enum KeychainError: Error, Equatable {
     case failure(OSStatus)
 }
 
+/// Bridges to `NSError` exactly as the `SFHFKeychainUtils` errors it replaces
+/// did, so crash logging and wrapping errors (`DataMigrationError.errorCode`,
+/// `underlying-error-code`) keep the raw `OSStatus`.
+extension KeychainError: CustomNSError {
+    public static var errorDomain: String { sfhfKeychainErrorDomain }
+
+    public var errorCode: Int {
+        switch self {
+        case .notFound: Int(errSecItemNotFound)
+        case .failure(let status): Int(status)
+        }
+    }
+}
+
 /// The underlying Keychain `OSStatus` for an error produced by
 /// `SFHFKeychainUtils`, or `nil` when the error is not from that domain.
 ///

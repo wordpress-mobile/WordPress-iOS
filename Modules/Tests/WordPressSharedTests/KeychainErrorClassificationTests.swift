@@ -33,6 +33,14 @@ struct KeychainErrorClassificationTests {
         #expect(keychainError(from: error) == .failure(-1999))
     }
 
+    /// Crash logging and `DataMigrationError` bridge the thrown error to
+    /// `NSError`; the `OSStatus` must survive that bridge.
+    @Test func failureBridgesToNSErrorCarryingOSStatus() {
+        let nsError = KeychainError.failure(errSecInteractionNotAllowed) as NSError
+        #expect(nsError.domain == sfhfKeychainErrorDomain)
+        #expect(nsError.code == Int(errSecInteractionNotAllowed))
+    }
+
     @Test func keychainErrorCodeReturnsStatusForSFHFError() {
         let error = NSError(domain: sfhfKeychainErrorDomain, code: Int(errSecMissingEntitlement))
         #expect(keychainErrorCode(error: error) == errSecMissingEntitlement)
