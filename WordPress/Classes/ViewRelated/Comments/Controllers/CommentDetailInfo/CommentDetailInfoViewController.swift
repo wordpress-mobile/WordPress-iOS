@@ -109,10 +109,9 @@ extension CommentDetailInfoViewController {
             navigationController.modalPresentationStyle = .popover
             navigationController.popoverPresentationController?.sourceView = sourceView
             navigationController.popoverPresentationController?.permittedArrowDirections = [.up]
+            navigationController.popoverPresentationController?.delegate = self
         } else {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, primaryAction: UIAction { [weak presentingViewController] _ in
-                presentingViewController?.dismiss(animated: true)
-            })
+            self.navigationItem.leftBarButtonItem = makeCloseButton()
             if let sheet = navigationController.sheetPresentationController {
                 sheet.detents = [.medium(), .large()]
                 sheet.prefersGrabberVisible = true
@@ -120,5 +119,27 @@ extension CommentDetailInfoViewController {
             }
         }
         presentingViewController.present(navigationController, animated: true)
+    }
+
+    private func makeCloseButton() -> UIBarButtonItem {
+        UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction { [weak self] _ in
+                self?.dismiss(animated: true)
+            }
+        )
+    }
+}
+
+extension CommentDetailInfoViewController: UIPopoverPresentationControllerDelegate {
+    func presentationController(
+        _ presentationController: UIPresentationController,
+        willPresentWithAdaptiveStyle style: UIModalPresentationStyle,
+        transitionCoordinator: UIViewControllerTransitionCoordinator?
+    ) {
+        // The popover is shown full screen when there's no room for it, e.g. on
+        // a large iPhone in landscape. It can't be dismissed by tapping outside
+        // there, so it needs a Close button.
+        navigationItem.leftBarButtonItem = style == .none ? nil : makeCloseButton()
     }
 }
