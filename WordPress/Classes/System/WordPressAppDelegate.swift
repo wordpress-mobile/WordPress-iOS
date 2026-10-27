@@ -41,6 +41,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // Recover by creating the window now: `WordPressSceneDelegate` attaches it to
             // the scene once one connects.
             assertionFailure("windowManager accessed before any scene connected")
+            // TODO: Modernization - Replace with UIWindow(windowScene:) once this fallback can receive the
+            // connecting UIWindowScene (e.g. by moving window creation into
+            // WordPressSceneDelegate.scene(_:willConnectTo:options:)). Do not look the scene up via
+            // UIApplication.shared.connectedScenes here.
             window = UIWindow(frame: UIScreen.main.bounds)
         }
         let window = window!

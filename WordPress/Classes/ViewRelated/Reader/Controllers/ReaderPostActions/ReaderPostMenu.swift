@@ -108,7 +108,7 @@ struct ReaderPostMenu {
             WPAnalytics.track(.intelligenceSummarizeReaderPostTapped)
 
             let view = ReaderSummarizePostView(post: post)
-            let summarizeVC = UIHostingController(rootView: NavigationView { view })
+            let summarizeVC = UIHostingController(rootView: NavigationStack { view })
             summarizeVC.sheetPresentationController?.detents = [.medium(), .large()]
             viewController.present(summarizeVC, animated: true)
         }

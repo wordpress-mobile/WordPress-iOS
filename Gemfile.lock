@@ -5,7 +5,7 @@ GEM
     abbrev (0.1.2)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    anthropic (1.80.0)
+    anthropic (2.2.0)
       base64 (~> 0.1)
       connection_pool (>= 2, < 4)
       opentelemetry-api (>= 1.2.4, < 2)
@@ -298,7 +298,7 @@ GEM
     os (1.1.4)
     ostruct (0.6.3)
     parallel (1.28.0)
-    parser (3.3.12.0)
+    parser (3.3.13.0)
       ast (~> 2.4.1)
       racc
     pkg-config (1.6.5)
@@ -343,7 +343,7 @@ GEM
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
-    rubocop (1.92.0)
+    rubocop (1.92.1)
       json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -410,7 +410,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anthropic (~> 1.80)
+  anthropic (~> 2.2)
   danger-dangermattic (~> 1.4)
   dotenv
   fastlane (~> 2.241)

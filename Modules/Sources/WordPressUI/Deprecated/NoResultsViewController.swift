@@ -65,6 +65,10 @@ import WordPressShared
     public override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
+
+        registerForTraitChanges([UITraitVerticalSizeClass.self]) { (self: Self, _: UITraitCollection) in
+            self.setAccessoryViewsVisibility()
+        }
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +83,6 @@ import WordPressShared
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setAccessoryViewsVisibility()
         // `traitCollectionDidChange` is not fired for iOS 16.0 + Media adding flow. The reason why the constraints update call was moved to here.
         // Since `viewWillTransition` is always called when the orientation changes (portrait | landscape), it will work for all scenarios.
         DispatchQueue.main.async {
@@ -372,8 +375,8 @@ private extension NoResultsViewController {
             return
         }
 
-        // Always hide the accessory/image stack view when in iPhone landscape.
-        accessoryStackView.isHidden = UIDevice.current.orientation.isLandscape && WPDeviceIdentification.isiPhone()
+        // Always hide the accessory/image stack view when vertical space is constrained (e.g. iPhone landscape).
+        accessoryStackView.isHidden = traitCollection.verticalSizeClass == .compact
 
         // If there is an accessory view, show that.
         accessoryView.isHidden = accessorySubview == nil

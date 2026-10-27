@@ -205,7 +205,8 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     fileprivate func refreshNavigationBar() {
         title = note.title
 
-        if splitViewControllerIsHorizontallyCompact {
+        // The list isn't visible next to the details, so show the arrows instead.
+        if splitViewController?.isCollapsed ?? true {
             enableNavigationRightBarButtonItems()
         } else {
             navigationItem.rightBarButtonItems = nil
