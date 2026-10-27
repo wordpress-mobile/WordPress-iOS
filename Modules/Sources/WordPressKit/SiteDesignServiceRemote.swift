@@ -38,26 +38,44 @@ public class SiteDesignServiceRemote {
         "type": ("mobile" as AnyObject)
     ]
 
-    private static func joinParameters(_ parameters: [String: AnyObject], additionalParameters: [String: AnyObject]?) -> [String: AnyObject] {
+    private static func joinParameters(
+        _ parameters: [String: AnyObject],
+        additionalParameters: [String: AnyObject]?
+    ) -> [String: AnyObject] {
         guard let additionalParameters else { return parameters }
-        return parameters.reduce(into: additionalParameters, { result, element in
-            result[element.key] = element.value
-        })
+        return parameters.reduce(
+            into: additionalParameters,
+            { result, element in
+                result[element.key] = element.value
+            }
+        )
     }
 
-    public static func fetchSiteDesigns(_ api: WordPressComRestApi, request: SiteDesignRequest? = nil, completion: @escaping CompletionHandler) {
-        let combinedParameters: [String: AnyObject] = joinParameters(parameters, additionalParameters: request?.parameters)
-        api.GET(endpoint, parameters: combinedParameters, success: { responseObject, _ in
-            do {
-                let result = try parseLayouts(fromResponse: responseObject)
-                completion(.success(result))
-            } catch {
-                NSLog("error response object: %@", String(describing: responseObject))
+    public static func fetchSiteDesigns(
+        _ api: WordPressComRestApi,
+        request: SiteDesignRequest? = nil,
+        completion: @escaping CompletionHandler
+    ) {
+        let combinedParameters: [String: AnyObject] = joinParameters(
+            parameters,
+            additionalParameters: request?.parameters
+        )
+        api.GET(
+            endpoint,
+            parameters: combinedParameters,
+            success: { responseObject, _ in
+                do {
+                    let result = try parseLayouts(fromResponse: responseObject)
+                    completion(.success(result))
+                } catch {
+                    NSLog("error response object: %@", String(describing: responseObject))
+                    completion(.failure(error))
+                }
+            },
+            failure: { error, _ in
                 completion(.failure(error))
             }
-        }, failure: { error, _ in
-            completion(.failure(error))
-        })
+        )
     }
 
     private static func parseLayouts(fromResponse response: Any) throws -> RemoteSiteDesigns {
