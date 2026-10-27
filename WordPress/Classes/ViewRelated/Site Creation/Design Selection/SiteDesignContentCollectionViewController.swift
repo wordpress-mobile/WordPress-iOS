@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import WordPressKit
+import WordPressShared
 import WordPressUI
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
@@ -12,14 +13,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private let completion: SiteDesignStep.SiteDesignSelection
     private var sectionAssembler: SiteDesignSectionLoader.Assembler?
 
-    private var sections: [SiteDesignSection] = [] {
-        didSet {
-            tableView.scrollToTop(animated: false)
-            sectionHorizontalOffsets.removeAll()
-            contentSizeWillChange()
-            tableView.reloadData()
-        }
-    }
+    private var sections: [SiteDesignSection] = []
 
     /// Dictionary to store horizontal scroll position of sections, keyed by category slug
     private var sectionHorizontalOffsets: [String: CGFloat] = [:]
@@ -39,7 +33,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     private var ghostThumbnailSize: CGSize {
-        SiteDesignCategoryThumbnailSize.recommended.value
+        SiteDesignCategoryThumbnailSize.recommended.value(for: traitCollection)
     }
 
     // MARK: Helper Footer View
@@ -181,11 +175,22 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             self.helperSeparator.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
             self.helperContentView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
+
+        // The thumbnail sizes follow the horizontal size class. The designs that are already loaded are laid
+        // out again at the new sizes, in the same order, without a new request. Their previews keep the size
+        // they were requested at: the two sizes differ by 23 pt in width, and the thumbnails crop the previews
+        // to fill.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            if let sectionAssembler = self.sectionAssembler {
+                self.sections = sectionAssembler(self.creator.vertical, self.traitCollection)
+            }
+            self.contentSizeWillChange()
+            self.tableView.reloadData()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchSiteDesigns()
 
         // Disable the button temporarily during the transition animation.
         //
@@ -209,6 +214,13 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        // The design request needs the scale of the screen that displays the thumbnails,
+        // which is only known once the view is in a window.
+        fetchSiteDesigns()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.rightBarButtonItem?.isEnabled = true
@@ -216,21 +228,29 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func fetchSiteDesigns() {
         if let sectionAssembler {
-            self.sections = sectionAssembler(creator.vertical)
+            showSections(sectionAssembler(creator.vertical, traitCollection))
             return
+        }
+
+        guard let scale = view.window?.windowScene?.screen.nativeScale else {
+            return wpAssertionFailure(
+                "SiteDesignContentCollectionViewController.fetchSiteDesigns() requires the view to be in a window"
+            )
         }
 
         isLoading = true
 
+        let traitCollection = traitCollection
         DispatchQueue.main.async { [weak self] in
-            SiteDesignSectionLoader.buildAssembler { result in
+            SiteDesignSectionLoader.buildAssembler(scale: scale, traitCollection: traitCollection) { result in
                 guard let self else { return }
 
                 switch result {
                 case .success(let assembler):
                     self.sectionAssembler = assembler
                     self.dismissNoResultsController()
-                    self.sections = assembler(self.creator.vertical)
+                    // The current size class, which can differ from the one the request was made for.
+                    self.showSections(assembler(self.creator.vertical, self.traitCollection))
                     self.setupHelperView()
                 case .failure(let error):
                     self.handleError(error)
@@ -239,6 +259,15 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 self.isLoading = false
             }
         }
+    }
+
+    /// Shows a newly assembled list of sections, scrolled to the top.
+    private func showSections(_ sections: [SiteDesignSection]) {
+        self.sections = sections
+        tableView.scrollToTop(animated: false)
+        sectionHorizontalOffsets.removeAll()
+        contentSizeWillChange()
+        tableView.reloadData()
     }
 
     private func configureHeaderStyling() {

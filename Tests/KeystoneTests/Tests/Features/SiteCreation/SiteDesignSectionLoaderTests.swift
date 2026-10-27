@@ -1,8 +1,12 @@
+import UIKit
 import XCTest
 import WordPressKit
 @testable import WordPress
 
 class SiteDesignSectionLoaderTests: XCTestCase {
+    /// The thumbnail sizes follow the horizontal size class of the view that displays them.
+    private let traitCollection = UITraitCollection(horizontalSizeClass: .compact)
+
     private var remoteDesigns: RemoteSiteDesigns {
         let remoteSiteDesignsPayload =
         """
@@ -19,7 +23,8 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         // When
         let section = SiteDesignSectionLoader.getRecommendedSectionForVertical(
             validVertical,
-            remoteDesigns: remoteDesigns
+            remoteDesigns: remoteDesigns,
+            traitCollection: traitCollection
         )
         let unwrappedSection = try XCTUnwrap(section)
 
@@ -36,7 +41,8 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         // When
         let section = SiteDesignSectionLoader.getRecommendedSectionForVertical(
             invalidVertical,
-            remoteDesigns: remoteDesigns
+            remoteDesigns: remoteDesigns,
+            traitCollection: traitCollection
         )
 
         // Then
@@ -45,7 +51,10 @@ class SiteDesignSectionLoaderTests: XCTestCase {
 
     func testCategorySectionsForRemoteSiteSiteDesigns() throws {
         // When
-        let sections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+        let sections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(
+            remoteDesigns,
+            traitCollection: traitCollection
+        )
 
         // Then
         // The Slugs category has no designs so it isn't returned
@@ -58,13 +67,17 @@ class SiteDesignSectionLoaderTests: XCTestCase {
     func testAssembleSections() throws {
         // Given
         let testVertical = SiteIntentVertical(slug: "test-vertical", localizedTitle: "Testing", emoji: "")
-        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(
+            remoteDesigns,
+            traitCollection: traitCollection
+        )
 
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
             categorySections: categorySections,
             remoteDesigns: remoteDesigns,
-            vertical: testVertical
+            vertical: testVertical,
+            traitCollection: traitCollection
         )
 
         // Then
@@ -73,27 +86,71 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let recommendedSection = sections[0]
         XCTAssertEqual(recommendedSection.title, "Best for Testing")
         XCTAssertEqual(recommendedSection.categorySlug, "recommended_test-vertical")
-        XCTAssertEqual(recommendedSection.thumbnailSize, SiteDesignCategoryThumbnailSize.recommended.value)
+        XCTAssertEqual(
+            recommendedSection.thumbnailSize,
+            SiteDesignCategoryThumbnailSize.recommended.value(for: traitCollection)
+        )
 
         let sectionOne = sections[1]
         XCTAssertEqual(sectionOne.categorySlug, "about")
-        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value(for: traitCollection))
 
         let sectionTwo = sections[2]
         XCTAssertEqual(sectionTwo.categorySlug, "blog")
-        XCTAssertEqual(sectionTwo.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionTwo.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value(for: traitCollection))
     }
 
-    /// Tests entire assembly of sections when there are no matches for a vertical and we fall back to the "Blog" category
-    func testAssembleSectionsFallback() throws {
+    /// Tests that sections built for one size class are laid out at the sizes for another, in the same order
+    func testAssembleSectionsForAnotherSizeClass() throws {
         // Given
-        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+        let testVertical = SiteIntentVertical(slug: "test-vertical", localizedTitle: "Testing", emoji: "")
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(
+            remoteDesigns,
+            traitCollection: traitCollection
+        )
+        let regularTraitCollection = UITraitCollection(horizontalSizeClass: .regular)
 
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
             categorySections: categorySections,
             remoteDesigns: remoteDesigns,
-            vertical: nil
+            vertical: testVertical,
+            traitCollection: regularTraitCollection
+        )
+
+        // Then
+        XCTAssertNotEqual(
+            SiteDesignCategoryThumbnailSize.category.value(for: traitCollection),
+            SiteDesignCategoryThumbnailSize.category.value(for: regularTraitCollection)
+        )
+        XCTAssertEqual(sections.map(\.categorySlug), ["recommended_test-vertical", "about", "blog"])
+        XCTAssertEqual(
+            sections[0].thumbnailSize,
+            SiteDesignCategoryThumbnailSize.recommended.value(for: regularTraitCollection)
+        )
+        for (section, categorySection) in zip(sections.dropFirst(), categorySections) {
+            XCTAssertEqual(
+                section.thumbnailSize,
+                SiteDesignCategoryThumbnailSize.category.value(for: regularTraitCollection)
+            )
+            XCTAssertEqual(section.designs.map(\.slug), categorySection.designs.map(\.slug))
+        }
+    }
+
+    /// Tests entire assembly of sections when there are no matches for a vertical and we fall back to the "Blog" category
+    func testAssembleSectionsFallback() throws {
+        // Given
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(
+            remoteDesigns,
+            traitCollection: traitCollection
+        )
+
+        // When
+        let sections = SiteDesignSectionLoader.assembleSections(
+            categorySections: categorySections,
+            remoteDesigns: remoteDesigns,
+            vertical: nil,
+            traitCollection: traitCollection
         )
 
         // Then
@@ -102,11 +159,14 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let recommendedSection = sections[0]
         XCTAssertEqual(recommendedSection.title, "Best for Blogging")
         XCTAssertEqual(recommendedSection.categorySlug, "blog")
-        XCTAssertEqual(recommendedSection.thumbnailSize, SiteDesignCategoryThumbnailSize.recommended.value)
+        XCTAssertEqual(
+            recommendedSection.thumbnailSize,
+            SiteDesignCategoryThumbnailSize.recommended.value(for: traitCollection)
+        )
 
         let sectionOne = sections[1]
         XCTAssertEqual(sectionOne.categorySlug, "about")
-        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value(for: traitCollection))
     }
 
     /// Tests that no recommended section is part of the final assembly when there is no fallback
@@ -120,19 +180,23 @@ class SiteDesignSectionLoaderTests: XCTestCase {
             RemoteSiteDesigns.self,
             from: remoteSiteDesignsWithoutBlogCategoryPayload.data(using: .utf8)!
         )
-        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteSiteDesignsWithoutBlogCategory)
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(
+            remoteSiteDesignsWithoutBlogCategory,
+            traitCollection: traitCollection
+        )
 
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
             categorySections: categorySections,
             remoteDesigns: remoteSiteDesignsWithoutBlogCategory,
-            vertical: nil
+            vertical: nil,
+            traitCollection: traitCollection
         )
 
         // Then
         XCTAssertEqual(sections.count, 1)
 
         let sectionOne = sections[0]
-        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value(for: traitCollection))
     }
 }
