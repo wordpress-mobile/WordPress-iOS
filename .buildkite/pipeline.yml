@@ -157,6 +157,28 @@ steps:
               context: "Localization Tooling Unit Tests"
 
   #################
+  # Claude PR Review (experimental): fails only when Claude proves a bug caused by the PR
+  #################
+  - label: ":claude: Claude PR Review"
+    key: claude_pr_review
+    command: .buildkite/commands/claude-pr-review.sh
+    depends_on: "build_jetpack"
+    allow_dependency_failure: true
+    if: build.pull_request.id != null
+    timeout_in_minutes: 120
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    artifact_paths:
+      - "build/claude-review/**/*"
+    retry:
+      automatic:
+        # Exit 2 means the review didn't complete (e.g. an API error), not that it found a bug.
+        - exit_status: 2
+          limit: 1
+    notify:
+      - github_commit_status:
+          context: "Claude PR Review"
+
+  #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
