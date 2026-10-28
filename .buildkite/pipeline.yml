@@ -9,6 +9,12 @@ env:
 
 # This is the default pipeline – it will build and test the app
 steps:
+  - label: ":warning: [DO NOT MERGE] Validate plural lanes for #26261"
+    command: .buildkite/commands/validate-plural-lanes.sh
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    artifact_paths:
+      - validation-artifacts/**/*
+
   #################
   # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
   #################
