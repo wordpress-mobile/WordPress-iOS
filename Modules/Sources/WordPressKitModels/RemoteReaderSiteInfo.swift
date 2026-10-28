@@ -83,6 +83,39 @@ private let DeliveryMethodNotificationKey = "notification"
 
         return siteInfo
     }
+
+    /// Creates site info for an entry of the `read/following/mine?meta=site,feed` response.
+    ///
+    /// The entry's `meta.data.site` or `meta.data.feed` is preferred. The feed meta can be an error object, or
+    /// have an empty name and URL when the server has not read the feed: a feed subscribed moments ago, or a
+    /// site that was deleted. The entry's own fields fill those gaps, so every followed site has a feed ID,
+    /// a URL, and a name.
+    public class func siteInfo(forFollowedSiteResponse response: NSDictionary) -> RemoteReaderSiteInfo {
+        let site = response.object(forKeyPath: "meta.data.site") as? NSDictionary
+        let feed = response.object(forKeyPath: "meta.data.feed") as? NSDictionary
+        let siteInfo: RemoteReaderSiteInfo
+        if let site, site[SiteDictionaryIDKey] != nil {
+            siteInfo = self.siteInfo(forSiteResponse: site, isFeed: false)
+        } else if let feed, feed[SiteDictionaryFeedIDKey] != nil {
+            siteInfo = self.siteInfo(forFeedResponse: feed)
+        } else {
+            // The entry has the feed keys (`feed_ID`, `feed_URL`, `name`, `URL`) at its top level.
+            siteInfo = self.siteInfo(forFeedResponse: response)
+        }
+
+        // Every entry of this response is followed, including those whose meta is an error object.
+        siteInfo.isFollowing = true
+
+        if siteInfo.siteURL?.isEmpty ?? true {
+            siteInfo.siteURL = response.string(forKey: SiteDictionaryURLKey)
+        }
+        if siteInfo.siteName?.isEmpty ?? true {
+            siteInfo.siteName = response.string(forKey: SiteDictionaryNameKey)
+            siteInfo.fillEmptyNameWithHost()
+        }
+
+        return siteInfo
+    }
 }
 
 private extension RemoteReaderSiteInfo {
