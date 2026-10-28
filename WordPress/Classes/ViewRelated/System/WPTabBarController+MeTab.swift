@@ -1,70 +1,46 @@
-import Foundation
-import WordPressData
-import WordPressUI
-import Gravatar
-import AsyncImageKit
+import Combine
+import UIKit
 
 extension WPTabBarController {
 
-    private func defaultAccount() -> WPAccount? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+    private struct MeTabAssociatedKeys {
+        static var accountAvatarSubscription = 0
     }
 
-    @objc public func observeGravatarImageUpdate() {
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar(_:)), name: .GravatarQEAvatarUpdateNotification, object: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountEmailAndDefaultBlogUpdated, object: nil)
-    }
-
-    @objc public func configureMeTabImage(placeholderImage: UIImage?) {
-        meNavigationController.tabBarItem.image = placeholderImage
-        meNavigationController.tabBarItem.selectedImage = nil
-        downloadImage()
-    }
-
-    func downloadImage(forceRefresh: Bool = false) {
-        guard let account = defaultAccount(),
-              let email = account.email else {
-            return
+    /// An Objective-C class extension cannot add stored properties.
+    private var meTabAvatarSubscription: AnyCancellable? {
+        get {
+            objc_getAssociatedObject(self, &MeTabAssociatedKeys.accountAvatarSubscription) as? AnyCancellable
         }
-
-        ImageDownloader.shared.downloadGravatarImage(with: email, forceRefresh: forceRefresh) { [weak self] image in
-            guard let image else {
-                return
-            }
-
-            self?.meNavigationController.tabBarItem.configureGravatarImage(image)
+        set {
+            objc_setAssociatedObject(
+                self,
+                &MeTabAssociatedKeys.accountAvatarSubscription,
+                newValue,
+                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            )
         }
     }
 
-    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
-        guard let email = defaultAccount()?.email,
-              notification.userInfoHasEmail(email) else { return }
-        downloadImage(forceRefresh: true)
-    }
-
-    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo,
-            let email = userInfo["email"] as? String,
-            let image = userInfo["image"] as? UIImage,
-            let url = AvatarURL.url(for: email) else {
-                return
+    /// Shows the account avatar on the Me tab item.
+    @objc public func observeAccountAvatar() {
+        meTabAvatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
+            self?.meNavigationController.tabBarItem.configureAccountAvatar(avatar)
         }
-
-        ImageCache.shared.setImage(image, forKey: url.absoluteString)
-        meNavigationController.tabBarItem.configureGravatarImage(image)
-    }
-
-    @objc private func accountDidChange() {
-        configureMeTabImage(placeholderImage: UIImage(named: "tab-bar-me"))
     }
 }
 
 extension UITabBarItem {
+
+    /// Shows `avatar`, or the default Me icon when there is none.
+    func configureAccountAvatar(_ avatar: UIImage?) {
+        if let avatar {
+            configureGravatarImage(avatar)
+        } else {
+            image = UIImage(named: "tab-bar-me")
+            selectedImage = nil
+        }
+    }
 
     func configureGravatarImage(_ image: UIImage) {
         let gravatarIcon = image.gravatarIcon(size: 26.0)
