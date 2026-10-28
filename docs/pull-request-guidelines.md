@@ -20,7 +20,7 @@ When you are ready, please, spend time crafting a good Pull Request, since it wi
 
 **Testing instructions**: Step by step testing instructions. When necessary break out individual scenarios that need testing, consider including a checklist for the reviewer to go through. Consider whether the change warrants accessibility testing. For UI changes, consider testing on different form factors (iPad, iPhone, iPad split screen) and in landscape and portrait orientations. 
 
-**Test results**: Fill in the "What I ran" section of the [pull request template](../.github/PULL_REQUEST_TEMPLATE.md). List the exact commands you ran and their final result line. See [Before Opening a Pull Request](../CONTRIBUTING.md#before-opening-a-pull-request) for the full rule.
+**Test results**: Fill in the "What I ran" section of the [pull request template](../.github/PULL_REQUEST_TEMPLATE.md). List the test suites you ran and the result line each one printed, or `No tests apply:` with the reason. See [Before Opening a Pull Request](../CONTRIBUTING.md#before-opening-a-pull-request) for the full rule.
 
 **Images and Gif**: Include before and after images or gifs when appropriate.
 

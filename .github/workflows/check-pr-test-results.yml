@@ -37,10 +37,11 @@ jobs:
               sys.exit(1)
 
           # XCTest prints `Executed 3 tests, with 0 failures`. Swift Testing prints
-          # `Test run with 6 tests in 1 suite passed`.
-          result_line = re.compile(r"Executed \d+ tests?, with \d+ failures?|Test run with \d+ tests?")
+          # `Test run with 6 tests in 1 suite passed`. A change with no tests to run
+          # says `No tests apply:` with the reason.
+          result_line = re.compile(r"Executed \d+ tests?, with \d+ failures?|Test run with \d+ tests?|^\s*No tests apply:[ \t]*\S", re.MULTILINE | re.IGNORECASE)
           if not result_line.search(section.group(1)):
-              print(f"::error::The \"What I ran\" section has no test result line. See {contributing}")
+              print(f"::error::The \"What I ran\" section has no test result line or \"No tests apply:\" reason. See {contributing}")
               sys.exit(1)
 
           print("Found test results in the pull request description.")

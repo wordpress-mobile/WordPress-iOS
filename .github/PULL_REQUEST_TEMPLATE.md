@@ -14,7 +14,7 @@ CI does not run on pull requests from forks, so a maintainer is the first person
     ```
 
     For example, `-only-testing:WordPressTest/RemoteFeatureFlagTests`. Repeat `-only-testing:` once for each suite.
-3. In the pull request description, include the exact command and the test result lines it printed. XCTest prints a line like `Executed 3 tests, with 0 failures`. Swift Testing prints a line like `Test run with 6 tests in 1 suite passed`.
+3. If you're opening the pull request from a fork, add a "What I ran" section to the description. List the test suites you ran and paste the result line each one printed. XCTest prints a line like `Executed 3 tests, with 0 failures`. Swift Testing prints a line like `Test run with 6 tests in 1 suite passed`. If your change has no tests to run (for example, a documentation change), write `No tests apply:` followed by the reason.
 4. If you could not build the change or run its tests (for example, because you aren't on macOS), don't open a pull request. Comment on the issue with your proposed approach instead.
 
 -->
