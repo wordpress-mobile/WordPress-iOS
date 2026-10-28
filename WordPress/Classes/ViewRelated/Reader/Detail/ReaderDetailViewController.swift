@@ -308,7 +308,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         shouldFetchRelatedPosts = false
 
-        let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
+        let groupedPosts = Dictionary(grouping: posts.filter(\.hasContentForRelatedPostCard), by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
         relatedPostsTableView.reloadData()
@@ -1447,5 +1447,13 @@ private extension WKWebView {
             in: nil,
             contentWorld: .page
         )
+    }
+}
+
+private extension RemoteReaderSimplePost {
+    /// A card with only a title reads as a stray heading next to cards with an image and an
+    /// excerpt, so such posts are left out of the related posts section.
+    var hasContentForRelatedPostCard: Bool {
+        featuredImageURL != nil || !excerpt.makePlainText().isEmpty
     }
 }

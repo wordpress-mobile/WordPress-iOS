@@ -23,6 +23,21 @@ public struct RemoteReaderSimplePost: Decodable {
     public let featuredMedia: RemoteReaderSimplePostFeaturedMedia?
     public let railcar: RemoteReaderSimplePostRailcar
 
+    /// The image to show for the post, or nil when the API supplied none that loads as an image.
+    ///
+    /// `featured_media` describes the first media in the post, which can be a video. Its `uri` is
+    /// then an embed page (a YouTube player URL, for example), not an image, so only `image` media
+    /// is used.
+    public var featuredImageURL: URL? {
+        if let featuredImageUrl, !featuredImageUrl.isEmpty {
+            return URL(string: featuredImageUrl)
+        }
+        if let featuredMedia, featuredMedia.type == "image", let uri = featuredMedia.uri, !uri.isEmpty {
+            return URL(string: uri)
+        }
+        return nil
+    }
+
     public var postType: PostType {
         switch railcar.fetchAlgo {
         case let algoStr where algoStr.contains("local"):
@@ -55,6 +70,7 @@ public struct RemoteReaderSimplePostAuthor: Decodable {
 
 public struct RemoteReaderSimplePostFeaturedMedia: Decodable {
     public let uri: String?
+    public let type: String?
 }
 
 public struct RemoteReaderSimplePostRailcar: Decodable {
