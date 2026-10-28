@@ -236,6 +236,42 @@ class PluralStringsFoldTest < Minitest::Test # rubocop:disable Metrics/ClassLeng
     assert_equal unit('needs_review', '%lld wpisy'), cell('few', catalog: cat, locale: 'pl')
   end
 
+  # A machine cell kept from the previous fold must still match the English it translates. When the source's
+  # placeholders change (`%lld` -> `%d`), the old machine text is stale, so it's dropped and re-filled.
+  def test_kept_ai_cells_whose_placeholders_no_longer_match_the_english_are_refilled
+    cat = polish_folded_then_english_switched_to_d
+    calls = []
+    ai = recording_translator(reply: { 'few' => '%d wpisy', 'many' => '%d wpisów', 'other' => '%d wpisu' }, calls: calls)
+    warnings = capture_stderr { refold_polish_with_d(cat, ai_translator: ai) }
+
+    assert_equal 1, calls.size, 'stale machine cells must be re-offered to the AI tier'
+    assert_equal({ 'one' => '%d wpis' }, calls.first[:anchors], 'a stale machine cell must not anchor the request')
+    assert_equal unit('needs_review', '%d wpisy'), cell('few', catalog: cat, locale: 'pl')
+    assert_match(/dropped stale pl machine translation for "#{KEY}" \(few\)/, warnings)
+  end
+
+  def test_kept_ai_cells_whose_placeholders_no_longer_match_fall_back_to_english_without_ai
+    cat = polish_folded_then_english_switched_to_d
+    capture_stderr { refold_polish_with_d(cat, ai_translator: nil) }
+
+    assert_equal unit('needs_review', '%d posts'), cell('few', catalog: cat, locale: 'pl')
+  end
+
+  def polish_folded_then_english_switched_to_d
+    cat, = fold_polish(reply: POLISH_AI)
+    cat['strings'][KEY]['localizations']['en']['variations']['plural'].each_value do |form|
+      form['stringUnit']['value'] = form['stringUnit']['value'].sub('%lld', '%d')
+    end
+    cat
+  end
+
+  def refold_polish_with_d(cat, ai_translator:)
+    fold(cat,
+         categories_by_locale: { 'pl' => %w[one few many other] },
+         translations_by_locale: { 'pl' => { "#{KEY}#{INFIX}one" => '%d wpis' } },
+         ai_translator: ai_translator)
+  end
+
   # When a human translation arrives for a category the AI filled last run, it supersedes the machine cell; with
   # every category now human- or kept-AI-covered, no model call is made.
   def test_human_translation_supersedes_a_prior_ai_cell
