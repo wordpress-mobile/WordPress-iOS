@@ -11,4 +11,4 @@ install_swiftpm_dependencies
 popd
 
 echo "--- :xcode: Fetch XCFrameworks"
-rake dependencies
+"$(dirname "${BASH_SOURCE[0]}")/../../Scripts/download-gutenberg-xcframeworks.sh"
