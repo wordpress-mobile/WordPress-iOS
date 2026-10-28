@@ -49,4 +49,19 @@ struct StatsCodeBuiltViewsTests {
 
         #expect(row.dataBar.layer.cornerRadius == 2.5)
     }
+
+    /// Xib-loaded views started at their root view's design size with a flexible autoresizing
+    /// mask, so some screens add them with `addSubview` and no constraints (for example the
+    /// posting activity legend, or the date header used as a `tableHeaderView`).
+    @Test func standaloneViewsStartAtTheirXibSizeAndResizeWithTheirContainer() {
+        let legend = PostingActivityLegend()
+        let header = SiteStatsTableHeaderView()
+        #expect(legend.frame.size == CGSize(width: 375, height: 44))
+        #expect(header.frame.size == CGSize(width: 375, height: 60))
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 375, height: 44))
+        container.addSubview(legend)
+        container.frame.size.width = 320
+        #expect(legend.frame.width == 320)
+    }
 }

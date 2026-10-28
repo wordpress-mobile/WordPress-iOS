@@ -28,6 +28,8 @@ class StatsNoDataRow: UIView, Accessible {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        applyStatsXibRootDefaults(size: CGSize(width: 375, height: 45))
+
         backgroundColor = .white
         addSubview(noDataLabel)
         NSLayoutConstraint.activate([

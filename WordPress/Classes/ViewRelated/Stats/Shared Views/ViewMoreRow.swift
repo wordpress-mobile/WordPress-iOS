@@ -29,6 +29,8 @@ class ViewMoreRow: UIView, Accessible {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        applyStatsXibRootDefaults(size: CGSize(width: 375, height: 44))
+
         backgroundColor = .white
 
         let contentView = UIView()

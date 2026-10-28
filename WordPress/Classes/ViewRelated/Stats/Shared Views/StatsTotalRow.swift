@@ -257,6 +257,10 @@ class StatsTotalRow: UIView, Accessible {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        applyStatsXibRootDefaults(
+            size: CGSize(width: 442, height: 80),
+            mask: [.flexibleRightMargin, .flexibleBottomMargin]
+        )
 
         backgroundColor = .white
         setUpViews()

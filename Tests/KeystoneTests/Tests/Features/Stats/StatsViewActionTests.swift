@@ -231,9 +231,7 @@ struct StatsViewActionTests {
     }
 }
 
-private final class StatsActionSpy: NSObject, SiteStatsInsightsDelegate, StatsTotalRowDelegate, ViewMoreRowDelegate,
-    SiteStatsTableHeaderDelegate
-{
+private final class StatsActionSpy: NSObject, SiteStatsInsightsDelegate, StatsTotalRowDelegate {
     var viewMoreSections: [StatSection] = []
     var openedURLs: [URL] = []
     var mediaIDs: [NSNumber] = []
@@ -270,3 +268,5 @@ private final class ViewsVisitorsSpy: StatsInsightsViewsAndVisitorsDelegate {
     var selectedSegments: [Int] = []
     func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int) { selectedSegments.append(selectedSegmentIndex) }
 }
+
+extension StatsActionSpy: ViewMoreRowDelegate, SiteStatsTableHeaderDelegate {}

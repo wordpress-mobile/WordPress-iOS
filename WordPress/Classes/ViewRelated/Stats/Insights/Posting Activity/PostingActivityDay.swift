@@ -26,6 +26,8 @@ class PostingActivityDay: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        applyStatsXibRootDefaults(size: CGSize(width: 12, height: 12))
+
         backgroundColor = .white
         dayButton.addTarget(self, action: #selector(dayButtonPressed), for: .touchUpInside)
         addSubview(dayButton)

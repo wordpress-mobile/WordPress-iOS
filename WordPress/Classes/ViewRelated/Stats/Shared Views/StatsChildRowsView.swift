@@ -25,6 +25,8 @@ class StatsChildRowsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        applyStatsXibRootDefaults(size: CGSize(width: 375, height: 219))
+
         backgroundColor = .secondarySystemGroupedBackground
         WPStyleGuide.Stats.configureViewAsSeparator(bottomSeperatorLine)
 

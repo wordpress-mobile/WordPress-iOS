@@ -37,3 +37,16 @@ extension UIView {
         return view
     }
 }
+
+extension UIView {
+    /// Gives a view built in code the size and resizing behaviour its xib's root view had.
+    ///
+    /// A view loaded from a xib starts at the root view's design size, with its autoresizing
+    /// mask, so callers could add it with `addSubview` and no constraints. Keep that working.
+    func applyStatsXibRootDefaults(size: CGSize, mask: AutoresizingMask = [.flexibleWidth, .flexibleHeight]) {
+        if frame.size == .zero {
+            frame.size = size
+        }
+        autoresizingMask = mask
+    }
+}

@@ -23,6 +23,8 @@ class PostingActivityLegend: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        applyStatsXibRootDefaults(size: CGSize(width: 375, height: 44))
+
         let stackView = UIStackView(arrangedSubviews: [fewerPostsLabel, colorsStackView, morePostsLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .equalSpacing

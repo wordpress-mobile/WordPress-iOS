@@ -69,6 +69,8 @@ class PostingActivityMonth: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        applyStatsXibRootDefaults(size: CGSize(width: 151, height: 135))
+
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(weeksStackView)
