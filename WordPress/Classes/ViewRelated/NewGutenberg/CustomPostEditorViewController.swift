@@ -102,7 +102,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
         super.editorDidLoad(viewContoller)
 
-        primarySaveButton.isEnabled = true
+        updatePrimarySaveButton()
         if editorSession?.started == false {
             editorSession?.start()
         }
@@ -112,9 +112,22 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         super.editorDidBecomeUnavailable(viewController)
 
         // Saving reads the content from the editor, so it has to wait for the reload.
-        primarySaveButton.isEnabled = false
+        updatePrimarySaveButton()
         redoButton.isEnabled = false
         undoButton.isEnabled = false
+    }
+
+    override func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateSaveAvailability availability: GutenbergKit.EditorSaveAvailability
+    ) {
+        super.editor(viewController, didUpdateSaveAvailability: availability)
+
+        updatePrimarySaveButton()
+    }
+
+    private func updatePrimarySaveButton() {
+        primarySaveButton.isEnabled = !isEditorUnavailable && !isSavingLocked
     }
 
     override func editorDidRequestLatestContent(
@@ -166,7 +179,8 @@ private extension CustomPostEditorViewController {
         }
 
         let changed: Bool
-        var canSave = true
+        // A locked editor's content can reference temporary media URLs.
+        var canSave = !isSavingLocked
         do {
             changed = try await hasUnsavedChanges()
         } catch {
@@ -217,7 +231,8 @@ private extension CustomPostEditorViewController {
         if post?.status ?? .draft == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
-                    let enabled = (try? await self?.hasUnsavedChanges()) == true
+                    let hasUnsavedChanges = (try? await self?.hasUnsavedChanges()) == true
+                    let enabled = hasUnsavedChanges && self?.isSavingLocked == false
                     let saveDraft = UIAction(
                         title: PostEditorStrings.saveDraft,
                         image: UIImage(systemName: "doc"),
