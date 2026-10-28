@@ -3,7 +3,7 @@
 # VM. It can build, run tests and use simulators.
 #
 # Exit status: 0 = no proven bugs, 1 = Claude proved a bug caused by the PR,
-# 2 = the review didn't complete.
+# 2 = the review didn't complete (any other failure in this script).
 #
 # Claude runs with an allowlisted environment: the Anthropic key and the test
 # site sign-in only. It has no GitHub token and no Buildkite agent token. This
@@ -13,7 +13,10 @@
 # Prompt: .buildkite/claude/pr-review-prompt.md, plus the CI notes in
 # .buildkite/claude/pr-review-ci-context.md.
 
-set -euo pipefail
+set -eEuo pipefail
+# Any unexpected failure means the review didn't complete (exit 2, retried
+# once). Exit 1 is reserved for a "fail" verdict.
+trap 'echo "^^^ +++ Unexpected failure at line ${LINENO}: the review did not complete."; exit 2' ERR
 
 CLAUDE_CODE_VERSION="2.1.310"
 CLAUDE_MODEL="claude-opus-5-5"
@@ -39,8 +42,12 @@ if [[ "$(repo_slug "${BUILDKITE_PULL_REQUEST_REPO:-}")" != "$REPO_SLUG" ]]; then
   exit 0
 fi
 
-: "${ANTHROPIC_API_KEY:?Set ANTHROPIC_API_KEY}"
-: "${GITHUB_TOKEN:?Set GITHUB_TOKEN}"
+for var in ANTHROPIC_API_KEY GITHUB_TOKEN; do
+  if [[ -z "${!var:-}" ]]; then
+    echo "^^^ +++ ${var} is not set, so the review can't run."
+    exit 2
+  fi
+done
 
 PR_NUMBER="$BUILDKITE_PULL_REQUEST"
 BASE_BRANCH="$BUILDKITE_PULL_REQUEST_BASE_BRANCH"
@@ -63,6 +70,8 @@ if ! command -v gh >/dev/null; then
   cp "$gh_dir/gh_${GH_VERSION}_macOS_arm64/bin/gh" "$HOME/.local/bin/gh"
 fi
 export GH_TOKEN="$GITHUB_TOKEN"
+# The account the script posts as. Only threads it started count as Claude's.
+BOT_LOGIN=$(gh api user --jq .login)
 
 # ── Project setup, so Claude can build and test ──────────────────────
 # a8c-secrets is deliberately not installed: builds fall back to the example
@@ -95,6 +104,21 @@ if sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents \
 else
   echo "Could not enable Xcode MCP; continuing without it."
 fi
+
+echo "--- :lock: Removing sudo before Claude runs"
+# Claude must not have root: it could read the secrets this job was started
+# with. sudo uses the last matching rule, and sudoers.d is read after the main
+# file, so this rule overrides any earlier grant for this user. The VM is thrown
+# away after the job, so nothing has to restore it.
+no_sudo_rule="$(mktemp)"
+printf '%s ALL=(ALL) !ALL\n' "$(id -un)" > "$no_sudo_rule"
+/usr/sbin/visudo -c -q -f "$no_sudo_rule"
+sudo -n install -m 0440 -o root -g wheel "$no_sudo_rule" /etc/sudoers.d/zz-no-sudo-for-claude
+if sudo -n true 2>/dev/null; then
+  echo "^^^ +++ sudo still works, so Claude will not run."
+  exit 2
+fi
+echo "sudo is now refused for $(id -un)."
 
 # ── PR data for Claude ───────────────────────────────────────────────
 echo "--- :github: Fetching PR #${PR_NUMBER}"
@@ -137,7 +161,7 @@ PROMPT_FILE="$(mktemp)"
   echo
   cat .buildkite/claude/pr-review-ci-context.md
 } | REPO="$REPO_SLUG" PR_NUMBER="$PR_NUMBER" HEAD_SHA="$HEAD_SHA" BASE_BRANCH="$BASE_BRANCH" \
-    INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" XCODE_TOOLS="$XCODE_TOOLS" \
+    INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" XCODE_TOOLS="$XCODE_TOOLS" BOT_LOGIN="$BOT_LOGIN" \
     SIMULATOR_NAME="$SIMULATOR_NAME" SIMULATOR_UDID="$SIMULATOR_UDID" \
     ruby -e 'print STDIN.read.gsub(/\{\{([A-Z_]+)\}\}/) { ENV.fetch($1) }' > "$PROMPT_FILE"
 
@@ -174,8 +198,10 @@ VERDICT=$(jq -r .verdict <<<"$REVIEW")
 
 # ── Report ───────────────────────────────────────────────────────────
 echo "--- :buildkite: Annotating the build"
+# Reporting is best-effort: a failure here must not change the verdict.
 jq -r '.summary' <<<"$REVIEW" | buildkite-agent annotate \
-  --style "$([[ "$VERDICT" == pass ]] && echo success || echo error)" --context claude-pr-review
+  --style "$([[ "$VERDICT" == pass ]] && echo success || echo error)" --context claude-pr-review \
+  || echo "Warning: could not annotate the build."
 
 echo "--- :github: Posting to PR #${PR_NUMBER}"
 ANNOTATION_URL="${BUILDKITE_BUILD_URL}#annotation-claude-pr-review"
@@ -203,7 +229,8 @@ if jq -e '.findings | length > 0' <<<"$REVIEW" >/dev/null; then
 fi
 
 # Replies to Claude's earlier threads. Only threads that are Claude's own may be touched.
-own_threads=$(jq -c --arg marker "$MARKER" '[.[] | select(.comments.nodes[0].body | contains($marker)) | .id]' "$INPUT_DIR/review-threads.json")
+own_threads=$(jq -c --arg marker "$MARKER" --arg bot "$BOT_LOGIN" '
+  [.[] | select(.comments.nodes[0] | (.author.login == $bot) and (.body | contains($marker))) | .id]' "$INPUT_DIR/review-threads.json")
 while IFS= read -r reply; do
   thread_id=$(jq -r .thread_id <<<"$reply")
   if ! jq -e --arg id "$thread_id" 'index($id) != null' <<<"$own_threads" >/dev/null; then
