@@ -49,6 +49,21 @@ enum PostEditorStrings {
         value: "Discard Changes",
         comment: "Button in an alert confirming discarding changes"
     )
+    static let leaveWhileUploadingTitle = NSLocalizedString(
+        "postEditor.leaveWhileUploadingAlert.title",
+        value: "Media is still uploading",
+        comment: "Title of an alert shown when closing the editor while media is uploading"
+    )
+    static let leaveWhileUploadingMessage = NSLocalizedString(
+        "postEditor.leaveWhileUploadingAlert.message",
+        value: "If you leave now, the upload stops and the media won't be added to your post.",
+        comment: "Message of an alert shown when closing the editor while media is uploading"
+    )
+    static let leave = NSLocalizedString(
+        "postEditor.leaveWhileUploadingAlert.leave",
+        value: "Leave",
+        comment: "Button to close the editor in an alert shown while media is uploading"
+    )
 
     // Primary actions
     static let publish = NSLocalizedString(

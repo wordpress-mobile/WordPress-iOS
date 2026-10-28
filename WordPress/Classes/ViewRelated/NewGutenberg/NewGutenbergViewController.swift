@@ -319,14 +319,33 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
-            // The editor's uploads stop when it closes, so keep the changes in the local
-            // revision rather than syncing their temporary media URLs.
+            // Closing ends the editor's uploads, so confirm before the media is lost.
             guard !isUploadingMedia else {
-                editorSession.end(outcome: .cancel)
-                return dismissOrPopView()
+                return showLeaveWhileUploadingAlert()
             }
             cancelEditing()
         }
+    }
+
+    private func showLeaveWhileUploadingAlert() {
+        let alert = UIAlertController(
+            title: PostEditorStrings.leaveWhileUploadingTitle,
+            message: PostEditorStrings.leaveWhileUploadingMessage,
+            preferredStyle: .alert
+        )
+        alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
+        alert.addDestructiveActionWithTitle(PostEditorStrings.leave) { [weak self] _ in
+            guard let self else { return }
+            // The upload may have finished while the alert was shown.
+            guard isUploadingMedia else {
+                return cancelEditing()
+            }
+            // Keep the changes in the local revision rather than syncing their
+            // temporary media URLs.
+            editorSession.end(outcome: .cancel)
+            dismissOrPopView()
+        }
+        present(alert, animated: true)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
