@@ -6,6 +6,7 @@ import WordPressData
 import WordPressShared
 import WordPressAPI
 import WordPressCore
+import WordPressUI
 
 // MARK: - BlogDetailsViewController (Misc)
 
@@ -373,12 +374,7 @@ extension BlogDetailsViewController {
             onClose: nil
         )
 
-        let navigationController = UINavigationController(rootViewController: webViewController)
-        // Ask the window: on a full-screen iPad the site menu is a compact split view column.
-        if view.window?.traitCollection.horizontalSizeClass == .regular {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-        present(navigationController, animated: true, completion: nil)
+        presentCoveringWindow(webViewController)
     }
 
     public func showViewAdmin() {

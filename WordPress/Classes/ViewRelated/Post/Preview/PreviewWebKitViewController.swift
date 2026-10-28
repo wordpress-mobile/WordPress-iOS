@@ -113,6 +113,12 @@ class PreviewWebKitViewController: WebKitViewController {
         setWidth(selectedDevice.width, viewWidth: size.width)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // A sheet resized along with its window gets no size transition, so fit the width to the new size here.
+        setWidth(selectedDevice.width, viewWidth: view.bounds.width)
+    }
+
     // MARK: Toolbar Items
 
     override func configureToolbarButtons() {

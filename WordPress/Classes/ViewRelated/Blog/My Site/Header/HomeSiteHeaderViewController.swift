@@ -5,6 +5,7 @@ import WordPressShared
 import SwiftUI
 import SVProgressHUD
 import DesignSystem
+import WordPressUI
 
 final class HomeSiteHeaderViewController: UIViewController {
 
@@ -259,13 +260,7 @@ extension HomeSiteHeaderViewController {
             onClose: nil
         )
 
-        let navigationController = UINavigationController(rootViewController: webViewController)
-
-        if view.window?.traitCollection.horizontalSizeClass == .regular {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-
-        present(navigationController, animated: true)
+        presentCoveringWindow(webViewController)
     }
 }
 
