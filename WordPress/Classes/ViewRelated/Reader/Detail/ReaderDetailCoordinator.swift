@@ -317,8 +317,14 @@ class ReaderDetailCoordinator {
 
     private func presentGallery(_ gallery: ReaderPostParser.Gallery, startingAt index: Int) {
         WPAnalytics.trackReader(.readerArticleImageTapped)
+        guard let viewController else {
+            return // Nothing to present the gallery from
+        }
         let host = post.map(MediaHost.init)
-        let maxDimension = Int(max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) * min(UIScreen.main.scale, 2))
+        // The gallery covers the whole window, so size the images for the window rather than
+        // for the post's column, which is narrower in the iPad split view.
+        let bounds = viewController.view.window?.bounds ?? viewController.view.bounds
+        let maxDimension = Int(max(bounds.width, bounds.height) * min(viewController.traitCollection.displayScale, 2))
         let assets = gallery.images.map { image in
             let sourceURL = image.bestURL(maxDimension: maxDimension) ?? image.originalFileURL ?? image.src
             let previewURL = image.srcset.min(by: { $0.width < $1.width })?.url
@@ -326,7 +332,7 @@ class ReaderDetailCoordinator {
         }
         let lightboxVC = LightboxViewController(assets: assets, selectedIndex: index)
         lightboxVC.configureZoomTransition()
-        viewController?.present(lightboxVC, animated: true)
+        viewController.present(lightboxVC, animated: true)
     }
 
     /// Open the postURL in a separated view controller

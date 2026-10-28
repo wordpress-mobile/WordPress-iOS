@@ -23,6 +23,9 @@ class LikeUserTableViewCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureCell()
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: LikeUserTableViewCell, _) in
+            self.separatorHeightConstraint.constant = .hairlineBorderWidth(traitCollection: self.traitCollection)
+        }
     }
 
     // MARK: - Public Methods
@@ -44,7 +47,7 @@ private extension LikeUserTableViewCell {
         usernameLabel.textColor = .secondaryLabel
         backgroundColor = Style.blockBackgroundColor
         separatorView.backgroundColor = Style.blockSeparatorColor
-        separatorHeightConstraint.constant = .hairlineBorderWidth
+        separatorHeightConstraint.constant = .hairlineBorderWidth(traitCollection: traitCollection)
     }
 
     func downloadGravatarWithURL(_ url: String?) {

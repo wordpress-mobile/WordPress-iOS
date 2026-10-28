@@ -12,7 +12,7 @@ Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
 ## Bootstrap
 
-Prepare a fresh clone or worktree for building with `rake dependencies`, the repository's canonical bootstrap command.
+A fresh clone or worktree builds and runs its unit tests with plain `xcodebuild` or Xcode.
 
 ## High-Level Architecture
 

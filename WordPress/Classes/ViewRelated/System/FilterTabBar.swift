@@ -256,7 +256,7 @@ public class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             divider.leadingAnchor.constraint(equalTo: leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
+            divider.makeHairlineConstraint(for: divider.heightAnchor)
         ])
 
         addSubview(scrollView)
@@ -561,7 +561,6 @@ public class FilterTabBar: UIControl {
 
     private enum AppearanceMetrics {
         static let height: CGFloat = 46.0
-        static let bottomDividerHeight: CGFloat = .hairlineBorderWidth
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = NSDirectionalEdgeInsets(top: 14.0, leading: 12.0, bottom: 14.0, trailing: 12.0)

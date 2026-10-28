@@ -34,6 +34,14 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
 
     public let segmentedControl = UISegmentedControl()
 
+    private lazy var segmentedControlItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(customView: segmentedControl)
+        if #available(iOS 26.0, *) {
+            button.hidesSharedBackground = true
+        }
+        return button
+    }()
+
     private weak var viewController: UIViewController?
 
     private var onSelectionChanged: ((Item) -> Void)?
@@ -84,17 +92,21 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     private func refresh() {
         guard let viewController else { return }
 
+        let navigationItem = self.navigationItem ?? viewController.navigationItem
+        // Keep any items the screen added itself, such as a Done button.
+        let otherItems = (navigationItem.leftBarButtonItems ?? []).filter { $0 !== segmentedControlItem }
+
         if viewController.traitCollection.horizontalSizeClass == .regular {
             filterBarContainer.removeFromSuperview()
-            (navigationItem ?? viewController.navigationItem).leftBarButtonItem = {
-                let button = UIBarButtonItem(customView: segmentedControl)
-                if #available(iOS 26.0, *) {
-                    button.hidesSharedBackground = true
-                }
-                return button
-            }()
+            navigationItem.leftBarButtonItems = otherItems + [segmentedControlItem]
+            // A regular width doesn't mean the screen is the root of a split view column. On the
+            // iPhone Duo's inner screen it's pushed with the tab bar hidden, so it needs its back button.
+            navigationItem.leftItemsSupplementBackButton = true
             viewController.additionalSafeAreaInsets = .zero
         } else {
+            if navigationItem.leftBarButtonItems?.contains(segmentedControlItem) == true {
+                navigationItem.leftBarButtonItems = otherItems
+            }
             viewController.navigationItem.titleView = nil
             viewController.view.addSubview(filterBarContainer)
             filterBarContainer.pinEdges([.top, .horizontal])

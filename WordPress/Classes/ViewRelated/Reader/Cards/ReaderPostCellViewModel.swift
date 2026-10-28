@@ -1,5 +1,6 @@
 import Foundation
 import AsyncImageKit
+import UIKit
 import WordPressData
 
 final class ReaderPostCellViewModel {
@@ -28,7 +29,8 @@ final class ReaderPostCellViewModel {
         faviconTask?.cancel()
     }
 
-    init(post: ReaderPost, topic: ReaderAbstractTopic?) {
+    /// - parameter traitCollection: The trait collection of the view that displays the post.
+    init(post: ReaderPost, topic: ReaderAbstractTopic?, traitCollection: UITraitCollection) {
         self.post = post
 
         let isP2 = (topic as? ReaderSiteTopic)?.isP2Type == true
@@ -51,7 +53,10 @@ final class ReaderPostCellViewModel {
 
         if isP2 {
             self.avatarURL = post.authorAvatarURL.flatMap(URL.init)
-        } else if let avatarURL = post.getSiteIconURL(size: Int(ReaderPostCell.avatarSize)) {
+        } else if let avatarURL = post.getSiteIconURL(
+            size: Int(ReaderPostCell.avatarSize),
+            traitCollection: traitCollection
+        ) {
             self.avatarURL = avatarURL
         } else if let blogURL = post.blogURL.flatMap(URL.init), post.isExternal {
             if let faviconURL = FaviconService.shared.cachedFavicon(forURL: blogURL) {

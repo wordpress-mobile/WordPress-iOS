@@ -88,11 +88,17 @@ private extension ReferrerDetailsSpamActionCell {
         separatorView.backgroundColor = Style.separatorColor
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(separatorView)
+        let separatorHeightConstraint = separatorView.heightAnchor.constraint(
+            equalToConstant: Style.separatorHeight(traitCollection: traitCollection)
+        )
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: topAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: Style.separatorHeight)
+            separatorHeightConstraint
         ])
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: ReferrerDetailsSpamActionCell, _) in
+            separatorHeightConstraint.constant = Style.separatorHeight(traitCollection: self.traitCollection)
+        }
     }
 }

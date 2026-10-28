@@ -10,28 +10,6 @@ env:
 # This is the default pipeline – it will build and test the app
 steps:
   #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    key: prototype_builds_group
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
   # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
   #################
   - group: ":testflight: TestFlight Builds"
@@ -194,7 +172,6 @@ steps:
     # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
     depends_on:
       - linters_group
-      - prototype_builds_group
       - unit_tests_group
     allow_dependency_failure: true
     agents:
