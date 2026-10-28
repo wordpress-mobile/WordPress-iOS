@@ -4,6 +4,10 @@ import XCTest
 
 class PluginStateTests: XCTestCase {
 
+    func testDeliberateFailureToTriggerDiagnosticsCollection() {
+        XCTFail("Deliberate failure: validation PR for #26265, do not merge")
+    }
+
     func testPluginStateEquatable() {
 
         let lhs = MockPluginStateProvider.getPluginState()
