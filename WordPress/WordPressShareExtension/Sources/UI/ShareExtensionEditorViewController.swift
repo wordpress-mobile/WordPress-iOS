@@ -133,15 +133,24 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     /// Title's Height Constraint
     ///
-    fileprivate var titleHeightConstraint: NSLayoutConstraint!
+    fileprivate lazy var titleHeightConstraint: NSLayoutConstraint = {
+        titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
+    }()
 
     /// Title's Top Constraint
     ///
-    fileprivate var titleTopConstraint: NSLayoutConstraint!
+    fileprivate lazy var titleTopConstraint: NSLayoutConstraint = {
+        titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
+    }()
 
     /// Placeholder's Top Constraint
     ///
-    fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
+    fileprivate lazy var textPlaceholderTopConstraint: NSLayoutConstraint = {
+        placeholderLabel.topAnchor.constraint(
+            equalTo: richTextView.topAnchor,
+            constant: richTextView.textContainerInset.top + richTextView.contentInset.top
+        )
+    }()
 
     /// Current keyboard rect used to help size things
     ///
@@ -193,8 +202,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         configureView()
         configureSubviews()
 
-        // Setup Autolayout
-        view.setNeedsUpdateConstraints()
+        // The constraints must exist before `loadContent()`, which can set the title right away.
+        configureConstraints()
 
         // Load everything into the editor from the host app
         loadContent()
@@ -254,10 +263,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     // MARK: - Title and Title placeholder position methods
 
     func refreshTitlePosition() {
-        guard titleTopConstraint != nil && textPlaceholderTopConstraint != nil else {
-            return
-        }
-
         let referenceView: UITextView = richTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y + referenceView.contentInset.top)
 
@@ -378,12 +383,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         view.addSubview(placeholderLabel)
     }
 
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-
-        titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
-        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
-        textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
+    func configureConstraints() {
         updateTitleHeight()
         let layoutGuide = view.layoutMarginsGuide
 
