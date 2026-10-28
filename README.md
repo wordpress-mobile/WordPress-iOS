@@ -20,8 +20,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Configure Your WordPress App Development Environment
 
-1. Check that your local version of Ruby matches the one in [.ruby-version](./.ruby-version). We recommend installing a tool like [rbenv](https://github.com/rbenv/rbenv) so your system will always use the version defined in that file. Once installed, simply run `rbenv install` in the repo to match the version.
-1. Return to the command line and run `rake init:oss` to set up your own WordPress.com API credentials, so you can log in to WordPress.com in the app
+1. Return to the command line and run `make credentials` to set up your own WordPress.com API credentials, so you can log in to WordPress.com in the app. To skip the prompts, run `Scripts/setup-credentials.sh --client-id <id> --client-secret <secret>` instead.
 1. Once completed, run `open WordPress.xcworkspace` to open the project in Xcode.
 
 If all went well you can now compile to your iOS device or simulator, and log into the WordPress app.
@@ -34,7 +33,7 @@ The steps above will help you configure the WordPress app to run and compile.  B
 
 ### Third party tools
 
-We use a few Ruby tools for release and CI, such as fastlane and Danger. Run `bundle install` to install or update them. Building and testing the app doesn't need them.
+We use a few Ruby tools for release and CI, such as fastlane and Danger. Run `bundle install` to install or update them. Building and testing the app doesn't need them. Use the Ruby version in [.ruby-version](./.ruby-version); a tool like [rbenv](https://github.com/rbenv/rbenv) picks it up automatically (`rbenv install`).
 
 ### Open Xcode
 
@@ -51,7 +50,7 @@ The "**Website URL**", "**Redirect URLs**", and "**Javascript Origins**" fields 
 
 Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application.
 
-Next, run the command `rake credentials:setup` you will be prompted for your Client ID and your Client Secret.  Once added you will be able to log into the WordPress app
+Next, run `make credentials`. You will be prompted for your Client ID and your Client Secret. Once added, you will be able to log into the WordPress app.
 
 **Remember the only WordPress.com account you will be able to login in with is the one used to create your client ID and client secret.**
 

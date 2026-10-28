@@ -94,7 +94,7 @@ Artifacts
 !.a8c-secrets/*.age
 
 # A file external contributors can have locally to provide their own credentials.
-# This file is created during the `rake init:oss` task, based on the Secrets-example.swift file.
+# This file is created by `make credentials` (Scripts/setup-credentials.sh), based on the Secrets-example.swift file.
 WordPress/Credentials/Secrets.swift
 
 # Ignoring old locations to be sure they aren't commited accidentally
