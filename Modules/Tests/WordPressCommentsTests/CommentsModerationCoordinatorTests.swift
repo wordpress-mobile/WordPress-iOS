@@ -347,8 +347,9 @@ struct CommentsModerationCoordinatorTests {
 
         #expect(outcome.alreadyPosted)
         #expect(outcome.replyStatus == .approved)
-        // No reply row came back, so only the parent approval is broadcast.
-        #expect(recorder.events == [.statusChanged(id: 1, to: .approved)])
+        // No reply row came back, but the reply still exists, so its event is
+        // sent without one.
+        #expect(recorder.events == [.statusChanged(id: 1, to: .approved), .replyCreated(parentID: 1, reply: nil)])
         #expect(service.setStatusInvocations.map(\.status) == [.approved])
     }
 

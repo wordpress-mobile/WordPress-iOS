@@ -113,16 +113,14 @@ final class CommentsModerationCoordinator {
             }
             // Reply is moderator-gated, so core auto-approves our replies; a
             // duplicate (unknown landed status) assumes approved on the same
-            // basis. A duplicate also carries no comment to insert, so no
-            // event is sent: the loaded tabs pick the reply up on their next
-            // refresh.
+            // basis. A duplicate also carries no comment to insert, so its
+            // event has no row: the detail screen still bumps its reply count
+            // and matching tabs reload.
             //
             // Emitted after the approve so its statusChanged lands first and
             // loaded list tabs correct the parent row before inserting the
             // reply row.
-            if let created {
-                self.events.send(.replyCreated(parentID: parent.id, reply: CommentListItem(detail: created)))
-            }
+            self.events.send(.replyCreated(parentID: parent.id, reply: created.map(CommentListItem.init(detail:))))
             let replyStatus = created?.status ?? .approved
             return ReplyOutcome(replyStatus: replyStatus, alreadyPosted: created == nil)
         }
