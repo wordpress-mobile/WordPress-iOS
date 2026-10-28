@@ -49,3 +49,11 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
         static let cornerRadius: CGFloat = 6
     }
 }
+
+extension RemoteReaderSimplePost {
+    /// A card with only a title reads as a stray heading next to cards with an image and an
+    /// excerpt, so such posts are left out of the related posts section.
+    var hasContentForRelatedPostCard: Bool {
+        featuredImageURL != nil || !excerpt.makePlainText().isEmpty
+    }
+}
