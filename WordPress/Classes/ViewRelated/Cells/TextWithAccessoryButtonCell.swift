@@ -76,7 +76,6 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
 
     private func setupSubviews() {
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
 
         let stackView = UIStackView(arrangedSubviews: [mainLabel, secondaryLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false

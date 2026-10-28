@@ -86,7 +86,6 @@ class ExpandableCell: WPReusableTableViewCell {
     private func buildSubviews() {
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
         clipsToBounds = true
-        backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
 
         let headerStackView = UIStackView(arrangedSubviews: [titleTextLabel, chevronImageView])
         headerStackView.translatesAutoresizingMaskIntoConstraints = false
