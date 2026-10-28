@@ -214,7 +214,7 @@
             }
         });
     } failure:^(NSError *error) {
-        DDLogError(@"Failed to fetch user details for account %@.  %@", account, error);
+        WPLogError(@"Failed to fetch user details for account %@.  %@", account, error);
         if (failure) {
             failure(error);
         }
@@ -274,7 +274,7 @@
     Blog *defaultBlog = [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
 
     if (!defaultBlog) {
-        DDLogError(@"Error: The Default Blog could not be loaded");
+        WPLogError(@"Error: The Default Blog could not be loaded");
         return;
     }
 
@@ -305,7 +305,7 @@
         }
 
         if (purge) {
-            DDLogWarn(@"Removing account since it has no blogs associated and it's not the default account: %@", accountInContext);
+            WPLogWarning(@"Removing account since it has no blogs associated and it's not the default account: %@", accountInContext);
             [context deleteObject:accountInContext];
         }
     }];
