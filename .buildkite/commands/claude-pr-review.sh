@@ -87,6 +87,19 @@ if [[ -z "$SIMULATOR_UDID" ]]; then
 fi
 echo "Simulator UDID: ${SIMULATOR_UDID}"
 
+echo "--- :xcode: Enabling Xcode MCP"
+# Headless Xcode asks before an agent or folder may use it. Nobody can answer
+# on CI, so allow every agent: this VM is thrown away after the job, and Claude
+# already has full shell access. Claude falls back to plain xcodebuild and
+# simctl if this fails (e.g. no passwordless sudo).
+XCODE_MCP=no
+if sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents; then
+  XCODE_MCP=yes
+  xcrun mcp-server status || true
+else
+  echo "Could not enable Xcode MCP; continuing without it."
+fi
+
 # ── PR data for Claude ───────────────────────────────────────────────
 echo "--- :github: Fetching PR #${PR_NUMBER}"
 mkdir -p "$INPUT_DIR" "$EVIDENCE_DIR"
@@ -116,13 +129,19 @@ else
   SITE_SIGN_IN='No test site credentials are available in this job, so you cannot sign in. Say so in the summary if it stopped you from checking something.'
 fi
 
+if [[ "$XCODE_MCP" == yes ]]; then
+  XCODE_TOOLS='The Xcode MCP tools are available (`mcp__xcode__*`), including `DeviceInteraction*` to tap, type and take screenshots in a simulator. Prefer them over WebDriverAgent. Open `WordPress.xcworkspace` with `XcodeOpenWorkspace` first.'
+else
+  XCODE_TOOLS='The Xcode MCP tools are not available in this job. Drive the app with launch arguments, deep links (`xcrun simctl openurl`), a temporary XCUITest, or WebDriverAgent (`SIMULATOR_UDID=... .buildkite/commands/build-wda.sh` builds it).'
+fi
+
 PROMPT_FILE="$(mktemp)"
 {
   cat .buildkite/claude/pr-review-prompt.md
   echo
   cat .buildkite/claude/pr-review-ci-context.md
 } | REPO="$REPO_SLUG" PR_NUMBER="$PR_NUMBER" HEAD_SHA="$HEAD_SHA" BASE_BRANCH="$BASE_BRANCH" \
-    INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" \
+    INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" XCODE_TOOLS="$XCODE_TOOLS" \
     SIMULATOR_NAME="$SIMULATOR_NAME" SIMULATOR_UDID="$SIMULATOR_UDID" \
     ruby -e 'print STDIN.read.gsub(/\{\{([A-Z_]+)\}\}/) { ENV.fetch($1) }' > "$PROMPT_FILE"
 
@@ -141,6 +160,7 @@ echo "--- :claude: Reviewing PR #${PR_NUMBER}"
 env -i "${claude_env[@]}" claude -p "$(cat "$PROMPT_FILE")" \
   --model "$CLAUDE_MODEL" \
   --dangerously-skip-permissions \
+  --strict-mcp-config --mcp-config '{"mcpServers": {"xcode": {"type": "stdio", "command": "xcrun", "args": ["mcpbridge"]}}}' \
   --json-schema "$(jq -c . .buildkite/claude/pr-review-schema.json)" \
   --output-format stream-json --verbose \
   < /dev/null > "${EVIDENCE_DIR}/transcript.jsonl" || true

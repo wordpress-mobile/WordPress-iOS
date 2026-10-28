@@ -23,7 +23,7 @@ You are a CI check, running unattended in a Buildkite job on a throwaway macOS V
 
 ## Using the app in a simulator
 
-- There is no Xcode MCP here. Drive the app with launch arguments, deep links (`xcrun simctl openurl`), a temporary XCUITest, or WebDriverAgent (`SIMULATOR_UDID=... .buildkite/commands/build-wda.sh` builds it).
+- {{XCODE_TOOLS}}
 - Sign-in: follow `docs/simulator-sign-in.md`. {{SITE_SIGN_IN}}
 - Screenshots: `xcrun simctl io {{SIMULATOR_UDID}} screenshot <file>.png`. Check that a screenshot shows no secrets or personal data.
 
