@@ -48,7 +48,7 @@ echo "OK: trunk's catalog fails the assertion as expected"
 
 echo "--- :arrow_left: Reverse: download_localized_plurals (as at every beta), without the AI tier"
 reverse_log="$ARTIFACTS/download_localized_plurals.log"
-env -u ANTHROPIC_API_KEY bundle exec fastlane download_localized_plurals | tee "$reverse_log"
+env -u ANTHROPIC_API_KEY bundle exec fastlane download_localized_plurals 2>&1 | tee "$reverse_log"
 cp "$CATALOG" "$ARTIFACTS/folded-Plurals.xcstrings"
 grep -q 'ANTHROPIC_API_KEY not set' "$reverse_log" || { echo "ASSERTION FAILED: AI tier was not skipped"; exit 1; }
 grep -q 'Folded plural translations from Localizable.strings' "$reverse_log" || { echo "ASSERTION FAILED: fold did not complete"; exit 1; }
@@ -64,4 +64,6 @@ xcrun xcstringstool compile "$CATALOG" --output-directory "$ARTIFACTS/compiled"
 echo "OK: folded catalog compiles"
 
 echo "--- :memo: Human word-count translations rejected by the fold (expected until GlotPress re-translates)"
-grep -c 'rejected .* human translation for "editor.textCounter.wordCount"' "$reverse_log" || true
+rejected=$(grep -c 'rejected .* human translation for "editor.textCounter.wordCount"' "$reverse_log" || true)
+[[ "$rejected" -gt 0 ]] || { echo "ASSERTION FAILED: the fold processed no human word-count translations"; exit 1; }
+echo "OK: the fold processed and rejected $rejected human %1\$ld word-count translations"
