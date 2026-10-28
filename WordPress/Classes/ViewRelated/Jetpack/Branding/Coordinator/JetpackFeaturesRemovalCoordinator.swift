@@ -295,7 +295,8 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     static func presentOverlay(navigationViewController: UINavigationController,
                                in viewController: UIViewController,
                                fullScreen: Bool = false) {
-        let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
+        let windowSizeClass = viewController.view.window?.traitCollection.horizontalSizeClass
+        let shouldUseFormSheet = windowSizeClass == .regular || !fullScreen
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
 
         viewController.present(navigationViewController, animated: true)

@@ -1236,7 +1236,7 @@ private extension AztecPostViewController {
             comment: "Title displayed via UIAlertController when a user inserts a document into a post."
         )
 
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an alert.")
@@ -1703,9 +1703,11 @@ extension AztecPostViewController {
         let optionsTableViewController = OptionsTableViewController(options: listOptions)
 
         optionsTableViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
-        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor(
+            for: traitCollection
+        )
         optionsTableViewController.cellSelectedBackgroundColor =
-            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
+            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsTableViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
 
         optionsTablePresenter.present(
@@ -1823,7 +1825,7 @@ extension AztecPostViewController {
         navigationController.popoverPresentationController?.permittedArrowDirections = [.any]
         navigationController.popoverPresentationController?.sourceView = richTextView
         navigationController.popoverPresentationController?.backgroundColor =
-            WPStyleGuide.aztecFormatPickerBackgroundColor
+            WPStyleGuide.aztecFormatPickerBackgroundColor(for: traitCollection)
         if richTextView.selectedRange.length > 0, let textRange = richTextView.selectedTextRange,
             let selectionRect = richTextView.selectionRects(for: textRange).first
         {
@@ -1983,9 +1985,11 @@ extension AztecPostViewController {
         let optionsTableViewController = OptionsTableViewController(options: headerOptions)
 
         optionsTableViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
-        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor(
+            for: traitCollection
+        )
         optionsTableViewController.cellSelectedBackgroundColor =
-            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
+            WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsTableViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
 
         optionsTablePresenter.present(
@@ -3142,7 +3146,7 @@ extension AztecPostViewController {
         // iPads only...not the 12.9"
         // See http://www.openradar.me/radar?id=4972612522344448 for more details.
         //
-        if UIDevice.isPad() {
+        if traitCollection.userInterfaceIdiom == .pad {
             closeMediaPickerInputViewController()
         }
     }

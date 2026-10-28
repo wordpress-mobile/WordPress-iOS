@@ -357,10 +357,16 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
                 horizontalViewBound = width
             }
 
-            widthConstraint?.constant = min(width, horizontalViewBound)
-            widthConstraint?.priority = UILayoutPriority.defaultHigh
-        } else {
-            widthConstraint?.priority = UILayoutPriority.defaultLow
+            let constant = min(width, horizontalViewBound)
+            // Skip unchanged values: this runs from layout passes, which a constraint change would start again.
+            if widthConstraint?.constant != constant {
+                widthConstraint?.constant = constant
+            }
+            if widthConstraint?.priority != .defaultHigh {
+                widthConstraint?.priority = .defaultHigh
+            }
+        } else if widthConstraint?.priority != .defaultLow {
+            widthConstraint?.priority = .defaultLow
         }
     }
 

@@ -57,7 +57,7 @@ extension ReaderStreamViewController {
             }
         }
 
-        if UIDevice.isPad() {
+        if traitCollection.userInterfaceIdiom == .pad {
             activityViewController.modalPresentationStyle = .popover
         }
 

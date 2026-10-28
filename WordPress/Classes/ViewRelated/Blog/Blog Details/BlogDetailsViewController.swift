@@ -223,7 +223,7 @@ public class BlogDetailsViewController: UIViewController {
 
         let destructiveTitle = NSLocalizedString("Remove Site", comment: "Button to remove a site from the app")
 
-        let alertStyle: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let alertStyle: UIAlertController.Style = traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: alertStyle)
 
         alertController.addCancelActionWithTitle(SharedStrings.Button.cancel, handler: nil)

@@ -657,11 +657,7 @@ class AbstractPostListViewController: UIViewController,
         // NOTE: We'll set the title to match the title of the View action button.
         // If the button title changes we should also update the title here.
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-        let navWrapper = UINavigationController(rootViewController: controller)
-        if navigationController?.traitCollection.userInterfaceIdiom == .pad {
-            navWrapper.modalPresentationStyle = .fullScreen
-        }
-        navigationController?.present(navWrapper, animated: true)
+        navigationController?.presentCoveringWindow(controller)
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
