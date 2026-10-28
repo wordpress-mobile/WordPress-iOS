@@ -860,7 +860,8 @@ extension ShareExtensionEditorViewController {
         optionsViewController = OptionsTableViewController(options: options)
         optionsViewController.cellDeselectedTintColor = ShareColors.aztecFormatBarInactiveColor
         optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
-        optionsViewController.cellSelectedBackgroundColor = ShareColors.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
+        optionsViewController.cellSelectedBackgroundColor =
+            ShareColors.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsViewController.view.tintColor = ShareColors.aztecFormatBarActiveColor
 
         let selectRow = {
@@ -889,7 +890,8 @@ extension ShareExtensionEditorViewController {
         let frame = barItem.superview?.convert(barItem.frame, to: view)
 
         optionsViewController.popoverPresentationController?.sourceRect = frame!
-        optionsViewController.popoverPresentationController?.backgroundColor = ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
+        optionsViewController.popoverPresentationController?.backgroundColor =
+            ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
         optionsViewController.popoverPresentationController?.delegate = self
 
         present(viewController, animated: true, completion: completion)
@@ -1332,11 +1334,11 @@ fileprivate extension ShareExtensionEditorViewController {
         static let aztecFormatBarActiveColor = UIAppColor.primary
 
         static func aztecFormatPickerSelectedCellBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
-            return (traitCollection.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
+            (traitCollection.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
         }
 
         static func aztecFormatPickerBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
-            return (traitCollection.userInterfaceIdiom == .pad) ? .white : .systemGroupedBackground
+            (traitCollection.userInterfaceIdiom == .pad) ? .white : .systemGroupedBackground
         }
     }
 
