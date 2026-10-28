@@ -137,7 +137,10 @@ platform :ios do
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
-      output_types: 'junit'
+      output_types: 'junit',
+      # Workaround: on Xcode 27, post-test simulator diagnostics collection can hang until its 600 s timeout.
+      # Drop once a newer Xcode no longer does.
+      xcargs: '-collect-test-diagnostics never'
     )
   end
 
