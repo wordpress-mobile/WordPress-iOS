@@ -13,6 +13,7 @@ private let SiteDictionaryPostCountKey = "post_count"
 private let SiteDictionaryIconPathKey = "icon.img"
 private let SiteDictionaryDescriptionKey = "description"
 private let SiteDictionaryIDKey = "ID"
+private let SiteDictionaryBlogIDKey = "blog_ID"
 private let SiteDictionaryNameKey = "name"
 private let SiteDictionaryURLKey = "URL"
 private let SiteDictionarySubscriptionsKey = "subscribers_count"
@@ -86,10 +87,10 @@ private let DeliveryMethodNotificationKey = "notification"
 
     /// Creates site info for an entry of the `read/following/mine?meta=site,feed` response.
     ///
-    /// The entry's `meta.data.site` or `meta.data.feed` is preferred. The feed meta can be an error object, or
-    /// have an empty name and URL when the server has not read the feed: a feed subscribed moments ago, or a
-    /// site that was deleted. The entry's own fields fill those gaps, so every followed site has a feed ID,
-    /// a URL, and a name.
+    /// The entry's `meta.data.site` or `meta.data.feed` is preferred. Either meta can be an error object, for
+    /// example for a private site the user can no longer read. The feed meta can also have an empty name and URL
+    /// when the server has not read the feed: a feed subscribed moments ago, or a site that was deleted. The
+    /// entry's own fields fill those gaps, so every followed site has a feed ID, a URL, and a name.
     public class func siteInfo(forFollowedSiteResponse response: NSDictionary) -> RemoteReaderSiteInfo {
         let site = response.object(forKeyPath: "meta.data.site") as? NSDictionary
         let feed = response.object(forKeyPath: "meta.data.feed") as? NSDictionary
@@ -101,6 +102,15 @@ private let DeliveryMethodNotificationKey = "notification"
         } else {
             // The entry has the feed keys (`feed_ID`, `feed_URL`, `name`, `URL`) at its top level.
             siteInfo = self.siteInfo(forFeedResponse: response)
+        }
+
+        // A WordPress.com site keeps its site ID and endpoint when its site meta is an error object. Otherwise the
+        // topic saved under `read/sites/<blogID>/posts/` would get a duplicate under the feed endpoint. External
+        // feeds have a `blog_ID` of 0, "0" or false, and stay feeds.
+        if (siteInfo.siteID?.intValue ?? 0) == 0,
+           let blogID = response.number(forKey: SiteDictionaryBlogIDKey), blogID.intValue != 0 {
+            siteInfo.siteID = blogID
+            siteInfo.endpointPath = "read/sites/\(blogID)/posts/"
         }
 
         // Every entry of this response is followed, including those whose meta is an error object.

@@ -54,4 +54,24 @@ struct RemoteReaderSiteInfoFollowedSiteTests {
         #expect(siteInfo.siteURL == "http://www.raspberrypi.com/news")
         #expect(siteInfo.endpointPath == "read/feed/182815000/posts/")
     }
+
+    @Test func siteMetaErrorKeepsSiteEndpoint() {
+        let error: NSDictionary = ["errors": ["unauthorized": ["User cannot access this private blog."]]]
+        let entry: NSDictionary = [
+            "blog_ID": "1001",
+            "feed_ID": "2002",
+            "URL": "https://private-site.example.com",
+            "feed_URL": "https://private-site.example.com/feed",
+            "name": "Private Site",
+            "meta": ["data": ["site": error, "feed": error]]
+        ]
+
+        let siteInfo = RemoteReaderSiteInfo.siteInfo(forFollowedSiteResponse: entry)
+
+        #expect(siteInfo.siteID == 1001)
+        #expect(siteInfo.feedID == 2002)
+        #expect(siteInfo.siteName == "Private Site")
+        #expect(siteInfo.endpointPath == "read/sites/1001/posts/")
+        #expect(siteInfo.isFollowing)
+    }
 }
