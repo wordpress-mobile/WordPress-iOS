@@ -38,7 +38,7 @@ We use a few Ruby tools for release and CI, such as fastlane and Danger. Run `bu
 
 ### Open Xcode
 
-Launch the workspace by running `open WordPress.xcworkspace` from the command line, by double clicking on the `WordPress.xcworkspace` file, or by launching Xcode and choosing `File` > `Open` and browsing to `WordPress.xcworkspace`. The first build downloads the Gutenberg frameworks the app needs.
+Open `WordPress.xcworkspace` in Xcode. The first build downloads the Gutenberg frameworks the app needs.
 
 ### Setup Credentials
 
