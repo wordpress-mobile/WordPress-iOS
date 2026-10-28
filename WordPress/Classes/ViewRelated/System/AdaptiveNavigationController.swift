@@ -44,7 +44,7 @@ extension AdaptiveNavigationController: UIPopoverPresentationControllerDelegate 
             return
         }
 
-        let hidesNavigationBar = style != .fullScreen && navigationController.traitCollection.userInterfaceIdiom == .pad
+        let hidesNavigationBar = style != .fullScreen && WPDeviceIdentification.isiPad()
         navigationController.navigationBar.isHidden = hidesNavigationBar
     }
 }

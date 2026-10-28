@@ -180,7 +180,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UIEdgeInsets)tabBarIconImageInsets
 {
     CGFloat offset = 0;
-    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    if ([WPDeviceIdentification isiPad]) {
         offset = WPTabBarIconOffsetiPad;
     } else {
         offset = WPTabBarIconOffsetiPhone;
