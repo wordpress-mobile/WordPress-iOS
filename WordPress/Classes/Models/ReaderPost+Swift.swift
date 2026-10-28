@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import WordPressData
 import WordPressReader
 import WordPressUI
@@ -21,8 +22,14 @@ extension ReaderPost {
         return false
     }
 
-    func getSiteIconURL(size: Int) -> URL? {
-        SiteIconViewModel.makeReaderSiteIconURL(iconURL: siteIconURL, siteID: siteID?.intValue, size: CGSize(width: size, height: size))
+    /// - parameter traitCollection: The trait collection of the view that displays the icon.
+    func getSiteIconURL(size: Int, traitCollection: UITraitCollection) -> URL? {
+        SiteIconViewModel.makeReaderSiteIconURL(
+            iconURL: siteIconURL,
+            siteID: siteID?.intValue,
+            size: CGSize(width: size, height: size),
+            traitCollection: traitCollection
+        )
     }
 
     /// Find cached comment with given ID.

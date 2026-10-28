@@ -131,7 +131,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
 
-        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post, traitCollection: traitCollection)
 
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.editingAlreadyPublishedImage = true
@@ -252,7 +252,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
-        GutenbergImageLoader(post: post)
+        let loader = GutenbergImageLoader(post: post, traitCollection: traitCollection)
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: GutenbergViewController, _) in
+            self.gutenbergImageLoader.traitCollection = self.traitCollection
+        }
+        return loader
     }()
 
     private lazy var gutenberg: Gutenberg = {
@@ -412,7 +416,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 
         // Add bottom border line
-        let screenScale = UIScreen.main.scale
+        let screenScale = traitCollection.displayScale
         let borderWidth: CGFloat = 1.0 / screenScale
         let borderColor = UIColor(red: 60 / 255, green: 60 / 255, blue: 67 / 255, alpha: 0.36).cgColor
 
@@ -426,6 +430,16 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         )
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: GutenbergViewController, _) in
+            // Keep the border one pixel thick, anchored to the bottom edge
+            let borderWidth: CGFloat = 1.0 / self.traitCollection.displayScale
+            borderBottom.frame = CGRect(
+                x: borderBottom.frame.minX,
+                y: borderBottom.frame.maxY - borderWidth,
+                width: borderBottom.frame.width,
+                height: borderWidth
+            )
+        }
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true

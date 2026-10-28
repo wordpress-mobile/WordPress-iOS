@@ -54,32 +54,64 @@ class EditorMediaUtility {
         })
     }
 
+    /// Downloads an image sized to fill the given bounds.
+    ///
+    /// - parameters:
+    ///   - bounds: The bounds of the view that displays the image. The larger side
+    ///     becomes the requested image width.
+    ///   - traitCollection: The trait collection of the view that displays the image.
     func downloadImage(
         from url: URL,
         post: AbstractPost,
+        bounds: CGRect,
+        traitCollection: UITraitCollection,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> ImageDownloaderTask {
+        onFailure failure: @escaping (Error) -> Void
+    ) -> ImageDownloaderTask {
 
-        let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        let imageMaxDimension = max(bounds.size.width, bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
         let size = CGSize(width: imageMaxDimension, height: 0)
-        let scale = UIScreen.main.scale
+        let scale = traitCollection.displayScale
 
-        return downloadImage(from: url, size: size, scale: scale, post: post, success: success, onFailure: failure)
+        return downloadImage(
+            from: url,
+            size: size,
+            scale: scale,
+            post: post,
+            traitCollection: traitCollection,
+            success: success,
+            onFailure: failure
+        )
     }
 
+    /// Downloads an image at the requested size.
+    ///
+    /// - parameters:
+    ///   - requestSize: The requested size, in points.
+    ///   - scale: The scale applied to `requestSize` for hosts that expect a pixel size.
+    ///   - traitCollection: The trait collection of the view that displays the image.
+    ///     Photon applies its display scale to `requestSize`.
     func downloadImage(
         from url: URL,
         size requestSize: CGSize,
         scale: CGFloat,
         post: AbstractPost,
+        traitCollection: UITraitCollection,
         success: @escaping (UIImage) -> Void,
         onFailure failure: @escaping (Error) -> Void
     ) -> ImageDownloaderTask {
         let postObjectID = post.objectID
         let result = ContextManager.shared.performQuery { context in
             Result {
-                try EditorMediaUtility.prepareForDownloading(url: url, size: requestSize, scale: scale, postObjectID: postObjectID, in: context)
+                try EditorMediaUtility.prepareForDownloading(
+                    url: url,
+                    size: requestSize,
+                    scale: scale,
+                    traitCollection: traitCollection,
+                    postObjectID: postObjectID,
+                    in: context
+                )
             }
         }
 
@@ -107,6 +139,7 @@ class EditorMediaUtility {
         url: URL,
         size requestSize: CGSize,
         scale: CGFloat,
+        traitCollection: UITraitCollection,
         postObjectID: NSManagedObjectID,
         in context: NSManagedObjectContext
     ) throws -> (URL, MediaHost) {
@@ -148,7 +181,7 @@ class EditorMediaUtility {
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
         } else {
             // the size that PhotonImageURLHelper expects is points size
-            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url, traitCollection: traitCollection)
         }
 
         return (requestURL, MediaHost(post.blog))

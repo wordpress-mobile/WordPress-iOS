@@ -47,9 +47,18 @@ extension WPStyleGuide {
 
         static func configureViewAsSeparator(_ separatorView: UIView) {
             separatorView.backgroundColor = .clear
+            // Cells call this on every configure. Keep the one hairline constraint, which already
+            // follows the display scale, rather than registering for trait changes again.
+            guard !separatorView.constraints.contains(where: { $0.identifier == separatorHeightIdentifier }) else {
+                return
+            }
             separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
-            separatorView.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
+            let heightConstraint = separatorView.makeHairlineConstraint(for: separatorView.heightAnchor)
+            heightConstraint.identifier = separatorHeightIdentifier
+            heightConstraint.isActive = true
         }
+
+        private static let separatorHeightIdentifier = "StatsSeparatorHeight"
 
         static func configureViewAsVerticalSeparator(_ separatorView: UIView) {
             separatorView.backgroundColor = verticalSeparatorColor
@@ -225,7 +234,9 @@ extension WPStyleGuide {
         static let cellBackgroundColor = UIColor.secondarySystemGroupedBackground
         static let separatorColor = UIColor.separator
         static let dataBarColor = UIColor.tertiaryLabel
-        static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
+        static func separatorHeight(traitCollection: UITraitCollection) -> CGFloat {
+            return 1.0 / traitCollection.displayScale
+        }
         static let verticalSeparatorColor = UIColor.separator
 
         static let defaultFilterTintColor = UIColor.label

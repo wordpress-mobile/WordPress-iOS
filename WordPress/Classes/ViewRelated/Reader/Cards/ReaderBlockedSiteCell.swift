@@ -8,12 +8,15 @@ open class ReaderBlockedSiteCell: UITableViewCell, NibLoadable {
     open override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: ReaderBlockedSiteCell, _) in
+            self.applyStyles()
+        }
     }
 
     fileprivate func applyStyles() {
         contentView.backgroundColor = .systemGroupedBackground
         borderedContentView.layer.borderColor = UIColor.separator.cgColor
-        borderedContentView.layer.borderWidth = .hairlineBorderWidth
+        borderedContentView.layer.borderWidth = .hairlineBorderWidth(traitCollection: traitCollection)
         label.font = WPStyleGuide.subtitleFont()
         label.textColor = .secondaryLabel
     }
