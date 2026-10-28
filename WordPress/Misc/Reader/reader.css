@@ -23,7 +23,11 @@ a { text-decoration: none; color: var(--main-link-color); }
 
 pre { overflow-x: scroll; background-color: var(--color-neutral-0); padding: 1em; }
 
-p, div, li { line-height: 1.6em; font-size: 100%; }
+/* Broad defaults: the remote stylesheet's more specific rules win over these.
+   This relies on the layer order declared in `ReaderWebView.formattedContent()`. */
+@layer reader-defaults {
+  p, div, li { line-height: 1.6em; font-size: 100%; }
+}
 
 /* Headings: tighter line spacing than body text, and 16px above and below.
    Both body classes are used so these rules beat the remote stylesheet's rules,
@@ -113,13 +117,6 @@ figure {
 /* Workaround: limit the maximum width so that the right border is not cut off */
 figure.wp-block-embed.is-type-video {
     max-width: 99vw;
-}
-
-/* workaround for CMM-1964 */
-.reader-full-post .reader-full-post__story-content {
-  a {
-    color: var(--main-link-color);
-  }
 }
 
 .reader-full-post__story-content .wp-block-button {

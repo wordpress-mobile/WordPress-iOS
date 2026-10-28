@@ -19,6 +19,15 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
         color.background.brighterThan(0.5)
     }
 
+    /// The interface style that matches the theme: `.unspecified` for themes that
+    /// follow the system appearance, otherwise light or dark to match the background.
+    public var interfaceStyle: UIUserInterfaceStyle {
+        if color.adaptsToInterfaceStyle {
+            return .unspecified
+        }
+        return hasLightBackground ? .light : .dark
+    }
+
     public var isDefaultSetting: Bool {
         return self == .standard
     }

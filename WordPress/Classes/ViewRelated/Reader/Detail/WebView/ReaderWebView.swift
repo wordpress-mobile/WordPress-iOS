@@ -30,7 +30,13 @@ class ReaderWebView: WKWebView {
 
     var isP2 = false
 
-    var displaySetting: ReaderDisplaySettings = .standard
+    var displaySetting: ReaderDisplaySettings = .standard {
+        didSet {
+            // Make `prefers-color-scheme` (and embeds) follow the theme, not the
+            // system appearance, so e.g. Sepia stays light when Dark Mode is on.
+            overrideUserInterfaceStyle = displaySetting.interfaceStyle
+        }
+    }
 
     /// Make the webview transparent
     ///
@@ -60,12 +66,20 @@ class ReaderWebView: WKWebView {
     /// Given a HTML content, returns it formatted.
     /// Ie.: Including tags, CSS, JS, etc.
     ///
+    /// The remote Calypso stylesheet is imported into the `calypso` cascade layer, so every
+    /// unlayered rule of ours wins over it regardless of selector specificity. Our broad
+    /// element defaults live in the lower `reader-defaults` layer (see `reader.css`), so the
+    /// remote stylesheet's more specific rules still win over those.
+    ///
     func formattedContent(_ content: String, additionalJavaScript: String = "") -> String {
         """
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=\(displaySetting.size.scale), maximum-scale=\(displaySetting.size.scale), user-scalable=no'>
-        <link rel="stylesheet" type="text/css" href="\(ReaderCSS().address)">
+        <style>
+        @layer reader-defaults, calypso;
+        @import url("\(ReaderCSS().address)") layer(calypso);
+        </style>
         <style>
         \(cssColors())
         \(cssStyles())
