@@ -76,7 +76,8 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
-    var isUploadingMedia: Bool { false }
+    // The editor uploads media itself and locks saving until uploads finish.
+    var isUploadingMedia: Bool { isSavingLocked }
     var wordCount: UInt { 0 }
     var postIsReblogged: Bool = false
     var entryPoint: PostEditorEntryPoint = .unknown
@@ -318,6 +319,12 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
+            // The editor's uploads stop when it closes, so keep the changes in the local
+            // revision rather than syncing their temporary media URLs.
+            guard !isUploadingMedia else {
+                editorSession.end(outcome: .cancel)
+                return dismissOrPopView()
+            }
             cancelEditing()
         }
     }
@@ -335,6 +342,11 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+        // Unlike the media uploads of other editors, `PostCoordinator` can't wait for
+        // the editor's before publishing.
+        guard !isUploadingMedia else {
+            return displayMediaIsUploadingAlert()
+        }
         performAfterUpdatingContent { [self] in
             if editorHasContent {
                 handlePrimaryActionButtonTap()

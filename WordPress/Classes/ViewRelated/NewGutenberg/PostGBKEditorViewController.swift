@@ -24,6 +24,10 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     /// Whether the editor crashed and has not reloaded yet, so calls into it are refused.
     private(set) var isEditorUnavailable = false
 
+    /// Whether the editor locked saving, e.g. during a media upload, so its content
+    /// may reference temporary media URLs that must not reach the server.
+    private(set) var isSavingLocked = false
+
     init(
         postId: Int?,
         postType: PostTypeDetails,
@@ -127,6 +131,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     /// Subclasses that override this must call `super`.
     func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
         isEditorUnavailable = true
+        // The reloaded editor reports its availability again.
+        isSavingLocked = false
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
@@ -186,6 +192,14 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         didUpdateHistoryState state: GutenbergKit.EditorState
     ) {
         // Do nothing
+    }
+
+    /// Subclasses that override this must call `super`.
+    func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateSaveAvailability availability: GutenbergKit.EditorSaveAvailability
+    ) {
+        isSavingLocked = availability.isSavingLocked
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {

@@ -89,6 +89,51 @@ struct PostGBKEditorViewControllerTests {
         #expect(reported?.isEmpty == true)
     }
 
+    @Test("tracks whether the editor locked saving")
+    func tracksSavingLock() {
+        let viewController = makeViewController()
+
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+        #expect(viewController.isSavingLocked)
+
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: false)
+        )
+        #expect(!viewController.isSavingLocked)
+    }
+
+    @Test("clears the saving lock when the editor becomes unavailable")
+    func clearsSavingLockWhenUnavailable() {
+        let viewController = makeViewController()
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+
+        // The reloaded editor reports its availability again, so a lock from
+        // before the crash must not keep blocking saves.
+        viewController.editorDidBecomeUnavailable(viewController.editorViewController)
+
+        #expect(!viewController.isSavingLocked)
+    }
+
+    private func makeViewController() -> PostGBKEditorViewController {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        return PostGBKEditorViewController(
+            postId: nil,
+            postType: .post,
+            title: "",
+            content: "",
+            status: "draft",
+            blog: blog
+        )
+    }
+
     /// Returns the media the picker has actually preselected.
     ///
     /// Read from the embedded collection view controller, which the picker adds as
