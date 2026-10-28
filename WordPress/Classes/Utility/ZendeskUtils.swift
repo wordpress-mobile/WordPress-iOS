@@ -725,8 +725,7 @@ private extension ZendeskUtils {
 
     static func getEncryptedLogUUID() -> String {
 
-        let fileLogger = WPLogger.shared().fileLogger
-        let dataProvider = EventLoggingDataProvider.fromDDFileLogger(fileLogger)
+        let dataProvider = EventLoggingDataProvider.from(.shared)
 
         guard let logFilePath = dataProvider.logFilePath(forErrorLevel: .debug, at: Date()) else {
             return "Error: No log files found on device"

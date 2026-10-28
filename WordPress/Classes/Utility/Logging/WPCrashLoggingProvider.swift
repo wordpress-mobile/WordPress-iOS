@@ -13,7 +13,7 @@ struct WPLoggingStack {
     let crashLogging: CrashLogging
     let eventLogging: EventLogging
 
-    private let eventLoggingDataProvider = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
+    private let eventLoggingDataProvider = EventLoggingDataProvider.from(.shared)
     // swiftlint:disable:next weak_delegate
     private let eventLoggingDelegate = EventLoggingDelegate()
 
