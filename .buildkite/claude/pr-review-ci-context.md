@@ -25,12 +25,13 @@ You are a CI check, running unattended in a Buildkite job on a throwaway macOS V
 
 - {{XCODE_TOOLS}}
 - Sign-in: follow `docs/simulator-sign-in.md`. {{SITE_SIGN_IN}}
-- Screenshots: `xcrun simctl io {{SIMULATOR_UDID}} screenshot <file>.png`. Check that a screenshot shows no secrets or personal data.
+- Screenshots: `xcrun simctl io {{SIMULATOR_UDID}} screenshot <file>.png`. 
 
 ## Evidence
 
 - Save every proof (screenshots, failing test output, the test code you wrote) in `{{EVIDENCE_DIR}}`. It is uploaded as Buildkite artifacts, and the summary is shown as a Buildkite annotation.
-- Embed screenshots in the summary with `<img src="artifact://{{EVIDENCE_DIR}}/<file>.png" width="300">`. GitHub can't show them, so in finding bodies name the file instead.
+- Embed screenshots in the summary and in finding bodies with `<img src="artifact://{{EVIDENCE_DIR}}/<file>.png" width="300">`. The CI script makes them show on GitHub too.
+- Screenshots may be published on a **public** website. Before saving one, check that it shows no secrets, tokens, email addresses, or anyone's personal data.
 - Do not commit or push.
 
 ## Your result

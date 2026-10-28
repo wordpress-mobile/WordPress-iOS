@@ -28,6 +28,10 @@ SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 18 Pro}"
 INPUT_DIR="build/claude-review-input"
 EVIDENCE_DIR="build/claude-review"
 MARKER="<!-- claude-ci-review -->"
+# Optional: publish screenshots to a public Spacefast Space so GitHub can show
+# them. Needs SPACEFAST_TOKEN (a `ci_deploy` key), SPACEFAST_SPACE (slug),
+# SPACEFAST_TEAM and SPACEFAST_BASE_URL (e.g. https://<slug>.space.fast).
+# Without them, screenshots are linked to the Buildkite build instead.
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
@@ -203,16 +207,61 @@ jq -r '.summary' <<<"$REVIEW" | buildkite-agent annotate \
   --style "$([[ "$VERDICT" == pass ]] && echo success || echo error)" --context claude-pr-review \
   || echo "Warning: could not annotate the build."
 
-echo "--- :github: Posting to PR #${PR_NUMBER}"
 ANNOTATION_URL="${BUILDKITE_BUILD_URL}#annotation-claude-pr-review"
+
+# Screenshots and videos for GitHub. Best-effort: on any failure, IMAGE_BASE
+# stays empty and the comments link to the Buildkite build instead. This runs
+# in the script, not in Claude's session, so Claude never sees the token.
+IMAGE_BASE=""
+media=()
+while IFS= read -r -d '' file; do media+=("$file"); done < <(
+  find "$EVIDENCE_DIR" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.mp4' \) -print0)
+if [[ ${#media[@]} -gt 0 && -n "${SPACEFAST_TOKEN:-}" && -n "${SPACEFAST_SPACE:-}" && -n "${SPACEFAST_TEAM:-}" && -n "${SPACEFAST_BASE_URL:-}" ]]; then
+  echo "--- :frame_with_picture: Publishing ${#media[@]} screenshot(s) to Spacefast"
+  media_path="wordpress-ios/pr-${PR_NUMBER}/build-${BUILDKITE_BUILD_NUMBER}"
+  stage="$(mktemp -d)"
+  mkdir -p "$stage/$media_path"
+  cp "${media[@]}" "$stage/$media_path/"
+  published=no
+  if command -v sf >/dev/null || curl -fsSL https://spacefast.com/install.sh | sh -s -- --method binary; then
+    # Additive, so other PRs' files in the Space are kept.
+    if (cd "$stage" && sf publish . --publish-mode additive --space "$SPACEFAST_SPACE" --team "$SPACEFAST_TEAM" \
+          --token "$SPACEFAST_TOKEN" --json --wait > /dev/null); then
+      published=yes
+      for file in "${media[@]}"; do
+        url="${SPACEFAST_BASE_URL%/}/${media_path}/$(basename "$file")"
+        if [[ "$(curl -s -o /dev/null -w '%{http_code}' "$url")" != 200 ]]; then
+          echo "Not reachable: ${url}"
+          published=no
+        fi
+      done
+    fi
+  fi
+  if [[ "$published" == yes ]]; then
+    IMAGE_BASE="${SPACEFAST_BASE_URL%/}/${media_path}"
+    echo "Published to ${IMAGE_BASE}/"
+  else
+    echo "Warning: could not publish screenshots; linking to the Buildkite build instead."
+  fi
+fi
+
+# Turns <img src="artifact://build/claude-review/x.png"> into a Spacefast image,
+# or into a link to the Buildkite build when nothing was published.
+JQ_MEDIA='
+  def media: gsub("<img(?<pre>[^>]*)src=\"artifact://(?<p>[^\"]+)\"(?<post>[^>]*)>";
+    if $imgbase == "" then "[`\(.p | split("/") | last)`](\($url))"
+    else "<img\(.pre)src=\"\($imgbase)/\(.p | split("/") | last)\"\(.post)>" end);
+'
+
+echo "--- :github: Posting to PR #${PR_NUMBER}"
 post_failed=0
 
 # New findings: one review, always event COMMENT.
 if jq -e '.findings | length > 0' <<<"$REVIEW" >/dev/null; then
   review_payload() {  # $1 = include inline comments (true/false)
-    jq --arg marker "$MARKER" --arg sha "$HEAD_SHA" --arg url "$ANNOTATION_URL" --argjson inline "$1" '
+    jq --arg marker "$MARKER" --arg sha "$HEAD_SHA" --arg url "$ANNOTATION_URL" --arg imgbase "$IMAGE_BASE" --argjson inline "$1" "$JQ_MEDIA"'
       def tag: if .proven then "**Proven**" else "**Unproven**" end;
-      def text: "\(tag): \(.title)\n\n\(.body)";
+      def text: "\(tag): \(.title)\n\n\(.body | media)";
       {
         commit_id: $sha,
         event: "COMMENT",
@@ -249,21 +298,19 @@ $(jq -r .body <<<"$reply")"
   fi
 done < <(jq -c '.thread_replies[]' <<<"$REVIEW")
 
-# The full result as one PR comment, updated in place on every run. GitHub
-# can't show Buildkite artifacts, so embedded screenshots become links to the
-# annotation. Comments over GitHub's 65,536-character limit are cut short.
+# The full result as one PR comment, updated in place on every run. Comments
+# over GitHub's 65,536-character limit are cut short.
 SUMMARY_MARKER="<!-- claude-ci-review-summary -->"
-summary_body=$(jq -r --arg marker "$SUMMARY_MARKER" --arg url "$ANNOTATION_URL" --arg sha "$HEAD_SHA" '
-  def no_artifacts: gsub("<img[^>]*src=\"artifact://(?<p>[^\"]+)\"[^>]*>"; "[`\(.p | split("/") | last)`](\($url))");
+summary_body=$(jq -r --arg marker "$SUMMARY_MARKER" --arg url "$ANNOTATION_URL" --arg sha "$HEAD_SHA" --arg imgbase "$IMAGE_BASE" "$JQ_MEDIA"'
   def tag: if .proven then "**Proven**" else "**Unproven**" end;
   "\($marker)\n## 🤖 Claude CI review: \(if .verdict == "fail" then "❌ fail" else "✅ pass" end)\n\n"
-  + "Commit `\($sha[0:10])`. Screenshots, test output and the transcript are on the [Buildkite build](\($url)).\n\n"
-  + (.summary | no_artifacts) + "\n"
+  + "Commit `\($sha[0:10])`. Test output and the transcript are on the [Buildkite build](\($url)).\n\n"
+  + (.summary | media) + "\n"
   + (if (.findings | length) > 0 then
-       "\n## New findings\n\n" + (.findings | map("### \(tag): \(.title)\n\n`\(.path):\(.line)`\n\n\(.body | no_artifacts)") | join("\n\n")) + "\n"
+       "\n## New findings\n\n" + (.findings | map("### \(tag): \(.title)\n\n`\(.path):\(.line)`\n\n\(.body | media)") | join("\n\n")) + "\n"
      else "" end)
   + (if (.thread_replies | length) > 0 then
-       "\n## Earlier findings\n\n" + (.thread_replies | map("- \(if .resolved then "✅ Resolved" else "❌ Not resolved" end): \(.body | no_artifacts | gsub("\n"; " "))") | join("\n")) + "\n"
+       "\n## Earlier findings\n\n" + (.thread_replies | map("- \(if .resolved then "✅ Resolved" else "❌ Not resolved" end): \(.body | media | gsub("\n"; " "))") | join("\n")) + "\n"
      else "" end)
   | if length > 65000 then .[0:65000] + "\n\n…cut short. The full result is on the Buildkite build." else . end
 ' <<<"$REVIEW")
