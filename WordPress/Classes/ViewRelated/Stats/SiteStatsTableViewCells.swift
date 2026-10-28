@@ -82,7 +82,7 @@ struct SubscriberChartRow: StatsHashableImmuTableRow {
     typealias CellType = StatsSubscribersChartCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let action: ImmuTableAction? = nil
@@ -138,7 +138,7 @@ struct TableFooterRow: HashableImmutableRow {
     typealias CellType = StatsTableFooter
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let action: ImmuTableAction? = nil
@@ -936,7 +936,7 @@ struct DetailSubtitlesTabbedHeaderRow: HashableImmutableRow {
 
 struct StatsErrorRow: StatsHashableImmuTableRow {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
+        return ImmuTableCell.class(StatsStackViewCell.self)
     }()
     let action: ImmuTableAction? = nil
     let rowStatus: StoreFetchingStatus
