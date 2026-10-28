@@ -391,8 +391,15 @@ private extension LikesListController {
                 return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
+        let horizontalSizeClass = (tableView.window ?? tableView).traitCollection.horizontalSizeClass
+        cell.attributedHeaderTitle = formatter.render(
+            content: gravatarBlock,
+            with: HeaderContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
+        cell.attributedHeaderDetails = formatter.render(
+            content: snippetBlock,
+            with: HeaderDetailsContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
 
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
