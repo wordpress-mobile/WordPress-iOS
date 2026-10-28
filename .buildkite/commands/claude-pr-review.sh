@@ -93,7 +93,10 @@ echo "--- :xcode: Enabling Xcode MCP"
 # already has full shell access. Claude falls back to plain xcodebuild and
 # simctl if this fails (e.g. no passwordless sudo).
 XCODE_MCP=no
-if sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents; then
+# The folder grant covers this checkout and everything below it, in case
+# folder approval is still asked for with all agents allowed.
+if sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents \
+  && sudo -n xcrun mcp-server allow-folder "$PWD" --always; then
   XCODE_MCP=yes
   xcrun mcp-server status || true
 else
