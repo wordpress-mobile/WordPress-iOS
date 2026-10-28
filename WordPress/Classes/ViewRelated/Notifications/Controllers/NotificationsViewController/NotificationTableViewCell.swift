@@ -16,13 +16,15 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
     }
 
     func configure(with viewModel: NotificationsViewModel, notification: WordPressData.Notification, parent: NotificationsViewController) {
+        // The cell isn't in the table yet, so read the size class from the list's window.
+        let horizontalSizeClass = (parent.view.window ?? parent.view).traitCollection.horizontalSizeClass
         let title: AttributedString? = {
-            guard let attributedSubject = notification.renderSubject() else {
+            guard let attributedSubject = notification.renderSubject(horizontalSizeClass: horizontalSizeClass) else {
                 return nil
             }
             return AttributedString(attributedSubject)
         }()
-        let description = notification.renderSnippet()?.string
+        let description = notification.renderSnippet(horizontalSizeClass: horizontalSizeClass)?.string
         let inlineAction = inlineAction(viewModel: viewModel, notification: notification, parent: parent)
         let avatarStyle = AvatarView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
         let style = NotificationsTableViewCellContent.Style.regular(

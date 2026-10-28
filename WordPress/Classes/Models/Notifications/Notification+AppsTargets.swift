@@ -1,21 +1,30 @@
 import FormattableContentKit
+import UIKit
 import WordPressData
 import WordPressKit
 
 extension WordPressData.Notification {
 
-    func renderSubject() -> NSAttributedString? {
+    /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the subject.
+    func renderSubject(horizontalSizeClass: UIUserInterfaceSizeClass) -> NSAttributedString? {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
             return nil
         }
-        return formatter.render(content: subjectContent, with: SubjectContentStyles())
+        return formatter.render(
+            content: subjectContent,
+            with: SubjectContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
     }
 
-    func renderSnippet() -> NSAttributedString? {
+    /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the snippet.
+    func renderSnippet(horizontalSizeClass: UIUserInterfaceSizeClass) -> NSAttributedString? {
         guard let snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: SnippetsContentStyles())
+        return formatter.render(
+            content: snippetContent,
+            with: SnippetsContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
     }
 
     /// Returns the first BlockGroup of the specified type, if any.

@@ -1509,24 +1509,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard
-            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
-                as? WordPressData.Notification,
-            let cell = cell as? ListTableViewCell
-        else {
-            return
-        }
-
-        cell.configureWithNotification(note)
-
-        // handle undo overlays
-        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
-        cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
-            self?.cancelDeletionRequestForNoteWithID(note.objectID)
-        }
-
-        // additional configurations
-        cell.accessibilityHint = Self.accessibilityHint(for: note)
+        // Required by `WPTableViewHandlerDelegate`. The cells are configured in `tableView(_:cellForRowAt:)`.
     }
 
     func sectionNameKeyPath() -> String {
