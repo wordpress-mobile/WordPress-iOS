@@ -17,6 +17,8 @@ set -euo pipefail
 
 CLAUDE_CODE_VERSION="2.1.310"
 CLAUDE_MODEL="claude-opus-5-5"
+# Pinned so a Claude Code update can't change it silently. It is also the current default.
+CLAUDE_EFFORT="medium"
 GH_VERSION="2.103.3"
 GH_ARM64_SHA256="d700207eae9ae98fe2b89535c2c087c07823d4628c56364695a5a07ef311c062"
 SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 18 Pro}"
@@ -69,15 +71,6 @@ export GH_TOKEN="$GITHUB_TOKEN"
 
 echo "--- :git: Fetching ${BASE_BRANCH}"
 git fetch --quiet origin "${BASE_BRANCH}:refs/remotes/origin/${BASE_BRANCH}"
-
-echo "--- :package: Downloading the PR's Jetpack build"
-# The build step skips itself on PRs that only change docs or tooling.
-if download_artifact "build-products-jetpack.tar"; then
-  tar -xf "build-products-jetpack.tar"
-  rm "build-products-jetpack.tar"
-else
-  echo "No Jetpack build for this PR; Claude will build if it needs to."
-fi
 
 echo "--- :iphone: Booting ${SIMULATOR_NAME}"
 SIMULATOR_UDID="$(ruby Scripts/ci/find-booted-simulator.rb "$SIMULATOR_NAME" 2>/dev/null || true)"
@@ -161,7 +154,7 @@ done
 
 echo "--- :claude: Reviewing PR #${PR_NUMBER}"
 env -i "${claude_env[@]}" claude -p "$(cat "$PROMPT_FILE")" \
-  --model "$CLAUDE_MODEL" \
+  --model "$CLAUDE_MODEL" --effort "$CLAUDE_EFFORT" \
   --dangerously-skip-permissions \
   --strict-mcp-config --mcp-config '{"mcpServers": {"xcode": {"type": "stdio", "command": "xcrun", "args": ["mcpbridge"]}}}' \
   --json-schema "$(jq -c . .buildkite/claude/pr-review-schema.json)" \

@@ -17,7 +17,7 @@ You are a CI check, running unattended in a Buildkite job on a throwaway macOS V
 ## Build and test
 
 - Gems, Swift packages and XCFrameworks are installed. App secrets are not: builds use the example credentials, as for external contributors.
-- The PR's Jetpack build from this pipeline is unpacked in `DerivedData/Build/Products/Debug-iphonesimulator/Jetpack.app`, unless that step skipped itself. Use it as is unless you change code.
+- Nothing is built yet. `bundle exec fastlane build_jetpack_for_testing` builds the Jetpack app into `DerivedData/Build/Products/Debug-iphonesimulator/Jetpack.app`. Only build if you need to run the app or tests.
 - Unit tests: `xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests test`. Use `-only-testing:` to run a subset.
 - A simulator is booted: `{{SIMULATOR_NAME}}`, UDID `{{SIMULATOR_UDID}}`. You may create and boot others, for example an iPad.
 

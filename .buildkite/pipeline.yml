@@ -162,8 +162,6 @@ steps:
   - label: ":claude: Claude PR Review"
     key: claude_pr_review
     command: .buildkite/commands/claude-pr-review.sh
-    depends_on: "build_jetpack"
-    allow_dependency_failure: true
     if: build.pull_request.id != null
     timeout_in_minutes: 120
     plugins: [$CI_TOOLKIT_PLUGIN]
