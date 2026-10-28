@@ -26,7 +26,7 @@ extension StatsRowGhostable {
 
 struct StatsGhostGrowAudienceImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostGrowAudienceCell.defaultNib, StatsGhostGrowAudienceCell.self)
+        return ImmuTableCell.class(StatsGhostGrowAudienceCell.self)
     }()
 
     var statSection: StatSection? = nil
@@ -34,7 +34,7 @@ struct StatsGhostGrowAudienceImmutableRow: StatsRowGhostable {
 
 struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostTwoColumnCell.defaultNib, StatsGhostTwoColumnCell.self)
+        return ImmuTableCell.class(StatsGhostTwoColumnCell.self)
     }()
 
     var statSection: StatSection? = nil
@@ -74,13 +74,13 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
 
 struct StatsGhostTopHeaderImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostTopHeaderCell.defaultNib, StatsGhostTopHeaderCell.self)
+        return ImmuTableCell.class(StatsGhostTopHeaderCell.self)
     }()
 }
 
 struct StatsGhostTabbedImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostTabbedCell.defaultNib, StatsGhostTabbedCell.self)
+        return ImmuTableCell.class(StatsGhostTabbedCell.self)
     }()
 
     var statSection: StatSection? = nil
@@ -88,7 +88,7 @@ struct StatsGhostTabbedImmutableRow: StatsRowGhostable {
 
 struct StatsGhostPostingActivitiesImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostPostingActivityCell.defaultNib, StatsGhostPostingActivityCell.self)
+        return ImmuTableCell.class(StatsGhostPostingActivityCell.self)
     }()
 
     var statSection: StatSection? = nil
@@ -96,7 +96,7 @@ struct StatsGhostPostingActivitiesImmutableRow: StatsRowGhostable {
 
 struct StatsGhostChartImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostChartCell.defaultNib, StatsGhostChartCell.self)
+        return ImmuTableCell.class(StatsGhostChartCell.self)
     }()
 
     var statSection: StatSection?
@@ -104,7 +104,7 @@ struct StatsGhostChartImmutableRow: StatsRowGhostable {
 
 struct StatsGhostDetailRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostSingleRowCell.defaultNib, StatsGhostSingleRowCell.self)
+        return ImmuTableCell.class(StatsGhostSingleRowCell.self)
     }()
 
     var hideTopBorder = false
@@ -127,7 +127,7 @@ struct StatsGhostDetailRow: StatsRowGhostable {
 
 struct StatsGhostTitleRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostTitleCell.defaultNib, StatsGhostTitleCell.self)
+        return ImmuTableCell.class(StatsGhostTitleCell.self)
     }()
 }
 

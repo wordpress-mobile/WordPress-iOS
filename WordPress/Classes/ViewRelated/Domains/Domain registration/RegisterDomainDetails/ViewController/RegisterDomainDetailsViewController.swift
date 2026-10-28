@@ -95,7 +95,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
             forHeaderFooterViewReuseIdentifier: EpilogueSectionHeaderFooter.identifier
         )
         tableView.register(
-            RegisterDomainDetailsErrorSectionFooter.defaultNib,
+            RegisterDomainDetailsErrorSectionFooter.self,
             forHeaderFooterViewReuseIdentifier: RegisterDomainDetailsErrorSectionFooter.defaultReuseID
         )
         tableView.register(
