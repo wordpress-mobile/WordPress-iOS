@@ -164,7 +164,7 @@ module PluralStrings # rubocop:disable Metrics/ModuleLength -- one cohesive pipe
     cats = slot.cats
     english_forms = english_forms_for(entry.plural, cats)
     human_forms = human_forms_for(entry.key, cats, slot.human, english_forms, slot.locale)
-    kept_ai = kept_ai_forms(slot.existing, cats, human_forms, english_forms)
+    kept_ai = kept_ai_forms(slot, entry.key, human_forms, english_forms)
     anchors = human_forms.merge(kept_ai)
     ai_forms = kept_ai.merge(fresh_ai_forms(ai_translator, entry, slot, english_forms, anchors))
 
@@ -179,16 +179,33 @@ module PluralStrings # rubocop:disable Metrics/ModuleLength -- one cohesive pipe
   # both anchor the AI request and pass straight through, so an unchanged fold never re-calls the (billable,
   # non-deterministic) model nor churns needs_review text a reviewer may be mid-review of. English-fallback
   # cells (the AI declined last time) are deliberately NOT kept, so a transient outage is retried next run.
-  def kept_ai_forms(existing, cats, human_forms, english_forms)
-    prior = existing.is_a?(Hash) ? existing.dig('variations', 'plural') : nil
-    return {} unless prior.is_a?(Hash)
+  # Neither is a cell whose placeholders no longer match the English, e.g. after the source moved from `%ld` to
+  # `%d`: it translates a string that no longer exists, so it's dropped and re-filled like a missing one.
+  def kept_ai_forms(slot, key, human_forms, english_forms)
+    prior = prior_plural_cells(slot)
+    return {} if prior.nil?
 
-    cats.each_with_object({}) do |cat, acc|
+    (slot.cats - human_forms.keys).each_with_object({}) do |cat, acc|
       value = kept_ai_value(prior[cat], english_forms[cat])
-      acc[cat] = value if value && !human_forms.key?(cat)
+      acc[cat] = value if value && still_matches_english?(value, english_forms[cat], "#{slot.locale} machine translation for #{key.inspect} (#{cat})")
     end
   end
   private_class_method :kept_ai_forms
+
+  def prior_plural_cells(slot)
+    prior = slot.existing.is_a?(Hash) ? slot.existing.dig('variations', 'plural') : nil
+    prior if prior.is_a?(Hash)
+  end
+  private_class_method :prior_plural_cells
+
+  def still_matches_english?(value, english, description)
+    return true if TranslationValidator.placeholders_match?(english, value)
+
+    warn "PluralStrings: dropped stale #{description} — " \
+         "#{TranslationValidator.mismatch_reason(english, value)}; re-filling it."
+    false
+  end
+  private_class_method :still_matches_english?
 
   # A previous cell's value if it's a reusable machine translation (needs_review and not merely the English
   # fallback), else nil so the category is re-filled.
