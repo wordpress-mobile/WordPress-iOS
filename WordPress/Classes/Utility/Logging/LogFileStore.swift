@@ -21,7 +21,6 @@ struct LogFileStore: Sendable {
     }
 
     init(fileLogger: DDFileLogger) {
-        nonisolated(unsafe) let fileLogger = fileLogger
         self.init {
             fileLogger.logFileManager.sortedLogFileInfos.map {
                 AppLogFile(url: URL(fileURLWithPath: $0.filePath), creationDate: $0.creationDate)
