@@ -181,9 +181,9 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
 
     func testNegativeFrequencyIsTreatedAsShowOnce() {
         // Given
-        let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-phase_four_overlay"
+        let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
-        let tracker = OverlayFrequencyTracker(source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.phaseFourOverlay,
+        let tracker = OverlayFrequencyTracker(source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.stats,
                                               type: .featuresRemoval,
                                               frequencyConfig: .init(featureSpecificInDays: 0, generalInDays: -1),
                                               persistenceStore: mockUserDefaults)

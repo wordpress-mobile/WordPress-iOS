@@ -24,42 +24,21 @@ extension RemoteParameter {
 /// Each enum case represents a single remote parameter. Each parameter has a default value and a server value.
 /// We fallback to the default value if the server value cannot be retrieved.
 enum RemoteConfigParameter: CaseIterable, RemoteParameter {
-    case jetpackDeadline
-    case phaseTwoBlogPostUrl
-    case phaseThreeBlogPostUrl
-    case phaseFourBlogPostUrl
-    case phaseNewUsersBlogPostUrl
-    case phaseSelfHostedBlogPostUrl
     case blazeNonDismissibleStep
     case blazeFlowCompletedStep
     case wordPressPluginOverlayMaxShown
-    case phaseFourOverlayFrequency
     case wordPressInAppUpdateBlockingVersion
     case jetpackInAppUpdateBlockingVersion
     case inAppUpdateFlexibleIntervalInDays
 
     var key: String {
         switch self {
-        case .jetpackDeadline:
-            return "jp_deadline"
-        case .phaseTwoBlogPostUrl:
-            return "phase_two_blog_post"
-        case .phaseThreeBlogPostUrl:
-            return "phase_three_blog_post"
-        case .phaseFourBlogPostUrl:
-            return "phase_four_blog_post"
-        case .phaseNewUsersBlogPostUrl:
-            return "phase_new_users_blog_post"
-        case .phaseSelfHostedBlogPostUrl:
-            return "phase_self_hosted_blog_post"
         case .blazeNonDismissibleStep:
             return "blaze_non_dismissable_hash"
         case .blazeFlowCompletedStep:
             return "blaze_completed_step_hash"
         case .wordPressPluginOverlayMaxShown:
             return "wp_plugin_overlay_max_shown"
-        case .phaseFourOverlayFrequency:
-            return "phase_four_overlay_frequency_in_days"
         case .wordPressInAppUpdateBlockingVersion:
             return "wp_in_app_update_blocking_version_ios"
         case .jetpackInAppUpdateBlockingVersion:
@@ -71,26 +50,12 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
 
     var defaultValue: LosslessStringConvertible? {
         switch self {
-        case .jetpackDeadline:
-            return nil
-        case .phaseTwoBlogPostUrl:
-            return nil
-        case .phaseThreeBlogPostUrl:
-            return nil
-        case .phaseFourBlogPostUrl:
-            return nil
-        case .phaseNewUsersBlogPostUrl:
-            return nil
-        case .phaseSelfHostedBlogPostUrl:
-            return nil
         case .blazeNonDismissibleStep:
             return "step-4"
         case .blazeFlowCompletedStep:
             return "step-5"
         case .wordPressPluginOverlayMaxShown:
             return 3
-        case .phaseFourOverlayFrequency:
-            return -1
         case .wordPressInAppUpdateBlockingVersion:
             return nil
         case .jetpackInAppUpdateBlockingVersion:
@@ -102,26 +67,12 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
 
     var description: String {
         switch self {
-        case .jetpackDeadline:
-            return "Jetpack Deadline"
-        case .phaseTwoBlogPostUrl:
-            return "Phase 2 Blog Post URL"
-        case .phaseThreeBlogPostUrl:
-            return "Phase 3 Blog Post URL"
-        case .phaseFourBlogPostUrl:
-            return "Phase 4 Blog Post URL"
-        case .phaseNewUsersBlogPostUrl:
-            return "Phase New Users Blog Post URL"
-        case .phaseSelfHostedBlogPostUrl:
-            return "Phase Self-Hosted Blog Post URL"
         case .blazeNonDismissibleStep:
             return "Blaze Non-Dismissible Step"
         case .blazeFlowCompletedStep:
             return "Blaze Completed Step"
         case .wordPressPluginOverlayMaxShown:
             return "WP Plugin Overlay Max Frequency"
-        case .phaseFourOverlayFrequency:
-            return "Phase Four Overlay Frequency"
         case .wordPressInAppUpdateBlockingVersion:
             return "WP In-App Update Blocking Version"
         case .jetpackInAppUpdateBlockingVersion:
