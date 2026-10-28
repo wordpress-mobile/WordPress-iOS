@@ -10,15 +10,17 @@ struct JetpackBrandingTextProvider {
     private let currentDateProvider: CurrentDateProvider
 
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
-        return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
     }
 
     // MARK: Initializer
 
-    init(screen: JetpackBrandedScreen?,
-         featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
-         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
+    init(
+        screen: JetpackBrandedScreen?,
+        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+        currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()
+    ) {
         self.screen = screen
         self.featureFlagStore = featureFlagStore
         self.remoteConfigStore = remoteConfigStore
@@ -47,7 +49,8 @@ struct JetpackBrandingTextProvider {
             return Strings.defaultText // Screen not provided, or was opted out by defining a nil featureName
         }
 
-        guard let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore) else {
+        guard let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
+        else {
             return String(format: movingSoonString, featureName) // Couldn't retrieve the deadline
         }
 
@@ -100,24 +103,40 @@ struct JetpackBrandingTextProvider {
 
 private extension JetpackBrandingTextProvider {
     enum Strings {
-        static let defaultText = NSLocalizedString("jetpack.branding.badge_banner.title",
-                                                   value: "Jetpack powered",
-                                                   comment: "Title of the Jetpack powered badge.")
-        static let phaseTwoText = NSLocalizedString("jetpack.branding.badge_banner.title.phase2",
-                                                    value: "Get the Jetpack app",
-                                                    comment: "Title of the Jetpack powered badge.")
-        static let phaseThreePluralMovingSoonText = NSLocalizedString("jetpack.branding.badge_banner.moving_soon.plural",
-                                                                      value: "%@ are moving soon",
-                                                                      comment: "Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon")
-        static let phaseThreeSingularMovingSoonText = NSLocalizedString("jetpack.branding.badge_banner.moving_soon.singular",
-                                                                      value: "%@ is moving soon",
-                                                                      comment: "Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon")
-        static let phaseThreePluralMovingInText = NSLocalizedString("jetpack.branding.badge_banner.moving_in.plural",
-                                                                      value: "%@ are moving in %@",
-                                                                      comment: "Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks")
-        static let phaseThreeSingularMovingInText = NSLocalizedString("jetpack.branding.badge_banner.moving_in.singular",
-                                                                      value: "%@ is moving in %@",
-                                                                      comment: "Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks")
+        static let defaultText = NSLocalizedString(
+            "jetpack.branding.badge_banner.title",
+            value: "Jetpack powered",
+            comment: "Title of the Jetpack powered badge."
+        )
+        static let phaseTwoText = NSLocalizedString(
+            "jetpack.branding.badge_banner.title.phase2",
+            value: "Get the Jetpack app",
+            comment: "Title of the Jetpack powered badge."
+        )
+        static let phaseThreePluralMovingSoonText = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_soon.plural",
+            value: "%@ are moving soon",
+            comment:
+                "Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon"
+        )
+        static let phaseThreeSingularMovingSoonText = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_soon.singular",
+            value: "%@ is moving soon",
+            comment:
+                "Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon"
+        )
+        static let phaseThreePluralMovingInText = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_in.plural",
+            value: "%@ are moving in %@",
+            comment:
+                "Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks"
+        )
+        static let phaseThreeSingularMovingInText = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_in.singular",
+            value: "%@ is moving in %@",
+            comment:
+                "Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks"
+        )
         static let phaseStaticScreensText = defaultText
     }
 
@@ -126,10 +145,10 @@ private extension JetpackBrandingTextProvider {
     }
 
     var movingSoonString: String {
-        return isPlural ? Strings.phaseThreePluralMovingSoonText : Strings.phaseThreeSingularMovingSoonText
+        isPlural ? Strings.phaseThreePluralMovingSoonText : Strings.phaseThreeSingularMovingSoonText
     }
 
     var movingInString: String {
-        return isPlural ? Strings.phaseThreePluralMovingInText : Strings.phaseThreeSingularMovingInText
+        isPlural ? Strings.phaseThreePluralMovingInText : Strings.phaseThreeSingularMovingInText
     }
 }

@@ -104,8 +104,10 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 // MARK: - Helpers
 
 private extension JetpackNotificationMigrationServiceTests {
-    func setup(preventDuplicateNotificationsFlag: Bool,
-               isWordPress: Bool) {
+    func setup(
+        preventDuplicateNotificationsFlag: Bool,
+        isWordPress: Bool
+    ) {
 
         remoteFeatureFlagStore.isPreventDuplicateNotifications = preventDuplicateNotificationsFlag
 

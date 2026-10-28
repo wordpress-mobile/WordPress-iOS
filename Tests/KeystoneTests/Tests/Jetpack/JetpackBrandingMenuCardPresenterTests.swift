@@ -23,11 +23,13 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     func testShouldShowTopCardBasedOnPhase() {
         // Given
-        let blog = BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
+        let blog = BlogBuilder(mainContext)
+            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: blog,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
 
         // Normal phase
         setPhase(phase: .normal)
@@ -61,11 +63,13 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     func testShouldShowBottomCardBasedOnPhase() {
         // Given
-        let blog = BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
+        let blog = BlogBuilder(mainContext)
+            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: blog,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
 
         // Normal phase
         setPhase(phase: .normal)
@@ -103,7 +107,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             blog: nil,
             remoteConfigStore: remoteConfigStore,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
         setPhase(phase: .three)
         remoteConfigStore.phaseThreeBlogPostUrl = "example.com"
 
@@ -111,7 +116,10 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let config = try XCTUnwrap(presenter.cardConfig())
 
         // Then
-        XCTAssertEqual(config.description, "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.")
+        XCTAssertEqual(
+            config.description,
+            "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon."
+        )
         XCTAssertEqual(config.type, .expanded)
     }
 
@@ -121,7 +129,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             blog: nil,
             remoteConfigStore: remoteConfigStore,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
         setPhase(phase: .four)
 
         // When
@@ -138,7 +147,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             blog: nil,
             remoteConfigStore: remoteConfigStore,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
         setPhase(phase: .newUsers)
         remoteConfigStore.phaseNewUsersBlogPostUrl = "example.com"
 
@@ -146,19 +156,24 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let config = try XCTUnwrap(presenter.cardConfig())
 
         // Then
-        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.")
+        XCTAssertEqual(
+            config.description,
+            "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack."
+        )
         XCTAssertEqual(config.type, .expanded)
     }
 
     func testPhaseSelfHostedCardConfig() throws {
         // Given
         UserSettings.defaultDotComUUID = nil
-        let blog = BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
+        let blog = BlogBuilder(mainContext)
+            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: blog,
             remoteConfigStore: remoteConfigStore,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
         setPhase(phase: .selfHosted)
         remoteConfigStore.phaseSelfHostedBlogPostUrl = "example.com"
 
@@ -166,7 +181,10 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let config = try XCTUnwrap(presenter.cardConfig())
 
         // Then
-        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.")
+        XCTAssertEqual(
+            config.description,
+            "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack."
+        )
         XCTAssertEqual(config.type, .expanded)
     }
 
@@ -175,7 +193,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
-            persistenceStore: mockUserDefaults)
+            persistenceStore: mockUserDefaults
+        )
         setPhase(phase: .three)
 
         // When
@@ -193,7 +212,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults,
-            currentDateProvider: currentDateProvider)
+            currentDateProvider: currentDateProvider
+        )
         setPhase(phase: .three)
         currentDateProvider.dateToReturn = currentDate
 
@@ -213,7 +233,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults,
-            currentDateProvider: currentDateProvider)
+            currentDateProvider: currentDateProvider
+        )
         setPhase(phase: .three)
         currentDateProvider.dateToReturn = currentDate
 

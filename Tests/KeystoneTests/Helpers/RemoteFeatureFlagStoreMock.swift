@@ -16,7 +16,7 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
     var disabledFeatureFlag = Set<String>()
 
     override var deviceID: String {
-        return "Test"
+        "Test"
     }
 
     override func value(for flagKey: String) -> Bool? {

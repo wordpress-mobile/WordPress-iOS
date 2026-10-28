@@ -70,7 +70,8 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
     var deviceIdCallback: ((String) -> Void)?
 
     init(mockFlags: [MockFeatureFlag] = []) {
-        self.flags = mockFlags
+        self.flags =
+            mockFlags
             .compactMap { $0.toFeatureFlag }
         super.init()
     }
@@ -80,7 +81,10 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
         super.init()
     }
 
-    public override func getRemoteFeatureFlags(forDeviceId deviceId: String, callback: @escaping FeatureFlagResponseCallback) {
+    public override func getRemoteFeatureFlags(
+        forDeviceId deviceId: String,
+        callback: @escaping FeatureFlagResponseCallback
+    ) {
         deviceIdCallback?(deviceId)
         callback(.success(flags))
     }

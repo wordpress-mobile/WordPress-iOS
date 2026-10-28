@@ -17,7 +17,9 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         case selfHosted = "self_hosted"
         case staticScreens = "static_screens"
 
-        func frequencyConfig(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) -> OverlayFrequencyTracker.FrequencyConfig {
+        func frequencyConfig(
+            remoteConfigStore: RemoteConfigStore = RemoteConfigStore()
+        ) -> OverlayFrequencyTracker.FrequencyConfig {
             switch self {
             case .one:
                 fallthrough
@@ -66,7 +68,7 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         }
 
         var key: String {
-            return rawValue
+            rawValue
         }
 
         var frequencyType: OverlayFrequencyTracker.FrequencyType {
@@ -101,14 +103,18 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     /// the root UI kept the old type. Tests may set it.
     static var isReaderInWordPressAppEnabled = RemoteFeatureFlag.readerInWordPressApp.enabled()
 
-    static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-                             app: AppBrand = BuildSettings.current.brand) -> GeneralPhase {
+    static func generalPhase(
+        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        app: AppBrand = BuildSettings.current.brand
+    ) -> GeneralPhase {
         guard app == .wordpress else {
             return .normal // Show migration only for the WordPress app
         }
 
         if AccountHelper.noWordPressDotComAccount {
-            let selfHostedRemoval = RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.enabled(using: featureFlagStore)
+            let selfHostedRemoval = RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.enabled(
+                using: featureFlagStore
+            )
             return selfHostedRemoval ? .selfHosted : .normal
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore) {
@@ -133,19 +139,23 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         return .normal
     }
 
-    static func siteCreationPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> SiteCreationPhase {
+    static func siteCreationPhase(
+        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()
+    ) -> SiteCreationPhase {
         guard BuildSettings.current.brand == .wordpress else {
             return .normal // Show migration only for the WordPress app
         }
 
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
-            || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
+            || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore)
+        {
             return Self.hasBlog() ? .two : .normal
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
-            || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled(using: featureFlagStore) {
+            || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled(using: featureFlagStore)
+        {
             return .one
         }
 
@@ -168,7 +178,7 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     /// This will happen in the "Static Screens" phase.
     @objc
     public static func jetpackFeaturesEnabled() -> Bool {
-        return jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore())
+        jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore())
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
@@ -190,7 +200,7 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     /// are to be displayed based on the removal phase regardless of the app UI state.
     @objc
     public static func shouldShowJetpackFeatures() -> Bool {
-        return shouldShowJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore())
+        shouldShowJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore())
     }
 
     /// Used to determine if the Jetpack features are to be displayed based on the current app UI type.
@@ -230,7 +240,8 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     /// Used to determine if the Jetpack features are enabled or not based on the removal phase regardless of the app UI state.
-    private static func shouldEnableJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+    private static func shouldEnableJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool
+    {
         let phase = generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .four, .newUsers, .selfHosted, .staticScreens:
@@ -250,23 +261,32 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - blog: `Blog` object used to determine if Jetpack is installed in case of the self-hosted phase.
     ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
-    static func presentOverlayIfNeeded(in viewController: UIViewController,
-                                       source: JetpackOverlaySource,
-                                       forced: Bool = false,
-                                       fullScreen: Bool = false,
-                                       blog: Blog? = nil,
-                                       onWillDismiss: JetpackOverlayDismissCallback? = nil,
-                                       onDidDismiss: JetpackOverlayDismissCallback? = nil) {
+    static func presentOverlayIfNeeded(
+        in viewController: UIViewController,
+        source: JetpackOverlaySource,
+        forced: Bool = false,
+        fullScreen: Bool = false,
+        blog: Blog? = nil,
+        onWillDismiss: JetpackOverlayDismissCallback? = nil,
+        onDidDismiss: JetpackOverlayDismissCallback? = nil
+    ) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig()
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
 
         let coordinator = JetpackDefaultOverlayCoordinator()
-        let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog, coordinator: coordinator)
-        let frequencyTracker = OverlayFrequencyTracker(source: source,
-                                                       type: .featuresRemoval,
-                                                       frequencyConfig: frequencyConfig,
-                                                       phaseString: frequencyTrackerPhaseString)
+        let viewModel = JetpackFullscreenOverlayGeneralViewModel(
+            phase: phase,
+            source: source,
+            blog: blog,
+            coordinator: coordinator
+        )
+        let frequencyTracker = OverlayFrequencyTracker(
+            source: source,
+            type: .featuresRemoval,
+            frequencyConfig: frequencyConfig,
+            phaseString: frequencyTrackerPhaseString
+        )
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
             onWillDismiss?()
             onDidDismiss?()
@@ -288,10 +308,12 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - source: The source that triggers the display of the overlay.
     ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
-    static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
-                                                   source: String,
-                                                   onWillDismiss: JetpackOverlayDismissCallback? = nil,
-                                                   onDidDismiss: JetpackOverlayDismissCallback? = nil) {
+    static func presentSiteCreationOverlayIfNeeded(
+        in viewController: UIViewController,
+        source: String,
+        onWillDismiss: JetpackOverlayDismissCallback? = nil,
+        onDidDismiss: JetpackOverlayDismissCallback? = nil
+    ) {
         let phase = siteCreationPhase()
         let coordinator = JetpackDefaultOverlayCoordinator()
         //
@@ -313,9 +335,11 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         presentOverlay(navigationViewController: navigationViewController, in: viewController)
     }
 
-    static func presentOverlay(navigationViewController: UINavigationController,
-                               in viewController: UIViewController,
-                               fullScreen: Bool = false) {
+    static func presentOverlay(
+        navigationViewController: UINavigationController,
+        in viewController: UIViewController,
+        fullScreen: Bool = false
+    ) {
         let windowSizeClass = viewController.view.window?.traitCollection.horizontalSizeClass
         let shouldUseFormSheet = windowSizeClass == .regular || !fullScreen
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
