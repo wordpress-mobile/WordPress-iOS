@@ -216,7 +216,7 @@ if jq -e '.findings | length > 0' <<<"$REVIEW" >/dev/null; then
       {
         commit_id: $sha,
         event: "COMMENT",
-        body: ("\($marker)\n🤖 **Claude CI review** – verdict: **\(.verdict)**. Evidence: [Buildkite annotation](\($url)).\n\n"
+        body: ("\($marker)\n🤖 **Claude CI review** – verdict: **\(.verdict)**. The full result is in the Claude CI review comment below; evidence is on the [Buildkite build](\($url)).\n\n"
           + (if $inline then "" else (.findings | map("### `\(.path):\(.line)`\n\n" + text) | join("\n\n")) end)),
         comments: (if $inline then .findings | map({path, line, side: "RIGHT", body: ("\($marker)\n" + text)}) else [] end)
       }' <<<"$REVIEW"
@@ -248,6 +248,32 @@ $(jq -r .body <<<"$reply")"
       mutation($thread: ID!) { resolveReviewThread(input: {threadId: $thread}) { thread { id } } }' >/dev/null || post_failed=1
   fi
 done < <(jq -c '.thread_replies[]' <<<"$REVIEW")
+
+# The full result as one PR comment, updated in place on every run. GitHub
+# can't show Buildkite artifacts, so embedded screenshots become links to the
+# annotation. Comments over GitHub's 65,536-character limit are cut short.
+SUMMARY_MARKER="<!-- claude-ci-review-summary -->"
+summary_body=$(jq -r --arg marker "$SUMMARY_MARKER" --arg url "$ANNOTATION_URL" --arg sha "$HEAD_SHA" '
+  def no_artifacts: gsub("<img[^>]*src=\"artifact://(?<p>[^\"]+)\"[^>]*>"; "[`\(.p | split("/") | last)`](\($url))");
+  def tag: if .proven then "**Proven**" else "**Unproven**" end;
+  "\($marker)\n## 🤖 Claude CI review: \(if .verdict == "fail" then "❌ fail" else "✅ pass" end)\n\n"
+  + "Commit `\($sha[0:10])`. Screenshots, test output and the transcript are on the [Buildkite build](\($url)).\n\n"
+  + (.summary | no_artifacts) + "\n"
+  + (if (.findings | length) > 0 then
+       "\n## New findings\n\n" + (.findings | map("### \(tag): \(.title)\n\n`\(.path):\(.line)`\n\n\(.body | no_artifacts)") | join("\n\n")) + "\n"
+     else "" end)
+  + (if (.thread_replies | length) > 0 then
+       "\n## Earlier findings\n\n" + (.thread_replies | map("- \(if .resolved then "✅ Resolved" else "❌ Not resolved" end): \(.body | no_artifacts | gsub("\n"; " "))") | join("\n")) + "\n"
+     else "" end)
+  | if length > 65000 then .[0:65000] + "\n\n…cut short. The full result is on the Buildkite build." else . end
+' <<<"$REVIEW")
+existing_summary=$(gh api "repos/${REPO_SLUG}/issues/${PR_NUMBER}/comments" --paginate \
+  --jq ".[] | select(.user.login == \"${BOT_LOGIN}\" and (.body | startswith(\"${SUMMARY_MARKER}\"))) | .id" 2>/dev/null | head -n 1) || true
+if [[ -n "$existing_summary" ]]; then
+  gh api --method PATCH "repos/${REPO_SLUG}/issues/comments/${existing_summary}" -f body="$summary_body" >/dev/null || post_failed=1
+else
+  gh api --method POST "repos/${REPO_SLUG}/issues/${PR_NUMBER}/comments" -f body="$summary_body" >/dev/null || post_failed=1
+fi
 
 if [[ "$post_failed" == 1 ]]; then
   echo "Warning: some comments could not be posted to GitHub. The verdict is unaffected."
