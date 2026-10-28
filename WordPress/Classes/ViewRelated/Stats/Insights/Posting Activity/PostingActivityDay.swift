@@ -37,7 +37,7 @@ class PostingActivityDay: UIView {
         // Position the button with a frame rather than constraints: a system button laid out
         // with Auto Layout creates a (hidden) title label, and the ghost animation only covers
         // views without subviews, so the loading state would lose its placeholder squares.
-        let guide = safeAreaLayoutGuide.layoutFrame
+        let guide = bounds.inset(by: safeAreaInsets)
         dayButton.frame = CGRect(
             x: guide.midX - Metrics.daySize / 2,
             y: guide.midY - Metrics.daySize / 2,
