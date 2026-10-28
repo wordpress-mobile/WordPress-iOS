@@ -8,18 +8,32 @@ import WordPressShared
 /// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
-final class TopTotalsCell: StatsRowsCell, NibLoadable {
+final class TopTotalsCell: StatsRowsCell {
 
     // MARK: - Properties
 
-    @IBOutlet weak var outerStackView: UIStackView!
-    @IBOutlet weak var subtitleStackView: UIStackView!
-    @IBOutlet weak var itemSubtitleLabel: UILabel!
-    @IBOutlet weak var dataSubtitleLabel: UILabel!
-    @IBOutlet weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var secondDataSubtitleLabel: UILabel!
-    @IBOutlet weak var topSeparatorLine: UIView!
-    @IBOutlet weak var bottomSeparatorLine: UIView!
+    private let outerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 7
+        return stackView
+    }()
+    private let subtitleStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.spacing = 16
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
+    }()
+    private let itemSubtitleLabel = UILabel.makeStatsLabel(text: "Subtitle", textStyle: .footnote, textAlignment: .left)
+    private let dataSubtitleLabel = makeDataSubtitleLabel()
+    /// Deactivated (and released) once a cell shows `secondDataSubtitleLabel`.
+    private weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint?
+    private let secondDataSubtitleLabel = makeDataSubtitleLabel()
+    private let topSeparatorLine = makeSeparator()
+    private let bottomSeparatorLine = makeSeparator()
+
     private var topAccessoryView: UIView? = nil {
         didSet {
             oldValue?.removeFromSuperview()
@@ -44,21 +58,80 @@ final class TopTotalsCell: StatsRowsCell, NibLoadable {
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
+    // MARK: - Init
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+
+        let rowsStackView = UIStackView()
+        rowsStackView.axis = .vertical
+
+        [itemSubtitleLabel, dataSubtitleLabel, secondDataSubtitleLabel].forEach(subtitleStackView.addArrangedSubview)
+        [subtitleStackView, rowsStackView].forEach(outerStackView.addArrangedSubview)
+        [outerStackView, topSeparatorLine, bottomSeparatorLine].forEach(contentView.addSubview)
+        self.rowsStackView = rowsStackView
+
+        let dataSubtitleLabelWidthConstraint = dataSubtitleLabel.widthAnchor.constraint(equalToConstant: 56)
+        self.dataSubtitleLabelWidthConstraint = dataSubtitleLabelWidthConstraint
+
+        let topConstraint = outerStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7)
+        NSLayoutConstraint.activate([
+            topConstraint,
+            outerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: outerStackView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: outerStackView.bottomAnchor),
+
+            subtitleStackView.leadingAnchor.constraint(equalTo: outerStackView.leadingAnchor),
+            subtitleStackView.bottomAnchor.constraint(equalTo: itemSubtitleLabel.bottomAnchor),
+            dataSubtitleLabelWidthConstraint,
+            secondDataSubtitleLabel.widthAnchor.constraint(equalToConstant: 56),
+
+            topSeparatorLine.topAnchor.constraint(equalTo: contentView.topAnchor),
+            topSeparatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: topSeparatorLine.trailingAnchor),
+
+            bottomSeparatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: bottomSeparatorLine.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomSeparatorLine.bottomAnchor)
+        ])
+        self.topConstraint = topConstraint
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private static func makeDataSubtitleLabel() -> UILabel {
+        UILabel.makeStatsLabel(text: "Subtitle", textStyle: .footnote, textAlignment: .right)
+    }
+
+    private static func makeSeparator() -> UIView {
+        let view = UIView.makeStatsSeparator()
+        view.backgroundColor = UIColor(white: 0.667, alpha: 1)
+        return view
+    }
+
     // MARK: - Configure
 
-    func configure(itemSubtitle: String? = nil,
-                   dataSubtitle: String? = nil,
-                   secondDataSubtitle: String? = nil,
-                   dataRows: [StatsTotalRowData],
-                   statSection: StatSection? = nil,
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
-                   siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
-                   siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
-                   postStatsDelegate: PostStatsDelegate? = nil,
-                   topAccessoryView: UIView? = nil,
-                   limitRowsDisplayed: Bool = true,
-                   forDetails: Bool = false) {
+    func configure(
+        itemSubtitle: String? = nil,
+        dataSubtitle: String? = nil,
+        secondDataSubtitle: String? = nil,
+        dataRows: [StatsTotalRowData],
+        statSection: StatSection? = nil,
+        siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
+        siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+        siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
+        siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+        postStatsDelegate: PostStatsDelegate? = nil,
+        topAccessoryView: UIView? = nil,
+        limitRowsDisplayed: Bool = true,
+        forDetails: Bool = false
+    ) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         secondDataSubtitleLabel.text = secondDataSubtitle
@@ -145,7 +218,7 @@ private extension TopTotalsCell {
     func initChildRows() {
         rowsStackView.arrangedSubviews.forEach { subview in
             guard let row = subview as? StatsTotalRow else {
-                    return
+                return
             }
 
             // On the Stats Detail view, do not expand rows initially.
@@ -156,19 +229,21 @@ private extension TopTotalsCell {
 
             toggleChildRows(for: row, didSelectRow: false)
 
-            row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
-                guard let childRow = child as? StatsTotalRow else {
-                    return
+            row.childRowsView?.rowsStackView.arrangedSubviews
+                .forEach { child in
+                    guard let childRow = child as? StatsTotalRow else {
+                        return
+                    }
+                    toggleChildRows(for: childRow, didSelectRow: false)
                 }
-                toggleChildRows(for: childRow, didSelectRow: false)
-            }
         }
     }
 
     func addChildRowsForRow(_ row: StatsTotalRow) {
         guard let rowIndex = indexForRow(row),
-            let childRows = row.rowData?.childRows else {
-                return
+            let childRows = row.rowData?.childRows
+        else {
+            return
         }
 
         // Make sure we don't duplicate child rows.
@@ -188,11 +263,11 @@ private extension TopTotalsCell {
         }()
 
         let containingStackView = stackViewContainingRow(row)
-        let childRowsView = StatsChildRowsView.loadFromNib()
+        let childRowsView = StatsChildRowsView()
 
         for childRowsIndex in 0..<numberOfRowsToAdd {
             let childRowData = childRows[childRowsIndex]
-            let childRow = StatsTotalRow.loadFromNib()
+            let childRow = StatsTotalRow()
 
             childRow.configure(rowData: childRowData, delegate: self, parentRow: row)
             childRow.showSeparator = false
@@ -211,10 +286,10 @@ private extension TopTotalsCell {
     }
 
     func removeChildRowsForRow(_ row: StatsTotalRow) {
-        guard let childRowsView = row.childRowsView,
-        let childRowsStackView = childRowsView.rowsStackView else {
+        guard let childRowsView = row.childRowsView else {
             return
         }
+        let childRowsStackView = childRowsView.rowsStackView
 
         // If the row's children have children, remove those too.
         childRowsStackView.arrangedSubviews.forEach { subView in
@@ -235,8 +310,9 @@ private extension TopTotalsCell {
     func toggleSeparatorsBeforeRow(_ row: StatsTotalRow) {
         guard let containingStackView = stackViewContainingRow(row),
             let rowIndex = indexForRow(row),
-            (rowIndex - 1) >= 0 else {
-                return
+            (rowIndex - 1) >= 0
+        else {
+            return
         }
 
         let previousRow = containingStackView.arrangedSubviews[rowIndex - 1]
@@ -255,8 +331,9 @@ private extension TopTotalsCell {
     func toggleSeparatorsAfterRow(_ row: StatsTotalRow) {
         guard let containingStackView = stackViewContainingRow(row),
             let rowIndex = indexForRow(row),
-            (rowIndex + 1) < containingStackView.arrangedSubviews.count else {
-                return
+            (rowIndex + 1) < containingStackView.arrangedSubviews.count
+        else {
+            return
         }
 
         let nextRow = containingStackView.arrangedSubviews[rowIndex + 1]
@@ -272,8 +349,9 @@ private extension TopTotalsCell {
         if nextRow is StatsChildRowsView {
 
             guard (rowIndex + 2) < containingStackView.arrangedSubviews.count,
-                let nextParentRow = containingStackView.arrangedSubviews[rowIndex + 2] as? StatsTotalRow else {
-                    return
+                let nextParentRow = containingStackView.arrangedSubviews[rowIndex + 2] as? StatsTotalRow
+            else {
+                return
             }
 
             row.childRowsView?.showBottomSeperatorLine = !nextParentRow.expanded
@@ -283,15 +361,16 @@ private extension TopTotalsCell {
     func indexForRow(_ row: StatsTotalRow) -> Int? {
         guard let stackView = stackViewContainingRow(row),
             let rowView = stackView.arrangedSubviews.first(where: ({ $0 == row })),
-            let rowIndex = stackView.arrangedSubviews.firstIndex(of: rowView) else {
-                return nil
+            let rowIndex = stackView.arrangedSubviews.firstIndex(of: rowView)
+        else {
+            return nil
         }
 
         return rowIndex
     }
 
     func stackViewContainingRow(_ row: StatsTotalRow) -> UIStackView? {
-        return row.parentRow?.childRowsView?.rowsStackView ?? rowsStackView
+        row.parentRow?.childRowsView?.rowsStackView ?? rowsStackView
     }
 }
 
@@ -362,14 +441,27 @@ extension TopTotalsCell: Accessible {
         let secondDataTitle = secondDataSubtitleLabel.text
 
         if let itemTitle, let dataTitle, let secondDataTitle {
-            let descriptionFormat = NSLocalizedString("stats.topTotalsCell.voiceOverDescription", value: "Table showing %1$@, %2$@, and %3$@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+            let descriptionFormat = NSLocalizedString(
+                "stats.topTotalsCell.voiceOverDescription",
+                value: "Table showing %1$@, %2$@, and %3$@",
+                comment:
+                    "Accessibility of stats table. Placeholders will be populated with names of data shown in table."
+            )
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle, secondDataTitle)
         } else if let itemTitle, let dataTitle {
-            let descriptionFormat = NSLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+            let descriptionFormat = NSLocalizedString(
+                "Table showing %@ and %@",
+                comment:
+                    "Accessibility of stats table. Placeholders will be populated with names of data shown in table."
+            )
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle)
         } else {
             if let title = (itemTitle ?? dataTitle) {
-                let descriptionFormat = NSLocalizedString("Table showing %@", comment: "Accessibility of stats table. Placeholder will be populated with name of data shown in table.")
+                let descriptionFormat = NSLocalizedString(
+                    "Table showing %@",
+                    comment:
+                        "Accessibility of stats table. Placeholder will be populated with name of data shown in table."
+                )
                 accessibilityLabel = String(format: descriptionFormat, title)
             }
         }
