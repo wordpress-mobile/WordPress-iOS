@@ -215,6 +215,21 @@ if ! as_reviewer true 2>/dev/null; then
 fi
 echo "Running as ${REVIEWER} via ${REVIEWER_TRANSPORT}"
 
+echo "--- :eject: Unmounting the shared credentials folder"
+# The host mounts its common credentials (AWS keys, the bot's SSH key) into
+# every VM, readable by every user. Nothing after this point needs them: the
+# AWS keys were read into the job's environment when it started, and this step
+# never pushes. If unmounting fails, the reviewer's checks stop Claude.
+shared_mount="/Volumes/My Shared Files"
+if mount | grep -qF " on ${shared_mount} "; then
+  sudo -n umount "$shared_mount" || sudo -n diskutil unmount force "$shared_mount" || true
+fi
+if mount | grep -qF " on ${shared_mount} "; then
+  echo "Warning: ${shared_mount} is still mounted."
+else
+  echo "${shared_mount} is not mounted."
+fi
+
 # ── Review ───────────────────────────────────────────────────────────
 echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
 reviewer_status=0
