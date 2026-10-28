@@ -291,7 +291,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         let mediaSize = CGSize(width: 4000, height: 3000)
         XCTAssertEqual(
             MediaImageService.getThumbnailSize(for: mediaSize, size: .small),
-            CGSize(width: 544, height: 408)
+            CGSize(width: 768, height: 576)
         )
         XCTAssertEqual(
             MediaImageService.getThumbnailSize(for: mediaSize, size: .large),

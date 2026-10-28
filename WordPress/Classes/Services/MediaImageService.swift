@@ -372,10 +372,11 @@ extension MediaImageService {
     private static func getPreferredThumbnailSize(for thumbnail: ImageSize) -> CGSize {
         switch thumbnail {
         case .small:
-            /// Fills a cell of the media grid in `SiteMediaCollectionViewController`.
-            /// The largest cell is on a 13-inch iPad in portrait: 204 pt at 2x.
-            /// iPhone cells are 92–108 pt at 3x, or 276–324 px.
-            return CGSize(width: 408, height: 408)
+            /// Fills a cell of the media grid in `SiteMediaCollectionViewController`
+            /// in either orientation. The largest cell is on an iPhone Pro Max in
+            /// landscape: 190 pt at 3x, or 569 px. On a 13-inch iPad in landscape,
+            /// a full-width grid has 274 pt cells at 2x, or 547 px.
+            return CGSize(width: 576, height: 576)
         case .large:
             /// Fills the screen of an iPhone, or a large part of an iPad's.
             return CGSize(width: 1024, height: 1024)
