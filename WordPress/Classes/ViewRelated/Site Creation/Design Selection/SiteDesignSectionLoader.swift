@@ -8,20 +8,25 @@ struct SiteDesignSectionLoader {
 
     /// Builds a site design section assembler based on data fetched from the API.
     ///
-    /// - Parameter completion: A closure providing an assembler function or an error.
-    static func buildAssembler(completion: @escaping (Result<Assembler, Error>) -> Void) {
-        fetchRemoteDesigns { result in
+    /// - Parameters:
+    ///   - scale: The native scale of the screen that will display the thumbnails,
+    ///     for example `view.window?.windowScene?.screen.nativeScale`.
+    ///   - completion: A closure providing an assembler function or an error.
+    static func buildAssembler(scale: CGFloat, completion: @escaping (Result<Assembler, Error>) -> Void) {
+        fetchRemoteDesigns(scale: scale) { result in
             switch result {
             case .success(let remoteDesigns):
                 let categorySections = getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
 
-                completion(.success({ vertical in
-                    assembleSections(
-                        categorySections: categorySections,
-                        remoteDesigns: remoteDesigns,
-                        vertical: vertical
-                    )
-                }))
+                completion(
+                    .success({ vertical in
+                        assembleSections(
+                            categorySections: categorySections,
+                            remoteDesigns: remoteDesigns,
+                            vertical: vertical
+                        )
+                    })
+                )
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -30,8 +35,14 @@ struct SiteDesignSectionLoader {
 
     /// Fetches remote designs from the API
     ///
-    /// - Parameter completion: A closure providing remote site designs or an error.
-    static func fetchRemoteDesigns(completion: @escaping (Result<RemoteSiteDesigns, Error>) -> Void) {
+    /// - Parameters:
+    ///   - scale: The native scale of the screen that will display the thumbnails,
+    ///     for example `view.window?.windowScene?.screen.nativeScale`.
+    ///   - completion: A closure providing remote site designs or an error.
+    static func fetchRemoteDesigns(
+        scale: CGFloat,
+        completion: @escaping (Result<RemoteSiteDesigns, Error>) -> Void
+    ) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
         let templateGroups: [TemplateGroup] = FeatureFlag.betaSiteDesigns.enabled ? [.stable, .beta] : []
 
@@ -41,7 +52,8 @@ struct SiteDesignSectionLoader {
         )
 
         let request = SiteDesignRequest(
-            withThumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value,
+            withThumbnailSize: SiteDesignCategoryThumbnailSize.previewSize,
+            scale: scale,
             withGroups: templateGroups
         )
 
@@ -61,7 +73,10 @@ struct SiteDesignSectionLoader {
     ///   - vertical: A Site Intent vertical.
     ///   - remoteDesigns: Remote Site Designs.
     /// - Returns: A `SiteDesignSection` if there was a match, otherwise `nil`.
-    static func getRecommendedSectionForVertical(_ vertical: SiteIntentVertical, remoteDesigns: RemoteSiteDesigns) -> SiteDesignSection? {
+    static func getRecommendedSectionForVertical(
+        _ vertical: SiteIntentVertical,
+        remoteDesigns: RemoteSiteDesigns
+    ) -> SiteDesignSection? {
         let designsForVertical = remoteDesigns.designs.filter({
             $0.group?
                 .map { $0.lowercased() }
@@ -74,7 +89,6 @@ struct SiteDesignSectionLoader {
 
         return SiteDesignSection(
             designs: designsForVertical,
-            thumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value,
             caption: TextContent.recommendedCaption,
             categorySlug: "recommended_" + vertical.slug,
             title: String(format: TextContent.recommendedTitle, vertical.localizedTitle),
@@ -90,13 +104,14 @@ struct SiteDesignSectionLoader {
     /// - Parameter remoteDesigns: Remote Site Designs.
     /// - Returns: Array of Site Design sections with the designs randomized.
     static func getCategorySectionsForRemoteSiteDesigns(_ remoteDesigns: RemoteSiteDesigns) -> [SiteDesignSection] {
-        return remoteDesigns.categories.map { category in
-            SiteDesignSection(
-                category: category,
-                designs: remoteDesigns.randomizedDesignsForCategory(category),
-                thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
-            )
-        }.filter { !$0.designs.isEmpty }
+        remoteDesigns.categories
+            .map { category in
+                SiteDesignSection(
+                    category: category,
+                    designs: remoteDesigns.randomizedDesignsForCategory(category)
+                )
+            }
+            .filter { !$0.designs.isEmpty }
     }
 
     /// Assembles Site Design sections by placing a single larger recommended section above category sections.
@@ -108,8 +123,14 @@ struct SiteDesignSectionLoader {
     ///   - remoteDesigns: Remote Site Designs.
     ///   - vertical: An optional Site Intent vertical.
     /// - Returns: An array of Site Design sections.
-    static func assembleSections(categorySections: [SiteDesignSection], remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
-        if let vertical, let recommendedVertical = getRecommendedSectionForVertical(vertical, remoteDesigns: remoteDesigns) {
+    static func assembleSections(
+        categorySections: [SiteDesignSection],
+        remoteDesigns: RemoteSiteDesigns,
+        vertical: SiteIntentVertical?
+    ) -> [SiteDesignSection] {
+        if let vertical,
+            let recommendedVertical = getRecommendedSectionForVertical(vertical, remoteDesigns: remoteDesigns)
+        {
             // Recommended designs for the vertical were found
             return [recommendedVertical] + categorySections
         }
@@ -117,7 +138,6 @@ struct SiteDesignSectionLoader {
         if var recommendedFallback = categorySections.first(where: { $0.categorySlug.lowercased() == "blog" }) {
             // Recommended designs for the vertical weren't found, so we used the fallback category
             recommendedFallback.title = String(format: TextContent.recommendedTitle, "Blogging")
-            recommendedFallback.thumbnailSize = SiteDesignCategoryThumbnailSize.recommended.value
             recommendedFallback.sectionType = .recommended
             recommendedFallback.caption = TextContent.recommendedCaption
             return [recommendedFallback] + categorySections.filter { $0 != recommendedFallback }
@@ -131,9 +151,14 @@ struct SiteDesignSectionLoader {
 private extension SiteDesignSectionLoader {
 
     enum TextContent {
-        static let recommendedTitle = NSLocalizedString("Best for %@",
-                                                        comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
-        static let recommendedCaption = NSLocalizedString("PICKED FOR YOU",
-                                                          comment: "Caption for the recommended sections in site designs.")
+        static let recommendedTitle = NSLocalizedString(
+            "Best for %@",
+            comment:
+                "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging."
+        )
+        static let recommendedCaption = NSLocalizedString(
+            "PICKED FOR YOU",
+            comment: "Caption for the recommended sections in site designs."
+        )
     }
 }
