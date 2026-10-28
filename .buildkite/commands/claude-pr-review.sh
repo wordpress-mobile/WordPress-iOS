@@ -5,10 +5,11 @@
 # Exit status: 0 = no proven bugs, 1 = Claude proved a bug caused by the PR,
 # 2 = the review didn't complete (any other failure in this script).
 #
-# Claude runs with an allowlisted environment: the Anthropic key and the test
-# site sign-in only. It has no GitHub token and no Buildkite agent token. This
-# script fetches the PR's data for it and posts its result, always as a plain
-# comment review, so it can't approve or request changes.
+# Claude runs as a separate, non-admin macOS user that only gets the Anthropic
+# key and the test site sign-in. It has no GitHub token and can't reach the
+# build user's secrets. This script fetches the PR's data for it and posts its
+# result, always as a plain comment review, so it can't approve or request
+# changes. Claude's part runs in claude-pr-review-as-reviewer.sh.
 #
 # Prompt: .buildkite/claude/pr-review-prompt.md, plus the CI notes in
 # .buildkite/claude/pr-review-ci-context.md.
@@ -60,11 +61,8 @@ OWNER="${REPO_SLUG%/*}"
 NAME="${REPO_SLUG#*/}"
 
 # ── Tools ────────────────────────────────────────────────────────────
-echo "--- :claude: Installing Claude Code ${CLAUDE_CODE_VERSION}"
-curl -fsSL https://claude.ai/install.sh | bash -s "$CLAUDE_CODE_VERSION"
+mkdir -p "$HOME/.local/bin"
 export PATH="$HOME/.local/bin:$PATH"
-claude --version
-
 if ! command -v gh >/dev/null; then
   echo "--- :github: Installing gh ${GH_VERSION}"
   gh_dir="$(mktemp -d)"
@@ -84,45 +82,13 @@ BOT_LOGIN=$(gh api user --jq .login)
 
 echo "--- :git: Fetching ${BASE_BRANCH}"
 git fetch --quiet origin "${BASE_BRANCH}:refs/remotes/origin/${BASE_BRANCH}"
-
-echo "--- :iphone: Booting ${SIMULATOR_NAME}"
-SIMULATOR_UDID="$(ruby Scripts/ci/find-booted-simulator.rb "$SIMULATOR_NAME" 2>/dev/null || true)"
-if [[ -z "$SIMULATOR_UDID" ]]; then
-  xcrun simctl boot "$SIMULATOR_NAME" 2>/dev/null || true
-  SIMULATOR_UDID="$(ruby Scripts/ci/find-booted-simulator.rb "$SIMULATOR_NAME" 30 1)"
+# The reviewer's copy can't read the shared git mirror, so make this checkout
+# self-contained before copying it.
+if [[ -s .git/objects/info/alternates ]]; then
+  echo "Copying objects from the git mirror into the checkout"
+  git repack -a -d -q
+  rm .git/objects/info/alternates
 fi
-echo "Simulator UDID: ${SIMULATOR_UDID}"
-
-echo "--- :xcode: Enabling Xcode MCP"
-# Headless Xcode asks before an agent or folder may use it. Nobody can answer
-# on CI, so allow every agent: this VM is thrown away after the job, and Claude
-# already has full shell access. Claude falls back to plain xcodebuild and
-# simctl if this fails (e.g. no passwordless sudo).
-XCODE_MCP=no
-# The folder grant covers this checkout and everything below it, in case
-# folder approval is still asked for with all agents allowed.
-if sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents \
-  && sudo -n xcrun mcp-server allow-folder "$PWD" --always; then
-  XCODE_MCP=yes
-  xcrun mcp-server status || true
-else
-  echo "Could not enable Xcode MCP; continuing without it."
-fi
-
-echo "--- :lock: Removing sudo before Claude runs"
-# Claude must not have root: it could read the secrets this job was started
-# with. sudo uses the last matching rule, and sudoers.d is read after the main
-# file, so this rule overrides any earlier grant for this user. The VM is thrown
-# away after the job, so nothing has to restore it.
-no_sudo_rule="$(mktemp)"
-printf '%s ALL=(ALL) !ALL\n' "$(id -un)" > "$no_sudo_rule"
-/usr/sbin/visudo -c -q -f "$no_sudo_rule"
-sudo -n install -m 0440 -o root -g wheel "$no_sudo_rule" /etc/sudoers.d/zz-no-sudo-for-claude
-if sudo -n true 2>/dev/null; then
-  echo "^^^ +++ sudo still works, so Claude will not run."
-  exit 2
-fi
-echo "sudo is now refused for $(id -un)."
 
 # ── PR data for Claude ───────────────────────────────────────────────
 echo "--- :github: Fetching PR #${PR_NUMBER}"
@@ -146,48 +112,127 @@ gh api graphql -F owner="$OWNER" -F name="$NAME" -F number="$PR_NUMBER" -f query
 gh api "repos/${REPO_SLUG}/issues/${PR_NUMBER}/comments" --paginate \
   --jq '[.[] | {author: .user.login, body, created_at}]' > "$INPUT_DIR/comments.json"
 
+# ── The reviewer user ────────────────────────────────────────────────
+# Claude runs as a separate, non-admin macOS user. As the build user it could
+# read this job's secrets: the AWS keys and bot SSH key mounted into every VM,
+# files in the build user's home, and (with `ps -E`) the environment of the
+# build user's processes, including the Buildkite job token. A different user
+# can do none of that. The build user keeps sudo, which Claude can't use.
+REVIEWER=claude-reviewer
+REVIEWER_HOME="/Users/${REVIEWER}"
+REVIEWER_REPO="${REVIEWER_HOME}/wordpress-ios"
+
+echo "--- :bust_in_silhouette: Creating the ${REVIEWER} user"
+reviewer_id=600
+while dscl . -list /Users UniqueID | awk '{print $2}' | grep -qx "$reviewer_id" \
+   || dscl . -list /Groups PrimaryGroupID | awk '{print $2}' | grep -qx "$reviewer_id"; do
+  reviewer_id=$((reviewer_id + 1))
+done
+# Its own group, so files that are only group-readable by `staff` stay out of reach.
+sudo -n dseditgroup -o create -i "$reviewer_id" "$REVIEWER"
+sudo -n dscl . -create "/Users/${REVIEWER}"
+sudo -n dscl . -create "/Users/${REVIEWER}" UserShell /bin/bash
+sudo -n dscl . -create "/Users/${REVIEWER}" RealName "Claude reviewer"
+sudo -n dscl . -create "/Users/${REVIEWER}" UniqueID "$reviewer_id"
+sudo -n dscl . -create "/Users/${REVIEWER}" PrimaryGroupID "$reviewer_id"
+sudo -n dscl . -create "/Users/${REVIEWER}" NFSHomeDirectory "$REVIEWER_HOME"
+sudo -n dscl . -create "/Users/${REVIEWER}" IsHidden 1
+sudo -n dscl . -passwd "/Users/${REVIEWER}" "$(openssl rand -base64 32)"
+# Allowed to log in over SSH, if the VM limits that to a group.
+if dscl . -read /Groups/com.apple.access_ssh >/dev/null 2>&1; then
+  sudo -n dseditgroup -o edit -a "$REVIEWER" -t user com.apple.access_ssh
+fi
+sudo -n mkdir -p "$REVIEWER_HOME/.ssh"
+
+echo "--- :card_file_box: Copying the checkout for ${REVIEWER}"
+# APFS clones, so this is quick and uses no extra space.
+sudo -n cp -cR "$PWD" "$REVIEWER_REPO" 2>/dev/null || sudo -n ditto "$PWD" "$REVIEWER_REPO"
+sudo -n cp .buildkite/claude/pr-review-schema.json "$REVIEWER_HOME/schema.json"
+sudo -n cp .buildkite/commands/claude-pr-review-as-reviewer.sh "$REVIEWER_HOME/run-review.sh"
+
+echo "--- :xcode: Enabling Xcode MCP"
+# Headless Xcode asks before an agent or folder may use it. Nobody can answer
+# on CI, so allow every agent: this VM is thrown away after the job. The
+# reviewer script reports whether the setting reaches the reviewer user.
+sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents || echo "Could not enable Xcode MCP."
+sudo -n xcrun mcp-server allow-folder "$REVIEWER_REPO" --always || true
+
 # ── Prompt ───────────────────────────────────────────────────────────
 if [[ -n "${SIMULATOR_LLM_PILOT_SITE_URL:-}" ]]; then
   SITE_SIGN_IN='A self-hosted test site is available: its address, username and application password are in the `SIMULATOR_LLM_PILOT_SITE_URL`, `SIMULATOR_LLM_PILOT_USERNAME` and `SIMULATOR_LLM_PILOT_APP_PASSWORD` environment variables. There is no WordPress.com account, so say in the summary when a flow needs one and you could not check it.'
 else
   SITE_SIGN_IN='No test site credentials are available in this job, so you cannot sign in. Say so in the summary if it stopped you from checking something.'
 fi
+XCODE_TOOLS_YES='The Xcode MCP tools are available (`mcp__xcode__*`), including `DeviceInteraction*` to tap, type and take screenshots in a simulator. Prefer them over WebDriverAgent. Open `WordPress.xcworkspace` with `XcodeOpenWorkspace` first.'
+XCODE_TOOLS_NO='The Xcode MCP tools are not available in this job. Drive the app with launch arguments, deep links (`xcrun simctl openurl`), a temporary XCUITest, or WebDriverAgent (`SIMULATOR_UDID=... .buildkite/commands/build-wda.sh` builds it).'
 
-if [[ "$XCODE_MCP" == yes ]]; then
-  XCODE_TOOLS='The Xcode MCP tools are available (`mcp__xcode__*`), including `DeviceInteraction*` to tap, type and take screenshots in a simulator. Prefer them over WebDriverAgent. Open `WordPress.xcworkspace` with `XcodeOpenWorkspace` first.'
-else
-  XCODE_TOOLS='The Xcode MCP tools are not available in this job. Drive the app with launch arguments, deep links (`xcrun simctl openurl`), a temporary XCUITest, or WebDriverAgent (`SIMULATOR_UDID=... .buildkite/commands/build-wda.sh` builds it).'
-fi
-
+# SIMULATOR_UDID and XCODE_TOOLS are filled in by the reviewer script.
 PROMPT_FILE="$(mktemp)"
 {
   cat .buildkite/claude/pr-review-prompt.md
   echo
   cat .buildkite/claude/pr-review-ci-context.md
 } | REPO="$REPO_SLUG" PR_NUMBER="$PR_NUMBER" HEAD_SHA="$HEAD_SHA" BASE_BRANCH="$BASE_BRANCH" \
-    INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" XCODE_TOOLS="$XCODE_TOOLS" BOT_LOGIN="$BOT_LOGIN" \
-    SIMULATOR_NAME="$SIMULATOR_NAME" SIMULATOR_UDID="$SIMULATOR_UDID" \
+    INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" BOT_LOGIN="$BOT_LOGIN" \
+    SIMULATOR_NAME="$SIMULATOR_NAME" SIMULATOR_UDID="{{SIMULATOR_UDID}}" XCODE_TOOLS="{{XCODE_TOOLS}}" \
     ruby -e 'print STDIN.read.gsub(/\{\{([A-Z_]+)\}\}/) { ENV.fetch($1) }' > "$PROMPT_FILE"
+sudo -n cp "$PROMPT_FILE" "$REVIEWER_HOME/prompt.md"
+
+# The only secrets the reviewer gets: the Anthropic key and the test site sign-in.
+env_file="$(mktemp)"
+{
+  for var in ANTHROPIC_API_KEY SIMULATOR_LLM_PILOT_SITE_URL SIMULATOR_LLM_PILOT_USERNAME SIMULATOR_LLM_PILOT_APP_PASSWORD; do
+    if [[ -n "${!var:-}" ]]; then printf 'export %s=%q\n' "$var" "${!var}"; fi
+  done
+  printf 'export %s=%q\n' CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" CLAUDE_MODEL "$CLAUDE_MODEL" \
+    CLAUDE_EFFORT "$CLAUDE_EFFORT" SIMULATOR_NAME "$SIMULATOR_NAME" EVIDENCE_DIR "$EVIDENCE_DIR" \
+    BUILDER_USER "$(id -un)" BUILDER_HOME "$HOME" BUILDER_PID "$$" \
+    XCODE_TOOLS_YES "$XCODE_TOOLS_YES" XCODE_TOOLS_NO "$XCODE_TOOLS_NO"
+} > "$env_file"
+sudo -n install -m 0600 "$env_file" "$REVIEWER_HOME/review.env"
+rm -f "$env_file"
+
+# SSH access for the reviewer, the same way the CI host reaches this VM.
+ssh_dir="$(mktemp -d)"
+ssh-keygen -q -t ed25519 -N '' -f "$ssh_dir/key"
+sudo -n install -m 0600 "$ssh_dir/key.pub" "$REVIEWER_HOME/.ssh/authorized_keys"
+sudo -n chown -R "${REVIEWER}:${REVIEWER}" "$REVIEWER_HOME"
+sudo -n chmod 0700 "$REVIEWER_HOME"
+
+# Runs a command as the reviewer, in its own login session: over SSH to this
+# VM, or with `launchctl asuser` if SSH isn't allowed.
+as_reviewer() {
+  if [[ "$REVIEWER_TRANSPORT" == ssh ]]; then
+    ssh -i "$ssh_dir/key" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+      -o LogLevel=ERROR "${REVIEWER}@127.0.0.1" "$@"
+  else
+    sudo -n launchctl asuser "$reviewer_id" sudo -n -H -u "$REVIEWER" bash -lc "$*"
+  fi
+}
+REVIEWER_TRANSPORT=ssh
+if ! as_reviewer true 2>/dev/null; then
+  REVIEWER_TRANSPORT=launchctl
+fi
+echo "Running as ${REVIEWER} via ${REVIEWER_TRANSPORT}"
 
 # ── Review ───────────────────────────────────────────────────────────
-# Only these variables reach Claude. Everything else in the job environment
-# (GitHub token, Buildkite agent token, SSH agent, other CI secrets) stays out.
-claude_env=(
-  "HOME=$HOME" "PATH=$PATH" "USER=${USER:-$(id -un)}" "LOGNAME=${LOGNAME:-$(id -un)}"
-  "TMPDIR=${TMPDIR:-/tmp}" "LANG=en_US.UTF-8" "CI=true" "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY"
-)
-for var in DEVELOPER_DIR SIMULATOR_LLM_PILOT_SITE_URL SIMULATOR_LLM_PILOT_USERNAME SIMULATOR_LLM_PILOT_APP_PASSWORD; do
-  if [[ -n "${!var:-}" ]]; then claude_env+=("$var=${!var}"); fi
-done
+echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
+reviewer_status=0
+as_reviewer "bash ~/run-review.sh" || reviewer_status=$?
 
-echo "--- :claude: Reviewing PR #${PR_NUMBER}"
-env -i "${claude_env[@]}" claude -p "$(cat "$PROMPT_FILE")" \
-  --model "$CLAUDE_MODEL" --effort "$CLAUDE_EFFORT" \
-  --dangerously-skip-permissions \
-  --strict-mcp-config --mcp-config '{"mcpServers": {"xcode": {"type": "stdio", "command": "xcrun", "args": ["mcpbridge"]}}}' \
-  --json-schema "$(jq -c . .buildkite/claude/pr-review-schema.json)" \
-  --output-format stream-json --verbose \
-  < /dev/null > "${EVIDENCE_DIR}/transcript.jsonl" || true
+# Bring the evidence back for upload and reporting.
+mkdir -p "$EVIDENCE_DIR"
+if sudo -n test -d "$REVIEWER_REPO/$EVIDENCE_DIR"; then
+  sudo -n ditto "$REVIEWER_REPO/$EVIDENCE_DIR" "$EVIDENCE_DIR"
+  sudo -n chown -R "$(id -un)" "$EVIDENCE_DIR"
+fi
+if [[ "$reviewer_status" == 3 ]]; then
+  echo "^^^ +++ The reviewer user could reach the build user's secrets, so Claude did not run."
+  exit 2
+elif [[ "$reviewer_status" != 0 ]]; then
+  echo "^^^ +++ The reviewer script failed (exit ${reviewer_status}), so there is no verdict."
+  exit 2
+fi
 
 RESULT=$(jq -c 'select(.type == "result")' "${EVIDENCE_DIR}/transcript.jsonl" 2>/dev/null | tail -n 1)
 RESULT=${RESULT:-'{}'}
