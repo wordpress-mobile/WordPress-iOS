@@ -72,11 +72,7 @@ private let DeliveryMethodNotificationKey = "notification"
         siteInfo.subscriberCount = response.number(forKey: SiteDictionarySubscriptionsKey) ?? 0
         siteInfo.unseenCount = response.number(forKey: SiteDictionaryUnseenCountKey) ?? 0
 
-        if (siteInfo.siteName?.count ?? 0) == 0,
-           let siteURLString = siteInfo.siteURL,
-           let siteURL = URL(string: siteURLString) {
-            siteInfo.siteName = siteURL.host
-        }
+        siteInfo.fillEmptyNameWithHost()
 
         siteInfo.endpointPath = "read/sites/\(siteInfo.siteID ?? 0)/posts/"
 
@@ -90,6 +86,13 @@ private let DeliveryMethodNotificationKey = "notification"
 }
 
 private extension RemoteReaderSiteInfo {
+    func fillEmptyNameWithHost() {
+        guard siteName?.isEmpty ?? true, let siteURL, let url = URL(string: siteURL) else {
+            return
+        }
+        siteName = url.host
+    }
+
     class func siteInfo(forFeedResponse response: NSDictionary) -> RemoteReaderSiteInfo {
         let siteInfo = RemoteReaderSiteInfo()
         siteInfo.feedID = response.number(forKey: SiteDictionaryFeedIDKey)
@@ -106,11 +109,7 @@ private extension RemoteReaderSiteInfo {
         siteInfo.siteURL = response.string(forKey: SiteDictionaryURLKey)
         siteInfo.subscriberCount = response.number(forKey: SiteDictionarySubscriptionsKey) ?? 0
 
-        if (siteInfo.siteName?.count ?? 0) == 0,
-           let siteURLString = siteInfo.siteURL,
-           let siteURL = URL(string: siteURLString) {
-            siteInfo.siteName = siteURL.host
-        }
+        siteInfo.fillEmptyNameWithHost()
 
         siteInfo.endpointPath = "read/feed/\(siteInfo.feedID ?? 0)/posts/"
 
