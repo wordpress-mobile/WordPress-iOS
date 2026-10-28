@@ -6,6 +6,25 @@
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES"
       buildArchitectures = "Automatic">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Download Gutenberg XCFrameworks"
+               scriptText = "&quot;${SRCROOT}/../Scripts/download-gutenberg-xcframeworks.sh&quot;&#10;"
+               shellToInvoke = "/bin/bash">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "FABB1F8F2602FC2C00C8785C"
+                     BuildableName = "Jetpack.app"
+                     BlueprintName = "Jetpack"
+                     ReferencedContainer = "container:WordPress.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"

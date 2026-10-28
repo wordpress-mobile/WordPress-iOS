@@ -8,7 +8,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. Refer to the [.xcode-version](./.xcode-version) file for the minimum required version.
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
-1. Run `rake dependencies`.
+1. Open `WordPress.xcworkspace` in Xcode and build the `Jetpack` or `WordPress` scheme. The first build downloads the Gutenberg frameworks the app needs (about 60 MB).
 
 #### Create WordPress.com API Credentials
 
@@ -34,7 +34,7 @@ The steps above will help you configure the WordPress app to run and compile.  B
 
 ### Third party tools
 
-We use a few tools to help with development. Running `rake dependencies` will configure or update them for you.
+We use a few tools to help with development, release and CI. Running `rake dependencies` will configure or update them for you. Building and testing the app doesn't need them.
 
 ### Open Xcode
 

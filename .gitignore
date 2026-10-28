@@ -132,6 +132,7 @@ Pods/
 WordPress/Frameworks/*.xcframework
 WordPress/Frameworks/*.tar.gz
 WordPress/Frameworks/react-native-bundle-source-map
+WordPress/Frameworks/.gutenberg-version
 
 Tests/AgentTests/results
 
