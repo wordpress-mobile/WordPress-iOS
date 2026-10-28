@@ -111,7 +111,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"SiteSettingsViewController viewDidLoad");
+    WPLogInfo(@"SiteSettingsViewController viewDidLoad");
     [super viewDidLoad];
 
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
@@ -1188,7 +1188,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     } failure:^(NSError *error) {
         [self hideActivityIndicator];
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
-        DDLogError(@"Error while trying to update BlogSettings: %@", error);
+        WPLogError(@"Error while trying to update BlogSettings: %@", error);
     }];
 }
 
