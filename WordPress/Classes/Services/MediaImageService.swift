@@ -472,17 +472,6 @@ extension MediaImageService {
     /// - parameters:
     ///   - blog: The blog that hosts the image.
     ///   - size: Target size in pixels.
-    @available(*, deprecated, message: "use getResizedImageURL(for:blog:size:traitCollection:) instead")
-    static func getResizedImageURL(for imageURL: URL, blog: Blog, size: CGSize) -> URL {
-        getResizedImageURL(for: imageURL, blog: blog, size: size, traitCollection: .current)
-    }
-
-    /// Returns the thumbnail remote URL with a given target size. It uses
-    /// Image CDN (formerly Photon) if available.
-    ///
-    /// - parameters:
-    ///   - blog: The blog that hosts the image.
-    ///   - size: Target size in pixels.
     ///   - traitCollection: The trait collection of the view that displays the image.
     static func getResizedImageURL(
         for imageURL: URL,

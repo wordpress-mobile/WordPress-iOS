@@ -144,15 +144,6 @@ class MediaThumbnailExporter: MediaExporter {
 
     let url: URL?
 
-    @available(
-        *,
-        deprecated,
-        message: "use init(url:traitCollection:) and pass the trait collection of the view that displays the thumbnail"
-    )
-    convenience init(url: URL? = nil) {
-        self.init(url: url, traitCollection: .current)
-    }
-
     /// - parameter traitCollection: The trait collection of the view that displays
     ///   the thumbnail. It provides the default `options.scale`.
     init(url: URL? = nil, traitCollection: UITraitCollection) {

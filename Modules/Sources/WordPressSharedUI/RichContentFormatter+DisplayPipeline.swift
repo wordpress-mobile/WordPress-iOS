@@ -17,22 +17,6 @@ extension RichContentFormatter {
     /// - Parameters:
     ///     - string: The content string to format.
     ///     - isPrivate: Whether the content is from a private blog.
-    ///
-    /// - Returns: The formatted string.
-    ///
-    @available(*, deprecated, message: "use formatContentString(_:isPrivateSite:bounds:traitCollection:) and pass the bounds and trait collection of the view that will display the content")
-    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        // TODO: Modernization - `UIScreen.main` assumes a single display. Callers should pass the bounds and
-        // trait collection of the view that will display the content to the overload below.
-        return formatContentString(string, isPrivateSite: isPrivate, bounds: UIScreen.main.bounds, traitCollection: .current)
-    }
-
-    /// Formats the specified content string for display. Forbidden HTML tags are
-    /// removed, paragraphs are normalized, etc.
-    ///
-    /// - Parameters:
-    ///     - string: The content string to format.
-    ///     - isPrivate: Whether the content is from a private blog.
     ///     - bounds: The bounds of the view that will display the content, used to size gallery images.
     ///     - traitCollection: The trait collection of the view that will display the content.
     ///

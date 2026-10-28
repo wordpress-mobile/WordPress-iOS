@@ -51,21 +51,6 @@ extension SiteIconViewModel {
 
 extension SiteIconViewModel {
     /// Returns the size-optimized URL for a given URL.
-    @available(
-        *,
-        deprecated,
-        message:
-            "use optimizedURL(for:imageSize:isP2:traitCollection:) and pass the trait collection of the view that displays the icon"
-    )
-    static func optimizedURL(
-        for url: URL,
-        imageSize: CGSize = SiteIconViewModel.Size.regular.size,
-        isP2: Bool = false
-    ) -> URL? {
-        optimizedURL(for: url, imageSize: imageSize, isP2: isP2, traitCollection: .current)
-    }
-
-    /// Returns the size-optimized URL for a given URL.
     /// - parameter traitCollection: The trait collection of the view that displays the icon.
     static func optimizedURL(
         for url: URL,
