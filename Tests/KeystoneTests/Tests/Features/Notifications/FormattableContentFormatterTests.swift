@@ -70,6 +70,23 @@ final class FormattableContentFormatterTests: XCTestCase {
         XCTAssert(formattedText.length == 0)
     }
 
+    func testConsecutiveSpacesAreCollapsed() {
+        let content = FormattableTextContent(text: "Hello    world", ranges: [])
+        let formattedText = formatter.render(content: content, with: RichTextContentStyles())
+
+        // Runs of spaces are collapsed into one regular space followed by hairline spaces,
+        // keeping the string length intact so range-based formatting still applies.
+        XCTAssertEqual(formattedText.string, "Hello \u{200A}\u{200A}\u{200A}world")
+        XCTAssertEqual(formattedText.string.count, "Hello    world".count)
+    }
+
+    func testSingleSpaceIsPreserved() {
+        let content = FormattableTextContent(text: "Hello world", ranges: [])
+        let formattedText = formatter.render(content: content, with: RichTextContentStyles())
+
+        XCTAssertEqual(formattedText.string, "Hello world")
+    }
+
     private func contentWithNoticon() -> FormattableTextContent {
         let range = FormattableNoticonRange(value: Constants.noticon, range: Constants.range)
         return FormattableTextContent(text: Constants.text, ranges: [range])
