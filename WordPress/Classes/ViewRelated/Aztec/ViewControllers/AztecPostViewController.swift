@@ -3120,7 +3120,14 @@ extension AztecPostViewController {
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { _ in failure() })
+        let receipt = mediaUtility.downloadImage(
+            from: url,
+            post: post,
+            bounds: view.bounds,
+            traitCollection: traitCollection,
+            success: success,
+            onFailure: { _ in failure() }
+        )
         activeMediaRequests.append(receipt)
     }
 

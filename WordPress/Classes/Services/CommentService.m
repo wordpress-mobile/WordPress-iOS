@@ -691,7 +691,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSString *content = string;
     content = [RichContentFormatter removeTrailingBreakTags:content];
-    content = [RichContentFormatter formatContentString:content isPrivateSite:isPrivateSite];
+    // Comment content is formatted when it's synced, not when it's displayed, so there is no
+    // view to size gallery images for. Size them for the largest display scale.
+    // TODO: Modernization - `UIScreen.mainScreen` assumes a single, fixed display. Size gallery
+    // images when the comment is displayed instead: https://github.com/wordpress-mobile/WordPress-iOS/issues/26252
+    content = [RichContentFormatter formatContentString:content
+                                          isPrivateSite:isPrivateSite
+                                                 bounds:UIScreen.mainScreen.bounds
+                                        traitCollection:UITraitCollection.largestDisplayScale];
     return content;
 }
 

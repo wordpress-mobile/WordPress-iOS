@@ -397,7 +397,7 @@ fileprivate extension UIView {
         let borderView = makeBorderView()
 
         NSLayoutConstraint.activate([
-            borderView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            makeHairlineConstraint(for: borderView.heightAnchor),
             borderView.topAnchor.constraint(equalTo: topAnchor),
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
@@ -411,7 +411,7 @@ fileprivate extension UIView {
             borderView.heightAnchor.constraint(equalTo: heightAnchor),
             borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
             borderView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            borderView.widthAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            makeHairlineConstraint(for: borderView.widthAnchor)
         ])
     }
 

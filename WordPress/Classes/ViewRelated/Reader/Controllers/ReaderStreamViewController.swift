@@ -1550,7 +1550,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        let viewModel = ReaderPostCellViewModel(post: post, topic: readerTopic)
+        let viewModel = ReaderPostCellViewModel(
+            post: post,
+            topic: readerTopic,
+            traitCollection: tableView.traitCollection
+        )
         viewModel.viewController = self
 
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)

@@ -6,6 +6,7 @@ public struct SiteIconView: View {
     public let viewModel: SiteIconViewModel
 
     @Environment(\.siteIconBackgroundColor) private var backgroundColor
+    @Environment(\.displayScale) private var displayScale
 
     public init(viewModel: SiteIconViewModel) {
         self.viewModel = viewModel
@@ -22,7 +23,7 @@ public struct SiteIconView: View {
 
     @ViewBuilder
     private var contents: some View {
-        if let imageURL = viewModel.imageURL {
+        if let imageURL = viewModel.imageURL(forDisplayScale: displayScale) {
             CachedAsyncImage(url: imageURL, host: viewModel.host, content: { phase in
                 switch phase {
                 case .success(let image):
@@ -84,7 +85,11 @@ extension EnvironmentValues {
 // MARK: - SiteIconViewModel
 
 public struct SiteIconViewModel {
+    /// The URL of the icon. If `sizeImageURL` is set, `SiteIconView` loads
+    /// the URL that it returns instead.
     public var imageURL: URL?
+    /// Returns `imageURL` sized for the icon on a display with the given scale.
+    public var sizeImageURL: ((_ imageURL: URL, _ displayScale: CGFloat) -> URL?)?
     public var firstLetter: Character?
     public var size: Size
     public var host: MediaHostProtocol?
@@ -112,6 +117,17 @@ public struct SiteIconViewModel {
         self.firstLetter = firstLetter
         self.size = size
         self.host = host
+    }
+
+    /// Returns the URL to load for the icon on a display with the given scale.
+    public func imageURL(forDisplayScale displayScale: CGFloat) -> URL? {
+        guard let imageURL else {
+            return nil
+        }
+        guard let sizeImageURL else {
+            return imageURL
+        }
+        return sizeImageURL(imageURL, displayScale)
     }
 }
 

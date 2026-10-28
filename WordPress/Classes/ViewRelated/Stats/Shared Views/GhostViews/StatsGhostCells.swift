@@ -69,7 +69,7 @@ class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable {
     @IBOutlet private var borderLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private var borderHeightConstraint: NSLayoutConstraint! {
         didSet {
-            borderHeightConstraint.constant = .hairlineBorderWidth
+            borderHeightConstraint.constant = .hairlineBorderWidth(traitCollection: traitCollection)
         }
     }
 
@@ -90,6 +90,10 @@ class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable {
         super.awakeFromNib()
 
         bottomBorder?.removeFromSuperview()
+
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: StatsGhostSingleRowCell, _) in
+            self.borderHeightConstraint.constant = .hairlineBorderWidth(traitCollection: self.traitCollection)
+        }
     }
 }
 class StatsGhostPostingActivityCell: StatsGhostBaseCell, NibLoadable {
