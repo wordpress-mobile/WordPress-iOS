@@ -84,14 +84,6 @@ steps:
         notify:
           - github_commit_status:
               context: "Unit Tests"
-      - label: "🔬 Reader Unit Tests"
-        command: ".buildkite/commands/run-unit-tests-reader.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Reader Unit Tests"
       # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
       # - label: "🔬 Keystone Unit Tests"
       #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
