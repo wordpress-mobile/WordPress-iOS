@@ -122,7 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "79edefae17ac610bfbd36863adc220c3b15a72d7"
+        "revision" : "0b9e362245ce96948ca4902e0dfdfb4183473969",
+        "version" : "0.20.0-alpha.1"
       }
     },
     {

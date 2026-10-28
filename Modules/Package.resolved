@@ -1,5 +1,5 @@
 {
-  "originHash" : "3733f442fc358e7e3c0c3066a60379b592682c23d6ba1a450c7c8f3e95613a79",
+  "originHash" : "592e79b41dba5d3294d9cf4d7d0c1779909fb88094a586af8416e8dce2ab4011",
   "pins" : [
     {
       "identity" : "automattic-tracks-ios",
@@ -122,7 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "79edefae17ac610bfbd36863adc220c3b15a72d7"
+        "revision" : "0b9e362245ce96948ca4902e0dfdfb4183473969",
+        "version" : "0.20.0-alpha.1"
       }
     },
     {
