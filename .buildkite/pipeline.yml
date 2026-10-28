@@ -163,6 +163,9 @@ steps:
     key: claude_pr_review
     command: .buildkite/commands/claude-pr-review.sh
     if: build.pull_request.id != null
+    env:
+      # Evidence comes from the reviewer user; never follow a link out of it.
+      BUILDKITE_ARTIFACT_UPLOAD_SKIP_SYMLINKS: "true"
     timeout_in_minutes: 120
     plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:

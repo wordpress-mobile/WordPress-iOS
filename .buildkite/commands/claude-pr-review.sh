@@ -150,12 +150,13 @@ sudo -n cp -cR "$PWD" "$REVIEWER_REPO" 2>/dev/null || sudo -n ditto "$PWD" "$REV
 sudo -n cp .buildkite/claude/pr-review-schema.json "$REVIEWER_HOME/schema.json"
 sudo -n cp .buildkite/commands/claude-pr-review-as-reviewer.sh "$REVIEWER_HOME/run-review.sh"
 
-echo "--- :xcode: Enabling Xcode MCP"
+echo "--- :xcode: Enabling Xcode MCP for ${REVIEWER}"
 # Headless Xcode asks before an agent or folder may use it. Nobody can answer
 # on CI, so allow every agent: this VM is thrown away after the job. The
-# reviewer script reports whether the setting reaches the reviewer user.
-sudo -n xcrun mcp-server enable --unsafe-always-allow-all-agents || echo "Could not enable Xcode MCP."
-sudo -n xcrun mcp-server allow-folder "$REVIEWER_REPO" --always || true
+# setting is per user, and `mcp-server` takes the user from the SUDO_* variables.
+as_root_for_reviewer() { sudo -n env SUDO_USER="$REVIEWER" SUDO_UID="$reviewer_id" SUDO_GID="$reviewer_id" "$@"; }
+as_root_for_reviewer xcrun mcp-server enable --unsafe-always-allow-all-agents || echo "Could not enable Xcode MCP."
+as_root_for_reviewer xcrun mcp-server allow-folder "$REVIEWER_REPO" --always || true
 
 # ── Prompt ───────────────────────────────────────────────────────────
 if [[ -n "${SIMULATOR_LLM_PILOT_SITE_URL:-}" ]]; then
@@ -235,12 +236,20 @@ echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
 reviewer_status=0
 as_reviewer "bash ~/run-review.sh" || reviewer_status=$?
 
-# Bring the evidence back for upload and reporting.
+# Bring the evidence back for upload and reporting. The reviewer controls
+# everything in its evidence folder, so never copy it as root: a symlink there
+# would make root (or the artifact upload) copy files the reviewer can't read.
+# Instead the reviewer archives what it can read, and this script unpacks the
+# archive as the build user into a fresh folder and keeps only plain files.
+rm -rf "$EVIDENCE_DIR"
 mkdir -p "$EVIDENCE_DIR"
-if sudo -n test -d "$REVIEWER_REPO/$EVIDENCE_DIR"; then
-  sudo -n ditto "$REVIEWER_REPO/$EVIDENCE_DIR" "$EVIDENCE_DIR"
-  sudo -n chown -R "$(id -un)" "$EVIDENCE_DIR"
+evidence_tar="$(mktemp)"
+if as_reviewer "cd ~/wordpress-ios/${EVIDENCE_DIR} && tar -cf - ." > "$evidence_tar" 2>/dev/null; then
+  # bsdtar refuses absolute paths and `..` unless told otherwise (-P).
+  tar -xf "$evidence_tar" -C "$EVIDENCE_DIR" || echo "Warning: could not unpack all of the evidence."
 fi
+rm -f "$evidence_tar"
+find "$EVIDENCE_DIR" -mindepth 1 ! -type f ! -type d -print -delete | sed 's/^/Removed (not a plain file): /'
 if [[ "$reviewer_status" == 3 ]]; then
   echo "^^^ +++ The reviewer user could reach the build user's secrets, so Claude did not run."
   exit 2
