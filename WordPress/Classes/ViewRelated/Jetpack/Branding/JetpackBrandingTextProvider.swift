@@ -5,24 +5,26 @@ struct JetpackBrandingTextProvider {
     // MARK: Private Variables
 
     private let screen: JetpackBrandedScreen?
-    private let featureFlagStore: RemoteFeatureFlagStore
+    private let phaseProvider: () -> JetpackFeaturesRemovalCoordinator.GeneralPhase
     private let remoteConfigStore: RemoteConfigStore
     private let currentDateProvider: CurrentDateProvider
 
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
-        JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        phaseProvider()
     }
 
     // MARK: Initializer
 
     init(
         screen: JetpackBrandedScreen?,
-        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        phaseProvider: @escaping () -> JetpackFeaturesRemovalCoordinator.GeneralPhase = {
+            JetpackFeaturesRemovalCoordinator.generalPhase()
+        },
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()
     ) {
         self.screen = screen
-        self.featureFlagStore = featureFlagStore
+        self.phaseProvider = phaseProvider
         self.remoteConfigStore = remoteConfigStore
         self.currentDateProvider = currentDateProvider
     }

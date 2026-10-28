@@ -6,7 +6,7 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
 
     // MARK: Private Variables
 
-    private var remoteFeatureFlagsStore: RemoteFeatureFlagStoreMock!
+    private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase = .normal
     private var remoteConfigStore = RemoteConfigStoreMock()
     private var currentDateProvider: MockCurrentDateProvider!
     private var removalDeadline: Date {
@@ -19,7 +19,7 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
 
     override func setUp() {
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
+        phase = .normal
         currentDateProvider = MockCurrentDateProvider()
         remoteConfigStore.removalDeadline = "2022-10-10"
         let account = AccountBuilder(contextManager.mainContext).build()
@@ -36,7 +36,7 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         // Given
         let provider = JetpackBrandingTextProvider(
             screen: MockBrandedScreen.defaultScreen,
-            featureFlagStore: remoteFeatureFlagsStore
+            phaseProvider: { self.phase }
         )
 
         // When
@@ -50,9 +50,9 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         // Given
         let provider = JetpackBrandingTextProvider(
             screen: MockBrandedScreen.defaultScreen,
-            featureFlagStore: remoteFeatureFlagsStore
+            phaseProvider: { self.phase }
         )
-        remoteFeatureFlagsStore.removalPhaseOne = true
+        phase = .one
 
         // When
         let text = provider.brandingText()
@@ -65,9 +65,9 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         // Given
         let provider = JetpackBrandingTextProvider(
             screen: MockBrandedScreen.defaultScreen,
-            featureFlagStore: remoteFeatureFlagsStore
+            phaseProvider: { self.phase }
         )
-        remoteFeatureFlagsStore.removalPhaseTwo = true
+        phase = .two
 
         // When
         let text = provider.brandingText()
@@ -80,9 +80,9 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         // Given
         let provider = JetpackBrandingTextProvider(
             screen: MockBrandedScreen.defaultScreen,
-            featureFlagStore: remoteFeatureFlagsStore
+            phaseProvider: { self.phase }
         )
-        remoteFeatureFlagsStore.removalPhaseFour = true
+        phase = .four
 
         // When
         let text = provider.brandingText()
@@ -96,11 +96,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: nil, isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
 
         // When
         let text = provider.brandingText()
@@ -114,11 +114,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, months: -1)
 
         // When
@@ -133,11 +133,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         remoteConfigStore.removalDeadline = nil
 
         // When
@@ -152,11 +152,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         remoteConfigStore.removalDeadline = nil
 
         // When
@@ -171,11 +171,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, months: 1)
 
         // When
@@ -190,11 +190,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, months: 1)
 
         // When
@@ -209,11 +209,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, months: 2)
 
         // When
@@ -228,11 +228,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, months: 2)
 
         // When
@@ -247,11 +247,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 1)
 
         // When
@@ -266,11 +266,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 1)
 
         // When
@@ -285,11 +285,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 2)
 
         // When
@@ -304,11 +304,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 2)
 
         // When
@@ -323,11 +323,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, days: 1)
 
         // When
@@ -342,11 +342,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, days: 1)
 
         // When
@@ -361,11 +361,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, days: 2)
 
         // When
@@ -380,11 +380,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, days: 2)
 
         // When
@@ -399,11 +399,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, days: 0)
 
         // When
@@ -418,11 +418,11 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(
             screen: screen,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             remoteConfigStore: remoteConfigStore,
             currentDateProvider: currentDateProvider
         )
-        remoteFeatureFlagsStore.removalPhaseThree = true
+        phase = .three
         currentDateProvider.dateToReturn = dateBefore(removalDeadline, days: 0)
 
         // When

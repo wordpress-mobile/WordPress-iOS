@@ -14,7 +14,6 @@ protocol JetpackNotificationMigrationServiceProtocol {
 /// versions that still open `wordpressnotificationmigration://` get redirected back instead of stranding the user.
 final class JetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol {
     private let remoteNotificationRegister: RemoteNotificationRegister
-    private let featureFlagStore: RemoteFeatureFlagStore
     private let userDefaults: UserDefaults
     private let isWordPress: Bool
 
@@ -23,10 +22,6 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     static let wordPressScheme = "wordpressnotificationmigration"
     static let jetpackScheme = "jetpacknotificationmigration"
     private let wordPressNotificationsToggledDefaultsKey = "wordPressNotificationsToggledDefaultsKey"
-
-    private var jetpackMigrationPreventDuplicateNotifications: Bool {
-        RemoteFeatureFlag.jetpackMigrationPreventDuplicateNotifications.enabled(using: featureFlagStore)
-    }
 
     private lazy var notificationSettingsService: NotificationSettingsService? = {
         NotificationSettingsService(coreDataStack: ContextManager.shared)
@@ -71,25 +66,22 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     init(
         remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
-        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
         userDefaults: UserDefaults = .standard,
         isWordPress: Bool = AppConfiguration.isWordPress
     ) {
         self.remoteNotificationRegister = remoteNotificationRegister
-        self.featureFlagStore = featureFlagStore
         self.userDefaults = userDefaults
         self.isWordPress = isWordPress
     }
 
     func shouldShowNotificationControl() -> Bool {
-        jetpackMigrationPreventDuplicateNotifications && isWordPress
+        isWordPress
     }
 
     func shouldPresentNotifications() -> Bool {
         let notificationsDisabled = !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
         let appMigrated =
-            jetpackMigrationPreventDuplicateNotifications
-            && isWordPress
+            isWordPress
             && userDefaults.bool(forKey: wordPressNotificationsToggledDefaultsKey)
             && !wordPressNotificationsEnabled
         let disableNotifications = notificationsDisabled || appMigrated

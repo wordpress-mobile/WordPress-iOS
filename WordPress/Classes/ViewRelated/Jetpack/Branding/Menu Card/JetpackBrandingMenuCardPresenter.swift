@@ -20,9 +20,9 @@ class JetpackBrandingMenuCardPresenter {
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
-    private let featureFlagStore: RemoteFeatureFlagStore
+    private let phaseProvider: () -> JetpackFeaturesRemovalCoordinator.GeneralPhase
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
-        JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        phaseProvider()
     }
 
     // MARK: Initializers
@@ -30,7 +30,9 @@ class JetpackBrandingMenuCardPresenter {
     init(
         blog: Blog?,
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
-        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        phaseProvider: @escaping () -> JetpackFeaturesRemovalCoordinator.GeneralPhase = {
+            JetpackFeaturesRemovalCoordinator.generalPhase()
+        },
         persistenceStore: UserPersistentRepository = UserDefaults.standard,
         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()
     ) {
@@ -38,7 +40,7 @@ class JetpackBrandingMenuCardPresenter {
         self.remoteConfigStore = remoteConfigStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
-        self.featureFlagStore = featureFlagStore
+        self.phaseProvider = phaseProvider
     }
 
     // MARK: Public Functions
@@ -66,9 +68,7 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(
-            featureFlagStore: featureFlagStore
-        )
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
         switch (phase, jetpackFeaturesEnabled) {
         case (.three, true):
             return true
@@ -83,9 +83,7 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(
-            featureFlagStore: featureFlagStore
-        )
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
         switch (phase, jetpackFeaturesEnabled) {
         case (.four, false):
             fallthrough
@@ -149,8 +147,7 @@ extension JetpackBrandingMenuCardPresenter {
     }
 
     private var analyticsProperties: [String: String] {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
-        return [Constants.phaseAnalyticsKey: phase.rawValue]
+        [Constants.phaseAnalyticsKey: phase.rawValue]
     }
 }
 

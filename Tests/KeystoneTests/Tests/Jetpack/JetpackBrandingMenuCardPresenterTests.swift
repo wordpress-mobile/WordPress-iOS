@@ -5,13 +5,15 @@ import XCTest
 final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     private var mockUserDefaults: InMemoryUserDefaults!
-    private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
+    private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase = .normal
+    private var savedAppUIType: RootViewCoordinator.AppUIType?
     private var remoteConfigStore = RemoteConfigStoreMock()
     private var currentDateProvider: MockCurrentDateProvider!
 
     override func setUp() {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         mockUserDefaults = InMemoryUserDefaults()
+        savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
         currentDateProvider = MockCurrentDateProvider()
         let account = AccountBuilder(contextManager.mainContext).build()
         UserSettings.defaultDotComUUID = account.uuid
@@ -19,6 +21,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     override func tearDown() {
         UserSettings.defaultDotComUUID = nil
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
     }
 
     func testShouldShowTopCardBasedOnPhase() {
@@ -27,7 +30,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: blog,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
 
@@ -67,7 +70,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: blog,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
 
@@ -106,7 +109,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
             remoteConfigStore: remoteConfigStore,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
         setPhase(phase: .three)
@@ -128,7 +131,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
             remoteConfigStore: remoteConfigStore,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
         setPhase(phase: .four)
@@ -146,7 +149,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
             remoteConfigStore: remoteConfigStore,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
         setPhase(phase: .newUsers)
@@ -171,7 +174,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: blog,
             remoteConfigStore: remoteConfigStore,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
         setPhase(phase: .selfHosted)
@@ -192,7 +195,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults
         )
         setPhase(phase: .three)
@@ -210,7 +213,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let currentDate = Date()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults,
             currentDateProvider: currentDateProvider
         )
@@ -231,7 +234,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let currentDate = Date()
         let presenter = JetpackBrandingMenuCardPresenter(
             blog: nil,
-            featureFlagStore: remoteFeatureFlagsStore,
+            phaseProvider: { self.phase },
             persistenceStore: mockUserDefaults,
             currentDateProvider: currentDateProvider
         )
@@ -247,33 +250,11 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
     }
 
     private func setPhase(phase: JetpackFeaturesRemovalCoordinator.GeneralPhase) {
-        // Reset to normal
-        remoteFeatureFlagsStore.removalPhaseOne = false
-        remoteFeatureFlagsStore.removalPhaseTwo = false
-        remoteFeatureFlagsStore.removalPhaseThree = false
-        remoteFeatureFlagsStore.removalPhaseFour = false
-        remoteFeatureFlagsStore.removalPhaseNewUsers = false
-        remoteFeatureFlagsStore.removalPhaseSelfHosted = false
-        remoteFeatureFlagsStore.removalPhaseStaticScreens = false
-
-        // Set phase
-        switch phase {
-        case .normal:
-            break
-        case .one:
-            remoteFeatureFlagsStore.removalPhaseOne = true
-        case .two:
-            remoteFeatureFlagsStore.removalPhaseTwo = true
-        case .three:
-            remoteFeatureFlagsStore.removalPhaseThree = true
-        case .four:
-            remoteFeatureFlagsStore.removalPhaseFour = true
-        case .newUsers:
-            remoteFeatureFlagsStore.removalPhaseNewUsers = true
-        case .selfHosted:
-            remoteFeatureFlagsStore.removalPhaseSelfHosted = true
-        case .staticScreens:
-            remoteFeatureFlagsStore.removalPhaseStaticScreens = true
-        }
+        self.phase = phase
+        // The app sets the UI type from the phase when it builds the root view.
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = RootViewCoordinator.appUIType(
+            for: phase,
+            isReaderInWordPressAppEnabled: false
+        )
     }
 }

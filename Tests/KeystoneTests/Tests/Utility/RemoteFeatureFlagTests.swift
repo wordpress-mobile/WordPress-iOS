@@ -89,3 +89,13 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
         callback(.success(flags))
     }
 }
+
+private extension RemoteFeatureFlagStore {
+    func update(using remote: FeatureFlagRemote, waitOn test: XCTestCase) {
+        let exp = test.expectation(description: "Store finishes update")
+        update(using: remote) {
+            exp.fulfill()
+        }
+        test.wait(for: [exp], timeout: 1)
+    }
+}
