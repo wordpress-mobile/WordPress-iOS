@@ -177,6 +177,10 @@ steps:
         # Exit 2 means the review didn't complete (e.g. an API error), not that it found a bug.
         - exit_status: 2
           limit: 1
+      # Requesting a review from wpmobilebot retries this step, even after it passed
+      # (.github/workflows/rerun-claude-review.yml).
+      manual:
+        permit_on_passed: true
     notify:
       - github_commit_status:
           context: "Claude PR Review"

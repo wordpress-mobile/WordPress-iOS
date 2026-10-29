@@ -403,6 +403,11 @@ else
   gh api --method POST "repos/${REPO_SLUG}/issues/${PR_NUMBER}/comments" -f body="$summary_body" >/dev/null || post_failed=1
 fi
 
+# A review request for wpmobilebot re-runs this step, so clear it now to let
+# it be requested again. GitHub only clears it when a review is submitted.
+gh api --method DELETE "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/requested_reviewers" \
+  -f "reviewers[]=${BOT_LOGIN}" > /dev/null 2>&1 || true
+
 if [[ "$post_failed" == 1 ]]; then
   echo "Warning: some comments could not be posted to GitHub. The verdict is unaffected."
 fi
