@@ -118,6 +118,7 @@ class RequestAuthenticatorTests: XCTestCase {
         let expectation = self.expectation(description: "Completion handler called")
         authenticator.request(url: url, cookieJar: MockCookieJar()) { request in
             XCTAssertEqual(request.url, url)
+            XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
             expectation.fulfill()
         }
 
