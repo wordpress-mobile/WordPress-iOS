@@ -9,9 +9,11 @@ final class RootViewCoordinatorTests: XCTestCase {
     private var sut: RootViewCoordinator!
     private var windowManager: WindowManagerMock!
     private var contextManager: ContextManager!
+    private var wasReaderInWordPressAppEnabled = false
 
     override func setUp() {
         super.setUp()
+        wasReaderInWordPressAppEnabled = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
         contextManager = ContextManager.forTesting()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         windowManager = WindowManagerMock(window: .init())
@@ -28,6 +30,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         contextManager = nil
         UserSettings.defaultDotComUUID = nil
         JetpackFeaturesRemovalCoordinator.currentAppUIType = nil
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = wasReaderInWordPressAppEnabled
     }
 
     func testAppUIDeallocatedAfterLogout() {
@@ -188,6 +191,127 @@ final class RootViewCoordinatorTests: XCTestCase {
         // Then
         XCTAssertTrue(didReload)
         XCTAssertTrue(windowManager.didShowUI)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
+    }
+
+    // MARK: - Reader flag fetched after launch
+
+    func testReaderFlagTurningOnAfterLaunchRebuildsTheUIWithoutARelaunch() throws {
+        try XCTSkipIf(UIDevice.isPad(), "The iPad split view applies the type in place")
+
+        // Given a WordPress.com account whose first launch had no cached flag
+        signInToWordPressDotCom()
+        let featureFlagStore = makeProductionFlagStore()
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, featureFlagStore: featureFlagStore)
+        sut.showAppUI()
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
+
+        // When the fetch brings the flag
+        featureFlagStore.enabledFeatureFlags.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        sut.remoteFeatureFlagsDidUpdate()
+
+        // Then the UI and the Notifications scope change together
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
+        XCTAssertTrue(windowManager.didShowUI)
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+        XCTAssertEqual(NotificationsListScope.forAppNavigation(app: .wordpress), .reader)
+    }
+
+    func testReaderFlagTurningOffAfterLaunchRebuildsTheUIWithoutARelaunch() throws {
+        try XCTSkipIf(UIDevice.isPad(), "The iPad split view applies the type in place")
+
+        // Given
+        signInToWordPressDotCom()
+        let featureFlagStore = makeProductionFlagStore()
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: true, featureFlagStore: featureFlagStore)
+        sut.showAppUI()
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
+
+        // When
+        featureFlagStore.disabledFeatureFlag.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        sut.remoteFeatureFlagsDidUpdate()
+
+        // Then
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
+        XCTAssertTrue(windowManager.didShowUI)
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+        XCTAssertEqual(NotificationsListScope.forAppNavigation(app: .wordpress), .all)
+    }
+
+    func testUnchangedReaderFlagLeavesTheUIAlone() {
+        // Given
+        signInToWordPressDotCom()
+        let featureFlagStore = makeProductionFlagStore()
+        featureFlagStore.disabledFeatureFlag.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, featureFlagStore: featureFlagStore)
+        sut.showAppUI()
+
+        // When
+        sut.remoteFeatureFlagsDidUpdate()
+
+        // Then
+        XCTAssertFalse(windowManager.didShowUI)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
+    }
+
+    func testReaderFlagFetchedOnTheSignInScreenAppliesToTheNextSignIn() {
+        // Given a fresh install on the sign-in screen
+        let featureFlagStore = makeFreshInstallFlagStore()
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, featureFlagStore: featureFlagStore)
+        sut.showSignInUI()
+
+        // When the launch fetch brings the flag
+        featureFlagStore.enabledFeatureFlags.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        NotificationCenter.default.post(name: RemoteFeatureFlagStore.didUpdateNotification, object: nil)
+
+        // Then nothing is shown yet
+        XCTAssertFalse(windowManager.didShowUI)
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+
+        // And signing in resolves the type with the flag, through the account-change observer that
+        // a launch without the flag used to skip
+        signInToWordPressDotCom()
+        postAccountChangeNotification()
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
+    }
+
+    func testReaderFlagFetchedAfterSignOutDoesNotReplaceTheSignInUI() {
+        // Given an app UI that was replaced by the sign-in UI
+        signInToWordPressDotCom()
+        let featureFlagStore = makeProductionFlagStore()
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, featureFlagStore: featureFlagStore)
+        sut.showAppUI()
+        sut.showSignInUI()
+
+        // When a fetch brings the flag while the user signs in again
+        featureFlagStore.enabledFeatureFlags.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        sut.remoteFeatureFlagsDidUpdate()
+
+        // Then the sign-in UI stays, and the next app UI uses the flag
+        XCTAssertFalse(windowManager.didShowUI)
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
+    }
+
+    func testReaderFlagDoesNotChangeJetpack() {
+        // Given
+        let featureFlagStore = makeProductionFlagStore()
+        sut = RootViewCoordinator(
+            featureFlagStore: featureFlagStore,
+            windowManager: windowManager,
+            app: .jetpack,
+            isReaderInWordPressAppEnabled: false
+        )
+        sut.showAppUI()
+        let wasReaderInWordPressAppEnabled = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
+
+        // When
+        featureFlagStore.enabledFeatureFlags.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        sut.remoteFeatureFlagsDidUpdate()
+
+        // Then
+        XCTAssertFalse(windowManager.didShowUI)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled, wasReaderInWordPressAppEnabled)
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
     }
 

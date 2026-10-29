@@ -67,8 +67,9 @@ class RootViewCoordinator {
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
     private let app: AppBrand
-    private let isReaderInWordPressAppEnabled: Bool
+    private var isReaderInWordPressAppEnabled: Bool
     private var accountChangeObserver: NSObjectProtocol?
+    private var featureFlagsObserver: NSObjectProtocol?
     /// The type the current root view presenter was built for. It differs from
     /// `currentAppUIType` after an account change until `reloadUIIfNeeded` rebuilds the UI.
     private var presentedAppUIType: AppUIType?
@@ -94,27 +95,65 @@ class RootViewCoordinator {
         self.isReaderInWordPressAppEnabled = isReaderInWordPressAppEnabled
         updateJetpackFeaturesRemovalCoordinatorState()
 
-        if isReaderInWordPressAppEnabled {
-            // The UI type depends on the WordPress.com account, which can change while the app UI
-            // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
-            // call is the only other refresh. The default-account change is the one event every
-            // sign-in and sign-out path posts; a sign-in whose site sync fails skips
-            // `WPSigninDidFinishNotification`.
-            accountChangeObserver = NotificationCenter.default.addObserver(
-                forName: .wpAccountDefaultWordPressComAccountChanged,
-                object: nil,
-                queue: nil
-            ) { [weak self] _ in
-                guard let self else { return }
-                self.currentAppUIType = self.resolveAppUIType()
-                self.rootViewPresenter?.appUITypeDidChange()
-            }
+        // With `readerInWordPressApp` on, the UI type depends on the WordPress.com account, which
+        // can change while the app UI stays in place: the iPad split view never shows My Site,
+        // whose `reloadUIIfNeeded` call is the only other refresh. The default-account change is
+        // the one event every sign-in and sign-out path posts; a sign-in whose site sync fails
+        // skips `WPSigninDidFinishNotification`. The observer is registered whatever the flag's
+        // value, because a fetch can turn the flag on later in the session.
+        accountChangeObserver = NotificationCenter.default.addObserver(
+            forName: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            guard let self, self.isReaderInWordPressAppEnabled else { return }
+            self.applyResolvedAppUIType()
         }
+        featureFlagsObserver = NotificationCenter.default.addObserver(
+            forName: RemoteFeatureFlagStore.didUpdateNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.remoteFeatureFlagsDidUpdate()
+        }
+    }
+
+    /// Applies a fetched `readerInWordPressApp` value, which changes the UI type of a WordPress.com
+    /// account in the WordPress app.
+    ///
+    /// A fresh install has no cached value at launch, and the value can target an account, so the
+    /// fetch that follows launch or sign-in can change it. The UI type and
+    /// `JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled`, which Notifications lists
+    /// read when they are created, change together here so the two never disagree.
+    func remoteFeatureFlagsDidUpdate() {
+        let newValue = RemoteFeatureFlag.readerInWordPressApp.enabled(using: featureFlagStore)
+        guard app == .wordpress, newValue != isReaderInWordPressAppEnabled else {
+            return
+        }
+        isReaderInWordPressAppEnabled = newValue
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = newValue
+        applyResolvedAppUIType()
+
+        // The iPad split view applies the type in place. The other presenters are built for one
+        // type, so rebuild them now rather than when My Site next appears. Without a presenter the
+        // sign-in UI is up, maybe mid-login, and the next `showAppUI` uses the new type.
+        guard let rootViewPresenter, !(rootViewPresenter is SplitViewRootPresenter), !isSiteCreationActive else {
+            return
+        }
+        reloadUIIfNeeded(blog: nil)
+    }
+
+    private func applyResolvedAppUIType() {
+        currentAppUIType = resolveAppUIType()
+        rootViewPresenter?.appUITypeDidChange()
     }
 
     deinit {
         if let accountChangeObserver {
             NotificationCenter.default.removeObserver(accountChangeObserver)
+        }
+        if let featureFlagsObserver {
+            NotificationCenter.default.removeObserver(featureFlagsObserver)
         }
     }
 
