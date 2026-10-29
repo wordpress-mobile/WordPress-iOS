@@ -29,7 +29,6 @@ class RootViewCoordinator {
     // MARK: Static shared variables
 
     static let shared = RootViewCoordinator(
-        featureFlagStore: RemoteFeatureFlagStore(),
         windowManager: WordPressAppDelegate.shared?.windowManager
     )
     static var sharedPresenter: RootViewPresenter {
@@ -64,7 +63,6 @@ class RootViewCoordinator {
             updateJetpackFeaturesRemovalCoordinatorState()
         }
     }
-    private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
     private let app: AppBrand
     private let isReaderInWordPressAppEnabled: Bool
@@ -78,18 +76,12 @@ class RootViewCoordinator {
     // MARK: Initializer
 
     init(
-        featureFlagStore: RemoteFeatureFlagStore,
         windowManager: WindowManager?,
         app: AppBrand = BuildSettings.current.brand,
         isReaderInWordPressAppEnabled: Bool = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
     ) {
-        self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
-        self.currentAppUIType = Self.appUIType(
-            featureFlagStore: featureFlagStore,
-            app: app,
-            isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
-        )
+        self.currentAppUIType = Self.appUIType(app: app, isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled)
         self.app = app
         self.isReaderInWordPressAppEnabled = isReaderInWordPressAppEnabled
         updateJetpackFeaturesRemovalCoordinatorState()
@@ -162,12 +154,17 @@ class RootViewCoordinator {
     // MARK: JP Features State
 
     /// Used to determine the expected app UI type based on the removal phase.
+    private static func appUIType(app: AppBrand, isReaderInWordPressAppEnabled: Bool) -> AppUIType {
+        appUIType(
+            for: JetpackFeaturesRemovalCoordinator.generalPhase(app: app),
+            isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
+        )
+    }
+
     static func appUIType(
-        featureFlagStore: RemoteFeatureFlagStore,
-        app: AppBrand,
+        for phase: JetpackFeaturesRemovalCoordinator.GeneralPhase,
         isReaderInWordPressAppEnabled: Bool
     ) -> AppUIType {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore, app: app)
         switch phase {
         case .four, .newUsers, .selfHosted:
             return .simplified
@@ -179,11 +176,7 @@ class RootViewCoordinator {
     }
 
     private func resolveAppUIType() -> AppUIType {
-        Self.appUIType(
-            featureFlagStore: featureFlagStore,
-            app: app,
-            isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
-        )
+        Self.appUIType(app: app, isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled)
     }
 
     private func updateJetpackFeaturesRemovalCoordinatorState() {

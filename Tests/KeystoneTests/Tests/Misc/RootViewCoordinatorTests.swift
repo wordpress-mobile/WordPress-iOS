@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import Foundation
 import XCTest
 import WordPressShared
@@ -9,16 +10,16 @@ final class RootViewCoordinatorTests: XCTestCase {
     private var sut: RootViewCoordinator!
     private var windowManager: WindowManagerMock!
     private var contextManager: ContextManager!
+    private var savedAppUIType: RootViewCoordinator.AppUIType?
 
     override func setUp() {
         super.setUp()
         contextManager = ContextManager.forTesting()
         contextManager.useAsSharedInstance(untilTestFinished: self)
+        // `RootViewCoordinator` writes the app UI type to a static; restore it so other tests aren't affected.
+        savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
         windowManager = WindowManagerMock(window: .init())
-        sut = RootViewCoordinator(
-            featureFlagStore: RemoteFeatureFlagStoreMock(),
-            windowManager: windowManager
-        )
+        sut = RootViewCoordinator(windowManager: windowManager)
     }
 
     override func tearDown() {
@@ -27,7 +28,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         sut = nil
         contextManager = nil
         UserSettings.defaultDotComUUID = nil
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = nil
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
     }
 
     func testAppUIDeallocatedAfterLogout() {
@@ -43,10 +44,7 @@ final class RootViewCoordinatorTests: XCTestCase {
     }
 
     func testStaticScreensWithReaderShowsLiveReaderAndNotificationsPoster() throws {
-        let tabBarController = try showTabBar(
-            isReaderInWordPressAppEnabled: true,
-            featureFlagStore: makeProductionFlagStore()
-        )
+        let tabBarController = try showTabBar(isReaderInWordPressAppEnabled: true)
 
         XCTAssertFalse(tabBarController.showsPoster(in: .reader))
         XCTAssertTrue(tabBarController.showsPoster(in: .notifications))
@@ -55,7 +53,8 @@ final class RootViewCoordinatorTests: XCTestCase {
     }
 
     func testNormalUIShowsLiveReaderAndNotifications() throws {
-        let tabBarController = try showTabBar(isReaderInWordPressAppEnabled: false)
+        // Only apps other than WordPress use the normal UI.
+        let tabBarController = try showTabBar(isReaderInWordPressAppEnabled: false, app: .jetpack)
 
         XCTAssertFalse(tabBarController.showsPoster(in: .reader))
         XCTAssertFalse(tabBarController.showsPoster(in: .notifications))
@@ -63,10 +62,7 @@ final class RootViewCoordinatorTests: XCTestCase {
     }
 
     func testStaticScreensUIShowsReaderAndNotificationsPosters() throws {
-        let tabBarController = try showTabBar(
-            isReaderInWordPressAppEnabled: false,
-            featureFlagStore: makeFreshInstallFlagStore()
-        )
+        let tabBarController = try showTabBar(isReaderInWordPressAppEnabled: false)
 
         XCTAssertTrue(tabBarController.showsPoster(in: .reader))
         XCTAssertTrue(tabBarController.showsPoster(in: .notifications))
@@ -115,7 +111,7 @@ final class RootViewCoordinatorTests: XCTestCase {
 
     func testSignInResolvesStaticScreensWithReaderBeforeTheUIReloads() {
         // Given
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: true, featureFlagStore: makeProductionFlagStore())
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: true)
         sut.showAppUI()
 
         // When
@@ -134,7 +130,7 @@ final class RootViewCoordinatorTests: XCTestCase {
     func testSignOutRebuildsTheUIOnReload() {
         // Given
         signInToWordPressDotCom()
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: true, featureFlagStore: makeProductionFlagStore())
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: true)
         sut.showAppUI()
 
         // When
@@ -148,7 +144,7 @@ final class RootViewCoordinatorTests: XCTestCase {
 
     func testSignInKeepsLaunchUITypeUntilReloadWhenFlagIsOff() {
         // Given
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, featureFlagStore: makeFreshInstallFlagStore())
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         sut.showAppUI()
 
         // When
@@ -161,9 +157,9 @@ final class RootViewCoordinatorTests: XCTestCase {
     }
 
     func testReloadUIWhenSwitchingToStaticScreensWithReader() {
-        // Given a fresh install, which resolves the normal type until the remote flags arrive
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: true, featureFlagStore: makeFreshInstallFlagStore())
-        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
+        // Given
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: true)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
 
         // When
         signInToWordPressDotCom()
@@ -178,7 +174,7 @@ final class RootViewCoordinatorTests: XCTestCase {
     func testReloadUIWhenSwitchingFromStaticScreensWithReader() {
         // Given
         signInToWordPressDotCom()
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: true, featureFlagStore: makeFreshInstallFlagStore())
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: true)
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
 
         // When
@@ -188,7 +184,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         // Then
         XCTAssertTrue(didReload)
         XCTAssertTrue(windowManager.didShowUI)
-        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .normal)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
     }
 
     func testSplitViewShowNotificationsInStaticScreensWithReaderPresentsThePoster() throws {
@@ -303,30 +299,13 @@ final class RootViewCoordinatorTests: XCTestCase {
 
     // MARK: - Helpers
 
-    /// The removal phase flags in production: a WordPress.com account resolves to static screens,
-    /// and no account to the self-hosted phase.
-    private func makeProductionFlagStore() -> RemoteFeatureFlagStoreMock {
-        let featureFlagStore = makeFreshInstallFlagStore()
-        featureFlagStore.removalPhaseSelfHosted = true
-        return featureFlagStore
-    }
-
-    /// The removal phase flags before the remote values are cached: only the static posters flag
-    /// defaults to true, so a launch without an account resolves the normal type.
-    private func makeFreshInstallFlagStore() -> RemoteFeatureFlagStoreMock {
-        let featureFlagStore = RemoteFeatureFlagStoreMock()
-        featureFlagStore.removalPhaseStaticScreens = true
-        return featureFlagStore
-    }
-
     private func makeCoordinator(
         isReaderInWordPressAppEnabled: Bool,
-        featureFlagStore: RemoteFeatureFlagStoreMock
+        app: AppBrand = .wordpress
     ) -> RootViewCoordinator {
         RootViewCoordinator(
-            featureFlagStore: featureFlagStore,
             windowManager: windowManager,
-            app: .wordpress,
+            app: app,
             isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
         )
     }
@@ -334,14 +313,11 @@ final class RootViewCoordinatorTests: XCTestCase {
     /// Signs in and shows the app UI on the phone presenter.
     private func showTabBar(
         isReaderInWordPressAppEnabled: Bool,
-        featureFlagStore: RemoteFeatureFlagStoreMock = RemoteFeatureFlagStoreMock()
+        app: AppBrand = .wordpress
     ) throws -> WPTabBarController {
         try XCTSkipIf(UIDevice.isPad(), "The iPad presenter ignores the app UI type")
         signInToWordPressDotCom()
-        sut = makeCoordinator(
-            isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled,
-            featureFlagStore: featureFlagStore
-        )
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled, app: app)
         sut.showAppUI()
         return try XCTUnwrap(windowManager.presentedViewController as? WPTabBarController)
     }
