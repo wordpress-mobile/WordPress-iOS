@@ -76,8 +76,9 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
-    // The editor uploads media itself and locks saving until uploads finish.
-    var isUploadingMedia: Bool { isSavingLocked }
+    // The editor uploads media itself and locks saving until uploads finish. Rather
+    // than the shared guards blocking saves, `performAfterConfirmingSavingLock` asks.
+    var isUploadingMedia: Bool { false }
     var wordCount: UInt { 0 }
     var postIsReblogged: Bool = false
     var entryPoint: PostEditorEntryPoint = .unknown
@@ -320,17 +321,17 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
             // Closing ends the editor's uploads, so confirm before the media is lost.
-            guard !isUploadingMedia else {
-                return showLeaveWhileUploadingAlert()
+            guard !isSavingLocked else {
+                return showLeaveWhileSavingLockedAlert()
             }
             cancelEditing()
         }
     }
 
-    private func showLeaveWhileUploadingAlert() {
+    private func showLeaveWhileSavingLockedAlert() {
         let alert = UIAlertController(
-            title: PostEditorStrings.leaveWhileUploadingTitle,
-            message: PostEditorStrings.leaveWhileUploadingMessage,
+            title: PostEditorStrings.notReadyTitle,
+            message: PostEditorStrings.leaveWhileNotReadyMessage,
             preferredStyle: .alert
         )
         alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
@@ -357,14 +358,13 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
         // Unlike the media uploads of other editors, `PostCoordinator` can't wait for
         // the editor's before publishing.
-        guard !isUploadingMedia else {
-            return displayMediaIsUploadingAlert()
-        }
-        performAfterUpdatingContent { [self] in
-            if editorHasContent {
-                handlePrimaryActionButtonTap()
-            } else {
-                showAlertForEmptyPostPublish()
+        performAfterConfirmingSavingLock { [self] in
+            performAfterUpdatingContent { [self] in
+                if editorHasContent {
+                    handlePrimaryActionButtonTap()
+                } else {
+                    showAlertForEmptyPostPublish()
+                }
             }
         }
     }
@@ -556,7 +556,7 @@ extension NewGutenbergViewController {
                     image: UIImage(systemName: "doc"),
                     attributes: (editorHasChanges && editorHasContent) ? [] : [.disabled]
                 ) { [weak self] _ in
-                    self?.buttonSaveDraftTapped()
+                    self?.performAfterConfirmingSavingLock { self?.buttonSaveDraftTapped() }
                 }
             )
         }
@@ -570,7 +570,7 @@ extension NewGutenbergViewController {
 
         actions.append(
             UIAction(title: Strings.preview, image: UIImage(systemName: "safari")) { [weak self] _ in
-                self?.displayPreview()
+                self?.performAfterConfirmingSavingLock { self?.displayPreview() }
             }
         )
 

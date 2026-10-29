@@ -49,20 +49,36 @@ enum PostEditorStrings {
         value: "Discard Changes",
         comment: "Button in an alert confirming discarding changes"
     )
-    static let leaveWhileUploadingTitle = NSLocalizedString(
-        "postEditor.leaveWhileUploadingAlert.title",
-        value: "Media is still uploading",
-        comment: "Title of an alert shown when closing the editor while media is uploading"
+    static let notReadyTitle = NSLocalizedString(
+        "postEditor.notReadyAlert.title",
+        value: "Your post isn't ready yet",
+        comment:
+            "Title of an alert shown when saving or closing the editor while something, like a media upload, is in progress"
     )
-    static let leaveWhileUploadingMessage = NSLocalizedString(
-        "postEditor.leaveWhileUploadingAlert.message",
-        value: "If you leave now, the upload stops and the media won't be added to your post.",
-        comment: "Message of an alert shown when closing the editor while media is uploading"
+    static let leaveWhileNotReadyMessage = NSLocalizedString(
+        "postEditor.notReadyAlert.leaveMessage",
+        value:
+            "If you leave now, anything still in progress, like a media upload, stops and won't be added to your post.",
+        comment:
+            "Message of an alert shown when closing the editor while something, like a media upload, is in progress"
+    )
+    static let saveWhileNotReadyMessage = NSLocalizedString(
+        "postEditor.notReadyAlert.saveMessage",
+        value:
+            "Something in the editor, like a media upload, is still in progress. If you continue, it may be missing or broken in your post.",
+        comment:
+            "Message of an alert shown when saving, publishing or previewing while something, like a media upload, is in progress"
     )
     static let leave = NSLocalizedString(
-        "postEditor.leaveWhileUploadingAlert.leave",
+        "postEditor.notReadyAlert.leave",
         value: "Leave",
-        comment: "Button to close the editor in an alert shown while media is uploading"
+        comment: "Button to close the editor in an alert shown while something, like a media upload, is in progress"
+    )
+    static let continueAnyway = NSLocalizedString(
+        "postEditor.notReadyAlert.continue",
+        value: "Continue",
+        comment:
+            "Button to save, publish or preview anyway in an alert shown while something, like a media upload, is in progress"
     )
 
     // Primary actions

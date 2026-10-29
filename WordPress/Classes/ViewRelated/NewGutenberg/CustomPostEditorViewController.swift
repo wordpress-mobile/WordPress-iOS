@@ -117,17 +117,8 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         undoButton.isEnabled = false
     }
 
-    override func editor(
-        _ viewController: GutenbergKit.EditorViewController,
-        didUpdateSaveAvailability availability: GutenbergKit.EditorSaveAvailability
-    ) {
-        super.editor(viewController, didUpdateSaveAvailability: availability)
-
-        updatePrimarySaveButton()
-    }
-
     private func updatePrimarySaveButton() {
-        primarySaveButton.isEnabled = !isEditorUnavailable && !isSavingLocked
+        primarySaveButton.isEnabled = !isEditorUnavailable
     }
 
     override func editorDidRequestLatestContent(
@@ -179,8 +170,7 @@ private extension CustomPostEditorViewController {
         }
 
         let changed: Bool
-        // A locked editor's content can reference temporary media URLs.
-        var canSave = !isSavingLocked
+        var canSave = true
         do {
             changed = try await hasUnsavedChanges()
         } catch {
@@ -205,9 +195,12 @@ private extension CustomPostEditorViewController {
                         title: PostEditorStrings.saveDraft,
                         style: .default,
                         handler: { [weak self] _ in
-                            Task {
-                                await self?.save()
-                            }
+                            self?
+                                .performAfterConfirmingSavingLock {
+                                    Task {
+                                        await self?.save()
+                                    }
+                                }
                         }
                     )
                 )
@@ -232,15 +225,17 @@ private extension CustomPostEditorViewController {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
                     let hasUnsavedChanges = (try? await self?.hasUnsavedChanges()) == true
-                    let enabled = hasUnsavedChanges && self?.isSavingLocked == false
                     let saveDraft = UIAction(
                         title: PostEditorStrings.saveDraft,
                         image: UIImage(systemName: "doc"),
-                        attributes: enabled ? [] : [.disabled]
+                        attributes: hasUnsavedChanges ? [] : [.disabled]
                     ) { [weak self] _ in
-                        Task {
-                            await self?.save()
-                        }
+                        self?
+                            .performAfterConfirmingSavingLock {
+                                Task {
+                                    await self?.save()
+                                }
+                            }
                     }
                     resolve([saveDraft])
                 }
@@ -259,15 +254,21 @@ private extension CustomPostEditorViewController {
     private func savePostAction() -> UIAction {
         if post?.status ?? .draft == .draft {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
-                Task {
-                    await self?.showPublishingSheet()
-                }
+                self?
+                    .performAfterConfirmingSavingLock {
+                        Task {
+                            await self?.showPublishingSheet()
+                        }
+                    }
             }
         } else {
             return UIAction(title: PostEditorStrings.update) { [weak self] _ in
-                Task {
-                    await self?.save()
-                }
+                self?
+                    .performAfterConfirmingSavingLock {
+                        Task {
+                            await self?.save()
+                        }
+                    }
             }
         }
     }

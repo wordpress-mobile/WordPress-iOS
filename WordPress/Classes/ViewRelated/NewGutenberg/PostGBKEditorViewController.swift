@@ -25,7 +25,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     private(set) var isEditorUnavailable = false
 
     /// Whether the editor locked saving, e.g. during a media upload, so its content
-    /// may reference temporary media URLs that must not reach the server.
+    /// may be incomplete or reference temporary media URLs.
     private(set) var isSavingLocked = false
 
     init(
@@ -108,6 +108,22 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
             guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
             self?.present(SFSafariViewController(url: url), animated: true)
         }
+    }
+
+    /// Asks before saving while the editor locks saving. A lock is only advisory, so a
+    /// plugin that never releases one can't keep the user from saving.
+    func performAfterConfirmingSavingLock(_ action: @escaping () -> Void) {
+        guard isSavingLocked else {
+            return action()
+        }
+        let alert = UIAlertController(
+            title: PostEditorStrings.notReadyTitle,
+            message: PostEditorStrings.saveWhileNotReadyMessage,
+            preferredStyle: .alert
+        )
+        alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
+        alert.addDefaultActionWithTitle(PostEditorStrings.continueAnyway) { _ in action() }
+        present(alert, animated: true)
     }
 
     func feedbackAction() -> UIAction {

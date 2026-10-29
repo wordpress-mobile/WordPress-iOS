@@ -115,10 +115,45 @@ struct PostGBKEditorViewControllerTests {
         )
 
         // The reloaded editor reports its availability again, so a lock from
-        // before the crash must not keep blocking saves.
+        // before the crash must not keep asking before saves.
         viewController.editorDidBecomeUnavailable(viewController.editorViewController)
 
         #expect(!viewController.isSavingLocked)
+    }
+
+    @Test("saves without asking while saving is unlocked")
+    func savesWithoutAskingWhenUnlocked() {
+        let viewController = makeViewController()
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
+        var didSave = false
+        viewController.performAfterConfirmingSavingLock { didSave = true }
+
+        #expect(didSave)
+        #expect(viewController.presentedViewController == nil)
+    }
+
+    @Test("asks before saving while saving is locked")
+    func asksBeforeSavingWhenLocked() throws {
+        let viewController = makeViewController()
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+
+        var didSave = false
+        viewController.performAfterConfirmingSavingLock { didSave = true }
+
+        // A lock is advisory, so the user can still choose to save.
+        #expect(!didSave)
+        let alert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(alert.title == PostEditorStrings.notReadyTitle)
+        #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.continueAnyway])
     }
 
     private func makeViewController() -> PostGBKEditorViewController {
