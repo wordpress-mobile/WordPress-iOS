@@ -6,7 +6,7 @@
 # 2 = the review didn't complete (any other failure in this script).
 #
 # Claude runs as a separate, non-admin macOS user that only gets the Anthropic
-# key and the test site sign-in. It has no GitHub token and can't reach the
+# key. It has no GitHub token and can't reach the
 # build user's secrets. This script fetches the PR's data for it and posts its
 # result, always as a plain comment review, so it can't approve or request
 # changes. Claude's part runs in claude-pr-review-as-reviewer.sh.
@@ -144,6 +144,10 @@ if dscl . -read /Groups/com.apple.access_ssh >/dev/null 2>&1; then
 fi
 sudo -n mkdir -p "$REVIEWER_HOME/.ssh"
 
+echo "--- :wordpress: Installing what the test sites need"
+# Homebrew belongs to the build user, so install here; the reviewer only runs them.
+.buildkite/claude/wp-test-site.sh install-deps > /dev/null || echo "Warning: could not install the test site dependencies."
+
 echo "--- :card_file_box: Copying the checkout for ${REVIEWER}"
 # APFS clones, so this is quick and uses no extra space.
 sudo -n cp -cR "$PWD" "$REVIEWER_REPO" 2>/dev/null || sudo -n ditto "$PWD" "$REVIEWER_REPO"
@@ -151,15 +155,9 @@ sudo -n cp .buildkite/claude/pr-review-schema.json "$REVIEWER_HOME/schema.json"
 sudo -n cp .buildkite/commands/claude-pr-review-as-reviewer.sh "$REVIEWER_HOME/run-review.sh"
 
 # ── Prompt ───────────────────────────────────────────────────────────
-if [[ -n "${SIMULATOR_LLM_PILOT_SITE_URL:-}" ]]; then
-  SITE_SIGN_IN='A self-hosted test site is available: its address, username and application password are in the `SIMULATOR_LLM_PILOT_SITE_URL`, `SIMULATOR_LLM_PILOT_USERNAME` and `SIMULATOR_LLM_PILOT_APP_PASSWORD` environment variables. There is no WordPress.com account, so say in the summary when a flow needs one and you could not check it.'
-else
-  SITE_SIGN_IN='No test site credentials are available in this job, so you cannot sign in. Say so in the summary if it stopped you from checking something.'
-fi
-XCODE_TOOLS_YES='The Xcode MCP tools are available (`mcp__xcode__*`), including `DeviceInteraction*` to tap, type and take screenshots in a simulator. Prefer them over WebDriverAgent. Open `WordPress.xcworkspace` with `XcodeOpenWorkspace` first.'
-XCODE_TOOLS_NO='The Xcode MCP tools are not available in this job. Drive the app with launch arguments, deep links (`xcrun simctl openurl`), a temporary XCUITest, or WebDriverAgent (`SIMULATOR_UDID=... .buildkite/commands/build-wda.sh` builds it).'
+SITE_SIGN_IN='Create a fresh self-hosted site whenever you need one: `.buildkite/claude/wp-test-site.sh start <name>` prints its URL, admin username and application password as JSON, and `.buildkite/claude/wp-test-site.sh wp <name> <WP-CLI args>` adds content or plugins. The simulator reaches it on `http://localhost:<port>`. There is no WordPress.com account, so say in the summary when a flow needs one and you could not check it.'
 
-# SIMULATOR_UDID and XCODE_TOOLS are filled in by the reviewer script.
+# SIMULATOR_UDID is filled in by the reviewer script.
 PROMPT_FILE="$(mktemp)"
 {
   cat .buildkite/claude/pr-review-prompt.md
@@ -167,20 +165,16 @@ PROMPT_FILE="$(mktemp)"
   cat .buildkite/claude/pr-review-ci-context.md
 } | REPO="$REPO_SLUG" PR_NUMBER="$PR_NUMBER" HEAD_SHA="$HEAD_SHA" BASE_BRANCH="$BASE_BRANCH" \
     INPUT_DIR="$INPUT_DIR" EVIDENCE_DIR="$EVIDENCE_DIR" SITE_SIGN_IN="$SITE_SIGN_IN" BOT_LOGIN="$BOT_LOGIN" \
-    SIMULATOR_NAME="$SIMULATOR_NAME" SIMULATOR_UDID="{{SIMULATOR_UDID}}" XCODE_TOOLS="{{XCODE_TOOLS}}" \
+    SIMULATOR_NAME="$SIMULATOR_NAME" SIMULATOR_UDID="{{SIMULATOR_UDID}}" \
     ruby -e 'print STDIN.read.gsub(/\{\{([A-Z_]+)\}\}/) { ENV.fetch($1) }' > "$PROMPT_FILE"
 sudo -n cp "$PROMPT_FILE" "$REVIEWER_HOME/prompt.md"
 
-# The only secrets the reviewer gets: the Anthropic key and the test site sign-in.
+# The only secret the reviewer gets is the Anthropic key.
 env_file="$(mktemp)"
 {
-  for var in ANTHROPIC_API_KEY SIMULATOR_LLM_PILOT_SITE_URL SIMULATOR_LLM_PILOT_USERNAME SIMULATOR_LLM_PILOT_APP_PASSWORD; do
-    if [[ -n "${!var:-}" ]]; then printf 'export %s=%q\n' "$var" "${!var}"; fi
-  done
-  printf 'export %s=%q\n' CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" CLAUDE_MODEL "$CLAUDE_MODEL" \
+  printf 'export %s=%q\n' ANTHROPIC_API_KEY "$ANTHROPIC_API_KEY" CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" CLAUDE_MODEL "$CLAUDE_MODEL" \
     CLAUDE_EFFORT "$CLAUDE_EFFORT" SIMULATOR_NAME "$SIMULATOR_NAME" EVIDENCE_DIR "$EVIDENCE_DIR" \
-    BUILDER_USER "$(id -un)" BUILDER_HOME "$HOME" BUILDER_PID "$$" \
-    XCODE_TOOLS_YES "$XCODE_TOOLS_YES" XCODE_TOOLS_NO "$XCODE_TOOLS_NO"
+    BUILDER_USER "$(id -un)" BUILDER_HOME "$HOME" BUILDER_PID "$$"
 } > "$env_file"
 sudo -n install -m 0600 "$env_file" "$REVIEWER_HOME/review.env"
 rm -f "$env_file"
@@ -208,32 +202,6 @@ if ! as_reviewer true 2>/dev/null; then
 fi
 echo "Running as ${REVIEWER} via ${REVIEWER_TRANSPORT}"
 
-echo "--- :xcode: Enabling Xcode MCP for ${REVIEWER}"
-# Headless Xcode asks before an agent or folder may use it. Nobody can answer
-# on CI, so allow every agent: this VM is thrown away after the job. The
-# setting belongs to the user whose session runs `sudo mcp-server`, so the
-# reviewer runs it, through a sudo rule that allows only these two commands.
-# The rule is deleted again before Claude starts.
-mcp_rule="$(mktemp)"
-printf '%s ALL=(root) NOPASSWD: /usr/bin/xcrun mcp-server enable --unsafe-always-allow-all-agents, /usr/bin/xcrun mcp-server allow-folder %s --always\n' \
-  "$REVIEWER" "$REVIEWER_REPO" > "$mcp_rule"
-/usr/sbin/visudo -c -q -f "$mcp_rule"
-sudo -n install -m 0440 -o root -g wheel "$mcp_rule" /etc/sudoers.d/claude-reviewer-xcode-mcp
-# mcp-server stores an integrity hash in the user's keychain, and the new
-# user has none, so create and unlock a login keychain for it first.
-keychain_password="$(openssl rand -hex 24)"
-as_reviewer "kc=\$HOME/Library/Keychains/login.keychain-db
-  mkdir -p \$HOME/Library/Keychains
-  security create-keychain -p ${keychain_password} \$kc 2>/dev/null || true
-  security unlock-keychain -p ${keychain_password} \$kc
-  security set-keychain-settings \$kc
-  security list-keychains -d user -s \$kc
-  security default-keychain -d user -s \$kc
-  security login-keychain -d user -s \$kc 2>/dev/null || true
-  sudo -n /usr/bin/xcrun mcp-server enable --unsafe-always-allow-all-agents \
-    && sudo -n /usr/bin/xcrun mcp-server allow-folder ${REVIEWER_REPO} --always" \
-  || echo "Could not enable Xcode MCP for ${REVIEWER}."
-sudo -n rm -f /etc/sudoers.d/claude-reviewer-xcode-mcp
 
 echo "--- :eject: Unmounting the shared credentials folder"
 # The host mounts its common credentials (AWS keys, the bot's SSH key) into
