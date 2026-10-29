@@ -12,7 +12,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private let splitVC = UISplitViewController(style: .tripleColumn)
     private let tabBarVC: WPTabBarController
     private weak var sitePickerPopoverVC: UIViewController?
-    private weak var notificationsPosterVC: UIViewController?
+    private weak var posterVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
     private var siteContent: SiteSplitViewContent?
@@ -34,12 +34,15 @@ final class SplitViewRootPresenter: RootViewPresenter {
         return false
     }
 
+    // The compact tab bar and the split view follow the same rules as the iPhone, so resizing
+    // the window can't get around the Jetpack features removal.
+    private static var isReaderAvailable: Bool { JetpackFeaturesRemovalCoordinator.isReaderAvailable() }
+    private static var isNotificationsAvailable: Bool { JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() }
+
     init() {
-        // Outside `staticScreensWithReader`, the compact layout shows live tabs whatever the app UI
-        // type is. That predates `staticScreensWithReader` and is kept as is.
         tabBarVC = WPTabBarController(
-            staticReader: false,
-            staticNotifications: JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
+            staticReader: !Self.isReaderAvailable,
+            staticNotifications: !Self.isNotificationsAvailable
         )
 
         splitVC.delegate = self
@@ -272,6 +275,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
     func showReader(path: ReaderNavigationPath?) {
         if splitVC.isCollapsed {
             tabBarVC.showReader(path: path)
+        } else if !Self.isReaderAvailable {
+            // The sidebar has no Reader row, so links land on the poster.
+            showPoster(source: .reader)
         } else {
             sidebarViewModel.selection = .reader
             if let path {
@@ -285,14 +291,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         // These requests come from account-level entrances (Spotlight, links, settings).
-        // `staticScreensWithReader` has no account-level list, so they land on the Moved-to-Jetpack
-        // poster: the tab bar's Notifications tab, or a sheet in the split view, which has no
-        // Notifications row.
-        if JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
+        // Without the live list they land on the Moved-to-Jetpack poster: the tab bar's
+        // Notifications tab, or a sheet in the split view, which has no Notifications row.
+        if !Self.isNotificationsAvailable {
             if splitVC.isCollapsed {
                 tabBarVC.showNotificationsTab(completion: completion)
             } else {
-                showNotificationsPoster()
+                showPoster(source: .notifications)
             }
             return
         }
@@ -301,12 +306,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
         completion?(notificationsContent.notificationsViewController)
     }
 
-    private func showNotificationsPoster() {
-        // Each account-level entrance would otherwise stack another poster.
-        guard notificationsPosterVC?.presentingViewController == nil else {
+    private func showPoster(source: MovedToJetpackSource) {
+        // Each entrance would otherwise stack another poster.
+        guard self.posterVC?.presentingViewController == nil else {
             return
         }
-        let posterVC = MovedToJetpackViewController(source: .notifications)
+        let posterVC = MovedToJetpackViewController(source: source)
         let navigationVC = UINavigationController(rootViewController: posterVC)
         posterVC.navigationItem.rightBarButtonItem = UIBarButtonItem(
             systemItem: .close,
@@ -315,15 +320,16 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         )
         navigationVC.modalPresentationStyle = .formSheet
-        notificationsPosterVC = navigationVC
+        self.posterVC = navigationVC
         // An entrance such as the iOS Settings link can arrive while a sheet is up.
         splitVC.topmostPresentedViewController.present(navigationVC, animated: true)
     }
 
     func appUITypeDidChange() {
-        // Signing in from the sidebar can switch to `staticScreensWithReader` without rebuilding
-        // this presenter, and a failed site sync skips the sign-in completion that reloads the tabs.
-        tabBarVC.shouldUseStaticNotifications = JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
+        // Signing in or out can change the app UI type without rebuilding this presenter, and a
+        // failed site sync skips the sign-in completion that reloads the tabs.
+        tabBarVC.shouldUseStaticReader = !Self.isReaderAvailable
+        tabBarVC.shouldUseStaticNotifications = !Self.isNotificationsAvailable
     }
 
     // MARK: RootViewPresenter (Me)
