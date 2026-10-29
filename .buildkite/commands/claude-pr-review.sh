@@ -334,17 +334,29 @@ if jq -e '.findings | length > 0' <<<"$REVIEW" >/dev/null; then
       {
         commit_id: $sha,
         event: "COMMENT",
-        body: ("\($marker)\n🤖 **Claude CI review** – verdict: **\(.verdict)**. The full result is in the Claude CI review comment below; evidence is on the [Buildkite build](\($url)).\n\n"
+        body: ("\($marker)\n🤖 **Claude CI review** of `\($sha[0:10])`: \(.findings | length) new finding(s). The current verdict is in the Claude CI review comment; evidence is on the [Buildkite build](\($url)).\n\n"
           + (if $inline then "" else (.findings | map("### `\(.path):\(.line)`\n\n" + text) | join("\n\n")) end)),
         comments: (if $inline then .findings | map({path, line, side: "RIGHT", body: ("\($marker)\n" + text)}) else [] end)
       }' <<<"$REVIEW"
   }
-  if ! review_payload true | gh api --method POST "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/reviews" --input - >/dev/null; then
+  if ! new_review_id=$(review_payload true | gh api --method POST "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/reviews" --input - --jq .id); then
     # Usually a line that isn't in the diff. Fall back to listing the findings in the review body.
     echo "Inline review failed; posting the findings in the review body instead."
-    review_payload false | gh api --method POST "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/reviews" --input - >/dev/null || post_failed=1
+    new_review_id=$(review_payload false | gh api --method POST "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/reviews" --input - --jq .id) || post_failed=1
   fi
 fi
+
+# Earlier runs' reviews can't be deleted, so mark them superseded: their first
+# line (which may say "verdict: fail" in older runs) is replaced, and any
+# findings listed below it are kept. The summary comment has the current verdict.
+superseded_line="🤖 ~~Claude CI review~~ – superseded by the run on \`${HEAD_SHA:0:10}\`. The current verdict is in the Claude CI review comment."
+while IFS=$'\t' read -r review_id review_body_json; do
+  [[ -z "$review_id" || "$review_id" == "${new_review_id:-}" ]] && continue
+  updated=$(jq -rn --argjson body "$review_body_json" --arg line "$superseded_line" '$body | split("\n") | .[1] = $line | join("\n")')
+  gh api --method PUT "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/reviews/${review_id}" -f body="$updated" >/dev/null || post_failed=1
+done < <(gh api "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/reviews" --paginate --jq \
+  ".[] | select(.user.login == \"${BOT_LOGIN}\" and (.body | startswith(\"${MARKER}\")) and (.body | contains(\"🤖 **Claude CI review**\")))
+       | \"\\(.id)\\t\\(.body | tojson)\"" 2>/dev/null || true)
 
 # Replies to Claude's earlier threads. Only threads that are Claude's own may be touched.
 own_threads=$(jq -c --arg marker "$MARKER" --arg bot "$BOT_LOGIN" '
