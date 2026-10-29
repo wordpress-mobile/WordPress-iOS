@@ -93,7 +93,7 @@ NSErrorDomain const BlogServiceErrorDomain = @"BlogServiceErrorDomain";
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     if (!remote) {
         // The group below waits for callbacks that a nil remote never calls.
-        DDLogError(@"Failed syncing blog %@: no remote", blog.url);
+        WPLogError(@"Failed syncing blog %@: no remote", blog.url);
         if (completionHandler) {
             completionHandler();
         }

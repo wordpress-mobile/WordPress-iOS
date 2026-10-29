@@ -180,7 +180,7 @@ struct WordPressDotComAuthenticator {
 
         // Make sure the signed-in account is the expected one.
         switch context {
-        case .default:
+        case .default, .support:
             break
         case let .reauthentication(userID, emailHint):
             if let userID, user.userID != userID {
