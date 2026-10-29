@@ -61,9 +61,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens
 {
+    return [self initWithStaticReader:shouldUseStaticScreens staticNotifications:shouldUseStaticScreens];
+}
+
+- (instancetype)initWithStaticReader:(BOOL)shouldUseStaticReader
+                 staticNotifications:(BOOL)shouldUseStaticNotifications
+{
     self = [super init];
     if (self) {
-        _shouldUseStaticScreens = shouldUseStaticScreens;
+        _shouldUseStaticReader = shouldUseStaticReader;
+        _shouldUseStaticNotifications = shouldUseStaticNotifications;
         _pendingTabBarItemUpdates = [NSMutableArray new];
         [self setDelegate:self];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
@@ -112,7 +119,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        if (self.shouldUseStaticScreens) {
+        if (self.shouldUseStaticReader) {
             UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         } else {
@@ -139,11 +146,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _notificationsNavigationController;
     }
     UIViewController *rootViewController;
-    if (self.shouldUseStaticScreens) {
+    if (self.shouldUseStaticNotifications) {
+        // A rebuild can replace a live list with the poster; drop the old list with it.
+        self.notificationsViewController = nil;
         rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceNotifications];
     } else {
-        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:NSBundle.keystone];
-        self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
+        self.notificationsViewController = [NotificationsViewController makeForAppNavigation];
         rootViewController = self.notificationsViewController;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
@@ -155,6 +163,20 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
     return _notificationsNavigationController;
+}
+
+- (void)setShouldUseStaticNotifications:(BOOL)shouldUseStaticNotifications
+{
+    if (_shouldUseStaticNotifications == shouldUseStaticNotifications) {
+        return;
+    }
+    _shouldUseStaticNotifications = shouldUseStaticNotifications;
+
+    _notificationsNavigationController = nil;
+    NSUInteger selectedIndex = self.selectedIndex;
+    [self setViewControllers:[self tabViewControllers]];
+    self.selectedIndex = selectedIndex;
+    [self updateNotificationBadgeVisibility];
 }
 
 - (UINavigationController *)meNavigationController
@@ -373,7 +395,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
     
-    if (self.shouldUseStaticScreens) {
+    if (self.shouldUseStaticNotifications) {
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
         return;

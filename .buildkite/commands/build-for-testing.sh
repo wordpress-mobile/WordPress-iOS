@@ -18,8 +18,15 @@ fi
 
 source "$(dirname "${BASH_SOURCE[0]}")/install-a8c-secrets.sh"
 
+echo "--- :swift: Restoring Swift Package binaries"
+"$(dirname "${BASH_SOURCE[0]}")/swiftpm-artifacts-cache.sh" restore DerivedData/SourcePackages Modules/Package.resolved
+
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane "build_${APP}_for_testing"
+
+echo "--- :swift: Saving Swift Packages cache"
+"$(dirname "${BASH_SOURCE[0]}")/swiftpm-cache.sh" save
+"$(dirname "${BASH_SOURCE[0]}")/swiftpm-artifacts-cache.sh" save DerivedData/SourcePackages Modules/Package.resolved
 
 echo "--- :arrow_up: Upload Build Products"
 tar -cf "build-products-${APP}.tar" DerivedData/Build/Products/

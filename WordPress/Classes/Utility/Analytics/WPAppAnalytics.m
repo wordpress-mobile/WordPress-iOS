@@ -166,14 +166,14 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 - (void)beginSession
 {
-    DDLogInfo(@"WPAnalytics session started");
+    WPLogInfo(@"WPAnalytics session started");
     
     [WPAnalytics beginSession];
 }
 
 - (void)endSession
 {
-    DDLogInfo(@"WPAnalytics session stopped");
+    WPLogInfo(@"WPAnalytics session stopped");
     
     [WPAnalytics endSession];
 }

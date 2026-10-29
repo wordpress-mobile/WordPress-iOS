@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-# Verifies that the build-free String Catalog generation (xcstringstool extract/sync) captures every string
+# Run by run-swift-package-tests.sh. Verifies that the build-free String Catalog generation (xcstringstool extract/sync) captures every string
 # the legacy genstrings flow finds over the same source — guarding against extraction regressions (e.g. the
 # same-basename .stringsdata collision). Runs on the `mac` queue (needs Xcode's genstrings/xcstringstool).
 

@@ -58,7 +58,7 @@ steps:
   - group: "🔬 Unit Tests"
     key: unit_tests_group
     steps:
-      - label: "🔬 :swift: Swift Package Tests"
+      - label: "🔬 :swift: Swift Package Tests and String Catalog Coverage"
         command: .buildkite/commands/run-swift-package-tests.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
@@ -134,13 +134,6 @@ steps:
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
-
-      - label: ":mag: Verify String Catalog Coverage"
-        command: .buildkite/commands/verify-strings-catalog.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Verify String Catalog Coverage"
 
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh

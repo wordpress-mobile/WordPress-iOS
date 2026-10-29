@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-09 09:57:23+0000 */
+/* Translation-Revision-Date: 2026-10-25 20:50:26+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: zh_CN */
@@ -6681,6 +6681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "无法找到当前站点的 URL";
 
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "WordPress.com 站点通过您的 WordPress.com 账户进行管理，因此应用程序密码不可用。";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "您需要以用户“%@”的身份登录";
 
@@ -7108,6 +7111,168 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "无法加载消息";
 
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "添加更多信息";
+
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "正在加载附件…";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%1$d%% 匹配";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "打开链接：%1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "相关：";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "此对话已关闭。 您无法再对此进行回复。";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "上次更新于 %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "正在加载对话…";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "输入消息…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "发送";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "已转至人工支持";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "AI Assistant 正在输入";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "请与我们的支持团队开始对话，就您的疑问寻求帮助。";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "尚无对话";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "正在加载对话…";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "获取帮助";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "出错了。 请稍后重试。";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "出错了";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "刚才";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "目前无法查看应用程序日志。";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "新对话";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "请登录 WordPress.com，以获得我们支持团队的帮助。";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "请检查您的网络连接，然后重试。";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "无网络可用";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "回复";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "附件";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "请添加能体现问题的屏幕截图、视频或文档。";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "无法附加该文件";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "浏览文件";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "照片库";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "已达到大小上限。 仅会发送 %2$d 个文件中的 %1$d 个";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "移除 %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "此文件过大，无法发送。";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "这些文件过大，无法发送。";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "取消";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "继续撰写";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "放弃";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "您的消息及其附件将会丢失。";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "放弃此回复？";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "您的回复未发送";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "重试";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "消息";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "确定";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "可选";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "发送";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "正在发送…";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "您的回复已发送。 请查看您的电子邮件地址以获取更新。";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "开始对话";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "AI Assistant";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "已关闭";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "正在进行";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "已解决";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "未知";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "请重试";
+
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "工作中";
 
@@ -7128,6 +7293,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "回复 %1$@";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "正在发送回复";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "取消";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "删除草稿";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "继续编辑";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "保存草稿";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "发送";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "发送操作将同时批准该条评论。";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "此文章已关闭评论。";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "发送回复失败。";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "此回复已发布。";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "回复已提交审核。";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "回复已发出。";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "发表回复…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "回复";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "删除草稿";
@@ -7170,6 +7377,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "转为“待处理”状态";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "回复";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "恢复";
@@ -7227,6 +7437,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "垃圾评论";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "已移至回收站";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "放弃更改";
@@ -7407,6 +7620,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "置顶";
+
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "已移至回收站";
 
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "此操作无法撤销。";
@@ -10890,6 +11106,9 @@ Example: Reply to Pamela Nguyen */
 /* Post status title used in different contexts */
 "postStatus.pending.title" = "待处理";
 
+/* Post status details */
+"postStatus.private.details" = "仅对站点管理员和编辑可见";
+
 /* Post status title used in different contexts */
 "postStatus.private.title" = "私人";
 
@@ -11366,8 +11585,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile. */
 "reader.post.header.author.a11yHint" = "查看作者的个人资料";
 
+/* Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts. */
+"reader.post.header.site.a11yHint" = "查看该站点中的文章";
+
 /* Button in the reader post header to subscribe to the site */
 "reader.post.header.subscribe" = "订阅";
+
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "…查看更多";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "更多操作";
@@ -11814,6 +12039,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "修订版本";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "取消共享";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "读取您共享的内容时出错。 请重试。";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "无法加载共享内容";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "忽略";
 
@@ -11822,6 +12056,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "媒体选项";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "确定";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "无法加载一个或多个共享项目，因此已将其跳过。";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "部分内容已跳过";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "重试";
@@ -12750,6 +12993,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot 文字转录稿";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "提问并从我们的志愿者团队获得帮助。";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "社区论坛";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "随时向我们的支持团队寻求解答";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "获取帮助";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "在社区论坛中提问，从我们的志愿者群组获得帮助。";
 
@@ -12838,6 +13093,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "标签";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "正在激活";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
 
@@ -12922,6 +13180,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "错误";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "更新密码时出错。";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "错误";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "简历信息";

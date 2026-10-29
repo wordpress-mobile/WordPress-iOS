@@ -15,11 +15,17 @@ class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
+        super.init(rootView: AnyView(EmptyView()))
+
+        // Set after `super.init` so that the bell's action can reference `self`.
         // - warning: The `managedObjectContext` has to be set here in order for
         // `ReaderSidebarView` to eb able to access it
-        let view = ReaderSidebarView(viewModel: viewModel)
-            .environment(\.managedObjectContext, ContextManager.shared.mainContext)
-        super.init(rootView: AnyView(view))
+        let view = ReaderSidebarView(viewModel: viewModel) { [weak self] bell in
+            guard let self else { return }
+            bell.open(from: self, sourceItem: nil)
+        }
+        .environment(\.managedObjectContext, ContextManager.shared.mainContext)
+        rootView = AnyView(view)
 
         // TODO: (reader) fix on ipad
         title = Strings.reader
@@ -56,8 +62,25 @@ extension ReaderSidebarViewController: ScrollableViewController {
     }
 }
 
+/// Owns the activity indicator's view model, so that only the bell re-renders when it changes.
+private struct ReaderSidebarNotificationsButton: View {
+    let action: () -> Void
+
+    @StateObject private var viewModel = NotificationsButtonViewModel(scope: .forAppNavigation())
+
+    var body: some View {
+        Button(action: action) {
+            NotificationsBellImage(hasNewActivity: viewModel.hasNewActivity)
+        }
+        .accessibilityLabel(ReaderNotificationsBell.accessibilityLabel)
+    }
+}
+
 private struct ReaderSidebarView: View {
     @ObservedObject var viewModel: ReaderSidebarViewModel
+    let onNotificationsTapped: (ReaderNotificationsBell) -> Void
+
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @AppStorage("reader_sidebar_organization_expanded") var isSectionOrganizationExpanded = true
     @AppStorage("reader_sidebar_favorites_expanded") var isSectionFavoritesExpanded = true
@@ -89,8 +112,22 @@ private struct ReaderSidebarView: View {
             .toolbar {
                 EditButton()
             }
+            .toolbar {
+                if notificationsBell != .hidden {
+                    ToolbarItem(placement: .primaryAction) {
+                        ReaderSidebarNotificationsButton { onNotificationsTapped(notificationsBell) }
+                    }
+                }
+            }
             .tint(preferredTintColor)
             .accessibilityIdentifier("reader_sidebar")
+    }
+
+    private var notificationsBell: ReaderNotificationsBell {
+        // In the split view, the menu is in the supplementary column, which is horizontally
+        // compact even though the layout is regular.
+        let sizeClass = viewModel.isCompact ? UIUserInterfaceSizeClass(horizontalSizeClass) : .regular
+        return ReaderNotificationsBell(showsPopoverInRegularWidth: false, horizontalSizeClass: sizeClass)
     }
 
     @ViewBuilder

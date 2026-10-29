@@ -31,7 +31,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
-    DDLogInfo(@"BlogService syncBlogsForAccount");
+    WPLogInfo(@"BlogService syncBlogsForAccount");
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
@@ -44,7 +44,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             } completion:success onQueue:dispatch_get_main_queue()];
         }];
     } failure:^(NSError *error) {
-        DDLogError(@"Error syncing blogs: %@", error);
+        WPLogError(@"Error syncing blogs: %@", error);
 
         if (failure) {
             failure(error);
@@ -94,7 +94,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     dispatch_group_enter(syncGroup);
     [self fetchAndPersistSettingsForBlog:blog completion:^(NSError *error) {
         if (error) {
-            DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
+            WPLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
         }
         dispatch_group_leave(syncGroup);
     }];
@@ -107,7 +107,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                                                    dispatch_group_leave(syncGroup);
                                                                }]
                                 failure:^(NSError *error) {
-                                    DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
+                                    WPLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
                                     dispatch_group_leave(syncGroup);
                                 }];
     } else {
@@ -129,7 +129,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                                                   dispatch_group_leave(syncGroup);
                                                               }]
                                failure:^(NSError *error) {
-                                   DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+                                   WPLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
                                    dispatch_group_leave(syncGroup);
                                }];
 
@@ -140,7 +140,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                        dispatch_group_leave(syncGroup);
                                    }
                                    failure:^(NSError *error) {
-                                       DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error);
+                                       WPLogError(@"Failed syncing categories for blog %@: %@", blog.url, error);
                                        dispatch_group_leave(syncGroup);
                                    }];
 
@@ -150,7 +150,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             dispatch_group_leave(syncGroup);
         }];
     } failure:^(NSError *error) {
-        DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
+        WPLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
     }];
 
@@ -160,7 +160,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                        success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
-        DDLogError(@"Failed updating plans: %@", error);
+        WPLogError(@"Failed updating plans: %@", error);
         dispatch_group_leave(syncGroup);
     }];
 
@@ -168,7 +168,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [planService plansWithPricesForBlog:blog success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
-        DDLogError(@"Failed checking domain credit for site %@: %@", blog.url, error);
+        WPLogError(@"Failed checking domain credit for site %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
     }];
 
@@ -177,7 +177,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [editorService syncEditorSettingsForBlog:blog success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError * _Nonnull __unused error) {
-        DDLogError(@"Failed to sync Editor settings");
+        WPLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
     
@@ -186,7 +186,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         [self refreshDomainsFor:blog success:^{
             dispatch_group_leave(syncGroup);
         } failure:^(NSError * _Nonnull error) {
-            DDLogError(@"Failed refreshing domains: %@", error);
+            WPLogError(@"Failed refreshing domains: %@", error);
             dispatch_group_leave(syncGroup);
         }];
     }
@@ -248,7 +248,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
         [self updateMultiAuthor:users forBlog:blogObjectID completionHandler:success];
     } failure:^(NSError *error) {
-        DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
+        WPLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         failure(error);
     }];
 }
@@ -264,7 +264,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             NSError *blogError;
             Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:&blogError];
             if (!blogInContext || blogError) {
-                DDLogError(@"Error occurred fetching blog in context with: %@", blogError);
+                WPLogError(@"Error occurred fetching blog in context with: %@", blogError);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (failure) {
                         failure(blogError);
@@ -312,7 +312,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (void)removeBlog:(Blog *)blog
 {
-    DDLogInfo(@"<Blog:%@> remove", blog.displayURL);
+    WPLogInfo(@"<Blog:%@> remove", blog.displayURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
     [self unscheduleBloggingRemindersFor:blog];
     [self removeWordPressApiCachedDataForBlog:blog];
@@ -371,7 +371,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     NSError *error = nil;
     WPAccount *account = [context existingObjectWithID:accountID error:&error];
     if (account == nil) {
-        DDLogInfo(@"Can't find the account. User may have signed out. Error: %@", error);
+        WPLogInfo(@"Can't find the account. User may have signed out. Error: %@", error);
         return;
     }
 
@@ -429,7 +429,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     }
 
     if (!blog) {
-        DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
+        WPLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
         if (account != nil) {
             blog = [Blog createBlankBlogWithAccount:account];
         } else {
@@ -503,7 +503,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     }] firstObject];
 
     if (jetpackBlog) {
-        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog displayURL], account.username);
+        WPLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog displayURL], account.username);
         jetpackBlog.account = account;
     }
 
@@ -547,7 +547,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         NSError *error;
         Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:&error];
         if (error) {
-            DDLogError(@"%@", error);
+            WPLogError(@"%@", error);
         }
         if (!blog) {
             return;

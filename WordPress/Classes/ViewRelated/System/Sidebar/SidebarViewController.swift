@@ -130,28 +130,21 @@ struct SidebarView: View {
     private var more: some View {
         switch BuildSettings.current.brand {
         case .wordpress:
+            // No Notifications row: the WordPress app shows only Reader notifications,
+            // from the bell inside Reader. Checking the UI type rather than `isReaderAvailable()`
+            // keeps the sidebar unchanged with the flag off.
+            if JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader(), AccountHelper.isDotcomAvailable() {
+                reader
+            }
+
             Button(action: { viewModel.navigate(.help) }) {
                 Label(Strings.help, systemImage: "questionmark.circle")
             }
             .accessibilityIdentifier("sidebar_help")
         case .jetpack:
             if AccountHelper.isDotcomAvailable() {
-                Label {
-                    Text(Strings.notifications)
-                } icon: {
-                    if notificationsButtonViewModel.hasNewActivity {
-                        Image(systemName: "bell.badge")
-                            .foregroundStyle(.red, .primary)
-                    } else {
-                        Image(systemName: "bell")
-                    }
-                }
-                .accessibilityIdentifier("sidebar_notifications")
-                .tag(SidebarSelection.notifications)
-
-                Label(Strings.reader, systemImage: "eyeglasses")
-                    .tag(SidebarSelection.reader)
-                    .accessibilityIdentifier("sidebar_reader")
+                notifications
+                reader
 
                 if RemoteFeatureFlag.domainManagement.enabled() {
                     Button(action: { viewModel.navigate(.domains) }) {
@@ -169,6 +162,22 @@ struct SidebarView: View {
             // TODO: (reader) add iPad support
             fatalError("unsupported")
         }
+    }
+
+    private var notifications: some View {
+        Label {
+            Text(Strings.notifications)
+        } icon: {
+            NotificationsBellImage(hasNewActivity: notificationsButtonViewModel.hasNewActivity)
+        }
+        .accessibilityIdentifier("sidebar_notifications")
+        .tag(SidebarSelection.notifications)
+    }
+
+    private var reader: some View {
+        Label(Strings.reader, systemImage: "eyeglasses")
+            .tag(SidebarSelection.reader)
+            .accessibilityIdentifier("sidebar_reader")
     }
 }
 

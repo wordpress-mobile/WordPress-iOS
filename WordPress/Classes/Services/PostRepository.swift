@@ -19,10 +19,10 @@ final class PostRepository {
         }
     }
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let remoteFactory: PostServiceRemoteFactory
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
          remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
