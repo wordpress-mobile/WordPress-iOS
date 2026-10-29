@@ -157,6 +157,14 @@ steps:
               context: "Localization Tooling Unit Tests"
 
   #################
+  # TEMPORARY: find why the S3 secrets hook can't parse this pipeline's env file
+  #################
+  - label: ":lock: Check the secrets env file parses (temporary)"
+    command: Scripts/ci/check-secrets-env/check.sh
+    if: build.pull_request.id != null
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+  #################
   # Claude PR Review (experimental): fails only when Claude proves a bug caused by the PR
   #################
   - label: ":claude: Claude PR Review"

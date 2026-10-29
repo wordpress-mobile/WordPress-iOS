@@ -29,10 +29,12 @@ SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 18 Pro}"
 INPUT_DIR="build/claude-review-input"
 EVIDENCE_DIR="build/claude-review"
 MARKER="<!-- claude-ci-review -->"
-# Optional: publish screenshots to a public Spacefast Space so GitHub can show
-# them. Needs SPACEFAST_TOKEN (a `ci_deploy` key), SPACEFAST_SPACE (slug),
-# SPACEFAST_TEAM and SPACEFAST_BASE_URL (e.g. https://<slug>.space.fast).
-# Without them, screenshots are linked to the Buildkite build instead.
+# Screenshots are published to this public Spacefast Space so GitHub can show
+# them. Needs SPACEFAST_TOKEN (a `ci_deploy` key) from the pipeline's secrets;
+# without it, screenshots are linked to the Buildkite build instead.
+SPACEFAST_SPACE="jkmassel-screenshots"
+SPACEFAST_TEAM="jeremy-team-2"
+SPACEFAST_BASE_URL="https://jkmassel-screenshots.space.fast"
 
 # `--validate-setup` also runs .buildkite/claude/validate-setup.sh before Claude.
 CLAUDE_REVIEW_VALIDATE_SETUP=false
@@ -276,15 +278,19 @@ ANNOTATION_URL="${BUILDKITE_BUILD_URL}#annotation-claude-pr-review"
 IMAGE_BASE=""
 media=()
 while IFS= read -r -d '' file; do media+=("$file"); done < <(
-  find "$EVIDENCE_DIR" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.mp4' \) -print0)
-if [[ ${#media[@]} -gt 0 && -n "${SPACEFAST_TOKEN:-}" && -n "${SPACEFAST_SPACE:-}" && -n "${SPACEFAST_TEAM:-}" && -n "${SPACEFAST_BASE_URL:-}" ]]; then
+  find "$EVIDENCE_DIR" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.mp4' \) -print0)
+if [[ ${#media[@]} -eq 0 ]]; then
+  :
+elif [[ -z "${SPACEFAST_TOKEN:-}" ]]; then
+  echo "SPACEFAST_TOKEN isn't set, so screenshots link to the Buildkite build."
+else
   echo "--- :frame_with_picture: Publishing ${#media[@]} screenshot(s) to Spacefast"
   media_path="wordpress-ios/pr-${PR_NUMBER}/build-${BUILDKITE_BUILD_NUMBER}"
   stage="$(mktemp -d)"
   mkdir -p "$stage/$media_path"
   cp "${media[@]}" "$stage/$media_path/"
   published=no
-  if command -v sf >/dev/null || curl -fsSL https://spacefast.com/install.sh | sh -s -- --method binary; then
+  if command -v sf >/dev/null || curl -fsSL https://spacefast.com/install.sh | sh -s -- --method binary --install-dir "$HOME/.local/bin" > /dev/null; then
     # Additive, so other PRs' files in the Space are kept.
     if (cd "$stage" && sf publish . --publish-mode additive --space "$SPACEFAST_SPACE" --team "$SPACEFAST_TEAM" \
           --token "$SPACEFAST_TOKEN" --json --wait > /dev/null); then
