@@ -4,6 +4,9 @@ import WordPressKit
 
 class RemoteFeatureFlagStore {
 
+    /// Posted on the main queue after `WordPressAppDelegate.updateFeatureFlags` refreshes the cache.
+    static let didUpdateNotification = Notification.Name("RemoteFeatureFlagStore.didUpdate")
+
     /// Thread Safety Coordinator
     private var lock = NSLock()
     private var persistenceStore: UserPersistentRepository

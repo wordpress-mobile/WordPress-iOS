@@ -660,7 +660,14 @@ extension WordPressAppDelegate {
             api = WordPressComRestApi.defaultV2Api(in: mainContext)
         }
         let remote = FeatureFlagRemote(wordPressComRestApi: api)
-        remoteFeatureFlagStore.update(using: remote, then: completion)
+        remoteFeatureFlagStore.update(using: remote) {
+            // Lets the UI apply flags that change it without waiting for the next launch. The first
+            // fetch can finish before any scene connects, so don't touch the UI from here.
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: RemoteFeatureFlagStore.didUpdateNotification, object: nil)
+            }
+            completion?()
+        }
     }
 
     func updateRemoteConfig() {
