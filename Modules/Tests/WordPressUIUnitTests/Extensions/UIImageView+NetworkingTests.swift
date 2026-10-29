@@ -44,8 +44,8 @@ struct UIImageViewNetworkingTests {
     }
 
     private func download(_ url: URL) async -> Outcome {
-        FakeImageServer.install()
-        defer { HTTPStubs.removeAllStubs() }
+        let fakeServer = FakeImageServer.install()
+        defer { HTTPStubs.removeStub(fakeServer) }
 
         let imageView = UIImageView()
         return await withCheckedContinuation { continuation in
@@ -78,7 +78,7 @@ private enum FakeImageServer {
         URL(string: "https://\(host)\(path)?test=\(UUID().uuidString)")!
     }
 
-    static func install() {
+    static func install() -> HTTPStubsDescriptor {
         stub(condition: isHost(host)) { request in
             switch request.url?.path {
             case "/redirect.png":
