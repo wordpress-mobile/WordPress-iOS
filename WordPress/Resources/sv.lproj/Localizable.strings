@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-20 11:20:12+0000 */
+/* Translation-Revision-Date: 2026-10-23 09:54:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: sv_SE */
@@ -6684,6 +6684,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Det gick inte att hitta den aktuella webbplatsens URL";
 
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "WordPress.com-webbplatser hanteras via ditt WordPress.com-konto, så applikationslösenord är inte tillgängliga.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Du måste logga in med användare ”%@”";
 
@@ -7111,6 +7114,51 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Det gick inte att läsa in meddelandena";
 
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Lägg till mer information";
+
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Laddar bilaga…";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%1$d%% matchning";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Öppna länk: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "Relaterat:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Denna konversation är stängd. Du kan inte längre svara i den.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Senast uppdaterad %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Laddar konversation…";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Skriv ett meddelande...";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Skicka";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "Överförd till mänsklig support";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "AI-assistenten skriver";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Starta en konversation med vårt supportteam för att få hjälp med dina frågor.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Inga konversationer än";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Laddar konversationer...";
+
 /* Title of the screen listing the user's support conversations. */
 "com.jetpack.support.unified.conversations.title" = "Få hjälp";
 
@@ -7123,17 +7171,68 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Time of a support conversation or message that was updated less than a minute ago. */
 "com.jetpack.support.unified.justNow" = "Just nu";
 
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "Applikationsloggarna är inte tillgängliga just nu.";
+
 /* Button that starts a new support conversation with the AI Assistant. */
 "com.jetpack.support.unified.newConversation" = "Ny konversation";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Logga in på WordPress.com för att få hjälp av vårt supportteam.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Kontrollera din internetanslutning och försök igen.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Inget nätverk tillgängligt";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Svara";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Bilagor";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Lägg till skärmdumpar, videoklipp eller dokument som visar problemet.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Det gick inte att bifoga filen";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Bläddra genom filer";
 
 /* Option that attaches photos and videos from the photo library to a reply. */
 "com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Fotobibliotek";
 
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Maximal storlek nådd. Endast %1$d av %2$d filer kommer att skickas";
+
 /* Button that takes a file off a reply. %1$@ is the file name. */
 "com.jetpack.support.unified.reply.attachments.remove" = "Ta bort %1$@";
 
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Denna fil är för stor för att skicka.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Dessa filer är för stora för att skicka.";
+
 /* Button that closes the form used to reply to the support team. */
 "com.jetpack.support.unified.reply.cancel" = "Avbryt";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Fortsätt skriva";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Kassera";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Ditt meddelande och dess bilagor kommer att försvinna.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Kassera detta svar?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Ditt svar skickades inte";
 
 /* Button that opens the reply form again after a reply couldn't be sent. */
 "com.jetpack.support.unified.reply.failed.tryAgain" = "Försök igen";
@@ -7147,8 +7246,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Marks a part of the reply form the user doesn't have to fill in. */
 "com.jetpack.support.unified.reply.optional" = "Valfritt";
 
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Skicka";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Skickar...";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "Ditt svar har skickats. Kolla din e-post för uppdateringar.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Starta konversation";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "AI-assistent";
+
 /* Badge on a support conversation that a Happiness Engineer is handling. */
 "com.jetpack.support.unified.status.ongoing" = "Pågående";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Löst";
 
 /* Badge on a support conversation whose status is not recognized. */
 "com.jetpack.support.unified.status.unknown" = "Okänt";
@@ -7177,6 +7294,9 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Svar till %1$@";
 
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Skickar svar";
+
 /* Button label to cancel composing or editing a comment */
 "commentComposer.action.cancel" = "Avbryt";
 
@@ -7191,6 +7311,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Button label to send a new reply */
 "commentComposer.action.send" = "Skicka";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "Att skicka kommer också att godkänna denna kommentar.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "Kommentarer är nu stängda för det här inlägget.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Kunde inte skicka svar.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Detta svar har redan publicerats.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Svar skickat för granskning.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Svar skickat.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Lämna ett svar...";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Svara";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Ta bort utkast";
@@ -7233,6 +7377,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "Flytta till Inväntar granskning";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Svara";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "Återställ";
@@ -7290,6 +7437,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "Skräppost";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Borttagen";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Kasta ändringar";
@@ -7473,6 +7623,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "Klistrat";
+
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Borttaget";
 
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Denna åtgärd kan inte ångras.";
@@ -11459,6 +11612,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "Prenumererar";
 
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "...visa mer";
+
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Fler åtgärder";
 
@@ -11904,6 +12060,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Versioner";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Avbryt delning";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Något gick fel vid läsningen av det du delade. Försök igen.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Det gick inte att ladda delat innehåll";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Avfärda";
 
@@ -11915,6 +12080,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Share extension notice dismiss button. */
 "shareExtension.partialError.dismiss" = "OK";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Ett eller flera delade objekt kunde inte laddas och hoppades över.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "Visst innehåll hoppades över";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Försök igen";
@@ -12843,6 +13014,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot-kopia";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Ställ en fråga och få hjälp av vår grupp med volontärer.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Communityforum";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Få svar från vårt supportteam när som helst";
+
 /* Title of the row that opens the support conversations with the AI Assistant and support team. */
 "support.root.getHelp.title" = "Få hjälp";
 
@@ -13021,6 +13201,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Fel";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Ett fel inträffade när lösenordet skulle uppdateras.";
 
 /* The title of the alert that appears when setting a new password fails */
 "userDetails.alert.passwordErrorAlertTitle" = "Fel";
