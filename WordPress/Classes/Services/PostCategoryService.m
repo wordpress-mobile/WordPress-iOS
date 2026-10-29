@@ -29,11 +29,24 @@ NS_ASSUME_NONNULL_BEGIN
                            userInfo:nil];
 }
 
+- (NSError *)serviceErrorNoRemote
+{
+    return [NSError errorWithDomain:NSStringFromClass([self class])
+                               code:PostCategoryServiceErrorsNoRemoteForBlog
+                           userInfo:nil];
+}
+
 - (void)syncCategoriesForBlog:(Blog *)blog
                       success:(nullable void (^)(void))success
                       failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        if (failure) {
+            failure([self serviceErrorNoRemote]);
+        }
+        return;
+    }
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithSuccess:^(NSArray *categories) {
                                NSError * __block error = nil;
@@ -65,6 +78,12 @@ NS_ASSUME_NONNULL_BEGIN
                       failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        if (failure) {
+            failure([self serviceErrorNoRemote]);
+        }
+        return;
+    }
     RemoteTaxonomyPaging *paging = [[RemoteTaxonomyPaging alloc] init];
     paging.number = number ?: @(100);
     paging.offset = offset ?: @(0);
@@ -113,6 +132,12 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        if (failure) {
+            failure([self serviceErrorNoRemote]);
+        }
+        return;
+    }
     [remote createCategory:remoteCategory
                    success:^(RemotePostCategory *receivedCategory) {
                        NSError * __block error = nil;
