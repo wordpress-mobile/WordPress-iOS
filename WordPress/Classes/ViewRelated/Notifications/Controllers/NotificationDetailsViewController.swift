@@ -374,16 +374,10 @@ extension NotificationDetailsViewController {
         ]
 
         for cellClass in cellClassNames {
-            let classname = cellClass.classNameWithoutNamespaces()
-            let nib = UINib(nibName: classname, bundle: .keystone)
-
-            tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
+            tableView.register(cellClass, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        tableView.register(
-            LikeUserTableViewCell.defaultNib,
-            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID
-        )
+        tableView.register(LikeUserTableViewCell.self, forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
