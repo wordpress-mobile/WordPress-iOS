@@ -136,6 +136,10 @@ else
   echo "Test site: FAILED (see wp-test-site-check.log)" | tee -a "$report"
 fi
 
+if [[ "${CLAUDE_REVIEW_VALIDATE_SETUP:-false}" == true ]]; then
+  bash .buildkite/claude/validate-setup.sh "$SIMULATOR_UDID" "$EVIDENCE_DIR" "$report"
+fi
+
 # ── Review ───────────────────────────────────────────────────────────
 sed -i '' -e "s/{{SIMULATOR_UDID}}/${SIMULATOR_UDID}/g" "$HOME/prompt.md"
 

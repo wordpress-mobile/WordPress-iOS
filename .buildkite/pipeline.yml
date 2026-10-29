@@ -166,6 +166,9 @@ steps:
     env:
       # Evidence comes from the reviewer user; never follow a link out of it.
       BUILDKITE_ARTIFACT_UPLOAD_SKIP_SYMLINKS: "true"
+      # TEMPORARY, for this PR: check end to end that the setup can test real PRs
+      # (.buildkite/claude/validate-setup.sh). Remove before merging.
+      CLAUDE_REVIEW_VALIDATE_SETUP: "true"
     timeout_in_minutes: 120
     plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
