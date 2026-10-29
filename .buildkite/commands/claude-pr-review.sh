@@ -252,10 +252,12 @@ elif [[ "$reviewer_status" != 0 ]]; then
   exit 2
 fi
 
-RESULT=$(jq -c 'select(.type == "result")' "${EVIDENCE_DIR}/transcript.jsonl" 2>/dev/null | tail -n 1)
-RESULT=${RESULT:-'{}'}
-jq -r '"Cost: $\(.total_cost_usd)  Turns: \(.num_turns)  Duration: \((.duration_ms // 0) / 1000 | floor)s"' <<<"$RESULT" || true
-REVIEW=$(jq -c '.structured_output // empty' <<<"$RESULT")
+# A session can end in several result events, one per segment. Show each one
+# (whether a segment's cost includes earlier segments isn't documented), and
+# take the last structured output.
+jq -r 'select(.type == "result") | "Segment: cost $\(.total_cost_usd // 0), \(.num_turns // 0) turns, \((.duration_ms // 0) / 1000 | floor)s"' \
+  "${EVIDENCE_DIR}/transcript.jsonl" 2>/dev/null || true
+REVIEW=$(jq -s -c '[.[] | select(.type == "result") | .structured_output // empty] | last // empty' "${EVIDENCE_DIR}/transcript.jsonl" 2>/dev/null || true)
 if [[ -z "$REVIEW" ]] || ! jq -e '.verdict == "pass" or .verdict == "fail"' <<<"$REVIEW" >/dev/null; then
   echo "^^^ +++ Claude's review did not complete, so there is no verdict."
   exit 2
