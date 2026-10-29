@@ -398,8 +398,13 @@ platform :ios do
 
     upload_app_to_testflight_internal(ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH])
 
-    sh('buildkite-agent', 'meta-data', 'set', "testflight_marketing_version_#{app}", marketing_version)
-    sh('buildkite-agent', 'meta-data', 'set', "testflight_build_code_#{app}", build_code)
+    if ENV['BUILDKITE']
+      # Picked up by the Linux step that runs `finalize_internal_testflight_build`.
+      sh('buildkite-agent', 'meta-data', 'set', "testflight_marketing_version_#{app}", marketing_version)
+      sh('buildkite-agent', 'meta-data', 'set', "testflight_build_code_#{app}", build_code)
+    else
+      finalize_internal_testflight_build(app: app, marketing_version: marketing_version, build_code: build_code)
+    end
 
     # Upload symbols so crashes from these builds symbolicate in Sentry.
     next if sentry_project_slug.nil?
@@ -422,7 +427,7 @@ platform :ios do
   # Waits for App Store Connect to process a build uploaded by `build_and_upload_app_for_testflight`,
   # then sets its "What to Test" notes and beta description. Needs no Xcode, so CI runs it on Linux.
   #
-  # @param [String] app One of `wordpress` or `jetpack`.
+  # @param [String] app One of `wordpress`, `jetpack`, or `reader`.
   # @param [String] marketing_version The build's `CFBundleShortVersionString`, e.g. `27.4`.
   # @param [String] build_code The build's `CFBundleVersion`, e.g. `27.4.0.35492`.
   #
@@ -437,8 +442,11 @@ platform :ios do
     when 'jetpack'
       app_identifier = JETPACK_BUNDLE_IDENTIFIER
       beta_app_description_path = JETPACK_BETA_APP_DESCRIPTION_PATH
+    when 'reader'
+      app_identifier = READER_BUNDLE_IDENTIFIER
+      beta_app_description_path = BETA_APP_DESCRIPTION_PATH_READER
     else
-      UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack")
+      UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
     end
 
     # TODO: the "what's new" text for per-commit internal builds is not
@@ -466,7 +474,7 @@ platform :ios do
   end
 
   # Convenience wrapper that builds and uploads each app to TestFlight, one after
-  # another. CI builds each app in parallel via a Buildkite matrix instead; this
+  # another. CI builds each app in parallel in separate steps instead; this
   # lane is handy for running the whole set locally.
   #
   # Reader is omitted until its App Store archive is fixed (broken since #25321).
