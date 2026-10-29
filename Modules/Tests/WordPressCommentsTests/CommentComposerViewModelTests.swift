@@ -64,6 +64,18 @@ struct CommentComposerViewModelTests {
         #expect(!editVM.showsApproveNote)
     }
 
+    @Test func replyModeShowsReplyPlaceholder() {
+        let vm = makeComposerVM(mode: .reply(parent: makeDetail()))
+
+        #expect(vm.placeholder == "Leave a reply…")
+    }
+
+    @Test func editModeShowsNoPlaceholder() {
+        let vm = makeComposerVM(mode: .edit(comment: makeDetail(editContext: true)))
+
+        #expect(vm.placeholder == nil)
+    }
+
     @Test func canSendRequiresNonEmptyTrimmedText() {
         let vm = makeComposerVM(mode: .reply(parent: makeDetail()))
 

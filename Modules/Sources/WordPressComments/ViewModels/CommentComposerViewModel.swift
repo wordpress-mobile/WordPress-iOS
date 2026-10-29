@@ -78,6 +78,15 @@ final class CommentComposerViewModel: ObservableObject, Identifiable {
         }
     }
 
+    /// Nil in edit mode: a cleared edit is a rewrite, not a reply, and the
+    /// legacy edit screen showed no placeholder either.
+    var placeholder: String? {
+        switch mode {
+        case .reply: Strings.composerPlaceholder
+        case .edit: nil
+        }
+    }
+
     var canSend: Bool {
         isDirty && !trimmedText.isEmpty
     }

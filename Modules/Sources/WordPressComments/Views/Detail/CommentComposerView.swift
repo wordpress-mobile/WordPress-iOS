@@ -72,8 +72,8 @@ struct CommentComposerView: View {
             .accessibilityLabel(viewModel.title)
             .padding(.horizontal, 12)
             .overlay(alignment: .topLeading) {
-                if viewModel.text.isEmpty {
-                    Text(Strings.composerPlaceholder)
+                if viewModel.text.isEmpty, let placeholder = viewModel.placeholder {
+                    Text(placeholder)
                         .foregroundStyle(.tertiary)
                         .padding(.horizontal, 16)
                         .padding(.top, 8)
