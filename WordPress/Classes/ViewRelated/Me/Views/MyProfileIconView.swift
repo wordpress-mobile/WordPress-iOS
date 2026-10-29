@@ -2,18 +2,18 @@ import Combine
 import UIKit
 
 final class MyProfileIconView: UIImageView {
-    private let hidesWhenEmpty: Bool
     private var avatarSubscription: AnyCancellable?
 
-    init(hidesWhenEmpty: Bool = false) {
-        self.hidesWhenEmpty = hidesWhenEmpty
-
+    init() {
         super.init(frame: .zero)
 
         backgroundColor = .secondarySystemBackground
 
+        // Hide only without an account: `AccountAvatar.image` is also nil while
+        // loading and for an email without a Gravatar.
+        isHidden = !AccountHelper.isDotcomAvailable()
         avatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
-            self?.updateAvatar(avatar)
+            self?.image = avatar ?? .gravatarPlaceholderImage
         }
 
         layer.masksToBounds = true
@@ -32,10 +32,5 @@ final class MyProfileIconView: UIImageView {
         super.layoutSubviews()
 
         layer.cornerRadius = bounds.width / 2
-    }
-
-    private func updateAvatar(_ avatar: UIImage?) {
-        image = avatar
-        isHidden = avatar == nil && hidesWhenEmpty
     }
 }
