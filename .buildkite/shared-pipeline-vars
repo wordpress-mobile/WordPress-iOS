@@ -14,6 +14,8 @@ RUBY_VERSION=$(cat .ruby-version)
 export IMAGE_ID="xcode-$XCODE_VERSION"
 # The slim image is enough – the steps that use it need only Ruby, its bundled gems, and bash.
 export DOCKER_RUBY_IMAGE="public.ecr.aws/docker/library/ruby:${RUBY_VERSION}-slim"
+# The full image has the compiler that `bundle install` needs to build native gems.
+export DOCKER_RUBY_FULL_IMAGE="public.ecr.aws/docker/library/ruby:${RUBY_VERSION}"
 export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
 export DOCKER_PLUGIN="docker#v$DOCKER_PLUGIN_VERSION"
 export TEST_COLLECTOR="test-collector#v$TEST_COLLECTOR_PLUGIN_VERSION"
