@@ -49,11 +49,17 @@ enum PostEditorStrings {
         value: "Discard Changes",
         comment: "Button in an alert confirming discarding changes"
     )
-    static let notReadyTitle = NSLocalizedString(
-        "postEditor.notReadyAlert.title",
+    static let notReadyPostTitle = NSLocalizedString(
+        "postEditor.notReadyAlert.postTitle",
         value: "Your post isn't ready yet",
         comment:
-            "Title of an alert shown when saving or closing the editor while something, like a media upload, is in progress"
+            "Title of an alert shown when saving or closing the editor for a post while something, like a media upload, is in progress"
+    )
+    static let notReadyPageTitle = NSLocalizedString(
+        "postEditor.notReadyAlert.pageTitle",
+        value: "Your page isn't ready yet",
+        comment:
+            "Title of an alert shown when saving or closing the editor for a page while something, like a media upload, is in progress"
     )
     static let leaveWhileNotReadyMessage = NSLocalizedString(
         "postEditor.notReadyAlert.leaveMessage",

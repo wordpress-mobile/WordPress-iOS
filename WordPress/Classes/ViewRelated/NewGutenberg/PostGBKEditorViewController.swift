@@ -28,6 +28,9 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     /// may be incomplete or reference temporary media URLs.
     private(set) var isSavingLocked = false
 
+    /// Pages say "page" in alerts. Custom post types say "post", as "Post Settings" does.
+    private let isPage: Bool
+
     init(
         postId: Int?,
         postType: PostTypeDetails,
@@ -38,6 +41,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     ) {
         self.status = status ?? "draft"
         self.blog = blog
+        self.isPage = postType.postType == PostTypeDetails.page.postType
 
         EditorLocalization.localize = { $0.localized }
 
@@ -117,7 +121,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
             return action()
         }
         let alert = UIAlertController(
-            title: PostEditorStrings.notReadyTitle,
+            title: notReadyTitle,
             message: PostEditorStrings.saveWhileNotReadyMessage,
             preferredStyle: .alert
         )
@@ -129,13 +133,17 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     /// Asks before closing while the editor locks saving, since closing ends the editor's uploads.
     func showLeaveWhileSavingLockedAlert(onLeave: @escaping () -> Void) {
         let alert = UIAlertController(
-            title: PostEditorStrings.notReadyTitle,
+            title: notReadyTitle,
             message: PostEditorStrings.leaveWhileNotReadyMessage,
             preferredStyle: .alert
         )
         alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
         alert.addDestructiveActionWithTitle(PostEditorStrings.leave) { _ in onLeave() }
         present(alert, animated: true)
+    }
+
+    private var notReadyTitle: String {
+        isPage ? PostEditorStrings.notReadyPageTitle : PostEditorStrings.notReadyPostTitle
     }
 
     func feedbackAction() -> UIAction {

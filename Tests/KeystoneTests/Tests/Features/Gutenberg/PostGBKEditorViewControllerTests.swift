@@ -152,8 +152,21 @@ struct PostGBKEditorViewControllerTests {
         // A lock is advisory, so the user can still choose to save.
         #expect(!didSave)
         let alert = try #require(viewController.presentedViewController as? UIAlertController)
-        #expect(alert.title == PostEditorStrings.notReadyTitle)
+        #expect(alert.title == PostEditorStrings.notReadyPostTitle)
         #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.continueAnyway])
+    }
+
+    @Test("says page in the saving lock alerts for pages")
+    func saysPageInSavingLockAlerts() throws {
+        let viewController = makeViewController(postType: .page)
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
+        viewController.showLeaveWhileSavingLockedAlert {}
+
+        let alert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(alert.title == PostEditorStrings.notReadyPageTitle)
     }
 
     @Test("asks before leaving while saving is locked")
@@ -172,12 +185,12 @@ struct PostGBKEditorViewControllerTests {
         #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.leave])
     }
 
-    private func makeViewController() -> PostGBKEditorViewController {
+    private func makeViewController(postType: PostTypeDetails = .post) -> PostGBKEditorViewController {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).build()
         return PostGBKEditorViewController(
             postId: nil,
-            postType: .post,
+            postType: postType,
             title: "",
             content: "",
             status: "draft",
