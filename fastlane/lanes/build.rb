@@ -449,10 +449,9 @@ platform :ios do
       UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
     end
 
-    # TODO: the "what's new" text for per-commit internal builds is not
-    # finalized yet. For now, generate a minimal placeholder from the commit
-    # metadata so the upload has something to show. Public-beta builds will get
-    # richer notes generated from the PRs merged since the previous public build.
+    # TODO: the "what's new" text for per-commit internal builds is not finalized yet. 
+    # For now, generate a minimal placeholder from the commit metadata there's something to show. 
+    # Public-beta builds will get richer notes generated from the PRs merged since the previous public build.
     changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown branch')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown commit')[0...7]})."
 
     upload_to_testflight(
@@ -713,9 +712,9 @@ platform :ios do
     )
   end
 
-  # Uploads an already-built IPA to TestFlight for internal testers only, without
-  # waiting for App Store Connect to process it. `finalize_internal_testflight_build`
-  # does the waiting, from a Linux agent.
+  # Uploads an already-built IPA to TestFlight for internal testers only,
+  # without waiting for App Store Connect to process it.
+  # `finalize_internal_testflight_build` does the waiting, from a Linux agent.
   #
   # @param [String] ipa_path Path to the built IPA.
   #
