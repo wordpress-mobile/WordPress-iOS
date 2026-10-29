@@ -161,7 +161,7 @@ private extension CookieJarTests {
             .domain: domain,
             .path: path,
             .name: "wordpress_logged_in",
-            .value: "testuser%00000"
+            .value: "testuser%7C00000"
         ]
         properties[.expires] = expires
         return HTTPCookie(properties: properties)!
