@@ -18,11 +18,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
-@property (nonatomic, strong) UINavigationController *readerNavigationController;
-@property (nonatomic, strong) UINavigationController *notificationsNavigationController;
-
 @property (nonatomic, strong) MeViewController *meViewController;
-@property (nonatomic, strong) UINavigationController *meNavigationController;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
@@ -58,7 +54,18 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [WPStyleGuide configureTabBar:[self tabBar]];
 
-        [self setViewControllers:[self tabViewControllers]];
+        // The tabs are built once. Account and app UI changes replace the first screen of a
+        // tab, and keep its navigation controller and tab bar item.
+        _readerNavigationController = [self makeReaderNavigationController];
+        _notificationsNavigationController = [self makeNotificationsNavigationController];
+        _meNavigationController = [self makeMeNavigationController];
+        [self observeAccountAvatar];
+        [self setViewControllers:@[
+            self.mySitesCoordinator.rootViewController,
+            _readerNavigationController,
+            _notificationsNavigationController,
+            _meNavigationController
+        ]];
 
         [self setSelectedViewController:self.mySitesCoordinator.rootViewController];
         
@@ -97,53 +104,63 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 #pragma mark - Tab Bar Items
 
-- (UINavigationController *)readerNavigationController
+- (UINavigationController *)makeReaderNavigationController
 {
-    if (!_readerNavigationController) {
-        if (self.shouldUseStaticReader) {
-            UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
-        } else {
-            _readerPresenter = [[ReaderPresenter alloc] init];
-            _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
-        }
-        _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
+    UINavigationController *navigationController = [UINavigationController new];
+    navigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
-        _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
-        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_reader";
-        _readerNavigationController.tabBarItem.title = [WPTabBarController readerLocalizedTitle];
+    navigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
+    navigationController.tabBarItem.accessibilityIdentifier = @"tabbar_reader";
+    navigationController.tabBarItem.title = [WPTabBarController readerLocalizedTitle];
 
-        UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
-        [scrollEdgeAppearance configureWithOpaqueBackground];
-        _readerNavigationController.tabBarItem.scrollEdgeAppearance = scrollEdgeAppearance;
-    }
+    UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
+    [scrollEdgeAppearance configureWithOpaqueBackground];
+    navigationController.tabBarItem.scrollEdgeAppearance = scrollEdgeAppearance;
 
-    return _readerNavigationController;
+    [self showFirstReaderScreenInNavigationController:navigationController];
+    return navigationController;
 }
 
-- (UINavigationController *)notificationsNavigationController
+/// Replaces the Reader tab's screens with a first screen for the current account.
+- (void)showFirstReaderScreenInNavigationController:(UINavigationController *)navigationController
 {
-    if (_notificationsNavigationController) {
-        return _notificationsNavigationController;
+    if (self.shouldUseStaticReader) {
+        self.readerPresenter = nil;
+        UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+        [navigationController setViewControllers:@[rootVC] animated:NO];
+    } else {
+        self.readerPresenter = [[ReaderPresenter alloc] init];
+        [self.readerPresenter prepareForTabBarPresentationInNavigationController:navigationController];
     }
+}
+
+- (UINavigationController *)makeNotificationsNavigationController
+{
+    UINavigationController *navigationController = [UINavigationController new];
+    self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
+    self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    navigationController.tabBarItem.image = self.notificationsTabBarImage;
+    navigationController.tabBarItem.accessibilityIdentifier = @"tabbar_notifications";
+    navigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+    navigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+
+    [self showFirstNotificationsScreenInNavigationController:navigationController];
+    return navigationController;
+}
+
+/// Replaces the Notifications tab's screens with a new list, or the Moved-to-Jetpack poster.
+- (void)showFirstNotificationsScreenInNavigationController:(UINavigationController *)navigationController
+{
     UIViewController *rootViewController;
     if (self.shouldUseStaticNotifications) {
-        // A rebuild can replace a live list with the poster; drop the old list with it.
+        // The poster can replace a live list; drop the old list with it.
         self.notificationsViewController = nil;
         rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceNotifications];
     } else {
         self.notificationsViewController = [NotificationsViewController makeForAppNavigation];
         rootViewController = self.notificationsViewController;
     }
-    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-    self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
-    self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_notifications";
-    _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-    _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-
-    return _notificationsNavigationController;
+    [navigationController setViewControllers:@[rootViewController] animated:NO];
 }
 
 - (void)setShouldUseStaticNotifications:(BOOL)shouldUseStaticNotifications
@@ -153,24 +170,17 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     }
     _shouldUseStaticNotifications = shouldUseStaticNotifications;
 
-    _notificationsNavigationController = nil;
-    NSUInteger selectedIndex = self.selectedIndex;
-    [self setViewControllers:[self tabViewControllers]];
-    self.selectedIndex = selectedIndex;
+    [self showFirstNotificationsScreenInNavigationController:self.notificationsNavigationController];
     [self updateNotificationBadgeVisibility];
 }
 
-- (UINavigationController *)meNavigationController
+- (UINavigationController *)makeMeNavigationController
 {
-    if (!_meNavigationController) {
-        _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        [self observeAccountAvatar];
-        _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-        _meNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
-        _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-    }
-
-    return _meNavigationController;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    navigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+    navigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
+    navigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+    return navigationController;
 }
 
 - (MeViewController *)meViewController {
@@ -183,19 +193,13 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)reloadTabs
 {
-    _readerPresenter = nil;
-    _readerNavigationController = nil;
-    _notificationsNavigationController = nil;
-    _meNavigationController = nil;
+    // `defaultAccountDidChange:` already resets the Reader tab, which depends only
+    // on the WordPress.com account.
+    [self showFirstNotificationsScreenInNavigationController:self.notificationsNavigationController];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
 
-    [self setViewControllers:[self tabViewControllers]];
-    
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
-
-    // The rebuilt Notifications tab starts with the plain image, and the bell
-    // state may have changed before the rebuild.
-    [self updateNotificationBadgeVisibility];
 }
 
 #pragma mark - Navigation Coordinators
@@ -211,18 +215,6 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     }
 
     return _mySitesCoordinator;
-}
-
-#pragma mark - Navigation Helpers
-
-- (NSArray<UIViewController *> *)tabViewControllers
-{
-    return @[
-        self.mySitesCoordinator.rootViewController,
-        self.readerNavigationController,
-        self.notificationsNavigationController,
-        self.meNavigationController
-    ];
 }
 
 #pragma mark - Tab Selection
@@ -330,18 +322,12 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
-    // Discard the Reader tab so `readerNavigationController` rebuilds it for the
-    // new account state. Login rebuilds every tab in `signinDidFinish:`.
-    _readerPresenter = nil;
-    _readerNavigationController = nil;
+    // The Reader tab's first screen and presenter depend on the account, so replace
+    // them for every change, including the same account signing in again.
+    [self showFirstReaderScreenInNavigationController:self.readerNavigationController];
 
     if (notification.object == nil) {
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
-        // Reinstall the tabs. The app UI stays up after logging out when a
-        // self-hosted site remains, so the rebuilt Reader tab has to replace the
-        // stale one here. The other tabs are the same instances, which keeps the
-        // selected tab.
-        [self setViewControllers:[self tabViewControllers]];
     }
 }
 
