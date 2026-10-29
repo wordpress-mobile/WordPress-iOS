@@ -150,15 +150,6 @@ sudo -n cp -cR "$PWD" "$REVIEWER_REPO" 2>/dev/null || sudo -n ditto "$PWD" "$REV
 sudo -n cp .buildkite/claude/pr-review-schema.json "$REVIEWER_HOME/schema.json"
 sudo -n cp .buildkite/commands/claude-pr-review-as-reviewer.sh "$REVIEWER_HOME/run-review.sh"
 
-echo "--- :xcode: Enabling Xcode MCP for ${REVIEWER}"
-# Headless Xcode asks before an agent or folder may use it. Nobody can answer
-# on CI, so allow every agent: this VM is thrown away after the job. The
-# setting is per user, and `mcp-server` takes the user from the SUDO_* variables.
-# It also writes its settings under $HOME, so point that at the reviewer too.
-as_root_for_reviewer() { sudo -n env HOME="$REVIEWER_HOME" SUDO_USER="$REVIEWER" SUDO_UID="$reviewer_id" SUDO_GID="$reviewer_id" "$@"; }
-as_root_for_reviewer xcrun mcp-server enable --unsafe-always-allow-all-agents || echo "Could not enable Xcode MCP."
-as_root_for_reviewer xcrun mcp-server allow-folder "$REVIEWER_REPO" --always || true
-
 # ── Prompt ───────────────────────────────────────────────────────────
 if [[ -n "${SIMULATOR_LLM_PILOT_SITE_URL:-}" ]]; then
   SITE_SIGN_IN='A self-hosted test site is available: its address, username and application password are in the `SIMULATOR_LLM_PILOT_SITE_URL`, `SIMULATOR_LLM_PILOT_USERNAME` and `SIMULATOR_LLM_PILOT_APP_PASSWORD` environment variables. There is no WordPress.com account, so say in the summary when a flow needs one and you could not check it.'
@@ -216,6 +207,21 @@ if ! as_reviewer true 2>/dev/null; then
   REVIEWER_TRANSPORT=launchctl
 fi
 echo "Running as ${REVIEWER} via ${REVIEWER_TRANSPORT}"
+
+echo "--- :xcode: Enabling Xcode MCP for ${REVIEWER}"
+# Headless Xcode asks before an agent or folder may use it. Nobody can answer
+# on CI, so allow every agent: this VM is thrown away after the job. The
+# setting belongs to the user whose session runs `sudo mcp-server`, so the
+# reviewer runs it, through a sudo rule that allows only these two commands.
+# The rule is deleted again before Claude starts.
+mcp_rule="$(mktemp)"
+printf '%s ALL=(root) NOPASSWD: /usr/bin/xcrun mcp-server enable --unsafe-always-allow-all-agents, /usr/bin/xcrun mcp-server allow-folder %s --always\n' \
+  "$REVIEWER" "$REVIEWER_REPO" > "$mcp_rule"
+/usr/sbin/visudo -c -q -f "$mcp_rule"
+sudo -n install -m 0440 -o root -g wheel "$mcp_rule" /etc/sudoers.d/claude-reviewer-xcode-mcp
+as_reviewer "sudo -n /usr/bin/xcrun mcp-server enable --unsafe-always-allow-all-agents && sudo -n /usr/bin/xcrun mcp-server allow-folder ${REVIEWER_REPO} --always" \
+  || echo "Could not enable Xcode MCP for ${REVIEWER}."
+sudo -n rm -f /etc/sudoers.d/claude-reviewer-xcode-mcp
 
 echo "--- :eject: Unmounting the shared credentials folder"
 # The host mounts its common credentials (AWS keys, the bot's SSH key) into
