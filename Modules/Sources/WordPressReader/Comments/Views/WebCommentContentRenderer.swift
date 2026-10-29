@@ -225,7 +225,7 @@ private extension WebCommentContentRenderer {
 
     private static let headTemplate: String = {
         guard let fileURL = Bundle.module.url(forResource: "gutenbergCommentHeadTemplate", withExtension: "html"),
-            let string = try? String(contentsOf: fileURL)
+            let string = try? String(contentsOf: fileURL, encoding: .utf8)
         else {
             assertionFailure("template missing")
             return ""

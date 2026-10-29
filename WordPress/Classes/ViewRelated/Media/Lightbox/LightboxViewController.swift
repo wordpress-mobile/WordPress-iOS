@@ -178,19 +178,16 @@ final class LightboxViewController: UIViewController {
     // MARK: Presentation
 
     func configureZoomTransition(souceItemProvider: @escaping (UIViewController) -> UIView?) {
-        if #available(iOS 18.0, *) {
-            let options = UIViewController.Transition.ZoomOptions()
-            options.alignmentRectProvider = { context in
-                // For more info, see https://douglashill.co/zoom-transitions/#Zooming-to-only-part-of-the-destination-view
-                let detailViewController = context.zoomedViewController as! LightboxViewController
-                let detailsView: UIView = detailViewController.currentPageVC?.scrollView.imageView ?? detailViewController.view
-                return detailsView.convert(detailsView.bounds, to: detailViewController.view)
-            }
-            preferredTransition = .zoom(options: options) { context in
-                souceItemProvider(context.zoomedViewController)
-            }
-        } else {
-            modalTransitionStyle = .crossDissolve
+        let options = UIViewController.Transition.ZoomOptions()
+        options.alignmentRectProvider = { context in
+            // For more info, see https://douglashill.co/zoom-transitions/#Zooming-to-only-part-of-the-destination-view
+            let detailViewController = context.zoomedViewController as! LightboxViewController
+            let detailsView: UIView =
+                detailViewController.currentPageVC?.scrollView.imageView ?? detailViewController.view
+            return detailsView.convert(detailsView.bounds, to: detailViewController.view)
+        }
+        preferredTransition = .zoom(options: options) { context in
+            souceItemProvider(context.zoomedViewController)
         }
     }
 
