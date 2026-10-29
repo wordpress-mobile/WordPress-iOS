@@ -84,18 +84,6 @@
     WPLogWarning(@"All log files erased.");
 }
 
-- (void)deleteArchivedLogs
-{
-    NSArray *logFiles = self.fileLogger.logFileManager.sortedLogFileInfos;
-    for (DDLogFileInfo *logFileInfo in logFiles) {
-        if (logFileInfo.isArchived) {
-            [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
-        }
-    }
-
-    WPLogWarning(@"All archived log files erased.");
-}
-
 #pragma mark - Public static methods
 
 + (void)configureLoggerLevelWithExtraDebug {

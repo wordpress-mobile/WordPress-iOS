@@ -5,9 +5,9 @@ import AutomatticEncryptedLogs
 
 struct EventLoggingDataProvider: EventLoggingDataSource {
 
-    typealias LogFilesCallback = (() -> [URL])
+    typealias LogFilesCallback = (() -> [AppLogFile])
 
-    /// A block that returns all existing log files
+    /// A block that returns all existing log files, newest first
     private let fetchLogFiles: LogFilesCallback?
 
     let loggingAuthenticationToken: String
@@ -27,14 +27,22 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
         self.fetchLogFiles = block
     }
 
-    /// The current session log will almost always be the correct one, because they're split by day
+    /// Returns the log file that was being written to at `date`.
+    ///
+    /// A crash is sent on the next launch, which may have started a new log file, so the newest file isn't always the
+    /// right one. The file that was current at `date` is the newest one created at or before it. If no file qualifies
+    /// (for example, because creation dates are unavailable), the newest file is returned.
     func logFilePath(forErrorLevel: EventLoggingErrorType, at date: Date) -> URL? {
-        return fetchLogFiles?().first
+        Self.logFile(in: fetchLogFiles?() ?? [], at: date)?.url
+    }
+
+    static func logFile(in newestFirst: [AppLogFile], at date: Date) -> AppLogFile? {
+        newestFirst.first { $0.creationDate.map { $0 <= date } ?? false } ?? newestFirst.first
     }
 
     static func from(_ store: LogFileStore) -> EventLoggingDataSource {
         EventLoggingDataProvider {
-            store.logFiles().map(\.url)
+            store.logFiles()
         }
     }
 }
