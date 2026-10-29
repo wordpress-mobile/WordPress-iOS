@@ -143,8 +143,13 @@ fi
 # ── Review ───────────────────────────────────────────────────────────
 sed -i '' -e "s/{{SIMULATOR_UDID}}/${SIMULATOR_UDID}/g" "$HOME/prompt.md"
 
+# Builds take 5–8 minutes and test runs longer, so let a single command run for
+# up to an hour. Without this Claude started builds in the background, and
+# submitted its verdict before they finished (build 35535); background tasks
+# are turned off for the same reason.
 claude_env=("HOME=$HOME" "PATH=$PATH" "USER=$(id -un)" "LOGNAME=$(id -un)" "TMPDIR=${TMPDIR:-/tmp}"
-  "LANG=en_US.UTF-8" "CI=true" "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY")
+  "LANG=en_US.UTF-8" "CI=true" "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY"
+  "BASH_DEFAULT_TIMEOUT_MS=3600000" "BASH_MAX_TIMEOUT_MS=3600000" "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1")
 echo "--- :claude: Reviewing as $(id -un)"
 env -i "${claude_env[@]}" claude -p "$(cat "$HOME/prompt.md")" \
   --model "$CLAUDE_MODEL" --effort "$CLAUDE_EFFORT" \

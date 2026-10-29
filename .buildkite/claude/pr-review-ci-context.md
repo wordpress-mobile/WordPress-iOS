@@ -17,7 +17,7 @@ You are a CI check, running unattended in a Buildkite job on a throwaway macOS V
 ## Build and test
 
 - The XCFrameworks are in place, but Swift packages may resolve again on your first build. App secrets aren't installed: builds use the example credentials, as for external contributors.
-- You have up to about 90 minutes in total. A Jetpack build takes about 8 minutes on this VM. When the PR changes how the app behaves, build it and check the change in the simulator; don't finish before the build does.
+- You have up to about 90 minutes in total. A cold Jetpack build takes about 5 minutes on this VM, and a unit test run about 2 more. When the PR changes how the app behaves, build it and check the change in the simulator. Run builds and tests in the foreground: a single command may take up to an hour. Return your result only after every check you started has finished.
 - Nothing is built yet. Build the Jetpack app for the simulator with `xcodebuild -workspace WordPress.xcworkspace -scheme Jetpack -destination id={{SIMULATOR_UDID}} -derivedDataPath DerivedData build`; it ends up in `DerivedData/Build/Products/Debug-iphonesimulator/Jetpack.app`. Only build if you need to run the app or tests. Ruby, Bundler and fastlane aren't available to you.
 - Unit tests: `xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests test`. Use `-only-testing:` to run a subset.
 - A simulator is booted: `{{SIMULATOR_NAME}}`, UDID `{{SIMULATOR_UDID}}`. You may create and boot others, for example an iPad.
