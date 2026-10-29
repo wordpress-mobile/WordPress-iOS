@@ -151,12 +151,20 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
 private extension CustomPostEditorViewController {
     @objc func closeButtonAction() {
+        // Closing ends the editor's uploads, so confirm before the media is lost.
+        guard !isSavingLocked else {
+            return showLeaveWhileSavingLockedAlert { [weak self] in
+                Task {
+                    await self?.dismiss(hasConfirmedSavingLock: true)
+                }
+            }
+        }
         Task {
             await dismiss()
         }
     }
 
-    func dismiss() async {
+    func dismiss(hasConfirmedSavingLock: Bool = false) async {
         navigationController?.view.isUserInteractionEnabled = false
         defer {
             navigationController?.view.isUserInteractionEnabled = true
@@ -195,12 +203,17 @@ private extension CustomPostEditorViewController {
                         title: PostEditorStrings.saveDraft,
                         style: .default,
                         handler: { [weak self] _ in
-                            self?
-                                .performAfterConfirmingSavingLock {
-                                    Task {
-                                        await self?.save()
-                                    }
+                            let save: () -> Void = {
+                                Task {
+                                    await self?.save()
                                 }
+                            }
+                            // The Leave alert already warned about the upload, so don't ask again.
+                            if hasConfirmedSavingLock {
+                                save()
+                            } else {
+                                self?.performAfterConfirmingSavingLock(save)
+                            }
                         }
                     )
                 )

@@ -126,6 +126,18 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         present(alert, animated: true)
     }
 
+    /// Asks before closing while the editor locks saving, since closing ends the editor's uploads.
+    func showLeaveWhileSavingLockedAlert(onLeave: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: PostEditorStrings.notReadyTitle,
+            message: PostEditorStrings.leaveWhileNotReadyMessage,
+            preferredStyle: .alert
+        )
+        alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
+        alert.addDestructiveActionWithTitle(PostEditorStrings.leave) { _ in onLeave() }
+        present(alert, animated: true)
+    }
+
     func feedbackAction() -> UIAction {
         UIAction(title: PostEditorStrings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
             self?

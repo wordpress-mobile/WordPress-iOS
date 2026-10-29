@@ -156,6 +156,22 @@ struct PostGBKEditorViewControllerTests {
         #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.continueAnyway])
     }
 
+    @Test("asks before leaving while saving is locked")
+    func asksBeforeLeavingWhenLocked() throws {
+        let viewController = makeViewController()
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
+        var didLeave = false
+        viewController.showLeaveWhileSavingLockedAlert { didLeave = true }
+
+        #expect(!didLeave)
+        let alert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(alert.message == PostEditorStrings.leaveWhileNotReadyMessage)
+        #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.leave])
+    }
+
     private func makeViewController() -> PostGBKEditorViewController {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).build()

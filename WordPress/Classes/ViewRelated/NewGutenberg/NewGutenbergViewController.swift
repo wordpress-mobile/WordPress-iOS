@@ -322,25 +322,14 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
         performAfterUpdatingContent { [self] in
             // Closing ends the editor's uploads, so confirm before the media is lost.
             guard !isSavingLocked else {
-                return showLeaveWhileSavingLockedAlert()
+                return showLeaveWhileSavingLockedAlert { [weak self] in
+                    // Refresh in case the upload finished while the alert was shown, then
+                    // let the user save or discard the remaining changes.
+                    self?.performAfterUpdatingContent { self?.cancelEditing() }
+                }
             }
             cancelEditing()
         }
-    }
-
-    private func showLeaveWhileSavingLockedAlert() {
-        let alert = UIAlertController(
-            title: PostEditorStrings.notReadyTitle,
-            message: PostEditorStrings.leaveWhileNotReadyMessage,
-            preferredStyle: .alert
-        )
-        alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
-        alert.addDestructiveActionWithTitle(PostEditorStrings.leave) { [weak self] _ in
-            // Refresh in case the upload finished while the alert was shown, then
-            // let the user save or discard the remaining changes.
-            self?.performAfterUpdatingContent { self?.cancelEditing() }
-        }
-        present(alert, animated: true)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
