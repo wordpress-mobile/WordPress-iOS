@@ -98,18 +98,27 @@ echo "--- :point_up_2: AXe ${AXE_VERSION} for tapping in the simulator"
 # tree), without Xcode MCP or WebDriverAgent. Installed into this user's home.
 axe_dir="$HOME/.local/axe"
 axe_tar="$(mktemp)"
-curl -fsSL -o "$axe_tar" "https://github.com/cameroncooke/AXe/releases/download/v${AXE_VERSION}/AXe-macOS-v${AXE_VERSION}-universal.tar.gz"
-echo "${AXE_SHA256}  ${axe_tar}" | shasum -a 256 -c - > /dev/null
-mkdir -p "$axe_dir"
-tar -xzf "$axe_tar" -C "$axe_dir"
-rm -f "$axe_tar"
-# On PATH as a folder, not a symlink: axe loads the frameworks next to it.
-export PATH="$axe_dir:$PATH"
-if axe describe-ui --udid "$SIMULATOR_UDID" > /dev/null 2>&1; then
-  echo "AXe: works" | tee -a "$report"
+# Best-effort: if the download fails, Claude still runs without AXe.
+if curl -fsSL -o "$axe_tar" "https://github.com/cameroncooke/AXe/releases/download/v${AXE_VERSION}/AXe-macOS-v${AXE_VERSION}-universal.tar.gz" \
+  && echo "${AXE_SHA256}  ${axe_tar}" | shasum -a 256 -c - > /dev/null; then
+  mkdir -p "$axe_dir"
+  tar -xzf "$axe_tar" -C "$axe_dir"
+  # On PATH as a folder, not a symlink: axe loads the frameworks next to it.
+  export PATH="$axe_dir:$PATH"
+  # The first call can fail while the simulator finishes starting, so try a few times.
+  axe_status="FAILED (see axe-check.log)"
+  for attempt in 1 2 3; do
+    if axe describe-ui --udid "$SIMULATOR_UDID" > /dev/null 2>> "$EVIDENCE_DIR/axe-check.log"; then
+      axe_status="works (attempt ${attempt})"
+      break
+    fi
+    sleep 10
+  done
+  echo "AXe: ${axe_status}" | tee -a "$report"
 else
-  echo "AXe: FAILED" | tee -a "$report"
+  echo "AXe: download FAILED" | tee -a "$report"
 fi
+rm -f "$axe_tar"
 
 echo "--- :wordpress: Test site check"
 # Creates one site the way Claude would, and checks the REST API accepts its

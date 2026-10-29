@@ -252,6 +252,10 @@ start_site() {
 	port="$(next_free_port)"
 	db="wp_${name//-/_}"
 	password="$(openssl rand -hex 12)"
+
+	# If anything below fails, remove what was created, so the name can be used again.
+	# shellcheck disable=SC2064 # Expand now: the trap runs after this function returns.
+	trap "cleanup_failed_site '$dir' '$db'" EXIT
 	mkdir -p "$dir"
 	local url="http://localhost:$port"
 
@@ -317,7 +321,22 @@ start_site() {
 		> "$dir/site.json"
 
 	start_web_server "$name"
+	trap - EXIT
 	cat "$dir/site.json"
+}
+
+cleanup_failed_site() {
+	local dir="$1" db="$2"
+	echo "Couldn't create the site; removing what was created." >&2
+	if [ -f "$dir/httpd.pid" ]; then
+		"$HTTPD_PREFIX/bin/httpd" -f "$dir/httpd.conf" -k stop > /dev/null 2>&1 || true
+	fi
+	mariadb_client <<-SQL > /dev/null 2>&1 || true
+		DROP DATABASE IF EXISTS \`$db\`;
+		DROP USER IF EXISTS '$db'@'localhost';
+		DROP USER IF EXISTS '$db'@'127.0.0.1';
+	SQL
+	rm -rf "$dir"
 }
 
 stop_site() {
