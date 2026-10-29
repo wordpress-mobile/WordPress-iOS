@@ -4,6 +4,7 @@
 #import "WordPressTest-Swift.h"
 
 @import WordPressData;
+@import WordPressKit;
 @import WordPressKitModels;
 
 @import OCMock;
@@ -13,6 +14,7 @@
 - (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs
       withAccountID:(NSManagedObjectID *)accountID
           inContext:(NSManagedObjectContext *)context;
+- (nullable id<BlogServiceRemote>)remoteForBlog:(Blog *)blog;
 
 @end
 
@@ -119,6 +121,74 @@
     XCTAssertFalse(self.blog.settings.ampEnabled);
     XCTAssertFalse(self.blog.settings.sharingDisabledLikes);
     XCTAssertEqualObjects(self.blog.settings.tagline, @"New tagline");
+}
+
+#pragma mark - Remote selection
+
+- (void)testRemoteForDotComBlogWithTokenUsesREST
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:@"token" context:self.coreDataStack.mainContext];
+    XCTAssertTrue([[self.blogService remoteForBlog:blog] isKindOfClass:[BlogServiceRemoteREST class]]);
+}
+
+- (void)testNoRemoteForDotComBlogWithoutToken
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:nil context:self.coreDataStack.mainContext];
+    XCTAssertNil([self.blogService remoteForBlog:blog]);
+}
+
+- (void)testNoRemoteForDotComBlogWithEmptyToken
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:@"" context:self.coreDataStack.mainContext];
+    XCTAssertNil([self.blogService remoteForBlog:blog]);
+}
+
+- (void)testRemoteForJetpackBlogWithoutTokenUsesStoredXMLRPCCredentials
+{
+    Blog *blog = [RemoteSelectionBlogFixture jetpackBlogWithAuthToken:nil xmlrpcPassword:@"password" context:self.coreDataStack.mainContext];
+    XCTAssertTrue([[self.blogService remoteForBlog:blog] isKindOfClass:[BlogServiceRemoteXMLRPC class]]);
+}
+
+- (void)testNoRemoteForJetpackBlogWithoutTokenOrXMLRPCCredentials
+{
+    Blog *blog = [RemoteSelectionBlogFixture jetpackBlogWithAuthToken:nil xmlrpcPassword:nil context:self.coreDataStack.mainContext];
+    XCTAssertNil([self.blogService remoteForBlog:blog]);
+}
+
+- (void)testRemoteForSelfHostedBlogIsUnaffected
+{
+    Blog *blog = [RemoteSelectionBlogFixture selfHostedBlogWithContext:self.coreDataStack.mainContext];
+    XCTAssertTrue([[self.blogService remoteForBlog:blog] isKindOfClass:[BlogServiceRemoteXMLRPC class]]);
+}
+
+#pragma mark - Syncing without a remote
+
+- (void)testSyncBlogAndAllMetadataCompletesWithoutRemote
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:nil context:self.coreDataStack.mainContext];
+    XCTestExpectation *completion = [self expectationWithDescription:@"completion"];
+
+    [self.blogService syncBlogAndAllMetadata:blog completionHandler:^{
+        [completion fulfill];
+    }];
+
+    [self waitForExpectations:@[completion] timeout:1];
+}
+
+- (void)testSyncPostFormatsFailsWithoutRemote
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:nil context:self.coreDataStack.mainContext];
+    XCTestExpectation *failure = [self expectationWithDescription:@"failure"];
+
+    [self.blogService syncPostFormatsForBlog:blog success:^{
+        XCTFail(@"Syncing without a remote must not succeed");
+    } failure:^(NSError *error) {
+        XCTAssertEqualObjects(error.domain, BlogServiceErrorDomain);
+        XCTAssertEqual(error.code, BlogServiceErrorNoRemoteForBlog);
+        [failure fulfill];
+    }];
+
+    [self waitForExpectations:@[failure] timeout:1];
 }
 
 @end
