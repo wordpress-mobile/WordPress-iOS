@@ -335,15 +335,9 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
         )
         alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
         alert.addDestructiveActionWithTitle(PostEditorStrings.leave) { [weak self] _ in
-            guard let self else { return }
-            // The upload may have finished while the alert was shown.
-            guard isUploadingMedia else {
-                return cancelEditing()
-            }
-            // Keep the changes in the local revision rather than syncing their
-            // temporary media URLs.
-            editorSession.end(outcome: .cancel)
-            dismissOrPopView()
+            // Refresh in case the upload finished while the alert was shown, then
+            // let the user save or discard the remaining changes.
+            self?.performAfterUpdatingContent { self?.cancelEditing() }
         }
         present(alert, animated: true)
     }
