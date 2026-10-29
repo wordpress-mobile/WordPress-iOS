@@ -169,10 +169,9 @@ steps:
   #################
   - label: ":claude: Claude PR Review"
     key: claude_pr_review
-    # TEMPORARY, for this PR: `--validate-setup` checks end to end that the setup can
-    # test real PRs (.buildkite/claude/validate-setup.sh). Remove before merging.
-    # (A step `env:` setting wouldn't work: Mac VMs only get BUILDKITE_* variables.)
-    command: .buildkite/commands/claude-pr-review.sh --validate-setup
+    # `--validate-setup` also checks, end to end, that the setup can test real PRs
+    # (.buildkite/claude/validate-setup.sh). Use it after Xcode or VM image updates.
+    command: .buildkite/commands/claude-pr-review.sh
     if: build.pull_request.id != null
     env:
       # Evidence comes from the reviewer user; never follow a link out of it.
