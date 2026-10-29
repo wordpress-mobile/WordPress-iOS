@@ -57,7 +57,7 @@ steps:
                 - APP_STORE_CONNECT_API_KEY_KEY
         notify:
           - github_commit_status:
-              context: "TestFlight Processing (wordpress)"
+              context: "TestFlight Processing (WordPress)"
 
       - label: ":jetpack: :testflight: Process Jetpack"
         command: ".buildkite/commands/finalize-testflight-build.sh jetpack"
@@ -69,7 +69,7 @@ steps:
           - $DOCKER_PLUGIN: *testflight_processing_docker
         notify:
           - github_commit_status:
-              context: "TestFlight Processing (jetpack)"
+              context: "TestFlight Processing (Jetpack)"
 
   #################
   # Create Builds for Testing
