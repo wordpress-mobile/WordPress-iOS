@@ -65,6 +65,63 @@ class WKCookieJarTests: XCTestCase {
         }
         waitForExpectations(timeout: 5, handler: nil)
     }
+
+    func testRemoveCookiesWhenTheCookieReadIsSlow() {
+        let expectation = self.expectation(description: "removeCookies completion called")
+        cookieJar.removeWordPressComCookies { [dataStore] in
+            dataStore!.httpCookieStore
+                .getAllCookies { cookies in
+                    XCTAssertEqual(cookies.map(\.domain), ["example.com"])
+                    expectation.fulfill()
+                }
+        }
+        // WebKit replies on the main thread, so keeping it busy delays the cookie read.
+        // The removal has to wait for that read, however long it takes.
+        Thread.sleep(forTimeInterval: 2.5)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func testGetCookiesFromADataStoreThatHasNotBeenUsedYet() {
+        // `getAllCookies` can report no cookies for a data store that has not been in touch with
+        // WebKit's network process yet, whatever that data store has saved.
+
+        // Always the same identifier, so that a removal that fails leaves one data store behind
+        // and not one for every run.
+        let identifier = UUID(uuidString: "0DBBAB0A-FAFA-40CD-A8DF-32A08C939D3D")!
+        addTeardownBlock {
+            try? await WKWebsiteDataStore.remove(forIdentifier: identifier)
+        }
+
+        weak var dataStoreThatSavedTheCookie: WKWebsiteDataStore?
+        autoreleasepool {
+            let dataStore = WKWebsiteDataStore(forIdentifier: identifier)
+            dataStoreThatSavedTheCookie = dataStore
+            let cookie = HTTPCookie(properties: [
+                .domain: ".wordpress.com",
+                .path: "/",
+                .name: "saved",
+                .value: "value",
+                .expires: Date(timeIntervalSinceNow: 3600)
+            ])!
+            let expectation = self.expectation(description: "cookie set")
+            dataStore.httpCookieStore.setCookie(cookie) {
+                expectation.fulfill()
+            }
+            waitForExpectations(timeout: 5, handler: nil)
+        }
+        // WebKit hands out the same object, which has been in touch, for as long as it is alive.
+        XCTAssertNil(dataStoreThatSavedTheCookie)
+
+        autoreleasepool {
+            let cookieJar: CookieJar = WKWebsiteDataStore(forIdentifier: identifier).httpCookieStore
+            let expectation = self.expectation(description: "getCookies completion called")
+            cookieJar.getCookies { cookies in
+                XCTAssertEqual(cookies.map(\.name), ["saved"])
+                expectation.fulfill()
+            }
+            waitForExpectations(timeout: 5, handler: nil)
+        }
+    }
 }
 
 private extension WKCookieJarTests {

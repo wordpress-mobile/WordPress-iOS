@@ -66,36 +66,17 @@ extension HTTPCookieStorage: CookieJar {
 
 extension WKHTTPCookieStore: CookieJar {
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
-
-        // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
-        // - adds timeout so the above failure will eventually return
-        // - waits for the cookies on a background thread so that:
-        //   1. we are not blocking the main thread for UI reasons
-        //   2. cookies seem to never load when main thread is blocked (perhaps they dispatch to the main thread later on)
-
-        DispatchQueue.global(qos: .userInitiated)
-            .async {
-                let group = DispatchGroup()
-                group.enter()
-
-                var allCookies: [HTTPCookie] = []
-
-                DispatchQueue.main.async {
-                    self.getAllCookies { cookies in
-                        allCookies = cookies
-                        group.leave()
-                    }
-                }
-
-                let result = group.wait(timeout: .now() + .seconds(2))
-                if result == .timedOut {
-                    Loggers.app.warning("Time out waiting for WKHTTPCookieStore to get cookies")
-                }
-
-                DispatchQueue.main.async {
-                    completion(allCookies)
-                }
+        // The cookie store has to be used on the main thread, which is also where it calls back.
+        DispatchQueue.main.async {
+            // `getAllCookies` can report no cookies while WebKit's network process is not running
+            // for this data store, and does not start it. Reading the cookie policy does.
+            //
+            // Neither call has a timeout, deliberately. A slow reply reported as "no cookies"
+            // would make `removeWordPressComCookies` remove nothing.
+            self.getCookiePolicy { _ in
+                self.getAllCookies(completion)
             }
+        }
     }
 
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
