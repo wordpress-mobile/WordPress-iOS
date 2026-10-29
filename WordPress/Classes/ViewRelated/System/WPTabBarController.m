@@ -134,6 +134,16 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     }
 }
 
+- (void)setShouldUseStaticReader:(BOOL)shouldUseStaticReader
+{
+    if (_shouldUseStaticReader == shouldUseStaticReader) {
+        return;
+    }
+    _shouldUseStaticReader = shouldUseStaticReader;
+
+    [self showFirstReaderScreenInNavigationController:self.readerNavigationController];
+}
+
 - (UINavigationController *)makeNotificationsNavigationController
 {
     UINavigationController *navigationController = [UINavigationController new];

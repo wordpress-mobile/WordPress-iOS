@@ -242,24 +242,96 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenNotifications)
     }
 
-    func testSplitViewCompactTabBarFollowsStaticScreensWithReader() throws {
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
-        let withReaderPresenter = SplitViewRootPresenter()
-        let withReaderTabBar = try XCTUnwrap(compactTabBar(of: withReaderPresenter))
-        XCTAssertFalse(withReaderTabBar.showsPoster(in: .reader))
-        XCTAssertTrue(withReaderTabBar.showsPoster(in: .notifications))
+    func testSplitViewCompactTabBarFollowsTheAppUIType() throws {
+        // The compact tab bar shows what the iPhone shows, so narrowing the window can't get
+        // around the Jetpack features removal.
+        let expectations: [(RootViewCoordinator.AppUIType, liveReader: Bool, liveNotifications: Bool)] = [
+            (.normal, liveReader: true, liveNotifications: true),
+            (.staticScreensWithReader, liveReader: true, liveNotifications: false),
+            (.staticScreens, liveReader: false, liveNotifications: false),
+            (.simplified, liveReader: false, liveNotifications: false)
+        ]
+        for (appUIType, liveReader, liveNotifications) in expectations {
+            JetpackFeaturesRemovalCoordinator.currentAppUIType = appUIType
+            let tabBar = try XCTUnwrap(compactTabBar(of: SplitViewRootPresenter()))
+            XCTAssertEqual(tabBar.showsPoster(in: .reader), !liveReader, "Reader in \(appUIType)")
+            XCTAssertEqual(tabBar.showsPoster(in: .notifications), !liveNotifications, "Notifications in \(appUIType)")
+            XCTAssertEqual(tabBar.readerPresenter != nil, liveReader, "Reader presenter in \(appUIType)")
+            XCTAssertEqual(tabBar.notificationsViewController != nil, liveNotifications, "list in \(appUIType)")
+        }
+    }
 
-        // Outside `staticScreensWithReader` the compact tab bar keeps its live tabs.
+    func testSplitViewCompactTabBarShowsPostersWhenTheAppUITypeTurnsOffJetpackFeatures() throws {
+        // Given
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
+        let presenter = SplitViewRootPresenter()
+        let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
+        tabBar.selectedIndex = WPTab.reader.rawValue
+        let tabs = tabBar.viewControllers ?? []
+
+        // When
         JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreens
-        let staticScreensPresenter = SplitViewRootPresenter()
-        let staticScreensTabBar = try XCTUnwrap(compactTabBar(of: staticScreensPresenter))
-        XCTAssertFalse(staticScreensTabBar.showsPoster(in: .reader))
-        XCTAssertFalse(staticScreensTabBar.showsPoster(in: .notifications))
+        presenter.appUITypeDidChange()
+
+        // Then
+        XCTAssertTrue(tabBar.showsPoster(in: .reader))
+        XCTAssertTrue(tabBar.readerNavigationController.viewControllers.first is MovedToJetpackViewController)
+        XCTAssertNil(tabBar.readerPresenter)
+        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
+        XCTAssertNil(tabBar.notificationsViewController)
+        XCTAssertEqual(tabBar.selectedIndex, WPTab.reader.rawValue)
+        XCTAssertTrue(zip(tabs, tabBar.viewControllers ?? []).allSatisfy { $0 === $1 })
+    }
+
+    func testSplitViewShowReaderInStaticScreensPresentsThePoster() throws {
+        // Given
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreens
+        let presenter = SplitViewRootPresenter()
+        try showExpanded(presenter)
+
+        // When a Reader link arrives
+        presenter.showReader(path: .discover)
+
+        // Then
+        XCTAssertNotEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenReader)
+        let sheet = try XCTUnwrap(presenter.rootViewController.presentedViewController as? UINavigationController)
+        XCTAssertTrue(sheet.viewControllers.first is MovedToJetpackViewController)
+    }
+
+    func testSplitViewShowReaderInStaticScreensWithReaderSelectsReader() throws {
+        // Given
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
+        let presenter = SplitViewRootPresenter()
+        try showExpanded(presenter)
+
+        // When
+        presenter.showReader(path: nil)
+
+        // Then
+        XCTAssertEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenReader)
+        XCTAssertNil(presenter.rootViewController.presentedViewController)
+    }
+
+    func testSplitViewShowNotificationsInStaticScreensPresentsThePoster() throws {
+        // Given
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreens
+        let presenter = SplitViewRootPresenter()
+        try showExpanded(presenter)
+        var didRunCompletion = false
+
+        // When
+        presenter.showNotificationsTab { _ in didRunCompletion = true }
+
+        // Then
+        XCTAssertFalse(didRunCompletion)
+        XCTAssertNotEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenNotifications)
+        let sheet = try XCTUnwrap(presenter.rootViewController.presentedViewController as? UINavigationController)
+        XCTAssertTrue(sheet.viewControllers.first is MovedToJetpackViewController)
     }
 
     func testSplitViewCompactTabBarShowsThePosterWhenAnAccountChangeTurnsOnStaticScreensWithReader() throws {
         // Given a split view built before a WordPress.com account exists, on the Notifications tab
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
         let presenter = SplitViewRootPresenter()
         let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
         tabBar.selectedIndex = WPTab.notifications.rawValue
@@ -292,13 +364,28 @@ final class RootViewCoordinatorTests: XCTestCase {
         let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
         XCTAssertTrue(tabBar.showsPoster(in: .notifications))
 
-        // When
+        // When signing out resolves the normal type
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
+        presenter.appUITypeDidChange()
+
+        // Then
+        XCTAssertFalse(tabBar.showsPoster(in: .notifications))
+        XCTAssertNotNil(tabBar.notificationsViewController)
+    }
+
+    func testSplitViewCompactTabBarShowsPostersWhenSignOutResolvesSimplified() throws {
+        // Given
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
+        let presenter = SplitViewRootPresenter()
+        let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
+
+        // When signing out with the self-hosted removal phase on
         JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
         presenter.appUITypeDidChange()
 
-        // Then the compact layout's live tabs return, as before `staticScreensWithReader`
-        XCTAssertFalse(tabBar.showsPoster(in: .notifications))
-        XCTAssertNotNil(tabBar.notificationsViewController)
+        // Then, as on the iPhone, where the simplified UI has neither tab
+        XCTAssertTrue(tabBar.showsPoster(in: .reader))
+        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
     }
 
     func testTabsKeepTheirNavigationControllersWhenTheAccountOrAppUIChanges() {
@@ -364,6 +451,47 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertNil(tabBarController.notificationsViewController)
         XCTAssertEqual(notificationsNavigationController.viewControllers.count, 1)
         XCTAssertTrue(notificationsNavigationController.viewControllers.first is MovedToJetpackViewController)
+    }
+
+    func testSidebarDoesNotRestoreTheReaderWhenItIsUnavailable() {
+        // Given a Reader selection saved while the Reader was available
+        let wasReaderSelected = UserDefaults.standard.isReaderSelected
+        addTeardownBlock { UserDefaults.standard.isReaderSelected = wasReaderSelected }
+        UserDefaults.standard.isReaderSelected = true
+
+        // When the sidebar is built for an app UI type without the Reader
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreens
+        let staticScreensViewModel = SidebarViewModel(contextManager: contextManager)
+
+        // Then
+        XCTAssertNotEqual(staticScreensViewModel.selection, .reader)
+
+        // And the Reader is still restored where it is available
+        UserDefaults.standard.isReaderSelected = true
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
+        XCTAssertEqual(SidebarViewModel(contextManager: contextManager).selection, .reader)
+    }
+
+    func testStaticReaderSwapsTheFirstScreenAndKeepsTheSelectedTab() {
+        // Given
+        signInToWordPressDotCom()
+        let tabBarController = WPTabBarController(staticScreens: false)
+        tabBarController.selectedIndex = WPTab.reader.rawValue
+        let readerNavigationController = tabBarController.readerNavigationController
+
+        // When
+        tabBarController.shouldUseStaticReader = true
+
+        // Then
+        XCTAssertIdentical(tabBarController.readerNavigationController, readerNavigationController)
+        XCTAssertEqual(readerNavigationController.viewControllers.count, 1)
+        XCTAssertTrue(readerNavigationController.viewControllers.first is MovedToJetpackViewController)
+        XCTAssertNil(tabBarController.readerPresenter)
+        XCTAssertEqual(tabBarController.selectedIndex, WPTab.reader.rawValue)
+
+        // And back
+        tabBarController.shouldUseStaticReader = false
+        XCTAssertIdentical(readerNavigationController.viewControllers.first, tabBarController.readerPresenter?.sidebar)
     }
 
     // MARK: - Helpers

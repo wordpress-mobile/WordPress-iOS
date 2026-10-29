@@ -85,7 +85,8 @@ final class SidebarViewModel: ObservableObject {
     }
 
     private func resetSelection() {
-        if UserDefaults.standard.isReaderSelected {
+        // The Reader may have been turned off since it was last selected.
+        if UserDefaults.standard.isReaderSelected, JetpackFeaturesRemovalCoordinator.isReaderAvailable() {
             selection = .reader
         } else if let blog = Blog.lastUsedOrFirst(in: contextManager.mainContext) {
             selection = .blog(TaggedManagedObjectID(blog))

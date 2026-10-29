@@ -22,7 +22,8 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @property (nonatomic, strong, readonly, nonnull) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly, nullable) ReaderPresenter *readerPresenter;
 /// Whether the Reader tab shows the Moved-to-Jetpack poster instead of the live Reader.
-@property (nonatomic, assign, readonly) BOOL shouldUseStaticReader;
+/// Changing it replaces the Reader tab's screens; the other tabs keep their state.
+@property (nonatomic, assign) BOOL shouldUseStaticReader;
 /// Whether the Notifications tab shows the Moved-to-Jetpack poster instead of the live list.
 /// Changing it rebuilds the Notifications tab; the other tabs keep their state.
 @property (nonatomic, assign) BOOL shouldUseStaticNotifications;
