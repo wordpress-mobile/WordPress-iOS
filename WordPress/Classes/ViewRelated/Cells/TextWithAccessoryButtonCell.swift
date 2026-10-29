@@ -20,7 +20,7 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
     private let secondaryLabel: UILabel = {
         let label = makeLabel(fontSize: 14)
         label.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
-        label.textColor = UIColor(red: 0.596_806, green: 0.710_4, blue: 0.788_126, alpha: 1)
+        label.textColor = .secondaryLabel
         return label
     }()
     let button: UIButton = {
