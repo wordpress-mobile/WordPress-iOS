@@ -219,7 +219,19 @@ printf '%s ALL=(root) NOPASSWD: /usr/bin/xcrun mcp-server enable --unsafe-always
   "$REVIEWER" "$REVIEWER_REPO" > "$mcp_rule"
 /usr/sbin/visudo -c -q -f "$mcp_rule"
 sudo -n install -m 0440 -o root -g wheel "$mcp_rule" /etc/sudoers.d/claude-reviewer-xcode-mcp
-as_reviewer "sudo -n /usr/bin/xcrun mcp-server enable --unsafe-always-allow-all-agents && sudo -n /usr/bin/xcrun mcp-server allow-folder ${REVIEWER_REPO} --always" \
+# mcp-server stores an integrity hash in the user's keychain, and the new
+# user has none, so create and unlock a login keychain for it first.
+keychain_password="$(openssl rand -hex 24)"
+as_reviewer "kc=\$HOME/Library/Keychains/login.keychain-db
+  mkdir -p \$HOME/Library/Keychains
+  security create-keychain -p ${keychain_password} \$kc 2>/dev/null || true
+  security unlock-keychain -p ${keychain_password} \$kc
+  security set-keychain-settings \$kc
+  security list-keychains -d user -s \$kc
+  security default-keychain -d user -s \$kc
+  security login-keychain -d user -s \$kc 2>/dev/null || true
+  sudo -n /usr/bin/xcrun mcp-server enable --unsafe-always-allow-all-agents \
+    && sudo -n /usr/bin/xcrun mcp-server allow-folder ${REVIEWER_REPO} --always" \
   || echo "Could not enable Xcode MCP for ${REVIEWER}."
 sudo -n rm -f /etc/sudoers.d/claude-reviewer-xcode-mcp
 
