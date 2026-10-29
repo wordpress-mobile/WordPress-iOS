@@ -259,9 +259,21 @@ audit_canary
 
 echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
 # The reviewer script sends Claude's transcript to its stdout and everything
-# else to stderr. Saving it here means Claude can't edit it afterwards.
-reviewer_status=0
-as_reviewer "bash ~/run-review.sh" > "$AUDIT_DIR/transcript.jsonl" || reviewer_status=$?
+# else to stderr. Saving it here means Claude can't edit it afterwards. Each
+# tool call and the result are also shown in the build log as they happen.
+{
+  as_reviewer "bash ~/run-review.sh" && echo 0 > "$AUDIT_DIR/.reviewer-status" || echo $? > "$AUDIT_DIR/.reviewer-status"
+} | tee "$AUDIT_DIR/transcript.jsonl" | jq --unbuffered -R -r '
+  fromjson? |
+  if .type == "assistant" then
+    .message.content[]? | select(.type == "tool_use")
+    | "\(.name): \((.input.command // .input.file_path // .input.pattern // .input.description // "") | tostring | gsub("\n"; " ") | .[0:200])"
+  elif .type == "result" then
+    "Claude finished: \(.subtype // "?"), \(.num_turns // 0) turns, $\(.total_cost_usd // 0)"
+  else empty end' || true
+reviewer_status=$(cat "$AUDIT_DIR/.reviewer-status" 2>/dev/null || echo 2)
+rm -f "$AUDIT_DIR/.reviewer-status"
+echo "The reviewer session ended."
 
 # Bring the evidence back for upload and reporting. The reviewer controls
 # everything in its evidence folder, so never copy it as root: a symlink there
