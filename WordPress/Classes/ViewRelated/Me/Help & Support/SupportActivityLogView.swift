@@ -1,6 +1,5 @@
 import SwiftUI
 import WordPressShared
-import CocoaLumberjack
 
 struct SupportActivityLogView: View {
     @StateObject private var viewModel = ActivityLogViewModel()
@@ -10,7 +9,7 @@ struct SupportActivityLogView: View {
     var body: some View {
         List {
             Section(footer: Text(Strings.sectionFooter)) {
-                ForEach(viewModel.logFiles, id: \.filePath) { logFile in
+                ForEach(viewModel.logFiles, id: \.url) { logFile in
                     NavigationLink(destination: SupportActivityDetailsView(logFile: logFile)) {
                         Text(viewModel.getFormattedDate(for: logFile))
                     }
@@ -40,24 +39,21 @@ struct SupportActivityLogView: View {
 }
 
 private class ActivityLogViewModel: ObservableObject {
-    @Published private(set) var logFiles: [DDLogFileInfo] = []
+    @Published private(set) var logFiles: [AppLogFile] = []
 
-    private let fileLogger: DDFileLogger
     private let dateFormatter: DateFormatter
 
-    init() {
-        fileLogger = WPLogger.shared().fileLogger
-
+    init(store: LogFileStore = .shared) {
         dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.doesRelativeDateFormatting = true
         dateFormatter.timeStyle = .short
 
-        logFiles = fileLogger.logFileManager.sortedLogFileInfos
+        logFiles = store.logFiles()
     }
 
-    func getFormattedDate(for logFile: DDLogFileInfo) -> String {
-        if logFile === logFiles.first {
+    func getFormattedDate(for logFile: AppLogFile) -> String {
+        if logFile == logFiles.first {
             return Strings.currentLog
         }
         guard let creationDate = logFile.creationDate else {
