@@ -81,6 +81,18 @@ class WKCookieJarTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
+    func testRemoveCookiesAfterTheCookieStoreIsReleased() {
+        let expectation = self.expectation(description: "removeCookies completion called")
+        // Once the pool drains, only the removal in progress holds the cookie store.
+        autoreleasepool {
+            let cookieJar: CookieJar = WKWebsiteDataStore.nonPersistent().httpCookieStore
+            cookieJar.removeWordPressComCookies {
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
     func testGetCookiesFromADataStoreThatHasNotBeenUsedYet() {
         // `getAllCookies` can report no cookies for a data store that has not been in touch with
         // WebKit's network process yet, whatever that data store has saved.

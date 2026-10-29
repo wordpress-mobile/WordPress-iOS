@@ -39,7 +39,7 @@ extension CookieJar {
     }
 
     func removeWordPressComCookies(completion: @escaping () -> Void) {
-        getCookies { [unowned self] cookies in
+        getCookies { cookies in
             self.removeCookies(cookies.filter({ $0.domain.hasSuffix(".wordpress.com") }), completion: completion)
         }
     }
