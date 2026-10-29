@@ -2,7 +2,7 @@
 
 # Checks, end to end, that the Claude PR review setup can test real PRs. Runs
 # as the `claude-reviewer` user from claude-pr-review-as-reviewer.sh, before
-# Claude, when CLAUDE_REVIEW_VALIDATE_SETUP is `true`.
+# Claude, when claude-pr-review.sh gets `--validate-setup`.
 #
 #   1. Build the Jetpack app for the simulator, the way Claude would.
 #   2. Install and launch it with a test site's credentials.

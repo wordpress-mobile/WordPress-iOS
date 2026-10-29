@@ -34,6 +34,10 @@ MARKER="<!-- claude-ci-review -->"
 # SPACEFAST_TEAM and SPACEFAST_BASE_URL (e.g. https://<slug>.space.fast).
 # Without them, screenshots are linked to the Buildkite build instead.
 
+# `--validate-setup` also runs .buildkite/claude/validate-setup.sh before Claude.
+CLAUDE_REVIEW_VALIDATE_SETUP=false
+if [[ "${1:-}" == --validate-setup ]]; then CLAUDE_REVIEW_VALIDATE_SETUP=true; fi
+
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
 # ── Gates ────────────────────────────────────────────────────────────
@@ -175,7 +179,7 @@ env_file="$(mktemp)"
   printf 'export %s=%q\n' ANTHROPIC_API_KEY "$ANTHROPIC_API_KEY" CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" CLAUDE_MODEL "$CLAUDE_MODEL" \
     CLAUDE_EFFORT "$CLAUDE_EFFORT" SIMULATOR_NAME "$SIMULATOR_NAME" EVIDENCE_DIR "$EVIDENCE_DIR" \
     BUILDER_USER "$(id -un)" BUILDER_HOME "$HOME" BUILDER_PID "$$" \
-    CLAUDE_REVIEW_VALIDATE_SETUP "${CLAUDE_REVIEW_VALIDATE_SETUP:-false}"
+    CLAUDE_REVIEW_VALIDATE_SETUP "$CLAUDE_REVIEW_VALIDATE_SETUP"
 } > "$env_file"
 sudo -n install -m 0600 "$env_file" "$REVIEWER_HOME/review.env"
 rm -f "$env_file"
