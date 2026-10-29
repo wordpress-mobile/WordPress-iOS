@@ -30,7 +30,7 @@ struct PostSettingsGenerateExcerptButton: View {
 
     @ViewBuilder
     private var form: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 switch SystemLanguageModel.default.availability {
                 case .available:

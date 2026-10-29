@@ -136,6 +136,8 @@ struct ReaderDisplaySettingSelectionView: View {
 
     @ObservedObject var viewModel: ReaderDisplaySettingSelectionViewModel
 
+    @Environment(\.displayScale) private var displayScale
+
     @State private var viewHeight: CGFloat = .zero
 
     @State private var controlViewIntrinsicHeight: CGFloat = .zero
@@ -157,7 +159,7 @@ struct ReaderDisplaySettingSelectionView: View {
             .overlay(alignment: .top, content: { // add a thin top border.
                 Rectangle()
                     .ignoresSafeArea()
-                    .frame(width: nil, height: .hairlineBorderWidth, alignment: .top)
+                    .frame(width: nil, height: 1 / displayScale, alignment: .top)
                     .foregroundStyle(Color(.tertiaryLabel))
             })
             // if there's enough space to show the entire control view, shrink the scroll view to fit.

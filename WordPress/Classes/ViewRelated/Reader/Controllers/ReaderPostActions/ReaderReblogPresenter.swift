@@ -86,7 +86,10 @@ private extension ReaderReblogPresenter {
                                            origin.view.frame.height),
                                 height: 0)
 
-        post.prepareForReblog(with: readerPost, imageSize: photonSize)
+        // The featured image URL is saved in the post and shown to every reader, on any screen,
+        // so don't request less than a 2x image, even when the editor opens on a 1x display.
+        let imageTraits = UITraitCollection(displayScale: max(2, origin.traitCollection.displayScale))
+        post.prepareForReblog(with: readerPost, imageSize: photonSize, traitCollection: imageTraits)
         // instantiate & configure editor
         let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
@@ -127,7 +130,8 @@ private extension ReaderReblogPresenter {
 private extension Post {
     /// Formats the new Post content for reblogging, using an existing ReaderPost
     /// Uses the passed imageSize to obtain a Photon URL for the featured image
-    func prepareForReblog(with readerPost: ReaderPost, imageSize: CGSize) {
+    /// - parameter traitCollection: The traits whose display scale sizes the featured image.
+    func prepareForReblog(with readerPost: ReaderPost, imageSize: CGSize, traitCollection: UITraitCollection) {
         // update the post
         update(with: readerPost)
         // initialize the content
@@ -146,7 +150,8 @@ private extension Post {
         if let image = readerPost.featuredImage,
             image.isValidURL(),
             let cdnImage = PhotonImageURLHelper.photonURL(with: imageSize,
-                                                          forImageURL: URL(string: image)) {
+                                                          forImageURL: URL(string: image),
+                                                          traitCollection: traitCollection) {
 
             content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergImage(image: cdnImage.absoluteString) + content :
                 ReaderReblogFormatter.aztecImage(image: cdnImage.absoluteString) + content

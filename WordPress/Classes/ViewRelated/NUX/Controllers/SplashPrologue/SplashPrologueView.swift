@@ -5,6 +5,7 @@ struct SplashPrologueView: View {
     var body: some View {
         ZStack {
             Color(SplashPrologueStyleGuide.backgroundColor)
+                .ignoresSafeArea()
             GeometryReader { proxy in
                 Image("splashBrushStroke")
                     .resizable()
@@ -15,6 +16,7 @@ struct SplashPrologueView: View {
                     .foregroundColor(Color(SplashPrologueStyleGuide.BrushStroke.color))
                     .accessibility(hidden: true)
             }
+            .ignoresSafeArea()
             VStack {
                 Image("splashLogo")
                     .resizable()
@@ -27,7 +29,6 @@ struct SplashPrologueView: View {
                     .foregroundColor(Color(SplashPrologueStyleGuide.Title.textColor))
             }
         }
-        .edgesIgnoringSafeArea(.all)
     }
 
     private struct Constants {

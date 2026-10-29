@@ -38,7 +38,7 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
     }
 
     override var alwaysResetHeaderOnRotation: Bool {
-        WPDeviceIdentification.isiPhone()
+        traitCollection.userInterfaceIdiom == .phone
     }
 
     override var alwaysShowHeaderTitles: Bool {

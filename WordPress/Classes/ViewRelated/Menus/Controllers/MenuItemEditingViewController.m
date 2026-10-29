@@ -115,6 +115,10 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     [super viewWillAppear:animated];
 
+    // TODO: Replace these observers with `self.view.keyboardLayoutGuide`: re-anchor
+    // `stackViewBottomConstraint` (MenuItemEditing.storyboard) to
+    // `keyboardLayoutGuide.topAnchor` and drop `updateWithKeyboardNotification:`.
+    // Not done here because the constraint is a storyboard outlet.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
 }

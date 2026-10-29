@@ -110,7 +110,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var footerHeight: CGFloat {
         let verticalMargins: CGFloat = 16
         let buttonHeight: CGFloat = 44
-        let safeArea = (view.window?.safeAreaInsets.bottom ?? 0)
+        let safeArea = view.safeAreaInsets.bottom
 
         var height = verticalMargins + buttonHeight + verticalMargins + safeArea
 
@@ -269,6 +269,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewWillDisappear(animated)
     }
 
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        // `footerHeight` includes the bottom safe area inset, so the footer and the
+        // scrollable view's bottom inset go stale when the inset changes.
+        updateFooterInsets()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
@@ -284,6 +291,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             if self.shouldHideAccessoryBar, self.isShowingNoResults {
                 self.disableInitialLayoutHelpers()
                 self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
+            } else {
+                // `updateHeaderDisplay()` gives the header its full height so it can be measured, whatever the
+                // scroll position. Size it for the scroll position again: the next snap, which runs when the size
+                // class changes, reads the header and would otherwise scroll a full header back to the top.
+                self.scrollViewDidScroll(self.scrollableView)
             }
         }
     }

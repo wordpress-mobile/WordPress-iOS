@@ -2,6 +2,7 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 import WordPressData
+import WordPressUI
 
 /// Encapsulates CoreSpotlight operations for WPiOS
 ///
@@ -455,17 +456,13 @@ fileprivate extension SearchManager {
     func openPreview(for apost: AbstractPost) {
         RootViewCoordinator.sharedPresenter.showMySitesTab()
         closePreviewIfNeeded(for: apost)
+        // Open the list first: in the tab bar layout, opening a site's list closes anything presented,
+        // which would include the preview.
+        openListView(for: apost)
 
         let controller = PreviewWebKitViewController(post: apost, source: "spotlight_preview_post")
         controller.trackOpenEvent()
-        let navWrapper = UINavigationController(rootViewController: controller)
-        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
-        if rootViewController.traitCollection.userInterfaceIdiom == .pad {
-            navWrapper.modalPresentationStyle = .fullScreen
-        }
-        rootViewController.present(navWrapper, animated: true)
-
-        openListView(for: apost)
+        RootViewCoordinator.sharedPresenter.rootViewController.presentCoveringWindow(controller)
     }
 
     /// If there is a post preview window open and it is already displaying the provided

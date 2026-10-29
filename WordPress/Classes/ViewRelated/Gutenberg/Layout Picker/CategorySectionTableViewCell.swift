@@ -83,17 +83,43 @@ class CategorySectionTableViewCell: UITableViewCell, NibLoadable {
         }
     }
     var showsCheckMarkWhenSelected = true
+    /// The horizontal scroll position to show. It's applied once the collection view has laid out the
+    /// current section: until then its content size can still be the previous section's (when the cell is
+    /// reused), and UIKit would clamp the offset to that.
     var horizontalScrollOffset: CGFloat = .zero {
         didSet {
-            collectionView.contentOffset.x = horizontalScrollOffset
+            pendingHorizontalScrollOffset = horizontalScrollOffset
+            setNeedsLayout()
         }
     }
+
+    private var pendingHorizontalScrollOffset: CGFloat?
 
     override func prepareForReuse() {
         delegate = nil
         super.prepareForReuse()
+        pendingHorizontalScrollOffset = nil
         collectionView.contentOffset.x = 0
         categoryTitleFont = nil
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        applyPendingHorizontalScrollOffset()
+    }
+
+    private func applyPendingHorizontalScrollOffset() {
+        guard let offset = pendingHorizontalScrollOffset else {
+            return
+        }
+        collectionView.layoutIfNeeded()
+        // The content size is zero until the collection view is tall enough for the section's thumbnails.
+        guard collectionView.contentSize.width > 0 else {
+            return
+        }
+        pendingHorizontalScrollOffset = nil
+        let maximumOffset = max(collectionView.contentSize.width - collectionView.bounds.width, 0)
+        collectionView.contentOffset.x = min(offset, maximumOffset)
     }
 
     override func awakeFromNib() {
@@ -140,6 +166,10 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         delegate?.didDeselectItem(forCell: self)
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        pendingHorizontalScrollOffset = nil
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

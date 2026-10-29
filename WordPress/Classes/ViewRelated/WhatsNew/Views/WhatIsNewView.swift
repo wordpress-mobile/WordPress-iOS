@@ -175,7 +175,7 @@ class WhatIsNewView: UIView {
 
         NSLayoutConstraint.activate([
             continueButton.heightAnchor.constraint(equalToConstant: self.appearance.continueButtonHeight),
-            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            divider.makeHairlineConstraint(for: divider.heightAnchor),
             continueButtonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             continueButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             continueButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),

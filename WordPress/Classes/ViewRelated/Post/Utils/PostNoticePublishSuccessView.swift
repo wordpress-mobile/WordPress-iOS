@@ -3,6 +3,7 @@ import SwiftUI
 import DesignSystem
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 struct PostNoticePublishSuccessView: View {
     let post: Post
@@ -119,8 +120,7 @@ struct PostNoticePublishSuccessView: View {
         WPAnalytics.track(.postEpilogueView)
         let controller = PreviewWebKitViewController(post: post, source: "edit_post_preview")
         controller.trackOpenEvent()
-        let navWrapper = UINavigationController(rootViewController: controller)
-        presenter.present(navWrapper, animated: true)
+        presenter.presentCoveringWindow(controller)
     }
 
     private func buttonShareTapped() {

@@ -81,6 +81,13 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.scrollView.alpha = 0.0;
     self.scrollView.delegate = self;
 
+    // Keep the menus inside the safe area, clear of the iPhone Duo's side strip and the sensor
+    // housing in landscape. The storyboard's edge constraints are removed at build time.
+    [NSLayoutConstraint activateConstraints:@[
+        [self.scrollView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.scrollView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+    ]];
+
     // add a bit of padding to the scrollable content
     self.stackView.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(0, 0, 10, 0);
     self.stackView.layoutMarginsRelativeArrangement = YES;
@@ -148,6 +155,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     self.animatesAppearanceAfterSync = YES;
 
+    // TODO: Replace these observers with `self.view.keyboardLayoutGuide`: constrain the
+    // scroll view's bottom to `keyboardLayoutGuide.topAnchor` instead of converting the
+    // keyboard frame into a content inset. Not done here because the scroll view's bottom
+    // constraint comes from the storyboard and the swap needs it re-anchored there.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
