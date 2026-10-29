@@ -123,12 +123,12 @@ class WebDriverAgent
     end
   end
 
-  def clone_repository(into: directory)
-    system("git", "clone", "--depth", "1", REPOSITORY, directory)
+  def clone_repository(into: @directory)
+    system("git", "clone", "--depth", "1", REPOSITORY, into)
   end
 
-  def build_for_testing(at: directory, clean: false)
-    arguments = build_arguments(directory)
+  def build_for_testing(at: @directory, clean: false)
+    arguments = build_arguments(at)
 
     if clean
       puts "Cleaning the cached WebDriverAgent build..."
