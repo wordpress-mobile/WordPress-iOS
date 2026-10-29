@@ -23,7 +23,7 @@ final class NotificationsViewModel {
 
     // MARK: - Depdencies
 
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStack
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
     private let crashLogger: CrashLogging
@@ -37,7 +37,7 @@ final class NotificationsViewModel {
 
     init(
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
-        contextManager: CoreDataStackSwift = ContextManager.shared,
+        contextManager: CoreDataStack = ContextManager.shared,
         analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
         crashLogger: CrashLogging = CrashLogging.main
     ) {
