@@ -99,7 +99,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
             forHeaderFooterViewReuseIdentifier: RegisterDomainDetailsErrorSectionFooter.defaultReuseID
         )
         tableView.register(
-            InlineEditableNameValueCell.defaultNib,
+            InlineEditableNameValueCell.self,
             forCellReuseIdentifier: InlineEditableNameValueCell.defaultReuseID
         )
         tableView.register(
