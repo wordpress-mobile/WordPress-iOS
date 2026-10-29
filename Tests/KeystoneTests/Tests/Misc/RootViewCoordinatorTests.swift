@@ -10,11 +10,14 @@ final class RootViewCoordinatorTests: XCTestCase {
     private var sut: RootViewCoordinator!
     private var windowManager: WindowManagerMock!
     private var contextManager: ContextManager!
+    private var savedAppUIType: RootViewCoordinator.AppUIType?
 
     override func setUp() {
         super.setUp()
         contextManager = ContextManager.forTesting()
         contextManager.useAsSharedInstance(untilTestFinished: self)
+        // `RootViewCoordinator` writes the app UI type to a static; restore it so other tests aren't affected.
+        savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
         windowManager = WindowManagerMock(window: .init())
         sut = RootViewCoordinator(windowManager: windowManager)
     }
@@ -25,7 +28,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         sut = nil
         contextManager = nil
         UserSettings.defaultDotComUUID = nil
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = nil
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
     }
 
     func testAppUIDeallocatedAfterLogout() {
