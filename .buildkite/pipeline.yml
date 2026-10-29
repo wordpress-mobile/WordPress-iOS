@@ -23,7 +23,6 @@ steps:
         key: testflight_upload_wordpress
         command: ".buildkite/commands/build-and-upload-testflight.sh wordpress"
         plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.branch == 'trunk'"
         notify:
           - github_commit_status:
               context: "TestFlight Build (wordpress)"
@@ -32,7 +31,6 @@ steps:
         key: testflight_upload_jetpack
         command: ".buildkite/commands/build-and-upload-testflight.sh jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.branch == 'trunk'"
         notify:
           - github_commit_status:
               context: "TestFlight Build (jetpack)"
@@ -41,7 +39,6 @@ steps:
       - label: ":testflight: Process wordpress"
         command: ".buildkite/commands/finalize-testflight-build.sh wordpress"
         depends_on: testflight_upload_wordpress
-        if: "build.branch == 'trunk'"
         agents:
           queue: "default"
         plugins:
@@ -62,7 +59,6 @@ steps:
       - label: ":testflight: Process jetpack"
         command: ".buildkite/commands/finalize-testflight-build.sh jetpack"
         depends_on: testflight_upload_jetpack
-        if: "build.branch == 'trunk'"
         agents:
           queue: "default"
         plugins:
