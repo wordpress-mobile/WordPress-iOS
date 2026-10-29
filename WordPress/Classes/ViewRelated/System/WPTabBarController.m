@@ -408,14 +408,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)performTabBarItemUpdate:(void (^)(void))update
 {
     // iOS 26 measures each tab button's title once, in the tab bar's first layout
-    // pass after it joins a window, and never again. An item image that changes
-    // between the attach and that pass makes the measurement run against
-    // icon-only buttons, so every title stays truncated and bottom-anchored until
-    // the user taps a tab (FB24250687). Changes before the view is attached are
-    // safe and set the initial images; changes in `viewWillAppear:` or the first
-    // `viewDidLayoutSubviews` are not. So a change in between waits for
-    // `viewDidAppear:`.
-    BOOL isAwaitingFirstLayout = self.viewIfLoaded.window != nil && !self.hasCompletedFirstAppearance;
+    // pass, and never again. An item image that changes after the tabs are set and
+    // before that pass makes the measurement run against icon-only buttons, so
+    // every title stays truncated and bottom-anchored until the user taps a tab
+    // (FB24250687). This holds whether or not the view is in a window yet, which
+    // includes `viewWillAppear:`. So any change once the tab bar has items waits
+    // for `viewDidAppear:`. Changes while the tabs are built run immediately,
+    // because the tab bar has no items yet, and set the initial images.
+    BOOL isAwaitingFirstLayout = self.tabBar.items.count > 0 && !self.hasCompletedFirstAppearance;
     if (isAwaitingFirstLayout) {
         [self.pendingTabBarItemUpdates addObject:[update copy]];
         return;

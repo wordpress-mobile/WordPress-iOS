@@ -35,9 +35,9 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 
 - (void)updateNotificationBadgeVisibility;
 
-/// Runs `update` now, or in `viewDidAppear:` when the view is already in a window
-/// but has not completed its first appearance. Every change to a tab bar item's
-/// `image` or `selectedImage` after init goes through this method; the
+/// Runs `update` now, or in `viewDidAppear:` when the tab bar already has items
+/// but the view has not completed its first appearance. Every change to a tab bar
+/// item's `image` or `selectedImage` after init goes through this method; the
 /// implementation explains the iOS 26 constraint behind it.
 - (void)performTabBarItemUpdate:(void (^)(void))update;
 
