@@ -275,6 +275,24 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
     }
 
+    func testReaderFlagFetchedAfterSignOutDoesNotReplaceTheSignInUI() {
+        // Given an app UI that was replaced by the sign-in UI
+        signInToWordPressDotCom()
+        let featureFlagStore = makeProductionFlagStore()
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, featureFlagStore: featureFlagStore)
+        sut.showAppUI()
+        sut.showSignInUI()
+
+        // When a fetch brings the flag while the user signs in again
+        featureFlagStore.enabledFeatureFlags.insert(RemoteFeatureFlag.readerInWordPressApp.remoteKey)
+        sut.remoteFeatureFlagsDidUpdate()
+
+        // Then the sign-in UI stays, and the next app UI uses the flag
+        XCTAssertFalse(windowManager.didShowUI)
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
+    }
+
     func testReaderFlagDoesNotChangeJetpack() {
         // Given
         let featureFlagStore = makeProductionFlagStore()

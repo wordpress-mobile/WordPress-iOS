@@ -135,8 +135,9 @@ class RootViewCoordinator {
         applyResolvedAppUIType()
 
         // The iPad split view applies the type in place. The other presenters are built for one
-        // type, so rebuild them now rather than when My Site next appears.
-        guard !(rootViewPresenter is SplitViewRootPresenter), !isSiteCreationActive else {
+        // type, so rebuild them now rather than when My Site next appears. Without a presenter the
+        // sign-in UI is up, maybe mid-login, and the next `showAppUI` uses the new type.
+        guard let rootViewPresenter, !(rootViewPresenter is SplitViewRootPresenter), !isSiteCreationActive else {
             return
         }
         reloadUIIfNeeded(blog: nil)
