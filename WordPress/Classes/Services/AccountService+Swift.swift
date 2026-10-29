@@ -21,25 +21,58 @@ extension AccountService {
         UserPersistentStoreFactory.instance()
             .set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
 
-        let objectID = TaggedManagedObjectID(account)
-        let notifyAccountChange = {
-            let context = self.coreDataStack.mainContext
-            let account = try? context.existingObject(with: objectID)
-            NotificationCenter
-                .default
-                .post(name: .wpAccountDefaultWordPressComAccountChanged, object: account)
-
+        postDefaultAccountChanged(accountID: account.objectID) {
             PushNotificationsManager.shared.setupRemoteNotifications()
+        }
+    }
+
+    /// Posts `wpAccountDefaultWordPressComAccountChanged` on the main thread with the account as the object, then
+    /// runs `completion`.
+    ///
+    /// Nothing is posted if the account is gone: observers treat the notification without an object as a logout.
+    private func postDefaultAccountChanged(accountID: NSManagedObjectID, completion: (() -> Void)? = nil) {
+        let notify = {
+            if let account = try? self.coreDataStack.mainContext.existingObject(with: accountID) {
+                NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: account)
+            }
+            completion?()
         }
 
         if Thread.isMainThread {
             // This is meant to help with testing account observers.
             // Short version: dispatch_async and XCTest asynchronous helpers don't play nice with each other
             // Long version: see the comment in https://github.com/wordpress-mobile/WordPress-iOS/blob/2f9a2100ca69d8f455acec47a1bbd6cbc5084546/WordPress/WordPressTest/AccountServiceRxTests.swift#L7
-            notifyAccountChange()
+            notify()
         } else {
-            DispatchQueue.main.async(execute: notifyAccountChange)
+            DispatchQueue.main.async(execute: notify)
         }
+    }
+
+    /// The stored account of a WordPress.com user: the one with the user's ID, or else the one with the username.
+    ///
+    /// The username can change on WordPress.com. A lookup by username alone would add a second account for the
+    /// same user, and the next blog sync would remove the first one together with its sites and local drafts.
+    @objc(existingAccountForRemoteUser:inContext:)
+    func existingAccount(for remoteUser: RemoteUser, in context: NSManagedObjectContext) -> WPAccount? {
+        if let userID = remoteUser.userID?.int64Value,
+            let account = try? WPAccount.lookup(withUserID: userID, in: context)
+        {
+            return account
+        }
+        guard let username = remoteUser.username else {
+            return nil
+        }
+        return try? WPAccount.lookup(withUsername: username, in: context)
+    }
+
+    /// Tells observers that the default account has a new token.
+    ///
+    /// `setDefaultWordPressComAccount` does not post for an account that is already the default, so without this
+    /// a re-authentication of the default account would leave observers, such as the wordpress-rs authentication
+    /// provider, with the rejected token.
+    @objc(postDefaultAccountTokenReplacedForAccountID:)
+    func postDefaultAccountTokenReplaced(accountID: NSManagedObjectID) {
+        postDefaultAccountChanged(accountID: accountID)
     }
 
     func removeDefaultWordPressComAccount() {
