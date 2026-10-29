@@ -137,6 +137,6 @@ private extension InlineEditableSingleLineCell {
 
     func configureInteraction(_ disabled: Bool) {
         isUserInteractionEnabled = !disabled
-        textField.textColor = disabled ? UIAppColor.neutral(.shade20) : .label
+        textField.textColor = disabled ? .secondaryLabel : .label
     }
 }
