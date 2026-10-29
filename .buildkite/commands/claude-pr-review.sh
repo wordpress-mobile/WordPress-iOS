@@ -154,7 +154,8 @@ echo "--- :xcode: Enabling Xcode MCP for ${REVIEWER}"
 # Headless Xcode asks before an agent or folder may use it. Nobody can answer
 # on CI, so allow every agent: this VM is thrown away after the job. The
 # setting is per user, and `mcp-server` takes the user from the SUDO_* variables.
-as_root_for_reviewer() { sudo -n env SUDO_USER="$REVIEWER" SUDO_UID="$reviewer_id" SUDO_GID="$reviewer_id" "$@"; }
+# It also writes its settings under $HOME, so point that at the reviewer too.
+as_root_for_reviewer() { sudo -n env HOME="$REVIEWER_HOME" SUDO_USER="$REVIEWER" SUDO_UID="$reviewer_id" SUDO_GID="$reviewer_id" "$@"; }
 as_root_for_reviewer xcrun mcp-server enable --unsafe-always-allow-all-agents || echo "Could not enable Xcode MCP."
 as_root_for_reviewer xcrun mcp-server allow-folder "$REVIEWER_REPO" --always || true
 
