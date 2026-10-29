@@ -38,7 +38,7 @@ public class MySitesCoordinator: NSObject {
 
     @objc
     public lazy var navigationController: UINavigationController = {
-        let navigationController = UINavigationController(rootViewController: rootContentViewController)
+        let navigationController = MySitesNavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.tabBarItem.image = UIImage(named: "tab-bar-home")
