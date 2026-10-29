@@ -26,6 +26,14 @@ WORDPRESS_BETA_APP_DESCRIPTION_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress'
 JETPACK_BETA_APP_DESCRIPTION_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'beta_app_description.txt')
 BETA_APP_DESCRIPTION_PATH_READER = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'reader_metadata', 'default', 'beta_app_description.txt')
 
+# The simulator and iOS version that the test lanes build for and run on. Naming both stops `scan`
+# from reading the build settings to pick a simulator, which takes about 30 s on CI.
+TEST_SIMULATOR_DEVICE = 'iPhone 18 Pro'
+TEST_DEPLOYMENT_TARGET = XcconfigHelper.fetch(
+  path: File.join(PROJECT_ROOT_FOLDER, 'Config', 'Common.xcconfig'),
+  key: 'IPHONEOS_DEPLOYMENT_TARGET'
+)
+
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
 USER_ENV_FILE_PATH = File.join(Dir.home, ENV_FILE_NAME)

@@ -5,7 +5,7 @@
 
 # The ~> modifier is not currently used, but we check for it just in case
 XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
-CI_TOOLKIT_PLUGIN_VERSION="6.3.0"
+CI_TOOLKIT_PLUGIN_VERSION="576fd6e01a8e8e7dad052c433c059796ee75b6b3"
 TEST_COLLECTOR_PLUGIN_VERSION="1.11.0"
 DOCKER_PLUGIN_VERSION="5.13.0"
 # This is also the Ruby image tag, so a `.ruby-version` bump can only land once that tag is published on ECR Public.
