@@ -86,7 +86,7 @@ class MediaSizeSliderCell: UITableViewCell {
         titleLabel.font = WPStyleGuide.tableviewTextFont()
         titleLabel.textColor = UIAppColor.neutral(.shade70)
         valueLabel.font = .preferredFont(forTextStyle: .callout)
-        valueLabel.textColor = UIAppColor.neutral(.shade30)
+        valueLabel.textColor = .secondaryLabel
     }
 
     // MARK: - Init
