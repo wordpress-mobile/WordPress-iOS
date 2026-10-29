@@ -47,6 +47,14 @@ struct SharedCellActionTests {
         #expect(cell.valueTextField.delegate === cell)
     }
 
+    /// Tapping the name label focuses the text field, so the label must accept touches.
+    @Test func nameValueCellLabelAcceptsTaps() {
+        let cell = InlineEditableNameValueCell(style: .default, reuseIdentifier: nil)
+
+        #expect(cell.nameLabel.isUserInteractionEnabled)
+        #expect(cell.nameLabel.gestureRecognizers?.contains { $0 is UITapGestureRecognizer } == true)
+    }
+
     @Test func nameValueCellDisablesEditingWithAnAccessory() {
         let cell = InlineEditableNameValueCell(style: .default, reuseIdentifier: nil)
 

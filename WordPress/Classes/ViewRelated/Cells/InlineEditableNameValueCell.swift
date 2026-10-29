@@ -39,6 +39,8 @@ class InlineEditableNameValueCell: WPTableViewCell, Reusable {
         label.backgroundColor = nil
         label.contentMode = .left
         label.textAlignment = .natural
+        // Tapping the label focuses the text field.
+        label.isUserInteractionEnabled = true
         label.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
         label.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
         return label
