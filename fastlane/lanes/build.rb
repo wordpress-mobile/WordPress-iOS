@@ -53,7 +53,7 @@ platform :ios do
   #   bundle exec fastlane test clean:true
   #
   desc 'Run tests locally'
-  lane :test do |scheme: 'WordPress', device: TEST_SIMULATOR_DEVICE, ios_version: nil, only_testing: nil, clean: false|
+  lane :test do |scheme: 'WordPress', device: 'iPhone 18 Pro', ios_version: nil, only_testing: nil, clean: false|
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
@@ -82,9 +82,9 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
       # With `app_name` above, naming the device and the deployment target stops scan from reading
-      # the build settings. See `TEST_SIMULATOR_DEVICE`.
-      device: options[:device] || TEST_SIMULATOR_DEVICE,
-      deployment_target_version: options[:ios_version] || TEST_DEPLOYMENT_TARGET,
+      # the build settings. See `CI_SIMULATOR_DEVICE`.
+      device: options[:device] || CI_SIMULATOR_DEVICE,
+      deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       disallow_xcodebuild_settings_lookup: true
     )
   end
@@ -105,9 +105,9 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
       # With `app_name` above, naming the device and the deployment target stops scan from reading
-      # the build settings. See `TEST_SIMULATOR_DEVICE`.
-      device: options[:device] || TEST_SIMULATOR_DEVICE,
-      deployment_target_version: options[:ios_version] || TEST_DEPLOYMENT_TARGET,
+      # the build settings. See `CI_SIMULATOR_DEVICE`.
+      device: options[:device] || CI_SIMULATOR_DEVICE,
+      deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       disallow_xcodebuild_settings_lookup: true
     )
   end
@@ -138,8 +138,8 @@ platform :ios do
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
       # Naming the device and the deployment target stops scan from reading the build settings to pick a simulator.
-      device: options[:device] || TEST_SIMULATOR_DEVICE,
-      deployment_target_version: options[:ios_version] || TEST_DEPLOYMENT_TARGET,
+      device: options[:device] || CI_SIMULATOR_DEVICE,
+      deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
