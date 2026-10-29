@@ -19,7 +19,7 @@ steps:
       # (PostHelper moved to the app target without updating the Reader target),
       # and went undetected after #25179 removed Reader from CI. Re-add once
       # the Reader target archives again.
-      - label: ":testflight: Build & Upload wordpress"
+      - label: ":wordpress: :testflight: Build & Upload WordPress"
         key: testflight_upload_wordpress
         command: ".buildkite/commands/build-and-upload-testflight.sh wordpress"
         plugins: [$CI_TOOLKIT_PLUGIN]
@@ -28,7 +28,7 @@ steps:
           - github_commit_status:
               context: "TestFlight Build (wordpress)"
 
-      - label: ":testflight: Build & Upload jetpack"
+      - label: ":jetpack: :testflight: Build & Upload Jetpack"
         key: testflight_upload_jetpack
         command: ".buildkite/commands/build-and-upload-testflight.sh jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
@@ -38,7 +38,7 @@ steps:
               context: "TestFlight Build (jetpack)"
 
       # Waiting for App Store Connect to process the upload needs no Xcode, so it doesn't hold a Mac.
-      - label: ":testflight: Process wordpress"
+      - label: ":wordpress: :testflight: Process WordPress"
         command: ".buildkite/commands/finalize-testflight-build.sh wordpress"
         depends_on: testflight_upload_wordpress
         if: "build.branch == 'trunk'"
@@ -59,7 +59,7 @@ steps:
           - github_commit_status:
               context: "TestFlight Processing (wordpress)"
 
-      - label: ":testflight: Process jetpack"
+      - label: ":jetpack: :testflight: Process Jetpack"
         command: ".buildkite/commands/finalize-testflight-build.sh jetpack"
         depends_on: testflight_upload_jetpack
         if: "build.branch == 'trunk'"
