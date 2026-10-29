@@ -11,12 +11,12 @@ struct AppLogFile: Hashable, Sendable {
 ///
 /// Code that reads the log files (support screens, Zendesk, encrypted log upload, crash reports) goes through this
 /// type, so it doesn't depend on the logging library that writes them.
-struct LogFileStore: Sendable {
+struct LogFileStore {
     static let shared = LogFileStore(fileLogger: WPLogger.shared().fileLogger)
 
-    private let listFiles: @Sendable () -> [AppLogFile]
+    private let listFiles: () -> [AppLogFile]
 
-    init(listFiles: @escaping @Sendable () -> [AppLogFile]) {
+    init(listFiles: @escaping () -> [AppLogFile]) {
         self.listFiles = listFiles
     }
 
@@ -28,7 +28,10 @@ struct LogFileStore: Sendable {
         }
     }
 
-    /// The log files on disk, newest first. The first one is the file the app is writing to.
+    /// The log files on disk, newest first.
+    ///
+    /// The first one is usually the file the app is writing to. Right after the logger rolls to a new file, it's the
+    /// file that was just closed, until the next line is logged.
     func logFiles() -> [AppLogFile] {
         listFiles()
     }
