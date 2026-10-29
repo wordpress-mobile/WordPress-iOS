@@ -122,7 +122,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         }
         let alert = UIAlertController(
             title: notReadyTitle,
-            message: PostEditorStrings.saveWhileNotReadyMessage,
+            message: isPage
+                ? PostEditorStrings.savePageWhileNotReadyMessage : PostEditorStrings.savePostWhileNotReadyMessage,
             preferredStyle: .alert
         )
         alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
@@ -134,7 +135,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     func showLeaveWhileSavingLockedAlert(onLeave: @escaping () -> Void) {
         let alert = UIAlertController(
             title: notReadyTitle,
-            message: PostEditorStrings.leaveWhileNotReadyMessage,
+            message: isPage
+                ? PostEditorStrings.leavePageWhileNotReadyMessage : PostEditorStrings.leavePostWhileNotReadyMessage,
             preferredStyle: .alert
         )
         alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)

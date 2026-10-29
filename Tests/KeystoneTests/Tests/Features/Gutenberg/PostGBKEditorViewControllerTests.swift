@@ -163,10 +163,23 @@ struct PostGBKEditorViewControllerTests {
         window.rootViewController = viewController
         window.makeKeyAndVisible()
 
-        viewController.showLeaveWhileSavingLockedAlert {}
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
 
-        let alert = try #require(viewController.presentedViewController as? UIAlertController)
-        #expect(alert.title == PostEditorStrings.notReadyPageTitle)
+        viewController.performAfterConfirmingSavingLock {}
+        let saveAlert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(saveAlert.title == PostEditorStrings.notReadyPageTitle)
+        #expect(saveAlert.message == PostEditorStrings.savePageWhileNotReadyMessage)
+
+        // A fresh view controller, since the save alert is still presented.
+        let leaveViewController = makeViewController(postType: .page)
+        window.rootViewController = leaveViewController
+        leaveViewController.showLeaveWhileSavingLockedAlert {}
+        let leaveAlert = try #require(leaveViewController.presentedViewController as? UIAlertController)
+        #expect(leaveAlert.title == PostEditorStrings.notReadyPageTitle)
+        #expect(leaveAlert.message == PostEditorStrings.leavePageWhileNotReadyMessage)
     }
 
     @Test("asks before leaving while saving is locked")
@@ -181,7 +194,7 @@ struct PostGBKEditorViewControllerTests {
 
         #expect(!didLeave)
         let alert = try #require(viewController.presentedViewController as? UIAlertController)
-        #expect(alert.message == PostEditorStrings.leaveWhileNotReadyMessage)
+        #expect(alert.message == PostEditorStrings.leavePostWhileNotReadyMessage)
         #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.leave])
     }
 

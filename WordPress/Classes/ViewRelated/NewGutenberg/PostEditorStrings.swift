@@ -61,19 +61,33 @@ enum PostEditorStrings {
         comment:
             "Title of an alert shown when saving or closing the editor for a page while something, like a media upload, is in progress"
     )
-    static let leaveWhileNotReadyMessage = NSLocalizedString(
-        "postEditor.notReadyAlert.leaveMessage",
+    static let leavePostWhileNotReadyMessage = NSLocalizedString(
+        "postEditor.notReadyAlert.leavePostMessage",
         value:
             "If you leave now, anything still in progress, like a media upload, stops and won't be added to your post.",
         comment:
-            "Message of an alert shown when closing the editor while something, like a media upload, is in progress"
+            "Message of an alert shown when closing the editor for a post while something, like a media upload, is in progress"
     )
-    static let saveWhileNotReadyMessage = NSLocalizedString(
-        "postEditor.notReadyAlert.saveMessage",
+    static let leavePageWhileNotReadyMessage = NSLocalizedString(
+        "postEditor.notReadyAlert.leavePageMessage",
+        value:
+            "If you leave now, anything still in progress, like a media upload, stops and won't be added to your page.",
+        comment:
+            "Message of an alert shown when closing the editor for a page while something, like a media upload, is in progress"
+    )
+    static let savePostWhileNotReadyMessage = NSLocalizedString(
+        "postEditor.notReadyAlert.savePostMessage",
         value:
             "Something in the editor, like a media upload, is still in progress. If you continue, it may be missing or broken in your post.",
         comment:
-            "Message of an alert shown when saving, publishing or previewing while something, like a media upload, is in progress"
+            "Message of an alert shown when saving, publishing or previewing a post while something, like a media upload, is in progress"
+    )
+    static let savePageWhileNotReadyMessage = NSLocalizedString(
+        "postEditor.notReadyAlert.savePageMessage",
+        value:
+            "Something in the editor, like a media upload, is still in progress. If you continue, it may be missing or broken in your page.",
+        comment:
+            "Message of an alert shown when saving, publishing or previewing a page while something, like a media upload, is in progress"
     )
     static let leave = NSLocalizedString(
         "postEditor.notReadyAlert.leave",
