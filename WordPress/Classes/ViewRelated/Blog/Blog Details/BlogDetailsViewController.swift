@@ -1,5 +1,6 @@
 import Combine
 import UIKit
+import SwiftUI
 import WordPressData
 import WordPressShared
 import WordPressUI
@@ -16,12 +17,19 @@ public class BlogDetailsViewController: UIViewController {
             tableViewModel?.blog = blog
         }
     }
-    public private(set) var tableView: UITableView?
     public private(set) var tableViewModel: BlogDetailsTableViewModel?
-    public var isScrollEnabled = false
     public weak var presentationDelegate: BlogDetailsPresentationDelegate?
     public var isSidebarModeEnabled = false
     public weak var presentedSiteSettingsViewController: UIViewController?
+
+    var headerViewController: UIViewController? {
+        didSet { hostingController?.rootView.headerViewController = headerViewController }
+    }
+    lazy var onRefresh: () async -> Void = { [weak self] in
+        await self?.refreshMenu()
+    }
+
+    private var hostingController: UIHostingController<BlogDetailsView>?
 
     private lazy var blogService = BlogService(coreDataStack: ContextManager.shared)
     private var hasLoggedDomainCreditPromptShownEvent = false
@@ -29,7 +37,6 @@ public class BlogDetailsViewController: UIViewController {
 
     init(blog: Blog) {
         self.blog = blog
-        self.isScrollEnabled = false
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -40,43 +47,26 @@ public class BlogDetailsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        let tableView: UITableView
-        if isSidebarModeEnabled {
-            tableView = UITableView(frame: .zero, style: .grouped)
-        } else if isScrollEnabled {
-            tableView = UITableView(frame: .zero, style: .insetGrouped)
-        } else {
-            tableView = IntrinsicTableView(frame: .zero, style: .insetGrouped)
-            tableView.isScrollEnabled = false
-        }
-        self.tableView = tableView
+        let viewModel = BlogDetailsTableViewModel(blog: blog, viewController: self)
+        tableViewModel = viewModel
+        // Deep links need the menu actions before the view appears.
+        viewModel.configureTableViewData()
 
-        tableViewModel = BlogDetailsTableViewModel(blog: blog, viewController: self)
-        tableViewModel?.configure(tableView: tableView)
         accountAvatarSubscription = observeAccountAvatar()
-        // - warning: This needs to be populated early because tableViewModel.sections
-        // are what drive programmatical navigation with universal links
-        tableViewModel?.configureTableViewData()
+        let host = UIHostingController(
+            rootView: BlogDetailsView(
+                viewModel: viewModel,
+                headerViewController: headerViewController,
+                refresh: { [weak self] in await self?.onRefresh() }
+            )
+        )
+        hostingController = host
+        host.view.backgroundColor = .clear
+        add(host)
+        host.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(host.view)
 
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        if isSidebarModeEnabled {
-            tableView.separatorStyle = .none
-            additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        }
-
-        view.addSubview(tableView)
-        view.pinSubviewToAllEdges(tableView)
-
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(pulledToRefreshTriggered), for: .valueChanged)
-        tableView.refreshControl = refreshControl
-
-        tableView.accessibilityIdentifier = "Blog Details Table"
-        tableView.cellLayoutMarginsFollowReadableWidth = true
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        view.backgroundColor = isSidebarModeEnabled ? .systemBackground : .systemGroupedBackground
 
         hasLoggedDomainCreditPromptShownEvent = false
         preloadMetadata()
@@ -98,7 +88,6 @@ public class BlogDetailsViewController: UIViewController {
         tableViewModel?.viewWillAppear()
         // Configure and reload table data when appearing to ensure pending comment count is updated
         configureTableViewData()
-        reloadTableViewPreservingSelection()
         preloadBlogData()
     }
 
@@ -130,11 +119,6 @@ public class BlogDetailsViewController: UIViewController {
 
     @objc private func handleTraitChanges() {
         configureTableViewData()
-        reloadTableViewPreservingSelection()
-    }
-
-    public func reloadTableViewPreservingSelection() {
-        tableViewModel?.reloadTableViewPreservingSelection()
     }
 
     public func configureTableViewData() {
@@ -144,7 +128,6 @@ public class BlogDetailsViewController: UIViewController {
     public func `switch`(to blog: Blog) {
         self.blog = blog
         showInitialDetailsForBlog()
-        tableView?.reloadData()
         preloadMetadata()
     }
 
@@ -153,7 +136,7 @@ public class BlogDetailsViewController: UIViewController {
     }
 
     @MainActor
-    private func updateTableView() async {
+    func refreshMenu() async {
         await withCheckedContinuation { continuation in
             blogService.syncBlogAndAllMetadata(blog) {
                 continuation.resume()
@@ -162,24 +145,10 @@ public class BlogDetailsViewController: UIViewController {
 
         tableViewModel?.updateCustomPostTypesObservationIfNeeded()
         configureTableViewData()
-        reloadTableViewPreservingSelection()
-    }
-
-    public func pulledToRefresh(with refreshControl: UIRefreshControl, onCompletion completion: (() -> Void)?) {
-        Task { @MainActor [weak refreshControl] in
-            await updateTableView()
-            refreshControl?.endRefreshing()
-            completion?()
-        }
     }
 
     public func refresh() {
-        guard let refreshControl = tableView?.refreshControl else {
-            wpAssertionFailure("Can't get the UIRefreshControl instance")
-            return
-        }
-        refreshControl.beginRefreshing()
-        pulledToRefreshTriggered(refreshControl)
+        Task { await refreshMenu() }
     }
 
     private func preloadBlogData() {
@@ -203,7 +172,7 @@ public class BlogDetailsViewController: UIViewController {
 
     public func preloadMetadata() {
         Task {
-            await updateTableView()
+            await refreshMenu()
         }
     }
 
@@ -235,10 +204,6 @@ public class BlogDetailsViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    @objc private func pulledToRefreshTriggered(_ control: UIRefreshControl) {
-        pulledToRefresh(with: control, onCompletion: {})
-    }
-
     @objc private func handleDataModelChange(_ notification: NSNotification) {
         guard let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> else {
             return
@@ -259,13 +224,11 @@ public class BlogDetailsViewController: UIViewController {
 
         if updatedObjects.contains(blog) || (blog.settings != nil && updatedObjects.contains(blog.settings!)) {
             configureTableViewData()
-            reloadTableViewPreservingSelection()
         }
     }
 
     @objc private func handleWillEnterForeground(_ notification: NSNotification) {
         configureTableViewData()
-        reloadTableViewPreservingSelection()
     }
 
     private func observeManagedObjectContextObjectsDidChangeNotification() {
@@ -317,7 +280,7 @@ extension BlogDetailsViewController: UIAdaptivePresentationControllerDelegate {
 
     public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         if presentationController.presentedViewController == presentedSiteSettingsViewController {
-            tableView?.deselectSelectedRowWithAnimation(true)
+            tableViewModel?.clearSelection()
         }
     }
 }
