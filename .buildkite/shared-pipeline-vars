@@ -12,7 +12,7 @@ DOCKER_PLUGIN_VERSION="5.13.0"
 RUBY_VERSION=$(cat .ruby-version)
 
 export IMAGE_ID="xcode-$XCODE_VERSION"
-# The slim image is enough – the steps that use it need only Ruby, its bundled gems, and bash.
+# The slim image is enough for those steps that only Ruby, its stock gems, and bash.
 export DOCKER_RUBY_IMAGE="public.ecr.aws/docker/library/ruby:${RUBY_VERSION}-slim"
 # The full image has the compiler that `bundle install` needs to build native gems.
 export DOCKER_RUBY_FULL_IMAGE="public.ecr.aws/docker/library/ruby:${RUBY_VERSION}"
