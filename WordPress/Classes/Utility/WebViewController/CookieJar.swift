@@ -142,11 +142,18 @@ private extension HTTPCookie {
             && value.components(separatedBy: "|").first == username
     }
 
+    /// Matches the way `HTTPCookieStorage.cookies(for:)` does: expired cookies never match, hosts are
+    /// compared case-insensitively, and a cookie path only matches whole path segments.
     func matches(url: URL) -> Bool {
-        guard let host = url.host else {
+        guard let host = url.host?.lowercased() else {
             return false
         }
 
+        if let expiresDate, expiresDate <= Date() {
+            return false
+        }
+
+        let domain = domain.lowercased()
         let matchesDomain: Bool
         if domain.hasPrefix(".") {
             matchesDomain =
@@ -155,8 +162,16 @@ private extension HTTPCookie {
         } else {
             matchesDomain = host == domain
         }
+
+        let urlPath = url.path(percentEncoded: false)
+        let requestPath = urlPath.isEmpty ? "/" : urlPath
+        let matchesPath =
+            requestPath == path
+            || (requestPath.hasPrefix(path)
+                && (path.hasSuffix("/") || requestPath.dropFirst(path.count).hasPrefix("/")))
+
         return matchesDomain
-            && url.path.hasPrefix(path)
+            && matchesPath
             && (!isSecure || (url.scheme == "https"))
     }
 }
