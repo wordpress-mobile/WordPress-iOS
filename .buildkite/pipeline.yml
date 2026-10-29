@@ -10,28 +10,6 @@ env:
 # This is the default pipeline – it will build and test the app
 steps:
   #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    key: prototype_builds_group
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
   # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
   #################
   - group: ":testflight: TestFlight Builds"
@@ -80,7 +58,7 @@ steps:
   - group: "🔬 Unit Tests"
     key: unit_tests_group
     steps:
-      - label: "🔬 :swift: Swift Package Tests"
+      - label: "🔬 :swift: Swift Package Tests and String Catalog Coverage"
         command: .buildkite/commands/run-swift-package-tests.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
@@ -106,14 +84,6 @@ steps:
         notify:
           - github_commit_status:
               context: "Unit Tests"
-      - label: "🔬 Reader Unit Tests"
-        command: ".buildkite/commands/run-unit-tests-reader.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Reader Unit Tests"
       # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
       # - label: "🔬 Keystone Unit Tests"
       #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
@@ -165,13 +135,6 @@ steps:
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
 
-      - label: ":mag: Verify String Catalog Coverage"
-        command: .buildkite/commands/verify-strings-catalog.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Verify String Catalog Coverage"
-
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh
         # Pure Ruby, so it runs in a Ruby container on the Linux queue instead of booting a Mac VM.
@@ -194,7 +157,6 @@ steps:
     # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
     depends_on:
       - linters_group
-      - prototype_builds_group
       - unit_tests_group
     allow_dependency_failure: true
     agents:

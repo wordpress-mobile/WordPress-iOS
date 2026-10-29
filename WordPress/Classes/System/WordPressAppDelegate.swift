@@ -104,6 +104,12 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             ])
         }
 
+        // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPSetLoggingDelegate(libraryLogger)
+
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
@@ -377,10 +383,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
-        let libraryLogger = WordPressLibraryLogger()
-        TracksLogging.delegate = libraryLogger
-        WPKitSetLoggingDelegate(libraryLogger)
-        WPSetLoggingDelegate(libraryLogger)
         printDebugLaunchInfo()
         toggleExtraDebuggingIfNeeded()
 
@@ -752,7 +754,6 @@ extension WordPressAppDelegate {
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
-        SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjackSwift.dynamicLogLevel = level
     }
 

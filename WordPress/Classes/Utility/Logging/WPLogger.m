@@ -1,14 +1,9 @@
 @import CocoaLumberjack;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 #import "WPLogger.h"
 #import "WordPress-Swift.h"
-DDLogLevel ddLogLevel = DDLogLevelInfo;
-
-void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
-{
-    ddLogLevel = (DDLogLevel)ddLogLevelRawValue;
-}
 
 @interface WPLogger ()
 @property (nonatomic, strong, readwrite) DDFileLogger * _Nonnull fileLogger;
@@ -117,7 +112,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
         [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
     }
 
-    DDLogWarn(@"All log files erased.");
+    WPLogWarning(@"All log files erased.");
 }
 
 - (void)deleteArchivedLogs
@@ -129,7 +124,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
         }
     }
 
-    DDLogWarn(@"All archived log files erased.");
+    WPLogWarning(@"All archived log files erased.");
 }
 
 #pragma mark - Public static methods

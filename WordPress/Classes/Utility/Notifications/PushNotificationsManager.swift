@@ -207,6 +207,7 @@ public final class PushNotificationsManager: NSObject {
 
         // Badge: Reset
         guard let type = userInfo.string(forKey: Notification.typeKey), type != Notification.badgeResetValue else {
+            completionHandler?(.noData)
             return
         }
 
@@ -220,9 +221,10 @@ public final class PushNotificationsManager: NSObject {
 
         for handler in handlers {
             if handler(userInfo, userInteraction, completionHandler) {
-                break
+                return
             }
         }
+        completionHandler?(.noData)
     }
 
     /// Tracks a Notification Event

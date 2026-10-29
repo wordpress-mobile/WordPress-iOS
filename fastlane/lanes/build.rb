@@ -78,10 +78,14 @@ platform :ios do
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
+      app_name: 'WordPress',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      device: options[:device],
-      deployment_target_version: options[:ios_version]
+      # Naming the device and the deployment target, with `app_name` above, stops scan from reading
+      # the build settings, which takes about 30 s on CI.
+      device: options[:device] || 'iPhone 17 Pro',
+      deployment_target_version: options[:ios_version] || '17.0',
+      disallow_xcodebuild_settings_lookup: true
     )
   end
 
@@ -97,10 +101,14 @@ platform :ios do
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'Jetpack',
+      app_name: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      device: options[:device],
-      deployment_target_version: options[:ios_version]
+      # Naming the device and the deployment target, with `app_name` above, stops scan from reading
+      # the build settings, which takes about 30 s on CI.
+      device: options[:device] || 'iPhone 17 Pro',
+      deployment_target_version: options[:ios_version] || '17.0',
+      disallow_xcodebuild_settings_lookup: true
     )
   end
 
@@ -129,15 +137,25 @@ platform :ios do
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
-      device: options[:device],
-      deployment_target_version: options[:ios_version],
+      # Naming the device and the deployment target stops scan from reading the build settings to pick a simulator.
+      device: options[:device] || 'iPhone 17 Pro',
+      deployment_target_version: options[:ios_version] || '17.0',
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
+      # The tests run from the prebuilt .xctestrun. Resolving packages, or reading build settings
+      # (which also resolves them), would fetch every Swift package for nothing.
+      skip_package_dependencies_resolution: true,
+      disallow_xcodebuild_settings_lookup: true,
+      derived_data_path: DERIVED_DATA_PATH,
+      app_name: 'WordPress',
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
-      output_types: 'junit'
+      output_types: 'junit',
+      # Workaround: on Xcode 27, post-test simulator diagnostics collection can hang until its 600 s timeout.
+      # Drop once a newer Xcode no longer does.
+      xcargs: '-collect-test-diagnostics never'
     )
   end
 

@@ -22,10 +22,13 @@ struct WordPressDotComAuthenticator {
         case reauthentication(accountEmail: String?)
         // Connect a site to Jetpack or sign in to an already connected site.
         case jetpackSite(accountEmail: String?)
+        // Sign in from the support screen, which needs a WordPress.com account.
+        // Unlike `default`, the app isn't reloaded, so the user stays on the support screen.
+        case support
 
         func accountEmail(in context: NSManagedObjectContext) -> String? {
             switch self {
-            case .default:
+            case .default, .support:
                 return nil
             case let .reauthentication(email), let .jetpackSite(email):
                 return email
@@ -70,7 +73,7 @@ struct WordPressDotComAuthenticator {
     }
 
     let redirectURIScheme: String
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
@@ -78,7 +81,7 @@ struct WordPressDotComAuthenticator {
     private let clientSecret: String
 
     init(
-        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        coreDataStack: CoreDataStack = ContextManager.shared,
         showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,

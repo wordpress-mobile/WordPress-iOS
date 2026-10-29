@@ -1,15 +1,35 @@
 import UIKit
 import WordPressShared
 
-class StatsStackViewCell: StatsBaseCell, NibLoadable {
+class StatsStackViewCell: StatsBaseCell {
     private typealias Style = WPStyleGuide.Stats
 
-    @IBOutlet private(set) var stackView: UIStackView!
+    private(set) var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
         Style.configureCell(self)
-        stackView.removeAllSubviews()
+
+        contentView.addSubview(stackView)
+        let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor)
+        NSLayoutConstraint.activate([
+            topConstraint,
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+        self.topConstraint = topConstraint
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func prepareForReuse() {

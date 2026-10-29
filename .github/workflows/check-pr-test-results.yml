@@ -1,0 +1,47 @@
+name: 🧪 Check PR Test Results
+
+# CI doesn't build pull requests from forks, so ask fork authors to show that
+# they built the change and ran its tests before a maintainer looks at it.
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  check-test-results:
+    if: ${{ github.event.pull_request.head.repo.fork }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Check the PR description for test results
+        # Pass the description through the environment, never through `${{ }}`
+        # in the script, so its contents can't be run as shell code.
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        shell: python3 {0}
+        run: |
+          import os
+          import re
+          import sys
+
+          contributing = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/blob/trunk/CONTRIBUTING.md#before-opening-a-pull-request"
+
+          # Ignore the template's own instructions and example result line.
+          body = re.sub(r"<!--.*?-->", "", os.environ.get("PR_BODY") or "", flags=re.DOTALL)
+
+          section = re.search(r"^#+\s*What I ran\s*$(.*?)(?=^#+\s|\Z)", body, flags=re.MULTILINE | re.DOTALL | re.IGNORECASE)
+          if section is None:
+              print(f"::error::The pull request description has no \"What I ran\" section. See {contributing}")
+              sys.exit(1)
+
+          # XCTest prints `Executed 3 tests, with 0 failures`. Swift Testing prints
+          # `Test run with 6 tests in 1 suite passed`. A change with no tests to run
+          # says `No tests apply:` with the reason.
+          result_line = re.compile(r"Executed \d+ tests?, with \d+ failures?|Test run with \d+ tests?|^\s*No tests apply:[ \t]*\S", re.MULTILINE | re.IGNORECASE)
+          if not result_line.search(section.group(1)):
+              print(f"::error::The \"What I ran\" section has no test result line or \"No tests apply:\" reason. See {contributing}")
+              sys.exit(1)
+
+          print("Found test results in the pull request description.")
