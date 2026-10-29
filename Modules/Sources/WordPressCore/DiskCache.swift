@@ -7,9 +7,11 @@ public actor DiskCache: DiskCacheProtocol {
 
     public static let shared = DiskCache()
 
-    private let cacheRoot = URL.cachesDirectory
+    private let cacheRoot: URL
 
-    public init() {}
+    public init(cacheRoot: URL = .cachesDirectory) {
+        self.cacheRoot = cacheRoot
+    }
 
     public func read<T>(
         _ type: T.Type,
@@ -23,15 +25,19 @@ public actor DiskCache: DiskCacheProtocol {
         }
 
         if let interval {
-            let attributes = try FileManager.default.attributesOfItem(atPath: path.path())
+            // Read the date off the URL rather than a path string: `path()` percent-encodes, so a
+            // key needing encoding would name a file that doesn't exist.
+            let creationDate = try path.resourceValues(forKeys: [.creationDateKey]).creationDate
 
             // If we can't find the creation date, assume the cache object is invalid because we can't guarantee
             // the developer's intent will be respected.
-            guard let creationDate = attributes[.creationDate] as? Date else {
+            guard let creationDate else {
                 return nil
             }
 
-            if creationDate.addingTimeInterval(interval) > Date.now {
+            // The entry expires once `interval` has elapsed since it was written, so treat it as a
+            // miss only once that moment has passed.
+            if creationDate.addingTimeInterval(interval) < Date.now {
                 return nil
             }
         }
