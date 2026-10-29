@@ -92,10 +92,34 @@ fi
 echo "--- :xcode: Xcode MCP as $(id -un)"
 mcp_status=$(xcrun mcp-server status 2>&1 || true)
 echo "$mcp_status" | sed 's/^/  /' | tee -a "$report"
+# The permission alone isn't enough: the bridge must also be able to launch
+# Xcode Service, which needs a desktop session. So ask it to start for real.
+XCODE_MCP=no
 if grep -q "unsafe-always-allow-all-agents" <<<"$mcp_status"; then
-  XCODE_MCP=yes
-else
-  XCODE_MCP=no
+  probe=$(python3 - <<'PY' 2>&1 || true
+import json, subprocess, threading
+request = {"jsonrpc": "2.0", "id": 1, "method": "initialize",
+           "params": {"protocolVersion": "2025-06-18", "capabilities": {},
+                      "clientInfo": {"name": "ci-probe", "version": "1"}}}
+proc = subprocess.Popen(["xcrun", "mcpbridge"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE, text=True)
+proc.stdin.write(json.dumps(request) + "\n")
+proc.stdin.flush()
+reply = []
+reader = threading.Thread(target=lambda: reply.append(proc.stdout.readline()), daemon=True)
+reader.start()
+reader.join(60)
+proc.kill()
+line = reply[0] if reply else ""
+if '"result"' in line:
+    print("ok")
+else:
+    err = proc.stderr.read() if proc.poll() is not None else ""
+    print("failed: " + ((line or err).strip()[:300] or "no reply in 60 s"))
+PY
+)
+  echo "Xcode MCP bridge: ${probe}" | tee -a "$report"
+  if [[ "$probe" == ok ]]; then XCODE_MCP=yes; fi
 fi
 echo "Xcode MCP usable: ${XCODE_MCP}" | tee -a "$report"
 
