@@ -1,5 +1,6 @@
 27.5
 -----
+* [*] Keep profile pictures up to date across the app after changing your Gravatar [#26163]
 * [*] Fix tab bar titles showing truncated and misaligned on iOS 26 [#26162]
 * [*] Reader: Show a name for every subscription, including sites the app cannot load [#26274]
 * [*] Share Extension: Fix a crash when sharing a photo [#26251]
