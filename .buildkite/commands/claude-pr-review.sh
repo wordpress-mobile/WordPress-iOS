@@ -20,14 +20,21 @@ set -eEuo pipefail
 trap 'echo "^^^ +++ Unexpected failure at line ${LINENO}: the review did not complete."; exit 2' ERR
 
 CLAUDE_CODE_VERSION="2.1.310"
+# darwin-arm64 binary, from https://downloads.claude.ai/claude-code-releases/<version>/manifest.json
+CLAUDE_CODE_SHA256="ffb64331bc0ee1b69efb7c2c428bd3ab516bc31b75bf60886b356c97c1c25ffd"
 CLAUDE_MODEL="claude-opus-5-5"
 # Pinned so a Claude Code update can't change it silently. It is also the current default.
 CLAUDE_EFFORT="medium"
 GH_VERSION="2.103.3"
 GH_ARM64_SHA256="d700207eae9ae98fe2b89535c2c087c07823d4628c56364695a5a07ef311c062"
+SF_VERSION="0.4.0"
+# spacefast-darwin-arm64.gz, from the release's latest.json
+SF_ARM64_SHA256="f9d3e396de0919450792917c6c91e97048aafce5b35dbeeb4166a1426689e1c7"
 SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 18 Pro}"
 INPUT_DIR="build/claude-review-input"
 EVIDENCE_DIR="build/claude-review"
+# Written only by this script (the build user), so the reviewer can't change it.
+AUDIT_DIR="build/claude-audit"
 MARKER="<!-- claude-ci-review -->"
 # Screenshots are published to this public Spacefast Space so GitHub can show
 # them. Needs SPACEFAST_TOKEN (a `ci_deploy` key) from the pipeline's secrets;
@@ -41,6 +48,10 @@ CLAUDE_REVIEW_VALIDATE_SETUP=false
 if [[ "${1:-}" == --validate-setup ]]; then CLAUDE_REVIEW_VALIDATE_SETUP=true; fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
+
+# shellcheck source=.buildkite/claude/audit.sh
+source .buildkite/claude/audit.sh
+trap 'audit_stop' EXIT
 
 # ── Gates ────────────────────────────────────────────────────────────
 # Turns git@github.com:org/repo.git or https://github.com/org/repo.git into org/repo.
@@ -150,9 +161,13 @@ if dscl . -read /Groups/com.apple.access_ssh >/dev/null 2>&1; then
 fi
 sudo -n mkdir -p "$REVIEWER_HOME/.ssh"
 
+# Before the reviewer user runs anything.
+audit_start "$reviewer_id"
+
 echo "--- :wordpress: Installing what the test sites need"
 # Homebrew belongs to the build user, so install here; the reviewer only runs them.
-.buildkite/claude/wp-test-site.sh install-deps > /dev/null || echo "Warning: could not install the test site dependencies."
+.buildkite/claude/wp-test-site.sh install-deps > "$AUDIT_DIR/install-test-site-deps.log" 2>&1 \
+  || echo "Warning: could not install the test site dependencies (see install-test-site-deps.log)."
 
 echo "--- :card_file_box: Copying the checkout for ${REVIEWER}"
 # APFS clones, so this is quick and uses no extra space.
@@ -175,10 +190,24 @@ PROMPT_FILE="$(mktemp)"
     ruby -e 'print STDIN.read.gsub(/\{\{([A-Z_]+)\}\}/) { ENV.fetch($1) }' > "$PROMPT_FILE"
 sudo -n cp "$PROMPT_FILE" "$REVIEWER_HOME/prompt.md"
 
+# What Claude was given and run with, for the audit.
+mkdir -p "$AUDIT_DIR/inputs"
+cp "$PROMPT_FILE" "$AUDIT_DIR/inputs/prompt.md"
+cp .buildkite/claude/pr-review-schema.json "$INPUT_DIR"/* "$AUDIT_DIR/inputs/"
+jq -n --arg head "$HEAD_SHA" --arg base "$BASE_BRANCH" --arg pr "$PR_NUMBER" \
+  --arg claude "$CLAUDE_CODE_VERSION" --arg claude_sha256 "$CLAUDE_CODE_SHA256" --arg model "$CLAUDE_MODEL" --arg effort "$CLAUDE_EFFORT" \
+  --arg gh "$(gh --version | head -n 1)" --arg simulator "$SIMULATOR_NAME" --arg xcode "$(xcodebuild -version | tr '\n' ' ')" \
+  --arg reviewer "$REVIEWER" --argjson reviewer_uid "$reviewer_id" \
+  --arg scripts "$(shasum -a 256 .buildkite/commands/claude-pr-review*.sh .buildkite/claude/*)" \
+  '{pr: $pr, head_commit: $head, base_branch: $base, claude_code: $claude, claude_code_sha256: $claude_sha256,
+    model: $model, effort: $effort, gh: $gh, xcode: $xcode, simulator: $simulator,
+    reviewer: $reviewer, reviewer_uid: $reviewer_uid, script_sha256: ($scripts | split("\n"))}' > "$AUDIT_DIR/run-info.json"
+
 # The only secret the reviewer gets is the Anthropic key.
 env_file="$(mktemp)"
 {
-  printf 'export %s=%q\n' ANTHROPIC_API_KEY "$ANTHROPIC_API_KEY" CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" CLAUDE_MODEL "$CLAUDE_MODEL" \
+  printf 'export %s=%q\n' ANTHROPIC_API_KEY "$ANTHROPIC_API_KEY" CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" \
+    CLAUDE_CODE_SHA256 "$CLAUDE_CODE_SHA256" CLAUDE_MODEL "$CLAUDE_MODEL" \
     CLAUDE_EFFORT "$CLAUDE_EFFORT" SIMULATOR_NAME "$SIMULATOR_NAME" EVIDENCE_DIR "$EVIDENCE_DIR" \
     BUILDER_USER "$(id -un)" BUILDER_HOME "$HOME" BUILDER_PID "$$" \
     CLAUDE_REVIEW_VALIDATE_SETUP "$CLAUDE_REVIEW_VALIDATE_SETUP"
@@ -226,9 +255,13 @@ else
 fi
 
 # ── Review ───────────────────────────────────────────────────────────
+audit_canary
+
 echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
+# The reviewer script sends Claude's transcript to its stdout and everything
+# else to stderr. Saving it here means Claude can't edit it afterwards.
 reviewer_status=0
-as_reviewer "bash ~/run-review.sh" || reviewer_status=$?
+as_reviewer "bash ~/run-review.sh" > "$AUDIT_DIR/transcript.jsonl" || reviewer_status=$?
 
 # Bring the evidence back for upload and reporting. The reviewer controls
 # everything in its evidence folder, so never copy it as root: a symlink there
@@ -244,6 +277,7 @@ if as_reviewer "cd ~/wordpress-ios/${EVIDENCE_DIR} && tar -cf - ." > "$evidence_
 fi
 rm -f "$evidence_tar"
 find "$EVIDENCE_DIR" -mindepth 1 ! -type f ! -type d -print -delete | sed 's/^/Removed (not a plain file): /'
+audit_stop
 if [[ "$reviewer_status" == 3 ]]; then
   echo "^^^ +++ The reviewer user could reach the build user's secrets, so Claude did not run."
   exit 2
@@ -256,8 +290,8 @@ fi
 # (whether a segment's cost includes earlier segments isn't documented), and
 # take the last structured output.
 jq -r 'select(.type == "result") | "Segment: cost $\(.total_cost_usd // 0), \(.num_turns // 0) turns, \((.duration_ms // 0) / 1000 | floor)s"' \
-  "${EVIDENCE_DIR}/transcript.jsonl" 2>/dev/null || true
-REVIEW=$(jq -s -c '[.[] | select(.type == "result") | .structured_output // empty] | last // empty' "${EVIDENCE_DIR}/transcript.jsonl" 2>/dev/null || true)
+  "${AUDIT_DIR}/transcript.jsonl" 2>/dev/null || true
+REVIEW=$(jq -s -c '[.[] | select(.type == "result") | .structured_output // empty] | last // empty' "${AUDIT_DIR}/transcript.jsonl" 2>/dev/null || true)
 if [[ -z "$REVIEW" ]] || ! jq -e '.verdict == "pass" or .verdict == "fail"' <<<"$REVIEW" >/dev/null; then
   echo "^^^ +++ Claude's review did not complete, so there is no verdict."
   exit 2
@@ -292,13 +326,25 @@ else
   mkdir -p "$stage/$media_path"
   cp "${media[@]}" "$stage/$media_path/"
   published=no
-  if command -v sf >/dev/null || curl -fsSL https://spacefast.com/install.sh | sh -s -- --method binary --install-dir "$HOME/.local/bin" > /dev/null; then
+  sf_bin="$HOME/.local/bin/sf-${SF_VERSION}"
+  if [[ ! -x "$sf_bin" ]]; then
+    sf_gz="$(mktemp)"
+    if curl -fsSL -o "$sf_gz" "https://github.com/spacefast/cli/releases/download/v${SF_VERSION}/spacefast-darwin-arm64.gz" \
+        && echo "${SF_ARM64_SHA256}  ${sf_gz}" | shasum -a 256 -c -; then
+      gzip -dc "$sf_gz" > "$sf_bin" && chmod 0755 "$sf_bin"
+    else
+      rm -f "$sf_bin"
+    fi
+    rm -f "$sf_gz"
+  fi
+  if [[ -x "$sf_bin" ]]; then
     # Additive, so other PRs' files in the Space are kept.
-    if (cd "$stage" && sf publish . --publish-mode additive --space "$SPACEFAST_SPACE" --team "$SPACEFAST_TEAM" \
-          --token "$SPACEFAST_TOKEN" --json --wait > /dev/null); then
+    if (cd "$stage" && "$sf_bin" publish . --publish-mode additive --space "$SPACEFAST_SPACE" --team "$SPACEFAST_TEAM" \
+          --token "$SPACEFAST_TOKEN" --json --wait) > "$AUDIT_DIR/spacefast-publish.json" 2> "$AUDIT_DIR/spacefast-publish.err"; then
       published=yes
       for file in "${media[@]}"; do
         url="${SPACEFAST_BASE_URL%/}/${media_path}/$(basename "$file")"
+        echo "Published: ${url}" | tee -a "$AUDIT_DIR/published-urls.txt"
         if [[ "$(curl -s -o /dev/null -w '%{http_code}' "$url")" != 200 ]]; then
           echo "Not reachable: ${url}"
           published=no

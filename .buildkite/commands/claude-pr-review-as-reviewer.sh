@@ -4,8 +4,12 @@
 #
 # Exit status: 0 = Claude ran (the verdict is in the transcript), 3 = an
 # isolation check failed and Claude did not run, anything else = an error.
+#
+# Claude's transcript is the only thing written to stdout: claude-pr-review.sh
+# saves it where this user can't edit it. Everything else goes to stderr.
 
 set -euo pipefail
+exec 3>&1 1>&2
 
 AXE_VERSION="1.8.0"
 AXE_SHA256="7b76340b72e90d0f211bc7c4636f15009076eff07acef2f2b632b175debd8834"
@@ -75,7 +79,13 @@ fi
 # ── Capability checks (informational) ────────────────────────────────
 mkdir -p "$HOME/.local/bin"
 echo "--- :claude: Installing Claude Code ${CLAUDE_CODE_VERSION}"
-curl -fsSL https://claude.ai/install.sh | bash -s "$CLAUDE_CODE_VERSION" > /dev/null
+# The pinned binary, checked against its checksum, rather than the installer
+# script (which takes the checksum from the same server as the binary).
+claude_download="$(mktemp)"
+curl -fsSL -o "$claude_download" "https://downloads.claude.ai/claude-code-releases/${CLAUDE_CODE_VERSION}/darwin-arm64/claude"
+echo "${CLAUDE_CODE_SHA256}  ${claude_download}" | shasum -a 256 -c -
+install -m 0755 "$claude_download" "$HOME/.local/bin/claude"
+rm -f "$claude_download"
 claude --version
 
 echo "--- :iphone: Simulator as $(id -un)"
@@ -149,7 +159,8 @@ sed -i '' -e "s/{{SIMULATOR_UDID}}/${SIMULATOR_UDID}/g" "$HOME/prompt.md"
 # are turned off for the same reason.
 claude_env=("HOME=$HOME" "PATH=$PATH" "USER=$(id -un)" "LOGNAME=$(id -un)" "TMPDIR=${TMPDIR:-/tmp}"
   "LANG=en_US.UTF-8" "CI=true" "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY"
-  "BASH_DEFAULT_TIMEOUT_MS=3600000" "BASH_MAX_TIMEOUT_MS=3600000" "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1")
+  "BASH_DEFAULT_TIMEOUT_MS=3600000" "BASH_MAX_TIMEOUT_MS=3600000" "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1"
+  "DISABLE_UPDATES=1")
 echo "--- :claude: Reviewing as $(id -un)"
 env -i "${claude_env[@]}" claude -p "$(cat "$HOME/prompt.md")" \
   --model "$CLAUDE_MODEL" --effort "$CLAUDE_EFFORT" \
@@ -157,4 +168,4 @@ env -i "${claude_env[@]}" claude -p "$(cat "$HOME/prompt.md")" \
   --strict-mcp-config \
   --json-schema "$(cat "$HOME/schema.json")" \
   --output-format stream-json --verbose \
-  < /dev/null > "$EVIDENCE_DIR/transcript.jsonl" || true
+  < /dev/null >&3 3>&- || true

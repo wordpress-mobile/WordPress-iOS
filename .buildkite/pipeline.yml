@@ -172,6 +172,8 @@ steps:
     plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
       - "build/claude-review/**/*"
+      # Logs of everything the reviewer user did (.buildkite/claude/audit.sh)
+      - "build/claude-audit/**/*"
     retry:
       automatic:
         # Exit 2 means the review didn't complete (e.g. an API error), not that it found a bug.
