@@ -10,6 +10,10 @@
 
 set -euo pipefail
 exec 3>&1 1>&2
+# Only Claude gets fd 3. Anything else that kept it open, such as the test
+# site's database and web server, would hold the SSH session open after
+# Claude finishes, and the job would hang until it times out.
+{
 
 AXE_VERSION="1.8.0"
 AXE_SHA256="7b76340b72e90d0f211bc7c4636f15009076eff07acef2f2b632b175debd8834"
@@ -149,6 +153,8 @@ fi
 if [[ "${CLAUDE_REVIEW_VALIDATE_SETUP:-false}" == true ]]; then
   bash .buildkite/claude/validate-setup.sh "$SIMULATOR_UDID" "$EVIDENCE_DIR" "$report"
 fi
+
+} 3>&-
 
 # ── Review ───────────────────────────────────────────────────────────
 sed -i '' -e "s/{{SIMULATOR_UDID}}/${SIMULATOR_UDID}/g" "$HOME/prompt.md"
