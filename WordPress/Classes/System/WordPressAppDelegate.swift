@@ -647,7 +647,7 @@ extension WordPressAppDelegate {
 
     /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
     /// Otherwise an anonymous remote will be used
-    func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
+    func updateFeatureFlags(authToken: String? = nil, force: Bool = false, completion: (() -> Void)? = nil) {
         /// - warning: must be called before the `update(using:then:)`.
         if remoteFeatureFlagStore.isFreshInstall {
             FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
@@ -660,7 +660,9 @@ extension WordPressAppDelegate {
             api = WordPressComRestApi.defaultV2Api(in: mainContext)
         }
         let remote = FeatureFlagRemote(wordPressComRestApi: api)
-        remoteFeatureFlagStore.update(using: remote, then: completion)
+        // An explicit auth token means the account context changed; flags are
+        // customized per-user server-side, so bypass the refresh rate limit.
+        remoteFeatureFlagStore.update(using: remote, force: force || authToken != nil, then: completion)
     }
 
     func updateRemoteConfig() {
