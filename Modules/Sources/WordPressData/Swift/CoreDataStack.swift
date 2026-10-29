@@ -83,8 +83,11 @@ public extension CoreDataStack {
                 result = blockResult
             },
             completion: {
-                // `result` is always set: the block above runs before this completion.
-                completion?(result!)
+                guard let result else {
+                    assertionFailure("CoreDataStack conformers must run the block before calling the completion")
+                    return
+                }
+                completion?(result)
             },
             on: queue
         )

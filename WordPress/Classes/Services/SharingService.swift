@@ -10,8 +10,6 @@ import WordPressKit
     private let coreDataStack: CoreDataStack
 
     /// The initialiser for Objective-C code.
-    ///
-    /// Using `ContextManager` as the argument because `CoreDataStack` is not accessible from Objective-C code.
     @objc
     public init(contextManager: ContextManager) {
         self.coreDataStack = contextManager

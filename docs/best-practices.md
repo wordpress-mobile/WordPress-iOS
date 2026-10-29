@@ -13,7 +13,6 @@ WordPress for iOS wraps Core Data access in `CoreDataStack` and `ContextManager`
 Use these APIs by default:
 
 - Inject `CoreDataStack` into new Swift services, repositories, and view models. Default the dependency to `ContextManager.shared` at the composition boundary.
-- Use `CoreDataStack` when a type must remain Objective-C-compatible.
 - Use `ContextManager.shared` directly only at composition boundaries, in legacy code, or in small UI integration points where dependency injection would add noise.
 - Do not call `newDerivedContext()` in new code. It is deprecated and exists for legacy callers. Use `performQuery` or `performAndSave` instead.
 - Do not create `NSManagedObjectContext` manually for app data. If a test needs an isolated store, use the project testing helpers for `ContextManager`.
