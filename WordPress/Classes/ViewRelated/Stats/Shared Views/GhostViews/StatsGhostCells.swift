@@ -437,7 +437,7 @@ class StatsGhostPostingActivityCell: StatsGhostBaseCell {
 
         let months = makeGhostStackView(.horizontal, distribution: .fillEqually, spacing: 12, arrangedSubviews: [])
         for _ in 0...2 {
-            let monthView = PostingActivityMonth.loadFromNib()
+            let monthView = PostingActivityMonth()
             monthView.configureGhost(monthData: monthData)
             months.addArrangedSubview(monthView)
         }
