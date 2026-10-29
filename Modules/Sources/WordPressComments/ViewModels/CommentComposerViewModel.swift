@@ -41,6 +41,11 @@ final class CommentComposerViewModel: ObservableObject, Identifiable {
     enum Outcome: Equatable {
         case replied(notice: String)
         case edited
+        /// The edited comment no longer exists on the server. The sheet
+        /// closes instead of showing an in-sheet error, because the
+        /// coordinator's `.deleted` event also closes the detail screen
+        /// beneath it; the detail screen reports the failure as a notice.
+        case commentDeleted
     }
 
     @Published var text: String
@@ -138,6 +143,9 @@ final class CommentComposerViewModel: ObservableObject, Identifiable {
                 return .edited
             }
         } catch {
+            if case .edit = mode, (error as? WpApiError)?.httpStatusCode == 404 {
+                return .commentDeleted
+            }
             errorMessage = errorText(for: error)
             return nil
         }

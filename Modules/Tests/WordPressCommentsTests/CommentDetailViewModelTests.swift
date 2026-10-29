@@ -817,6 +817,18 @@ struct CommentDetailViewModelTests {
         #expect(noticePresenter.presented == ["Reply sent."])
     }
 
+    @Test func composerClosedCommentDeletedPresentsEditFailureNotice() async {
+        let noticePresenter = FakeNoticePresenter()
+        let vm = await makeLoadedVM(status: .approved, noticePresenter: noticePresenter)
+        vm.editTapped()
+        #expect(vm.composer != nil)
+
+        vm.composerClosed(.commentDeleted)
+
+        #expect(vm.composer == nil)
+        #expect(noticePresenter.presented == ["Failed to save changes."])
+    }
+
     @Test(arguments: [CommentComposerViewModel.Outcome.edited, nil])
     func composerClosedEditedOrCancelledJustDismisses(_ outcome: CommentComposerViewModel.Outcome?) async {
         let noticePresenter = FakeNoticePresenter()

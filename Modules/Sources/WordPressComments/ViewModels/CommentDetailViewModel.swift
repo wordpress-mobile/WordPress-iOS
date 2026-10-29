@@ -173,13 +173,20 @@ final class CommentDetailViewModel: ObservableObject {
         )
     }
 
-    /// Dismisses the composer sheet. A successful reply also posts its
-    /// notice; a cancel (nil) or a successful edit needs none (the edited
-    /// content updates in place via the coordinator's `contentChanged` event).
+    /// Dismisses the composer sheet. A successful reply posts its notice,
+    /// and an edit of a comment deleted elsewhere posts the edit failure (this
+    /// screen is closing too, so the notice is the only feedback). A cancel
+    /// (nil) or a successful edit needs none: the edited content updates in
+    /// place via the coordinator's `contentChanged` event.
     func composerClosed(_ outcome: CommentComposerViewModel.Outcome?) {
         composer = nil
-        if case .replied(let replyNotice) = outcome {
+        switch outcome {
+        case .replied(let replyNotice):
             noticePresenter?.present(title: replyNotice)
+        case .commentDeleted:
+            noticePresenter?.present(title: Strings.composerErrorEditFailed)
+        case .edited, nil:
+            break
         }
     }
 

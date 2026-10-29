@@ -216,6 +216,20 @@ struct CommentComposerViewModelTests {
         #expect(vm.errorMessage == Strings.composerErrorEditFailed)
     }
 
+    @Test func sendEditNotFoundReturnsCommentDeletedWithoutError() async {
+        let service = FakeCommentsService()
+        service.updateContentResult = .failure(WpApiError.stub(statusCode: 404))
+        let comment = makeDetail(id: 1, editContext: true, content: "raw")
+        let vm = makeComposerVM(mode: .edit(comment: comment), service: service)
+        vm.text = "new"
+
+        let outcome = await vm.send()
+
+        #expect(outcome == .commentDeleted)
+        #expect(vm.errorMessage == nil)
+        #expect(!vm.isSending)
+    }
+
     // MARK: - Cancel flows
 
     @Test func replyIsDirtyOnlyWithNonBlankText() {

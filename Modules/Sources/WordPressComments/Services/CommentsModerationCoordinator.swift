@@ -44,9 +44,10 @@ struct ReplyOutcome: Equatable, Sendable {
 /// machinery is needed.
 ///
 /// A genuine failure leaves the UI on the true pre-action state. The only
-/// exceptions are three bounded failure mappings, where the desired outcome
-/// holds anyway and the change is emitted: the same-status probe, already-
-/// trashed, and 404.
+/// exceptions are three bounded failure mappings, where the failure itself
+/// proves a state change and that change is emitted: the same-status probe and
+/// already-trashed (the desired outcome holds), and a 404 from a moderation
+/// action or an edit (the comment is gone).
 ///
 /// Deliberately UI-free so it stays testable off the main-thread UI stack.
 @MainActor
@@ -135,10 +136,23 @@ final class CommentsModerationCoordinator {
     /// limitation; see the design doc. The response also carries the
     /// authoritative server status; a status correction is emitted alongside
     /// the content change when it disagrees with `comment.status`.
+    ///
+    /// A 404 means the comment was deleted elsewhere while the editor was
+    /// open. It still throws, but `.deleted` is emitted first, as
+    /// `mapFailure` does for moderation, so the detail screen closes and list
+    /// rows drop the comment instead of offering a retry that can never land.
     func editContent(on comment: CommentDetail, newContent: String) async throws -> CommentDetail {
         try await holdingSlot(for: comment.id, waitingForSlot: true) { [weak self] in
             guard let self else { throw CancellationError() }
-            let updated = try await self.service.updateContent(id: comment.id, content: newContent)
+            let updated: CommentDetail
+            do {
+                updated = try await self.service.updateContent(id: comment.id, content: newContent)
+            } catch {
+                if (error as? WpApiError)?.httpStatusCode == 404 {
+                    self.events.send(.deleted(id: comment.id))
+                }
+                throw error
+            }
             self.events.send(
                 .contentChanged(id: comment.id, contentHTML: updated.contentHTML, contentRaw: updated.contentRaw)
             )

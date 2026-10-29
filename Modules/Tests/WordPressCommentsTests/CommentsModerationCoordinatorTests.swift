@@ -453,6 +453,20 @@ struct CommentsModerationCoordinatorTests {
         #expect(service.fetchStatusInvocations.isEmpty)
     }
 
+    @Test func editContentNotFoundThrowsWithDeletedEvent() async {
+        let service = FakeCommentsService()
+        service.updateContentResult = .failure(WpApiError.stub(statusCode: 404))
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let recorder = EventRecorder(coordinator)
+        let comment = makeDetail(id: 1, status: .approved)
+
+        await #expect(throws: (any Error).self) {
+            try await coordinator.editContent(on: comment, newContent: "x")
+        }
+
+        #expect(recorder.events == [.deleted(id: 1)])
+    }
+
     @Test func editContentEmitsStatusCorrectionWhenServerStatusDiffers() async throws {
         let service = FakeCommentsService()
         // A concurrent moderator (or plugin) marked the comment as spam while
