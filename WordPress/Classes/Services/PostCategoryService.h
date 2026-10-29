@@ -9,7 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
     PostCategoryServiceErrorsBlogNotFound,
-    PostCategoryServiceErrorsCategoryNotFound
+    PostCategoryServiceErrorsCategoryNotFound,
+    /// The blog has no remote, for example because its WordPress.com account has no token.
+    PostCategoryServiceErrorsNoRemoteForBlog
 };
 
 @interface PostCategoryService : NSObject
