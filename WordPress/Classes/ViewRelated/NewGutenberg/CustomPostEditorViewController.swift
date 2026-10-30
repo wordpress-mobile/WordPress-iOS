@@ -100,9 +100,32 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     }
 
     override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        super.editorDidLoad(viewContoller)
+
+        updatePrimarySaveButton()
         if editorSession?.started == false {
             editorSession?.start()
         }
+    }
+
+    override func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
+        super.editorDidBecomeUnavailable(viewController)
+
+        // Saving reads the content from the editor, so it has to wait for the reload.
+        updatePrimarySaveButton()
+        redoButton.isEnabled = false
+        undoButton.isEnabled = false
+    }
+
+    private func updatePrimarySaveButton() {
+        primarySaveButton.isEnabled = !isEditorUnavailable
+    }
+
+    override func editorDidRequestLatestContent(
+        _ controller: GutenbergKit.EditorViewController
+    ) -> (title: String, content: String)? {
+        // After a save, the post is newer than the content the editor opened with.
+        post.map { ($0.title?.raw ?? "", $0.content.raw ?? "") }
     }
 
     override func editor(
@@ -128,23 +151,42 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
 private extension CustomPostEditorViewController {
     @objc func closeButtonAction() {
+        // Closing ends the editor's uploads, so confirm before the media is lost.
+        guard !isSavingLocked else {
+            return showLeaveWhileSavingLockedAlert { [weak self] in
+                Task {
+                    await self?.dismiss(hasConfirmedSavingLock: true)
+                }
+            }
+        }
         Task {
             await dismiss()
         }
     }
 
-    func dismiss() async {
+    func dismiss(hasConfirmedSavingLock: Bool = false) async {
         navigationController?.view.isUserInteractionEnabled = false
         defer {
             navigationController?.view.isUserInteractionEnabled = true
         }
 
+        // The editor can't report its content before it loads, but nothing could have been edited yet either.
+        guard hasEditorLoaded || editorService.hasSettingsChanges else {
+            endEditorSession(outcome: .cancel)
+            navigationController?.dismiss(animated: true)
+            return
+        }
+
         let changed: Bool
+        var canSave = true
         do {
             changed = try await hasUnsavedChanges()
         } catch {
+            // Without the editor's content (e.g. after a crash), let the user discard
+            // their changes rather than trapping them in the editor.
             DDLogError("Failed to get editor content: \(error)")
-            return
+            changed = true
+            canSave = false
         }
 
         if changed {
@@ -155,14 +197,22 @@ private extension CustomPostEditorViewController {
                 self.endEditorSession(outcome: .discard)
                 self.navigationController?.dismiss(animated: true)
             }
-            if post?.status ?? .draft == .draft {
+            if canSave, post?.status ?? .draft == .draft {
                 alert.addAction(
                     UIAlertAction(
                         title: PostEditorStrings.saveDraft,
                         style: .default,
                         handler: { [weak self] _ in
-                            Task {
-                                await self?.save()
+                            let save: () -> Void = {
+                                Task {
+                                    await self?.save()
+                                }
+                            }
+                            // The Leave alert already warned about the upload, so don't ask again.
+                            if hasConfirmedSavingLock {
+                                save()
+                            } else {
+                                self?.performAfterConfirmingSavingLock(save)
                             }
                         }
                     )
@@ -178,20 +228,27 @@ private extension CustomPostEditorViewController {
     }
 
     func rightBarButtonItems() -> [UIBarButtonItem] {
-        var children: [UIMenuElement] = [editorModeToggle(), settingsAction(), helpAction(), feedbackAction()]
+        // Deferred so the toggle reflects the current editor mode and availability.
+        let editorModeToggle = UIDeferredMenuElement.uncached { [weak self] resolve in
+            resolve(self.map { [$0.editorModeToggle()] } ?? [])
+        }
+        var children: [UIMenuElement] = [editorModeToggle, settingsAction(), helpAction(), feedbackAction()]
 
         if post?.status ?? .draft == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
-                    let enabled = (try? await self?.hasUnsavedChanges()) == true
+                    let hasUnsavedChanges = (try? await self?.hasUnsavedChanges()) == true
                     let saveDraft = UIAction(
                         title: PostEditorStrings.saveDraft,
                         image: UIImage(systemName: "doc"),
-                        attributes: enabled ? [] : [.disabled]
+                        attributes: hasUnsavedChanges ? [] : [.disabled]
                     ) { [weak self] _ in
-                        Task {
-                            await self?.save()
-                        }
+                        self?
+                            .performAfterConfirmingSavingLock {
+                                Task {
+                                    await self?.save()
+                                }
+                            }
                     }
                     resolve([saveDraft])
                 }
@@ -210,15 +267,21 @@ private extension CustomPostEditorViewController {
     private func savePostAction() -> UIAction {
         if post?.status ?? .draft == .draft {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
-                Task {
-                    await self?.showPublishingSheet()
-                }
+                self?
+                    .performAfterConfirmingSavingLock {
+                        Task {
+                            await self?.showPublishingSheet()
+                        }
+                    }
             }
         } else {
             return UIAction(title: PostEditorStrings.update) { [weak self] _ in
-                Task {
-                    await self?.save()
-                }
+                self?
+                    .performAfterConfirmingSavingLock {
+                        Task {
+                            await self?.save()
+                        }
+                    }
             }
         }
     }

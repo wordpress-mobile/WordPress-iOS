@@ -15,21 +15,61 @@ steps:
   - group: ":testflight: TestFlight Builds"
     key: testflight_builds_group
     steps:
-      - label: ":testflight: Build & Upload {{matrix}}"
-        command: ".buildkite/commands/build-and-upload-testflight.sh {{matrix}}"
+      # Reader is omitted: its App Store archive has been broken since #25321
+      # (PostHelper moved to the app target without updating the Reader target),
+      # and went undetected after #25179 removed Reader from CI. Re-add once
+      # the Reader target archives again.
+      - label: ":wordpress: :testflight: Build & Upload WordPress"
+        key: testflight_upload_wordpress
+        command: ".buildkite/commands/build-and-upload-testflight.sh wordpress"
         plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.branch == 'trunk'"
-        matrix:
-          - "wordpress"
-          - "jetpack"
-          # Reader is omitted: its App Store archive has been broken since #25321
-          # (PostHelper moved to the app target without updating the Reader target),
-          # and went undetected after #25179 removed Reader from CI. Re-add once
-          # the Reader target archives again.
-          # - "reader"
         notify:
           - github_commit_status:
-              context: "TestFlight Build ({{matrix}})"
+              context: "TestFlight Build (wordpress)"
+
+      - label: ":jetpack: :testflight: Build & Upload Jetpack"
+        key: testflight_upload_jetpack
+        command: ".buildkite/commands/build-and-upload-testflight.sh jetpack"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        if: "build.branch == 'trunk'"
+        notify:
+          - github_commit_status:
+              context: "TestFlight Build (jetpack)"
+
+      # Waiting for App Store Connect to process the upload needs no Xcode, so it doesn't hold a Mac.
+      - label: ":wordpress: :testflight: Process WordPress"
+        command: ".buildkite/commands/finalize-testflight-build.sh wordpress"
+        depends_on: testflight_upload_wordpress
+        if: "build.branch == 'trunk'"
+        agents:
+          queue: "default"
+        plugins:
+          - $DOCKER_PLUGIN: &testflight_processing_docker
+              image: "$DOCKER_RUBY_FULL_IMAGE"
+              # An explicit pull is retried by the plugin; the one implied by `docker run` is not.
+              always-pull: true
+              mount-buildkite-agent: true
+              propagate-environment: true
+              environment:
+                - APP_STORE_CONNECT_API_KEY_KEY_ID
+                - APP_STORE_CONNECT_API_KEY_ISSUER_ID
+                - APP_STORE_CONNECT_API_KEY_KEY
+        notify:
+          - github_commit_status:
+              context: "TestFlight Processing (WordPress)"
+
+      - label: ":jetpack: :testflight: Process Jetpack"
+        command: ".buildkite/commands/finalize-testflight-build.sh jetpack"
+        depends_on: testflight_upload_jetpack
+        if: "build.branch == 'trunk'"
+        agents:
+          queue: "default"
+        plugins:
+          - $DOCKER_PLUGIN: *testflight_processing_docker
+        notify:
+          - github_commit_status:
+              context: "TestFlight Processing (Jetpack)"
 
   #################
   # Create Builds for Testing
@@ -58,7 +98,7 @@ steps:
   - group: "🔬 Unit Tests"
     key: unit_tests_group
     steps:
-      - label: "🔬 :swift: Swift Package Tests"
+      - label: "🔬 :swift: Swift Package Tests and String Catalog Coverage"
         command: .buildkite/commands/run-swift-package-tests.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
@@ -134,13 +174,6 @@ steps:
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
-
-      - label: ":mag: Verify String Catalog Coverage"
-        command: .buildkite/commands/verify-strings-catalog.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Verify String Catalog Coverage"
 
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh

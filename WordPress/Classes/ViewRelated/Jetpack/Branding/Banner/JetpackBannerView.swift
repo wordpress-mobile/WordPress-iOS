@@ -43,7 +43,7 @@ class JetpackBannerView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: JetpackBannerView.minimumHeight).isActive = true
         backgroundColor = Self.jetpackBannerBackgroundColor
-        let textProvider = JetpackBrandingTextProvider(screen: nil) // Use default text in case `configure()` is never called.
+        let textProvider = JetpackBrandingTextProvider()
         let jetpackButton = JetpackButton(style: .banner, title: textProvider.brandingText())
         jetpackButton.translatesAutoresizingMaskIntoConstraints = false
         jetpackButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)

@@ -15,12 +15,20 @@ class RootViewCoordinator {
         case normal
         case simplified
         case staticScreens
+
+        /// The static screens phase with the `readerInWordPressApp` flag on: a live Reader tab,
+        /// while Notifications and the other Jetpack features keep their posters.
+        ///
+        /// Notifications keeps the poster because the WordPress app shows only Reader
+        /// notifications, from the bell inside Reader, and a Notifications tab would promise the
+        /// account's notifications. The removal phases no longer change, so a WordPress.com
+        /// account in the WordPress app always resolves to this type when the flag is on.
+        case staticScreensWithReader
     }
 
     // MARK: Static shared variables
 
     static let shared = RootViewCoordinator(
-        featureFlagStore: RemoteFeatureFlagStore(),
         windowManager: WordPressAppDelegate.shared?.windowManager
     )
     static var sharedPresenter: RootViewPresenter {
@@ -55,24 +63,51 @@ class RootViewCoordinator {
             updateJetpackFeaturesRemovalCoordinatorState()
         }
     }
-    private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
     private let app: AppBrand
+    private let isReaderInWordPressAppEnabled: Bool
+    private var accountChangeObserver: NSObjectProtocol?
+    /// The type the current root view presenter was built for. It differs from
+    /// `currentAppUIType` after an account change until `reloadUIIfNeeded` rebuilds the UI.
+    private var presentedAppUIType: AppUIType?
 
     var isSiteCreationActive = false
     var isFullScreenOverlayBeingDisplayed = false
     // MARK: Initializer
 
     init(
-        featureFlagStore: RemoteFeatureFlagStore,
         windowManager: WindowManager?,
-        app: AppBrand = BuildSettings.current.brand
+        app: AppBrand = BuildSettings.current.brand,
+        isReaderInWordPressAppEnabled: Bool = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
     ) {
-        self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
-        self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
+        self.currentAppUIType = Self.appUIType(app: app, isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled)
         self.app = app
+        self.isReaderInWordPressAppEnabled = isReaderInWordPressAppEnabled
         updateJetpackFeaturesRemovalCoordinatorState()
+
+        if isReaderInWordPressAppEnabled {
+            // The UI type depends on the WordPress.com account, which can change while the app UI
+            // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
+            // call is the only other refresh. The default-account change is the one event every
+            // sign-in and sign-out path posts; a sign-in whose site sync fails skips
+            // `WPSigninDidFinishNotification`.
+            accountChangeObserver = NotificationCenter.default.addObserver(
+                forName: .wpAccountDefaultWordPressComAccountChanged,
+                object: nil,
+                queue: nil
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.currentAppUIType = self.resolveAppUIType()
+                self.rootViewPresenter?.appUITypeDidChange()
+            }
+        }
+    }
+
+    deinit {
+        if let accountChangeObserver {
+            NotificationCenter.default.removeObserver(accountChangeObserver)
+        }
     }
 
     // MARK: - Root Coordination
@@ -95,6 +130,7 @@ class RootViewCoordinator {
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
+        presentedAppUIType = appType
         if app == .reader {
             return ReaderRootViewPresenter()
         }
@@ -108,22 +144,39 @@ class RootViewCoordinator {
             return MySitesCoordinator(onBecomeActiveTab: {})
         case .staticScreens:
             return StaticScreensTabBarWrapper()
+        case .staticScreensWithReader:
+            // The wrapper drops Reader navigation such as `viewpost` links, so a live Reader tab
+            // needs the tab bar itself.
+            return WPTabBarController(staticReader: false, staticNotifications: true)
         }
     }
 
     // MARK: JP Features State
 
     /// Used to determine the expected app UI type based on the removal phase.
-    private static func appUIType(featureFlagStore: RemoteFeatureFlagStore) -> AppUIType {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+    private static func appUIType(app: AppBrand, isReaderInWordPressAppEnabled: Bool) -> AppUIType {
+        appUIType(
+            for: JetpackFeaturesRemovalCoordinator.generalPhase(app: app),
+            isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
+        )
+    }
+
+    static func appUIType(
+        for phase: JetpackFeaturesRemovalCoordinator.GeneralPhase,
+        isReaderInWordPressAppEnabled: Bool
+    ) -> AppUIType {
         switch phase {
-        case .four, .newUsers, .selfHosted:
+        case .normal:
+            return .normal
+        case .selfHosted:
             return .simplified
         case .staticScreens:
-            return .staticScreens
-        default:
-            return .normal
+            return isReaderInWordPressAppEnabled ? .staticScreensWithReader : .staticScreens
         }
+    }
+
+    private func resolveAppUIType() -> AppUIType {
+        Self.appUIType(app: app, isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled)
     }
 
     private func updateJetpackFeaturesRemovalCoordinatorState() {
@@ -136,8 +189,8 @@ class RootViewCoordinator {
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
     @discardableResult
     func reloadUIIfNeeded(blog: Blog?) -> Bool {
-        let newUIType: AppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
-        let oldUIType = currentAppUIType
+        let newUIType = resolveAppUIType()
+        let oldUIType = presentedAppUIType ?? currentAppUIType
         guard newUIType != oldUIType, let windowManager else {
             return false
         }

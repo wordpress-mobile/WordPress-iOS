@@ -1,24 +1,11 @@
 #import "WPTabBarController.h"
 
-#import "AccountService.h"
-#import "BlogService.h"
-
-#import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-@import WordPressData;
 
-@import Gridicons;
 @import WordPressData;
 @import WordPressShared;
 @import WordPressSharedObjCUI;
 @import WordPressUI;
-
-static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
-
-NSString * const WPNewPostURLParamTitleKey = @"title";
-NSString * const WPNewPostURLParamContentKey = @"content";
-NSString * const WPNewPostURLParamTagsKey = @"tags";
-NSString * const WPNewPostURLParamImageKey = @"image";
 
 NSString * const WPTabBarCurrentlySelectedScreenSites = @"Blog List";
 NSString * const WPTabBarCurrentlySelectedScreenReader = @"Reader";
@@ -26,9 +13,6 @@ NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications"
 
 NSNotificationName const WPTabBarHeightChangedNotification = @"WPTabBarHeightChangedNotification";
 static NSString * const WPTabBarFrameKeyPath = @"frame";
-
-static NSInteger const WPTabBarIconOffsetiPad = 7;
-static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
@@ -50,6 +34,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
 @property (nonatomic, assign) CGFloat tabBarHeight;
+@property (nonatomic, assign) BOOL hasCompletedFirstAppearance;
+@property (nonatomic, strong) NSMutableArray<void (^)(void)> *pendingTabBarItemUpdates;
 
 @end
 
@@ -59,9 +45,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens
 {
+    return [self initWithStaticReader:shouldUseStaticScreens staticNotifications:shouldUseStaticScreens];
+}
+
+- (instancetype)initWithStaticReader:(BOOL)shouldUseStaticReader
+                 staticNotifications:(BOOL)shouldUseStaticNotifications
+{
     self = [super init];
     if (self) {
-        _shouldUseStaticScreens = shouldUseStaticScreens;
+        _shouldUseStaticReader = shouldUseStaticReader;
+        _shouldUseStaticNotifications = shouldUseStaticNotifications;
+        _pendingTabBarItemUpdates = [NSMutableArray new];
         [self setDelegate:self];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
@@ -109,7 +103,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        if (self.shouldUseStaticScreens) {
+        if (self.shouldUseStaticReader) {
             UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         } else {
@@ -136,11 +130,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _notificationsNavigationController;
     }
     UIViewController *rootViewController;
-    if (self.shouldUseStaticScreens) {
+    if (self.shouldUseStaticNotifications) {
+        // A rebuild can replace a live list with the poster; drop the old list with it.
+        self.notificationsViewController = nil;
         rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceNotifications];
     } else {
-        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:NSBundle.keystone];
-        self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
+        self.notificationsViewController = [NotificationsViewController makeForAppNavigation];
         rootViewController = self.notificationsViewController;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
@@ -152,6 +147,20 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
     return _notificationsNavigationController;
+}
+
+- (void)setShouldUseStaticNotifications:(BOOL)shouldUseStaticNotifications
+{
+    if (_shouldUseStaticNotifications == shouldUseStaticNotifications) {
+        return;
+    }
+    _shouldUseStaticNotifications = shouldUseStaticNotifications;
+
+    _notificationsNavigationController = nil;
+    NSUInteger selectedIndex = self.selectedIndex;
+    [self setViewControllers:[self tabViewControllers]];
+    self.selectedIndex = selectedIndex;
+    [self updateNotificationBadgeVisibility];
 }
 
 - (UINavigationController *)meNavigationController
@@ -173,18 +182,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return _meViewController;
-}
-
-- (UIEdgeInsets)tabBarIconImageInsets
-{
-    CGFloat offset = 0;
-    if ([WPDeviceIdentification isiPad]) {
-        offset = WPTabBarIconOffsetiPad;
-    } else {
-        offset = WPTabBarIconOffsetiPhone;
-    }
-
-    return UIEdgeInsetsMake(offset, 0, -offset, 0);
 }
 
 - (void)reloadTabs
@@ -360,9 +357,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)updateNotificationBadgeVisibility
 {
+    __weak __typeof(self) weakSelf = self;
+    [self performTabBarItemUpdate:^{
+        [weakSelf applyNotificationBadgeVisibility];
+    }];
+}
+
+- (void)applyNotificationBadgeVisibility
+{
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
     
-    if (self.shouldUseStaticScreens) {
+    if (self.shouldUseStaticNotifications) {
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
         return;
@@ -390,6 +395,35 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSUserDefaults *standardUserDefaults = [UserPersistentStoreFactory userDefaultsInstance];
     NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
+}
+
+#pragma mark - Tab Bar Item Updates
+
+- (void)performTabBarItemUpdate:(void (^)(void))update
+{
+    // iOS 26 measures each tab button's title once, in the tab bar's first layout
+    // pass, and never again. An item image that changes after the tabs are set and
+    // before that pass makes the measurement run against icon-only buttons, so
+    // every title stays truncated and bottom-anchored until the user taps a tab
+    // (FB24250687). This holds whether or not the view is in a window yet, which
+    // includes `viewWillAppear:`. So any change once the tab bar has items waits
+    // for `viewDidAppear:`. Changes while the tabs are built run immediately,
+    // because the tab bar has no items yet, and set the initial images.
+    BOOL isAwaitingFirstLayout = self.tabBar.items.count > 0 && !self.hasCompletedFirstAppearance;
+    if (isAwaitingFirstLayout) {
+        [self.pendingTabBarItemUpdates addObject:[update copy]];
+        return;
+    }
+    update();
+}
+
+- (void)flushPendingTabBarItemUpdates
+{
+    NSArray<void (^)(void)> *updates = [self.pendingTabBarItemUpdates copy];
+    [self.pendingTabBarItemUpdates removeAllObjects];
+    for (void (^update)(void) in updates) {
+        update();
+    }
 }
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
@@ -448,26 +482,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    self.hasCompletedFirstAppearance = YES;
+    [self flushPendingTabBarItemUpdates];
     [self updateNotificationBadgeVisibility];
 
     [self trackTabAccessOnViewDidAppear];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
-{
-    if ([presented isKindOfClass:[FancyAlertViewController class]]) {
-        return [[FancyAlertPresentationController alloc] initWithPresentedViewController:presented
-                                                                presentingViewController:presenting];
-    }
-
-    return nil;
 }
 
 @end

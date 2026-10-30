@@ -797,6 +797,9 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupWordPressExtensions()
             AccountService.loadDefaultAccountCookies()
+            // Flags can target an account. Without this fetch, the new account's flags
+            // wait for the next foreground or launch.
+            updateFeatureFlags()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()

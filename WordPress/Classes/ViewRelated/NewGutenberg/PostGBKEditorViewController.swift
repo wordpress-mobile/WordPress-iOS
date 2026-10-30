@@ -18,6 +18,19 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
+    /// Whether the editor has finished loading at least once, so the user could have edited it.
+    private(set) var hasEditorLoaded = false
+
+    /// Whether the editor crashed and has not reloaded yet, so calls into it are refused.
+    private(set) var isEditorUnavailable = false
+
+    /// Whether the editor locked saving, e.g. during a media upload, so its content
+    /// may be incomplete or reference temporary media URLs.
+    private(set) var isSavingLocked = false
+
+    /// Pages say "page" in alerts. Custom post types say "post", as "Post Settings" does.
+    private let isPage: Bool
+
     init(
         postId: Int?,
         postType: PostTypeDetails,
@@ -28,6 +41,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     ) {
         self.status = status ?? "draft"
         self.blog = blog
+        self.isPage = postType.postType == PostTypeDetails.page.postType
 
         EditorLocalization.localize = { $0.localized }
 
@@ -81,7 +95,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         let title =
             editorViewController.isCodeEditorEnabled ? PostEditorStrings.visualEditor : PostEditorStrings.codeEditor
         let icon = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
-        return UIAction(title: title, image: UIImage(systemName: icon)) { [weak editorViewController] _ in
+        return UIAction(
+            title: title,
+            image: UIImage(systemName: icon),
+            attributes: isEditorUnavailable ? [.disabled] : []
+        ) { [weak editorViewController] _ in
             editorViewController?.isCodeEditorEnabled.toggle()
         }
     }
@@ -96,6 +114,40 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         }
     }
 
+    /// Asks before saving while the editor locks saving. A lock is only advisory, so a
+    /// plugin that never releases one can't keep the user from saving.
+    func performAfterConfirmingSavingLock(_ action: @escaping () -> Void) {
+        guard isSavingLocked else {
+            return action()
+        }
+        let alert = UIAlertController(
+            title: notReadyTitle,
+            message: isPage
+                ? PostEditorStrings.savePageWhileNotReadyMessage : PostEditorStrings.savePostWhileNotReadyMessage,
+            preferredStyle: .alert
+        )
+        alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
+        alert.addDefaultActionWithTitle(PostEditorStrings.continueAnyway) { _ in action() }
+        present(alert, animated: true)
+    }
+
+    /// Asks before closing while the editor locks saving, since closing ends the editor's uploads.
+    func showLeaveWhileSavingLockedAlert(onLeave: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: notReadyTitle,
+            message: isPage
+                ? PostEditorStrings.leavePageWhileNotReadyMessage : PostEditorStrings.leavePostWhileNotReadyMessage,
+            preferredStyle: .alert
+        )
+        alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
+        alert.addDestructiveActionWithTitle(PostEditorStrings.leave) { _ in onLeave() }
+        present(alert, animated: true)
+    }
+
+    private var notReadyTitle: String {
+        isPage ? PostEditorStrings.notReadyPageTitle : PostEditorStrings.notReadyPostTitle
+    }
+
     func feedbackAction() -> UIAction {
         UIAction(title: PostEditorStrings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
             self?
@@ -108,8 +160,17 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     // MARK: - GutenbergKit.EditorViewControllerDelegate
 
+    /// Subclasses that override this must call `super`.
     func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
-        // Do nothing
+        hasEditorLoaded = true
+        isEditorUnavailable = false
+    }
+
+    /// Subclasses that override this must call `super`.
+    func editorDidBecomeUnavailable(_ viewController: GutenbergKit.EditorViewController) {
+        isEditorUnavailable = true
+        // The reloaded editor reports its availability again.
+        isSavingLocked = false
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
@@ -169,6 +230,14 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         didUpdateHistoryState state: GutenbergKit.EditorState
     ) {
         // Do nothing
+    }
+
+    /// Subclasses that override this must call `super`.
+    func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateSaveAvailability availability: GutenbergKit.EditorSaveAvailability
+    ) {
+        isSavingLocked = availability.isSavingLocked
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {

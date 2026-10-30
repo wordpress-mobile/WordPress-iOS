@@ -10,7 +10,6 @@ import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import WordPressIntelligence
-import CocoaLumberjack
 import PulseUI
 
 extension SupportDataProvider {
@@ -37,10 +36,19 @@ actor WpLogDataProvider: ApplicationLogDataProvider {
     }
 
     func fetchApplicationLogs() async throws -> [Support.ApplicationLog] {
-        try WPLogger.shared().fileLogger
-            .logFileManager
-            .sortedLogFileInfos
-            .compactMap { try ApplicationLog(filePath: $0.filePath) }
+        Self.applicationLogs(atPaths: LogFileStore.shared.logFiles().map(\.url.path))
+    }
+
+    /// A file can be removed between listing the folder and reading its attributes (for example, by CocoaLumberjack's
+    /// automatic cleanup), so files that can't be read are skipped rather than failing the whole list.
+    static func applicationLogs(atPaths paths: [String]) -> [Support.ApplicationLog] {
+        paths.compactMap { path in
+            do {
+                return try ApplicationLog(filePath: path)
+            } catch {
+                return nil
+            }
+        }
     }
 
     func deleteApplicationLogs(in logs: [Support.ApplicationLog]) async throws {

@@ -27,10 +27,7 @@ struct EncryptedLogUploader: Sendable {
 
     init(
         logFiles: @escaping @MainActor @Sendable () -> [URL] = {
-            WPLogger.shared().fileLogger
-                .logFileManager
-                .sortedLogFileInfos
-                .map { URL(fileURLWithPath: $0.filePath) }
+            LogFileStore.shared.logFiles().map(\.url)
         },
         enqueue: @escaping @MainActor @Sendable (LogFile) throws -> Void = { log in
             guard let eventLogging = WordPressAppDelegate.eventLogging else {

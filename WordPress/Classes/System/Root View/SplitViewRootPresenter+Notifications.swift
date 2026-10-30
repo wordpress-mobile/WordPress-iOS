@@ -7,7 +7,7 @@ class NotificationsSplitViewContent: SplitViewDisplayable {
     var secondary: UINavigationController
 
     init() {
-        notificationsViewController = Notifications.instantiateInitialViewController()
+        notificationsViewController = NotificationsViewController.makeForAppNavigation()
         supplementary = UINavigationController(rootViewController: notificationsViewController)
         secondary = UINavigationController()
 

@@ -301,12 +301,12 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     }
 
     /// When a user views the Ticket List, this is called to:
-    /// - clear the notification count
-    /// - update the application badge count
-    /// - post an NSNotification so the various indicators can be cleared.
+    /// - clear the support notification count
+    /// - post an NSNotification so the support indicators can be cleared.
     ///
+    /// Support no longer touches the home-screen icon badge; the WordPress push
+    /// payload owns that count.
     static func pushNotificationRead() {
-        UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
         unreadNotificationsCount = 0
         saveUnreadCount()
         postNotificationRead()
@@ -725,8 +725,7 @@ private extension ZendeskUtils {
 
     static func getEncryptedLogUUID() -> String {
 
-        let fileLogger = WPLogger.shared().fileLogger
-        let dataProvider = EventLoggingDataProvider.fromDDFileLogger(fileLogger)
+        let dataProvider = EventLoggingDataProvider.from(.shared)
 
         guard let logFilePath = dataProvider.logFilePath(forErrorLevel: .debug, at: Date()) else {
             return "Error: No log files found on device"
