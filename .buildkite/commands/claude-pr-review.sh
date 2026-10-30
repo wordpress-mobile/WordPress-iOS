@@ -103,6 +103,8 @@ fi
 export GH_TOKEN="$GITHUB_TOKEN"
 # The account the script posts as. Only threads it started count as Claude's.
 BOT_LOGIN=$(gh api user --jq .login)
+echo "TEST: failing on purpose, to check the review request is cleared."
+false
 
 # ── Project setup, so Claude can build and test ──────────────────────
 # a8c-secrets is deliberately not installed: builds fall back to the example
