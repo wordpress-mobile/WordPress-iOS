@@ -20,6 +20,17 @@ struct SiteDesignSectionTests {
         #expect(section.thumbnailSize == expectedSize)
     }
 
+    @Test(arguments: [
+        (UIUserInterfaceSizeClass.compact, CGSize(width: 200, height: 150)),
+        (.regular, CGSize(width: 250, height: 188))
+    ])
+    func landscapeThumbnailsKeepTheCategoryWidth(windowSizeClass: UIUserInterfaceSizeClass, expectedSize: CGSize) {
+        var section = SiteDesignSection(designs: [], categorySlug: "blog", title: "Blog", hasLandscapeThumbnails: true)
+        section.windowSizeClass = windowSizeClass
+
+        #expect(section.thumbnailSize == expectedSize)
+    }
+
     /// The previews are requested once, so they must be large enough for every thumbnail size.
     @Test func previewSizeIsTheLargestThumbnailSize() {
         let thumbnailSizes = [SiteDesignCategoryThumbnailSize.recommended, .category]

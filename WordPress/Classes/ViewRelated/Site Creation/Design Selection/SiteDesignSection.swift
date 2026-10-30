@@ -18,8 +18,16 @@ struct SiteDesignSection: CategorySection {
     /// `thumbnailSize` follows it.
     var windowSizeClass: UIUserInterfaceSizeClass = .unspecified
 
+    /// Whether the thumbnails are landscape, for catalogs whose screenshots are desktop-sized.
+    var hasLandscapeThumbnails = false
+
     var thumbnailSize: CGSize {
-        let thumbnailSize: SiteDesignCategoryThumbnailSize = sectionType == .recommended ? .recommended : .category
+        let thumbnailSize: SiteDesignCategoryThumbnailSize
+        if hasLandscapeThumbnails {
+            thumbnailSize = .landscape
+        } else {
+            thumbnailSize = sectionType == .recommended ? .recommended : .category
+        }
         return thumbnailSize.value(for: windowSizeClass)
     }
 }

@@ -10,6 +10,8 @@ import Support
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable, Sendable {
     case dynamic
+    /// Offers a starter design to a blank site created through the short site creation flow.
+    case design
     case jetpackInstall
     case prompts
     case extensiveLogging
@@ -39,6 +41,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
         switch self {
         case .dynamic:
             return BlogDashboardDynamicCardCell.self
+        case .design:
+            return DashboardDesignCardCell.self
         case .extensiveLogging:
             return DashboardExtensiveLoggingCardCell.self
         case .jetpackInstall:
@@ -104,6 +108,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
         shouldShowJetpackFeatures: Bool = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
     ) -> Bool {
         switch self {
+        case .design:
+            return DashboardDesignCardCell.shouldShowCard(for: blog, isJetpack: isJetpack)
         case .jetpackInstall:
             return JetpackInstallPluginHelper.shouldShowCard(for: blog)
         case .draftPosts, .scheduledPosts:
