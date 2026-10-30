@@ -109,6 +109,19 @@ BOT_LOGIN=$(gh api user --jq .login)
 # credentials, so the app's secrets are never decrypted on this VM.
 .buildkite/commands/shared-set-up.sh
 
+# The Xcode build keeps its packages in DerivedData/SourcePackages, not where
+# the step above puts them. Without this the reviewer would fetch them again,
+# including 6.5 GB of binaries. The reviewer's copy of the checkout includes them.
+echo "--- :swift: Resolving Swift packages for the reviewer"
+packages_start=$SECONDS
+packages_log="$(mktemp)"
+xcodebuild -resolvePackageDependencies -onlyUsePackageVersionsFromResolvedFile -workspace WordPress.xcworkspace \
+  -scheme Jetpack -derivedDataPath DerivedData > "$packages_log" 2>&1 \
+  || echo "Warning: could not resolve the packages, so the reviewer's first build will (see the end of the log below)."
+tail -n 3 "$packages_log"
+rm -f "$packages_log"
+echo "Resolved in $((SECONDS - packages_start))s."
+
 echo "--- :git: Fetching ${BASE_BRANCH}"
 git fetch --quiet origin "${BASE_BRANCH}:refs/remotes/origin/${BASE_BRANCH}"
 # The reviewer's copy can't read the shared git mirror, so make this checkout
