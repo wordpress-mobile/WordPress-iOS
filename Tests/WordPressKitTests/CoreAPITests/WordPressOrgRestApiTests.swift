@@ -149,6 +149,34 @@ class WordPressOrgRestApiTests: XCTestCase {
         XCTAssertNil(captured.value(forHTTPHeaderField: "Authorization"))
     }
 
+    func testCredentialDestinationsForApplicationPassword() {
+        let api = WordPressOrgRestApi(
+            selfHostedSiteWPJSONURL: apiBase,
+            credential: .applicationPassword(username: "user", password: .init("app-pass"))
+        )
+        XCTAssertEqual(api.credentialDestinations, [apiBase])
+    }
+
+    func testCredentialDestinationsForAccountPassword() {
+        let loginURL = URL(string: "http://login.example.com/wp-login.php")!
+        let adminURL = URL(string: "https://admin.example.com/wp-admin/")!
+        let api = WordPressOrgRestApi(
+            selfHostedSiteWPJSONURL: apiBase,
+            credential: .accountPassword(
+                loginURL: loginURL,
+                username: "user",
+                password: .init("pass"),
+                adminURL: adminURL
+            )
+        )
+        XCTAssertEqual(api.credentialDestinations, [apiBase, loginURL, adminURL])
+    }
+
+    func testCredentialDestinationsForDotCom() {
+        let api = WordPressOrgRestApi(dotComSiteID: 1, bearerToken: "token")
+        XCTAssertEqual(api.credentialDestinations, [WordPressComRestApi.apiBaseURL])
+    }
+
     // Gutenberg Editor in the WordPress app may call `WordPressOrgRestApi` with a 'path' parameter that contain path
     // and query. This unit test ensures WordPressKit doesn't break that feature.
     func testPathWithQuery() async {
