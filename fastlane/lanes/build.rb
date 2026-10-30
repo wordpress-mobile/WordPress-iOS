@@ -81,10 +81,10 @@ platform :ios do
       app_name: 'WordPress',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      # Naming the device and the deployment target, with `app_name` above, stops scan from reading
-      # the build settings, which takes about 30 s on CI.
-      device: options[:device] || 'iPhone 17 Pro',
-      deployment_target_version: options[:ios_version] || '17.0',
+      # With `app_name` above, naming the device and the deployment target stops scan from reading
+      # the build settings. See `CI_SIMULATOR_DEVICE`.
+      device: options[:device] || CI_SIMULATOR_DEVICE,
+      deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       disallow_xcodebuild_settings_lookup: true
     )
   end
@@ -104,10 +104,10 @@ platform :ios do
       app_name: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      # Naming the device and the deployment target, with `app_name` above, stops scan from reading
-      # the build settings, which takes about 30 s on CI.
-      device: options[:device] || 'iPhone 17 Pro',
-      deployment_target_version: options[:ios_version] || '17.0',
+      # With `app_name` above, naming the device and the deployment target stops scan from reading
+      # the build settings. See `CI_SIMULATOR_DEVICE`.
+      device: options[:device] || CI_SIMULATOR_DEVICE,
+      deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       disallow_xcodebuild_settings_lookup: true
     )
   end
@@ -138,8 +138,8 @@ platform :ios do
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
       # Naming the device and the deployment target stops scan from reading the build settings to pick a simulator.
-      device: options[:device] || 'iPhone 17 Pro',
-      deployment_target_version: options[:ios_version] || '17.0',
+      device: options[:device] || CI_SIMULATOR_DEVICE,
+      deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
