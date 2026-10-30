@@ -123,7 +123,7 @@ audit_start() {
   # The rest of the checkout is world-readable; the audit logs shouldn't be.
   chmod 0700 "$AUDIT_DIR" "$AUDIT_RAW" "$AUDIT_LIVE"
   AUDIT_SECRETS=$(for var in ANTHROPIC_API_KEY GITHUB_TOKEN GH_TOKEN SPACEFAST_TOKEN BUILDKITE_AGENT_ACCESS_TOKEN AWS_SECRET_ACCESS_KEY; do
-    [[ -n "${!var:-}" ]] && printf '%s\n' "${!var}"
+    if [[ -n "${!var:-}" ]]; then printf '%s\n' "${!var}"; fi
   done)
   audit_started=true
   echo "--- :mag: Starting the audit logs"
