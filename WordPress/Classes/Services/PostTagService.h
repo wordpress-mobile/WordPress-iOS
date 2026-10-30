@@ -5,6 +5,12 @@ NS_ASSUME_NONNULL_BEGIN
 @class Blog;
 @class PostTag;
 
+extern NSErrorDomain const PostTagServiceErrorDomain;
+typedef NS_ERROR_ENUM(PostTagServiceErrorDomain, PostTagServiceError) {
+    /// The blog has no remote, for example because its WordPress.com account has no token.
+    PostTagServiceErrorNoRemoteForBlog = 1,
+};
+
 @interface PostTagService : NSObject
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;

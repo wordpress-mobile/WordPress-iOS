@@ -29,11 +29,24 @@ NS_ASSUME_NONNULL_BEGIN
                            userInfo:nil];
 }
 
+- (NSError *)serviceErrorNoRemote
+{
+    return [NSError errorWithDomain:NSStringFromClass([self class])
+                               code:PostCategoryServiceErrorsNoRemoteForBlog
+                           userInfo:nil];
+}
+
 - (void)syncCategoriesForBlog:(Blog *)blog
                       success:(nullable void (^)(void))success
                       failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        if (failure) {
+            failure([self serviceErrorNoRemote]);
+        }
+        return;
+    }
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithSuccess:^(NSArray *categories) {
                                NSError * __block error = nil;
@@ -65,6 +78,12 @@ NS_ASSUME_NONNULL_BEGIN
                       failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        if (failure) {
+            failure([self serviceErrorNoRemote]);
+        }
+        return;
+    }
     RemoteTaxonomyPaging *paging = [[RemoteTaxonomyPaging alloc] init];
     paging.number = number ?: @(100);
     paging.offset = offset ?: @(0);
@@ -113,6 +132,12 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        if (failure) {
+            failure([self serviceErrorNoRemote]);
+        }
+        return;
+    }
     [remote createCategory:remoteCategory
                    success:^(RemotePostCategory *receivedCategory) {
                        NSError * __block error = nil;
@@ -198,20 +223,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
-    if ([blog supports:BlogFeatureWpComRESTAPI]) {
-        if (blog.wordPressComRestApi) {
-            return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
-        }
-    } else {
-        // Prefer the core REST API (wp/v2) for self-hosted sites. Some hosts
-        // block the XML-RPC term methods, which breaks categories (#25758).
-        TaxonomyServiceRemoteCoreREST *coreREST = [[TaxonomyServiceRemoteCoreREST alloc] initWithBlog:blog];
-        if (coreREST) {
-            return coreREST;
-        }
-        if (blog.xmlrpcApi) {
-            return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
-        }
+    if ([blog supports:BlogFeatureWpComRESTAPI] && blog.wordPressComRestApi) {
+        return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
+    }
+    if (blog.isMissingRequiredWordPressComToken) {
+        return nil;
+    }
+    // Prefer the core REST API (wp/v2) for self-hosted sites. Some hosts
+    // block the XML-RPC term methods, which breaks categories (#25758).
+    TaxonomyServiceRemoteCoreREST *coreREST = [[TaxonomyServiceRemoteCoreREST alloc] initWithBlog:blog];
+    if (coreREST) {
+        return coreREST;
+    }
+    if (blog.xmlrpcApi) {
+        return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return nil;
 }

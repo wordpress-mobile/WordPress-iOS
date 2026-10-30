@@ -19,7 +19,9 @@ struct WordPressDotComAuthenticator {
         case `default`
         // Sign in to an existing account.
         // This is typically used when the app needs to get a new OAuth token because the current one becomes invalid.
-        case reauthentication(accountEmail: String?)
+        // The account is identified by its WordPress.com user ID. The email only prefills the login form, because
+        // the stored email can be outdated: the user may have changed it after the app last synced account details.
+        case reauthentication(userID: NSNumber?, emailHint: String?)
         // Connect a site to Jetpack or sign in to an already connected site.
         case jetpackSite(accountEmail: String?)
         // Sign in from the support screen, which needs a WordPress.com account.
@@ -30,7 +32,7 @@ struct WordPressDotComAuthenticator {
             switch self {
             case .default, .support:
                 return nil
-            case let .reauthentication(email), let .jetpackSite(email):
+            case let .reauthentication(_, email), let .jetpackSite(email):
                 return email
             }
         }
@@ -50,7 +52,9 @@ struct WordPressDotComAuthenticator {
     enum SignInError: Error {
         case authentication(AuthenticationError)
         case fetchUser(Error)
-        case mismatchedEmail(expectedEmail: String)
+        /// The user signed in to a different account than the one the context expects. `expectedEmail` is the
+        /// expected account's email, if known.
+        case mismatchedAccount(expectedEmail: String?)
         case alreadySignedIn(signedInAccountEmail: String)
         case loadingSites(Error)
     }
@@ -174,12 +178,24 @@ struct WordPressDotComAuthenticator {
             throw .fetchUser(error)
         }
 
-        // Make sure the signed-in account matches the given `accountEmail` argument.
-        if let email = context.accountEmail(in: coreDataStack.mainContext), user.email != email {
-            throw .mismatchedEmail(expectedEmail: email)
+        // Make sure the signed-in account is the expected one.
+        switch context {
+        case .default, .support:
+            break
+        case let .reauthentication(userID, emailHint):
+            if let userID, user.userID != userID {
+                throw .mismatchedAccount(expectedEmail: emailHint)
+            }
+        case let .jetpackSite(email):
+            if let email, user.email != email {
+                throw .mismatchedAccount(expectedEmail: email)
+            }
         }
 
-        if let defaultAccountEmail = defaultAccount?.email, defaultAccountEmail != user.email {
+        if let defaultAccount,
+            !Self.isSameUser(user, as: defaultAccount),
+            let defaultAccountEmail = defaultAccount.email
+        {
             throw .alreadySignedIn(signedInAccountEmail: defaultAccountEmail)
         }
 
@@ -212,6 +228,15 @@ struct WordPressDotComAuthenticator {
         }
 
         return accountID
+    }
+
+    /// Compares user IDs, because the email of an account can change on WordPress.com. Falls back to the email for
+    /// an account stored without a user ID.
+    private static func isSameUser(_ user: RemoteUser, as account: WPAccount) -> Bool {
+        if let userID = account.userID {
+            return user.userID == userID
+        }
+        return user.email == account.email
     }
 
     func present(_ error: SignInError, from viewController: UIViewController) {
@@ -479,8 +504,8 @@ private extension WordPressDotComAuthenticator.SignInError {
             return error.alertMessage
         case .fetchUser:
             return Strings.fetchUserError
-        case let .mismatchedEmail(expectedEmail):
-            return Strings.mismatchedEmail(expectedEmail)
+        case let .mismatchedAccount(expectedEmail):
+            return expectedEmail.map(Strings.mismatchedEmail) ?? Strings.mismatchedAccount
         case let .alreadySignedIn(signedInAccountEmail):
             return Strings.alreadySignedIn(signedInAccountEmail)
         case .loadingSites:
@@ -542,6 +567,11 @@ private enum Strings {
         value: "Please sign in with email address %@",
         comment:
             "Error message when user signs in with an unexpected email address. The first argument is the expected email address"
+    )
+    static let mismatchedAccount = NSLocalizedString(
+        "wpComLogin.error.mismatchedAccount",
+        value: "Please sign in with the WordPress.com account you used before.",
+        comment: "Error message when user signs in with a different WordPress.com account than the one the app expects"
     )
     static let alreadySignedIn = NSLocalizedString(
         "wpComLogin.error.alreadySignedIn",

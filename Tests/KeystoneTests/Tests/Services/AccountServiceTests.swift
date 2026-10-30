@@ -270,4 +270,78 @@ class AccountServiceTests: CoreDataTestCase {
         XCTAssertEqual(account.username, "jimthetester")
         XCTAssertEqual(account.email, "jim@wptestaccounts.com")
     }
+
+    // MARK: - Signing in to a stored account
+
+    func testNewTokenForDefaultAccountPostsAccountChangedWithTheAccount() throws {
+        let user = makeRemoteUser(userID: 1001)
+        let accountID = accountService.createOrUpdateAccount(withUserDetails: user, authToken: "old-token")
+        defer { clearToken(of: accountID) }
+
+        let accountChanged = XCTNSNotificationExpectation(
+            name: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil,
+            notificationCenter: .default
+        )
+        accountChanged.handler = { ($0.object as? WPAccount)?.objectID == accountID }
+
+        _ = accountService.createOrUpdateAccount(withUserDetails: user, authToken: "new-token")
+
+        wait(for: [accountChanged], timeout: 1)
+    }
+
+    func testWordPressComClientCreatedBeforeNewTokenUsesTheNewToken() throws {
+        let user = makeRemoteUser(userID: 1002)
+        let accountID = accountService.createOrUpdateAccount(withUserDetails: user, authToken: "old-token")
+        defer { clearToken(of: accountID) }
+        let url = try XCTUnwrap(URL(string: "https://public-api.wordpress.com/rest/v1.1/me"))
+        let provider = AutoUpdatingWPComAuthenticationProvider(coreDataStack: contextManager)
+        XCTAssertEqual(provider.authorize(URLRequest(url: url)).value(forHTTPHeaderField: "Authorization"), "Bearer old-token")
+
+        _ = accountService.createOrUpdateAccount(withUserDetails: user, authToken: "new-token")
+
+        XCTAssertEqual(provider.authorize(URLRequest(url: url)).value(forHTTPHeaderField: "Authorization"), "Bearer new-token")
+    }
+
+    func testSigningInAfterUsernameAndEmailChangeUpdatesTheStoredAccount() throws {
+        let oldUser = makeRemoteUser(userID: 1003, email: "old@example.com")
+        let accountID = accountService.createOrUpdateAccount(withUserDetails: oldUser, authToken: "old-token")
+        defer { clearToken(of: accountID) }
+        let account = try XCTUnwrap(mainContext.existingObject(with: accountID) as? WPAccount)
+        account.addBlogs(createMockBlogs(withIDs: [1], in: mainContext))
+        contextManager.saveContextAndWait(mainContext)
+
+        let accountRemoved = XCTNSNotificationExpectation(
+            name: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil,
+            notificationCenter: .default
+        )
+        accountRemoved.handler = { $0.object == nil }
+        accountRemoved.isInverted = true
+
+        let newUser = makeRemoteUser(userID: 1003, email: "new@example.com")
+        let updatedAccountID = accountService.createOrUpdateAccount(withUserDetails: newUser, authToken: "new-token")
+
+        wait(for: [accountRemoved], timeout: 0.5)
+        XCTAssertEqual(updatedAccountID, accountID)
+        try XCTAssertEqual(WPAccount.lookupNumberOfAccounts(in: mainContext), 1)
+        XCTAssertEqual(account.username, newUser.username)
+        XCTAssertEqual(account.email, "new@example.com")
+        XCTAssertEqual(account.blogs?.count, 1)
+        XCTAssertEqual(try WPAccount.token(forUsername: try XCTUnwrap(newUser.username)), "new-token")
+        XCTAssertThrowsError(try WPAccount.token(forUsername: try XCTUnwrap(oldUser.username)))
+    }
+
+    /// A user with a unique username, so tests don't share tokens in the simulator keychain.
+    private func makeRemoteUser(userID: Int, email: String = "user@example.com") -> RemoteUser {
+        let user = RemoteUser()
+        user.userID = NSNumber(value: userID)
+        user.username = "user-\(UUID().uuidString)"
+        user.email = email
+        return user
+    }
+
+    private func clearToken(of accountID: NSManagedObjectID) {
+        (try? mainContext.existingObject(with: accountID) as? WPAccount)?.authToken = nil
+    }
 }
