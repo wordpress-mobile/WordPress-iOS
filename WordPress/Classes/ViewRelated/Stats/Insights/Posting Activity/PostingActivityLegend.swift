@@ -1,22 +1,63 @@
 import UIKit
 import WordPressShared
 
-class PostingActivityLegend: UIView, NibLoadable {
+class PostingActivityLegend: UIView {
 
     // MARK: - Properties
 
-    @IBOutlet weak var fewerPostsLabel: UILabel!
-    @IBOutlet weak var colorsStackView: UIStackView!
-    @IBOutlet weak var morePostsLabel: UILabel!
+    private let fewerPostsLabel = UILabel.makeStatsLabel(text: "Fewer Posts", textStyle: .footnote)
+    private let morePostsLabel = UILabel.makeStatsLabel(text: "More Posts", textStyle: .footnote)
+
+    private let colorsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5
+        return stackView
+    }()
 
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Init
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        applyStatsXibRootDefaults(size: CGSize(width: 375, height: 44))
+
+        let stackView = UIStackView(arrangedSubviews: [fewerPostsLabel, colorsStackView, morePostsLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 10
+
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(stackView)
+        addSubview(contentView)
+
+        let guide = safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: guide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: 16),
+            contentView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 12),
+
+            morePostsLabel.widthAnchor.constraint(equalTo: fewerPostsLabel.widthAnchor),
+            colorsStackView.widthAnchor.constraint(equalToConstant: 80)
+        ])
+
         applyStyles()
         addColors()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Public Class Methods
@@ -51,7 +92,7 @@ private extension PostingActivityLegend {
     func addColors() {
         var numberInRange = 0
         for _ in 1...5 {
-            let dayView = PostingActivityDay.loadFromNib()
+            let dayView = PostingActivityDay()
             dayView.configure()
             dayView.dayButton.backgroundColor = PostingActivityLegend.colorForCount(numberInRange)
             colorsStackView.addArrangedSubview(dayView)

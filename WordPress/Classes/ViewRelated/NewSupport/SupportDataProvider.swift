@@ -10,7 +10,6 @@ import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import WordPressIntelligence
-import CocoaLumberjack
 import PulseUI
 
 extension SupportDataProvider {
@@ -37,10 +36,8 @@ actor WpLogDataProvider: ApplicationLogDataProvider {
     }
 
     func fetchApplicationLogs() async throws -> [Support.ApplicationLog] {
-        try WPLogger.shared().fileLogger
-            .logFileManager
-            .sortedLogFileInfos
-            .compactMap { try ApplicationLog(filePath: $0.filePath) }
+        try LogFileStore.shared.logFiles()
+            .compactMap { try ApplicationLog(filePath: $0.url.path) }
     }
 
     func deleteApplicationLogs(in logs: [Support.ApplicationLog]) async throws {

@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 import WordPressData
 import WordPressShared
@@ -24,6 +25,7 @@ public class BlogDetailsViewController: UIViewController {
 
     private lazy var blogService = BlogService(coreDataStack: ContextManager.shared)
     private var hasLoggedDomainCreditPromptShownEvent = false
+    private var accountAvatarSubscription: AnyCancellable?
 
     init(blog: Blog) {
         self.blog = blog
@@ -51,6 +53,7 @@ public class BlogDetailsViewController: UIViewController {
 
         tableViewModel = BlogDetailsTableViewModel(blog: blog, viewController: self)
         tableViewModel?.configure(tableView: tableView)
+        accountAvatarSubscription = observeAccountAvatar()
         // - warning: This needs to be populated early because tableViewModel.sections
         // are what drive programmatical navigation with universal links
         tableViewModel?.configureTableViewData()
@@ -84,8 +87,6 @@ public class BlogDetailsViewController: UIViewController {
         }
 
         observeManagedObjectContextObjectsDidChangeNotification()
-        observeGravatarImageUpdate()
-        downloadGravatarImage()
 
         registerForTraitChanges([UITraitHorizontalSizeClass.self], action: #selector(handleTraitChanges))
     }

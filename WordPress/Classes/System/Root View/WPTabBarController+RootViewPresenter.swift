@@ -28,7 +28,11 @@ extension WPTabBarController: RootViewPresenter {
         wpAssert(Thread.isMainThread)
 
         selectedIndex = WPTab.notifications.rawValue
-        completion?(notificationsViewController!)
+
+        // A tab with the Moved-to-Jetpack poster has no list, so the request ends on the poster.
+        if let notificationsViewController {
+            completion?(notificationsViewController)
+        }
     }
 
     // MARK: Me

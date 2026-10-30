@@ -421,7 +421,7 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
     typealias CellType = MediaSizeSliderCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(MediaSizeSliderCell.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let title: String

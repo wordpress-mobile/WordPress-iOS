@@ -1,14 +1,9 @@
 @import CocoaLumberjack;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 #import "WPLogger.h"
 #import "WordPress-Swift.h"
-DDLogLevel ddLogLevel = DDLogLevelInfo;
-
-void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
-{
-    ddLogLevel = (DDLogLevel)ddLogLevelRawValue;
-}
 
 @interface WPLogger ()
 @property (nonatomic, strong, readwrite) DDFileLogger * _Nonnull fileLogger;
@@ -77,37 +72,6 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
     return _fileLogger;
 }
 
-#pragma mark - Reading from the log
-
-// get the log content with a maximum byte size
-- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
-{
-    NSMutableString *description = [NSMutableString string];
-
-    NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
-    NSInteger count = [sortedLogFileInfos count];
-
-    // we start from the last one
-    for (NSInteger index = 0; index < count; index++) {
-        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
-
-        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
-        if ([logData length] > 0) {
-            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
-                                                        length:[logData length]
-                                                      encoding: NSUTF8StringEncoding];
-
-            [description appendString:result];
-        }
-    }
-
-    if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
-    }
-
-    return description;
-}
-
 #pragma mark - Deleting
 
 - (void)deleteAllLogs
@@ -117,7 +81,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
         [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
     }
 
-    DDLogWarn(@"All log files erased.");
+    WPLogWarning(@"All log files erased.");
 }
 
 - (void)deleteArchivedLogs
@@ -129,7 +93,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
         }
     }
 
-    DDLogWarn(@"All archived log files erased.");
+    WPLogWarning(@"All archived log files erased.");
 }
 
 #pragma mark - Public static methods

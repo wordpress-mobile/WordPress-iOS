@@ -1,19 +1,38 @@
 import UIKit
 import WordPressShared
 
-class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
+class StatsSubscribersChartCell: StatsBaseCell {
     private typealias Style = WPStyleGuide.Stats
 
-    @IBOutlet weak var chartView: UIView!
+    private let chartView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
 
     private var chartData: LineChartDataConvertible!
     private var chartStyling: LineChartStyling!
     private var xAxisDates: [Date]!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         Style.configureCell(self)
+
+        contentView.addSubview(chartView)
+        let topConstraint = chartView.topAnchor.constraint(equalTo: contentView.topAnchor)
+        NSLayoutConstraint.activate([
+            topConstraint,
+            chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Metrics.padding),
+            chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Metrics.padding),
+            chartView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Metrics.padding)
+        ])
+        self.topConstraint = topConstraint
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     func configure(row: SubscriberChartRow) {
@@ -30,11 +49,13 @@ class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
 private extension StatsSubscribersChartCell {
 
     func configureChartView() {
-        let configuration = StatsLineChartConfiguration(type: .subscribers,
-                                                        data: chartData,
-                                                        styling: chartStyling,
-                                                        analyticsGranularity: .days,
-                                                        xAxisDates: xAxisDates)
+        let configuration = StatsLineChartConfiguration(
+            type: .subscribers,
+            data: chartData,
+            styling: chartStyling,
+            analyticsGranularity: .days,
+            xAxisDates: xAxisDates
+        )
         let lineChartView = StatsLineChartView(configuration: configuration)
 
         resetChartContainerView()

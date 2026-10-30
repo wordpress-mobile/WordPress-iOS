@@ -111,12 +111,12 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"SiteSettingsViewController viewDidLoad");
+    WPLogInfo(@"SiteSettingsViewController viewDidLoad");
     [super viewDidLoad];
 
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingsTableViewCellReuseIdentifier];
-    [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
+    [self.tableView registerClass:MediaQuotaCell.class forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
 
@@ -1188,7 +1188,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     } failure:^(NSError *error) {
         [self hideActivityIndicator];
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
-        DDLogError(@"Error while trying to update BlogSettings: %@", error);
+        WPLogError(@"Error while trying to update BlogSettings: %@", error);
     }];
 }
 

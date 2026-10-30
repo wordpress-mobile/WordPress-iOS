@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-09 09:57:21+0000 */
+/* Translation-Revision-Date: 2026-10-23 11:39:22+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ko_KR */
@@ -6681,6 +6681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "현재 사이트의 URL을 찾을 수 없습니다.";
 
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "워드프레스닷컴 사이트는 워드프레스닷컴 계정을 통해 관리되므로 애플리케이션 비밀번호를 사용할 수 없습니다.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "사용자 \"%@\"(으)로 로그인해야 합니다.";
 
@@ -7108,6 +7111,168 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "메시지를 로드할 수 없음";
 
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "정보 더 추가";
+
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "첨부파일 로드 중...";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%1$d%% 일치";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "링크 열기: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "관련:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "이 대화는 마감되었습니다. 더는 회신할 수 없습니다.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "마지막으로 업데이트한 %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "대화 로드 중...";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "메시지 입력 …";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "보내기";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "사람의 지원으로 이전됨";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "AI 도우미가 입력 중";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "지원팀과 대화를 시작하여 질문에 대한 도움말을 받으세요.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "아직 대화 없음";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "대화 로드 중...";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "도움말 이용";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "문제가 발생했습니다. 나중에 다시 시도해 보세요.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "문제가 발생했음";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "지금";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "지금은 애플리케이션 로그를 사용할 수 없습니다.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "새 대화";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "워드프레스닷컴에 로그인하여 지원팀의 도움말을 이용하세요.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "인터넷 연결을 확인하고 다시 시도하세요.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "사용 가능한 네트워크 없음";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "답글";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "첨부파일";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "문제를 보여주는 스크린샷, 비디오 또는 문서를 추가하세요.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "파일을 첨부할 수 없음";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "파일 찾아보기";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "사진 라이브러리";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "최대 크기에 도달했습니다. %1$d\/%2$d개 파일만 보내게 됨";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "%1$@ 제거";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "이 파일은 너무 커서 보낼 수 없습니다.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "이러한 파일은 너무 커서 보낼 수 없습니다.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "취소";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "계속 쓰기";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "취소";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "메시지와 첨부파일을 상실하게 됩니다.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "이 답글을 취소할까요?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "답글이 발송되지 않았음";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "다시 시도";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "메시지";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "확인";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "선택 사항";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "보내기";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "보내는 중...";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "답글이 발송되었습니다. 이메일에서 업데이트 내용을 확인하세요.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "대화 시작";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "AI 도우미";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "마감됨";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "진행 중";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "해결됨";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "알 수 없음";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "다시 시도";
+
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "작업 중";
 
@@ -7128,6 +7293,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@에 회신";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "답글 발송 중";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "취소";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "임시글 삭제";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "계속 편집하기";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "임시글 저장";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "보내기";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "보내면 이 댓글도 승인됩니다.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "이 글에 대한 댓글은 마감되었습니다.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "답글을 보내지 못했습니다.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "이 답글은 이미 게시되었습니다.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "검토용으로 제출한 답글입니다.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "답글을 보냈습니다.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "답글을 남겨 주세요...";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "답글";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "임시글 삭제";
@@ -7170,6 +7377,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "대기 중으로 이동";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "답글";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "복원";
@@ -7227,6 +7437,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "스팸";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "휴지통으로 이동함";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "변경 사항 취소";
@@ -7410,6 +7623,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "붙박이";
+
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "휴지통으로 이동함";
 
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "이 작업은 취소할 수 없습니다.";
@@ -11381,6 +11597,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "구독됨";
 
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "…더 보기";
+
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "추가 작업";
 
@@ -11826,6 +12045,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "리비전";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "공유 취소";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "공유한 내용을 읽는 중 문제가 발생했습니다. 다시 시도해 주세요.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "공유한 콘텐츠를 로드할 수 없음";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "해제";
 
@@ -11834,6 +12062,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "미디어 옵션";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "확인";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "공유한 아이템 하나 이상을 로드할 수 없어서 건너뛰었습니다.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "일부 콘텐츠를 건너뛰었음";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "다시 시도";
@@ -12408,6 +12645,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "구독자";
 
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "최신 글%1$@에 %2$@개의 '좋아요' 표시가 있습니다.";
+
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "최신 글 %1$@에 %2$@개의 '좋아요' 표시가 있습니다.";
+
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "총 워드프레스닷컴 구독자: %@";
 
@@ -12753,6 +12996,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "젯팩 모바일 봇 대본";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "질문하여 자원봉사자 그룹의 도움말을 이용하세요.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "커뮤니티 포럼";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "언제든지 지원팀의 답변 이용";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "도움말 이용";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "커뮤니티 포럼에서 질문하고 자원봉사자 그룹으로부터 도움말을 받으세요.";
 
@@ -12841,6 +13096,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "태그";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "활성화하기";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "다음 항목이 삭제됩니다.";
 
@@ -12925,6 +13183,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "오류";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "비밀번호 업데이트 중 오류가 발생했습니다.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "오류";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "개인 정보";

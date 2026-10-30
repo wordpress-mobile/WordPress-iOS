@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-03 21:53:29+0000 */
+/* Translation-Revision-Date: 2026-10-28 21:41:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: hu */
@@ -13,6 +13,9 @@
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Haladó";
 
+/* Insights 'All-Time' header */
+"All-Time" = "Mindenkori";
+
 /* the comment has an anonymous author. */
 "Anonymous" = "Névtelen";
 
@@ -24,6 +27,9 @@
 
 /* Approves a Comment */
 "Approve Comment" = "Hozzászólás Jóváhagyása";
+
+/* Menus confirmation text for confirming if a user wants to delete a menu. */
+"Are you sure you want to delete the menu?" = "Biztosan töröljük a menüt?";
 
 /* No comment provided by engineer. */
 "Authenticating" = "Bejelentkezés";
@@ -99,6 +105,14 @@
    Register Domain - Domain contact information field Country */
 "Country" = "Ország";
 
+/* Button for selecting the current page template.
+   Title for button to make a page with the contents of the selected layout */
+"Create Page" = "Oldal létrehozása";
+
+/* Customize button that appears in Theme Browser Header
+   Theme Customize action title */
+"Customize" = "Testreszabás";
+
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Kikapcsolva";
 
@@ -134,6 +148,9 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Bejegyzés szerkesztése";
 
+/* No comment provided by engineer. */
+"Edit file" = "Fájl szerkesztése";
+
 /* Accessibility label for the Email text field.
    Account Settings Email label
    Email address text field placeholder
@@ -152,6 +169,9 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Üres cím";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Értesítések engedélyezése";
+
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Jelszó megadása";
 
@@ -160,6 +180,9 @@
 
 /* Generic error alert title */
 "Error" = "Hiba";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Hiba a lájkok betöltése közben";
 
 /* Label for number of followers. */
 "Followers" = "Követők";
@@ -183,11 +206,17 @@
    Label action for inserting a link on the editor */
 "Insert Link" = "Hivatkozás beillesztése";
 
+/* The Jetpack view title used while the is installing */
+"Installing Jetpack" = "Jetpack telepítése";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Hibás honlap cím";
 
 /* No comment provided by engineer. */
 "Invalid Site Title" = "Hibás honlap név";
+
+/* No comment provided by engineer. */
+"Invalid URL." = "Érvénytelen URL.";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Hibás felhasználónév";
@@ -209,6 +238,9 @@
 /* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Tovább";
+
+/* Text displayed while loading the scan section for a site */
+"Loading Scan..." = "Keresés betöltése...";
 
 /* Loading tags
    Loading. Verb
@@ -265,6 +297,9 @@
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Nincs kapcsolat";
+
+/* No comment provided by engineer. */
+"No blocks found" = "Nem találhatóak blokkok";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed when there are no comments in the Comments views. */
@@ -617,6 +652,9 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
+/* WordPress.com Notification Settings Title */
+"WordPress.com Updates" = "WordPress.com Frissítések";
+
 /* Yes */
 "Yes" = "Igen";
 
@@ -653,4 +691,7 @@
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Látogatók";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Elértük a korlátot. Egy perc múlva újra próbálkozhatunk. Az idő letelte előtti újrapróbálkozás, csak a kitiltás idejét fogja növelni. Amennyiben hibára gyanakszunk, forduljunk a támogató csapathoz.";
 

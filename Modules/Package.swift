@@ -422,7 +422,11 @@ let package = Package(
         ),
         .testTarget(
             name: "WordPressUIUnitTests",
-            dependencies: [.target(name: "WordPressUI"), .target(name: "WordPressSharedUI")],
+            dependencies: [
+                .target(name: "WordPressUI"),
+                .target(name: "WordPressSharedUI"),
+                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),

@@ -149,7 +149,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             NSError *error;
             BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
             if (!obtainedID) {
-                DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
+                WPLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
             }
             postObjectID = post.objectID;
         } completion:^{
@@ -454,7 +454,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         [context performBlockAndWait:^{
 
-            DDLogError(@"Error while toggling post Seen status: %@", error);
+            WPLogError(@"Error while toggling post Seen status: %@", error);
             readerPost.isSeen = oldValue;
 
             [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
@@ -493,12 +493,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         NSArray *arr = [context executeFetchRequest:fetchRequest error:&error];
         if (error) {
-            DDLogError(@"%@, error fetching posts belonging to no topic: %@", NSStringFromSelector(_cmd), error);
+            WPLogError(@"%@, error fetching posts belonging to no topic: %@", NSStringFromSelector(_cmd), error);
             return;
         }
 
         for (ReaderPost *post in arr) {
-            DDLogInfo(@"%@, deleting topicless post: %@", NSStringFromSelector(_cmd), post);
+            WPLogInfo(@"%@, deleting topicless post: %@", NSStringFromSelector(_cmd), post);
             [context deleteObject:post];
         }
     }];
@@ -512,7 +512,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         request.predicate = [NSPredicate predicateWithFormat:@"isSavedForLater = true"];
         NSArray *results = [context executeFetchRequest:request error:&error];
         if (error) {
-            DDLogError(@"%@, unsaving saved posts: %@", NSStringFromSelector(_cmd), error);
+            WPLogError(@"%@, unsaving saved posts: %@", NSStringFromSelector(_cmd), error);
             return;
         }
 
@@ -530,7 +530,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         request.predicate = [NSPredicate predicateWithFormat:@"inUse = true"];
         NSArray *results = [context executeFetchRequest:request error:&error];
         if (error) {
-            DDLogError(@"%@, marking posts not in use.: %@", NSStringFromSelector(_cmd), error);
+            WPLogError(@"%@, marking posts not in use.: %@", NSStringFromSelector(_cmd), error);
             return;
         }
 
@@ -554,7 +554,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND blogURL = %@", siteID, siteURL];
         NSArray *results = [context executeFetchRequest:request error:&error];
         if (error) {
-            DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
+            WPLogError(@"%@, error (un)following posts with siteID %@ and URL %@: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
             return;
         }
         if ([results count] == 0) {
@@ -632,7 +632,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     ReaderPost *post = [[context executeFetchRequest:fetchRequest error:&error] firstObject];
     if (error || !post) {
-        DDLogError(@"Error fetching post at a specific offset.", error);
+        WPLogError(@"Error fetching post at a specific offset: %@", error);
         return nil;
     }
 
@@ -654,11 +654,11 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSString *description = nil;
 
     if (post.isWPCom && post.postID == nil) {
-        DDLogError(@"Could not toggle Seen: missing postID.");
+        WPLogError(@"Could not toggle Seen: missing postID.");
         description = NSLocalizedString(@"Could not toggle Seen: missing postID.", @"An error description explaining that Seen could not be toggled due to a missing postID.");
 
     } else if (!post.isWPCom && post.feedItemID == nil) {
-        DDLogError(@"Could not toggle Seen: missing feedItemID.");
+        WPLogError(@"Could not toggle Seen: missing feedItemID.");
         description = NSLocalizedString(@"Could not toggle Seen: missing feedItemID.", @"An error description explaining that Seen could not be toggled due to a missing feedItemID.");
     }
 
@@ -782,7 +782,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSError *error;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(error.localizedDescription);
+        WPLogError(@"%@", error.localizedDescription);
         return NO;
     }
 
@@ -827,7 +827,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSError *error;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(error.localizedDescription);
+        WPLogError(@"%@", error.localizedDescription);
         return nil;
     }
 
@@ -866,13 +866,13 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSError *error;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(error.localizedDescription);
+        WPLogError(@"%@", error.localizedDescription);
         return;
     }
 
     // There should only ever be one, but loop over all results just in case.
     for (ReaderGapMarker *marker in results) {
-        DDLogInfo(@"Deleting Gap Marker: %@", marker);
+        WPLogInfo(@"Deleting Gap Marker: %@", marker);
         [context deleteObject:marker];
     }
 }
@@ -885,7 +885,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSError *error;
     NSInteger count = [context countForFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(error.localizedDescription);
+        WPLogError(@"%@", error.localizedDescription);
         return NO;
     }
     return (count > 0);
@@ -926,7 +926,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     NSArray *currentPosts = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
+        WPLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -935,7 +935,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             // If the missing post is currently being used or has been saved, just remove its topic.
             post.topic = nil;
         } else {
-            DDLogInfo(@"Deleting ReaderPost: %@", post);
+            WPLogInfo(@"Deleting ReaderPost: %@", post);
             [context deleteObject:post];
         }
     }
@@ -975,7 +975,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     NSArray *currentPosts = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
+        WPLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -988,7 +988,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             // If the missing post is currently being used or has been saved, just remove its topic.
             post.topic = nil;
         } else {
-            DDLogInfo(@"Deleting ReaderPost: %@", post);
+            WPLogInfo(@"Deleting ReaderPost: %@", post);
             [context deleteObject:post];
         }
     }
@@ -1031,7 +1031,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     NSArray *posts = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
+        WPLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -1041,7 +1041,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         if ([self topicShouldBeClearedFor:post]) {
             post.topic = nil;
         } else {
-            DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
+            WPLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
             [context deleteObject:post];
         }
     }
@@ -1049,7 +1049,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     // If the last remaining post is a gap marker, remove it.
     ReaderPost *lastPost = [posts objectAtIndex:maxPosts - 1];
     if ([lastPost isKindOfClass:[ReaderGapMarker class]]) {
-        DDLogInfo(@"Deleting Last GapMarker: %@", lastPost);
+        WPLogInfo(@"Deleting Last GapMarker: %@", lastPost);
         [context deleteObject:lastPost];
     }
 }
@@ -1073,7 +1073,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     request.predicate = [NSPredicate predicateWithFormat:@"isSiteBlocked = YES"];
     NSArray *results = [context executeFetchRequest:request error:&error];
     if (error) {
-        DDLogError(@"%@, error deleting deleting posts from blocked sites: %@", NSStringFromSelector(_cmd), error);
+        WPLogError(@"%@, error deleting deleting posts from blocked sites: %@", NSStringFromSelector(_cmd), error);
         return;
     }
 
@@ -1086,7 +1086,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             // If the missing post is currenty being used just remove its topic.
             post.topic = nil;
         } else {
-            DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
+            WPLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
             [context deleteObject:post];
         }
     }
@@ -1116,7 +1116,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         if (newPost != nil) {
             [newPosts addObject:newPost];
         } else {
-            DDLogInfo(@"%@ returned a nil post: %@", NSStringFromSelector(_cmd), post);
+            WPLogInfo(@"%@ returned a nil post: %@", NSStringFromSelector(_cmd), post);
         }
     }
     return newPosts;

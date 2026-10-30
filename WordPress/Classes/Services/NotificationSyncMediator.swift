@@ -24,7 +24,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Returns the Main Managed Context
     ///
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStack
 
     /// API object used to make network requests
     /// Used by remote services
@@ -93,7 +93,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - accountUUID: The account `dotcomAPI` belongs to. When set, results are
     ///       not written once another account becomes the default.
     ///
-    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi, accountUUID: String?) {
+    init?(manager: CoreDataStack, dotcomAPI: WordPressComRestApi, accountUUID: String?) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }

@@ -179,6 +179,7 @@ class RequestAuthenticator: NSObject, @unchecked Sendable {
         let context = ContextManager.shared.mainContext
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             WordPressAppDelegate.crashLogging?.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
+            done()
             return
         }
         let authenticationService = AtomicAuthenticationService(account: account)

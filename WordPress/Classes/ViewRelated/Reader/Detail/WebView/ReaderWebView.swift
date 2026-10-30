@@ -11,7 +11,7 @@ class ReaderWebView: WKWebView {
 
     /// HTML elements that will load only after the text has appeared
     /// From: https://www.w3schools.com/tags/att_src.asp
-    private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
+    private static let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
 
     /// Google recently started requiring an HTTP referrer, otherwise it'll just show an error.
     ///
@@ -52,7 +52,7 @@ class ReaderWebView: WKWebView {
         // This is because only the image inside the src tag is previously saved
         let additionalJavaScript = ReachabilityUtils.isInternetReachable() ? "" : jsToRemoveSrcSet
 
-        let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
+        let content = formattedContent(Self.addPlaceholder(string), additionalJavaScript: additionalJavaScript)
 
         super.loadHTMLString(content, baseURL: Self.baseURL)
     }
@@ -113,7 +113,7 @@ class ReaderWebView: WKWebView {
     func loadMedia() {
         evaluateJavaScript(
             """
-                var elements = ["\(elements.joined(separator: "\",\""))"]
+                var elements = ["\(Self.elements.joined(separator: "\",\""))"]
 
                 elements.forEach((element) => {
                     document.querySelectorAll(`${element}-placeholder`).forEach((el) => {
@@ -170,10 +170,26 @@ class ReaderWebView: WKWebView {
     /// Ie.: img -> img-placeholder
     /// This will make the text to appear fast, so the user can start reading
     ///
-    private func addPlaceholder(_ htmlContent: String) -> String {
+    /// End tags are renamed too. The HTML parser ignores a stray `</iframe>` after
+    /// `<iframe-placeholder>`, so the placeholder stays open and the rest of the
+    /// post is parsed as its children. `loadMedia` then turns it into an `<iframe>`,
+    /// whose children are fallback content that never renders.
+    static func addPlaceholder(_ htmlContent: String) -> String {
         var content = htmlContent
 
-        elements.forEach { content = content.replacingMatches(of: "<\($0)", with: "<\($0)-placeholder") }
+        for element in elements {
+            // HTML tag names are case-insensitive. Renaming only one tag of a pair leaves the element open.
+            content = content.replacingMatches(
+                of: "<\(element)",
+                with: "<\(element)-placeholder",
+                options: .caseInsensitive
+            )
+            content = content.replacingMatches(
+                of: "</\(element)\\s*>",
+                with: "</\(element)-placeholder>",
+                options: .caseInsensitive
+            )
+        }
 
         return content
     }

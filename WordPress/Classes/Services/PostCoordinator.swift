@@ -48,7 +48,7 @@ class PostCoordinator: NSObject {
     /// Events about the sync status changes.
     let syncEvents = PassthroughSubject<SyncEvent, Never>()
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
 
     private var mainContext: NSManagedObjectContext {
         coreDataStack.mainContext
@@ -74,7 +74,7 @@ class PostCoordinator: NSObject {
     init(
         mediaCoordinator: MediaCoordinator? = nil,
         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        coreDataStack: CoreDataStack = ContextManager.shared,
         searchManager: SearchManaging = SearchManager.shared
     ) {
         self.coreDataStack = coreDataStack
