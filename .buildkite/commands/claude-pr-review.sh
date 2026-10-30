@@ -54,10 +54,11 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 # shellcheck source=.buildkite/claude/audit.sh
 source .buildkite/claude/audit.sh
 
-# A review request for wpmobilebot re-runs this step, so clear it however the
-# run ends, to let it be requested again. GitHub only clears it when a review
-# is submitted, and a run that fails early doesn't submit one. Before BOT_LOGIN
-# is set, there's nothing to clear.
+# A review request for wpmobilebot re-runs this step, so clear it to let it be
+# requested again. GitHub only clears it when a review is submitted. This runs
+# when the job starts, because a cancelled job never reaches its EXIT trap, and
+# again at the end, for a request made during the run. Before BOT_LOGIN is set,
+# there's nothing to clear.
 clear_review_request() {
   [[ -n "${BOT_LOGIN:-}" ]] || return 0
   gh api --method DELETE "repos/${REPO_SLUG}/pulls/${PR_NUMBER}/requested_reviewers" \
@@ -103,6 +104,7 @@ fi
 export GH_TOKEN="$GITHUB_TOKEN"
 # The account the script posts as. Only threads it started count as Claude's.
 BOT_LOGIN=$(gh api user --jq .login)
+clear_review_request
 
 # ── Project setup, so Claude can build and test ──────────────────────
 # a8c-secrets is deliberately not installed: builds fall back to the example
