@@ -107,11 +107,12 @@ BOT_LOGIN=$(gh api user --jq .login)
 # ── Project setup, so Claude can build and test ──────────────────────
 # a8c-secrets is deliberately not installed: builds fall back to the example
 # credentials, so the app's secrets are never decrypted on this VM.
-.buildkite/commands/shared-set-up.sh
+.buildkite/commands/shared-set-up.sh --artifacts DerivedData/SourcePackages
 
-# The Xcode build keeps its packages in DerivedData/SourcePackages, not where
-# the step above puts them. Without this the reviewer would fetch them again,
-# including 6.5 GB of binaries. The reviewer's copy of the checkout includes them.
+# The step above restores what the build jobs cached, including 6.5 GB of
+# binaries. Resolving fills in anything missing, so the reviewer's copy of the
+# checkout has every package and its first build doesn't fetch them again. Only
+# the build jobs save this cache.
 echo "--- :swift: Resolving Swift packages for the reviewer"
 packages_start=$SECONDS
 packages_log="$(mktemp)"
