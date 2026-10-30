@@ -4,6 +4,7 @@
 * [*] Fix tab bar titles showing truncated and misaligned on iOS 26 [#26162]
 * [*] Reader: Load related post thumbnails and other images whose address redirects [#26296]
 * [*] Reader: Show a name for every subscription, including sites the app cannot load [#26274]
+* [*] Site Creation: Offer the free WordPress.com address on its own card, and dismiss the keyboard on Search and when scrolling domain results [#26141]
 * [*] Share Extension: Fix a crash when sharing a photo [#26251]
 * [*] Site Creation: Keep the design list's place when the iPad window is resized [#26224]
 * [*] iPad: Fix an open editor or Site Creation closing the first time the window is narrowed [#26223]
