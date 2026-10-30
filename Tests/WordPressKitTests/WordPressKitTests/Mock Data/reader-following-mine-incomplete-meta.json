@@ -1,0 +1,148 @@
+{
+	"page": 1,
+	"number": 4,
+	"total_subscriptions": 4,
+	"subscriptions": [
+		{
+			"ID": "863716721",
+			"blog_ID": "257970269",
+			"feed_ID": "182552112",
+			"URL": "https://testgallary.wordpress.com",
+			"feed_URL": "http://testgallary.wordpress.com",
+			"name": "testgallary",
+			"organization_id": 0,
+			"unseen_count": 0,
+			"site_icon": null,
+			"meta": {
+				"links": {
+					"site": "https://public-api.wordpress.com/rest/v1.2/read/sites/257970269",
+					"feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/182552112"
+				},
+				"data": {
+					"site": {
+						"ID": 257970269,
+						"name": "testgallary",
+						"description": "",
+						"URL": "https://testgallary.wordpress.com",
+						"feed_ID": 182552112,
+						"feed_URL": "http://testgallary.wordpress.com",
+						"is_following": true,
+						"is_private": false,
+						"visible": true,
+						"subscribers_count": 1,
+						"organization_id": 0
+					},
+					"feed": {
+						"blog_ID": "257970269",
+						"feed_ID": "182552112",
+						"name": null,
+						"URL": "",
+						"feed_URL": "http://testgallary.wordpress.com",
+						"subscribers_count": 1,
+						"is_following": true,
+						"last_update": null,
+						"last_checked": null,
+						"marked_for_refresh": false,
+						"next_refresh_time": null,
+						"organization_id": 0,
+						"subscription_id": "863716721",
+						"unseen_count": 0
+					}
+				}
+			}
+		},
+		{
+			"ID": "864159977",
+			"blog_ID": 0,
+			"feed_ID": "182647174",
+			"URL": "http://tremendously-random.jurassic.ninja",
+			"feed_URL": "http://tremendously-random.jurassic.ninja/feed",
+			"name": "Tremendously Random",
+			"organization_id": 0,
+			"unseen_count": 1,
+			"site_icon": null,
+			"meta": {
+				"links": {
+					"feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/182647174"
+				},
+				"data": {
+					"feed": {
+						"errors": {
+							"unauthorized": [
+								"User cannot access the feed of this private blog."
+							]
+						},
+						"error_data": {
+							"unauthorized": 403
+						}
+					}
+				}
+			}
+		},
+		{
+			"ID": "826118145",
+			"blog_ID": 0,
+			"feed_ID": "175735670",
+			"URL": "http://impressed-grizzly.jurassic.ninja",
+			"feed_URL": "http://impressed-grizzly.jurassic.ninja/feed",
+			"name": "Impressed Grizzly",
+			"organization_id": 0,
+			"unseen_count": 0,
+			"site_icon": null,
+			"meta": {
+				"links": {
+					"feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/175735670"
+				},
+				"data": {
+					"feed": {
+						"blog_ID": "0",
+						"feed_ID": "175735670",
+						"name": null,
+						"URL": "",
+						"feed_URL": "http://impressed-grizzly.jurassic.ninja/feed",
+						"subscribers_count": 1,
+						"is_following": true,
+						"last_update": null,
+						"last_checked": "2026-10-28T06:13:38+00:00",
+						"marked_for_refresh": false,
+						"next_refresh_time": null,
+						"organization_id": 0,
+						"subscription_id": "826118145",
+						"unseen_count": 0
+					}
+				}
+			}
+		},
+		{
+			"ID": "864714107",
+			"blog_ID": false,
+			"feed_ID": "182815000",
+			"URL": "http://www.raspberrypi.com/news",
+			"feed_URL": "http://www.raspberrypi.com/news/feed",
+			"name": "",
+			"organization_id": 0,
+			"unseen_count": 0,
+			"site_icon": null,
+			"meta": {
+				"links": {
+					"feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/182815000"
+				},
+				"data": {
+					"feed": {
+						"blog_ID": "0",
+						"feed_ID": "182815000",
+						"name": null,
+						"URL": "",
+						"feed_URL": "http://www.raspberrypi.com/news/feed",
+						"subscribers_count": 1,
+						"is_following": true,
+						"last_update": null,
+						"last_checked": null,
+						"organization_id": 0,
+						"unseen_count": 0
+					}
+				}
+			}
+		}
+	]
+}

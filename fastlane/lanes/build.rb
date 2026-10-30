@@ -78,10 +78,14 @@ platform :ios do
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
+      app_name: 'WordPress',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      device: options[:device],
-      deployment_target_version: options[:ios_version]
+      # Naming the device and the deployment target, with `app_name` above, stops scan from reading
+      # the build settings, which takes about 30 s on CI.
+      device: options[:device] || 'iPhone 17 Pro',
+      deployment_target_version: options[:ios_version] || '17.0',
+      disallow_xcodebuild_settings_lookup: true
     )
   end
 
@@ -97,10 +101,14 @@ platform :ios do
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'Jetpack',
+      app_name: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      device: options[:device],
-      deployment_target_version: options[:ios_version]
+      # Naming the device and the deployment target, with `app_name` above, stops scan from reading
+      # the build settings, which takes about 30 s on CI.
+      device: options[:device] || 'iPhone 17 Pro',
+      deployment_target_version: options[:ios_version] || '17.0',
+      disallow_xcodebuild_settings_lookup: true
     )
   end
 
@@ -129,11 +137,18 @@ platform :ios do
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
-      device: options[:device],
-      deployment_target_version: options[:ios_version],
+      # Naming the device and the deployment target stops scan from reading the build settings to pick a simulator.
+      device: options[:device] || 'iPhone 17 Pro',
+      deployment_target_version: options[:ios_version] || '17.0',
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
+      # The tests run from the prebuilt .xctestrun. Resolving packages, or reading build settings
+      # (which also resolves them), would fetch every Swift package for nothing.
+      skip_package_dependencies_resolution: true,
+      disallow_xcodebuild_settings_lookup: true,
+      derived_data_path: DERIVED_DATA_PATH,
+      app_name: 'WordPress',
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
@@ -343,19 +358,16 @@ platform :ios do
     when 'wordpress'
       scheme = 'WordPress'
       output_name = APP_STORE_CONNECT_BUILD_NAME_WORDPRESS
-      beta_app_description_path = WORDPRESS_BETA_APP_DESCRIPTION_PATH
       sentry_project_slug = SENTRY_PROJECT_SLUG_WORDPRESS
       app_identifier = WORDPRESS_BUNDLE_IDENTIFIER
     when 'jetpack'
       scheme = 'Jetpack'
       output_name = APP_STORE_CONNECT_BUILD_NAME_JETPACK
-      beta_app_description_path = JETPACK_BETA_APP_DESCRIPTION_PATH
       sentry_project_slug = SENTRY_PROJECT_SLUG_JETPACK
       app_identifier = JETPACK_BUNDLE_IDENTIFIER
     when 'reader'
       scheme = 'Reader'
       output_name = APP_STORE_CONNECT_BUILD_NAME_READER
-      beta_app_description_path = BETA_APP_DESCRIPTION_PATH_READER
       sentry_project_slug = nil # Reader does not have a Sentry project yet
       app_identifier = nil
     else
@@ -399,10 +411,15 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_app_to_testflight_internal(
-      ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      beta_app_description_path: beta_app_description_path
-    )
+    upload_app_to_testflight_internal(ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH])
+
+    if ENV['BUILDKITE']
+      # Picked up by the Linux step that runs `finalize_internal_testflight_build`.
+      sh('buildkite-agent', 'meta-data', 'set', "testflight_marketing_version_#{app}", marketing_version)
+      sh('buildkite-agent', 'meta-data', 'set', "testflight_build_code_#{app}", build_code)
+    else
+      finalize_internal_testflight_build(app: app, marketing_version: marketing_version, build_code: build_code)
+    end
 
     # Upload symbols so crashes from these builds symbolicate in Sentry.
     next if sentry_project_slug.nil?
@@ -422,8 +439,56 @@ platform :ios do
     )
   end
 
+  # Waits for App Store Connect to process a build uploaded by `build_and_upload_app_for_testflight`,
+  # then sets its "What to Test" notes and beta description. Needs no Xcode, so CI runs it on Linux.
+  #
+  # @param [String] app One of `wordpress`, `jetpack`, or `reader`.
+  # @param [String] marketing_version The build's `CFBundleShortVersionString`, e.g. `27.4`.
+  # @param [String] build_code The build's `CFBundleVersion`, e.g. `27.4.0.35492`.
+  #
+  # @called_by CI
+  #
+  desc 'Waits for an internal TestFlight build to process, then sets its notes'
+  lane :finalize_internal_testflight_build do |app:, marketing_version:, build_code:|
+    case app.to_s.downcase
+    when 'wordpress'
+      app_identifier = WORDPRESS_BUNDLE_IDENTIFIER
+      beta_app_description_path = WORDPRESS_BETA_APP_DESCRIPTION_PATH
+    when 'jetpack'
+      app_identifier = JETPACK_BUNDLE_IDENTIFIER
+      beta_app_description_path = JETPACK_BETA_APP_DESCRIPTION_PATH
+    when 'reader'
+      app_identifier = READER_BUNDLE_IDENTIFIER
+      beta_app_description_path = BETA_APP_DESCRIPTION_PATH_READER
+    else
+      UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
+    end
+
+    # TODO: the "what's new" text for per-commit internal builds is not finalized yet.
+    # For now, generate a minimal placeholder from the commit metadata there's something to show.
+    # Public-beta builds will get richer notes generated from the PRs merged since the previous public build.
+    changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown branch')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown commit')[0...7]})."
+
+    upload_to_testflight(
+      api_key: app_store_connect_api_key,
+      distribute_only: true,
+      app_identifier: app_identifier,
+      app_platform: 'ios',
+      app_version: marketing_version,
+      build_number: build_code,
+      beta_app_description: File.read(beta_app_description_path),
+      changelog: changelog,
+      distribute_external: false,
+      notify_external_testers: false,
+      # Internal builds don't participate in beta review and must not disturb an
+      # existing external review submission.
+      submit_beta_review: false,
+      reject_build_waiting_for_review: false
+    )
+  end
+
   # Convenience wrapper that builds and uploads each app to TestFlight, one after
-  # another. CI builds each app in parallel via a Buildkite matrix instead; this
+  # another. CI builds each app in parallel in separate steps instead; this
   # lane is handy for running the whole set locally.
   #
   # Reader is omitted until its App Store archive is fixed (broken since #25321).
@@ -662,27 +727,20 @@ platform :ios do
     )
   end
 
-  # Uploads an already-built IPA to TestFlight for internal testers only.
+  # Uploads an already-built IPA to TestFlight for internal testers only,
+  # without waiting for App Store Connect to process it.
+  # `finalize_internal_testflight_build` does the waiting, from a Linux agent.
   #
   # @param [String] ipa_path Path to the built IPA.
-  # @param [String] beta_app_description_path Path to the beta app description file.
   #
-  def upload_app_to_testflight_internal(ipa_path:, beta_app_description_path:)
-    # TODO: the "what's new" text for per-commit internal builds is not
-    # finalized yet. For now, generate a minimal placeholder from the commit
-    # metadata so the upload has something to show. Public-beta builds will get
-    # richer notes generated from the PRs merged since the previous public build.
-    changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown branch')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown commit')[0...7]})."
-
+  def upload_app_to_testflight_internal(ipa_path:)
     upload_to_testflight(
       api_key: app_store_connect_api_key,
       ipa: ipa_path,
-      beta_app_description: File.read(beta_app_description_path),
-      changelog: changelog,
+      # pilot still waits for the build to appear, i.e. finish processing, when given a changelog.
+      skip_waiting_for_build_processing: true,
       distribute_external: false,
       notify_external_testers: false,
-      # Internal builds don't participate in beta review and must not disturb an
-      # existing external review submission.
       submit_beta_review: false,
       reject_build_waiting_for_review: false
     )

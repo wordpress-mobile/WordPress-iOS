@@ -13,13 +13,16 @@ struct WPLoggingStack {
     let crashLogging: CrashLogging
     let eventLogging: EventLogging
 
-    private let eventLoggingDataProvider = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
+    private let eventLoggingDataProvider: EventLoggingDataSource
     // swiftlint:disable:next weak_delegate
     private let eventLoggingDelegate = EventLoggingDelegate()
 
     private let enterForegroundObserver: AnyCancellable
 
     init() {
+        // Adds the file logger to CocoaLumberjack. Lines logged before this never reach the log files.
+        _ = WPLogger.shared()
+        eventLoggingDataProvider = EventLoggingDataProvider.from(.shared)
 
         let eventLogging = EventLogging(dataSource: eventLoggingDataProvider, delegate: eventLoggingDelegate)
 

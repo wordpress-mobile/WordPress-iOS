@@ -15,8 +15,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private let tags: ManagedObjectsObserver<ReaderTagTopic>
     private let viewContext: NSManagedObjectContext
     private var cancellables: [AnyCancellable] = []
-    private let notificationsButtonViewModel = NotificationsButtonViewModel()
-    private var notificationsButtonCancellable: AnyCancellable?
+    private let notificationsBarButton = ReaderNotificationsBarButton()
+    private weak var notificationsItem: UIBarButtonItem?
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
@@ -61,25 +61,32 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         setupNotificationsBarButtonItem()
     }
 
+    /// The bell for the current layout. The tap reads it too, so it acts on the layout the
+    /// bell is shown in.
+    private var notificationsBell: ReaderNotificationsBell {
+        ReaderNotificationsBell(
+            showsPopoverInRegularWidth: true,
+            horizontalSizeClass: traitCollection.horizontalSizeClass
+        )
+    }
+
+    /// Replaces only the bell, keeping the items that subclasses add.
     private func setupNotificationsBarButtonItem() {
-        notificationsButtonCancellable = nil
-        if traitCollection.horizontalSizeClass == .regular {
-            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
-                guard let self else { return }
-                self.navigationItem.rightBarButtonItems = [
-                    UIBarButtonItem(
-                        image: $0,
-                        style: .plain,
-                        target: self,
-                        action: #selector(buttonShowNotificationsTapped)
-                    )
-                ]
-            }
+        var items = navigationItem.rightBarButtonItems ?? []
+        items.removeAll { $0 === notificationsItem }
+        notificationsItem = notificationsBarButton.makeItem(
+            for: notificationsBell,
+            target: self,
+            action: #selector(buttonShowNotificationsTapped)
+        )
+        if let notificationsItem {
+            items.insert(notificationsItem, at: 0)
         }
+        navigationItem.rightBarButtonItems = items
     }
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
-        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
+        notificationsBell.open(from: self, sourceItem: sender)
     }
 
     private func setupHeaderView() {
@@ -165,8 +172,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     // MARK: ReaderDiscoverHeaderViewDelegate
 
-    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
-    {
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel) {
         self.selectedChannel = selection
         configureStream(for: selection)
         WPAnalytics.track(.readerDiscoverChannelSelected, properties: selection.analyticsProperties)
@@ -302,8 +308,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
 
         if let posts = content.content as? [ReaderCard], let post = posts[indexPath.row].post {

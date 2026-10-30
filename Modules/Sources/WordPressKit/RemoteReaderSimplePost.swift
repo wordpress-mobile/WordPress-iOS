@@ -19,9 +19,21 @@ public struct RemoteReaderSimplePost: Decodable {
     public let author: RemoteReaderSimplePostAuthor
     public let excerpt: String
     public let siteName: String
-    public let featuredImageUrl: String?
-    public let featuredMedia: RemoteReaderSimplePostFeaturedMedia?
+    private let featuredImageUrl: String?
+    private let featuredMedia: RemoteReaderSimplePostFeaturedMedia?
     public let railcar: RemoteReaderSimplePostRailcar
+
+    /// The post's image, or nil when the API supplied none. Only `image` featured media counts:
+    /// a video's `uri` is an embed page (a YouTube player URL, for example), not an image.
+    public var featuredImageURL: URL? {
+        if let featuredImageUrl, !featuredImageUrl.isEmpty {
+            return URL(string: featuredImageUrl)
+        }
+        if let featuredMedia, featuredMedia.type == "image", let uri = featuredMedia.uri, !uri.isEmpty {
+            return URL(string: uri)
+        }
+        return nil
+    }
 
     public var postType: PostType {
         switch railcar.fetchAlgo {
@@ -53,8 +65,9 @@ public struct RemoteReaderSimplePostAuthor: Decodable {
     public let name: String
 }
 
-public struct RemoteReaderSimplePostFeaturedMedia: Decodable {
-    public let uri: String?
+struct RemoteReaderSimplePostFeaturedMedia: Decodable {
+    let uri: String?
+    let type: String?
 }
 
 public struct RemoteReaderSimplePostRailcar: Decodable {

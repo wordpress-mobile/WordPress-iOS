@@ -1,32 +1,124 @@
 import UIKit
 import WordPressShared
 
-class GrowAudienceCell: UITableViewCell, NibLoadable {
+class GrowAudienceCell: UITableViewCell {
 
-    @IBOutlet weak var viewCountStackView: UIStackView!
-    @IBOutlet weak var viewCountLabel: UILabel!
-    @IBOutlet weak var viewCountDescriptionLabel: UILabel!
-    @IBOutlet weak var tipLabel: UILabel!
-    @IBOutlet weak var detailsLabel: UILabel!
-    @IBOutlet weak var iconView: UIImageView!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var actionButton: UIButton!
+    private let viewCountStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.alignment = .firstBaseline
+        stackView.spacing = 8
+        return stackView
+    }()
+    private let viewCountLabel = makeLabel(textStyle: .title1)
+    private let viewCountDescriptionLabel: UILabel = {
+        let label = makeLabel(text: "Views to your site so far", textStyle: .body)
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return label
+    }()
+    private let tipLabel: UILabel = {
+        let label = makeLabel(textStyle: .title3, numberOfLines: 0)
+        label.setContentHuggingPriority(UILayoutPriority(252), for: .vertical)
+        return label
+    }()
+    private let detailsLabel = makeLabel(textStyle: .subheadline, numberOfLines: 0)
+    private let iconView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
+        imageView.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
+        return imageView
+    }()
+    private let dismissButton = makeButton()
+    private let actionButton = makeButton()
 
     private var hintType: HintType?
 
     private weak var insightsDelegate: SiteStatsInsightsDelegate?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+        setUpViews()
         applyStyles()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setUpViews() {
+        [viewCountLabel, viewCountDescriptionLabel].forEach(viewCountStackView.addArrangedSubview)
+
+        let tipStackView = UIStackView(arrangedSubviews: [tipLabel, detailsLabel])
+        tipStackView.axis = .vertical
+        tipStackView.spacing = 8
+
+        let hintStackView = UIStackView(arrangedSubviews: [tipStackView, iconView])
+        hintStackView.alignment = .top
+        hintStackView.spacing = 24
+
+        let contentStackView = UIStackView(arrangedSubviews: [viewCountStackView, hintStackView])
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 16
+
+        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        let buttonsStackView = UIStackView(arrangedSubviews: [dismissButton, actionButton])
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.distribution = .equalSpacing
+        buttonsStackView.spacing = 16
+
+        contentView.addSubview(contentStackView)
+        contentView.addSubview(buttonsStackView)
+
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor, constant: 16),
+
+            viewCountLabel.topAnchor.constraint(equalTo: viewCountStackView.topAnchor),
+            viewCountLabel.centerYAnchor.constraint(equalTo: viewCountStackView.centerYAnchor),
+
+            iconView.widthAnchor.constraint(equalToConstant: 88),
+            iconView.widthAnchor.constraint(equalTo: iconView.heightAnchor),
+
+            buttonsStackView.topAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: 32),
+            buttonsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            buttonsStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            contentView.bottomAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 16),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: 30),
+            actionButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+
+    private static func makeLabel(
+        text: String = "Label",
+        textStyle: UIFont.TextStyle,
+        numberOfLines: Int = 1
+    ) -> UILabel {
+        let label = UILabel.makeStatsLabel(text: text, textStyle: textStyle, numberOfLines: numberOfLines)
+        label.adjustsFontForContentSizeCategory = false
+        return label
+    }
+
+    private static func makeButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Button", for: .normal)
+        return button
     }
 
     // MARK: - Configuration
 
-    func configure(hintType: HintType,
-                   allTimeViewsCount: Int,
-                   isNudgeCompleted: Bool,
-                   insightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(
+        hintType: HintType,
+        allTimeViewsCount: Int,
+        isNudgeCompleted: Bool,
+        insightsDelegate: SiteStatsInsightsDelegate?
+    ) {
         self.hintType = hintType
         self.insightsDelegate = insightsDelegate
 
@@ -37,9 +129,11 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
         updateView(isCompleted: isNudgeCompleted)
 
-        prepareForVoiceOver(hintType: hintType,
-                            allTimeViewsCount: allTimeViewsCount,
-                            isNudgeCompleted: isNudgeCompleted)
+        prepareForVoiceOver(
+            hintType: hintType,
+            allTimeViewsCount: allTimeViewsCount,
+            isNudgeCompleted: isNudgeCompleted
+        )
     }
 
     // MARK: - A11y
@@ -68,7 +162,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             detailsLabel,
             dismissButton,
             actionButton
-        ].compactMap { $0 }
+        ]
+        .compactMap { $0 }
     }
 
     // MARK: - Styling
@@ -111,16 +206,16 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         layoutIfNeeded()
     }
 
-    // MARK: - IBAction
+    // MARK: - Actions
 
-    @IBAction private func dismissButtonTapped(_ sender: UIButton) {
+    @objc private func dismissButtonTapped(_ sender: UIButton) {
         guard let hintType else {
             return
         }
         insightsDelegate?.growAudienceDismissButtonTapped?(hintType)
     }
 
-    @IBAction private func actionButtonTapped(_ sender: UIButton) {
+    @objc private func actionButtonTapped(_ sender: UIButton) {
         guard let hintType else {
             return
         }
@@ -154,7 +249,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         static let tipTitle = NSLocalizedString(
             "growAudienceCell.tip",
             value: "A tip to grow your audience",
-            comment: "A hint to users about growing the audience for their site, when their site doesn't have many views yet."
+            comment:
+                "A hint to users about growing the audience for their site, when their site doesn't have many views yet."
         )
 
         static let dismissButtonTitle = NSLocalizedString(
@@ -164,7 +260,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         )
 
         static func getViewsCountDescription(viewsCount: Int) -> String {
-            return viewsCount == 1 ? viewsCountDescriptionSingular : viewsCountDescriptionPlural
+            viewsCount == 1 ? viewsCountDescriptionSingular : viewsCountDescriptionPlural
         }
 
         static func getViewCountSummary(viewsCount: Int) -> String {
@@ -175,8 +271,10 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         enum Social {
             static let detailsTitle = NSLocalizedString(
                 "growAudienceCell.social.title",
-                value: "Automatically share new posts to your social media to start bringing that audience over to your site.",
-                comment: "A detailed message to users about growing the audience for their site through enabling post sharing."
+                value:
+                    "Automatically share new posts to your social media to start bringing that audience over to your site.",
+                comment:
+                    "A detailed message to users about growing the audience for their site through enabling post sharing."
             )
 
             static let actionButtonTitle = NSLocalizedString(
@@ -208,7 +306,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             static let detailsTitle = NSLocalizedString(
                 "growAudienceCell.bloggingReminders.details",
                 value: "Posting regularly can help build an audience. Reminders help keep you on track.",
-                comment: "A detailed message to users about growing the audience for their site through blogging reminders."
+                comment:
+                    "A detailed message to users about growing the audience for their site through blogging reminders."
             )
 
             static let actionButtonTitle = NSLocalizedString(
@@ -240,7 +339,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             static let detailsTitle = NSLocalizedString(
                 "growAudienceCell.readerDiscover.details",
                 value: "Connect with other bloggers by subscribing, liking and commenting on their posts.",
-                comment: "A detailed message to users about growing the audience for their site through reader discover."
+                comment:
+                    "A detailed message to users about growing the audience for their site through reader discover."
             )
 
             static let actionButtonTitle = NSLocalizedString(
@@ -257,7 +357,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
             static let completedDetailsTitle = NSLocalizedString(
                 "growAudienceCell.readerDiscover.completed.details",
-                value: "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.",
+                value:
+                    "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.",
                 comment: "A detailed message to users indicating that they've set up reader discover."
             )
 
@@ -279,15 +380,15 @@ extension GrowAudienceCell {
         case readerDiscover
 
         func getTipTitle(_ isCompleted: Bool) -> String {
-            return isCompleted ? completedTipTitle : Strings.tipTitle
+            isCompleted ? completedTipTitle : Strings.tipTitle
         }
 
         func getDetailsTitle(_ isCompleted: Bool) -> String {
-            return isCompleted ? completedDetailsTitle : detailsTitle
+            isCompleted ? completedDetailsTitle : detailsTitle
         }
 
         func getActionButtonTitle(_ isCompleted: Bool) -> String {
-            return isCompleted ? completedActionButtonTitle : actionButtonTitle
+            isCompleted ? completedActionButtonTitle : actionButtonTitle
         }
 
         var completedTipTitle: String {

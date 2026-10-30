@@ -243,6 +243,12 @@ enum Strings {
         comment: "Title of the compose screen for replying to a comment"
     )
 
+    static let composerEditTitle = NSLocalizedString(
+        "commentComposer.title.edit",
+        value: "Edit Comment",
+        comment: "Title of the compose screen for editing a comment"
+    )
+
     static let composerPlaceholder = NSLocalizedString(
         "commentComposer.placeholder",
         value: "Leave a reply…",
@@ -259,6 +265,18 @@ enum Strings {
         "commentComposer.accessibility.sending",
         value: "Sending reply",
         comment: "VoiceOver announcement made when a reply starts sending"
+    )
+
+    static let composerSave = NSLocalizedString(
+        "commentComposer.action.save",
+        value: "Save",
+        comment: "Button label to save changes to an edited comment"
+    )
+
+    static let composerSaving = NSLocalizedString(
+        "commentComposer.accessibility.saving",
+        value: "Saving changes",
+        comment: "VoiceOver announcement made when changes to an edited comment start saving"
     )
 
     static let composerCancel = NSLocalizedString(
@@ -291,6 +309,12 @@ enum Strings {
         comment: "Button label to continue editing instead of discarding changes"
     )
 
+    static let composerDiscardChanges = NSLocalizedString(
+        "commentComposer.action.discardChanges",
+        value: "Discard Changes",
+        comment: "Button label to discard unsaved changes to a comment"
+    )
+
     static let composerErrorClosed = NSLocalizedString(
         "commentComposer.error.closed",
         value: "Comments are closed for this post.",
@@ -301,6 +325,12 @@ enum Strings {
         "commentComposer.error.replyFailed",
         value: "Failed to send reply.",
         comment: "Error message shown when sending a reply fails"
+    )
+
+    static let composerErrorEditFailed = NSLocalizedString(
+        "commentComposer.error.editFailed",
+        value: "Failed to save changes.",
+        comment: "Error message shown when editing a comment fails"
     )
 
     static let noticeReplySent = NSLocalizedString(
@@ -325,5 +355,11 @@ enum Strings {
         "commentDetail.action.reply",
         value: "Reply",
         comment: "Button label to reply to a comment on the detail screen"
+    )
+
+    static let detailEdit = NSLocalizedString(
+        "commentDetail.action.edit",
+        value: "Edit",
+        comment: "Button label to edit a comment on the detail screen"
     )
 }

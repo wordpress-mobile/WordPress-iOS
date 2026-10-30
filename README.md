@@ -6,7 +6,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 ### Getting Started
 
-1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. Refer to the [.xcode-version](./.xcode-version) file for the minimum required version.
+1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. The [.xcode-version](./.xcode-version) file lists the version CI uses.
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
 1. Open `WordPress.xcworkspace` in Xcode and build the `Jetpack` or `WordPress` scheme. The first build downloads the Gutenberg frameworks the app needs (about 60 MB).
 

@@ -349,7 +349,7 @@ struct TextWithButtonRow: ImmuTableRow {
     typealias CellType = TextWithAccessoryButtonCell
 
     static let cell: ImmuTableCell = {
-        ImmuTableCell.nib(TextWithAccessoryButtonCell.defaultNib, CellType.self)
+        ImmuTableCell.class(CellType.self)
     }()
 
     let title: String
@@ -373,7 +373,7 @@ struct TextWithButtonIndicatingActivityRow: ImmuTableRow {
     typealias CellType = TextWithAccessoryButtonCell
 
     static let cell: ImmuTableCell = {
-        ImmuTableCell.nib(TextWithAccessoryButtonCell.defaultNib, CellType.self)
+        ImmuTableCell.class(CellType.self)
     }()
 
     let title: String
@@ -385,7 +385,7 @@ struct TextWithButtonIndicatingActivityRow: ImmuTableRow {
 
         cell.mainLabelText = title
         cell.secondaryLabelText = subtitle
-        cell.button?.setActivityIndicatorVisible(true)
+        cell.button.setActivityIndicatorVisible(true)
     }
 }
 
@@ -471,7 +471,7 @@ struct SwitchWithSubtitleRow: ImmuTableRow {
 
 class ExpandableRow: ImmuTableRow {
     static let cell: ImmuTableCell = {
-        ImmuTableCell.nib(ExpandableCell.defaultNib, CellType.self)
+        ImmuTableCell.class(CellType.self)
     }()
 
     init(
@@ -499,7 +499,7 @@ class ExpandableRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! CellType
 
-        cell.titleTextLabel?.text = title
+        cell.titleTextLabel.text = title
         cell.expandableTextView.attributedText = expandedText
         cell.expanded = expanded
         cell.urlCallback = onLinkTap

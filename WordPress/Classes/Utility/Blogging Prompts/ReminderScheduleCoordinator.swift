@@ -14,7 +14,7 @@ class ReminderScheduleCoordinator {
     private let bloggingRemindersScheduler: BloggingRemindersScheduler
     private let promptRemindersScheduler: PromptRemindersScheduler
     private let bloggingPromptsServiceFactory: BloggingPromptsServiceFactory
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
 
     // MARK: Public Methods
 
@@ -22,7 +22,7 @@ class ReminderScheduleCoordinator {
         bloggingRemindersScheduler: BloggingRemindersScheduler,
         promptRemindersScheduler: PromptRemindersScheduler,
         bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
-        coreDataStack: CoreDataStackSwift
+        coreDataStack: CoreDataStack
     ) {
         self.bloggingRemindersScheduler = bloggingRemindersScheduler
         self.promptRemindersScheduler = promptRemindersScheduler
@@ -34,7 +34,7 @@ class ReminderScheduleCoordinator {
         notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
         pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
         bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
-        coreDataStack: CoreDataStackSwift = ContextManager.shared
+        coreDataStack: CoreDataStack = ContextManager.shared
     ) throws {
 
         let bloggingRemindersScheduler = try BloggingRemindersScheduler(notificationCenter: notificationScheduler,

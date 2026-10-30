@@ -4,6 +4,7 @@
 @import WordPressShared;
 @import WordPressSharedUI;
 @import WordPressKit;
+@import WordPressSharedObjC;
 
 
 @interface WPError ()
@@ -66,7 +67,7 @@
 
 + (BOOL)showWPComSigninIfErrorIsInvalidAuth:(nonnull NSError *)error {
     if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
-        DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
+        WPLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
                    [error localizedDescription]);
         if (error.code == WordPressComRestApiErrorCodeInvalidToken || error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
             [ObjCBridge showSigninForWPComFixingAuthToken];
@@ -95,7 +96,7 @@
         }
         [WPError internalInstance].alertShowing = YES;
 
-        DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
+        WPLogInfo(@"Showing alert with title: %@ and message %@", title, message);
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                                  message:[message stringByStrippingHTML]
                                                                           preferredStyle:UIAlertControllerStyleAlert];
