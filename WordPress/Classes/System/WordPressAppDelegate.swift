@@ -378,8 +378,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
+        WordPressAppDelegate.restoreExtraDebugSetting()
         printDebugLaunchInfo()
-        toggleExtraDebuggingIfNeeded()
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
@@ -718,34 +718,18 @@ extension WordPressAppDelegate {
         Loggers.app.info("===========================================================================")
     }
 
-    func toggleExtraDebuggingIfNeeded() {
-        if !AccountHelper.isLoggedIn {
-            // When there are no blogs in the app the settings screen is unavailable.
-            // In this case, enable extra_debugging by default to help troubleshoot any issues.
-            guard UserPersistentStoreFactory.instance().object(forKey: "orig_extra_debug") == nil else {
-                // Already saved. Don't save again or we could loose the original value.
-                return
-            }
-
-            let origExtraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug") ? "YES" : "NO"
-            UserPersistentStoreFactory.instance().set(origExtraDebug, forKey: "orig_extra_debug")
-            UserPersistentStoreFactory.instance().set(true, forKey: "extra_debug")
-            WordPressAppDelegate.setLogLevel(.verbose)
-        } else {
-            guard let origExtraDebug = UserPersistentStoreFactory.instance().string(forKey: "orig_extra_debug") else {
-                return
-            }
-
-            let origExtraDebugValue = (origExtraDebug as NSString).boolValue
-
-            // Restore the original setting and remove orig_extra_debug
-            UserPersistentStoreFactory.instance().set(origExtraDebugValue, forKey: "extra_debug")
-            UserPersistentStoreFactory.instance().removeObject(forKey: "orig_extra_debug")
-
-            if origExtraDebugValue {
-                WordPressAppDelegate.setLogLevel(.verbose)
-            }
+    /// Extra debug used to turn itself on for signed-out users, saving their choice in `orig_extra_debug`.
+    /// It's opt-in now, so this puts back the saved choice on devices that still have one.
+    static func restoreExtraDebugSetting(
+        in store: UserPersistentRepository = UserPersistentStoreFactory.instance()
+    ) {
+        guard let savedValue = store.string(forKey: "orig_extra_debug") else {
+            return
         }
+
+        store.set((savedValue as NSString).boolValue, forKey: "extra_debug")
+        store.removeObject(forKey: "orig_extra_debug")
+        WPLogger.configureLoggerLevelWithExtraDebug()
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
@@ -809,8 +793,6 @@ extension WordPressAppDelegate {
             }
             clearReaderStuff()
         }
-
-        toggleExtraDebuggingIfNeeded()
 
         WPAnalytics.track(.defaultAccountChanged)
     }

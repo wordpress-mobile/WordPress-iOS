@@ -109,6 +109,30 @@ struct AppLoggingWiringTests {
     }
 }
 
+struct RestoreExtraDebugSettingTests {
+
+    private let store = InMemoryUserDefaults()
+
+    @Test(arguments: [("NO", false), ("YES", true)])
+    func restoresTheSavedChoice(savedValue: String, expected: Bool) {
+        store.set(true, forKey: "extra_debug")
+        store.set(savedValue, forKey: "orig_extra_debug")
+
+        WordPressAppDelegate.restoreExtraDebugSetting(in: store)
+
+        #expect(store.bool(forKey: "extra_debug") == expected)
+        #expect(store.object(forKey: "orig_extra_debug") == nil)
+    }
+
+    @Test func leavesTheSettingAloneWhenNothingIsSaved() {
+        store.set(true, forKey: "extra_debug")
+
+        WordPressAppDelegate.restoreExtraDebugSetting(in: store)
+
+        #expect(store.bool(forKey: "extra_debug"))
+    }
+}
+
 private final class RecordingLogHandler: LogHandler, @unchecked Sendable {
     var logLevel: Logging.Logger.Level = .trace
     var metadata: Logging.Logger.Metadata = [:]
