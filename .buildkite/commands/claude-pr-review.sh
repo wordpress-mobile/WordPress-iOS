@@ -35,6 +35,8 @@ INPUT_DIR="build/claude-review-input"
 EVIDENCE_DIR="build/claude-review"
 # Written only by this script (the build user), so the reviewer can't change it.
 AUDIT_DIR="build/claude-audit"
+# Claude writes its transcript here. It is append-only (see below).
+TRANSCRIPT_FILE="/Users/Shared/claude-review-audit/transcript.jsonl"
 MARKER="<!-- claude-ci-review -->"
 # Screenshots are published to this public Spacefast Space so GitHub can show
 # them. Needs SPACEFAST_TOKEN (a `ci_deploy` key) from the pipeline's secrets;
@@ -172,6 +174,7 @@ echo "--- :wordpress: Installing what the test sites need"
 echo "--- :card_file_box: Copying the checkout for ${REVIEWER}"
 # APFS clones, so this is quick and uses no extra space.
 sudo -n cp -cR "$PWD" "$REVIEWER_REPO" 2>/dev/null || sudo -n ditto "$PWD" "$REVIEWER_REPO"
+sudo -n rm -rf "${REVIEWER_REPO:?}/${AUDIT_DIR}"
 sudo -n cp .buildkite/claude/pr-review-schema.json "$REVIEWER_HOME/schema.json"
 sudo -n cp .buildkite/commands/claude-pr-review-as-reviewer.sh "$REVIEWER_HOME/run-review.sh"
 
@@ -207,7 +210,7 @@ jq -n --arg head "$HEAD_SHA" --arg base "$BASE_BRANCH" --arg pr "$PR_NUMBER" \
 env_file="$(mktemp)"
 {
   printf 'export %s=%q\n' ANTHROPIC_API_KEY "$ANTHROPIC_API_KEY" CLAUDE_CODE_VERSION "$CLAUDE_CODE_VERSION" \
-    CLAUDE_CODE_SHA256 "$CLAUDE_CODE_SHA256" CLAUDE_MODEL "$CLAUDE_MODEL" \
+    CLAUDE_CODE_SHA256 "$CLAUDE_CODE_SHA256" CLAUDE_MODEL "$CLAUDE_MODEL" TRANSCRIPT_FILE "$TRANSCRIPT_FILE" \
     CLAUDE_EFFORT "$CLAUDE_EFFORT" SIMULATOR_NAME "$SIMULATOR_NAME" EVIDENCE_DIR "$EVIDENCE_DIR" \
     BUILDER_USER "$(id -un)" BUILDER_HOME "$HOME" BUILDER_PID "$$" \
     CLAUDE_REVIEW_VALIDATE_SETUP "$CLAUDE_REVIEW_VALIDATE_SETUP"
@@ -258,22 +261,28 @@ fi
 audit_canary
 
 echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
-# The reviewer script sends Claude's transcript to its stdout and everything
-# else to stderr. Saving it here means Claude can't edit it afterwards. Each
-# tool call and the result are also shown in the build log as they happen.
-{
-  as_reviewer "bash ~/run-review.sh" && echo 0 > "$AUDIT_DIR/.reviewer-status" || echo $? > "$AUDIT_DIR/.reviewer-status"
-} | tee "$AUDIT_DIR/transcript.jsonl" | jq --unbuffered -R -r '
+# Claude's transcript, in a root-owned folder, append-only (`sappnd`): the
+# reviewer can add to it but can't change or delete what's there, and it
+# doesn't depend on the SSH session closing. Each tool call and the result are
+# shown in the build log as they happen.
+sudo -n install -d -o root -g wheel -m 0755 "$(dirname "$TRANSCRIPT_FILE")"
+sudo -n install -o root -g wheel -m 0666 /dev/null "$TRANSCRIPT_FILE"
+sudo -n chflags sappnd "$TRANSCRIPT_FILE"
+tail -n +1 -F "$TRANSCRIPT_FILE" 2>/dev/null > >(jq --unbuffered -R -r '
   fromjson? |
   if .type == "assistant" then
     .message.content[]? | select(.type == "tool_use")
     | "\(.name): \((.input.command // .input.file_path // .input.pattern // .input.description // "") | tostring | gsub("\n"; " ") | .[0:200])"
   elif .type == "result" then
     "Claude finished: \(.subtype // "?"), \(.num_turns // 0) turns, $\(.total_cost_usd // 0)"
-  else empty end' || true
-reviewer_status=$(cat "$AUDIT_DIR/.reviewer-status" 2>/dev/null || echo 2)
-rm -f "$AUDIT_DIR/.reviewer-status"
+  else empty end') &
+transcript_follower=$!
+reviewer_status=0
+as_reviewer "bash ~/run-review.sh" || reviewer_status=$?
 echo "The reviewer session ended."
+sleep 2
+kill "$transcript_follower" 2>/dev/null || true
+cp "$TRANSCRIPT_FILE" "$AUDIT_DIR/transcript.jsonl"
 
 # Bring the evidence back for upload and reporting. The reviewer controls
 # everything in its evidence folder, so never copy it as root: a symlink there

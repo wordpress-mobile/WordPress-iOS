@@ -5,15 +5,10 @@
 # Exit status: 0 = Claude ran (the verdict is in the transcript), 3 = an
 # isolation check failed and Claude did not run, anything else = an error.
 #
-# Claude's transcript is the only thing written to stdout: claude-pr-review.sh
-# saves it where this user can't edit it. Everything else goes to stderr.
+# Claude's transcript goes to $TRANSCRIPT_FILE, which claude-pr-review.sh
+# made append-only: this user can add to it, but not change what's there.
 
 set -euo pipefail
-exec 3>&1 1>&2
-# Only Claude gets fd 3. Anything else that kept it open, such as the test
-# site's database and web server, would hold the SSH session open after
-# Claude finishes, and the job would hang until it times out.
-{
 
 AXE_VERSION="1.8.0"
 AXE_SHA256="7b76340b72e90d0f211bc7c4636f15009076eff07acef2f2b632b175debd8834"
@@ -154,8 +149,6 @@ if [[ "${CLAUDE_REVIEW_VALIDATE_SETUP:-false}" == true ]]; then
   bash .buildkite/claude/validate-setup.sh "$SIMULATOR_UDID" "$EVIDENCE_DIR" "$report"
 fi
 
-} 3>&-
-
 # ── Review ───────────────────────────────────────────────────────────
 sed -i '' -e "s/{{SIMULATOR_UDID}}/${SIMULATOR_UDID}/g" "$HOME/prompt.md"
 
@@ -168,10 +161,12 @@ claude_env=("HOME=$HOME" "PATH=$PATH" "USER=$(id -un)" "LOGNAME=$(id -un)" "TMPD
   "BASH_DEFAULT_TIMEOUT_MS=3600000" "BASH_MAX_TIMEOUT_MS=3600000" "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1"
   "DISABLE_UPDATES=1")
 echo "--- :claude: Reviewing as $(id -un)"
+claude_status=0
 env -i "${claude_env[@]}" claude -p "$(cat "$HOME/prompt.md")" \
   --model "$CLAUDE_MODEL" --effort "$CLAUDE_EFFORT" \
   --dangerously-skip-permissions \
   --strict-mcp-config \
   --json-schema "$(cat "$HOME/schema.json")" \
   --output-format stream-json --verbose \
-  < /dev/null >&3 3>&- || true
+  < /dev/null >> "$TRANSCRIPT_FILE" || claude_status=$?
+echo "Claude exited with status ${claude_status}."
