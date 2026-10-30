@@ -117,7 +117,7 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
                 // A successful response includes a separate success field advising of the outcome of the call.
                 // In my testing, this has never been `false`, but we will be cautious.
                 guard response.success == true else {
-                    DDLogError("The service response indicates that it failed.")
+                    Loggers.app.error("The service response indicates that it failed.")
                     self.endFailedAssembly()
 
                     return
@@ -136,7 +136,7 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
                     on: .main
                 )
             case .failure(let creationError):
-                DDLogError("\(creationError)")
+                Loggers.app.error("\(creationError)")
                 self.endFailedAssembly()
             }
         }
@@ -223,7 +223,7 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
             case .success:
                 self.performRemoteSiteCreation()
             case .failure(let validationError):
-                DDLogError("\(validationError)")
+                Loggers.app.error("\(validationError)")
                 self.endFailedAssembly()
             }
         }

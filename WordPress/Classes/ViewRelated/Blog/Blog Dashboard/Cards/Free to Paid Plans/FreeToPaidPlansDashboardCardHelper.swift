@@ -13,7 +13,7 @@ import WordPressData
     static func hideCard(for blog: Blog?) {
         guard let blog,
               let siteID = blog.dotComID?.intValue else {
-            DDLogError("Free to Paid Plans Dashboard Card: error hiding the card.")
+            Loggers.app.error("Free to Paid Plans Dashboard Card: error hiding the card.")
             return
         }
 

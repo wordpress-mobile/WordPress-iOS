@@ -82,7 +82,7 @@ class ReaderDisplaySettingStore: NSObject {
 
         // since we're handling change notifications, a stored setting object *should* exist.
         guard let updatedSetting = try? fetchSetting() else {
-            DDLogError("ReaderDisplaySettingStore: Received a didChange notification with a nil stored value")
+            Loggers.app.error("ReaderDisplaySettingStore: Received a didChange notification with a nil stored value")
             return
         }
 

@@ -26,7 +26,7 @@ struct SupportTableViewControllerConfiguration {
         do {
             return try WPAccount.lookupDefaultWordPressComAccount(in: context)
         } catch {
-            DDLogError("Account lookup failed with error: \(error)")
+            Loggers.app.error("Account lookup failed with error: \(error)")
             return nil
         }
     }

@@ -212,7 +212,7 @@ struct UniversalLinkRouter: LinkRouter {
         let sourceInfo = properties[TracksPropertyKeys.sourceInfo] ?? ""
         let info = sourceInfo.isEmpty ? "" : " – \(sourceInfo)"
 
-        DDLogInfo("🔗 Deep link: \(path), source: \(source)\(info), section: \(section)")
+        Loggers.app.info("🔗 Deep link: \(path), source: \(source)\(info), section: \(section)")
     }
 
     private enum TracksPropertyKeys {

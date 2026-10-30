@@ -90,7 +90,7 @@ struct ResolveConflictView: View {
                 PostCoordinator.shared.didResolveConflict(for: post)
                 dismiss?()
             } catch {
-                DDLogError("Error resolving conflict picking local version: \(error)")
+                Loggers.app.error("Error resolving conflict picking local version: \(error)")
             }
             isSaving = false
         }
@@ -103,7 +103,7 @@ struct ResolveConflictView: View {
             PostCoordinator.shared.didResolveConflict(for: post)
             dismiss?()
         } catch {
-            DDLogError("Error resolving conflict picking remote version: \(error)")
+            Loggers.app.error("Error resolving conflict picking remote version: \(error)")
         }
         isSaving = false
     }

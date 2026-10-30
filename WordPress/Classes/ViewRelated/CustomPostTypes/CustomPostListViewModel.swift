@@ -286,7 +286,7 @@ final class CustomPostListViewModel: ObservableObject {
             load.record(try await collection.refresh())
         } catch {
             load.error = error
-            DDLogError("Failed to refresh pages: \(error)")
+            Loggers.app.error("Failed to refresh pages: \(error)")
             self.show(error: error)
             return
         }

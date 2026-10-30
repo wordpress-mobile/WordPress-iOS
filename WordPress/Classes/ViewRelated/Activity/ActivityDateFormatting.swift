@@ -28,7 +28,7 @@ struct ActivityDateFormatting {
     static func timeZone(for site: JetpackSiteRef, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) -> TimeZone {
 
         guard let blog = try? Blog.lookup(withID: site.siteID, in: managedObjectContext) else {
-            DDLogInfo("[ActivityDateFormatting] Couldn't find a blog with specified siteID. Falling back to UTC.")
+            Loggers.app.info("[ActivityDateFormatting] Couldn't find a blog with specified siteID. Falling back to UTC.")
             return TimeZone(secondsFromGMT: 0)!
         }
 

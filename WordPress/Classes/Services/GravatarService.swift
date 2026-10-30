@@ -44,7 +44,7 @@ public class GravatarService {
             profile.displayName = remoteProfile.displayName
             onCompletion(profile)
         }, failure: { error in
-            DDLogError("\(error.debugDescription)")
+            Loggers.app.error("\(error.debugDescription)")
             onCompletion(nil)
         })
     }
@@ -72,10 +72,10 @@ public class GravatarService {
                 // Thus, we call `.squared()` (which will do nothing if the image is already square).
                 // cropping(to: ...) sometimes generates edges a few pixels uneven. So `.squared()` will compensate.
                 try await imageUploader.upload(image.squared(), selectionBehavior: .selectUploadedImage(for: Email(email)), accessToken: accountToken)
-                DDLogInfo("GravatarService.uploadImage Success!")
+                Loggers.app.info("GravatarService.uploadImage Success!")
                 completion?(nil)
             } catch {
-                DDLogError("GravatarService.uploadImage Error: \(error)")
+                Loggers.app.error("GravatarService.uploadImage Error: \(error)")
                 completion?(error)
             }
         }

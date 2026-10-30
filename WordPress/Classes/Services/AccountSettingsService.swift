@@ -88,9 +88,9 @@ class AccountSettingsService {
             failure: { error in
                 let error = error as NSError
                 if error.domain == NSURLErrorDomain {
-                    DDLogError("Error refreshing settings (attempt \(count)): \(error)")
+                    Loggers.app.error("Error refreshing settings (attempt \(count)): \(error)")
                 } else {
-                    DDLogError("Error refreshing settings (unrecoverable): \(error)")
+                    Loggers.app.error("Error refreshing settings (unrecoverable): \(error)")
                 }
 
                 if error.domain == NSURLErrorDomain && error.code != URLError.cancelled.rawValue && count < Defaults.maxRetries {
@@ -146,9 +146,9 @@ class AccountSettingsService {
                 // revert change
                 try await self.applyChange(reverse)
             } catch {
-                DDLogError("Error reverting change \(error)")
+                Loggers.app.error("Error reverting change \(error)")
             }
-            DDLogError("Error saving account settings change \(error)")
+            Loggers.app.error("Error saving account settings change \(error)")
 
             throw error
         }
@@ -158,7 +158,7 @@ class AccountSettingsService {
         remote.updateSetting(.displayName(displayName), success: {
             finished?(true, nil)
         }) { error in
-            DDLogError("Error saving account settings change \(error)")
+            Loggers.app.error("Error saving account settings change \(error)")
             NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: self, userInfo: [NSUnderlyingErrorKey: error])
 
             finished?(false, error)
@@ -169,7 +169,7 @@ class AccountSettingsService {
         remote.updatePassword(password, success: {
             finished?(true, nil)
         }) { error -> Void in
-            DDLogError("Error saving account settings change \(error)")
+            Loggers.app.error("Error saving account settings change \(error)")
             NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: error as NSError)
 
             finished?(false, error)
@@ -211,7 +211,7 @@ class AccountSettingsService {
     @discardableResult fileprivate func applyChange(_ change: AccountSettingsChange) async throws -> AccountSettingsChange {
         let reverse = try await coreDataStack.performAndSave({ context in
             guard let settings = self.managedAccountSettingsWithID(self.userID, in: context) else {
-                DDLogError("Tried to apply a change to nonexistent settings (ID: \(self.userID)")
+                Loggers.app.error("Tried to apply a change to nonexistent settings (ID: \(self.userID)")
                 throw Errors.notFound
             }
 
@@ -250,7 +250,7 @@ class AccountSettingsService {
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings, in context: NSManagedObjectContext) {
 
         guard let account = try? WPAccount.lookup(withUserID: Int64(userID), in: context) else {
-            DDLogError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
+            Loggers.app.error("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
 

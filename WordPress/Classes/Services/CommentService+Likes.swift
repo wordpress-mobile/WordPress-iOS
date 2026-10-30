@@ -30,7 +30,7 @@ extension CommentService {
                      failure: @escaping ((Error?) -> Void)) {
 
         guard let remote = restRemote(forSite: siteID) else {
-            DDLogError("Unable to create a REST remote for comments.")
+            Loggers.app.error("Unable to create a REST remote for comments.")
             failure(nil)
             return
         }
@@ -50,7 +50,7 @@ extension CommentService {
                                             success(users, totalLikes.intValue, count)
                                         }
                                     }, failure: { error in
-                                        DDLogError("\(String(describing: error))")
+                                        Loggers.app.error("\(String(describing: error))")
                                         failure(error)
                                     })
     }
@@ -93,7 +93,7 @@ private extension CommentService {
             let users = try context.fetch(request)
             users.forEach { context.delete($0) }
         } catch {
-            DDLogError("Error fetching comment Like Users: \(error)")
+            Loggers.app.error("Error fetching comment Like Users: \(error)")
         }
     }
 }

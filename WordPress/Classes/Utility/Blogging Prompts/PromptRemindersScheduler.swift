@@ -359,7 +359,7 @@ private extension PromptRemindersScheduler {
         // schedule the local notification.
         notificationScheduler.add(request) { error in
             if let error {
-                DDLogError("[PromptRemindersScheduler] Error adding notification request: \(error.localizedDescription)")
+                Loggers.app.error("[PromptRemindersScheduler] Error adding notification request: \(error.localizedDescription)")
             }
         }
 

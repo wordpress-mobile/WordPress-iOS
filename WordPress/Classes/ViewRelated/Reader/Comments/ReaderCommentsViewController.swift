@@ -271,7 +271,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
                     ContextManager.shared.save(ContextManager.shared.mainContext)
                 },
                 failure: { error in
-                    DDLogError("Error fetching subscription status for post: \(error ?? URLError(.unknown))")
+                    Loggers.app.error("Error fetching subscription status for post: \(error ?? URLError(.unknown))")
                 }
             )
     }

@@ -108,7 +108,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
         guard let appId = zdAppID,
             let url = zdUrl,
             let clientId = zdClientId else {
-                DDLogInfo("Unable to set up Zendesk.")
+                Loggers.app.info("Unable to set up Zendesk.")
                 toggleZendesk(enabled: false)
                 return
         }
@@ -239,7 +239,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
                 ticketFields.append(CustomField(fieldId: TicketFieldIDs.addOns, value: metadata.jetpackAddons))
                 tags.append(contentsOf: metadata.jetpackAddons)
             case .failure(let error):
-                DDLogError("Unable to fetch zendesk metadata - \(error.localizedDescription)")
+                Loggers.app.error("Unable to fetch zendesk metadata - \(error.localizedDescription)")
             }
             requestConfig.customFields = ticketFields
             // Set tags
@@ -264,12 +264,12 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     ///
     static func unregisterDevice() {
         guard let zendeskInstance = Zendesk.instance else {
-            DDLogInfo("No Zendesk instance. Unable to unregister device.")
+            Loggers.app.info("No Zendesk instance. Unable to unregister device.")
             return
         }
 
         ZDKPushProvider(zendesk: zendeskInstance).unregisterForPush()
-        DDLogInfo("Zendesk successfully unregistered stored device.")
+        Loggers.app.info("Zendesk successfully unregistered stored device.")
     }
 
     // MARK: - Push Notifications
@@ -283,7 +283,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
         guard zendeskEnabled == true,
             let payload = userInfo as? [AnyHashable: Any],
             let requestId = payload["zendesk_sdk_request_id"] as? String else {
-                DDLogInfo("Zendesk push notification payload invalid.")
+                Loggers.app.info("Zendesk push notification payload invalid.")
                 return
         }
 
@@ -404,7 +404,7 @@ extension ZendeskUtils {
 
                 provider.createRequest(request) { response, error in
                     if let error {
-                        DDLogError("Creating new request failed: \(error)")
+                        Loggers.app.error("Creating new request failed: \(error)")
                         completion(.failure(.createRequest(error.localizedDescription)))
                     } else if let data = (response as? ZDKDispatcherResponse)?.data,
                               let dict = try? JSONSerialization.jsonObject(with: data) as? [AnyHashable: Any],
@@ -459,7 +459,7 @@ private extension ZendeskUtils {
             !zdUrl.isEmpty,
             !zdClientId.isEmpty
         else {
-            DDLogInfo("Unable to get Zendesk credentials.")
+            Loggers.app.info("Unable to get Zendesk credentials.")
             toggleZendesk(enabled: false)
             return false
         }
@@ -473,7 +473,7 @@ private extension ZendeskUtils {
 
     static func toggleZendesk(enabled: Bool) {
         zendeskEnabled = enabled
-        DDLogInfo("Zendesk Enabled: \(enabled)")
+        Loggers.app.info("Zendesk Enabled: \(enabled)")
     }
 
     /// Creates a Zendesk Identity from user information.
@@ -486,7 +486,7 @@ private extension ZendeskUtils {
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
         guard !haveUserInfo else {
-                DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
+                Loggers.app.debug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
                 completion(true, false)
                 return
         }
@@ -501,18 +501,18 @@ private extension ZendeskUtils {
         ZendeskUtils.getUserInformationIfAvailable {
             ZendeskUtils.promptUserForInformation(alertOptions: alertOptions) { success in
                 guard success else {
-                    DDLogInfo("No user information to create Zendesk identity with.")
+                    Loggers.app.info("No user information to create Zendesk identity with.")
                     completion(false)
                     return
                 }
 
                 ZendeskUtils.createZendeskIdentity { success in
                     guard success else {
-                        DDLogInfo("Creating Zendesk identity failed.")
+                        Loggers.app.info("Creating Zendesk identity failed.")
                         completion(false)
                         return
                     }
-                    DDLogDebug("Using information from prompt for Zendesk identity.")
+                    Loggers.app.debug("Using information from prompt for Zendesk identity.")
                     ZendeskUtils.sharedInstance.haveUserIdentity = true
                     completion(true)
                     return
@@ -533,7 +533,7 @@ private extension ZendeskUtils {
 
         // 1. Check for WP account
         if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
-            DDLogDebug("Zendesk - Using defaultAccount for suggested identity.")
+            Loggers.app.debug("Zendesk - Using defaultAccount for suggested identity.")
             getUserInformationFrom(wpAccount: defaultAccount)
             completion()
             return
@@ -549,7 +549,7 @@ private extension ZendeskUtils {
 
         // 2a. Jetpack site
         if let jetpackState = blog.jetpack, jetpackState.isConnected {
-            DDLogDebug("Zendesk - Using Jetpack site for suggested identity.")
+            Loggers.app.debug("Zendesk - Using Jetpack site for suggested identity.")
             getUserInformationFrom(jetpackState: jetpackState)
             completion()
             return
@@ -557,7 +557,7 @@ private extension ZendeskUtils {
 
         // 2b. self-hosted site
         ZendeskUtils.getUserInformationFrom(blog: blog) {
-            DDLogDebug("Zendesk - Using self-hosted for suggested identity.")
+            Loggers.app.debug("Zendesk - Using self-hosted for suggested identity.")
             completion()
             return
         }
@@ -565,7 +565,7 @@ private extension ZendeskUtils {
 
     static func createZendeskIdentity(completion: @escaping (Bool) -> Void) {
         guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
-            DDLogInfo("No user email to create Zendesk identity with.")
+            Loggers.app.info("No user email to create Zendesk identity with.")
             let identity = Identity.createAnonymous()
             Zendesk.instance?.setIdentity(identity)
             completion(false)
@@ -574,7 +574,7 @@ private extension ZendeskUtils {
 
         let zendeskIdentity = Identity.createAnonymous(name: ZendeskUtils.sharedInstance.userName, email: userEmail)
         Zendesk.instance?.setIdentity(zendeskIdentity)
-        DDLogDebug("Zendesk identity created with email '\(userEmail)' and name '\(ZendeskUtils.sharedInstance.userName ?? "")'.")
+        Loggers.app.debug("Zendesk identity created with email '\(userEmail)' and name '\(ZendeskUtils.sharedInstance.userName ?? "")'.")
         registerDeviceIfNeeded()
         completion(true)
     }
@@ -588,10 +588,10 @@ private extension ZendeskUtils {
 
         ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { _, error in
             if let error {
-                DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
+                Loggers.app.info("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
                 ZendeskUtils.sharedInstance.deviceID = nil
-                DDLogDebug("Zendesk successfully registered device: \(deviceID)")
+                Loggers.app.debug("Zendesk successfully registered device: \(deviceID)")
             }
         }
     }
@@ -644,14 +644,14 @@ private extension ZendeskUtils {
     static func getUserInformationFrom(wpAccount: WPAccount) {
 
         guard let api = wpAccount.wordPressComRestApi, let userID = wpAccount.userID else {
-            DDLogInfo("Zendesk: No wordPressComRestApi.")
+            Loggers.app.info("Zendesk: No wordPressComRestApi.")
             return
         }
 
         let service = AccountSettingsService(userID: userID.intValue, api: api)
 
         guard let accountSettings = service.settings else {
-            DDLogInfo("Zendesk: No accountSettings.")
+            Loggers.app.info("Zendesk: No accountSettings.")
             return
         }
 
@@ -668,7 +668,7 @@ private extension ZendeskUtils {
         var userProfile = [String: String]()
         userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
-        DDLogDebug("Zendesk - saving profile to User Defaults: \(userProfile)")
+        Loggers.app.debug("Zendesk - saving profile to User Defaults: \(userProfile)")
         UserPersistentStoreFactory.instance().set(userProfile, forKey: Constants.zendeskProfileUDKey)
     }
 
@@ -677,7 +677,7 @@ private extension ZendeskUtils {
             return false
         }
 
-        DDLogDebug("Zendesk - read profile from User Defaults: \(userProfile)")
+        Loggers.app.debug("Zendesk - read profile from User Defaults: \(userProfile)")
         ZendeskUtils.sharedInstance.userEmail = userProfile.valueAsString(forKey: Constants.profileEmailKey)
         ZendeskUtils.sharedInstance.userName = userProfile.valueAsString(forKey: Constants.profileNameKey)
         ZendeskUtils.sharedInstance.userNameConfirmed = true
@@ -686,7 +686,7 @@ private extension ZendeskUtils {
             guard success else {
                 return
             }
-            DDLogDebug("Using User Defaults for Zendesk identity.")
+            Loggers.app.debug("Using User Defaults for Zendesk identity.")
             ZendeskUtils.sharedInstance.haveUserIdentity = true
         }
 

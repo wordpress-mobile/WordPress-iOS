@@ -230,7 +230,7 @@ extension HomeSiteHeaderViewController {
                                 feedbackType: .error)
             ActionDispatcher.global.dispatch(NoticeAction.post(notice))
 
-            DDLogError("Error while trying to update blog settings: \(error.localizedDescription)")
+            Loggers.app.error("Error while trying to update blog settings: \(error.localizedDescription)")
         })
     }
 

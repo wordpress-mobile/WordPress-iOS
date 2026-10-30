@@ -41,7 +41,7 @@ import BuildSettingsKit
 
     public func track(_ stat: WPAnalyticsStat, withProperties properties: [AnyHashable: Any]?) {
         guard let event = TracksMappedEvent.make(for: stat) else {
-            DDLogInfo("WPAnalyticsStat not supported by AnalyticsTrackerAutomatticTracks: \(stat)")
+            Loggers.app.info("WPAnalyticsStat not supported by AnalyticsTrackerAutomatticTracks: \(stat)")
             return
         }
 
@@ -55,7 +55,7 @@ import BuildSettingsKit
     }
 
     public func trackString(_ event: String, withProperties properties: [AnyHashable: Any]?) {
-        DDLogInfo("\(makeLogMessage(for: event, properties: properties))")
+        Loggers.app.info("\(makeLogMessage(for: event, properties: properties))")
         tracksService.trackEventName(event, withCustomProperties: properties)
     }
 

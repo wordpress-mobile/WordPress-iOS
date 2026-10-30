@@ -8,7 +8,7 @@ enum AppTips {
         do {
             try Tips.configure()
         } catch {
-            DDLogError("Error initializing tips: \(error)")
+            Loggers.app.error("Error initializing tips: \(error)")
         }
     }
 

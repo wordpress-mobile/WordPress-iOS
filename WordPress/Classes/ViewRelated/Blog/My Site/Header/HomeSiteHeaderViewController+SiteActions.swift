@@ -82,7 +82,7 @@ extension HomeSiteHeaderViewController {
 
     private func personalizeHomeTapped() {
         guard let siteID = blog.dotComID?.intValue else {
-            return DDLogError("Failed to show dashboard personalization screen: siteID is missing")
+            return Loggers.app.error("Failed to show dashboard personalization screen: siteID is missing")
         }
 
         let viewController = UIHostingController(rootView: NavigationView {

@@ -39,7 +39,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
         fetchReaderMenu(success: { [weak self] in
             self?.fetchFollowedInterestsLocally(completion: completion)
         }) { [weak self] error in
-            DDLogError("Could not fetch remotely followed interests: \(String(describing: error))")
+            Loggers.app.error("Could not fetch remotely followed interests: \(String(describing: error))")
             self?.fetchFollowedInterestsLocally(completion: completion)
         }
     }
@@ -111,7 +111,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
         do {
             return try coreDataStack.mainContext.fetch(fetchRequest)
         } catch {
-            DDLogError("Could not fetch followed interests: \(String(describing: error))")
+            Loggers.app.error("Could not fetch followed interests: \(String(describing: error))")
 
             return nil
         }

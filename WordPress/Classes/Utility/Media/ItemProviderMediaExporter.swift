@@ -81,7 +81,7 @@ final class ItemProviderMediaExporter: MediaExporter {
         }
 
         let start = CFAbsoluteTimeGetCurrent()
-        DDLogInfo("Will export file for provider: \(ObjectIdentifier(provider)) \(provider.registeredTypeIdentifiers)")
+        Loggers.app.info("Will export file for provider: \(ObjectIdentifier(provider)) \(provider.registeredTypeIdentifiers)")
 
         let loadProgress = provider.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, error in
             guard let url else {
@@ -89,7 +89,7 @@ final class ItemProviderMediaExporter: MediaExporter {
                 return
             }
             let diff = CFAbsoluteTimeGetCurrent() - start
-            DDLogInfo("Loaded file representation for provider: \(ObjectIdentifier(self.provider)) \(self.provider.registeredTypeIdentifiers) (\(diff) seconds)")
+            Loggers.app.info("Loaded file representation for provider: \(ObjectIdentifier(self.provider)) \(self.provider.registeredTypeIdentifiers) (\(diff) seconds)")
 
             // Retaining `self` on purpose.
             do {
@@ -153,7 +153,7 @@ final class ItemProviderMediaExporter: MediaExporter {
     private func handleLoadFailure(_ error: Error?, onError: (MediaExportError) -> Void) {
         let providerID = ObjectIdentifier(provider)
         guard let error else {
-            DDLogError("Failed to load file representation for provider: \(providerID), error: nil")
+            Loggers.app.error("Failed to load file representation for provider: \(providerID), error: nil")
             onError(ExportError.unknown)
             return
         }
@@ -162,10 +162,10 @@ final class ItemProviderMediaExporter: MediaExporter {
         // error) and surfaces the cancellation itself. Bail out without calling
         // `onError` so we don't show a spurious "failed" message.
         if ItemProviderMediaExporter.isCancellation(error) {
-            DDLogInfo("Cancelled loading file representation for provider: \(providerID)")
+            Loggers.app.info("Cancelled loading file representation for provider: \(providerID)")
             return
         }
-        DDLogError("Failed to load file representation for provider: \(providerID), error: \(error)")
+        Loggers.app.error("Failed to load file representation for provider: \(providerID), error: \(error)")
         if let connectionError = ItemProviderMediaExporter.providerConnectionError(in: error) {
             let device = LockdownHelper.isDeviceLockdownModeEnabled
             let appExcluded = device && !LockdownHelper.isAppLockdownModeEnabled

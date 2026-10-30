@@ -36,7 +36,7 @@ extension BlogDashboardPersistence: DashboardBlazeStoreProtocol {
             let data = try Data(contentsOf: url)
             return try JSONDecoder().decode(BlazeCampaign.self, from: data)
         } catch {
-            DDLogError("Failed to retrieve blaze campaign: \(error)")
+            Loggers.app.error("Failed to retrieve blaze campaign: \(error)")
             return nil
         }
     }
@@ -50,7 +50,7 @@ extension BlogDashboardPersistence: DashboardBlazeStoreProtocol {
                 try? FileManager.default.removeItem(at: url)
             }
         } catch {
-            DDLogError("Failed to store blaze campaign: \(error)")
+            Loggers.app.error("Failed to store blaze campaign: \(error)")
         }
     }
 

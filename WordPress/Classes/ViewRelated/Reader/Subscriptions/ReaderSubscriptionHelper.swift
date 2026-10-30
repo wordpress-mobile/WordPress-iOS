@@ -35,7 +35,7 @@ struct ReaderSubscriptionHelper {
                 generator.notificationOccurred(.success)
                 continuation.resume(returning: ())
             }, failure: { error in
-                DDLogError("Could not follow site: \(String(describing: error))")
+                Loggers.app.error("Could not follow site: \(String(describing: error))")
                 generator.notificationOccurred(.error)
                 continuation.resume(throwing: error)
             })
@@ -66,7 +66,7 @@ struct ReaderSubscriptionHelper {
         service.toggleFollowing(forSite: site, success: { _ in
             // Do nothing
         }, failure: { _, error in
-            DDLogError("Could not unfollow site: \(String(describing: error))")
+            Loggers.app.error("Could not unfollow site: \(String(describing: error))")
             let title = NSLocalizedString("reader.notice.blog.unsubscribed.error", value: "Could not unsubscribe from blog", comment: "Title of a prompt.")
             Notice(title: title, message: error?.localizedDescription, feedbackType: .error).post()
         })

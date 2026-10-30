@@ -264,7 +264,7 @@ private extension ActivityLogDetailsView {
         } failure: { error in
             DispatchQueue.main.async {
                 self.isLoadingRewindStatus = false
-                DDLogError("Failed to fetch rewind status: \(error.localizedDescription)")
+                Loggers.app.error("Failed to fetch rewind status: \(error.localizedDescription)")
             }
         }
     }

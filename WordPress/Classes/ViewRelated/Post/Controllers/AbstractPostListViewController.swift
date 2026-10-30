@@ -342,7 +342,7 @@ class AbstractPostListViewController: UIViewController,
         do {
             try fetchResultsController.performFetch()
         } catch {
-            DDLogError("Error fetching posts after updating the fetch request predicate: \(error)")
+            Loggers.app.error("Error fetching posts after updating the fetch request predicate: \(error)")
         }
     }
 
@@ -880,7 +880,7 @@ extension AbstractPostListViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         // Only automatically refresh if the view is loaded and visible on the screen
         if !isViewLoaded || view.window == nil {
-            DDLogVerbose("View is not visible and will not check for auto refresh.")
+            Loggers.app.trace("View is not visible and will not check for auto refresh.")
             return
         }
         automaticallySyncIfAppropriate()

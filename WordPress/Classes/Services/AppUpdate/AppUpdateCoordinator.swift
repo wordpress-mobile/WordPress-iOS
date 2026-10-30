@@ -120,7 +120,7 @@ final class AppUpdateCoordinator {
             lastFetchedAppStoreInfoDate = currentDateProvider.date()
             return response.results.first { $0.trackId == Int(service.appID) }
         } catch {
-            DDLogError("Error fetching app store info: \(error)")
+            Loggers.app.error("Error fetching app store info: \(error)")
             return nil
         }
     }

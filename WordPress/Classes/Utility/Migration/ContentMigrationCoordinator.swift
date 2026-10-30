@@ -95,7 +95,7 @@ class ContentMigrationCoordinator {
                 self?.processResult(.success(()), completion: completion)
 
             case .failure(let error):
-                DDLogError("[Jetpack Migration] Error exporting data: \(error)")
+                Loggers.app.error("[Jetpack Migration] Error exporting data: \(error)")
                 self?.tracker.trackContentExportFailed(reason: error.localizedDescription, hasBlogs: hasBlogs)
                 self?.processResult(.failure(.exportFailure), completion: completion)
             }

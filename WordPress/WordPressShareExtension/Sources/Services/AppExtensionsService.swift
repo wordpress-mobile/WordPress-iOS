@@ -1,7 +1,6 @@
 import Aztec
 import AztecExtensions
 import BuildSettingsKit
-import CocoaLumberjackSwift
 import CoreData
 import TracksMini
 import WordPressShared
@@ -104,7 +103,7 @@ extension AppExtensionsService {
 
         remote.getBlogs(filterJetpackSites, success: { blogs in
             guard let blogs = blogs as? [RemoteBlog] else {
-                DDLogError("Error parsing returned sites.")
+                Loggers.shareExtension.error("Error parsing returned sites.")
                 onFailure()
                 return
             }
@@ -114,7 +113,7 @@ extension AppExtensionsService {
             let combinedSiteList = primary + recents + self.remainingSites(with: blogs, ignoring: (primary + recents))
             onSuccess(combinedSiteList)
         }, failure: { error in
-            DDLogError("Error retrieving sites: \(String(describing: error))")
+            Loggers.shareExtension.error("Error retrieving sites: \(String(describing: error))")
             onFailure()
         })
     }
@@ -183,7 +182,7 @@ extension AppExtensionsService {
         remote.syncBlogSettings(success: { settings in
             onSuccess(settings)
         }, failure: { error in
-            DDLogError("Error retrieving settings for site ID \(siteID): \(String(describing: error))")
+            Loggers.shareExtension.error("Error retrieving settings for site ID \(siteID): \(String(describing: error))")
             onFailure(error)
         })
     }
@@ -208,7 +207,7 @@ extension AppExtensionsService {
         remote.getTagsWith(paging, success: { tags in
             onSuccess(tags)
         }, failure: { error in
-            DDLogError("Error retrieving tags for site ID \(siteID): \(String(describing: error))")
+            Loggers.shareExtension.error("Error retrieving tags for site ID \(siteID): \(String(describing: error))")
             onFailure(error)
         })
     }
@@ -225,7 +224,7 @@ extension AppExtensionsService {
         remote.getCategoriesWithSuccess({ categories in
             onSuccess(categories)
         }, failure: { error in
-            DDLogError("Error retrieving categories for site ID \(siteID): \(String(describing: error))")
+            Loggers.shareExtension.error("Error retrieving categories for site ID \(siteID): \(String(describing: error))")
             onFailure(error)
         })
     }
@@ -287,7 +286,7 @@ extension AppExtensionsService {
                                     requestEnqueued: @escaping CompletionBlock,
                                     onFailure: @escaping FailureBlock) {
         guard !localMediaFileURLs.isEmpty else {
-            DDLogError("No media is attached to this upload request")
+            Loggers.shareExtension.error("No media is attached to this upload request")
             onFailure()
             return
         }
@@ -312,7 +311,7 @@ extension AppExtensionsService {
             guard let returnedMedia = remoteMedia as? [RemoteMedia],
                 !returnedMedia.isEmpty,
                 let mediaUploadOps = self.coreDataStack.fetchMediaUploadOps(for: self.groupIdentifier) else {
-                    DDLogError("Error creating post in share extension. RemoteMedia info not returned from server.")
+                    Loggers.shareExtension.error("Error creating post in share extension. RemoteMedia info not returned from server.")
                     return
             }
 
@@ -349,7 +348,7 @@ extension AppExtensionsService {
             guard let error = error as NSError? else {
                 return
             }
-            DDLogError("Error creating post in share extension: \(error.localizedDescription)")
+            Loggers.shareExtension.error("Error creating post in share extension: \(error.localizedDescription)")
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadMediaOpID)
             })
@@ -451,7 +450,7 @@ fileprivate extension AppExtensionsService {
     ///
     func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
-            DDLogError("Error uploading post in share extension — could not fetch saved post.")
+            Loggers.shareExtension.error("Error uploading post in share extension — could not fetch saved post.")
             onFailure?()
             return
         }
@@ -463,7 +462,7 @@ fileprivate extension AppExtensionsService {
         let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
         remote.createPost(remotePost, success: { post in
             if let post {
-                DDLogInfo("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
+                Loggers.shareExtension.info("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
                 if let postID = post.postID {
                     self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
                 } else {
@@ -476,7 +475,7 @@ fileprivate extension AppExtensionsService {
             if let error = error as NSError? {
                 errorString += ": \(error.localizedDescription)"
             }
-            DDLogError("\(errorString)")
+            Loggers.shareExtension.error("\(errorString)")
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             onFailure?()
         })
@@ -499,7 +498,7 @@ fileprivate extension AppExtensionsService {
                 if let error = error as NSError? {
                     errorString += ": \(error.localizedDescription)"
                 }
-                DDLogError("\(errorString)")
+                Loggers.shareExtension.error("\(errorString)")
                 syncGroup.leave()
             })
         }

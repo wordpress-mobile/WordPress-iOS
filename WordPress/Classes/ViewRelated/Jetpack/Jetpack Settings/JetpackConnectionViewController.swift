@@ -153,7 +153,7 @@ open class JetpackConnectionViewController: UITableViewController {
                     comment: "Message displayed on an error alert to prompt the user to contact support"
                 )
                 WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
-                DDLogError("Error disconnecting Jetpack: \(String(describing: error))")
+                Loggers.app.error("Error disconnecting Jetpack: \(String(describing: error))")
             }
         )
     }

@@ -133,7 +133,7 @@ final class EditorDependencyManager: Sendable {
                     state.cache[key] = dependencies
                 }
             } catch {
-                DDLogError("EditorDependencyManager: Failed to prefetch dependencies: \(error)")
+                Loggers.app.error("EditorDependencyManager: Failed to prefetch dependencies: \(error)")
             }
 
             _ = self.state.withLock { state in
@@ -216,7 +216,7 @@ final class EditorDependencyManager: Sendable {
                 return postTypes.map { EditorConfiguration(blog: blog, postType: $0) }
             }
         } catch {
-            DDLogError("Failed to find blog for \(blogID): \(error)")
+            Loggers.app.error("Failed to find blog for \(blogID): \(error)")
             return
         }
 
@@ -224,7 +224,7 @@ final class EditorDependencyManager: Sendable {
             do {
                 try await EditorService(configuration: configuration).purge()
             } catch {
-                DDLogError(
+                Loggers.app.error(
                     "EditorDependencyManager: Failed to clear cache for \(configuration.postType.postType): \(error)"
                 )
             }
@@ -266,7 +266,7 @@ final class EditorDependencyManager: Sendable {
         }
 
         if needsWarmup {
-            DDLogInfo("EditorDependencyManager: Warming up editor for blog \(blog.logDescription)")
+            Loggers.app.info("EditorDependencyManager: Warming up editor for blog \(blog.logDescription)")
             let configuration = EditorConfiguration(blog: blog, postType: .post)
             GutenbergKit.EditorViewController.warmup(configuration: configuration)
         }
@@ -334,7 +334,7 @@ final class EditorDependencyManager: Sendable {
                 do {
                     try await self.performFetchEditorCapabilities(for: blog)
                 } catch {
-                    DDLogError("EditorDependencyManager: Failed to fetch editor capabilities: \(error)")
+                    Loggers.app.error("EditorDependencyManager: Failed to fetch editor capabilities: \(error)")
                 }
 
                 self.state.withLock { state in

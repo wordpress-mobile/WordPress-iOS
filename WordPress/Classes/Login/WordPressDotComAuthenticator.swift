@@ -196,7 +196,7 @@ struct WordPressDotComAuthenticator {
             let service = WordPressComSyncService(coreDataStack: coreDataStack)
             accountID = try await service.syncWPCom(remoteUser: user, authToken: token, isJetpackLogin: isJetpackLogin)
         } catch {
-            DDLogError("Failed to syncing WP.com account: \(error)")
+            Loggers.app.error("Failed to syncing WP.com account: \(error)")
             throw .loadingSites(error)
         }
 
@@ -330,7 +330,7 @@ struct WordPressDotComAuthenticator {
                 callbackURLViaWebAuthenticationSession.send(url)
                 callbackURLViaWebAuthenticationSession.send(completion: .finished)
             } else {
-                DDLogWarn("Error from authentication session: \(String(describing: error))")
+                Loggers.app.warning("Error from authentication session: \(String(describing: error))")
                 callbackURLViaWebAuthenticationSession.send(completion: .failure(.cancelled))
             }
         }
@@ -427,7 +427,7 @@ struct WordPressDotComAuthenticator {
         } catch let error as DecodingError {
             throw .parsing(error)
         } catch {
-            DDLogError("Failed to parse token request response: \(error)")
+            Loggers.app.error("Failed to parse token request response: \(error)")
             throw .unknown(error)
         }
     }

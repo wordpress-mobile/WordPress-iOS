@@ -123,7 +123,7 @@ class NotificationSettingsViewController: UIViewController {
             dispatchGroup.leave()
         }, failure: { error in
             dispatchGroup.leave()
-            DDLogError("Could not sync sites: \(String(describing: error))")
+            Loggers.app.error("Could not sync sites: \(String(describing: error))")
         })
 
         dispatchGroup.enter()
