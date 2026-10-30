@@ -16,10 +16,10 @@ class AutomatedTransferHelper {
     private var delayWrapper: DelayStateWrapper?
 
     init?(site: JetpackSiteRef, plugin: PluginDirectoryEntry) {
-        DDLogInfo("[AT] Trying to create AutomatedTransferHelper.")
+        Loggers.app.info("[AT] Trying to create AutomatedTransferHelper.")
 
         guard let token = CredentialsService().getOAuthToken(site: site) else {
-            DDLogInfo("[AT] Couldn't get credentials for site when creating AutomatedTransferHelper. Bailing.")
+            Loggers.app.info("[AT] Couldn't get credentials for site when creating AutomatedTransferHelper. Bailing.")
             return nil
         }
 
@@ -38,25 +38,25 @@ class AutomatedTransferHelper {
 
         alertController.addCancelActionWithTitle(Constants.PromptMessages.alertCancel, handler: { _ in
             WPAnalytics.track(.automatedTransferDialogCancelled)
-            DDLogInfo("[AT] User canceled.")
+            Loggers.app.info("[AT] User canceled.")
         })
         alertController.addDefaultActionWithTitle(Constants.PromptMessages.alertInstall, handler: { _ in
-            DDLogInfo("[AT] User confirmed, proceeding with install.")
+            Loggers.app.info("[AT] User confirmed, proceeding with install.")
             self.startAutomatedTransferProcess()
         })
 
-        DDLogInfo("[AT] Prompting user for confirmation of transfer.")
+        Loggers.app.info("[AT] Prompting user for confirmation of transfer.")
         return alertController
     }
 
     func startAutomatedTransferProcess(retryingAfterFailure: Bool = false) {
-        DDLogInfo("[AT] Kicking off the AT process.")
+        Loggers.app.info("[AT] Kicking off the AT process.")
 
         // fake coefficient, just so it doesn't look weird empty!
         SVProgressHUD.showProgress(0.02, status: Constants.PluginNameStrings.progressHudTitle(plugin.name))
 
         verifyEligibility(retryingAfterFailure: retryingAfterFailure, success: {
-                DDLogInfo("[AT] Site was confirmed eligible, proceeding to initiating AT process.")
+                Loggers.app.info("[AT] Site was confirmed eligible, proceeding to initiating AT process.")
                 self.initiateAutomatedTransfer(retryingAfterFailure: true)
         },
             failure: {
@@ -66,7 +66,7 @@ class AutomatedTransferHelper {
     }
 
     private func verifyEligibility(retryingAfterFailure: Bool, success: @escaping (() -> ()), failure: @escaping (() -> ())) {
-        DDLogInfo("[AT] Starting eligibility check.")
+        Loggers.app.info("[AT] Starting eligibility check.")
 
         WPAnalytics.track(.automatedTransferEligibilityCheckInitiated)
 
@@ -78,7 +78,7 @@ class AutomatedTransferHelper {
                 success()
         },
             failure: { error in
-                DDLogInfo(("[AT] Site ineligible for AT, error: \(error)"))
+                Loggers.app.info("[AT] Site ineligible for AT, error: \(error)")
 
                 let errorMessage: String
 
@@ -117,7 +117,7 @@ class AutomatedTransferHelper {
                 }
 
                 guard var wrapper = self.delayWrapper else {
-                    DDLogInfo("[AT] Eligiblity check failure after purchasing a domain. Scheduling another try.")
+                    Loggers.app.info("[AT] Eligiblity check failure after purchasing a domain. Scheduling another try.")
                     // This means it's the first retry attempt.
 
                     let wrapper = DelayStateWrapper(delaySequence: [Constants.afterDomainPurchaseRefreshInterval]) {
@@ -128,7 +128,7 @@ class AutomatedTransferHelper {
                     return
                 }
 
-                DDLogInfo("[AT] Eligibility check retry #\(wrapper.retryAttempt)")
+                Loggers.app.info("[AT] Eligibility check retry #\(wrapper.retryAttempt)")
                 guard wrapper.retryAttempt < Constants.afterDomainPurchaseMaxRetries else {
 
                     wrapper.delayedRetryAction.cancel()
@@ -140,14 +140,14 @@ class AutomatedTransferHelper {
                     return
                 }
 
-                DDLogInfo("[AT] Incrementing eligibility check counter.")
+                Loggers.app.info("[AT] Incrementing eligibility check counter.")
                 wrapper.increment()
                 self.delayWrapper = wrapper
         })
     }
 
     private func initiateAutomatedTransfer(retryingAfterFailure: Bool = false) {
-        DDLogInfo("[AT] Initiating Automated Transfer.")
+        Loggers.app.info("[AT] Initiating Automated Transfer.")
 
         WPAnalytics.track(.automatedTransferInitiate)
 
@@ -155,7 +155,7 @@ class AutomatedTransferHelper {
             self.delayWrapper?.delayedRetryAction.cancel()
             self.delayWrapper = nil
 
-            DDLogInfo("[AT] Succesfully started Automated Transfer process. Transfer ID: \(transferID), status: \(status)")
+            Loggers.app.info("[AT] Succesfully started Automated Transfer process. Transfer ID: \(transferID), status: \(status)")
 
             WPAnalytics.track(.automatedTransferInitiated)
 
@@ -164,7 +164,7 @@ class AutomatedTransferHelper {
 
             // Refresh status after 3 seconds.
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.refreshInterval)) {
-                DDLogInfo("[AT] Scheduling status update.")
+                Loggers.app.info("[AT] Scheduling status update.")
                 self.updateAutomatedTransferStatus()
             }
         }, failure: { error in
@@ -174,7 +174,7 @@ class AutomatedTransferHelper {
             // start the AT process (usually only after a custom domain was _just_ purchased) fails spectacularly.
             // In those cases, we'll retry this request a few times.
             guard retryingAfterFailure else {
-                DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
+                Loggers.app.info("[AT] Failed to initiate Automated Transfer: \(error)")
 
                 WPAnalytics.track(.automatedTransferInitiationFailed)
 
@@ -185,7 +185,7 @@ class AutomatedTransferHelper {
             }
 
             guard var wrapper = self.delayWrapper else {
-                DDLogInfo("[AT] Kickoff failure after purchasing a domain. Scheduling another try.")
+                Loggers.app.info("[AT] Kickoff failure after purchasing a domain. Scheduling another try.")
                 // This means it's the first retry attempt.
 
                 let wrapper = DelayStateWrapper(delaySequence: [Constants.afterDomainPurchaseRefreshInterval]) {
@@ -196,13 +196,13 @@ class AutomatedTransferHelper {
                 return
             }
 
-            DDLogInfo("[AT] Kickoff retry #\(wrapper.retryAttempt)")
+            Loggers.app.info("[AT] Kickoff retry #\(wrapper.retryAttempt)")
             guard wrapper.retryAttempt < Constants.afterDomainPurchaseMaxRetries else {
 
                 wrapper.delayedRetryAction.cancel()
                 self.delayWrapper = nil
 
-                DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
+                Loggers.app.info("[AT] Failed to initiate Automated Transfer: \(error)")
 
                 WPAnalytics.track(.automatedTransferInitiationFailed)
 
@@ -212,7 +212,7 @@ class AutomatedTransferHelper {
                 return
             }
 
-            DDLogInfo("[AT] Incrementing kickoff  counter.")
+            Loggers.app.info("[AT] Incrementing kickoff  counter.")
             wrapper.increment()
             self.delayWrapper = wrapper
         })
@@ -222,7 +222,7 @@ class AutomatedTransferHelper {
         // Definining this here, because we also want to be able to call it if we "successfully" fetch a status update
         // and the resulting status is `failed`.
         let failureBlock: ((Error?) -> ()) = { error in
-            DDLogInfo("[AT] Status update failed: \(String(describing: error))")
+            Loggers.app.info("[AT] Status update failed: \(String(describing: error))")
 
             WPAnalytics.track(.automatedTransferStatusFailed)
 
@@ -231,7 +231,7 @@ class AutomatedTransferHelper {
         }
 
         automatedTransferService.fetchAutomatedTransferStatus(siteID: site.siteID, success: { status in
-            DDLogInfo("[AT] Received AT status update: \(status)")
+            Loggers.app.info("[AT] Received AT status update: \(status)")
 
             guard status.status != .error else {
                 failureBlock(nil)
@@ -241,7 +241,7 @@ class AutomatedTransferHelper {
             // This means the AT process itself is done. It's now a JP site, so we need to refresh it
             // to make sure we have correct (and latest) data.
             if status.status == .complete {
-                DDLogInfo("[AT] AT remote process complete. Refreshing the site.")
+                Loggers.app.info("[AT] AT remote process complete. Refreshing the site.")
 
                 WPAnalytics.track(.automatedTransferStatusComplete)
 
@@ -251,26 +251,26 @@ class AutomatedTransferHelper {
             }
 
             if let step = status.step, let totalSteps = status.totalSteps {
-                DDLogInfo("[AT] Updating AT progress indicator.")
+                Loggers.app.info("[AT] Updating AT progress indicator.")
 
                 let progressFraction = Float(step) / Float(totalSteps)
                 SVProgressHUD.showProgress(progressFraction, status: Constants.PluginNameStrings.progressHudTitle(self.plugin.name))
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.refreshInterval)) {
-                DDLogInfo("[AT] Scheduling status update.")
+                Loggers.app.info("[AT] Scheduling status update.")
                 self.updateAutomatedTransferStatus()
             }
         }, failure: failureBlock)
     }
 
     private func refreshSite() {
-        DDLogInfo("[AT] Starting to refresh the site after AT process completed.")
+        Loggers.app.info("[AT] Starting to refresh the site after AT process completed.")
 
         let service = BlogService(coreDataStack: ContextManager.shared)
 
         guard let blog = try? BlogQuery().blogID(site.siteID).dotComAccountUsername(site.username).blog(in: ContextManager.shared.mainContext) else {
-            DDLogInfo("[AT] Couldn't find a blog with provided JetpackSiteRef. This definitely shouldn't have happened. Bailing.")
+            Loggers.app.info("[AT] Couldn't find a blog with provided JetpackSiteRef. This definitely shouldn't have happened. Bailing.")
 
             SVProgressHUD.dismiss()
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
@@ -278,18 +278,18 @@ class AutomatedTransferHelper {
         }
 
         service.syncBlog(blog, success: {
-            DDLogInfo("[AT] Successfully synced the site.")
+            Loggers.app.info("[AT] Successfully synced the site.")
             self.delayWrapper = nil
 
             // after we refreshed the site, we need to manually fetch plugins so the directory/detail screens has correct data.
             self.reloadPlugins()
         }, failure: { error in
-            DDLogInfo("[AT] Failed to fetch site info, error: \(error)")
+            Loggers.app.info("[AT] Failed to fetch site info, error: \(error)")
 
             // It's expected for this call to initially fail, due to how JP/AT works.
             // We'll retry for 30 seconds, which should be plenty of time for the site to come back up.
             guard var wrapper = self.delayWrapper else {
-                DDLogInfo("[AT] First site fetch failure. Setting up delayed retries.")
+                Loggers.app.info("[AT] First site fetch failure. Setting up delayed retries.")
                 // This means it's the first failure and we need to setup the delayWrapper.
 
                 let wrapper = DelayStateWrapper(delaySequence: Constants.delaySequence) {
@@ -300,7 +300,7 @@ class AutomatedTransferHelper {
                 return
             }
 
-            DDLogInfo("[AT] Site fetch retry #\(wrapper.retryAttempt)")
+            Loggers.app.info("[AT] Site fetch retry #\(wrapper.retryAttempt)")
             guard wrapper.retryAttempt < Constants.maxRetries else {
 
                 wrapper.delayedRetryAction.cancel()
@@ -311,20 +311,20 @@ class AutomatedTransferHelper {
                 return
             }
 
-            DDLogInfo("[AT] Incrementing retry counter.")
+            Loggers.app.info("[AT] Incrementing retry counter.")
             wrapper.increment()
             self.delayWrapper = wrapper
         })
     }
 
     private func reloadPlugins() {
-        DDLogInfo("[AT] Fetching site plugins.")
+        Loggers.app.info("[AT] Fetching site plugins.")
 
         let pluginsRemote = PluginServiceRemote(wordPressComRestApi: automatedTransferService.wordPressComRestApi)
         pluginsRemote.getPlugins(siteID: site.siteID, success: { plugins in
             // This was the last step in the process! The transfer is complete. Time to celebrate 🎇🎉✨
-            DDLogInfo("[AT] Successfully fetched plugins.")
-            DDLogInfo("[AT] AT Process complete.")
+            Loggers.app.info("[AT] Successfully fetched plugins.")
+            Loggers.app.info("[AT] AT Process complete.")
 
             WPAnalytics.track(.automatedTransferFlowComplete)
 
@@ -332,11 +332,11 @@ class AutomatedTransferHelper {
             SVProgressHUD.dismiss()
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.successMessage(self.plugin.name))))
         }, failure: { error in
-            DDLogInfo("[AT] Failed to fetch plugins, error: \(error)")
+            Loggers.app.info("[AT] Failed to fetch plugins, error: \(error)")
 
             // Same spiel as with site refresh — it's semi-expected for this call to fail initially.
             guard var wrapper = self.delayWrapper else {
-                DDLogInfo("[AT] First plugin fetch failure. Setting up delayed retries.")
+                Loggers.app.info("[AT] First plugin fetch failure. Setting up delayed retries.")
                 // This means it's the first failure and we need to setup the delayWrapper.
 
                 let wrapper = DelayStateWrapper(delaySequence: Constants.delaySequence) {
@@ -347,7 +347,7 @@ class AutomatedTransferHelper {
                 return
             }
 
-            DDLogInfo("[AT] Plugin fetch retry #\(wrapper.retryAttempt)")
+            Loggers.app.info("[AT] Plugin fetch retry #\(wrapper.retryAttempt)")
             guard wrapper.retryAttempt < Constants.maxRetries else {
 
                 wrapper.delayedRetryAction.cancel()
@@ -358,7 +358,7 @@ class AutomatedTransferHelper {
                 return
             }
 
-            DDLogInfo("[AT] Incrementing retry counter.")
+            Loggers.app.info("[AT] Incrementing retry counter.")
             wrapper.increment()
             self.delayWrapper = wrapper
         })

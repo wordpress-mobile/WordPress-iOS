@@ -48,7 +48,7 @@ final class BlogDashboardService {
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, deviceId: deviceID, success: { [weak self] cardsDictionary in
             guard let self else {
-                DDLogError("The BlogDashboardService instance is deallocated")
+                Loggers.app.error("The BlogDashboardService instance is deallocated")
                 return
             }
 
@@ -71,10 +71,10 @@ final class BlogDashboardService {
                 failure?([])
             }
         }, failure: { [weak self] error in
-            DDLogError("Failed to fetch Dashboard Cards: \(error.localizedDescription)")
+            Loggers.app.error("Failed to fetch Dashboard Cards: \(error.localizedDescription)")
 
             guard let self else {
-                DDLogError("The BlogDashboardService instance is deallocated")
+                Loggers.app.error("The BlogDashboardService instance is deallocated")
                 return
             }
 

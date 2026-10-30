@@ -75,7 +75,7 @@ class WordPressComSyncService {
             /// At this point the user is authed and there is a valid account in core data. Make a note of the error and just dismiss
             /// the vc. There might be some wonkiness due to missing data (blogs, account info) but this will eventually resync.
             ///
-            DDLogError("Error while syncing wpcom account and/or blog details after authenticating. \(String(describing: error))")
+            Loggers.app.error("Error while syncing wpcom account and/or blog details after authenticating. \(String(describing: error))")
             onFailure(error)
         }
 

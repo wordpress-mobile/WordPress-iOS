@@ -18,7 +18,7 @@ class RemoteFeatureFlagStore {
     /// happening server-side we don't want our flags to change on each fetch, so we provide an anonymous ID to manage this.
     public var deviceID: String {
         guard let deviceID = persistenceStore.string(forKey: Constants.DeviceIdKey) else {
-            DDLogInfo("🚩 Unable to find existing device ID – generating a new one")
+            Loggers.app.info("🚩 Unable to find existing device ID – generating a new one")
             let newID = UUID().uuidString
             persistenceStore.set(newID, forKey: Constants.DeviceIdKey)
             return newID
@@ -111,20 +111,20 @@ fileprivate final class FetchRemoteFeatureFlagsOperation: AsyncOperation, @unche
     }
 
     override func main() {
-        DDLogInfo("🚩 Updating Remote Feature Flags with Device ID: \(deviceID)")
+        Loggers.app.info("🚩 Updating Remote Feature Flags with Device ID: \(deviceID)")
         remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
             if self?.isCancelled == true {
                 self?.state = .isFinished
-                DDLogInfo("🚩 Feature flags update operation canceled")
+                Loggers.app.info("🚩 Feature flags update operation canceled")
                 self?.completion(.failure(OperationError.operationCanceled))
                 return
             }
             switch result {
                 case .success(let flags):
-                    DDLogInfo("🚩 Successfully updated local feature flags: \(flags.dictionaryValue)")
+                    Loggers.app.info("🚩 Successfully updated local feature flags: \(flags.dictionaryValue)")
                     self?.completion(.success(flags.dictionaryValue))
                 case .failure(let error):
-                    DDLogError("🚩 Unable to update Feature Flag Store: \(error.localizedDescription)")
+                    Loggers.app.error("🚩 Unable to update Feature Flag Store: \(error.localizedDescription)")
                     self?.completion(.failure(error))
             }
             self?.state = .isFinished

@@ -24,11 +24,11 @@ class NotificationActionsService {
         }
 
         siteService.followSite(withID: siteID, success: {
-            DDLogInfo("Successfully followed site \(siteID)")
+            Loggers.app.info("Successfully followed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to follow site: \(String(describing: error))")
+            Loggers.app.error("Error while trying to follow site: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -45,11 +45,11 @@ class NotificationActionsService {
         }
 
         siteService.unfollowSite(withID: siteID, success: {
-            DDLogInfo("Successfully unfollowed site \(siteID)")
+            Loggers.app.info("Successfully unfollowed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to unfollow site: \(String(describing: error))")
+            Loggers.app.error("Error while trying to unfollow site: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -67,11 +67,11 @@ class NotificationActionsService {
         }
 
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
-            DDLogInfo("Successfully replied to comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully replied to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to reply comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to reply comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -93,11 +93,11 @@ class NotificationActionsService {
 
         // Hit the backend
         commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: { _ in
-            DDLogInfo("Successfully updated to comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully updated to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to update comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to update comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -120,11 +120,11 @@ class NotificationActionsService {
 
         // Proceed toggling the Like field
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
-            DDLogInfo("Successfully liked comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully liked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to like comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to like comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -141,11 +141,11 @@ class NotificationActionsService {
         }
 
         commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
-            DDLogInfo("Successfully unliked comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully unliked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to unlike comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to unlike comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -162,11 +162,11 @@ class NotificationActionsService {
         }
 
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
-            DDLogInfo("Successfully approved comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully approved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to moderate comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to moderate comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -183,11 +183,11 @@ class NotificationActionsService {
         }
 
         commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
-            DDLogInfo("Successfully unapproved comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully unapproved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to moderate comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to moderate comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -204,11 +204,11 @@ class NotificationActionsService {
         }
 
         commentService.spamComment(withID: commentID, siteID: siteID, success: {
-            DDLogInfo("Successfully spammed comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully spammed comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to mark comment as spam: \(String(describing: error))")
+            Loggers.app.error("Error while trying to mark comment as spam: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -225,11 +225,11 @@ class NotificationActionsService {
         }
 
         commentService.deleteComment(withID: commentID, siteID: siteID, success: {
-            DDLogInfo("Successfully deleted comment \(siteID).\(commentID)")
+            Loggers.app.info("Successfully deleted comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
         }, failure: { error in
-            DDLogError("Error while trying to delete comment: \(String(describing: error))")
+            Loggers.app.error("Error while trying to delete comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -253,7 +253,7 @@ private extension NotificationActionsService {
         }
 
         let notificationID = block.parent.notificationIdentifier
-        DDLogInfo("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
+        Loggers.app.info("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
         mediator.invalidateCacheForNotification(notificationID)
         mediator.syncNote(with: notificationID)
     }

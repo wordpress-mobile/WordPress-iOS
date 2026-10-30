@@ -50,7 +50,7 @@ struct PeopleService {
                 success(users.count, hasMore)
             }, on: .main)
         }, failure: { error in
-            DDLogError("\(String(describing: error))")
+            Loggers.app.error("\(String(describing: error))")
             failure?(error)
         })
     }
@@ -71,7 +71,7 @@ struct PeopleService {
                 success(followers.count, hasMore)
             }, on: .main)
         }, failure: { error in
-            DDLogError("\(String(describing: error))")
+            Loggers.app.error("\(String(describing: error))")
             failure?(error)
         })
     }
@@ -92,7 +92,7 @@ struct PeopleService {
                 success(viewers.count, hasMore)
             }, on: .main)
         }, failure: { error in
-            DDLogError("\(String(describing: error))")
+            Loggers.app.error("\(String(describing: error))")
             failure?(error)
         })
     }
@@ -132,11 +132,11 @@ struct PeopleService {
 
     private func updateRemoteUser(_ user: User, role: String, roleToRevertUponFailure pristineRole: String, failure: ((Error, User) -> Void)?) {
         remote.updateUserRole(siteID, userID: user.ID, newRole: role, success: nil, failure: { error in
-            DDLogError("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
+            Loggers.app.error("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
 
             self.coreDataStack.performAndSave({ context in
                 guard let managedPerson = self.managedPersonFromPerson(user, in: context) else {
-                    DDLogError("### Person with ID \(user.ID) deleted before update")
+                    Loggers.app.error("### Person with ID \(user.ID) deleted before update")
                     throw PeopleServiceError.userNotFoundLocally(user)
                 }
 
@@ -424,7 +424,7 @@ extension PeopleService {
                     context.delete(staleInvite)
                 }
             } catch {
-                DDLogError("Error fetching stale invite links: \(error)")
+                Loggers.app.error("Error fetching stale invite links: \(error)")
             }
         }, completion: onComplete, on: .main)
     }
@@ -447,7 +447,7 @@ extension PeopleService {
                 context.delete(staleInvite)
             }
         } catch {
-            DDLogError("Error fetching stale invite links: \(error)")
+            Loggers.app.error("Error fetching stale invite links: \(error)")
         }
     }
 
@@ -516,7 +516,7 @@ private extension PeopleService {
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson, in: context) {
                 existingPerson.updateWith(remotePerson)
-                DDLogDebug("Updated person \(existingPerson)")
+                Loggers.app.debug("Updated person \(existingPerson)")
             } else {
                 createManagedPerson(remotePerson, in: context)
             }
@@ -534,7 +534,7 @@ private extension PeopleService {
         do {
             results = try context.fetch(request) as! [ManagedPerson]
         } catch {
-            DDLogError("Error fetching all people: \(error)")
+            Loggers.app.error("Error fetching all people: \(error)")
             results = []
         }
 
@@ -571,7 +571,7 @@ private extension PeopleService {
 
         let objects = (try? context.fetch(request) as? [NSManagedObject]) ?? []
         for object in objects {
-            DDLogDebug("Removing person: \(object)")
+            Loggers.app.debug("Removing person: \(object)")
             context.delete(object)
         }
     }
@@ -582,6 +582,6 @@ private extension PeopleService {
         let managedPerson = NSEntityDescription.insertNewObject(forEntityName: ManagedPerson.entityName(), into: context) as! ManagedPerson
         managedPerson.updateWith(person)
         managedPerson.creationDate = Date()
-        DDLogDebug("Created person \(managedPerson)")
+        Loggers.app.debug("Created person \(managedPerson)")
     }
 }

@@ -714,7 +714,7 @@ private extension InvitePersonViewController {
                     // Fail silently.
                     self?.bumpStat(event: .inviteLinksGetStatus, error: error)
                     self?.updatingInviteLinks = false
-                    DDLogError("Error syncing invite links. \(error)")
+                    Loggers.app.error("Error syncing invite links. \(error)")
                 }
             )
     }
@@ -746,7 +746,7 @@ private extension InvitePersonViewController {
                                 comment: "An error message shown when there is an issue creating new invite links."
                             )
                         )
-                    DDLogError("Error generating invite links. \(error)")
+                    Loggers.app.error("Error generating invite links. \(error)")
                 }
             )
     }
@@ -819,7 +819,7 @@ private extension InvitePersonViewController {
                                 comment: "An error message shown when there is an issue creating new invite links."
                             )
                         )
-                    DDLogError("Error disabling invite links. \(error)")
+                    Loggers.app.error("Error disabling invite links. \(error)")
                 }
             )
     }

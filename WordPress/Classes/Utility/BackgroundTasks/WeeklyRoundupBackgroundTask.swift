@@ -74,7 +74,7 @@ private class WeeklyRoundupDataProvider {
     /// and returns the result through the provided completion handler.
     private func getTopSiteStats(from sites: [Site], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         guard let periodEndDate = Self.makePeriodEndDate() else {
-            DDLogError("Something's wrong with the period end date selection.")
+            Loggers.app.error("Something's wrong with the period end date selection.")
             completion(.failure(DataRequestError.failedToMakePeriodEndDate))
             return
         }

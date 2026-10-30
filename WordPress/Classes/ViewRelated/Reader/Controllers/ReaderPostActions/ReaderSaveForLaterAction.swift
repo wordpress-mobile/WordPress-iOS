@@ -81,7 +81,7 @@ final class ReaderSaveForLaterAction {
     }
 
     private func presentErrorNotice(_ error: Error?, activating: Bool) {
-        DDLogError("Could not toggle save for later: \(String(describing: error))")
+        Loggers.app.error("Could not toggle save for later: \(String(describing: error))")
 
         let title = activating ? Strings.addToSavedError : Strings.removeFromSavedError
 

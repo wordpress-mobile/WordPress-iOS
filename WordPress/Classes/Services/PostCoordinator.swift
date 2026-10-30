@@ -195,7 +195,7 @@ class PostCoordinator: NSObject {
     }
 
     private func trackError(_ error: Error, operation: String, post: AbstractPost) {
-        DDLogError("post-coordinator-\(operation)-failed: \(error)")
+        Loggers.app.error("post-coordinator-\(operation)-failed: \(error)")
 
         if let error = error as? TrackableErrorProtocol, var userInfo = error.getTrackingUserInfo() {
             userInfo["operation"] = operation
@@ -325,7 +325,7 @@ class PostCoordinator: NSObject {
                 startSync(for: post)
             }
         } catch {
-            DDLogError("failed to scheduled sync: \(error)")
+            Loggers.app.error("failed to scheduled sync: \(error)")
         }
     }
 
@@ -404,7 +404,7 @@ class PostCoordinator: NSObject {
         }
 
         func log(_ string: String) {
-            DDLogInfo("sync-worker(\(post.objectID.shortDescription)) \(string)")
+            Loggers.app.info("sync-worker(\(post.objectID.shortDescription)) \(string)")
         }
     }
 
@@ -433,7 +433,7 @@ class PostCoordinator: NSObject {
         }
 
         func log(_ string: String) {
-            DDLogInfo(
+            Loggers.app.info(
                 "sync-operation(\(id)) (\(post.objectID.shortDescription)→\(revision.objectID.shortDescription))) \(string)"
             )
         }
@@ -454,7 +454,7 @@ class PostCoordinator: NSObject {
             postDidUpdateNotification(for: post)
         }
         guard let revision = post.getLatestRevisionNeedingSync() else {
-            return DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
+            return Loggers.app.info("sync: \(post.objectID.shortDescription) is already up to date")
         }
         startSync(for: post, revision: revision)
     }
@@ -800,7 +800,7 @@ class PostCoordinator: NSObject {
                 case .failed(let error):
                     handleSingleMediaFailure(error)
                 default:
-                    DDLogInfo("Post Coordinator -> Media state: \(state)")
+                    Loggers.app.info("Post Coordinator -> Media state: \(state)")
                 }
             },
             forMediaFor: post

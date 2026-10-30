@@ -22,13 +22,13 @@ extension CommentService {
         failure: @escaping (Error?) -> Void
     ) {
         guard let remote = restRemote(forSite: NSNumber(value: siteID)) else {
-            DDLogError("Unable to create a REST remote to fetch comment replies.")
+            Loggers.app.error("Unable to create a REST remote to fetch comment replies.")
             failure(nil)
             return
         }
 
         guard let userID = getCurrentUserID(accountService: accountService)?.intValue else {
-            DDLogError("Unable to find the current user's dotcom ID to fetch comment replies.")
+            Loggers.app.error("Unable to find the current user's dotcom ID to fetch comment replies.")
             failure(nil)
             return
         }
@@ -104,7 +104,7 @@ extension CommentService {
             }
 
         let blogId = TaggedManagedObjectID(blog)
-        DDLogInfo("Pre-fetching \(postIds.count) posts...")
+        Loggers.app.info("Pre-fetching \(postIds.count) posts...")
         Task {
             let repository = PostRepository()
             for postId in postIds {

@@ -177,7 +177,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
         context.performAndWait {
             guard let mediaInContext = try? context.existingObject(with: media.objectID) as? Media else {
-                DDLogError("The media object no longer exists")
+                Loggers.app.error("The media object no longer exists")
                 return
             }
 

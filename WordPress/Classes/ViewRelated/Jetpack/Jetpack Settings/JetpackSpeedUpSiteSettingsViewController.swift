@@ -93,11 +93,11 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
             blog,
             success: { [weak self] in
                 self?.reloadViewModel()
-                DDLogInfo("Reloaded Speed up site settings")
+                Loggers.app.info("Reloaded Speed up site settings")
             },
             failure: { (error: Error?) in
                 Notice(title: SharedStrings.Error.refreshFailed, message: error?.localizedDescription).post()
-                DDLogError("Error while syncing blog Speed up site settings: \(String(describing: error))")
+                Loggers.app.error("Error while syncing blog Speed up site settings: \(String(describing: error))")
         })
     }
 

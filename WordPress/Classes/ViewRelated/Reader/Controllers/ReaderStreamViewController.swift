@@ -460,7 +460,7 @@ import AutomatticTracks
     ///
     private func fetchSiteTopic() {
         guard let siteID else {
-            DDLogError("A siteID is required before fetching a site topic")
+            Loggers.app.error("A siteID is required before fetching a site topic")
             return
         }
 
@@ -478,7 +478,7 @@ import AutomatticTracks
                 guard let objectID,
                     let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic
                 else {
-                    DDLogError("Reader: Error retriving an existing site topic by its objectID")
+                    Loggers.app.error("Reader: Error retriving an existing site topic by its objectID")
                     if self?.isLoadingDiscover ?? false {
                         self?.updateContent(synchronize: false)
                     }
@@ -511,7 +511,7 @@ import AutomatticTracks
                 let context = ContextManager.shared.mainContext
                 guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic
                 else {
-                    DDLogError("Reader: Error retriving an existing tag topic by its objectID")
+                    Loggers.app.error("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
                 }
@@ -909,7 +909,7 @@ import AutomatticTracks
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogError("Failed to retrieve an existing topic when updating last sync date.")
+            Loggers.app.error("Failed to retrieve an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -1037,7 +1037,7 @@ import AutomatticTracks
 
     private func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
-            DDLogError("Error: Reader tried to sync items when the topic was nil.")
+            Loggers.app.error("Error: Reader tried to sync items when the topic was nil.")
             return
         }
 
@@ -1075,7 +1075,7 @@ import AutomatticTracks
     ) {
         coreDataStack.performAndSave { context in
             guard let topic = (try? context.existingObject(with: originalTopic.objectID)) as? ReaderAbstractTopic else {
-                DDLogError("Error: Could not retrieve an existing topic via its objectID")
+                Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1104,12 +1104,12 @@ import AutomatticTracks
         }
 
         guard let indexPath = indexPathForGapMarker else {
-            DDLogError("Error: Tried to sync a gap when the index path for the gap was nil.")
+            Loggers.app.error("Error: Tried to sync a gap when the index path for the gap was nil.")
             return
         }
 
         guard let post: ReaderGapMarker = content.object(at: indexPath) else {
-            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
+            Loggers.app.error("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
@@ -1121,7 +1121,7 @@ import AutomatticTracks
         coreDataStack.performAndSave { [weak self] context in
             guard let topicInContext = (try? context.existingObject(with: topic.objectID)) as? ReaderAbstractTopic
             else {
-                DDLogError("Error: Could not retrieve an existing topic via its objectID")
+                Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1212,13 +1212,13 @@ import AutomatticTracks
             let post = posts.last as? ReaderPost,
             let sortDate = post.sortDate
         else {
-            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
+            Loggers.app.error("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
         coreDataStack.performAndSave { context in
             guard let topic = (try? context.existingObject(with: originalTopic.objectID)) as? ReaderAbstractTopic else {
-                DDLogError("Error: Could not retrieve an existing topic via its objectID")
+                Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1299,7 +1299,7 @@ import AutomatticTracks
 
         guard let topicInContext = (try? viewContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic
         else {
-            DDLogError("Error: Could not retrieve an existing topic via its objectID")
+            Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
             return predicateForNilTopic
         }
 
@@ -1630,7 +1630,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
             if !(content.content is [ReaderTagTopic]) {
-                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+                Loggers.app.error("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             }
             return
         }

@@ -75,7 +75,7 @@ import WordPressKit
         service.postDesignateMobileEditorForAllSites(remoteEditor, setOnlyIfEmpty: !overrideRemote, success: { response in
             self.updateAllSites(with: response, completion: onSuccess)
         }) { error in
-            DDLogError("Error saving editor settings: \(error)")
+            Loggers.app.error("Error saving editor settings: \(error)")
         }
     }
 

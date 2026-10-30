@@ -7,15 +7,15 @@ class WordPressBackgroundTaskEventHandler: BackgroundTaskEventHandler {
     func handle(_ event: BackgroundTaskEvent) {
         switch event {
         case .start(let identifier):
-            DDLogInfo("Background task started: \(identifier)")
+            Loggers.app.info("Background task started: \(identifier)")
         case .error(let identifier, let error):
-            DDLogError("Background task error: \(identifier) - Error: \(error)")
+            Loggers.app.error("Background task error: \(identifier) - Error: \(error)")
         case .expirationHandlerCalled(let identifier):
-            DDLogError("Background task time expired: \(identifier)")
+            Loggers.app.error("Background task time expired: \(identifier)")
         case .taskCompleted(let identifier, let cancelled):
-            DDLogInfo("Background task completed: \(identifier) - Cancelled: \(cancelled)")
+            Loggers.app.info("Background task completed: \(identifier) - Cancelled: \(cancelled)")
         case .rescheduled(let identifier):
-            DDLogInfo("Background task rescheduled: \(identifier)")
+            Loggers.app.info("Background task rescheduled: \(identifier)")
         }
     }
 }

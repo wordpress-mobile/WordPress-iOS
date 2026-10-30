@@ -20,10 +20,10 @@ extension WPAccount {
         for (blogID, group) in blogsById where group.count > 1 {
             assert(blogID > 0, "There should not be a Blog without ID if it has an account")
             guard blogID > 0 else {
-                DDLogError("Found one or more WordPress.com blogs without ID, skipping de-duplication")
+                Loggers.app.error("Found one or more WordPress.com blogs without ID, skipping de-duplication")
                 continue
             }
-            DDLogWarn("Found \(group.count - 1) duplicates for blog with ID \(blogID)")
+            Loggers.app.warning("Found \(group.count - 1) duplicates for blog with ID \(blogID)")
             deduplicate(group: group, in: context)
         }
     }
@@ -39,11 +39,11 @@ extension WPAccount {
             // If there are other blogs with local drafts, we reassing them to the blog that
             // is not going to be deleted
             for draft in localDrafts(for: blog) {
-                DDLogInfo("Migrating local draft \(draft.postTitle ?? "<Untitled>") to de-duplicated blog")
+                Loggers.app.info("Migrating local draft \(draft.postTitle ?? "<Untitled>") to de-duplicated blog")
                 draft.blog = candidate
             }
             // Once the drafts are moved (if any), we can safely delete the duplicate
-            DDLogInfo("Deleting duplicate blog \(blog.logDescription)")
+            Loggers.app.info("Deleting duplicate blog \(blog.logDescription)")
             context.delete(blog)
         }
     }

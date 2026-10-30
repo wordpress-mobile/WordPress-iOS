@@ -137,7 +137,7 @@ private extension StatsRevampStore {
         loadViewsAndVisitorsCache(date: date)
 
         guard shouldFetchViewsAndVisitors() else {
-            DDLogInfo("Stats Views and Visitors details refresh triggered while one was in progress.")
+            Loggers.app.info("Stats Views and Visitors details refresh triggered while one was in progress.")
             return
         }
 
@@ -155,10 +155,10 @@ private extension StatsRevampStore {
 
         let topReferrers = PeriodOperation(service: service, for: .week, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Revamp Store: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Stats Revamp Store: Error fetching referrers: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Revamp Store: Finished fetching referrers.")
+            Loggers.app.info("Stats Revamp Store: Finished fetching referrers.")
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
@@ -167,10 +167,10 @@ private extension StatsRevampStore {
 
         let topCountries = PeriodOperation(service: service, for: .week, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Revamp Store: Error fetching countries: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Stats Revamp Store: Error fetching countries: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Revamp Store: Finished fetching countries.")
+            Loggers.app.info("Stats Revamp Store: Finished fetching countries.")
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
@@ -193,7 +193,7 @@ private extension StatsRevampStore {
             state.summary = getValue(.timeIntervalsSummary, period: .day)
             state.topReferrers = getValue(.topReferrers, period: .week)
             state.topCountries = getValue(.topCountries, period: .week)
-            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from cache")
+            Loggers.app.info("Stats Revamp Store: Finished setting data to Period store from cache")
         }
     }
 }
@@ -216,7 +216,7 @@ private extension StatsRevampStore {
         loadLikesTotalsCache(date: date)
 
         guard shouldFetchLikesTotals() else {
-            DDLogInfo("Stats Views and Visitors details refresh triggered while one was in progress.")
+            Loggers.app.info("Stats Views and Visitors details refresh triggered while one was in progress.")
             return
         }
 
@@ -234,10 +234,10 @@ private extension StatsRevampStore {
 
         let topPostsOperation = PeriodOperation(service: service, for: .week, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Revamp Store: Error fetching posts: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Stats Revamp Store: Error fetching posts: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Revamp Store: Finished fetching posts.")
+            Loggers.app.info("Stats Revamp Store: Finished fetching posts.")
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
@@ -258,7 +258,7 @@ private extension StatsRevampStore {
         transaction { state in
             state.summary = getValue(.timeIntervalsSummary, period: .day)
             state.topPostsAndPages = getValue(.topPostsAndPages, period: .week)
-            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from cache.")
+            Loggers.app.info("Stats Revamp Store: Finished setting data to Period store from cache.")
         }
     }
 }
@@ -270,16 +270,16 @@ private extension StatsRevampStore {
         }
 
         scheduler.debounce { [weak self] in
-            DDLogInfo("Stats Revamp Store: Cancel all operations")
+            Loggers.app.info("Stats Revamp Store: Cancel all operations")
 
             self?.operationQueue.cancelAllOperations()
 
             let chartOperation = PeriodOperation(service: service, for: .day, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
                 if error != nil {
-                    DDLogError("Stats Revamp Store: Error fetching summary: \(String(describing: error?.localizedDescription))")
+                    Loggers.app.error("Stats Revamp Store: Error fetching summary: \(String(describing: error?.localizedDescription))")
                 }
 
-                DDLogInfo("Stats Revamp Store: Finished fetching summary.")
+                Loggers.app.info("Stats Revamp Store: Finished fetching summary.")
 
                 DispatchQueue.main.async {
                     self?.receivedSummary(summary, error)
