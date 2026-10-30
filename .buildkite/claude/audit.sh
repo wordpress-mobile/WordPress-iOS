@@ -56,7 +56,9 @@ audit_stop_process() {
 audit_has_secret() {
   [[ -n "$AUDIT_SECRETS" ]] || return 1
   if [[ "$1" == *.gz ]]; then
-    gzip -dc "$1" 2>/dev/null | grep -q -a -F -f <(printf '%s\n' "$AUDIT_SECRETS")
+    # grep -q stops at the first match, so gzip gets SIGPIPE. Under pipefail
+    # that would turn a match into "no secret", so gzip's status is ignored.
+    { gzip -dc "$1" 2>/dev/null || true; } | grep -q -a -F -f <(printf '%s\n' "$AUDIT_SECRETS")
   else
     grep -q -a -F -f <(printf '%s\n' "$AUDIT_SECRETS") "$1" 2>/dev/null
   fi
@@ -153,11 +155,12 @@ audit_start() {
 
   # Endpoint Security, as root. grep cheaply keeps only lines that mention the
   # reviewer's user ID; audit-es-filter.py checks each event exactly, removes
-  # environments and drops the noise (see that file).
+  # environments, redacts this job's secrets (passed on fd 3) and drops the
+# noise (see that file).
   mkfifo "$AUDIT_RAW/.es-fifo"
   grep -E "\"[er]uid\" *: *${AUDIT_UID}[^0-9]" < "$AUDIT_RAW/.es-fifo" \
     | python3 -I .buildkite/claude/audit-es-filter.py "$AUDIT_UID" "$reviewer_home" "$AUDIT_RAW/es" "$AUDIT_UPLOAD_SECONDS" \
-      2> "$AUDIT_DIR/es-filter.err" &
+      2> "$AUDIT_DIR/es-filter.err" 3< <(printf '%s\n' "$AUDIT_SECRETS") &
   AUDIT_ES_FILTER_PID=$!
   # The build user reads the output, so the redirect is meant to run without sudo.
   # shellcheck disable=SC2024

@@ -7,6 +7,8 @@ renamed to es-events.<n>.jsonl.gz, so the uploader only ever sees whole parts.
 
 To keep the log useful and safe:
 - `exec` events lose their environment, which holds the Anthropic key.
+- Any of this job's secrets, read one per line from file descriptor 3, is
+  replaced with "(redacted)" anywhere in an event, e.g. in a command's args.
 - `close` events for files that weren't changed are dropped.
 - Read-only opens of system files, Xcode, Homebrew and the reviewer's own
   home and temporary folders are counted instead of logged. Reads anywhere
@@ -34,6 +36,12 @@ QUIET_READS = (
     home + "/",
 )
 FWRITE = 0x2
+
+try:
+    with os.fdopen(3) as secrets_file:
+        SECRETS = [line.strip() for line in secrets_file if line.strip()]
+except OSError:
+    SECRETS = []
 
 dropped = collections.Counter()
 kept = 0
@@ -99,7 +107,12 @@ try:
         if prefix:
             dropped[f"read-only open under {prefix}"] += 1
             continue
-        write(json.dumps(message, separators=(",", ":")))
+        line = json.dumps(message, separators=(",", ":"))
+        for secret in SECRETS:
+            if secret in line:
+                line = line.replace(secret, "(redacted)")
+                dropped["secret redacted"] += 1
+        write(line)
 finally:
     finish_part()
     with open(os.path.join(out_dir, "es-dropped.json"), "w") as f:
