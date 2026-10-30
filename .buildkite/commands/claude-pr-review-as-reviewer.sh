@@ -157,6 +157,9 @@ sed -i '' -e "s/{{SIMULATOR_UDID}}/${SIMULATOR_UDID}/g" "$HOME/prompt.md"
 # submitted its verdict before they finished (build 35535); background tasks
 # are turned off for the same reason.
 echo "--- :claude: Reviewing as $(id -un)"
+echo "TEST: waiting instead of running Claude, to be cancelled."
+sleep 1500
+exit 0
 claude_status=0
 # Claude gets only these variables. They're exported rather than passed to
 # `env -i`, so the key is never in a command's arguments, where `ps` and the
