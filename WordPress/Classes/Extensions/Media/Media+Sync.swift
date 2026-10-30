@@ -61,7 +61,7 @@ extension Media {
             case .success:
                 onCompletion?()
             case let .failure(error):
-                DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
+                Loggers.app.error("Error while attempting to clean local media: \(error.localizedDescription)")
                 onError?(error)
             }
         }, on: .main)

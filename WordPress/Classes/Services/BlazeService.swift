@@ -32,7 +32,7 @@ protocol BlazeServiceProtocol {
             return
         }
         guard let siteId = blog.dotComID?.intValue else {
-            DDLogError("Invalid site ID for Blaze")
+            Loggers.app.error("Invalid site ID for Blaze")
             completion(.failure(BlazeServiceError.missingBlogId))
             return
         }

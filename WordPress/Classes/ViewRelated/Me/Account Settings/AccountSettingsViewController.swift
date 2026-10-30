@@ -369,7 +369,7 @@ private class AccountSettingsController: SettingsController {
                 WPAnalytics.track(.accountCloseCompleted, properties: ["status": "failure", "error_code": errorCode])
 
                 SVProgressHUD.dismiss()
-                DDLogError("Error closing account: \(error.localizedDescription)")
+                Loggers.app.error("Error closing account: \(error.localizedDescription)")
                 self.showCloseAccountErrorAlert(message: self.generateLocalizedMessage(error))
             }
         }

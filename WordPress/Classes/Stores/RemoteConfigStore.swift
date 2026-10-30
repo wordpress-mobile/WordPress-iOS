@@ -42,10 +42,10 @@ class RemoteConfigStore {
             switch result {
                 case .success(let response):
                     self?.cache = response
-                    DDLogInfo("🚩 Successfully updated remote config values: \(response)")
+                    Loggers.app.info("🚩 Successfully updated remote config values: \(response)")
                     callback?()
                 case .failure(let error):
-                    DDLogError("🚩 Unable to update remote config values: \(error.localizedDescription)")
+                    Loggers.app.error("🚩 Unable to update remote config values: \(error.localizedDescription)")
             }
         }
     }

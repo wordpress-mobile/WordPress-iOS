@@ -248,7 +248,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         _ viewController: GutenbergKit.EditorViewController,
         didLogException exception: GutenbergKit.GutenbergJSException
     ) {
-        DDLogError("GBK editor exception:\n\(exception)")
+        Loggers.app.error("GBK editor exception:\n\(exception)")
 
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?
@@ -314,7 +314,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
                     // Appended space completes the autocomplete session
                     self?.editorViewController.appendTextAtCursor(suggestion + " ")
                 case .failure(let error):
-                    DDLogError("Mention selection cancelled or failed: \(error)")
+                    Loggers.app.error("Mention selection cancelled or failed: \(error)")
                 }
             }
         case "plus-symbol":
@@ -324,11 +324,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
                     // Appended space completes the autocomplete session
                     self?.editorViewController.appendTextAtCursor(suggestion + " ")
                 case .failure(let error):
-                    DDLogError("Xpost selection cancelled or failed: \(error)")
+                    Loggers.app.error("Xpost selection cancelled or failed: \(error)")
                 }
             }
         default:
-            DDLogError("Unknown autocompleter type: \(type)")
+            Loggers.app.error("Unknown autocompleter type: \(type)")
         }
     }
 
@@ -354,7 +354,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
                 return jsonString
             }
         } catch {
-            DDLogError("Error encoding MediaInfo array: \(error)")
+            Loggers.app.error("Error encoding MediaInfo array: \(error)")
         }
         return nil
     }
@@ -415,7 +415,7 @@ private extension PostGBKEditorViewController {
         return await withCheckedContinuation { continuation in
             // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
             authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
-                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
+                Loggers.app.info("Authentication cookies loaded into shared cookie store for GutenbergKit")
                 continuation.resume(returning: true)
             }
         }

@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import UserNotifications
 import ShareExtensionCore
 
@@ -58,7 +57,7 @@ class ExtensionNotificationManager {
         let notificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: notificationTrigger)
         UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { error in
             if let error {
-                DDLogError("Unable to add notification request (\(error), \(error.localizedDescription))")
+                Loggers.shareExtension.error("Unable to add notification request (\(error), \(error.localizedDescription))")
             }
         })
     }

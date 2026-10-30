@@ -57,10 +57,10 @@ open class DiscussionSettingsViewController: UITableViewController {
             for: blog,
             success: { [weak self] in
                 self?.tableView.reloadData()
-                DDLogInfo("Reloaded Settings")
+                Loggers.app.info("Reloaded Settings")
             },
             failure: { (error: Error) in
-                DDLogError("Error while sync'ing blog settings: \(error)")
+                Loggers.app.error("Error while sync'ing blog settings: \(error)")
             }
         )
     }
@@ -101,7 +101,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             navigationItem.rightBarButtonItem = nil
         }
         if let error {
-            DDLogError("Error while persisting settings: \(error)")
+            Loggers.app.error("Error while persisting settings: \(error)")
             let alert = UIAlertController(
                 title: Strings.errorTitle,
                 message: error.localizedDescription,

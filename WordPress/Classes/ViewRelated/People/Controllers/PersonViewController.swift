@@ -254,7 +254,7 @@ private extension PersonViewController {
 
     func deleteUser() {
         guard let user else {
-            DDLogError("Error: Only Users can be deleted here")
+            Loggers.app.error("Error: Only Users can be deleted here")
             assertionFailure()
             return
         }
@@ -273,7 +273,7 @@ private extension PersonViewController {
 
     func deleteViewer() {
         guard let viewer, isViewer else {
-            DDLogError("Error: Only Viewers can be deleted here")
+            Loggers.app.error("Error: Only Viewers can be deleted here")
             assertionFailure()
             return
         }
@@ -315,13 +315,13 @@ private extension PersonViewController {
 
     func updateUserRole(_ newRole: String) {
         guard let user else {
-            DDLogError("Error: Only Users have Roles!")
+            Loggers.app.error("Error: Only Users have Roles!")
             assertionFailure()
             return
         }
 
         guard let service else {
-            DDLogError("Couldn't instantiate People Service")
+            Loggers.app.error("Couldn't instantiate People Service")
             return
         }
 

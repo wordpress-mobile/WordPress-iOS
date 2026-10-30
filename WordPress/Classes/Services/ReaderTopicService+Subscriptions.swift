@@ -97,12 +97,12 @@ extension ReaderTopicService {
 
         let successBlock = {
             success?()
-            DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+            Loggers.app.info("Success turn notifications \(subscribe ? "on" : "off")")
         }
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
+            Loggers.app.error("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         coreDataStack.performAndSave { context in
@@ -153,7 +153,7 @@ extension ReaderTopicService {
 
         let successBlock = {
             success?()
-            DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+            Loggers.app.info("Success turn notifications \(subscribe ? "on" : "off")")
 
             let event: WPAnalyticsStat = subscribe ? .notificationsSettingsCommentsNotificationsOn : .notificationsSettingsCommentsNotificationsOff
             WPAnalytics.track(event)
@@ -161,7 +161,7 @@ extension ReaderTopicService {
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
+            Loggers.app.error("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         coreDataStack.performAndSave { context in
@@ -212,7 +212,7 @@ extension ReaderTopicService {
 
         let successBlock = {
             success?()
-            DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+            Loggers.app.info("Success turn notifications \(subscribe ? "on" : "off")")
 
             let event: WPAnalyticsStat = subscribe ? .notificationsSettingsEmailNotificationsOn : .notificationsSettingsEmailNotificationsOff
             WPAnalytics.track(event)
@@ -220,7 +220,7 @@ extension ReaderTopicService {
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
+            Loggers.app.error("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         coreDataStack.performAndSave { context in
@@ -238,7 +238,7 @@ extension ReaderTopicService {
     func updateFrequencyPostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
         let successBlock = { [weak self] in
             success?()
-            DDLogInfo("Success update frequency \(frequency.rawValue)")
+            Loggers.app.info("Success update frequency \(frequency.rawValue)")
 
             if let event = self?.frequencyPostsEmailTrackEvent(for: frequency) {
                 WPAnalytics.track(event)
@@ -247,7 +247,7 @@ extension ReaderTopicService {
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
+            Loggers.app.error("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         coreDataStack.performAndSave { context in

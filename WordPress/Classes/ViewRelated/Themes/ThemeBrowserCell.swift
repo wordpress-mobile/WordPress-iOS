@@ -269,7 +269,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 if nsError?.domain == NSURLErrorDomain && nsError?.code == NSURLErrorCancelled {
                     return
                 }
-                DDLogError("Error loading theme screenshot: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error loading theme screenshot: \(String(describing: error?.localizedDescription))")
                 self?.showPlaceholder()
             }
         )

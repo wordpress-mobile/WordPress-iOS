@@ -457,7 +457,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
         guard let post else {
-            DDLogError("Missing post when updating Reader post detail comments.")
+            Loggers.app.error("Missing post when updating Reader post detail comments.")
             return
         }
 
@@ -748,7 +748,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                     Notice(error: error).post()
                     UINotificationFeedbackGenerator().notificationOccurred(.error)
                 }
-                DDLogError("Translation failed: \(error)")
+                Loggers.app.error("Translation failed: \(error)")
             }
         }
     }
@@ -795,7 +795,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         do {
             try await webView.setBodyHTML(translationResults[1])
         } catch {
-            DDLogError("Failed to set HTML: \(error)")
+            Loggers.app.error("Failed to set HTML: \(error)")
         }
     }
 

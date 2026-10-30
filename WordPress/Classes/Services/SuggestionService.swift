@@ -91,7 +91,7 @@ class SuggestionService {
             // remove blog from the currently being requested list
             self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId}
 
-            DDLogVerbose("[Rest API] ! \(error.localizedDescription)")
+            Loggers.app.trace("[Rest API] ! \(error.localizedDescription)")
         })
     }
 

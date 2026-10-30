@@ -247,7 +247,7 @@ class ReaderDetailToolbar {
         }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()
             if let error {
-                DDLogError("Error (un)liking post: \(error.localizedDescription)")
+                Loggers.app.error("Error (un)liking post: \(error.localizedDescription)")
                 Notice(error: error).post()
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
             }

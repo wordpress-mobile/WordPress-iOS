@@ -98,7 +98,7 @@ extension PageLayoutService {
         do {
             try resultsController.performFetch()
         } catch {
-            DDLogError("Failed to fetch entities: \(error)")
+            Loggers.app.error("Failed to fetch entities: \(error)")
         }
 
         return resultsController

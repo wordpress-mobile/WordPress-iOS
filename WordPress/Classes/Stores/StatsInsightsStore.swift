@@ -192,7 +192,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         }
 
         if !isFetchingOverview {
-            DDLogInfo("Stats: Insights Overview refreshing operations finished.")
+            Loggers.app.info("Stats: Insights Overview refreshing operations finished.")
         }
     }
 
@@ -276,7 +276,7 @@ private extension StatsInsightsStore {
 
         currentDataTypes.forEach {
             guard forceRefresh || cache.isExpired || !hasCache(forDataType: $0) else {
-                DDLogInfo("Stats: Insights Overview refresh requested for \($0) but we still have valid cache data.")
+                Loggers.app.info("Stats: Insights Overview refresh requested for \($0) but we still have valid cache data.")
                 return
             }
 
@@ -289,87 +289,87 @@ private extension StatsInsightsStore {
         case .latestPost:
             api.getInsight { (lastPost: StatsLastPostInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching last posts insights: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching last posts insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
-                DDLogInfo("Stats: Insights - successfully fetched latest post summary")
+                Loggers.app.info("Stats: Insights - successfully fetched latest post summary")
             }
         case .allTime:
             api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching all time insights: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching all time insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
-                DDLogInfo("Stats: Insights - successfully fetched all time")
+                Loggers.app.info("Stats: Insights - successfully fetched all time")
             }
 
         case .annualAndMostPopular:
             api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching annual/most popular time: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching annual/most popular time: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
-                DDLogInfo("Stats: Insights - successfully fetched annual and most popular")
+                Loggers.app.info("Stats: Insights - successfully fetched annual and most popular")
             }
         case .tagsAndCategories:
             api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching tags and categories insight: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching tags and categories insight: \(error.localizedDescription)")
                 }
 
                 self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
-                DDLogInfo("Stats: Insights - successfully fetched tags and categories")
+                Loggers.app.info("Stats: Insights - successfully fetched tags and categories")
             }
 
         case .comments:
             api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching comment insights: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching comment insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
-                DDLogInfo("Stats: Insights - successfully fetched comments")
+                Loggers.app.info("Stats: Insights - successfully fetched comments")
             }
         case .followers:
             api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching WP.com followers: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching WP.com followers: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
-                DDLogInfo("Stats: Insights - successfully fetched wp.com followers")
+                Loggers.app.info("Stats: Insights - successfully fetched wp.com followers")
             }
 
             api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching email followers: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching email followers: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
-                DDLogInfo("Stats: Insights - successfully fetched email followers")
+                Loggers.app.info("Stats: Insights - successfully fetched email followers")
             }
         case .today:
             api.getInsight { (todayInsight: StatsTodayInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching today's insight: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching today's insight: \(error.localizedDescription)")
                 }
 
                 self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight, error))
-                DDLogInfo("Stats: Insights - successfully fetched today")
+                Loggers.app.info("Stats: Insights - successfully fetched today")
             }
         case .postingActivity:
             api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching posting activity insight: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching posting activity insight: \(error.localizedDescription)")
                 }
 
                 self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
-                DDLogInfo("Stats: Insights - successfully fetched posting activity")
+                Loggers.app.info("Stats: Insights - successfully fetched posting activity")
             }
         case .publicize:
             api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
                 if let error {
-                    DDLogError("Error fetching publicize insights: \(error.localizedDescription)")
+                    Loggers.app.error("Error fetching publicize insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
-                DDLogInfo("Stats: Insights - successfully fetched publicize")
+                Loggers.app.info("Stats: Insights - successfully fetched publicize")
             }
         }
     }
@@ -395,7 +395,7 @@ private extension StatsInsightsStore {
             state.emailFollowers = getValue(.emailFollowers)
         }
 
-        DDLogInfo("Insights load from cache")
+        Loggers.app.info("Insights load from cache")
     }
 
     private func hasCache(forDataType type: InsightDataType) -> Bool {
@@ -443,12 +443,12 @@ private extension StatsInsightsStore {
 
     func refreshInsights(forceRefresh: Bool = false) {
         guard shouldFetchOverview() else {
-            DDLogInfo("Stats: Insights Overview refresh triggered while one was in progress.")
+            Loggers.app.info("Stats: Insights Overview refresh triggered while one was in progress.")
             return
         }
 
         if forceRefresh {
-            DDLogInfo("Stats: Forcing an Insights refresh.")
+            Loggers.app.info("Stats: Forcing an Insights refresh.")
         }
 
         saveDataInCache()
@@ -464,9 +464,9 @@ private extension StatsInsightsStore {
 
         api.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
             if let error {
-                DDLogError("Insights: Error fetching Post Stats: \(error.localizedDescription)")
+                Loggers.app.error("Insights: Error fetching Post Stats: \(error.localizedDescription)")
             }
-            DDLogInfo("Stats: Insights - successfully fetched latest post details.")
+            Loggers.app.info("Stats: Insights - successfully fetched latest post details.")
 
             DispatchQueue.main.async {
                 self.receivedPostStats(postStats, error)
@@ -623,14 +623,14 @@ private extension StatsInsightsStore {
 
         api.getInsight(limit: 100) { (dotComFollowers: StatsDotComFollowersInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
+                Loggers.app.info("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers, error))
         }
 
           api.getInsight(limit: 100) { (emailFollowers: StatsEmailFollowersInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
+                Loggers.app.info("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllEmailFollowers(emailFollowers, error))
         }
@@ -648,7 +648,7 @@ private extension StatsInsightsStore {
 
         api.getInsight(limit: 1000) {(allComments: StatsCommentsInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching all comments: \(String(describing: error?.localizedDescription))")
+                Loggers.app.info("Error fetching all comments: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllCommentsInsight(allComments, error))
         }
@@ -664,7 +664,7 @@ private extension StatsInsightsStore {
         // See the comment about the limit in the method above.
         api.getInsight(limit: 1000) { (allTagsAndCategories: StatsTagsAndCategoriesInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching all tags and categories: \(String(describing: error?.localizedDescription))")
+                Loggers.app.info("Error fetching all tags and categories: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllTagsAndCategories(allTagsAndCategories, error))
         }
@@ -679,7 +679,7 @@ private extension StatsInsightsStore {
 
         api.getInsight { (allAnnual: StatsAllAnnualInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching all annual: \(String(describing: error?.localizedDescription))")
+                Loggers.app.info("Error fetching all annual: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllAnnual(allAnnual, error))
         }
@@ -705,7 +705,7 @@ private extension StatsInsightsStore {
 
     func refreshFollowers() {
         guard shouldFetchFollowers() else {
-            DDLogInfo("Stats Insights Followers refresh triggered while one was in progress.")
+            Loggers.app.info("Stats Insights Followers refresh triggered while one was in progress.")
             return
         }
 
@@ -727,7 +727,7 @@ private extension StatsInsightsStore {
 
     func refreshComments() {
         guard shouldFetchComments() else {
-            DDLogInfo("Stats Insights Comments refresh triggered while one was in progress.")
+            Loggers.app.info("Stats Insights Comments refresh triggered while one was in progress.")
             return
         }
 
@@ -749,7 +749,7 @@ private extension StatsInsightsStore {
 
     func refreshTagsAndCategories() {
         guard shouldFetchTagsAndCategories() else {
-            DDLogInfo("Stats Insights Tags And Categories refresh triggered while one was in progress.")
+            Loggers.app.info("Stats Insights Tags And Categories refresh triggered while one was in progress.")
             return
         }
 
@@ -771,7 +771,7 @@ private extension StatsInsightsStore {
 
     func refreshAnnual() {
         guard shouldFetchAnnual() else {
-            DDLogInfo("Stats Insights Annual refresh triggered while one was in progress.")
+            Loggers.app.info("Stats Insights Annual refresh triggered while one was in progress.")
             return
         }
 

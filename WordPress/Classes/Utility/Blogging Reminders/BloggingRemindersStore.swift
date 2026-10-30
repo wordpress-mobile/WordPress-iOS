@@ -157,7 +157,7 @@ extension BloggingRemindersStore.ScheduledReminders: Codable {
                 let days = try container.decode([ScheduledWeekday].self, forKey: .weekdays)
                 self = .weekdays(days)
             } catch {
-                DDLogError("Failed to decode days from Blogging Reminders store :\(error)")
+                Loggers.app.error("Failed to decode days from Blogging Reminders store :\(error)")
                 self = .none
             }
         case .weekDaysWithTime:
@@ -165,7 +165,7 @@ extension BloggingRemindersStore.ScheduledReminders: Codable {
                 let daysWithTime = try container.decode(ScheduledWeekdaysWithTime.self, forKey: .weekDaysWithTime)
                 self = .weekDaysWithTime(daysWithTime)
             } catch {
-                DDLogError("Failed to decode days from Blogging Reminders store :\(error)")
+                Loggers.app.error("Failed to decode days from Blogging Reminders store :\(error)")
                 self = .none
             }
         }

@@ -88,7 +88,7 @@ private extension NotificationCommentDetailCoordinator {
         guard let viewController,
               let notificationDetailsViewController = Notifications.storyboard
             .instantiateViewController(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces()) as? NotificationDetailsViewController else {
-                  DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
+                  Loggers.app.error("NotificationCommentDetailCoordinator: missing view controller.")
                   return
               }
 

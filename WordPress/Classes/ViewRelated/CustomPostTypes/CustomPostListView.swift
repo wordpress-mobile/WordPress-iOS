@@ -288,7 +288,7 @@ private struct PaginatedList<Header: View>: View {
         do {
             try await onLoadNextPage()
         } catch {
-            DDLogError("Failed to load next page: \(error)")
+            Loggers.app.error("Failed to load next page: \(error)")
             self.loadMoreError = error
         }
     }

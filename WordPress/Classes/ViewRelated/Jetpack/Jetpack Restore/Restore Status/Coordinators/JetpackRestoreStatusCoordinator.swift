@@ -78,7 +78,7 @@ class JetpackRestoreStatusCoordinator {
                 }
             },
             failure: { [weak self] error in
-                DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
+                Loggers.app.error("Error fetching rewind status object: \(error.localizedDescription)")
 
                 guard let self else {
                     return

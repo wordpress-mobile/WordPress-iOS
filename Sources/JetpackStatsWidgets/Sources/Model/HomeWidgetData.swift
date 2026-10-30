@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import JetpackStatsWidgetsCore
 import BuildSettingsKit
 
@@ -12,7 +11,7 @@ extension HomeWidgetData {
         do {
             return try cache.read()
         } catch {
-            DDLogError("HomeWidgetToday: Failed loading data: \(error.localizedDescription)")
+            Loggers.widgets.error("HomeWidgetToday: Failed loading data: \(error.localizedDescription)")
             return nil
         }
     }
@@ -22,7 +21,7 @@ extension HomeWidgetData {
         do {
             try cache.setItem(item: item)
         } catch {
-            DDLogError("HomeWidgetToday: Failed writing data item: \(error.localizedDescription)")
+            Loggers.widgets.error("HomeWidgetToday: Failed writing data item: \(error.localizedDescription)")
         }
     }
 

@@ -192,7 +192,7 @@ final class PageListViewController: AbstractPostListViewController {
                     self?.tableView.reloadData()
                 }
             case .failure(let error):
-                DDLogError("Error fetching editor settings: \(error)")
+                Loggers.app.error("Error fetching editor settings: \(error)")
             }
         }
 
@@ -238,7 +238,7 @@ final class PageListViewController: AbstractPostListViewController {
                         return page
                     }
             } catch {
-                DDLogError("Failed to reload published pages: \(error)")
+                Loggers.app.error("Failed to reload published pages: \(error)")
             }
         } else {
             self.pages = pages

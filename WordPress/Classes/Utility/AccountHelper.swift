@@ -76,7 +76,7 @@ import WordPressData
             .joined(separator: "\n")
         let blogTreeDescription = !blogsByAccount.isEmpty ? blogTree : "No account/blogs configured on device"
 
-        DDLogInfo("\(accountsDescription)\nAll accounts and blogs:\n\(blogTreeDescription)")
+        Loggers.app.info("\(accountsDescription)\nAll accounts and blogs:\n\(blogTreeDescription)")
     }
 
     static func logOutDefaultWordPressComAccount() {
