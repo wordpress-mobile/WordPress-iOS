@@ -53,7 +53,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
 # shellcheck source=.buildkite/claude/audit.sh
 source .buildkite/claude/audit.sh
-trap 'audit_stop' EXIT
+trap 'audit_stop; audit_archive' EXIT
 
 # ── Gates ────────────────────────────────────────────────────────────
 # Turns git@github.com:org/repo.git or https://github.com/org/repo.git into org/repo.

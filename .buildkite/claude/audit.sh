@@ -18,8 +18,9 @@
 #
 # At the end, audit-summarize.py turns the parts into readable lists in
 # $AUDIT_DIR, and audit-checks.txt records whether each log worked, using a
-# known command run as the reviewer. Every file is checked for this job's
-# secrets before it's uploaded.
+# known command run as the reviewer. Everything is then packed into
+# $AUDIT_ARCHIVE. Every file is checked for this job's secrets before it's
+# uploaded.
 #
 # AUDIT_DIR and TRANSCRIPT_FILE are set by the caller.
 # shellcheck disable=SC2153
@@ -31,6 +32,7 @@ AUDIT_CANARY_URL="https://example.com/?claude-audit-canary"
 AUDIT_RAW="build/claude-audit-raw"
 AUDIT_LIVE="build/claude-audit-live"
 AUDIT_UPLOAD_SECONDS=120
+AUDIT_ARCHIVE="build/audit-log.tar.gz"
 audit_started=false
 
 audit_note() { echo "$*" | tee -a "$AUDIT_DIR/audit-checks.txt"; }
@@ -217,6 +219,31 @@ audit_canary() {
   as_reviewer "curl -sS -o /dev/null --max-time 20 '${AUDIT_CANARY_URL}'; head -c 1 /etc/hosts > /dev/null" || true
 }
 
+# Last line of defence for everything uploaded at the end of the job: removes
+# any file in the given folders that contains one of this job's secrets.
+audit_remove_secrets() {
+  local file
+  while IFS= read -r -d '' file; do
+    if audit_has_secret "$file"; then
+      rm -f "$file"
+      audit_note "REMOVED ${file}: it contained one of this job's secrets"
+    fi
+  done < <(find "$@" -type f -print0)
+}
+
+# Packs every audit result, and the parts uploaded during the run, into
+# $AUDIT_ARCHIVE: the one artifact to download for an audit. Runs last (from
+# the EXIT trap), after the steps that post the review have added their logs.
+audit_archive() {
+  [[ -d "$AUDIT_DIR" ]] || return 0
+  audit_remove_secrets "$AUDIT_DIR"
+  if tar -czf "$AUDIT_ARCHIVE" -C "$(dirname "$AUDIT_DIR")" "$(basename "$AUDIT_DIR")" "$(basename "$AUDIT_LIVE")"; then
+    echo "Audit log: ${AUDIT_ARCHIVE} ($(du -h "$AUDIT_ARCHIVE" | cut -f1))"
+  else
+    echo "Warning: could not create ${AUDIT_ARCHIVE}."
+  fi
+}
+
 audit_stop() {
   [[ "$audit_started" == true ]] || return 0
   audit_started=false
@@ -254,13 +281,7 @@ audit_stop() {
     || audit_note "Summary: FAILED"
   echo "Summarized in $((SECONDS - started))s."
 
-  # Last line of defence for everything uploaded at the end of the job.
-  while IFS= read -r -d '' file; do
-    if audit_has_secret "$file"; then
-      rm -f "$file"
-      audit_note "REMOVED ${file}: it contained one of this job's secrets"
-    fi
-  done < <(find "$AUDIT_DIR" "${EVIDENCE_DIR:-$AUDIT_DIR}" -type f -print0)
+  audit_remove_secrets "$AUDIT_DIR" "${EVIDENCE_DIR:-$AUDIT_DIR}"
 
   # Did each log record the canary?
   found() { [[ -f "$AUDIT_DIR/$1" ]] && grep -qF -- "$2" "$AUDIT_DIR/$1"; }
