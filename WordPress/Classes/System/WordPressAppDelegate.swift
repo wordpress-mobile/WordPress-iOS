@@ -4,7 +4,6 @@ import AutomatticEncryptedLogs
 import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
-import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
@@ -97,11 +96,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // We need to set up the swift-log logging system right after app launch, so that logs can be written
         // into the log handlers configured below.
         LoggingSystem.bootstrap { label in
-            let ddLogHandlerFactory: (String) -> LogHandler = DDLogHandler.handlerFactory()
-            return MultiplexLogHandler([
-                ddLogHandlerFactory(label),
-                ExtensiveLogger(label: label)
-            ])
+            AppLogLevelHandler.makeAppHandler(label: label)
         }
 
         // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
@@ -755,6 +750,7 @@ extension WordPressAppDelegate {
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
         CocoaLumberjackSwift.dynamicLogLevel = level
+        AppLogLevel.shared.current = Logging.Logger.Level(level)
     }
 
     /// Logs the error in Sentry.
