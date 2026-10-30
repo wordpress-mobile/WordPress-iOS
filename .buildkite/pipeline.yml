@@ -163,7 +163,7 @@ steps:
     key: claude_pr_review
     # `--validate-setup` also checks, end to end, that the setup can test real PRs
     # (.buildkite/claude/validate-setup.sh). Use it after Xcode or VM image updates.
-    command: .buildkite/commands/claude-pr-review.sh --validate-setup
+    command: .buildkite/commands/claude-pr-review.sh
     if: build.pull_request.id != null
     env:
       # Evidence comes from the reviewer user; never follow a link out of it.
