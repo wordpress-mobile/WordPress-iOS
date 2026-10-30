@@ -148,14 +148,14 @@ gh api graphql -F owner="$OWNER" -F name="$NAME" -F number="$PR_NUMBER" -f query
         reviewThreads(first: 100) {
           nodes {
             id isResolved isOutdated path line
-            comments(first: 50) { nodes { author { login } body createdAt } }
+            comments(first: 50) { nodes { author { login } authorAssociation body createdAt } }
           }
         }
       }
     }
   }' --jq '.data.repository.pullRequest.reviewThreads.nodes' > "$INPUT_DIR/review-threads.json"
 gh api "repos/${REPO_SLUG}/issues/${PR_NUMBER}/comments" --paginate \
-  --jq '[.[] | {author: .user.login, body, created_at}]' > "$INPUT_DIR/comments.json"
+  --jq '[.[] | {author: .user.login, authorAssociation: .author_association, body, created_at}]' > "$INPUT_DIR/comments.json"
 
 # ── The reviewer user ────────────────────────────────────────────────
 # Claude runs as a separate, non-admin macOS user. As the build user it could
