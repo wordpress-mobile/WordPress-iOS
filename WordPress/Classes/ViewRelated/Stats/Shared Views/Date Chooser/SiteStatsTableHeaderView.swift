@@ -10,35 +10,33 @@ protocol SiteStatsTableHeaderDateButtonDelegate: SiteStatsTableHeaderDelegate {
     func didTouchHeaderButton(forward: Bool)
 }
 
-class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
+class SiteStatsTableHeaderView: UIView, Accessible {
 
     // MARK: - Properties
 
     static let estimatedHeight: CGFloat = 60
 
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var timezoneLabel: UILabel!
-    @IBOutlet weak var bottomSeparatorLine: UIView! {
-        didSet {
-            bottomSeparatorLine.isGhostableDisabled = true
-        }
-    }
+    let dateLabel = UILabel.makeStatsLabel(text: "Date", textStyle: .headline)
+    // The xib's initial text colour is replaced by `applyStyles()`.
+    let timezoneLabel = UILabel.makeStatsLabel(text: "Site timezone (UTC + 10)", textStyle: .callout)
 
-    @IBOutlet weak var backButton: UIButton! {
-        didSet {
-            backButton.isGhostableDisabled = true
-        }
-    }
-    @IBOutlet weak var forwardButton: UIButton! {
-        didSet {
-            forwardButton.isGhostableDisabled = true
-        }
-    }
-    @IBOutlet private var containerView: UIView! {
-        didSet {
-            containerView.isGhostableDisabled = true
-        }
-    }
+    let bottomSeparatorLine: UIView = {
+        let view = UIView.makeStatsSeparator()
+        view.backgroundColor = UIColor(white: 0.667, alpha: 1)
+        view.isGhostableDisabled = true
+        return view
+    }()
+
+    let backButton = makeNavigationButton()
+    let forwardButton = makeNavigationButton()
+
+    private let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.isGhostableDisabled = true
+        return view
+    }()
 
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: SiteStatsTableHeaderDelegate?
@@ -54,16 +52,71 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
     static let defaultPeriodCount = 14
     private var expectedPeriodCount = SiteStatsTableHeaderView.defaultPeriodCount
     private var backLimit: Int {
-        return -(expectedPeriodCount - 1)
+        -(expectedPeriodCount - 1)
     }
 
     private var isRunningGhostAnimation: Bool = false
 
-    // MARK: - View
+    // MARK: - Init
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        applyStatsXibRootDefaults(size: CGSize(width: 375, height: 60))
+
+        setUpViews()
         applyStyles()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setUpViews() {
+        let dateStackView = UIStackView(arrangedSubviews: [dateLabel, timezoneLabel])
+        dateStackView.translatesAutoresizingMaskIntoConstraints = false
+        dateStackView.axis = .vertical
+        dateStackView.distribution = .fillProportionally
+        dateStackView.spacing = 1
+
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        forwardButton.addTarget(self, action: #selector(didTapForwardButton), for: .touchUpInside)
+
+        [containerView, dateStackView, backButton, forwardButton, bottomSeparatorLine].forEach(addSubview)
+
+        let guide = safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: guide.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            guide.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            guide.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+
+            dateStackView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 9),
+            dateStackView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
+
+            backButton.topAnchor.constraint(equalTo: guide.topAnchor),
+            guide.bottomAnchor.constraint(equalTo: backButton.bottomAnchor),
+            backButton.leadingAnchor.constraint(greaterThanOrEqualTo: dateStackView.trailingAnchor, constant: 8),
+
+            forwardButton.topAnchor.constraint(equalTo: guide.topAnchor),
+            guide.bottomAnchor.constraint(equalTo: forwardButton.bottomAnchor),
+            forwardButton.leadingAnchor.constraint(equalTo: backButton.trailingAnchor),
+            guide.trailingAnchor.constraint(equalTo: forwardButton.trailingAnchor, constant: 8),
+
+            bottomSeparatorLine.topAnchor.constraint(equalTo: dateStackView.bottomAnchor, constant: 9),
+            bottomSeparatorLine.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            guide.trailingAnchor.constraint(equalTo: bottomSeparatorLine.trailingAnchor),
+            guide.bottomAnchor.constraint(equalTo: bottomSeparatorLine.bottomAnchor)
+        ])
+    }
+
+    private static func makeNavigationButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.isGhostableDisabled = true
+        return button
     }
 
     override func tintColorDidChange() {
@@ -72,16 +125,19 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
         restartGhostAnimation(style: GhostCellStyle.muriel)
     }
 
-    func configure(date: Date?,
-                   period: StatsPeriodUnit?,
-                   delegate: SiteStatsTableHeaderDelegate,
-                   expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
-                   mostRecentDate: Date? = nil) {
+    func configure(
+        date: Date?,
+        period: StatsPeriodUnit?,
+        delegate: SiteStatsTableHeaderDelegate,
+        expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
+        mostRecentDate: Date? = nil
+    ) {
 
         self.date = {
             if let date,
                 let mostRecentDate,
-                mostRecentDate < date {
+                mostRecentDate < date
+            {
                 return mostRecentDate
             }
             return date
@@ -101,11 +157,17 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
         dateLabel.accessibilityLabel = displayDateAccessibilityLabel()
 
         backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
-        backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
+        backButton.accessibilityHint = NSLocalizedString(
+            "Tap to select the previous period",
+            comment: "Accessibility hint"
+        )
         backButton.accessibilityTraits = backButton.isEnabled ? [.button] : [.button, .notEnabled]
 
         forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
-        forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+        forwardButton.accessibilityHint = NSLocalizedString(
+            "Tap to select the next period",
+            comment: "Accessibility hint"
+        )
         forwardButton.accessibilityTraits = forwardButton.isEnabled ? [.button] : [.button, .notEnabled]
 
         accessibilityElements = [
@@ -113,7 +175,8 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
             timezoneLabel,
             backButton,
             forwardButton
-        ].compactMap { $0 }
+        ]
+        .compactMap { $0 }
     }
 
     func animateGhostLayers(_ animate: Bool) {
@@ -184,10 +247,17 @@ private extension SiteStatsTableHeaderView {
         let (fromDate, toDate) = components
 
         if let toDate {
-            let format = NSLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
+            let format = NSLocalizedString(
+                "Current period: %@ to %@",
+                comment:
+                    "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12."
+            )
             return .localizedStringWithFormat(format, fromDate, toDate)
         } else {
-            let format = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
+            let format = NSLocalizedString(
+                "Current period: %@",
+                comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019"
+            )
             return .localizedStringWithFormat(format, fromDate)
         }
     }
@@ -219,7 +289,8 @@ private extension SiteStatsTableHeaderView {
 
     func displayTimezone() {
         guard !SiteStatsInformation.sharedInstance.timeZoneMatchesDevice(),
-        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
+            let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone
+        else {
             timezoneLabel.isHidden = true
             timezoneLabel.accessibilityLabel = nil
             return
@@ -237,12 +308,12 @@ private extension SiteStatsTableHeaderView {
         postAccessibilityPeriodLabel()
     }
 
-    @IBAction func didTapBackButton(_ sender: UIButton) {
+    @objc func didTapBackButton(_ sender: UIButton) {
         captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
     }
 
-    @IBAction func didTapForwardButton(_ sender: UIButton) {
+    @objc func didTapForwardButton(_ sender: UIButton) {
         captureAnalyticsEvent(.statsDateTappedForward)
         updateDate(forward: true)
     }
@@ -280,7 +351,12 @@ private extension SiteStatsTableHeaderView {
 
         let helper = StatsPeriodHelper()
         forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period, mostRecentDate: mostRecentDate)
-        backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit, mostRecentDate: mostRecentDate)
+        backButton.isEnabled = helper.dateAvailableBeforeDate(
+            date,
+            period: period,
+            backLimit: backLimit,
+            mostRecentDate: mostRecentDate
+        )
         prepareForVoiceOver()
     }
 

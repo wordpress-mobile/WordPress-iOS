@@ -54,7 +54,10 @@ final class FormattableContentFormatterTests: XCTestCase {
 
     func testNoticonRangeIsFormattedCorrectly() {
         let content = contentWithNoticon()
-        let formattedText = formatter.render(content: content, with: RichTextContentStyles())
+        let formattedText = formatter.render(
+            content: content,
+            with: RichTextContentStyles(horizontalSizeClass: .compact)
+        )
 
         XCTAssertEqual(formattedText.string, Constants.textExpectation)
     }
@@ -66,7 +69,10 @@ final class FormattableContentFormatterTests: XCTestCase {
             NotificationContentRange(kind: .post, properties: postProperties)
         ])
 
-        let formattedText = formatter.render(content: content, with: SubjectContentStyles())
+        let formattedText = formatter.render(
+            content: content,
+            with: SubjectContentStyles(horizontalSizeClass: .compact)
+        )
         XCTAssert(formattedText.length == 0)
     }
 

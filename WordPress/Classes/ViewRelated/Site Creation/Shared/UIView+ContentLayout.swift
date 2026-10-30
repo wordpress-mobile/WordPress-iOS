@@ -19,12 +19,15 @@ extension UILabel {
 extension UIView {
 
     /// Oftentimes, the readable content guide is used to layout content.
-    /// For Site Creation, however, iPhone content is "full bleed."
+    /// For Site Creation, however, compact-width content is "full bleed."
     /// This computed property implements this fallback logic.
     ///
+    /// The result follows the window's horizontal size class (Site Creation is a page sheet, which
+    /// reports a compact size class in a wide iPad window), so constraints anchored to it must be
+    /// rebuilt when the window's size class changes.
     var prevailingLayoutGuide: UILayoutGuide {
         let layoutGuide: UILayoutGuide
-        if WPDeviceIdentification.isiPad() {
+        if (window ?? self).traitCollection.horizontalSizeClass == .regular {
             layoutGuide = readableContentGuide
         } else {
             layoutGuide = safeAreaLayoutGuide

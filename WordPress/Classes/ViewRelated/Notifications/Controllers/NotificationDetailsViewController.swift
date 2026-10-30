@@ -137,6 +137,12 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupTableView()
         setupTableViewCells()
         setupTableDelegates()
+
+        // The text metrics follow the window's horizontal size class. This screen's own size class changes
+        // along with the window's (it's the detail column of the iPad split view, or full width on iPhone).
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.refreshInterfaceIfNeeded()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -205,7 +211,8 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     fileprivate func refreshNavigationBar() {
         title = note.title
 
-        if splitViewControllerIsHorizontallyCompact {
+        // The list isn't visible next to the details, so show the arrows instead.
+        if splitViewController?.isCollapsed ?? true {
             enableNavigationRightBarButtonItems()
         } else {
             navigationItem.rightBarButtonItems = nil
@@ -367,16 +374,10 @@ extension NotificationDetailsViewController {
         ]
 
         for cellClass in cellClassNames {
-            let classname = cellClass.classNameWithoutNamespaces()
-            let nib = UINib(nibName: classname, bundle: .keystone)
-
-            tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
+            tableView.register(cellClass, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        tableView.register(
-            LikeUserTableViewCell.defaultNib,
-            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID
-        )
+        tableView.register(LikeUserTableViewCell.self, forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
@@ -507,8 +508,15 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
+        let horizontalSizeClass = (view.window ?? view).traitCollection.horizontalSizeClass
+        cell.attributedHeaderTitle = formatter.render(
+            content: gravatarBlock,
+            with: HeaderContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
+        cell.attributedHeaderDetails = formatter.render(
+            content: snippetBlock,
+            with: HeaderDetailsContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
 
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
@@ -521,7 +529,11 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        cell.attributedText = formatter.render(content: textBlock, with: FooterContentStyles())
+        let horizontalSizeClass = (view.window ?? view).traitCollection.horizontalSizeClass
+        cell.attributedText = formatter.render(
+            content: textBlock,
+            with: FooterContentStyles(horizontalSizeClass: horizontalSizeClass)
+        )
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
     }
@@ -585,16 +597,24 @@ private extension NotificationDetailsViewController {
 
         // Load the attributedText
         let text: NSAttributedString
+        let horizontalSizeClass = (view.window ?? view).traitCollection.horizontalSizeClass
 
         if note.isBadge {
             let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
             text = formatter.render(
                 content: textBlock,
-                with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup)
+                with: BadgeContentStyles(
+                    cachingKey: "Badge-\(indexPath)",
+                    isTitle: isFirstTextGroup,
+                    horizontalSizeClass: horizontalSizeClass
+                )
             )
             cell.isTitle = isFirstTextGroup
         } else {
-            text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+            text = formatter.render(
+                content: textBlock,
+                with: RichTextContentStyles(horizontalSizeClass: horizontalSizeClass, key: "Rich-Text-\(indexPath)")
+            )
         }
 
         // Setup: Properties
@@ -727,7 +747,7 @@ private extension NotificationDetailsViewController {
         //
         let urls = imageUrls(from: contentGroup.blocks, inKindSet: ContentMedia.richBlockTypes)
 
-        let completion = {
+        let completion = { [weak self] in
             // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
             // lead to a state in which the cell remains not visible.
             //
@@ -735,7 +755,7 @@ private extension NotificationDetailsViewController {
                 withDuration: ContentMedia.duration,
                 delay: ContentMedia.delay,
                 options: ContentMedia.options,
-                animations: { [weak self] in
+                animations: {
                     self?.tableView.reloadRows(at: [indexPath], with: .fade)
                 }
             )

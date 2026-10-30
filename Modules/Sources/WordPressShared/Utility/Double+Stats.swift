@@ -1,11 +1,15 @@
 import Foundation
-#if canImport(UIKit)
-import UIKit
-#endif
 
 fileprivate struct Unit {
     let abbreviationFormat: String
     let accessibilityLabelFormat: String
+}
+
+/// A stats number abbreviated for display (e.g. "1.2M"), paired with its spoken form for
+/// VoiceOver (e.g. "1.2 million").
+public struct AbbreviatedNumber: Equatable, Sendable {
+    public let text: String
+    public let accessibilityLabel: String
 }
 
 extension Double {
@@ -31,6 +35,22 @@ extension Double {
                     let formatter = NumberFormatter()
                     // Show at least one digit after the decimal
                     formatter.minimumFractionDigits = 1
+                    return formatter
+                }()
+            }
+
+            return Cache.formatter
+        }
+    }
+
+    private var spokenDecimalFormatter: NumberFormatter {
+        get {
+            struct Cache {
+                static let formatter: NumberFormatter = {
+                    let formatter = NumberFormatter()
+                    // Drop a trailing ".0" so VoiceOver doesn't read "one point zero million"
+                    formatter.minimumFractionDigits = 0
+                    formatter.maximumFractionDigits = 1
                     return formatter
                 }()
             }
@@ -89,62 +109,73 @@ extension Double {
     /// Provides a short, friendly representation of the current Double value. If the value is
     /// below 10,000, the decimal is stripped and the string returned will look like an Int. If the value
     /// is above 10,000, the value is rounded to the nearest tenth and the appropriate abbreviation
-    /// will be appended (k, m, b, t, p, e).
+    /// will be appended (K, M, B, T, P, E).
     ///
-    /// Examples:
+    /// Examples (en_US):
     ///  - 0 becomes "0"
-    ///  - 9999 becomes "9999"
-    ///  - 10000 becomes "10.0k"
-    ///  - 987654 becomes "987.7k"
-    ///  - 999999 becomes "1m"
-    ///  - 1000000 becomes "1m"
-    ///  - 1234324 becomes "1.2m"
-    ///  - 5800199 becomes "5.8m"
-    ///  - 5897459 becomes "5.9m"
-    ///  - 1000000000 becomes "1b"
-    ///  - 1000000000000 becomes "1t"
-
+    ///  - 9999 becomes "9,999"
+    ///  - 10000 becomes "10.0K"
+    ///  - 987654 becomes "987.7K"
+    ///  - 999999 becomes "1.0M"
+    ///  - 1000000 becomes "1.0M"
+    ///  - 1234324 becomes "1.2M"
+    ///  - 5800199 becomes "5.8M"
+    ///  - 5897459 becomes "5.9M"
+    ///  - 1000000000 becomes "1.0B"
+    ///  - 1000000000000 becomes "1.0T"
     public func abbreviatedString(forHeroNumber: Bool = false) -> String {
+        abbreviated(forHeroNumber: forHeroNumber).text
+    }
+
+    /// The spoken equivalent of `abbreviatedString(forHeroNumber:)` for VoiceOver.
+    ///
+    /// Below the abbreviation limit it returns the comma-formatted number; above it, the
+    /// unit spelled out without a trailing ".0" (e.g. "1.2 million" instead of "1.2M", and
+    /// "1 million" instead of "1.0M").
+    public func abbreviatedAccessibilityLabel(forHeroNumber: Bool = false) -> String {
+        abbreviated(forHeroNumber: forHeroNumber).accessibilityLabel
+    }
+
+    /// The displayed and spoken representations from a single rounding pass. Prefer this when a
+    /// view needs both, so the two can't disagree.
+    public func abbreviated(forHeroNumber: Bool = false) -> AbbreviatedNumber {
+        guard let abbreviation = abbreviation(forHeroNumber: forHeroNumber) else {
+            let formatted = formatWithCommas()
+            return AbbreviatedNumber(text: formatted, accessibilityLabel: formatted)
+        }
+        let (value, unit) = abbreviation
+        return AbbreviatedNumber(
+            text: String.localizedStringWithFormat(unit.abbreviationFormat, value.formatWithFractions()),
+            accessibilityLabel: String.localizedStringWithFormat(unit.accessibilityLabelFormat, value.formatForSpeech())
+        )
+    }
+
+    /// Shared rounding and unit selection for the abbreviated representations.
+    ///
+    /// Returns `nil` when the value should be shown in full (below the limit, not finite, or outside
+    /// the supported units), in which case callers fall back to `formatWithCommas()`.
+    private func abbreviation(forHeroNumber: Bool) -> (value: Double, unit: Unit)? {
         let absValue = fabs(self)
         let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
 
-        if absValue < abbreviationLimit {
-            return self.formatWithCommas()
+        // `Int(_:)` traps on NaN and infinity
+        guard absValue.isFinite, absValue >= abbreviationLimit else {
+            return nil
         }
 
         let exp = Int(log10(absValue) / 3.0)
         let unsignedRoundedNum: Double = Foundation.round(10 * absValue / pow(1000.0, Double(exp))) / 10
 
-        var roundedNum: Double
-        var unit: Unit
+        // A value that rounds up to 1000 moves into the next unit (999,999 is "1.0M", not "1000.0K")
+        let roundsUp = unsignedRoundedNum == 1000.0
+        let unitIndex = roundsUp ? exp : exp - 1
 
-        if unsignedRoundedNum == 1000.0 {
-            guard exp >= units.startIndex else {
-                return self.formatWithCommas()
-            }
-
-            roundedNum = 1
-            unit = units[exp]
-        } else {
-            let unitIndex = exp - 1
-
-            guard unitIndex >= units.startIndex else {
-                return self.formatWithCommas()
-            }
-
-            roundedNum = unsignedRoundedNum
-            unit = units[unitIndex]
+        guard units.indices.contains(unitIndex) else {
+            return nil
         }
 
-        roundedNum = self < 0 ? -roundedNum : roundedNum
-        let formattedValue = roundedNum.formatWithFractions()
-
-        var formattedString = String.localizedStringWithFormat(unit.abbreviationFormat, formattedValue)
-        #if canImport(UIKit)
-        formattedString.accessibilityLabel = String.localizedStringWithFormat(unit.accessibilityLabelFormat, formattedValue)
-        #endif
-
-        return formattedString
+        let roundedNum = roundsUp ? 1 : unsignedRoundedNum
+        return (self < 0 ? -roundedNum : roundedNum, units[unitIndex])
     }
 
     public func percentageString() -> String {
@@ -158,11 +189,23 @@ extension Double {
     private func formatWithFractions() -> String {
         return decimalFormatter.string(for: self) ?? String(self)
     }
+
+    private func formatForSpeech() -> String {
+        return spokenDecimalFormatter.string(for: self) ?? String(self)
+    }
 }
 
 extension Int {
     public func abbreviatedString(forHeroNumber: Bool = false) -> String {
         Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
+    }
+
+    public func abbreviatedAccessibilityLabel(forHeroNumber: Bool = false) -> String {
+        Double(self).abbreviatedAccessibilityLabel(forHeroNumber: forHeroNumber)
+    }
+
+    public func abbreviated(forHeroNumber: Bool = false) -> AbbreviatedNumber {
+        Double(self).abbreviated(forHeroNumber: forHeroNumber)
     }
 
     public func percentageString() -> String {

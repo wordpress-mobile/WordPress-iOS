@@ -10,9 +10,24 @@ WordPress for iOS is the official WordPress mobile app. It lets users create, ma
 
 Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
+## Before Opening a Pull Request
+
+CI does not run on pull requests from forks, so a maintainer is the first person to build your change. Before you open a pull request:
+
+1. Build your change and run the tests for the code you changed. This needs macOS and Xcode.
+2. Run each affected test suite with this command. If you don't have an `iPhone 18 Pro` simulator, use any iPhone simulator listed by `xcrun simctl list devices available`.
+
+    ```bash
+    xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests -destination 'platform=iOS Simulator,name=iPhone 18 Pro' test -only-testing:<TestTarget>/<Suite>
+    ```
+
+    For example, `-only-testing:WordPressTest/RemoteFeatureFlagTests`. Repeat `-only-testing:` once for each suite.
+3. If you're opening the pull request from a fork, add a "What I ran" section to the description. List the test suites you ran and paste the result line each one printed. XCTest prints a line like `Executed 3 tests, with 0 failures`. Swift Testing prints a line like `Test run with 6 tests in 1 suite passed`. If your change has no tests to run (for example, a documentation change), write `No tests apply:` followed by the reason.
+4. If you could not build the change or run its tests (for example, because you aren't on macOS), don't open a pull request. Comment on the issue with your proposed approach instead.
+
 ## Bootstrap
 
-Prepare a fresh clone or worktree for building with `rake dependencies`, the repository's canonical bootstrap command.
+A fresh clone or worktree builds and runs its unit tests with plain `xcodebuild` or Xcode.
 
 ## High-Level Architecture
 
@@ -40,7 +55,7 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - Use Swift Testing for new tests.
 - The WordPress scheme uses `WordPressUnitTests.xctestplan` for the full unit test suite, including tests in the `Modules` Swift package.
 - Add every unit test target to `WordPressUnitTests.xctestplan`.
-- Run the full suite with `xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests test`. Do not use `swift test`.
+- Run the full suite with `xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests -destination 'platform=iOS Simulator,name=iPhone 18 Pro' test`. Do not use `swift test`.
 - To verify changes end-to-end on an iOS simulator, follow @docs/simulator-sign-in.md to sign in to the app.
 
 ### Important Considerations
@@ -48,9 +63,11 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Accessibility**: Use proper accessibility labels and traits
 - **Localization**: follow best practices from @docs/localization.md. For how strings flow through GlotPress and the AI translation tier (the `human ?? AI ?? English` floor), see @docs/localization-pipeline.md.
 
-## Libraries
+## Build Troubleshooting
 
-### wordpress-rs
+Stale build artifacts in DerivedData can cause the build errors below. Neither error means the source is wrong.
+
+### Modified wordpress-rs header
 
 The `wordpress-rs` Swift package provides the `WordPressAPI` and `WordPressAPIInternal` modules and includes an xcframework target. Builds occasionally fail with an error like:
 
@@ -58,12 +75,20 @@ The `wordpress-rs` Swift package provides the `WordPressAPI` and `WordPressAPIIn
 
 To recover, delete all `*.pcm` files in the directory reported by the error and rebuild.
 
+### Missing member in a `Modules` package
+
+DerivedData can hold two copies of a `Modules` package module: `Build/Products/Debug-iphonesimulator/<Module>.swiftmodule` (with `<Module>.o`) and `Build/Products/Debug-iphonesimulator/PackageFrameworks/<Module>.framework`. With Xcode 27, after you switch to a branch that changes a module's API, the build can use the stale copy and fail with an error like:
+
+> type 'BlogFeature' has no member 'applicationPasswords'
+
+Other branches can fail the same way, so the error can look pre-existing. To recover, delete the top-level `<Module>.swiftmodule` and `<Module>.o` of the module named in the error, then rebuild. A full DerivedData wipe is not necessary.
+
 ## Coding Standards
 - Before writing code, read and follow the [best practice guidelines](./docs/best-practices.md).
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
 - Follow the standard formatting practices enforced by SwiftLint
-- swift-format and SwiftLint can occasionally disagree. Make sure the final code is stable under `xcrun swift format --in-place <path>` and also passes `rake lint[<path>]`. Use `swiftlint:disable` directives as the last resort to solve the conflicts.
+- swift-format and SwiftLint can occasionally disagree. Make sure the final code is stable under `xcrun swift format --in-place <path>` and also passes `make lint PATHS=<path>`. Use `swiftlint:disable` directives as the last resort to solve the conflicts.
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`
 - Use swift-log (see the `WordPress/Classes/System/Logging.swift` file) instead of CocoaLumberjack (`DDLogError`, etc)

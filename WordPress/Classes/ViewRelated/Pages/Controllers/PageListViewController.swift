@@ -90,6 +90,10 @@ final class PageListViewController: AbstractPostListViewController {
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.createButtonCoordinator.showCreateButton(for: self.blog)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -105,12 +109,6 @@ final class PageListViewController: AbstractPostListViewController {
             fetchAllPagesTask?.cancel()
             fetchAllPagesTask = nil
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     // MARK: - Configuration

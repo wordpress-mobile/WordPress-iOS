@@ -174,7 +174,7 @@ public final class ReaderPostHeaderView: UIView {
             authorRow,
             featuredImageView,
             excerptLabel,
-            separator,
+            separator
         ])
         stack.setCustomSpacing(9, after: separator)
         stack.axis = .vertical
@@ -276,14 +276,16 @@ public final class ReaderPostHeaderView: UIView {
 
     private func setupView() {
         addSubview(mainStack)
-        mainStack.pinEdges(insets: UIEdgeInsets(top: Constants.padding, left: Constants.padding, bottom: 20, right: Constants.padding))
+        mainStack.pinEdges(
+            insets: UIEdgeInsets(top: Constants.padding, left: Constants.padding, bottom: 20, right: Constants.padding)
+        )
 
         mainStack.setCustomSpacing(9, after: headerRow)
         mainStack.setCustomSpacing(12, after: featuredImageView)
 
         avatarSizeConstraints = [
             avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarSize),
-            avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarSize),
+            avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarSize)
         ]
         NSLayoutConstraint.activate(avatarSizeConstraints)
 
@@ -307,7 +309,9 @@ public final class ReaderPostHeaderView: UIView {
         excerptLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(excerptTapped)))
 
         featuredImageView.isUserInteractionEnabled = true
-        featuredImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(featuredImageTapped)))
+        featuredImageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(featuredImageTapped))
+        )
 
         apply(.standard)
     }
@@ -356,7 +360,10 @@ public final class ReaderPostHeaderView: UIView {
         if isExcerptExpanded, let text = fullExcerptText {
             let font = displaySettings.font(with: .callout)
             let textColor = displaySettings.color.secondaryForeground
-            excerptLabel.attributedText = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor])
+            excerptLabel.attributedText = NSAttributedString(
+                string: text,
+                attributes: [.font: font, .foregroundColor: textColor]
+            )
         } else {
             updateExcerptTruncation()
         }
@@ -404,7 +411,10 @@ public final class ReaderPostHeaderView: UIView {
 
     private func updateFeaturedImageAspectRatio(_ ratio: CGFloat) {
         featuredImageAspectConstraint?.isActive = false
-        let constraint = featuredImageView.heightAnchor.constraint(equalTo: featuredImageView.widthAnchor, multiplier: ratio)
+        let constraint = featuredImageView.heightAnchor.constraint(
+            equalTo: featuredImageView.widthAnchor,
+            multiplier: ratio
+        )
         constraint.isActive = true
         featuredImageAspectConstraint = constraint
     }
@@ -441,12 +451,14 @@ public final class ReaderPostHeaderView: UIView {
         let maxHeight = font.lineHeight * CGFloat(Constants.excerptMaxLines) + 1
 
         func isEnoughSpace(for string: String, maxHeight: CGFloat) -> Bool {
-            let height = (string as NSString).boundingRect(
-                with: CGSize(width: availableWidth, height: .greatestFiniteMagnitude),
-                options: [.usesLineFragmentOrigin, .usesFontLeading],
-                attributes: atttributes,
-                context: nil
-            ).height
+            let height = (string as NSString)
+                .boundingRect(
+                    with: CGSize(width: availableWidth, height: .greatestFiniteMagnitude),
+                    options: [.usesLineFragmentOrigin, .usesFontLeading],
+                    attributes: atttributes,
+                    context: nil
+                )
+                .height
             return height <= maxHeight
         }
 
@@ -474,10 +486,13 @@ public final class ReaderPostHeaderView: UIView {
         let trimmed = String(text.prefix(bestCut)).trimmingCharacters(in: .whitespacesAndNewlines)
         let result = NSMutableAttributedString(string: trimmed, attributes: atttributes)
         result.append(
-            NSAttributedString(string: suffix, attributes: [
-                .font: font.withWeight(.regular),
-                .foregroundColor: displaySettings.color.foreground,
-            ])
+            NSAttributedString(
+                string: suffix,
+                attributes: [
+                    .font: font.withWeight(.regular),
+                    .foregroundColor: displaySettings.color.foreground
+                ]
+            )
         )
         excerptLabel.attributedText = result
     }
@@ -530,9 +545,10 @@ private enum Strings {
         comment: "Button in the reader post header showing the user is subscribed to the site"
     )
 
+    // Use a literal ellipsis: genstrings copies Swift `\u{…}` escapes verbatim into Localizable.strings.
     static let viewMore = AppLocalizedString(
         "reader.post.header.viewMore",
-        value: "\u{2026}view more",
+        value: "…view more",
         comment: "Appended to the truncated excerpt in the reader post header to indicate more content is available"
     )
 
@@ -545,7 +561,8 @@ private enum Strings {
     static let authorAccessibilityHint = AppLocalizedString(
         "reader.post.header.author.a11yHint",
         value: "Views the author's profile",
-        comment: "Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile."
+        comment:
+            "Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile."
     )
 }
 
@@ -553,74 +570,109 @@ private enum Strings {
 
 @available(iOS 17, *)
 #Preview("Full Header") {
-    UINavigationController(rootViewController: ReaderPostHeaderPreviewController(viewModel: .init(
-        siteName: "Automattic Design",
-        postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
-        authorName: "Roosmarijn van Kessel",
-        authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Dec 18, 2025 at 3:30 PM",
-        featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"),
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy."
-    )))
+    UINavigationController(
+        rootViewController: ReaderPostHeaderPreviewController(
+            viewModel: .init(
+                siteName: "Automattic Design",
+                postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
+                authorName: "Roosmarijn van Kessel",
+                authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
+                dateString: "Dec 18, 2025 at 3:30 PM",
+                featuredImageURL: URL(
+                    string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"
+                ),
+                excerpt:
+                    "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy."
+            )
+        )
+    )
 }
 
 @available(iOS 17, *)
 #Preview("No Featured Image") {
-    UINavigationController(rootViewController: ReaderPostHeaderPreviewController(viewModel: .init(
-        siteName: "Automattic Design",
-        postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
-        authorName: "Roosmarijn van Kessel",
-        authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Dec 18, 2025 at 3:30 PM",
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy."
-    )))
+    UINavigationController(
+        rootViewController: ReaderPostHeaderPreviewController(
+            viewModel: .init(
+                siteName: "Automattic Design",
+                postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
+                authorName: "Roosmarijn van Kessel",
+                authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
+                dateString: "Dec 18, 2025 at 3:30 PM",
+                excerpt:
+                    "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy."
+            )
+        )
+    )
 }
 
 @available(iOS 17, *)
 #Preview("No Excerpt") {
-    UINavigationController(rootViewController: ReaderPostHeaderPreviewController(viewModel: .init(
-        siteName: "Automattic Design",
-        postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
-        authorName: "Roosmarijn van Kessel",
-        authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Dec 18, 2025 at 3:30 PM",
-        featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024")
-    )))
+    UINavigationController(
+        rootViewController: ReaderPostHeaderPreviewController(
+            viewModel: .init(
+                siteName: "Automattic Design",
+                postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
+                authorName: "Roosmarijn van Kessel",
+                authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
+                dateString: "Dec 18, 2025 at 3:30 PM",
+                featuredImageURL: URL(
+                    string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"
+                )
+            )
+        )
+    )
 }
 
 @available(iOS 17, *)
 #Preview("Long Excerpt") {
-    UINavigationController(rootViewController: ReaderPostHeaderPreviewController(viewModel: .init(
-        siteName: "Automattic Design",
-        postTitle: "A Very Long Title That Spans Multiple Lines to Test How the Layout Handles Wrapping Text in the Header",
-        authorName: "Roosmarijn van Kessel",
-        authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Dec 18, 2025 at 3:30 PM",
-        featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"),
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy. Her work has been featured in numerous publications and exhibitions across Europe and the Americas. She specializes in editorial illustration, children's books, and cultural event posters, bringing a unique blend of traditional and contemporary techniques to every project she undertakes."
-    )))
+    UINavigationController(
+        rootViewController: ReaderPostHeaderPreviewController(
+            viewModel: .init(
+                siteName: "Automattic Design",
+                postTitle:
+                    "A Very Long Title That Spans Multiple Lines to Test How the Layout Handles Wrapping Text in the Header",
+                authorName: "Roosmarijn van Kessel",
+                authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
+                dateString: "Dec 18, 2025 at 3:30 PM",
+                featuredImageURL: URL(
+                    string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"
+                ),
+                excerpt:
+                    "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy. Her work has been featured in numerous publications and exhibitions across Europe and the Americas. She specializes in editorial illustration, children's books, and cultural event posters, bringing a unique blend of traditional and contemporary techniques to every project she undertakes."
+            )
+        )
+    )
 }
 
 @available(iOS 17, *)
 #Preview("Portrait Image") {
-    UINavigationController(rootViewController: ReaderPostHeaderPreviewController(viewModel: .init(
-        siteName: "Automattic Design",
-        postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
-        authorName: "Roosmarijn van Kessel",
-        authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Dec 18, 2025 at 3:30 PM",
-        featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/aecc_stars.png"),
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience."
-    )))
+    UINavigationController(
+        rootViewController: ReaderPostHeaderPreviewController(
+            viewModel: .init(
+                siteName: "Automattic Design",
+                postTitle: "Drawing the holiday spirit — Interviewing Cinta Arribas",
+                authorName: "Roosmarijn van Kessel",
+                authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
+                dateString: "Dec 18, 2025 at 3:30 PM",
+                featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/aecc_stars.png"),
+                excerpt:
+                    "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience."
+            )
+        )
+    )
 }
 
 @available(iOS 17, *)
 #Preview("Minimal") {
-    UINavigationController(rootViewController: ReaderPostHeaderPreviewController(viewModel: .init(
-        siteName: "Blog",
-        postTitle: "Hello World",
-        authorName: "admin",
-        authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Mar 1, 2026"
-    )))
+    UINavigationController(
+        rootViewController: ReaderPostHeaderPreviewController(
+            viewModel: .init(
+                siteName: "Blog",
+                postTitle: "Hello World",
+                authorName: "admin",
+                authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
+                dateString: "Mar 1, 2026"
+            )
+        )
+    )
 }

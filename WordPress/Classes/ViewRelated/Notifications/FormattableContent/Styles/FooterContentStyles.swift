@@ -3,18 +3,26 @@ import WordPressShared
 
 class FooterContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {
-        return WPStyleGuide.Notifications.footerRegularStyle
+        WPStyleGuide.Notifications.footerRegularStyle(for: horizontalSizeClass)
     }
 
     var quoteStyles: [NSAttributedString.Key: Any]?
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
-        return [
-            .noticon: WPStyleGuide.Notifications.blockNoticonStyle
+        [
+            .noticon: WPStyleGuide.Notifications.blockNoticonStyle(for: horizontalSizeClass)
         ]
     }
 
     var linksColor: UIColor?
 
-    var key: String = "FooterContentStyles"
+    let key: String
+
+    private let horizontalSizeClass: UIUserInterfaceSizeClass
+
+    /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the footer.
+    init(horizontalSizeClass: UIUserInterfaceSizeClass) {
+        self.horizontalSizeClass = horizontalSizeClass
+        self.key = WPStyleGuide.Notifications.cacheKey("FooterContentStyles", for: horizontalSizeClass)
+    }
 }

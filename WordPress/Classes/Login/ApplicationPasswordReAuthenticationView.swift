@@ -13,7 +13,7 @@ struct ApplicationPasswordReAuthenticationView: View {
     @State private var error: String?
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 20) {
                 Image(systemName: "key.slash")
                     .font(.system(size: 50))

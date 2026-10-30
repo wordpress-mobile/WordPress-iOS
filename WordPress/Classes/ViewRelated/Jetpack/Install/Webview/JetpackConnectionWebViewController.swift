@@ -257,13 +257,18 @@ private extension JetpackConnectionWebViewController {
                     Task { @MainActor in
                         let email = self.blog.jetpack?.connectedEmail
                         let accountID = await WordPressDotComAuthenticator().signIn(from: self, context: .jetpackSite(accountEmail: email))
-                        if let accountID {
+                        guard let accountID else {
+                            return
+                        }
+                        do {
                             let account = try ContextManager.shared.mainContext.existingObject(with: accountID)
                             service.associateSyncedBlogs(
                                 toJetpackAccount: account,
                                 success: success,
                                 failure: failure
                             )
+                        } catch {
+                            failure(error)
                         }
                     }
 

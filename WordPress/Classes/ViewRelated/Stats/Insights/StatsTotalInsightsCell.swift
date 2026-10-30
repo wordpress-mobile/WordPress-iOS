@@ -142,6 +142,10 @@ class StatsTotalInsightsCell: StatsBaseCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         configureView()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.rebuildGuideViewIfNeeded()
+        }
     }
 
     required init(coder: NSCoder) {
@@ -157,12 +161,6 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         guideViewLabel.text = ""
         guideView.removeFromSuperview()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        rebuildGuideViewIfNeeded()
     }
 
     private func configureView() {
@@ -262,6 +260,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         updateGuideView(withGuideText: dataRow.guideText)
         updateComparisonLabel(withCount: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage)
+        rebuildGuideViewIfNeeded()
     }
 
     private func updateGuideView(withGuideText guideText: NSAttributedString?) {

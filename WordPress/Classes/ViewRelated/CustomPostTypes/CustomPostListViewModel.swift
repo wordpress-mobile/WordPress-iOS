@@ -1,4 +1,5 @@
 import Foundation
+import SwiftSoup
 import SwiftUI
 import UIKit
 import WordPressAPI
@@ -26,6 +27,8 @@ final class CustomPostListViewModel: ObservableObject {
     private var homepageSetting: HomepageSetting?
     private var canManageOptions = false
     private var isBatchSyncing = false
+    private var hasReportedPostDetailLoadingFailure = false
+    private let analytics = CustomPostListAnalytics()
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
     // is less than a threshold, where the app can fetch all content relative quickly.
@@ -97,7 +100,7 @@ final class CustomPostListViewModel: ObservableObject {
             .createPostMetadataCollectionWithEditContext(
                 endpointType: details.toPostEndpointType(),
                 filter: filter.asPostListFilter(),
-                perPage: 100
+                perPage: Constants.pageSize
             )
     }
 
@@ -116,7 +119,7 @@ final class CustomPostListViewModel: ObservableObject {
                 .createPostMetadataCollectionWithEditContext(
                     endpointType: endpoint,
                     filter: filter.asPostListFilter(),
-                    perPage: 100
+                    perPage: Constants.pageSize
                 )
             items = []
             listInfo = nil
@@ -127,7 +130,41 @@ final class CustomPostListViewModel: ObservableObject {
         await refresh(pullToRefresh: false)
     }
 
+    func trackOpened() {
+        analytics.opened(properties: analyticsProperties)
+    }
+
+    private var analyticsProperties: [AnyHashable: Any] {
+        let tab: String
+        if filter.search != nil {
+            tab = "search"
+        } else if filter.statuses.contains(.any) {
+            tab = "all"
+        } else {
+            switch filter.primaryStatus {
+            case .publish: tab = "published"
+            case .draft: tab = "drafts"
+            case .future: tab = "scheduled"
+            case .trash: tab = "trash"
+            default: tab = "other"
+            }
+        }
+        return [
+            "post_type": endpoint == .posts ? "posts" : (isPages ? "pages" : "custom"),
+            "tab": tab,
+            "page_size": Constants.pageSize,
+            "hierarchy_eligible": shouldAttemptDisplayHierarchy,
+            "has_cached_content": (collection.listInfo()?.totalItems ?? 0) > 0
+        ]
+    }
+
     private func refresh(pullToRefresh: Bool) async {
+        var load = CustomPostListAnalytics.Load(
+            properties: analyticsProperties,
+            currentPage: collection.listInfo()?.currentPage
+        )
+        defer { analytics.finished(load, isCancelled: Task.isCancelled) }
+
         await fetchHomepageSettingsIfNeeded(forceRefresh: pullToRefresh)
 
         if !pullToRefresh {
@@ -135,9 +172,9 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         if shouldAttemptDisplayHierarchy {
-            await fetchAllPagesIfBelowThreshold()
+            await fetchAllPagesIfBelowThreshold(load: &load)
         } else {
-            await fetchWithPagination()
+            await fetchWithPagination(load: &load)
         }
     }
 
@@ -149,10 +186,27 @@ final class CustomPostListViewModel: ObservableObject {
             return
         }
 
-        if listInfo?.currentPage == nil {
-            _ = try await collection.refresh()
-        } else {
-            _ = try await collection.loadNextPage()
+        let currentPage = listInfo?.currentPage
+        var load = CustomPostListAnalytics.Load(
+            properties: analyticsProperties,
+            currentPage: currentPage,
+            isLoadingMore: true
+        )
+        do {
+            let result: SyncResult
+            if listInfo?.currentPage == nil {
+                result = try await collection.refresh()
+            } else {
+                result = try await collection.loadNextPage()
+                // Rust can return a no-op when another task has already loaded this page.
+                guard result.currentPage != currentPage else { return }
+            }
+            load.record(result)
+            analytics.finished(load, isCancelled: Task.isCancelled)
+        } catch {
+            load.error = error
+            analytics.finished(load, isCancelled: Task.isCancelled)
+            throw error
         }
     }
 
@@ -214,10 +268,11 @@ final class CustomPostListViewModel: ObservableObject {
 
     /// Fetches the first page and lets `handleDataChanges` update the UI
     /// incrementally as each page loads.
-    private func fetchWithPagination() async {
+    private func fetchWithPagination(load: inout CustomPostListAnalytics.Load) async {
         do {
-            _ = try await collection.refresh()
+            load.record(try await collection.refresh())
         } catch {
+            load.error = error
             Loggers.app.error("Failed to refresh posts: \(error)")
             self.show(error: error)
         }
@@ -226,10 +281,11 @@ final class CustomPostListViewModel: ObservableObject {
     /// Fetches the first page to determine total count. If below the
     /// threshold, fetches remaining pages and builds the hierarchy tree.
     /// Otherwise, stays in flat paginated mode.
-    private func fetchAllPagesIfBelowThreshold() async {
+    private func fetchAllPagesIfBelowThreshold(load: inout CustomPostListAnalytics.Load) async {
         do {
-            _ = try await collection.refresh()
+            load.record(try await collection.refresh())
         } catch {
+            load.error = error
             DDLogError("Failed to refresh pages: \(error)")
             self.show(error: error)
             return
@@ -241,6 +297,7 @@ final class CustomPostListViewModel: ObservableObject {
             return
         }
 
+        load.properties["loading_strategy"] = "hierarchy"
         shouldShowHierarchy = true
 
         isBatchSyncing = true
@@ -251,11 +308,12 @@ final class CustomPostListViewModel: ObservableObject {
                 guard let listInfo = collection.listInfo(), listInfo.hasMorePages, !listInfo.isSyncing else {
                     break
                 }
-                _ = try await collection.loadNextPage()
+                load.record(try await collection.loadNextPage())
             }
 
             await loadCachedItems()
         } catch {
+            load.error = error
             Loggers.app.error("Failed to refresh all pages for hierarchy: \(error)")
             self.show(error: error)
         }
@@ -281,6 +339,8 @@ final class CustomPostListViewModel: ObservableObject {
             items.removeAll { (try? exclude.evaluate($0)) == true }
         }
 
+        reportPostDetailLoadingFailureIfNeeded(in: items)
+
         guard shouldShowHierarchy else {
             indentationMap = [:]
             self.items = items
@@ -302,6 +362,25 @@ final class CustomPostListViewModel: ObservableObject {
 
         indentationMap = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
         self.items = entries.compactMap { itemMap[$0.id] }
+    }
+
+    private func reportPostDetailLoadingFailureIfNeeded(in items: [CustomPostCollectionItem]) {
+        guard !hasReportedPostDetailLoadingFailure,
+            items.contains(where: {
+                if case .error = $0.state { return true }
+                return false
+            })
+        else { return }
+
+        // Count affected list instances, not every row in a failed batch or repeated cache update.
+        hasReportedPostDetailLoadingFailure = true
+        WPLoggingStack.shared.crashLogging.logError(
+            NSError(
+                domain: "CPT.PostDetailLoadingFailure",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to load post details"]
+            )
+        )
     }
 
     // MARK: - Post Actions
@@ -691,7 +770,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
     init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
         self.modifiedDate = entity.modifiedGmt
-        self.title = entity.title?.raw
+        // Use rendered for wp-admin's title formatting; raw is the stored editor value.
+        self.title = entity.title.map { (try? Entities.unescape($0.rendered)) ?? $0.rendered }
         let contentPreview = GutenbergExcerptGenerator.firstParagraph(from: entity.content.rendered)
         self.content = contentPreview.isEmpty ? entity.excerpt?.raw : contentPreview
         if let authorId = entity.author {
@@ -721,52 +801,64 @@ struct CustomPostCollectionDisplayPost: Equatable {
 
     /// The header badges string (e.g. "Jan 15, 2026 · Author Name") matching
     /// the regular posts list. Combines the formatted date and author name.
-    var headerBadges: String {
-        var badges = [dateForDisplay]
+    ///
+    /// - Parameter now: The reference date for relative wording such as "2 minutes ago".
+    func headerBadges(relativeTo now: Date) -> String {
+        var badges = [dateForDisplay(relativeTo: now)]
         if let authorName, !authorName.isEmpty {
             badges.append(authorName)
         }
         return badges.joined(separator: " · ")
     }
 
-    private var dateForDisplay: String {
-        let string: String
+    /// The date the header shows: the post date for published, private, and
+    /// scheduled posts; the modified date otherwise.
+    var rowDate: Date {
         switch status {
-        case .future:
-            string = date.mediumStringWithTime()
-        case .publish, .private:
-            string = date.toMediumString()
-        case .trash:
-            string = (modifiedDate ?? date).toMediumString()
+        case .future, .publish, .private:
+            return date
         default:
-            string = (modifiedDate ?? date).toMediumString()
+            return modifiedDate ?? date
         }
-        return string.capitalized(with: .current)
     }
 
-    /// Combined status badges (e.g. "Private · Sticky") matching the regular
-    /// posts list. Returns nil when there is nothing to display.
-    var statusBadges: String? {
-        var badges: [String] = []
+    /// Whether the header date is worded relative to now ("2 minutes ago")
+    /// and therefore goes stale as time passes.
+    var hasRelativeRowDate: Bool {
+        status != .future
+    }
 
-        // Show a status badge when the post's status isn't one of the filter's
-        // statuses, since it would be redundant otherwise.
-        let showStatus = status != primaryStatus
-        if showStatus {
-            badges.append(status.localizedLabel())
+    private func dateForDisplay(relativeTo now: Date) -> String {
+        let context = Formatter.Context.beginningOfSentence
+        if hasRelativeRowDate {
+            return rowDate.toMediumString(formattingContext: context, relativeTo: now)
+        } else {
+            return rowDate.mediumStringWithTime(formattingContext: context)
+        }
+    }
+
+    /// The badges shown under the excerpt, in display order: the status, then
+    /// Sticky, then the page role.
+    var badges: [PostListBadge] {
+        var badges: [PostListBadge] = []
+
+        // The status is redundant when it is the filter's primary status,
+        // e.g. "Draft" on every row of the Drafts tab.
+        if status != primaryStatus {
+            badges.append(status.badge)
         }
         if sticky {
-            badges.append(Strings.sticky)
+            badges.append(PostListBadge(text: Strings.sticky, systemImage: "pin", tint: .neutral))
         }
-
-        return badges.isEmpty ? nil : badges.joined(separator: " · ")
-    }
-
-    var statusColor: Color {
-        if status == .trash {
-            return .red
+        switch pageRole {
+        case .homepage:
+            badges.append(PostListBadge(text: Strings.homepageBadge, systemImage: "house.fill", tint: .neutral))
+        case .postsPage:
+            badges.append(PostListBadge(text: Strings.postsPageBadge, systemImage: "paragraphsign", tint: .neutral))
+        case nil:
+            break
         }
-        return .secondary
+        return badges
     }
 
     static let placeholder = CustomPostCollectionDisplayPost(
@@ -776,26 +868,43 @@ struct CustomPostCollectionDisplayPost: Equatable {
     )
 }
 
+/// A short icon-and-text label under a post row's excerpt.
+struct PostListBadge: Equatable {
+    /// A semantic color the view resolves to a `Color`, so the status mapping
+    /// can be tested without comparing colors.
+    enum Tint: Equatable {
+        case neutral
+        case success
+        case warning
+        case error
+        case info
+    }
+
+    let text: String
+    let systemImage: String?
+    let tint: Tint
+}
+
 extension PostStatus {
-    func localizedLabel() -> String {
+    var badge: PostListBadge {
         switch self {
         case .publish:
-            return SharedStrings.PostStatus.published
+            PostListBadge(text: SharedStrings.PostStatus.published, systemImage: "checkmark.circle", tint: .success)
         case .draft:
-            return SharedStrings.PostStatus.draft
+            PostListBadge(text: SharedStrings.PostStatus.draft, systemImage: "pencil", tint: .neutral)
         case .future:
-            return SharedStrings.PostStatus.scheduled
+            PostListBadge(text: SharedStrings.PostStatus.scheduled, systemImage: "calendar", tint: .info)
         case .pending:
-            return SharedStrings.PostStatus.pending
+            PostListBadge(text: SharedStrings.PostStatus.pending, systemImage: "clock", tint: .warning)
         case .private:
-            return SharedStrings.PostStatus.privatePost
+            PostListBadge(text: SharedStrings.PostStatus.privatePost, systemImage: "lock", tint: .neutral)
         case .trash:
-            return SharedStrings.PostStatus.trash
+            PostListBadge(text: Strings.trashed, systemImage: "trash", tint: .error)
         case .any:
-            // This branch should never happen, since "any" is magic filter and no post would have this status.
-            return SharedStrings.PostStatus.any
+            // "any" is a filter value, not a status a post can have.
+            PostListBadge(text: SharedStrings.PostStatus.any, systemImage: nil, tint: .neutral)
         case .custom(let value):
-            return value
+            PostListBadge(text: value, systemImage: nil, tint: .neutral)
         }
     }
 }
@@ -914,6 +1023,21 @@ private enum Strings {
         value: "Sticky",
         comment: "Badge shown in the post list for sticky posts"
     )
+    static let trashed = NSLocalizedString(
+        "customPostList.badge.trashed",
+        value: "Trashed",
+        comment: "Badge shown in the post list for a post that has been moved to the trash"
+    )
+    static let homepageBadge = NSLocalizedString(
+        "customPostList.badge.homepage",
+        value: "Homepage",
+        comment: "Badge label shown on the homepage row in the custom post list for pages"
+    )
+    static let postsPageBadge = NSLocalizedString(
+        "customPostList.badge.postsPage",
+        value: "Posts page",
+        comment: "Badge label shown on the posts page row in the custom post list for pages"
+    )
     static let blaze = NSLocalizedString(
         "customPostList.action.blaze",
         value: "Promote with Blaze",
@@ -948,5 +1072,7 @@ private enum HomepageSetting {
 }
 
 private enum Constants {
+    // Match Android's Posts list to reduce the burst of detail requests per page.
+    static let pageSize: UInt32 = 20
     static let hierarchyPageCountThreshold: Int64 = 200
 }

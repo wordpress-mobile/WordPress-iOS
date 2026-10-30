@@ -22,7 +22,9 @@ extension SiteSettingsViewController {
                     selection: $selection,
                     values: WordPress.SiteVisibility.eligiblePickerValues(for: blog)
                 )
-                .onChange(of: selection, perform: onChange)
+                .onChange(of: selection) { _, newValue in
+                    self.onChange(newValue)
+                }
             }
         }
         let view = SiteSettingsPrivacyPicker(blog: blog, selection: blog.siteVisibility) { [weak self] in

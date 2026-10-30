@@ -102,7 +102,11 @@ extension BlogService {
             defer {
                 completion()
             }
-            try await self.syncTaxnomies(for: blogId)
+            do {
+                try await self.syncTaxnomies(for: blogId)
+            } catch {
+                Loggers.app.error("Failed to sync taxonomies: \(error)")
+            }
         }
     }
 
@@ -120,7 +124,11 @@ extension BlogService {
         let blogId = TaggedManagedObjectID(blog)
         Task { @MainActor in
             defer { completion() }
-            try await self.syncPostTypes(for: blogId)
+            do {
+                try await self.syncPostTypes(for: blogId)
+            } catch {
+                Loggers.app.error("Failed to sync post types: \(error)")
+            }
         }
     }
 

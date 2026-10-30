@@ -12,12 +12,24 @@ func makeDetail(
     parent: Int64 = 0,
     post: Int64 = 10,
     status: CommentStatus = .approved,
-    editContext: Bool = false
+    editContext: Bool = false,
+    content: String = "raw"
 ) -> CommentDetail {
     if editContext {
-        return CommentDetail(comment: .editDetailBuilder(id: id, post: post, parent: parent, status: status))
+        return CommentDetail(
+            comment: .editDetailBuilder(id: id, content: content, post: post, parent: parent, status: status)
+        )
     }
     return CommentDetail(comment: .detailBuilder(id: id, post: post, parent: parent, status: status))
+}
+
+/// A detail whose content differs from `makeDetail`'s defaults, standing in for
+/// the server's response to an edit.
+func makeEditedDetail(id: Int64 = 1, contentHTML: String, contentRaw: String?) -> CommentDetail {
+    var detail = makeDetail(id: id)
+    detail.contentHTML = contentHTML
+    detail.contentRaw = contentRaw
+    return detail
 }
 
 @MainActor
@@ -28,6 +40,7 @@ func makeVM(
     capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities(),
     resolver: CommentsCapabilityResolver? = nil,
     coordinator: CommentsModerationCoordinator? = nil,
+    draftStore: any CommentDraftStoring = FakeCommentDraftStore(),
     tracker: (any CommentsTracker)? = nil,
     noticePresenter: (any NoticePresenting)? = nil
 ) -> CommentDetailViewModel {
@@ -37,6 +50,7 @@ func makeVM(
         service: service,
         capabilities: resolver ?? CommentsCapabilityResolver(capabilities: capabilities),
         coordinator: coordinator ?? CommentsModerationCoordinator(service: FakeCommentsService()),
+        draftStore: draftStore,
         titleResolver: makeResolver(),
         tracker: tracker,
         noticePresenter: noticePresenter
@@ -59,7 +73,7 @@ func makeResolvedCapabilities(canModerate: Bool) async -> CommentsCapabilityReso
 @MainActor
 func makeLoadedVM(
     status: CommentStatus = .hold,
-    coordinator: CommentsModerationCoordinator,
+    coordinator: CommentsModerationCoordinator? = nil,
     noticePresenter: (any NoticePresenting)? = nil
 ) async -> CommentDetailViewModel {
     let service = FakeCommentsService()

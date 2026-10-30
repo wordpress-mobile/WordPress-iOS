@@ -2,7 +2,6 @@ import BuildSettingsKit
 import Foundation
 import AutomatticTracks
 import AutomatticEncryptedLogs
-import CocoaLumberjack
 
 struct EventLoggingDataProvider: EventLoggingDataSource {
 
@@ -33,11 +32,9 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
         return fetchLogFiles?().first
     }
 
-    static func fromDDFileLogger(_ logger: DDFileLogger) -> EventLoggingDataSource {
+    static func from(_ store: LogFileStore) -> EventLoggingDataSource {
         EventLoggingDataProvider {
-            logger.logFileManager.sortedLogFileInfos.map {
-                URL(fileURLWithPath: $0.filePath)
-            }
+            store.logFiles().map(\.url)
         }
     }
 }

@@ -24,6 +24,10 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
 
         followButton.addTarget(self, action: #selector(didTapFollowButton), for: .primaryActionTriggered)
         followButton.alpha = 0 // don't know the state before topic is loaded
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self, UITraitAccessibilityContrast.self]) { (self: Self, _) in
+            WPStyleGuide.applyTagsReaderButtonStyle(self.followButton)
+        }
     }
 
     public required init?(coder: NSCoder) {
@@ -32,14 +36,6 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
 
     private func applyStyles() {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
-    }
-
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            WPStyleGuide.applyTagsReaderButtonStyle(followButton)
-        }
     }
 
     // MARK: - Configuration

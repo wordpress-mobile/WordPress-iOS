@@ -306,6 +306,8 @@ import WordPressShared
     case siteListCopyLinktapped
 
     // Post List
+    case cptPostListOpened
+    case cptPostListLoadFinished
     case postListItemSelected
     case postListShareAction
     case postListBlazeAction
@@ -1246,6 +1248,10 @@ import WordPressShared
             return "site_list_copy_link_tapped"
 
         // Post List
+        case .cptPostListOpened:
+            return "cpt_post_list_opened"
+        case .cptPostListLoadFinished:
+            return "cpt_post_list_load_finished"
         case .postListItemSelected:
             return "post_list_item_selected"
         case .postListShareAction:

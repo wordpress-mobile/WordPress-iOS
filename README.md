@@ -6,9 +6,9 @@ Please refer to the sections below for more detailed information. The instructio
 
 ### Getting Started
 
-1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. Refer to the [.xcode-version](./.xcode-version) file for the minimum required version.
+1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. The [.xcode-version](./.xcode-version) file lists the version CI uses.
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
-1. Run `rake dependencies`.
+1. Open `WordPress.xcworkspace` in Xcode and build the `Jetpack` or `WordPress` scheme. The first build downloads the Gutenberg frameworks the app needs (about 60 MB).
 
 #### Create WordPress.com API Credentials
 
@@ -20,9 +20,8 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Configure Your WordPress App Development Environment
 
-1. Check that your local version of Ruby matches the one in [.ruby-version](./.ruby-version). We recommend installing a tool like [rbenv](https://github.com/rbenv/rbenv) so your system will always use the version defined in that file. Once installed, simply run `rbenv install` in the repo to match the version.
-1. Return to the command line and run `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
-1. Once completed, run `rake xcode` to open the project in Xcode.
+1. Return to the command line and run `make credentials` to set up your own WordPress.com API credentials, so you can log in to WordPress.com in the app. To skip the prompts, run `Scripts/setup-credentials.sh --client-id <id> --client-secret <secret>` instead.
+1. Once completed, run `open WordPress.xcworkspace` to open the project in Xcode.
 
 If all went well you can now compile to your iOS device or simulator, and log into the WordPress app.
 
@@ -34,17 +33,11 @@ The steps above will help you configure the WordPress app to run and compile.  B
 
 ### Third party tools
 
-We use a few tools to help with development. Running `rake dependencies` will configure or update them for you.
+We use a few Ruby tools for release and CI, such as fastlane and Danger. Run `bundle install` to install or update them. Building and testing the app doesn't need them. Use the Ruby version in [.ruby-version](./.ruby-version); a tool like [rbenv](https://github.com/rbenv/rbenv) picks it up automatically (`rbenv install`).
 
 ### Open Xcode
 
-Launch the workspace by running the following from the command line:
-
-`rake xcode`
-
-This will ensure any dependencies are ready before launching Xcode.
-
-You can also open the project by double clicking on `WordPress.xcworkspace` file, or launching Xcode and choose `File` > `Open` and browse to `WordPress.xcworkspace`.
+Open `WordPress.xcworkspace` in Xcode. The first build downloads the Gutenberg frameworks the app needs.
 
 ### Setup Credentials
 
@@ -57,7 +50,7 @@ The "**Website URL**", "**Redirect URLs**", and "**Javascript Origins**" fields 
 
 Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application.
 
-Next, run the command `rake credentials:setup` you will be prompted for your Client ID and your Client Secret.  Once added you will be able to log into the WordPress app
+Next, run `make credentials`. You will be prompted for your Client ID and your Client Secret. Once added, you will be able to log into the WordPress app.
 
 **Remember the only WordPress.com account you will be able to login in with is the one used to create your client ID and client secret.**
 

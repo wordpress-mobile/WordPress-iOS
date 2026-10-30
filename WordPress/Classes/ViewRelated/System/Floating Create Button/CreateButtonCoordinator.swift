@@ -234,15 +234,19 @@ private extension CreateButtonCoordinator {
             WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?
                 .dismiss(animated: true) {
-                    guard let viewController = self?.viewController else { return }
-                    PostEditorRouter.showNewPost(
-                        for: blog,
-                        from: viewController,
-                        context: NewPostEditorContext(
-                            prompt: prompt,
-                            entryPoint: .bloggingPromptsActionSheetHeader
+                    // UIKit runs the dismissal completion on the main thread but
+                    // doesn't declare it, so state the isolation explicitly.
+                    MainActor.assumeIsolated {
+                        guard let viewController = self?.viewController else { return }
+                        PostEditorRouter.showNewPost(
+                            for: blog,
+                            from: viewController,
+                            context: NewPostEditorContext(
+                                prompt: prompt,
+                                entryPoint: .bloggingPromptsActionSheetHeader
+                            )
                         )
-                    )
+                    }
                 }
         }
 

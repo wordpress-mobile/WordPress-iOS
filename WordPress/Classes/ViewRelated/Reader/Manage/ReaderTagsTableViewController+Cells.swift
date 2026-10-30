@@ -41,14 +41,17 @@ private extension UIButton {
         static let size = CGSize(width: 40, height: 40)
         static let image = UIImage.gridicon(.crossSmall)
         static let tintColor = UIAppColor.gray(.shade10)
-        static let insets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8) // To better align with the plus sign accessory view
+        // Pushes the icon to the trailing edge, to better align with the plus sign accessory view
+        static let insets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0)
     }
 
     static func closeAccessoryButton() -> UIButton {
         let button = UIButton(frame: CGRect(origin: .zero, size: Constants.size))
-        button.setImage(Constants.image, for: .normal)
-        button.imageEdgeInsets = Constants.insets
-        button.imageView?.tintColor = Constants.tintColor
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = Constants.image
+        configuration.baseForegroundColor = Constants.tintColor
+        configuration.contentInsets = Constants.insets
+        button.configuration = configuration
         return button
     }
 }

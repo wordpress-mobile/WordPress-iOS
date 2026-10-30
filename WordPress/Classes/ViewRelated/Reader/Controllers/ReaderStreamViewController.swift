@@ -80,8 +80,7 @@ import AutomatticTracks
     private var didSetupView = false
     private var didBumpStats = false
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
-    private let notificationsButtonViewModel = NotificationsButtonViewModel()
-    private var notificationsButtonCancellable: AnyCancellable?
+    private let notificationsBarButton = ReaderNotificationsBarButton()
 
     /// Content management
     let content = ReaderTableContent()
@@ -92,8 +91,10 @@ import AutomatticTracks
 
     private let prefetcher = ImagePrefetcher()
 
-    enum NavigationItemTag: Int {
-        case notifications
+    /// Tags start at 1 because 0 is every bar button's default tag: removing the items tagged 0
+    /// would also remove untagged items that subclasses add.
+    enum NavigationItemTag: Int, CaseIterable {
+        case notifications = 1
         case share
         case savedPostsSettings
     }
@@ -309,6 +310,12 @@ import AutomatticTracks
 
         isCompact = traitCollection.horizontalSizeClass == .compact
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.isCompact = self.traitCollection.horizontalSizeClass == .compact
+            self.setupNotificationsBarButtonItem()
+        }
+        setupNotificationsBarButtonItem()
+
         // Setup Site Blocking Controller
         self.siteBlockingController.delegate = self
 
@@ -390,13 +397,6 @@ import AutomatticTracks
         layoutEmptyStateView()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        isCompact = traitCollection.horizontalSizeClass == .compact
-        setupNotificationsBarButtonItem()
-    }
-
     private func layoutEmptyStateView() {
         guard let emptyStateView else { return }
         tableView.layoutEmptyStateView(emptyStateView, in: self)
@@ -407,25 +407,39 @@ import AutomatticTracks
         tableView.reloadData()
     }
 
-    private func setupNotificationsBarButtonItem() {
-        notificationsButtonCancellable = nil
-        if isNotificationsBarButtonEnabled && traitCollection.horizontalSizeClass == .regular {
-            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
-                guard let self else { return }
-                let button = UIBarButtonItem(
-                    image: $0,
-                    style: .plain,
-                    target: self,
-                    action: #selector(buttonShowNotificationsTapped)
-                )
-                button.tag = NavigationItemTag.notifications.rawValue
-                addRightBarButtonItem(button, after: .share)
-            }
+    /// The bell for the current layout. The tap reads it too, so it acts on the layout the
+    /// bell is shown in.
+    ///
+    /// Known issue: a followed site's header also shows a bell, for the site's post
+    /// notification settings, and both bells read as "Notifications". The header bell has no
+    /// accessibility label of its own. This predates the compact-width bell: the Jetpack app
+    /// shows both bells on site streams in regular width.
+    private var notificationsBell: ReaderNotificationsBell {
+        guard !isEmbeddedInDiscover else {
+            return .hidden // Discover shows its own bell
         }
+        return ReaderNotificationsBell(
+            showsPopoverInRegularWidth: isNotificationsBarButtonEnabled,
+            horizontalSizeClass: traitCollection.horizontalSizeClass
+        )
+    }
+
+    private func setupNotificationsBarButtonItem() {
+        removeRightBarButtonItem(withTag: .notifications)
+        let item = notificationsBarButton.makeItem(
+            for: notificationsBell,
+            target: self,
+            action: #selector(buttonShowNotificationsTapped)
+        )
+        guard let item else {
+            return
+        }
+        item.tag = NavigationItemTag.notifications.rawValue
+        addRightBarButtonItem(item, after: .share)
     }
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
-        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
+        notificationsBell.open(from: self, sourceItem: sender)
     }
 
     private func setupSavedPostsSettingsBarButtonItemIfNeeded() {
@@ -1536,7 +1550,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        let viewModel = ReaderPostCellViewModel(post: post, topic: readerTopic)
+        let viewModel = ReaderPostCellViewModel(
+            post: post,
+            topic: readerTopic,
+            traitCollection: tableView.traitCollection
+        )
         viewModel.viewController = self
 
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)

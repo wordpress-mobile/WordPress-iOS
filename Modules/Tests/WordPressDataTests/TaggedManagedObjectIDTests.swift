@@ -4,6 +4,7 @@ import CoreData
 
 @testable import WordPressData
 
+@MainActor
 @Suite struct TaggedManagedObjectIDTests {
     private let contextManager = ContextManager.forTesting()
 
@@ -72,11 +73,17 @@ import CoreData
         #expect(try author(of: abstractPostID, in: contextManager.mainContext) == "WordPress.com")
     }
 
-    private func author(of id: TaggedManagedObjectID<AbstractPost>, in context: NSManagedObjectContext) throws -> String? {
+    private func author(
+        of id: TaggedManagedObjectID<AbstractPost>,
+        in context: NSManagedObjectContext
+    ) throws -> String? {
         try context.existingObject(with: id).author
     }
 
-    private func author<T: AbstractPost>(of id: TaggedManagedObjectID<T>, in context: NSManagedObjectContext) throws -> String? {
+    private func author<T: AbstractPost>(
+        of id: TaggedManagedObjectID<T>,
+        in context: NSManagedObjectContext
+    ) throws -> String? {
         try context.existingObject(with: id).author
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import SVProgressHUD
 import WordPressAPI
 import WordPressCore
 
@@ -21,6 +22,7 @@ struct UserDetailsView: View {
     @State fileprivate var presentUserPicker: Bool = false
     @State fileprivate var presentDeleteConfirmation: Bool = false
     @State fileprivate var presentDeleteUserError: Bool = false
+    @State fileprivate var passwordError: Error?
 
     @StateObject
     fileprivate var viewModel: UserDetailViewModel
@@ -31,7 +33,12 @@ struct UserDetailsView: View {
     @Environment(\.dismiss)
     var dismissAction: DismissAction
 
-    init(user: DisplayUser, isCurrentUser: Bool, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+    init(
+        user: DisplayUser,
+        isCurrentUser: Bool,
+        userService: UserServiceProtocol,
+        applicationTokenListDataProvider: ApplicationTokenListDataProvider
+    ) {
         self.user = user
         self.isCurrentUser = isCurrentUser
         self.userService = userService
@@ -43,7 +50,11 @@ struct UserDetailsView: View {
     var body: some View {
         Form {
             VStack {
-                AvatarView(style: .single(user.profilePhotoUrl), diameter: 96, placeholderImage: Image("gravatar").resizable())
+                AvatarView(
+                    style: .single(user.profilePhotoUrl),
+                    diameter: 96,
+                    placeholderImage: Image("gravatar").resizable()
+                )
                 Text(user.displayName)
                     .font(.title)
                 Text(user.handle)
@@ -56,7 +67,11 @@ struct UserDetailsView: View {
 
             Section {
                 makeRow(title: Strings.roleFieldTitle, content: user.role.displayString)
-                makeRow(title: Strings.emailAddressFieldTitle, content: user.emailAddress, link: user.emailAddress.asEmail())
+                makeRow(
+                    title: Strings.emailAddressFieldTitle,
+                    content: user.emailAddress,
+                    link: user.emailAddress.asEmail()
+                )
                 if let website = user.websiteUrl, !website.isEmpty {
                     makeRow(title: Strings.websiteFieldTitle, content: website, link: URL(string: website))
                 }
@@ -83,8 +98,8 @@ struct UserDetailsView: View {
                                 presentUserPicker = true
                             } label: {
                                 Text(
-                                    deleteUserViewModel.isDeletingUser ?
-                                        Strings.deletingUserActionTitle
+                                    deleteUserViewModel.isDeletingUser
+                                        ? Strings.deletingUserActionTitle
                                         : Strings.deleteUserActionTitle
                                 )
                             }
@@ -101,8 +116,21 @@ struct UserDetailsView: View {
                 SecureField(Strings.newPasswordPlaceholder, text: $newPassword)
                 SecureField(Strings.newPasswordConfirmationPlaceholder, text: $newPasswordConfirmation)
                 Button(Strings.updatePasswordButton) {
-                    Task {
-                        try await self.userService.setNewPassword(id: user.id, newPassword: newPassword)
+                    let password = newPassword
+                    Task { @MainActor in
+                        SVProgressHUD.show()
+                        do {
+                            try await userService.setNewPassword(id: user.id, newPassword: password)
+                            SVProgressHUD.showSuccess(withStatus: nil)
+                            await SVProgressHUD.dismiss(withDelay: 1)
+                        } catch {
+                            // Set the alert state before awaiting dismiss: the bridged
+                            // async dismiss resumes from a completion that SVProgressHUD
+                            // skips if another HUD interrupts the fade-out, and the error
+                            // must surface regardless.
+                            passwordError = error
+                            await SVProgressHUD.dismiss()
+                        }
                     }
                 }
                 .disabled(newPassword.isEmpty || newPassword != newPasswordConfirmation)
@@ -114,6 +142,21 @@ struct UserDetailsView: View {
             },
             message: {
                 Text(Strings.newPasswordAlertMessage)
+            }
+        )
+        .alert(
+            Strings.passwordErrorAlertTitle,
+            isPresented: Binding(
+                get: { passwordError != nil },
+                set: { if !$0 { passwordError = nil } }
+            ),
+            presenting: passwordError,
+            actions: { _ in
+                Button(SharedStrings.Button.ok) {}
+            },
+            message: { error in
+                Text(Strings.passwordErrorAlertMessage)
+                Text(error.localizedDescription)
             }
         )
         .deleteUser(in: self)
@@ -219,7 +262,8 @@ struct UserDetailsView: View {
             let format = NSLocalizedString(
                 "userDetails.alert.deleteUserConfirmationMessage",
                 value: "Are you sure you want to delete this user and attribute all content to %@?",
-                comment: "The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed"
+                comment:
+                    "The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed"
             )
             return String(format: format, username)
         }
@@ -240,6 +284,18 @@ struct UserDetailsView: View {
             "userDetails.alert.deleteUserErrorAlertMessage",
             value: "There was an error deleting the user.",
             comment: "The message in the alert that appears when deleting a user"
+        )
+
+        static let passwordErrorAlertTitle = NSLocalizedString(
+            "userDetails.alert.passwordErrorAlertTitle",
+            value: "Error",
+            comment: "The title of the alert that appears when setting a new password fails"
+        )
+
+        static let passwordErrorAlertMessage = NSLocalizedString(
+            "userDetails.alert.passwordErrorAlertMessage",
+            value: "There was an error updating the password.",
+            comment: "The message in the alert that appears when setting a new password fails"
         )
     }
 }
@@ -294,7 +350,8 @@ private extension View {
             message: { error in
                 Text(Strings.deleteUserErrorAlertMessage)
                 Text(error.localizedDescription)
-            })
+            }
+        )
     }
 }
 
@@ -304,8 +361,8 @@ private extension String {
         let range = NSRange(str.startIndex..<str.endIndex, in: str)
 
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
-              let result = detector.firstMatch(in: str, range: range)
-            else { return nil }
+            let result = detector.firstMatch(in: str, range: range)
+        else { return nil }
 
         return result.url
     }
@@ -313,6 +370,11 @@ private extension String {
 
 #Preview {
     NavigationStack {
-        UserDetailsView(user: .mockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserDetailsView(
+            user: .mockUser,
+            isCurrentUser: true,
+            userService: MockUserProvider(),
+            applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens))
+        )
     }
 }

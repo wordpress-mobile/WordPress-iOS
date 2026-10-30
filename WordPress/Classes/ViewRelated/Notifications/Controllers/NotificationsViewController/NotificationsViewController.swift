@@ -105,27 +105,61 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         return indicator
     }()
 
-    private let shouldPushDetailsViewController = UIDevice.current.userInterfaceIdiom != .pad
-
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     lazy var viewModel: NotificationsViewModel = {
-        NotificationsViewModel(userDefaults: userDefaults)
+        NotificationsViewModel()
     }()
 
     var isSidebarModeEnabled = false
     var isReaderAppModeEnabled = false
 
+    /// The account whose notifications the list shows. Passed with every
+    /// activity-service callback so it can reject a list that has not rebound
+    /// after an account change.
+    private var boundAccountUUID: String?
+
+    var activityService = NotificationActivityService.shared
+
+    /// Set by the code that creates the list, before its view loads.
+    var scope: NotificationsListScope = .all
+
+    /// Decides whether the push notification permission primers may appear.
+    var notificationMigrationService: any JetpackNotificationMigrationServiceProtocol =
+        JetpackNotificationMigrationService.shared
+
     private var isNavigationItemsConfigured = false
 
+    /// Whether the list is the supplementary column of an expanded split view, so it owns
+    /// the detail column next to it and keeps a notification selected and displayed there.
+    ///
+    /// This is deliberately structural rather than based on the size class or device: the
+    /// split view's columns are horizontally compact even when it's expanded, and the
+    /// instance in the compact layout's tab bar becomes regular when the split view expands
+    /// (as does a large iPhone in landscape) without having a detail column of its own.
+    private var isShowingAlongsideDetailColumn: Bool {
+        guard let splitViewController, !splitViewController.isCollapsed else {
+            return false
+        }
+        return splitViewController.viewController(for: .supplementary) === navigationController
+    }
+
     // MARK: - View Lifecycle
+
+    /// Creates the list shown by the app's navigation: the tab bar, the iPad sidebar, the popover,
+    /// and the Reader bell.
+    @objc static func makeForAppNavigation() -> NotificationsViewController {
+        let notificationsVC = Notifications.instantiateInitialViewController()
+        notificationsVC.scope = .forAppNavigation()
+        return notificationsVC
+    }
 
     static func showInPopover(
         from presentingVC: UIViewController,
         sourceItem: UIPopoverPresentationControllerSourceItem
     ) {
-        let notificationsVC = Notifications.instantiateInitialViewController()
+        let notificationsVC = makeForAppNavigation()
         notificationsVC.isSidebarModeEnabled = true
 
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
@@ -141,6 +175,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         startListeningToAccountNotifications()
         startListeningToTimeChangeNotifications()
+        bindToCurrentAccount()
     }
 
     override func viewDidLoad() {
@@ -159,6 +194,30 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         reloadTableViewPreservingSelection()
         startListeningToCommentDeletedNotifications()
+
+        // Resizing can add or remove the detail column next to the list, which changes
+        // whether a row stays selected. `viewWillAppear` covers the list returning to the
+        // screen; this covers it staying on screen while the layout changes around it.
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.tableView.reloadData()
+
+            if !self.isShowingAlongsideDetailColumn {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            } else if let selectedNotification = self.selectedNotification {
+                self.selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
+            } else {
+                self.selectFirstNotificationIfAppropriate()
+            }
+
+            DispatchQueue.main.async {
+                self.showNoResultsViewIfNeeded()
+            }
+        }
+
+        // The filter header resizes with the text size.
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.tableView.tableHeaderView = self.tableHeaderView
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -170,7 +229,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         setupInlinePrompt()
 
         // Manually deselect the selected row.
-        if splitViewControllerIsHorizontallyCompact {
+        if !isShowingAlongsideDetailColumn {
             // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
 
@@ -187,13 +246,12 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Notifications
         startListeningToNotifications()
-        resetApplicationBadge()
-        updateLastSeenTime()
+        notificationsBecameVisible()
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
 
-        if !splitViewControllerIsHorizontallyCompact {
+        if isShowingAlongsideDetailColumn {
             reloadTableViewPreservingSelection()
         }
 
@@ -219,7 +277,11 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
-        registerUserActivity()
+        // The searchable "Notifications" activity opens the account-level list, which a
+        // Reader notifications list is not.
+        if scope == .all {
+            registerUserActivity()
+        }
 
         markWelcomeNotificationAsSeenIfNeeded()
 
@@ -227,21 +289,13 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             userDefaults.notificationsTabAccessCount += 1
         }
 
-        // Don't show the notification primers if we already asked during onboarding
-        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
-            return
-        }
-
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
-        }
-        showNotificationPrimerAlertIfNeeded()
-        showSecondNotificationsAlertIfNeeded()
+        showNotificationPrimersIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
+        activityService.notificationsResignedVisible(self)
 
         dismissNoNetworkAlert()
 
@@ -252,30 +306,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.layoutHeaderView()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        DispatchQueue.main.async {
-            self.showNoResultsViewIfNeeded()
-        }
-
-        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
-            tableView.reloadData()
-        }
-
-        if splitViewControllerIsHorizontallyCompact {
-            tableView.deselectSelectedRowWithAnimation(true)
-        } else {
-            if let selectedNotification {
-                selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
-            } else {
-                selectFirstNotificationIfAppropriate()
-            }
-        }
-
-        tableView.tableHeaderView = tableHeaderView
     }
 
     // MARK: - UITableViewDataSource Methods
@@ -295,7 +325,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         else {
             return UITableViewCell()
         }
-        cell.selectionStyle = splitViewControllerIsHorizontallyCompact ? .none : .default
+        cell.selectionStyle = isShowingAlongsideDetailColumn ? .default : .none
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         if let deletionRequest = notificationDeletionRequests[note.objectID] {
             cell.configure(with: note, deletionRequest: deletionRequest, parent: self) { [weak self] in
@@ -379,7 +409,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             AppRatingUtility.shared.incrementSignificantEvent()
         }
 
-        if !splitViewControllerIsHorizontallyCompact {
+        if isShowingAlongsideDetailColumn {
             syncNotificationsWithModeratedComments()
         }
     }
@@ -496,7 +526,8 @@ private extension NotificationsViewController {
 
     func setupNavigationBar() {
         if !isReaderAppModeEnabled {
-            navigationController?.navigationBar.prefersLargeTitles = false
+            // Only the list's own item: the Reader bell pushes the list onto Reader's stack,
+            // and turning off the bar's large titles would remove them from Reader's screens too.
             navigationItem.largeTitleDisplayMode = .never
         }
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
@@ -524,7 +555,9 @@ private extension NotificationsViewController {
             return button
         }()
     }
+}
 
+extension NotificationsViewController {
     func makeMoreMenuElements() -> [UIAction] {
         // Mark All As Read
         let markAllAsRead: UIAction? = { () -> UIAction? in
@@ -545,7 +578,7 @@ private extension NotificationsViewController {
 
         // Notifications Settings
         let settings: UIAction? = { () -> UIAction? in
-            guard shouldDisplaySettingsButton else {
+            guard shouldDisplaySettingsButton, scope == .all else {
                 return nil
             }
             return UIAction(
@@ -559,7 +592,9 @@ private extension NotificationsViewController {
         // Return
         return [markAllAsRead, settings].compactMap { $0 }
     }
+}
 
+private extension NotificationsViewController {
     @objc func closeNotificationSettings() {
         dismiss(animated: true, completion: nil)
     }
@@ -631,7 +666,7 @@ private extension NotificationsViewController {
         filterTabBar.superview?.backgroundColor = .systemBackground
         filterTabBar.backgroundColor = .systemBackground
 
-        filterTabBar.items = Filter.allCases
+        filterTabBar.items = filters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
@@ -669,15 +704,18 @@ private extension NotificationsViewController {
         )
         nc.addObserver(
             self,
-            selector: #selector(notificationsWereUpdated),
-            name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
-            object: nil
-        )
-        nc.addObserver(
-            self,
             selector: #selector(dynamicTypeDidChange),
             name: UIContentSizeCategory.didChangeNotification,
             object: nil
+        )
+        // Observe the context, not the table's results controller: that sees only
+        // notes matching the selected filter, and the single-note sync posts no
+        // update notification.
+        nc.addObserver(
+            self,
+            selector: #selector(managedObjectContextObjectsDidChange),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: mainContext
         )
     }
 
@@ -719,9 +757,19 @@ private extension NotificationsViewController {
         )
         nc.removeObserver(
             self,
-            name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
-            object: nil
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: mainContext
         )
+    }
+
+    @objc func managedObjectContextObjectsDidChange(_ note: Foundation.Notification) {
+        let keys = [NSInsertedObjectsKey, NSUpdatedObjectsKey, NSRefreshedObjectsKey]
+        let changesNotifications = keys.contains { key in
+            (note.userInfo?[key] as? Set<NSManagedObject>)?.contains { $0 is WordPressData.Notification } ?? false
+        }
+        if changesNotifications {
+            notificationsListDidUpdate()
+        }
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
@@ -730,31 +778,23 @@ private extension NotificationsViewController {
             return
         }
 
-        resetApplicationBadge()
-        updateLastSeenTime()
+        notificationsBecameVisible()
         reloadResultsControllerIfNeeded()
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
+        // The account-scoped bell state and icon clear are owned by
+        // NotificationActivityService, which observes the same notification. It
+        // keeps a visible list's visibility, so rebinding here is enough for the
+        // new account's content to be marked seen, whichever observer runs first.
         resetNotifications()
-        viewModel.didChangeDefaultAccount()
-        resetApplicationBadge()
+        bindToCurrentAccount()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
             return
         }
         reloadResultsController()
         syncNewNotifications()
-    }
-
-    @objc func notificationsWereUpdated(_ note: Foundation.Notification) {
-        // If we're onscreen, don't leave the badge updated behind
-        guard UIApplication.shared.applicationState == .active else {
-            return
-        }
-
-        resetApplicationBadge()
-        updateLastSeenTime()
     }
 
     @objc func significantTimeChange(_ note: Foundation.Notification) {
@@ -928,16 +968,10 @@ extension NotificationsViewController {
     }
 
     private func displayViewController(_ controller: UIViewController) {
-        if shouldPushDetailsViewController {
-            navigationController?.pushViewController(controller, animated: true)
-        } else if isSidebarModeEnabled {
-            if let splitViewController {
-                splitViewController.setViewController(controller, for: .secondary)
-            } else {
-                navigationController?.pushViewController(controller, animated: true)
-            }
+        if isShowingAlongsideDetailColumn, let splitViewController {
+            splitViewController.setViewController(controller, for: .secondary)
         } else {
-            showDetailViewController(controller, sender: nil)
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -1117,7 +1151,7 @@ private extension NotificationsViewController {
     func selectNextAvailableNotification(ignoring: [WordPressData.Notification]) {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
-        if !splitViewControllerIsHorizontallyCompact,
+        if isShowingAlongsideDetailColumn,
             let selectedNotification,
             ignoring.contains(selectedNotification)
         {
@@ -1168,7 +1202,9 @@ private extension NotificationsViewController {
 
         NotificationSyncMediator()?.markAsRead(note)
     }
+}
 
+extension NotificationsViewController {
     /// Marks all messages as read under the selected filter.
     ///
     @objc func markAllAsRead() {
@@ -1194,7 +1230,9 @@ private extension NotificationsViewController {
                 }
             )
     }
+}
 
+private extension NotificationsViewController {
     /// Presents a confirmation action sheet for mark all as read action.
     @objc func showMarkAllAsReadConfirmation() {
         let title: String
@@ -1242,7 +1280,9 @@ private extension NotificationsViewController {
         let welcomeNotificationSeenKey = userDefaults.welcomeNotificationSeenKey
         if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
-            resetApplicationBadge()
+            activityService.requestIconClear()
+            // The tab-bar unread state also depends on this flag, so re-render it.
+            activityService.refreshIndicators()
         }
     }
 }
@@ -1355,7 +1395,7 @@ private extension NotificationsViewController {
         tableView.reloadData()
 
         // Show the current selection if our split view isn't collapsed
-        if !splitViewControllerIsHorizontallyCompact, let notification = selectedNotification {
+        if isShowingAlongsideDetailColumn, let notification = selectedNotification {
             selectRow(for: notification, animated: false, scrollPosition: .none)
         }
     }
@@ -1426,7 +1466,7 @@ extension NotificationsViewController {
     }
 
     @objc func selectFirstNotificationIfAppropriate() {
-        guard !splitViewControllerIsHorizontallyCompact && selectedNotification == nil else {
+        guard isShowingAlongsideDetailColumn && selectedNotification == nil else {
             return
         }
 
@@ -1468,7 +1508,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     @objc func predicateForFetchRequest() -> NSPredicate {
         let deletedIdsPredicate = NSPredicate(format: "NOT (SELF IN %@)", Array(notificationIdsBeingDeleted))
         let selectedFilterPredicate = predicateForSelectedFilters()
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate])
+        return NSCompoundPredicate(
+            andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate, scope.predicate]
+        )
     }
 
     @objc func predicateForSelectedFilters() -> NSPredicate {
@@ -1485,24 +1527,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard
-            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
-                as? WordPressData.Notification,
-            let cell = cell as? ListTableViewCell
-        else {
-            return
-        }
-
-        cell.configureWithNotification(note)
-
-        // handle undo overlays
-        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
-        cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
-            self?.cancelDeletionRequestForNoteWithID(note.objectID)
-        }
-
-        // additional configurations
-        cell.accessibilityHint = Self.accessibilityHint(for: note)
+        // Required by `WPTableViewHandlerDelegate`. The cells are configured in `tableView(_:cellForRowAt:)`.
     }
 
     func sectionNameKeyPath() -> String {
@@ -1835,13 +1860,50 @@ private extension NotificationsViewController {
             }
     }
 
-    func updateLastSeenTime() {
-        guard let note = tableViewHandler?.resultsController?.fetchedObjects?.first as? WordPressData.Notification
-        else {
+    /// Notifications became visible: hand the newest observed timestamp to the
+    /// activity service, which clears the bell, clears the icon, and submits seen.
+    func notificationsBecameVisible() {
+        guard scope.tracksAccountActivity else {
             return
         }
+        activityService.notificationsBecameVisible(
+            self,
+            accountUUID: boundAccountUUID,
+            newestTimestamp: newestNotificationTimestamp()
+        )
+    }
 
-        viewModel.lastSeenChanged(timestamp: note.timestamp)
+    /// While the list is visible, hands its newest timestamp to the activity
+    /// service to submit as seen. The context observer that calls this exists
+    /// only while the list is on screen.
+    func notificationsListDidUpdate() {
+        guard scope.tracksAccountActivity, UIApplication.shared.applicationState == .active else {
+            return
+        }
+        activityService.notificationsListDidUpdate(
+            self,
+            accountUUID: boundAccountUUID,
+            newestTimestamp: newestNotificationTimestamp()
+        )
+    }
+
+    func bindToCurrentAccount() {
+        boundAccountUUID = (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext))?.uuid
+    }
+
+    /// The newest stored notification timestamp, if any. Ignores the selected
+    /// filter: the backend clears its unseen flag only when the newest
+    /// notification is marked seen.
+    func newestNotificationTimestamp() -> Date? {
+        let request = NSFetchRequest<WordPressData.Notification>(entityName: entityName())
+        request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
+        request.fetchLimit = 1
+        // Not `timestampAsDate`: it substitutes the current date when the stored
+        // string does not parse, which would mark unseen notifications seen.
+        guard let timestamp = (try? mainContext.fetch(request))?.first?.timestamp else {
+            return nil
+        }
+        return Date.dateWithISO8601String(timestamp)
     }
 
     func loadNotification(with noteId: String) -> WordPressData.Notification? {
@@ -1874,12 +1936,6 @@ private extension NotificationsViewController {
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetApplicationBadge() {
-        // These notifications are cleared, so we just need to take Zendesk unread notifications
-        // into account when setting the app icon count.
-        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 
@@ -1936,13 +1992,24 @@ private extension NotificationsViewController {
         UserPersistentStoreFactory.instance()
     }
 
+    /// The filters installed in the filter bar. The bar's selected index is an index into this
+    /// array, not a `Filter` raw value.
+    var filters: [Filter] {
+        switch scope {
+        case .all: Filter.allCases
+        case .reader: [.none, .unread]
+        }
+    }
+
     var filter: Filter {
         get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
-            return Filter(rawValue: selectedIndex) ?? .none
+            guard let selectedIndex = filterTabBar?.selectedIndex, filters.indices.contains(selectedIndex) else {
+                return .none
+            }
+            return filters[selectedIndex]
         }
         set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
+            filterTabBar?.setSelectedIndex(filters.firstIndex(of: newValue) ?? 0)
             reloadResultsController()
         }
     }
@@ -2128,6 +2195,23 @@ private extension NotificationsViewController {
 
 // MARK: - Push Notifications Permission Alert
 extension NotificationsViewController {
+    func showNotificationPrimersIfNeeded() {
+        // Don't show the notification primers if we already asked during onboarding
+        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
+            return
+        }
+
+        guard canShowNotificationPrimers else {
+            return
+        }
+
+        if shouldShowPrimeForPush {
+            setupNotificationPrompt()
+        }
+        showNotificationPrimerAlertIfNeeded()
+        showSecondNotificationsAlertIfNeeded()
+    }
+
     private func showNotificationPrimerAlertIfNeeded() {
         guard shouldShowPrimeForPush, !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
@@ -2177,8 +2261,16 @@ extension NotificationsViewController {
         }
     }
 
+    /// False while the app doesn't present push notifications, as in the WordPress app, so that the
+    /// primers don't ask for a permission the app won't use.
+    private var canShowNotificationPrimers: Bool {
+        notificationMigrationService.shouldPresentNotifications()
+    }
+
     private func showSecondNotificationsAlertIfNeeded() {
-        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold else {
+        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold,
+            canShowNotificationPrimers
+        else {
             return
         }
         showSecondNotificationAlert()

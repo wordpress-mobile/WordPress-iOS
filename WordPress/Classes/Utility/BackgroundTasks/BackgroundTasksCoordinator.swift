@@ -71,7 +71,8 @@ class BackgroundTasksCoordinator {
     init(
         scheduler: BGTaskScheduler = BGTaskScheduler.shared,
         tasks: [BackgroundTask],
-        eventHandler: BackgroundTaskEventHandler) {
+        eventHandler: BackgroundTaskEventHandler
+    ) {
 
         self.eventHandler = eventHandler
         self.scheduler = scheduler
@@ -84,9 +85,17 @@ class BackgroundTasksCoordinator {
             //
             // When the old identifier AppRefreshTask is triggered this will re-schedule using the new identifier going forward
             // at some point in future when this FeatureFlag is removed and most users are on new version of app this can be removed
-            scheduler.register(forTaskWithIdentifier: WeeklyRoundupBackgroundTask.Constants.taskIdentifier, using: nil) { osTask in
-                self.schedule(task) { [weak self] result in
-                    self?.taskScheduledCompleted(osTask, identifier: type(of: task).identifier, result: result, cancelled: false)
+            scheduler.register(
+                forTaskWithIdentifier: WeeklyRoundupBackgroundTask.Constants.taskIdentifier,
+                using: nil
+            ) { osTask in
+                self.schedule(task) { result in
+                    self.taskScheduledCompleted(
+                        osTask,
+                        identifier: type(of: task).identifier,
+                        result: result,
+                        cancelled: false
+                    )
                 }
             }
 
@@ -109,8 +118,13 @@ class BackgroundTasksCoordinator {
                 }) { cancelled in
                     eventHandler.handle(.taskCompleted(identifier: type(of: task).identifier, cancelled: cancelled))
 
-                    self.schedule(task) { [weak self] result in
-                        self?.taskScheduledCompleted(osTask, identifier: type(of: task).identifier, result: result, cancelled: cancelled)
+                    self.schedule(task) { result in
+                        self.taskScheduledCompleted(
+                            osTask,
+                            identifier: type(of: task).identifier,
+                            result: result,
+                            cancelled: cancelled
+                        )
                     }
                 }
             }

@@ -205,8 +205,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
     fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
         indicatorView.frame = themesLoaderFrame
-        //TODO update color with white headers
-        indicatorView.color = .white
         indicatorView.startAnimating()
         return indicatorView
     }()
@@ -251,6 +249,9 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
     }
 
     fileprivate var presentingTheme: Theme?
+
+    /// The theme whose activation request is in flight. Drives the grid cell spinner across cell reuse and reloads.
+    private var activatingThemeId: String?
 
     private var noResultsViewController: NoResultsViewController?
 
@@ -326,6 +327,10 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
         configureSearchController()
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.collectionView?.collectionViewLayout.invalidateLayout()
+        }
+
         updateActiveTheme()
         setupThemesSyncHelper()
         if blog.supports(BlogFeature.customThemes) {
@@ -355,12 +360,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader
         )
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        collectionView?.collectionViewLayout.invalidateLayout()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -396,12 +395,24 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
         }
     }
 
+    open override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        // The theme insets and card sizes depend on the safe area.
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         unregisterForKeyboardNotifications()
     }
 
+    // TODO: Replace these observers with `view.keyboardLayoutGuide`: constrain the
+    // collection view's bottom to `keyboardLayoutGuide.topAnchor` instead of
+    // converting the keyboard frame into a content inset. Not done here because
+    // the collection view is laid out from a storyboard and the swap needs its
+    // bottom constraint re-anchored there.
     fileprivate func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(
             self,
@@ -620,6 +631,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
         cell.presenter = self
         cell.theme = themeAtIndexPath(indexPath)
+        cell.isActivating = activatingThemeId != nil && cell.theme?.themeId == activatingThemeId
 
         if sections[indexPath.section] == .themes {
             syncMoreThemesIfNeeded(indexPath)
@@ -724,7 +736,8 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let parentViewWidth = collectionView.frame.size.width
+        // The layout's sections start at the safe area, so size the cells to fit inside it.
+        let parentViewWidth = collectionView.bounds.inset(by: collectionView.safeAreaInsets).width
 
         return Styles.cellSizeForFrameWidth(parentViewWidth)
     }
@@ -751,12 +764,30 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
             if !blog.supports(BlogFeature.customThemes) {
                 return .zero
             }
-            return Styles.themeMargins
+            return themeInsets(in: collectionView)
         case .themes:
-            return Styles.themeMargins
+            return themeInsets(in: collectionView)
         case .info:
             return Styles.infoMargins
         }
+    }
+
+    /// Keeps the themes inside the safe area, clear of the iPhone Duo's side strip and the sensor
+    /// housing in landscape.
+    ///
+    /// The flow layout lays out right-to-left by mirroring its frames across the collection view's
+    /// full width, so the side insets are swapped in right-to-left layouts. This is also why the
+    /// layout's `sectionInsetReference` can't be `.fromSafeArea`: it would put the right-hand inset
+    /// on the left.
+    private func themeInsets(in collectionView: UICollectionView) -> UIEdgeInsets {
+        var safeArea = collectionView.safeAreaInsets
+        if collectionView.effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            swap(&safeArea.left, &safeArea.right)
+        }
+        var insets = Styles.themeMargins
+        insets.left += safeArea.left
+        insets.right += safeArea.right
+        return insets
     }
 
     // MARK: - Search support
@@ -939,10 +970,12 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
     @objc var onWebkitViewControllerClose: (() -> Void)?
 
     @objc open func activateTheme(_ theme: Theme?) {
-        guard let theme, !theme.isCurrentTheme() else {
+        guard let theme, !theme.isCurrentTheme(), activatingThemeId == nil else {
             return
         }
 
+        activatingThemeId = theme.themeId
+        collectionView?.reloadData()
         updateActivateButton(isLoading: true)
 
         _ = themeService.activate(
@@ -955,6 +988,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     blog: self?.blog
                 )
 
+                self?.activatingThemeId = nil
                 self?.collectionView?.reloadData()
 
                 let successTitle = NSLocalizedString(
@@ -966,10 +1000,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     comment: "Message of alert when theme activation succeeds"
                 )
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
-                let manageTitle = NSLocalizedString(
-                    "Manage site",
-                    comment: "Return to blog screen action when theme activation succeeds"
-                )
 
                 self?.updateActivateButton(isLoading: false)
 
@@ -977,13 +1007,6 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     title: successTitle,
                     message: successMessage,
                     preferredStyle: .alert
-                )
-                alertController.addActionWithTitle(
-                    manageTitle,
-                    style: .default,
-                    handler: { [weak self] (_: UIAlertAction) in
-                        _ = self?.navigationController?.popViewController(animated: true)
-                    }
                 )
                 alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
@@ -998,6 +1021,8 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                     comment: "Title of alert when theme activation fails"
                 )
 
+                self?.activatingThemeId = nil
+                self?.collectionView?.reloadData()
                 self?.activityIndicator.stopAnimating()
                 self?.activateButton?.customView = nil
 

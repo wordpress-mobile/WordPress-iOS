@@ -69,8 +69,8 @@ final class CommentCreateViewController: UIViewController {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
                 presentingViewController?
-                    .dismiss(animated: true) { [weak self] in
-                        self?.showModerationNoticeIfNeeded(for: commentID)
+                    .dismiss(animated: true) {
+                        self.showModerationNoticeIfNeeded(for: commentID)
                     }
             } catch {
                 setLoading(false)
@@ -131,14 +131,24 @@ final class CommentCreateViewController: UIViewController {
     private func setupNavigationBar() {
         title = viewModel.title
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: SharedStrings.Button.cancel,
+            style: .plain,
+            target: self,
+            action: #selector(buttonCancelTapped)
+        )
 
         navigationItem.rightBarButtonItem = makeSendButton()
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     private func makeSendButton() -> UIBarButtonItem {
-        let button = UIBarButtonItem(title: Strings.send, style: .done, target: self, action: #selector(buttonSendTapped))
+        let button = UIBarButtonItem(
+            title: Strings.send,
+            style: .done,
+            target: self,
+            action: #selector(buttonSendTapped)
+        )
         button.accessibilityIdentifier = "button_send_comment"
         button.tintColor = UIAppColor.tint
         return button
@@ -160,9 +170,29 @@ extension CommentCreateViewController: CommentEditorViewControllerDelegate {
 
 private enum Strings {
     static let send = NSLocalizedString("commentCreate.send", value: "Send", comment: "Navigation bar button title")
-    static let failedToSend = NSLocalizedString("commentCreate.failedToSentComment", value: "Failed to send comment", comment: "Error title")
-    static let commentHeldForModeration = NSLocalizedString("commentCreate.commentHeldForModeration", value: "Comment is awaiting review", comment: "Toast title shown after successfully submitting a comment")
-    static let closeConfirmationAlertCancel = NSLocalizedString("commentCreate.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
-    static let closeConfirmationAlertDelete = NSLocalizedString("commentCreate.closeConfirmationAlert.deleteDraft", value: "Delete Draft", comment: "Button in an alert confirming discaring a new draft")
-    static let closeConfirmationAlertSaveDraft = NSLocalizedString("commentCreate.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
+    static let failedToSend = NSLocalizedString(
+        "commentCreate.failedToSentComment",
+        value: "Failed to send comment",
+        comment: "Error title"
+    )
+    static let commentHeldForModeration = NSLocalizedString(
+        "commentCreate.commentHeldForModeration",
+        value: "Comment is awaiting review",
+        comment: "Toast title shown after successfully submitting a comment"
+    )
+    static let closeConfirmationAlertCancel = NSLocalizedString(
+        "commentCreate.closeConfirmationAlert.keepEditing",
+        value: "Keep Editing",
+        comment: "Button to keep the changes in an alert confirming discaring changes"
+    )
+    static let closeConfirmationAlertDelete = NSLocalizedString(
+        "commentCreate.closeConfirmationAlert.deleteDraft",
+        value: "Delete Draft",
+        comment: "Button in an alert confirming discaring a new draft"
+    )
+    static let closeConfirmationAlertSaveDraft = NSLocalizedString(
+        "commentCreate.closeConfirmationAlert.saveDraft",
+        value: "Save Draft",
+        comment: "Button in an alert confirming saving a new draft"
+    )
 }

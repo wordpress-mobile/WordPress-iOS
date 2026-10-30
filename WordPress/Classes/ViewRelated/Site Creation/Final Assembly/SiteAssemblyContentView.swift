@@ -26,6 +26,16 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the completion label as it animates into place.
     private var completionLabelTopConstraint: NSLayoutConstraint?
 
+    /// The content is laid out against this guide, which follows `prevailingLayoutGuide`. That guide changes
+    /// with the window's horizontal size class, so only the constraints that pin this guide to it are replaced.
+    private let contentLayoutGuide = UILayoutGuide()
+
+    /// The constraints that pin `contentLayoutGuide` to `prevailingLayoutGuide`.
+    private var contentLayoutGuideConstraints: [NSLayoutConstraint] = []
+
+    /// The window's horizontal size class when `contentLayoutGuide` was last pinned.
+    private var pinnedWindowSizeClass: UIUserInterfaceSizeClass?
+
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
 
@@ -295,6 +305,12 @@ final class SiteAssemblyContentView: UIView {
     }
 
     override func layoutSubviews() {
+        // `prevailingLayoutGuide` is unresolved until the view is in a window, and changes with the window's
+        // horizontal size class. This view's own size class stays compact in a page sheet, so check on layout.
+        if pinnedWindowSizeClass != (window ?? self).traitCollection.horizontalSizeClass {
+            pinContentLayoutGuide()
+        }
+
         super.layoutSubviews()
 
         switch status {
@@ -326,9 +342,12 @@ final class SiteAssemblyContentView: UIView {
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusImageView)
 
+        addLayoutGuide(contentLayoutGuide)
+        pinContentLayoutGuide()
+
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
         let completionLabelInitialTopConstraint = completionLabelsStack.topAnchor.constraint(
-            equalTo: prevailingLayoutGuide.topAnchor,
+            equalTo: contentLayoutGuide.topAnchor,
             constant: completionLabelTopInsetInitial
         )
         self.completionLabelTopConstraint = completionLabelInitialTopConstraint
@@ -336,25 +355,38 @@ final class SiteAssemblyContentView: UIView {
         NSLayoutConstraint.activate([
             completionLabelInitialTopConstraint,
             completionLabelsStack.leadingAnchor.constraint(
-                equalTo: prevailingLayoutGuide.leadingAnchor,
+                equalTo: contentLayoutGuide.leadingAnchor,
                 constant: Parameters.horizontalMargin
             ),
-            prevailingLayoutGuide.trailingAnchor.constraint(
+            contentLayoutGuide.trailingAnchor.constraint(
                 equalTo: completionLabelsStack.trailingAnchor,
                 constant: Parameters.horizontalMargin
             ),
             completionLabelsStack.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.leadingAnchor.constraint(
-                equalTo: prevailingLayoutGuide.leadingAnchor,
+                equalTo: contentLayoutGuide.leadingAnchor,
                 constant: Parameters.horizontalMargin
             ),
-            prevailingLayoutGuide.trailingAnchor.constraint(
+            contentLayoutGuide.trailingAnchor.constraint(
                 equalTo: statusStackView.trailingAnchor,
                 constant: Parameters.horizontalMargin
             ),
             statusStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+
+    private func pinContentLayoutGuide() {
+        NSLayoutConstraint.deactivate(contentLayoutGuideConstraints)
+        pinnedWindowSizeClass = (window ?? self).traitCollection.horizontalSizeClass
+        let layoutGuide = prevailingLayoutGuide
+        contentLayoutGuideConstraints = [
+            contentLayoutGuide.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+            contentLayoutGuide.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            contentLayoutGuide.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+            contentLayoutGuide.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(contentLayoutGuideConstraints)
     }
 
     private func installAssembledSiteView() {
@@ -436,7 +468,7 @@ final class SiteAssemblyContentView: UIView {
         let buttonContainerHeight = buttonContainerView.bounds.height
         let safelyOffscreen = Parameters.buttonContainerScaleFactor * buttonContainerHeight
         let bottomConstraint = buttonContainerView.bottomAnchor.constraint(
-            equalTo: prevailingLayoutGuide.bottomAnchor,
+            equalTo: contentLayoutGuide.bottomAnchor,
             constant: safelyOffscreen
         )
         self.buttonContainerBottomConstraint = bottomConstraint

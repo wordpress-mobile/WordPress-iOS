@@ -268,6 +268,8 @@ extension JetpackScanThreatDetailsViewController {
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
         warningButton.titleLabel?.numberOfLines = 0
         warningButton.setImage(.gridicon(.plusSmall), for: .normal)
+        // Matches the bottom content inset the button carries in Interface Builder.
+        warningButton.verticalTitlePadding = 10
     }
 }
 

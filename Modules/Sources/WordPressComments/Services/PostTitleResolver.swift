@@ -90,16 +90,67 @@ final class PostTitleResolver: ObservableObject {
         }
     }
 
-    /// Fetches id + title for regular posts, then retries the remainder
-    /// against pages. Custom post types are not covered in M1 and resolve to
-    /// unavailable.
-    /// TODO: Read the wordpress-rs cache as a first tier once it exposes a
-    /// public by-post-ID lookup; today only cache-internal EntityId reads
-    /// exist, and direct sqlite access is off limits.
+    /// Fetches cached titles first, then resolves the remaining IDs from posts
+    /// and pages. The network fallback does not cover custom post types.
     /// TODO: Consider making this a plain nonisolated async function
     /// (`liveFetch(ids:client:)`) wrapped in a `Fetcher` closure at the call
     /// site, instead of a factory that returns a closure. Deferred for now.
     static func liveFetcher(client: WordPressClient) -> Fetcher {
+        cacheFirstFetcher(
+            cache: { ids in
+                let cached = try await client.service.posts().readPostsByIdsFromDb(postIds: ids)
+                return FetchResult(titles: titles(from: cached))
+            },
+            network: networkFetcher(client: client)
+        )
+    }
+
+    static func cacheFirstFetcher(cache: @escaping Fetcher, network: @escaping Fetcher) -> Fetcher {
+        { ids in
+            let cached: FetchResult
+            do {
+                cached = try await cache(ids)
+            } catch {
+                return try await network(ids)
+            }
+
+            let unresolved = ids.filter { cached.titles[$0] == nil }
+            guard !unresolved.isEmpty else {
+                return cached
+            }
+
+            do {
+                let network = try await network(unresolved)
+                return FetchResult(
+                    titles: cached.titles.merging(network.titles) { _, network in network },
+                    retryable: network.retryable
+                )
+            } catch {
+                return FetchResult(titles: cached.titles, retryable: Set(unresolved))
+            }
+        }
+    }
+
+    nonisolated static func normalizedTitle(_ rendered: String?) -> String? {
+        guard let rendered else {
+            return nil
+        }
+        let title = rendered.makePlainText()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return title.isEmpty ? nil : title
+    }
+
+    nonisolated private static func titles(from posts: [AnyPostWithEditContext]) -> [Int64: String] {
+        var titles: [Int64: String] = [:]
+        for post in posts {
+            if let title = normalizedTitle(post.title?.rendered) {
+                titles[post.id] = title
+            }
+        }
+        return titles
+    }
+
+    private static func networkFetcher(client: WordPressClient) -> Fetcher {
         { ids in
             func fetch(_ ids: [Int64], from endpoint: PostEndpointType) async throws -> [Int64: String] {
                 let response = try await client.api.posts.filterListWithViewContext(
@@ -109,18 +160,10 @@ final class PostTitleResolver: ObservableObject {
                 )
                 var titles: [Int64: String] = [:]
                 for post in response.data {
-                    guard let id = post.id, let rendered = post.title?.rendered else {
+                    guard let id = post.id, let title = normalizedTitle(post.title?.rendered) else {
                         continue
                     }
-                    // `rendered` is HTML; strip it to plain text so entities and
-                    // markup don't leak into the row. Skip an empty title so the
-                    // row falls back to author-only instead of showing a
-                    // dangling "Author on " headline.
-                    let title = rendered.makePlainText()
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !title.isEmpty {
-                        titles[id] = title
-                    }
+                    titles[id] = title
                 }
                 return titles
             }

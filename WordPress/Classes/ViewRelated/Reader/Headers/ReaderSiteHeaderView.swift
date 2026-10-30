@@ -32,8 +32,9 @@ class ReaderSiteHeaderView: ReaderBaseHeaderView, ReaderStreamHeader {
         addSubview(separatorView)
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            // Stop at the safe area, like the separators between posts.
+            separatorView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             separatorView.heightAnchor.constraint(equalToConstant: 1)
         ])

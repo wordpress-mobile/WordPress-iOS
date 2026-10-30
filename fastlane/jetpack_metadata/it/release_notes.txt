@@ -1,0 +1,10 @@
+Hai saputo? Abbiamo reso la scheda Notifiche e la campanella più precise, anche quando le notifiche di sistema o i badge delle icone sono disattivati. Ora sarai sempre al corrente di tutto.
+
+I tipi di articolo personalizzati ora compaiono direttamente nel menu del sito dopo Commenti, ordinati per nome per una maggiore praticità: non serviranno più puntine personalizzate.
+
+Infine, abbiamo risolto diversi bug, per rendere la tua esperienza con l'app ancora più semplice.
+
+- Nel Reader, le immagini in linea non scompariranno più sui dispositivi con iOS 27.
+- I caricamenti non falliranno più se il nome del file contiene spazi. (good-news-everyone.jpg)
+- Abbiamo risolto un arresto anomalo causato dalla condivisione di determinati tipi di file di testo.
+- Buone notizie per gli utenti iPad: l'app non rimarrà più bloccata nel layout compatto della barra delle schede quando ridimensioni lo schermo o passi da un'app all'altra.

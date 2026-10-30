@@ -54,6 +54,7 @@ import Foundation
     case publicize
     case shareButtons
     case jetpackNewsletter
+    case applicationPasswords
 }
 
 extension Blog {
@@ -137,6 +138,9 @@ extension Blog {
             return supportsShareButtons
         case .jetpackNewsletter:
             return supportsJetpackNewsletter
+        case .applicationPasswords:
+            // Simple sites have no site-level REST API; the app reaches them through the WordPress.com account.
+            return !isHostedAtWPcom || isAtomic
         }
     }
 

@@ -1,0 +1,7 @@
+Aangepaste berichttypen verschijnen nu direct in het sitemenu na Reacties, gesorteerd op naam voor extra gemak—geen aangepaste pins meer nodig.
+
+We hebben ook verschillende bugs opgelost, gewoon om je app ervaring wat makkelijker te maken.
+
+- Uploads mislukken niet langer als de bestandsnaam spaties bevat. (good-news-everyone.jpg)
+- We hebben een crash opgelost die werd veroorzaakt door het delen van bepaalde soorten tekstbestanden.
+- iPad gebruikers opgelet—de app blijft niet meer vastzitten in de compacte tabbalk lay-out wanneer je het scherm formaat aanpast of van app wisselt.

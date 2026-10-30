@@ -74,6 +74,18 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         delegate?.previewViewed()
         observeProgressEstimations()
         configurePreviewDeviceButton()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, _) in
+            self.updatePresentedPopoverIfNeeded()
+        }
+    }
+
+    private func updatePresentedPopoverIfNeeded() {
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
+            return
+        }
+
+        prepareForPopoverPresentation(popoverPresentationController)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -187,15 +199,5 @@ extension TemplatePreviewViewController {
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
-                return
-        }
-
-        prepareForPopoverPresentation(popoverPresentationController)
     }
 }

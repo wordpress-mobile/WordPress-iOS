@@ -67,8 +67,12 @@ public class MessageAnimator: Animator {
 
     // MARK: - Public Methods
     @objc public func layout() {
+        // Keep the notice inside the safe area, clear of the iPhone Duo's side strip and the
+        // sensor housing in landscape.
+        let safeArea = targetView.safeAreaInsets
         var targetFrame = noticeLabel.frame
-        targetFrame.size.width = targetView.bounds.width
+        targetFrame.origin.x = safeArea.left
+        targetFrame.size.width = noticeWidth
         targetFrame.size.height = heightForMessage(message)
         noticeLabel.frame = targetFrame
     }
@@ -134,7 +138,12 @@ public class MessageAnimator: Animator {
             return CGSize.zero.height
         }
 
-        let size = message.suggestedSize(with: Defaults.labelFont, width: targetView.frame.width)
+        let textWidth = noticeWidth - Defaults.padding.horizontal * 2
+        let size = message.suggestedSize(with: Defaults.labelFont, width: textWidth)
         return round(size.height + Defaults.padding.vertical)
+    }
+
+    private var noticeWidth: CGFloat {
+        targetView.bounds.inset(by: targetView.safeAreaInsets).width
     }
 }

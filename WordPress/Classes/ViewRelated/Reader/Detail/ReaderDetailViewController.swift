@@ -192,6 +192,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureHeader()
         configureRelatedPosts()
         configureToolbar()
+        if #available(iOS 26, *) {
+            // The toolbar buttons sit on their own frosted capsules (see `ReaderDetailToolbar`). With them,
+            // the automatic edge effect draws a frosted band behind the whole toolbar on iOS 27.
+            scrollView.bottomEdgeEffect.isHidden = true
+        }
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
@@ -258,7 +263,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        toolbar.configure(for: post, in: self)
         updateToolbarItems()
         cachedExcerpt = post.getUserProvidedExcerpt()
         configureHeaderView(with: post)
@@ -304,7 +308,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         shouldFetchRelatedPosts = false
 
-        let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
+        let groupedPosts = Dictionary(grouping: posts.filter(\.hasContentForRelatedPostCard), by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
         relatedPostsTableView.reloadData()
@@ -784,8 +788,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func updateToolbarItems() {
         guard let post else { return }
-        let items = toolbar.createToolbarItems(for: post, in: self)
-        setToolbarItems(items, animated: false)
+        toolbar.configure(for: post, in: self)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -897,7 +900,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Parameter simplePost: The related post object
     /// - Returns: If the related post URL is not valid
     class func controllerWithSimplePost(_ simplePost: RemoteReaderSimplePost) -> ReaderDetailViewController? {
-        guard !simplePost.postUrl.isEmpty(), let url = URL(string: simplePost.postUrl) else {
+        guard !simplePost.postUrl.isEmpty(), URL(string: simplePost.postUrl) != nil else {
             return nil
         }
 

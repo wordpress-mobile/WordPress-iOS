@@ -49,6 +49,48 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         }
     }
 
+    func testRequestsEncodeParameters() async throws {
+        var tokenRequest: URLRequest?
+        stub(condition: isPath("/oauth2/token")) { request in
+            tokenRequest = request
+            return HTTPStubsResponse(
+                data: #"{"access_token": "token"}"#.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        var authorizeURL: URL?
+        let callback = fakeAuthenticator(callback: ["code": "random"])
+        let authenticator = WordPressDotComAuthenticator(
+            authenticator: { url throws(WordPressDotComAuthenticator.AuthenticationError) in
+                authorizeURL = url
+                return try callback(url)
+            },
+            redirectURIScheme: "testapp",
+            clientId: "123",
+            clientSecret: "secret"
+        )
+        _ = try await authenticator.authenticate(
+            from: UIViewController(),
+            prefersEphemeralWebBrowserSession: false,
+            accountEmail: "foo+bar@example.com"
+        )
+
+        XCTAssertEqual(
+            authorizeURL?.absoluteString,
+            "https://public-api.wordpress.com/oauth2/authorize?client_id=123&redirect_uri=testapp%3A//oauth2-callback&response_type=code&scope=global&user_email=foo%2Bbar%40example.com"
+        )
+        XCTAssertEqual(
+            tokenRequest?.value(forHTTPHeaderField: "Content-Type"),
+            "application/x-www-form-urlencoded; charset=utf-8"
+        )
+        XCTAssertEqual(
+            tokenRequest?.ohhttpStubs_httpBody.flatMap { String(data: $0, encoding: .utf8) },
+            "client_id=123&client_secret=secret&code=random&grant_type=authorization_code&redirect_uri=testapp%3A//oauth2-callback"
+        )
+    }
+
     @MainActor
     func testSignInSuccess() async throws {
         stubTokenExchange()

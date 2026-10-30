@@ -89,7 +89,7 @@ private extension BloggingPromptsHeaderView {
 
     func configureConstraints() {
         NSLayoutConstraint.activate([
-            dividerView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            dividerView.makeHairlineConstraint(for: dividerView.heightAnchor)
         ])
     }
 

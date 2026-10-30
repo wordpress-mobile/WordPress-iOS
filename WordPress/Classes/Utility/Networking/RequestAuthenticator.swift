@@ -9,7 +9,9 @@ import WordPressData
 ///     Unfortunately the effort required for this makes it unfeasible for me to focus on it
 ///     right now, as it involves also moving at least CookieJar, AuthenticationService and AtomicAuthenticationService over there as well. - @diegoreymendez
 ///
-class RequestAuthenticator: NSObject {
+/// Both stored properties are immutable and `AuthenticationService` is stateless,
+/// so instances can be built on one queue and used on another.
+class RequestAuthenticator: NSObject, @unchecked Sendable {
 
     enum DotComAuthenticationType {
         case regular
@@ -177,6 +179,7 @@ class RequestAuthenticator: NSObject {
         let context = ContextManager.shared.mainContext
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             WordPressAppDelegate.crashLogging?.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
+            done()
             return
         }
         let authenticationService = AtomicAuthenticationService(account: account)

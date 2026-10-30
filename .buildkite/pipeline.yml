@@ -10,48 +10,66 @@ env:
 # This is the default pipeline – it will build and test the app
 steps:
   #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    key: prototype_builds_group
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
   # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
   #################
   - group: ":testflight: TestFlight Builds"
     key: testflight_builds_group
     steps:
-      - label: ":testflight: Build & Upload {{matrix}}"
-        command: ".buildkite/commands/build-and-upload-testflight.sh {{matrix}}"
+      # Reader is omitted: its App Store archive has been broken since #25321
+      # (PostHelper moved to the app target without updating the Reader target),
+      # and went undetected after #25179 removed Reader from CI. Re-add once
+      # the Reader target archives again.
+      - label: ":wordpress: :testflight: Build & Upload WordPress"
+        key: testflight_upload_wordpress
+        command: ".buildkite/commands/build-and-upload-testflight.sh wordpress"
         plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.branch == 'trunk'"
-        matrix:
-          - "wordpress"
-          - "jetpack"
-          # Reader is omitted: its App Store archive has been broken since #25321
-          # (PostHelper moved to the app target without updating the Reader target),
-          # and went undetected after #25179 removed Reader from CI. Re-add once
-          # the Reader target archives again.
-          # - "reader"
         notify:
           - github_commit_status:
-              context: "TestFlight Build ({{matrix}})"
+              context: "TestFlight Build (wordpress)"
+
+      - label: ":jetpack: :testflight: Build & Upload Jetpack"
+        key: testflight_upload_jetpack
+        command: ".buildkite/commands/build-and-upload-testflight.sh jetpack"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        if: "build.branch == 'trunk'"
+        notify:
+          - github_commit_status:
+              context: "TestFlight Build (jetpack)"
+
+      # Waiting for App Store Connect to process the upload needs no Xcode, so it doesn't hold a Mac.
+      - label: ":wordpress: :testflight: Process WordPress"
+        command: ".buildkite/commands/finalize-testflight-build.sh wordpress"
+        depends_on: testflight_upload_wordpress
+        if: "build.branch == 'trunk'"
+        agents:
+          queue: "default"
+        plugins:
+          - $DOCKER_PLUGIN: &testflight_processing_docker
+              image: "$DOCKER_RUBY_FULL_IMAGE"
+              # An explicit pull is retried by the plugin; the one implied by `docker run` is not.
+              always-pull: true
+              mount-buildkite-agent: true
+              propagate-environment: true
+              environment:
+                - APP_STORE_CONNECT_API_KEY_KEY_ID
+                - APP_STORE_CONNECT_API_KEY_ISSUER_ID
+                - APP_STORE_CONNECT_API_KEY_KEY
+        notify:
+          - github_commit_status:
+              context: "TestFlight Processing (WordPress)"
+
+      - label: ":jetpack: :testflight: Process Jetpack"
+        command: ".buildkite/commands/finalize-testflight-build.sh jetpack"
+        depends_on: testflight_upload_jetpack
+        if: "build.branch == 'trunk'"
+        agents:
+          queue: "default"
+        plugins:
+          - $DOCKER_PLUGIN: *testflight_processing_docker
+        notify:
+          - github_commit_status:
+              context: "TestFlight Processing (Jetpack)"
 
   #################
   # Create Builds for Testing
@@ -80,7 +98,7 @@ steps:
   - group: "🔬 Unit Tests"
     key: unit_tests_group
     steps:
-      - label: "🔬 :swift: Swift Package Tests"
+      - label: "🔬 :swift: Swift Package Tests and String Catalog Coverage"
         command: .buildkite/commands/run-swift-package-tests.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
@@ -106,14 +124,6 @@ steps:
         notify:
           - github_commit_status:
               context: "Unit Tests"
-      - label: "🔬 Reader Unit Tests"
-        command: ".buildkite/commands/run-unit-tests-reader.sh"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Reader Unit Tests"
       # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
       # - label: "🔬 Keystone Unit Tests"
       #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
@@ -151,8 +161,10 @@ steps:
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
         plugins:
-          - docker#v3.8.0:
+          - $DOCKER_PLUGIN:
               image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
+              # An explicit pull is retried by the plugin; the one implied by `docker run` is not.
+              always-pull: true
         agents:
           queue: "default"
         notify:
@@ -163,16 +175,16 @@ steps:
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
 
-      - label: ":mag: Verify String Catalog Coverage"
-        command: .buildkite/commands/verify-strings-catalog.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Verify String Catalog Coverage"
-
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        # Pure Ruby, so it runs in a Ruby container on the Linux queue instead of booting a Mac VM.
+        agents:
+          queue: "default"
+        plugins:
+          - $DOCKER_PLUGIN:
+              image: "$DOCKER_RUBY_IMAGE"
+              # An explicit pull is retried by the plugin; the one implied by `docker run` is not.
+              always-pull: true
         notify:
           - github_commit_status:
               context: "Localization Tooling Unit Tests"
@@ -185,7 +197,6 @@ steps:
     # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
     depends_on:
       - linters_group
-      - prototype_builds_group
       - unit_tests_group
     allow_dependency_failure: true
     agents:

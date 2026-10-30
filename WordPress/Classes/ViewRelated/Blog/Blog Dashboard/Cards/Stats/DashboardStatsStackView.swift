@@ -1,26 +1,29 @@
 import UIKit
+import WordPressShared
 
 final class DashboardStatsStackView: UIStackView {
 
     // MARK: Public Variables
 
-    var views: String? {
+    // Each value carries its displayed text ("1.2M") and its spoken form ("1.2 million").
+
+    var views: AbbreviatedNumber? {
         didSet {
-            viewsView?.countString = views
+            viewsView?.countString = views?.text
             updateAccessibility()
         }
     }
 
-    var visitors: String? {
+    var visitors: AbbreviatedNumber? {
         didSet {
-            visitorsView?.countString = visitors
+            visitorsView?.countString = visitors?.text
             updateAccessibility()
         }
     }
 
-    var likes: String? {
+    var likes: AbbreviatedNumber? {
         didSet {
-            likesView?.countString = likes
+            likesView?.countString = likes?.text
             updateAccessibility()
         }
     }
@@ -77,9 +80,9 @@ final class DashboardStatsStackView: UIStackView {
                   self.accessibilityLabel = Strings.errorTitle
                   return
         }
-        let arguments = [views.accessibilityLabel ?? views,
-                         visitors.accessibilityLabel ?? visitors,
-                         likes.accessibilityLabel ?? likes]
+        let arguments = [views.accessibilityLabel,
+                         visitors.accessibilityLabel,
+                         likes.accessibilityLabel]
         self.accessibilityLabel = String(format: Strings.accessibilityLabelFormat, arguments: arguments)
     }
 }

@@ -42,6 +42,10 @@ struct CommentDetailView: View {
             .onChange(of: viewModel.isDeleted) { _, isDeleted in
                 if isDeleted { dismiss() }
             }
+            .sheet(item: $viewModel.composer) { composer in
+                CommentComposerView(viewModel: composer) { viewModel.composerClosed($0) }
+                    .presentationDetents([.large])
+            }
     }
 
     private var fixedRegions: some View {
@@ -112,12 +116,24 @@ struct CommentDetailView: View {
     @ToolbarContentBuilder
     private var trailingToolbarItems: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            let link = viewModel.loadedDetail?.link
+            if viewModel.showsReply {
+                Button(Strings.detailReply, systemImage: "arrowshape.turn.up.left") {
+                    viewModel.replyTapped()
+                }
+                .disabled(!viewModel.canReply)
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            let shareLink = viewModel.shareLink
             let menuAction = viewModel.toolbarModel.menuAction
-            if link != nil || menuAction != nil {
+            if viewModel.showsEdit || shareLink != nil || menuAction != nil {
                 Menu {
-                    if let link {
-                        ShareLink(item: link)
+                    if viewModel.showsEdit {
+                        Button(Strings.detailEdit, systemImage: "pencil") { viewModel.editTapped() }
+                            .disabled(!viewModel.canEdit)
+                    }
+                    if let shareLink {
+                        ShareLink(item: shareLink)
                     }
                     // The secondary moderation move shares the toolbar's
                     // enablement so it can't fire on seed data or during a
@@ -180,6 +196,7 @@ private final class StubContentRenderer: NSObject, CommentContentRendering {
         service: service,
         capabilities: CommentsCapabilityResolver(capabilities: PreviewCapabilities()),
         coordinator: coordinator,
+        draftStore: PreviewCommentDraftStore(),
         titleResolver: titleResolver
     )
     return NavigationStack {

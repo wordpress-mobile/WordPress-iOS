@@ -48,7 +48,11 @@ class BorderedButtonTableViewCell: UITableViewCell {
         // Bordered background matching the button
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage.renderBackgroundImage(fill: .clear, border: borderColor)
+        imageView.image = UIImage.renderBackgroundImage(
+            fill: .clear,
+            border: borderColor,
+            traitCollection: traitCollection
+        )
         return imageView
     }()
 
@@ -67,6 +71,18 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
         return view
     }()
+
+    // MARK: - Init
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        registerForDisplayScaleChanges()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        registerForDisplayScaleChanges()
+    }
 
     // MARK: - Configure
 
@@ -137,8 +153,26 @@ private extension BorderedButtonTableViewCell {
     }
 
     func updateButtonBorderColors() {
-        button.setBackgroundImage(.renderBackgroundImage(fill: .clear, border: borderColor), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: borderColor, border: borderColor), for: .highlighted)
+        button.setBackgroundImage(
+            .renderBackgroundImage(fill: .clear, border: borderColor, traitCollection: traitCollection),
+            for: .normal
+        )
+        button.setBackgroundImage(
+            .renderBackgroundImage(fill: borderColor, border: borderColor, traitCollection: traitCollection),
+            for: .highlighted
+        )
+    }
+
+    /// The rendered border images are one pixel wide, so re-render them when the display scale changes.
+    func registerForDisplayScaleChanges() {
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: BorderedButtonTableViewCell, _) in
+            self.updateButtonBorderColors()
+            self.loadingBackgroundView.image = UIImage.renderBackgroundImage(
+                fill: .clear,
+                border: self.borderColor,
+                traitCollection: self.traitCollection
+            )
+        }
     }
 
     struct Defaults {

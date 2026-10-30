@@ -10,17 +10,6 @@
 
 @property (nonatomic, strong, readonly) DDFileLogger * _Nonnull fileLogger;
 
-#pragma mark - Reading from the log
-
-/**
- *  @brief      Retrieves log data from the log files.
- * 
- *  @param      maxSize     The maximum number of bytes to retrieve from the log files.
- *
- *  @returns    The requested log data.
- */
-- (NSString * _Nonnull)getLogFilesContentWithMaxSize:(NSInteger)maxSize;
-
 + (void)configureLoggerLevelWithExtraDebug;
 
 /**

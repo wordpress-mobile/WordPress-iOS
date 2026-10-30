@@ -193,8 +193,13 @@ public class FilterTabBar: UIControl {
     ///
     var tabSizingStyle: TabSizingStyle = .fitting {
         didSet {
+            guard oldValue != tabSizingStyle else {
+                return
+            }
+
             updateTabSizingConstraints()
             activateTabSizingConstraints()
+            tabs.forEach(updateTitleLineBreakMode)
         }
     }
 
@@ -225,8 +230,8 @@ public class FilterTabBar: UIControl {
         }
     }
 
-    var tabButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsets
-    var tabAttributedButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsetsAttributedTitle
+    var tabButtonInsets: NSDirectionalEdgeInsets = AppearanceMetrics.buttonInsets
+    var tabAttributedButtonInsets: NSDirectionalEdgeInsets = AppearanceMetrics.buttonInsetsAttributedTitle
     var tabSeparatorPadding: CGFloat = AppearanceMetrics.buttonPadding
 
     // MARK: - Initialization
@@ -248,16 +253,18 @@ public class FilterTabBar: UIControl {
 
         divider.backgroundColor = dividerColor
         addSubview(divider)
+        // Keep the divider and the tabs out of the horizontal safe area insets
+        // (landscape, the iPhone Duo's side bar).
         NSLayoutConstraint.activate([
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
+            divider.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            divider.makeHairlineConstraint(for: divider.heightAnchor)
         ])
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
 
         scrollView.addSubview(stackView)
@@ -275,7 +282,8 @@ public class FilterTabBar: UIControl {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor)
         ])
 
-        addSubview(selectionIndicator)
+        // Inside the scroll view, so the indicator scrolls and clips with the tabs.
+        scrollView.addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
             selectionIndicator.heightAnchor.constraint(equalToConstant: AppearanceMetrics.selectionIndicatorHeight)
         ])
@@ -327,15 +335,28 @@ public class FilterTabBar: UIControl {
         tab.accessibilityValue = item.accessibilityValue
         tab.accessibilityHint = item.accessibilityHint
 
-        tab.contentEdgeInsets = item.attributedTitle != nil ?
+        var configuration = tab.configuration ?? UIButton.Configuration.plain()
+        configuration.contentInsets = item.attributedTitle != nil ?
             tabAttributedButtonInsets :
             tabButtonInsets
+        tab.configuration = configuration
+        updateTitleLineBreakMode(tab)
 
         tab.sizeToFit()
 
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
 
         return tab
+    }
+
+    /// A tab whose title can wrap makes the stack view even out the width of every
+    /// tab. Only tabs that share the width equally need to wrap.
+    private func updateTitleLineBreakMode(_ tab: UIButton) {
+        guard tab.currentAttributedTitle == nil else {
+            return
+        }
+
+        tab.configuration?.titleLineBreakMode = tabSizingStyle == .equalWidths ? .byWordWrapping : .byTruncatingTail
     }
 
     private func addColor(_ color: UIColor, toAttributedString attributedString: NSAttributedString?) -> NSAttributedString? {
@@ -384,7 +405,7 @@ public class FilterTabBar: UIControl {
             scrollView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            selectionIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor)
+            selectionIndicator.topAnchor.constraint(equalTo: stackView.topAnchor)
         ]
     }
 
@@ -395,7 +416,7 @@ public class FilterTabBar: UIControl {
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: divider.topAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            selectionIndicator.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ]
     }
 
@@ -506,16 +527,20 @@ public class FilterTabBar: UIControl {
         }
 
         let tabCenterX = scrollView.convert(tab.frame, from: stackView).midX
+        let visibleWidth = scrollView.frame.width
 
-        if tabCenterX <= bounds.midX {
+        if tabCenterX <= visibleWidth / 2 {
             // If the tab is within the first half width of the bar, scroll to the beginning
             scrollView.setContentOffset(.zero, animated: animated)
-        } else if tabCenterX > scrollView.contentSize.width - bounds.midX {
+        } else if tabCenterX > scrollView.contentSize.width - visibleWidth / 2 {
             // If the tab is within the last half width of the bar, scroll to the end
-            scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width - bounds.width, y: 0), animated: animated)
+            scrollView.setContentOffset(
+                CGPoint(x: scrollView.contentSize.width - visibleWidth, y: 0),
+                animated: animated
+            )
         } else {
             // Otherwise scroll so the tab is centered
-            let centerPoint = CGPoint(x: tabCenterX - bounds.midX, y: 0)
+            let centerPoint = CGPoint(x: tabCenterX - visibleWidth / 2, y: 0)
             scrollView.setContentOffset(centerPoint, animated: animated)
         }
     }
@@ -530,8 +555,9 @@ public class FilterTabBar: UIControl {
             AppearanceMetrics.buttonInsetsAttributedTitle :
             tabButtonInsets
 
-        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - buttonInsets.left)
-        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + buttonInsets.right)
+        let contentInsets = tab.configuration?.contentInsets ?? .zero
+        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (contentInsets.leading - buttonInsets.leading)
+        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-contentInsets.trailing + buttonInsets.trailing)
 
         selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant + tabSeparatorPadding)
         selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant - tabSeparatorPadding)
@@ -542,12 +568,11 @@ public class FilterTabBar: UIControl {
 
     private enum AppearanceMetrics {
         static let height: CGFloat = 46.0
-        static let bottomDividerHeight: CGFloat = .hairlineBorderWidth
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
-        static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
+        static let buttonInsets = NSDirectionalEdgeInsets(top: 14.0, leading: 12.0, bottom: 14.0, trailing: 12.0)
         static let buttonPadding: CGFloat = 0.0
-        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 2.0, bottom: 10.0, right: 2.0)
+        static let buttonInsetsAttributedTitle = NSDirectionalEdgeInsets(top: 10.0, leading: 2.0, bottom: 10.0, trailing: 2.0)
     }
 
     private enum SelectionAnimation {
@@ -594,13 +619,27 @@ private class TabBarButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setFont()
+        configureAppearance()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
 
+        configureAppearance()
+    }
+
+    private func configureAppearance() {
         setFont()
+
+        // A plain configuration tints the background of a selected button. A clear
+        // background configuration alone keeps the tint, so the colours are cleared
+        // on every configuration update.
+        configurationUpdateHandler = { button in
+            var background = UIBackgroundConfiguration.clear()
+            background.backgroundColor = .clear
+            button.configuration?.background = background
+            button.configuration?.baseBackgroundColor = .clear
+        }
     }
 
     override var isSelected: Bool {
@@ -609,12 +648,19 @@ private class TabBarButton: UIButton {
         }
     }
 
+    /// A button configuration replaces the title label font, so the font is applied
+    /// through the title attributes. An attributed title keeps its own fonts.
     private func setFont() {
-        if isSelected {
-            titleLabel?.font = selectedFont
-        } else {
-            titleLabel?.font = font
+        var configuration = self.configuration ?? UIButton.Configuration.plain()
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { [weak self] attributes in
+            guard let self, currentAttributedTitle == nil else {
+                return attributes
+            }
+            var attributes = attributes
+            attributes.font = isSelected ? selectedFont : font
+            return attributes
         }
+        self.configuration = configuration
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

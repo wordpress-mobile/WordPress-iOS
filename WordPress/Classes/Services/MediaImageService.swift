@@ -9,12 +9,12 @@ final class MediaImageService {
     static let shared = MediaImageService()
 
     private let cache: MemoryCache
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let mediaFileManager: MediaFileManager
     private let downloader: ImageDownloader
 
     init(cache: MemoryCache = .shared,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         coreDataStack: CoreDataStack = ContextManager.shared,
          mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache),
          downloader: ImageDownloader = .shared) {
         self.cache = cache
@@ -204,7 +204,7 @@ final class MediaImageService {
 
     @MainActor
     private func makeThumbnailExporter(for media: SafeMedia, size: ImageSize) -> MediaThumbnailExporter {
-        let exporter = MediaThumbnailExporter()
+        let exporter = MediaThumbnailExporter(traitCollection: .largestDisplayScale)
         exporter.mediaDirectoryType = .cache
         exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
         exporter.options.scale = 1 // In pixels
@@ -222,18 +222,24 @@ final class MediaImageService {
                 return completion(nil)
             }
 
-            // Fixes the following React Native issue https://github.com/facebook/react-native/issues/42234
-            // where it'll fail to display local images with no path extension.
+            // React Native won't display local files without an extension
+            // (https://github.com/facebook/react-native/issues/42234), so return
+            // a copy of the cached thumbnail under the export's original name.
+            // The copy stays in the media cache directory, where
+            // `Media.absoluteThumbnailLocalURL` resolves saved file names.
+            // On APFS the copy is a clone that shares storage with the cached file.
             //
-            // This workaround creates a temporary symlink that has a file extension.
-            let tempDirectoryURL = URL.Helpers.temporaryDirectory(named: "org.automattic.MediaImageServiceSymlinks")
-            try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
-
-            let symlink = tempDirectoryURL
-                .appendingPathComponent(export.url.lastPathComponent)
-            try FileManager.default.createSymbolicLink(at: symlink, withDestinationURL: thumbnailURL)
-
-            completion(symlink)
+            // The export file still exists when it couldn't be moved to the cache
+            // because a cached thumbnail already existed.
+            do {
+                if !FileManager.default.fileExists(atPath: export.url.path) {
+                    try FileManager.default.copyItem(at: thumbnailURL, to: export.url)
+                }
+                completion(export.url)
+            } catch {
+                Loggers.app.error("Failed to copy the thumbnail: \(error)")
+                completion(nil)
+            }
         }
     }
 
@@ -266,7 +272,13 @@ final class MediaImageService {
         let targetSize = await MediaImageService.getThumbnailSize(for: media, size: size)
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
-            guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize, blog: blog) else { return nil }
+            guard
+                let imageURL = media.getRemoteThumbnailURL(
+                    targetSize: targetSize,
+                    blog: blog,
+                    traitCollection: .largestDisplayScale
+                )
+            else { return nil }
             return RemoteImageInfo(imageURL: imageURL, host: MediaHost(blog))
         }
     }
@@ -348,29 +360,26 @@ extension MediaImageService {
         return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
     }
 
-    /// Returns a preferred thumbnail size (in pixels) optimized for the device.
+    /// Returns a preferred thumbnail size (in pixels).
+    ///
+    /// The sizes are fixed, so they don't depend on the screen or the window
+    /// that displays the thumbnail. Each one is large enough for the largest
+    /// display it's used on, so thumbnails are sharp everywhere.
     ///
     /// - important: It makes sure the app uses the same thumbnails across
     /// different screens and presentation modes to avoid fetching and caching
     /// more than one version of the same image.
-    @MainActor
     private static func getPreferredThumbnailSize(for thumbnail: ImageSize) -> CGSize {
-        let minScreenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
         switch thumbnail {
         case .small:
-            /// The size is calculated to fill a collection view cell, assuming the app
-            /// displays a 4 or 5 cells in one row. The cell size can vary depending
-            /// on whether the device is in landscape or portrait mode, but the thumbnail size is
-            /// guaranteed to always be the same across app launches and optimized for
-            /// a portraint (dominant) mode.
-            let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
-            let availableWidth = minScreenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
-            let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
-            let targetSize = CGSize(width: targetSide, height: targetSide)
-            return targetSize.scaled(by: UIScreen.main.scale)
+            /// Fills a cell of the media grid in `SiteMediaCollectionViewController`
+            /// in either orientation. The largest cell is on an iPhone Pro Max in
+            /// landscape: 190 pt at 3x, or 569 px. On a 13-inch iPad in landscape,
+            /// a full-width grid has 274 pt cells at 2x, or 547 px.
+            return CGSize(width: 576, height: 576)
         case .large:
-            let side = min(1024, minScreenSide * UIScreen.main.scale)
-            return CGSize(width: side, height: side)
+            /// Fills the screen of an iPhone, or a large part of an iPad's.
+            return CGSize(width: 1024, height: 1024)
         case .original:
             assertionFailure("Unsupported thumbnail size")
             return CGSize(width: 2048, height: 2048)
@@ -435,14 +444,21 @@ private final class SafeMedia {
     /// Returns the thumbnail remote URL with a given target size. It uses
     /// Image CDN (formerly Photon) if available.
     ///
-    /// - parameter targetSize: Target size in pixels.
-    func getRemoteThumbnailURL(targetSize: CGSize, blog: Blog) -> URL? {
+    /// - parameters:
+    ///   - targetSize: Target size in pixels.
+    ///   - traitCollection: The trait collection that provides the display scale.
+    func getRemoteThumbnailURL(targetSize: CGSize, blog: Blog, traitCollection: UITraitCollection) -> URL? {
         switch mediaType {
         case .image:
             guard let remoteURL = remoteURL.flatMap(URL.init) else {
                 return nil
             }
-            return MediaImageService.getResizedImageURL(for: remoteURL, blog: blog, size: targetSize)
+            return MediaImageService.getResizedImageURL(
+                for: remoteURL,
+                blog: blog,
+                size: targetSize,
+                traitCollection: traitCollection
+            )
         default:
             return remoteThumbnailURL.flatMap(URL.init)
         }
@@ -456,8 +472,14 @@ extension MediaImageService {
     /// - parameters:
     ///   - blog: The blog that hosts the image.
     ///   - size: Target size in pixels.
-    static func getResizedImageURL(for imageURL: URL, blog: Blog, size: CGSize) -> URL {
-        let scale = UIScreen.main.scale
+    ///   - traitCollection: The trait collection of the view that displays the image.
+    static func getResizedImageURL(
+        for imageURL: URL,
+        blog: Blog,
+        size: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL {
+        let scale = traitCollection.displayScale
         var targetSize = size
         // Download a non-retina version for GIFs: makes a massive difference
         // in terms of size. Example: 2.4 MB -> 350 KB.
@@ -469,8 +491,8 @@ extension MediaImageService {
         if !blog.isEligibleForPhoton {
             return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: imageURL)
         } else {
-            let targetSize = targetSize.scaled(by: 1.0 / UIScreen.main.scale)
-            return PhotonImageURLHelper.photonURL(with: targetSize, forImageURL: imageURL)
+            let targetSize = targetSize.scaled(by: 1.0 / scale)
+            return PhotonImageURLHelper.photonURL(with: targetSize, forImageURL: imageURL, traitCollection: traitCollection)
         }
     }
 }

@@ -64,18 +64,15 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell, NibLoadab
         filterLabel.isGhostableDisabled = true
         checkmark.isGhostableDisabled = true
         pillBackgroundView.layer.masksToBounds = true
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+            self.updateSelectedStyle()
+        }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         filter = nil
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            updateSelectedStyle()
-        }
     }
 
     private func updateSelectedStyle() {

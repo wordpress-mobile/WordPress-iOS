@@ -39,7 +39,7 @@ class JetpackRemoteInstallStateView: UIViewController {
     }
 
     func toggleHidingImageView(for collection: UITraitCollection) {
-        imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
+        imageView.isHidden = collection.verticalSizeClass == .compact
     }
 
     func configure(with viewModel: JetpackRemoteInstallStateViewModel) {
@@ -69,12 +69,31 @@ private extension JetpackRemoteInstallStateView {
         descriptionLabel.adjustsFontForContentSizeCategory = true
         descriptionLabel.textColor = Constants.Description.color
 
-        configureTitleLabel(for: mainButton, font: Constants.MainButton.font)
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = Constants.MainButton.contentInsets
+        configuration.baseForegroundColor = Constants.MainButton.titleColor
+        configuration.titleAlignment = .center
+        configuration.titleLineBreakMode = .byWordWrapping
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = Constants.MainButton.font
+            return attributes
+        }
+        mainButton.configuration = configuration
+        mainButton.configurationUpdateHandler = { button in
+            var configuration = button.configuration
+            configuration?.background.image =
+                button.isEnabled
+                ? Constants.MainButton.normalBackground(traitCollection: button.traitCollection)
+                : Constants.MainButton.loadingBackground(traitCollection: button.traitCollection)
+            button.configuration = configuration
+        }
+        // The background images are rendered for one display scale, so rebuild the configuration when it changes.
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: JetpackRemoteInstallStateView, _) in
+            self.mainButton.setNeedsUpdateConfiguration()
+        }
         mainButton.setTitleColor(Constants.MainButton.titleColor, for: .normal)
         mainButton.setTitle(String(), for: .disabled)
-        mainButton.setBackgroundImage(Constants.MainButton.normalBackground, for: .normal)
-        mainButton.setBackgroundImage(Constants.MainButton.loadingBackground, for: .disabled)
-        mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         mainButton.addSubview(activityIndicator)
         mainButton.pinSubviewAtCenter(activityIndicator)
@@ -129,8 +148,13 @@ private extension JetpackRemoteInstallStateView {
         }
 
         struct MainButton {
-            static let normalBackground = UIImage.renderBackgroundImage(fill: UIAppColor.primary)
-            static let loadingBackground = UIImage.renderBackgroundImage(fill: UIAppColor.jetpackGreen(.shade70))
+            static let contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 20, bottom: 12, trailing: 20)
+            static func normalBackground(traitCollection: UITraitCollection) -> UIImage {
+                UIImage.renderBackgroundImage(fill: UIAppColor.primary, traitCollection: traitCollection)
+            }
+            static func loadingBackground(traitCollection: UITraitCollection) -> UIImage {
+                UIImage.renderBackgroundImage(fill: UIAppColor.jetpackGreen(.shade70), traitCollection: traitCollection)
+            }
             static let titleColor = UIColor.white
             static let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
             static let activityIndicatorColor = UIColor.white

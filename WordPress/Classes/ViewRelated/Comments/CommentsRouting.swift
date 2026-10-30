@@ -22,7 +22,7 @@ enum CommentsRouting {
     static func makeViewController(for blog: Blog) -> UIViewController? {
         guard FeatureFlag.commentsV2.enabled,
             let site = try? WordPressSite(blog: blog),
-            case .selfHosted = site.flavor
+            case .selfHosted(let credentials) = site.flavor
         else {
             return nil
         }
@@ -31,7 +31,8 @@ enum CommentsRouting {
             client: client,
             makeContentRenderer: { CommentsWebContentRendererAdapter() },
             tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
-            noticePresenter: NoticePresenterAdapter()
+            noticePresenter: NoticePresenterAdapter(),
+            draftStore: UserDefaultsCommentDraftStore(siteURL: site.siteURL, username: credentials.username)
         )
     }
 }

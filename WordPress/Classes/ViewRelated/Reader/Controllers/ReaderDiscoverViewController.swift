@@ -15,8 +15,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private let tags: ManagedObjectsObserver<ReaderTagTopic>
     private let viewContext: NSManagedObjectContext
     private var cancellables: [AnyCancellable] = []
-    private let notificationsButtonViewModel = NotificationsButtonViewModel()
-    private var notificationsButtonCancellable: AnyCancellable?
+    private let notificationsBarButton = ReaderNotificationsBarButton()
+    private weak var notificationsItem: UIBarButtonItem?
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
@@ -40,6 +40,10 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         setupNavigation()
         setupHeaderView()
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.setupNotificationsBarButtonItem()
+        }
+
         configureStream(for: selectedChannel)
 
         showSelectInterestsIfNeeded()
@@ -52,29 +56,37 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         trackDiscoverTab(selectedChannel)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        setupNotificationsBarButtonItem()
-    }
-
     private func setupNavigation() {
         navigationItem.largeTitleDisplayMode = .never
         setupNotificationsBarButtonItem()
     }
 
+    /// The bell for the current layout. The tap reads it too, so it acts on the layout the
+    /// bell is shown in.
+    private var notificationsBell: ReaderNotificationsBell {
+        ReaderNotificationsBell(
+            showsPopoverInRegularWidth: true,
+            horizontalSizeClass: traitCollection.horizontalSizeClass
+        )
+    }
+
+    /// Replaces only the bell, keeping the items that subclasses add.
     private func setupNotificationsBarButtonItem() {
-        notificationsButtonCancellable = nil
-        if traitCollection.horizontalSizeClass == .regular {
-            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
-                guard let self else { return }
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
-            }
+        var items = navigationItem.rightBarButtonItems ?? []
+        items.removeAll { $0 === notificationsItem }
+        notificationsItem = notificationsBarButton.makeItem(
+            for: notificationsBell,
+            target: self,
+            action: #selector(buttonShowNotificationsTapped)
+        )
+        if let notificationsItem {
+            items.insert(notificationsItem, at: 0)
         }
+        navigationItem.rightBarButtonItems = items
     }
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
-        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
+        notificationsBell.open(from: self, sourceItem: sender)
     }
 
     private func setupHeaderView() {

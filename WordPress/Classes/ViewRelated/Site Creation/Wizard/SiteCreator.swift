@@ -8,7 +8,6 @@ import WordPressKit
 final class SiteCreator {
 
     // MARK: Properties
-    var segment: SiteSegment?
     var design: RemoteSiteDesign?
     var vertical: SiteIntentVertical?
     var information: SiteInformation?
@@ -24,7 +23,7 @@ final class SiteCreator {
     func build() -> SiteCreationRequest {
 
         let request = SiteCreationRequest(
-            segmentIdentifier: segment?.identifier,
+            segmentIdentifier: nil,
             siteDesign: design?.slug ?? Strings.defaultDesignSlug,
             verticalIdentifier: vertical?.slug,
             title: information?.title ?? "",

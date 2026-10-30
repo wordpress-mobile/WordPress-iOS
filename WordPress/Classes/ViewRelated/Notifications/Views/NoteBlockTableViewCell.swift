@@ -4,9 +4,12 @@ import WordPressShared
 
 class NoteBlockTableViewCell: WPTableViewCell {
 
-    /// Represents the (full, side to side) Separator Insets
+    /// Represents the (full, side to side) Separator Insets. They stop at the safe area, so the
+    /// separator stays clear of the iPhone Duo's side strip and the sensor housing in landscape.
     ///
-    private let fullSeparatorInsets = UIEdgeInsets.zero
+    var fullSeparatorInsets: UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: safeAreaInsets.left, bottom: 0, right: safeAreaInsets.right)
+    }
 
     /// Indicates if the receiver represents a Badge Block
     ///
@@ -49,10 +52,22 @@ class NoteBlockTableViewCell: WPTableViewCell {
         refreshSeparators()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        preservesSuperviewLayoutMargins = true
+        selectionStyle = .blue
+        contentView.isOpaque = false
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+        contentView.preservesSuperviewLayoutMargins = true
+
         backgroundView = separatorsView
         backgroundColor = .secondarySystemGroupedBackground
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Public API
@@ -77,6 +92,6 @@ class NoteBlockTableViewCell: WPTableViewCell {
     }
 
     @objc class func reuseIdentifier() -> String {
-        return classNameWithoutNamespaces()
+        classNameWithoutNamespaces()
     }
 }

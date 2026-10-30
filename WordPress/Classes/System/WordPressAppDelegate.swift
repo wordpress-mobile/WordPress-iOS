@@ -41,6 +41,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // Recover by creating the window now: `WordPressSceneDelegate` attaches it to
             // the scene once one connects.
             assertionFailure("windowManager accessed before any scene connected")
+            // TODO: Modernization - Replace with UIWindow(windowScene:) once this fallback can receive the
+            // connecting UIWindowScene (e.g. by moving window creation into
+            // WordPressSceneDelegate.scene(_:willConnectTo:options:)). Do not look the scene up via
+            // UIApplication.shared.connectedScenes here.
             window = UIWindow(frame: UIScreen.main.bounds)
         }
         let window = window!
@@ -99,6 +103,12 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 ExtensiveLogger(label: label)
             ])
         }
+
+        // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPSetLoggingDelegate(libraryLogger)
 
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
@@ -224,7 +234,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
+        SiteStorageAccess.removePinnedPostTypes()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
+        NotificationActivityService.shared.start()
         setupPingHub()
         setupBackgroundRefresh(application)
         // The notice presenter must exist from process launch: background launches
@@ -371,10 +383,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
-        let libraryLogger = WordPressLibraryLogger()
-        TracksLogging.delegate = libraryLogger
-        WPKitSetLoggingDelegate(libraryLogger)
-        WPSetLoggingDelegate(libraryLogger)
         printDebugLaunchInfo()
         toggleExtraDebuggingIfNeeded()
 
@@ -746,7 +754,6 @@ extension WordPressAppDelegate {
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
-        SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjackSwift.dynamicLogLevel = level
     }
 
@@ -790,6 +797,9 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupWordPressExtensions()
             AccountService.loadDefaultAccountCookies()
+            // Flags can target an account. Without this fetch, the new account's flags
+            // wait for the next foreground or launch.
+            updateFeatureFlags()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()

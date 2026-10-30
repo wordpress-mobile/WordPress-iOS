@@ -79,7 +79,8 @@ extension Xcodeproj {
         case .projectRoot:
             return object.path.map { URL(fileURLWithPath: $0, relativeTo: projectDirectory) } ?? projectDirectory
         case .buildProductsDir, .devDir, .sdkDir:
-            print("\(self.projectURL.path): warning: Reference \(objectUUID) is relative to \(object.sourceTree.rawValue), which is not supported by the linter")
+            // Those source trees point outside the source directory (e.g. the generated `Secrets-*.swift`
+            // files), so there is nothing for the linter to scan. Skip them without reporting.
             return nil
         }
     }

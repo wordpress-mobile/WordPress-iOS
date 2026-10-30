@@ -119,8 +119,8 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         notificationsVC.enableLargeTitles()
 
-        notificationsButtonViewModel.$counter.sink { [weak notificationsVC] count in
-            let image = UIImage(named: count == 0 ? "tab-bar-notifications" : "tab-bar-notifications-unread")
+        notificationsButtonViewModel.$hasNewActivity.sink { [weak notificationsVC] hasNewActivity in
+            let image = UIImage(named: hasNewActivity ? "tab-bar-notifications-unread" : "tab-bar-notifications")
             notificationsVC?.tabBarItem.image = image
             notificationsVC?.tabBarItem.selectedImage = image
         }.store(in: &cancellables)
@@ -136,18 +136,11 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "tab-bar-me"),
             selectedImage: UIImage(named: "tab-bar-me")
         )
-        // TODO: (reader) observe gravatar updates
-        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
-           let avatarURL = account.avatarURL.flatMap(URL.init) {
-            Task { @MainActor [weak meVC] in
-                do {
-                    let image = try await ImageDownloader.shared.image(from: avatarURL)
-                    meVC?.tabBarItem.configureGravatarImage(image)
-                } catch {
-                    // Do nothing
-                }
+        AccountAvatar.shared.$image
+            .sink { [weak meVC] avatar in
+                meVC?.tabBarItem.configureAccountAvatar(avatar)
             }
-        }
+            .store(in: &cancellables)
         return UINavigationController(rootViewController: meVC)
     }
 

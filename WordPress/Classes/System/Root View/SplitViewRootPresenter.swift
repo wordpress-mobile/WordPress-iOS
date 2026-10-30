@@ -12,6 +12,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private let splitVC = UISplitViewController(style: .tripleColumn)
     private let tabBarVC: WPTabBarController
     private weak var sitePickerPopoverVC: UIViewController?
+    private weak var notificationsPosterVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
     private var siteContent: SiteSplitViewContent?
@@ -23,7 +24,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
     private var isDisplayingTabBar: Bool {
         if splitVC.isCollapsed {
-            wpAssert(splitVC.viewController(for: .compact) == tabBarVC, "Split view is collapsed, but is not displaying the tab bar view controller")
+            wpAssert(
+                splitVC.viewController(for: .compact) == tabBarVC,
+                "Split view is collapsed, but is not displaying the tab bar view controller"
+            )
             return true
         }
 
@@ -31,7 +35,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     init() {
-        tabBarVC = WPTabBarController(staticScreens: false)
+        // Outside `staticScreensWithReader`, the compact layout shows live tabs whatever the app UI
+        // type is. That predates `staticScreensWithReader` and is kept as is.
+        tabBarVC = WPTabBarController(
+            staticReader: false,
+            staticNotifications: JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
+        )
 
         splitVC.delegate = self
         splitVC.view.accessibilityIdentifier = "root_vc"
@@ -42,12 +51,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         splitVC.setViewController(tabBarVC, for: .compact)
 
-        NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification).sink { [weak self] in
-            guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
-                return wpAssertionFailure("invalid notification")
+        NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification)
+            .sink { [weak self] in
+                guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
+                    return wpAssertionFailure("invalid notification")
+                }
+                self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
             }
-            self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
-        }.store(in: &cancellables)
+            .store(in: &cancellables)
 
         // -warning: List occasionally sets the selection to `nil` when switching items.
         sidebarViewModel.$selection.compactMap { $0 }
@@ -180,8 +191,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         // Automatically switch to a site or show the sign in screen, when the current blog is removed.
 
         guard let blog = self.currentlyVisibleBlog(),
-              let deleted = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
-              deleted.contains(blog)
+            let deleted = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
+            deleted.contains(blog)
         else {
             return
         }
@@ -273,8 +284,46 @@ final class SplitViewRootPresenter: RootViewPresenter {
     // MARK: RootViewPresenter (Notifications)
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
+        // These requests come from account-level entrances (Spotlight, links, settings).
+        // `staticScreensWithReader` has no account-level list, so they land on the Moved-to-Jetpack
+        // poster: the tab bar's Notifications tab, or a sheet in the split view, which has no
+        // Notifications row.
+        if JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
+            if splitVC.isCollapsed {
+                tabBarVC.showNotificationsTab(completion: completion)
+            } else {
+                showNotificationsPoster()
+            }
+            return
+        }
+
         sidebarViewModel.selection = .notifications
         completion?(notificationsContent.notificationsViewController)
+    }
+
+    private func showNotificationsPoster() {
+        // Each account-level entrance would otherwise stack another poster.
+        guard notificationsPosterVC?.presentingViewController == nil else {
+            return
+        }
+        let posterVC = MovedToJetpackViewController(source: .notifications)
+        let navigationVC = UINavigationController(rootViewController: posterVC)
+        posterVC.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction { [weak navigationVC] _ in
+                navigationVC?.dismiss(animated: true)
+            }
+        )
+        navigationVC.modalPresentationStyle = .formSheet
+        notificationsPosterVC = navigationVC
+        // An entrance such as the iOS Settings link can arrive while a sheet is up.
+        splitVC.topmostPresentedViewController.present(navigationVC, animated: true)
+    }
+
+    func appUITypeDidChange() {
+        // Signing in from the sidebar can switch to `staticScreensWithReader` without rebuilding
+        // this presenter, and a failed site sync skips the sign-in completion that reloads the tabs.
+        tabBarVC.shouldUseStaticNotifications = JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader()
     }
 
     // MARK: RootViewPresenter (Me)
@@ -288,10 +337,16 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let meVC = MeViewController()
         meVC.isSidebarModeEnabled = true
         meVC.navigationItem.rightBarButtonItem = {
-            let button = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: .init { [weak self] _ in
-                self?.splitVC.dismiss(animated: true)
-            })
-            button.setTitleTextAttributes([.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)], for: .normal)
+            let button = UIBarButtonItem(
+                title: SharedStrings.Button.done,
+                primaryAction: .init { [weak self] _ in
+                    self?.splitVC.dismiss(animated: true)
+                }
+            )
+            button.setTitleTextAttributes(
+                [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)],
+                for: .normal
+            )
             return button
         }()
 
@@ -313,32 +368,35 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
     // TODO: refactor this
     func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
         // Make sure the tab bar controller (displayed in compact mode) shows the same blog as the one in split view.
+        // This only keeps the layouts in sync, so it leaves an open editor or Site Creation on screen.
         if let blog = siteContent?.blog, tabBarVC.mySitesCoordinator.currentBlog != siteContent?.blog {
-            tabBarVC.mySitesCoordinator.showBlogDetails(for: blog)
+            tabBarVC.mySitesCoordinator.switchToBlog(blog)
         }
 
         switch sidebarViewModel.selection {
         case .blog:
             break
         case .reader:
-            if let selection = readerPresenter.sidebar.viewModel.selection {
-                switch selection {
-                case .main(let readerStaticScreen):
-                    switch readerStaticScreen {
-                    case .recent: tabBarVC.showReader(path: .recent)
-                    case .discover: tabBarVC.showReader(path: .discover)
-                    case .saved: tabBarVC.showReader()
-                    case .likes: tabBarVC.showReader(path: .likes)
-                    case .search: tabBarVC.showReader(path: .search)
-                    case .subscrtipions, .lists, .tags:
-                        wpAssertionFailure("not supported by Jetpack")
-                    }
-                case .allSubscriptions:
-                    tabBarVC.showReader(path: .subscriptions)
-                default:
-                    tabBarVC.showReader()
+            guard let selection = readerPresenter.sidebar.viewModel.selection else { break }
+            let path: ReaderNavigationPath?
+            switch selection {
+            case .main(let readerStaticScreen):
+                switch readerStaticScreen {
+                case .recent: path = .recent
+                case .discover: path = .discover
+                case .saved: path = nil
+                case .likes: path = .likes
+                case .search: path = .search
+                case .subscrtipions, .lists, .tags:
+                    return wpAssertionFailure("not supported by Jetpack")
                 }
+            case .allSubscriptions:
+                path = .subscriptions
+            default:
+                path = nil
             }
+            // Not animated, because the split view can't expand again while a push is in flight.
+            tabBarVC.showReader(path: path, animated: false)
         case .notifications:
             tabBarVC.showNotificationsTab()
         default:
@@ -349,8 +407,9 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
     func splitViewControllerDidExpand(_ svc: UISplitViewController) {
         // Make sure the split view shows the same blog as the tab bar controller (displayed in the compact mode)
         if let blog = tabBarVC.mySitesCoordinator.currentBlog,
-           case let .blog(blogID) = sidebarViewModel.selection,
-           blog.objectID != blogID.objectID {
+            case let .blog(blogID) = sidebarViewModel.selection,
+            blog.objectID != blogID.objectID
+        {
             sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
         }
     }

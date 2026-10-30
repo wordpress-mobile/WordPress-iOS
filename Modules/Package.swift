@@ -20,6 +20,7 @@ let package = Package(
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
         .library(name: "Support", targets: ["Support"]),
+        .library(name: "TextBundle", targets: ["TextBundle"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
@@ -34,7 +35,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
-        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.5.2"),
@@ -66,7 +66,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.8.0"
+            exact: "0.9.1"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
@@ -218,7 +218,9 @@ let package = Package(
             name: "Support",
             dependencies: [
                 "AsyncImageKit",
-                "WordPressCoreProtocols"
+                "DesignSystem",
+                "WordPressCoreProtocols",
+                "WordPressUI"
             ]
         ),
         .target(name: "TextBundle"),
@@ -233,6 +235,7 @@ let package = Package(
             dependencies: [
                 "WordPressCoreProtocols",
                 "WordPressShared",
+                .product(name: "Logging", package: "swift-log"),
                 .product(name: "WordPressAPI", package: "wordpress-rs")
             ]
         ),
@@ -419,7 +422,11 @@ let package = Package(
         ),
         .testTarget(
             name: "WordPressUIUnitTests",
-            dependencies: [.target(name: "WordPressUI"), .target(name: "WordPressSharedUI")],
+            dependencies: [
+                .target(name: "WordPressUI"),
+                .target(name: "WordPressSharedUI"),
+                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
@@ -433,6 +440,13 @@ let package = Package(
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")]),
+        .testTarget(
+            name: "SupportTests",
+            dependencies: [
+                .target(name: "Support"),
+                .target(name: "WordPressCoreProtocols")
+            ]
+        ),
         .testTarget(
             name: "JetpackSocialTests",
             dependencies: [
@@ -537,7 +551,6 @@ enum XcodeSupport {
             "WordPressCore",
             "WordPressKit",
             "WordPressData",
-            .product(name: "Alamofire", package: "Alamofire"),
             .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
             .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
             .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),

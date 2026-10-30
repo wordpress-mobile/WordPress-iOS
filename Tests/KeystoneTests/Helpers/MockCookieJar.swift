@@ -5,10 +5,6 @@ import WebKit
 class MockCookieJar: HTTPCookieStorage {
     var _cookies = [HTTPCookie]()
 
-    override func cookies(for URL: URL) -> [HTTPCookie]? {
-        return _cookies
-    }
-
     override var cookies: [HTTPCookie]? {
         return _cookies
     }
@@ -28,12 +24,18 @@ class MockCookieJar: HTTPCookieStorage {
 }
 
 fileprivate func wordPressCookie(username: String, domain: String) -> HTTPCookie {
+    // Mirrors the real cookie format: WordPress sets `username|expiration|token|hmac`
+    // and PHP's `setcookie()` URL-encodes the value, so `|` arrives as `%7C` and the
+    // username itself is percent-encoded (with spaces as `+`).
+    let encodedUsername = username
+        .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?
+        .replacingOccurrences(of: "%20", with: "+") ?? username
     return HTTPCookie(properties: [
         .domain: domain,
         .path: "/",
         .secure: true,
         .name: "wordpress_logged_in",
-        .value: "\(username)%00000"
+        .value: "\(encodedUsername)%7C00000"
     ])!
 }
 
@@ -49,12 +51,12 @@ extension HTTPCookieStorage {
 }
 
 extension WKHTTPCookieStore {
-    func setWordPressCookie(username: String, domain: String) {
+    func setWordPressCookie(username: String, domain: String, completion: @escaping () -> Void) {
         let cookie = wordPressCookie(username: username, domain: domain)
-        setCookie(cookie)
+        setCookie(cookie, completionHandler: completion)
     }
 
-    func setWordPressComCookie(username: String) {
-        setWordPressCookie(username: username, domain: ".wordpress.com")
+    func setWordPressComCookie(username: String, completion: @escaping () -> Void) {
+        setWordPressCookie(username: username, domain: ".wordpress.com", completion: completion)
     }
 }

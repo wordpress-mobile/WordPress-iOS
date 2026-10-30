@@ -1,9 +1,9 @@
 import Foundation
+import UIKit
 import WordPressKit
 
 struct SiteDesignSection: CategorySection {
     var designs: [RemoteSiteDesign]
-    var thumbnailSize: CGSize
 
     var caption: String?
     var categorySlug: String
@@ -13,16 +13,25 @@ struct SiteDesignSection: CategorySection {
     var thumbnails: [Thumbnail] { designs }
 
     var sectionType: SiteDesignSectionType = .standard
+
+    /// The horizontal size class of the window that displays the section. Set it before display:
+    /// `thumbnailSize` follows it.
+    var windowSizeClass: UIUserInterfaceSizeClass = .unspecified
+
+    var thumbnailSize: CGSize {
+        let thumbnailSize: SiteDesignCategoryThumbnailSize = sectionType == .recommended ? .recommended : .category
+        return thumbnailSize.value(for: windowSizeClass)
+    }
 }
 
 extension SiteDesignSection {
-    init(category: RemoteSiteDesignCategory,
-         designs: [RemoteSiteDesign],
-         thumbnailSize: CGSize,
-         sectionType: SiteDesignSectionType = .standard) {
+    init(
+        category: RemoteSiteDesignCategory,
+        designs: [RemoteSiteDesign],
+        sectionType: SiteDesignSectionType = .standard
+    ) {
 
         self.designs = designs
-        self.thumbnailSize = thumbnailSize
         self.categorySlug = category.slug
         self.title = category.title
         self.emoji = category.emoji

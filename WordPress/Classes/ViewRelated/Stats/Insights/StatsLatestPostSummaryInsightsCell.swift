@@ -178,12 +178,13 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         noDataLabel.numberOfLines = 0
         noDataLabel.text = TextContent.noData
 
-        createPostButton.setImage(.gridicon(.create), for: .normal)
-        createPostButton.setTitle(TextContent.createPost, for: .normal)
-
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = .gridicon(.create)
+        configuration.title = TextContent.createPost
         // Increase the padding between the image and title of the button
-        createPostButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: Metrics.createPostButtonInset, bottom: 0, right: -Metrics.createPostButtonInset)
-        createPostButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: Metrics.createPostButtonInset)
+        configuration.imagePadding = Metrics.createPostButtonInset
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Metrics.createPostButtonInset)
+        createPostButton.configuration = configuration
 
         createPostButton.addTarget(self, action: #selector(createPostTapped), for: .touchUpInside)
     }

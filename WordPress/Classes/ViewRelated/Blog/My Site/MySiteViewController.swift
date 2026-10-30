@@ -287,7 +287,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// `viewDidAppear(_:)` to quickly refresh the navigation bar so that it's expanded.
     ///
     private func workaroundLargeTitleCollapseBug() {
-        guard !splitViewControllerIsHorizontallyCompact else {
+        guard splitViewController?.isCollapsed == false else {
             return
         }
 
@@ -301,7 +301,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
 
-        if isSidebarModeEnabled {
+        // `staticScreensWithReader` hides the bell so that Reader is the only entrance to the
+        // Reader notifications list.
+        if isSidebarModeEnabled && !JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
             notificationsButtonViewModel.$image
                 .sink { [weak self] in
                     guard let self else { return }
@@ -400,7 +402,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             : viewModel.getSection(
                 for: blog,
                 jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-                splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
+                showsSingleColumn: splitViewController?.isCollapsed ?? true
             )
 
         self.currentSection = section

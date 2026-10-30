@@ -49,6 +49,7 @@ final class CommentDetailViewModel: ObservableObject {
     /// spinner and gates the toolbar synchronously (the coordinator's
     /// `isMutating` only flips after the first suspension).
     @Published private(set) var pendingAction: CommentModerationAction?
+    @Published var composer: CommentComposerViewModel? // non-nil = the composer sheet is presented
     /// Set by a `.deleted` event (a confirmed delete), which turns the toolbar
     /// off and makes the view dismiss itself. Cleared by a successful
     /// authoritative fetch or a later status change proving the comment exists
@@ -91,6 +92,46 @@ final class CommentDetailViewModel: ObservableObject {
         actionableDetail != nil && pendingAction == nil
     }
 
+    /// Whether the Reply button renders. Reads the same seed-or-fetched status
+    /// the toolbar does, so the button appears as soon as the capability
+    /// resolves instead of after the whole load; `canReply` enables it.
+    var showsReply: Bool {
+        switch toolbarModel {
+        case .approved, .pending: true
+        case .inBin, .hidden: false
+        }
+    }
+
+    /// Reply is reachable only for an active (approved/pending) comment, and
+    /// only behind the moderation toolbar gate: the reply chain assumes a
+    /// moderator (core auto-approves the reply; a pending parent is approved
+    /// alongside it). Non-moderator reply is a follow-up that needs its own
+    /// capability check and a chain that doesn't assume auto-approval.
+    var canReply: Bool {
+        showsReply && isToolbarEnabled
+    }
+
+    /// Whether the Edit menu item renders: the toolbar's seed-or-fetched gate
+    /// (moderator, modeled status), so it appears with the toolbar rather than
+    /// after the whole load; `canEdit` enables it.
+    var showsEdit: Bool {
+        toolbarModel != .hidden
+    }
+
+    /// The permalink to share, or nil. Only a publicly visible (approved)
+    /// comment is shareable. Sharing needs no authoritative truth, so the
+    /// seed's link serves until the fetch lands.
+    var shareLink: URL? {
+        guard header?.status == .approved else { return nil }
+        return loadedDetail?.link ?? seed?.link
+    }
+
+    /// Edit context (and thus `contentRaw`) is already required by
+    /// `showsToolbar`; the modeled-status restriction comes from `showsEdit`.
+    var canEdit: Bool {
+        showsEdit && isToolbarEnabled
+    }
+
     var trashConfirmation: TrashConfirmation {
         switch numberOfReplies {
         case .none: .generic
@@ -109,10 +150,51 @@ final class CommentDetailViewModel: ObservableObject {
         return loadedDetail
     }
 
+    /// Presents the composer in reply mode. A no-op unless `canReply` (which
+    /// already covers "no mutation in flight" via `isToolbarEnabled`).
+    func replyTapped() {
+        guard canReply, let detail = loadedDetail else { return }
+        presentComposer(.reply(parent: detail))
+    }
+
+    /// Presents the composer in edit mode. Mirrors `replyTapped()`.
+    func editTapped() {
+        guard canEdit, let detail = loadedDetail else { return }
+        presentComposer(.edit(comment: detail))
+    }
+
+    private func presentComposer(_ mode: CommentComposerViewModel.Mode) {
+        guard composer == nil else { return }
+        composer = CommentComposerViewModel(
+            mode: mode,
+            coordinator: coordinator,
+            draftStore: draftStore,
+            tracker: tracker
+        )
+    }
+
+    /// Dismisses the composer sheet. A successful reply posts its notice,
+    /// and an edit of a comment deleted elsewhere posts the edit failure (this
+    /// screen is closing too, so the notice is the only feedback). A cancel
+    /// (nil) or a successful edit needs none: the edited content updates in
+    /// place via the coordinator's `contentChanged` event.
+    func composerClosed(_ outcome: CommentComposerViewModel.Outcome?) {
+        composer = nil
+        switch outcome {
+        case .replied(let replyNotice):
+            noticePresenter?.present(title: replyNotice)
+        case .commentDeleted:
+            noticePresenter?.present(title: Strings.composerErrorEditFailed)
+        case .edited, nil:
+            break
+        }
+    }
+
     private let seed: CommentListItem?
     private let service: any CommentsServiceProtocol
     private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
+    private let draftStore: any CommentDraftStoring
     private let titleResolver: PostTitleResolver
     /// Fires `.detailViewed` once per screen, on the first successful fetch.
     private let tracker: (any CommentsTracker)?
@@ -129,6 +211,7 @@ final class CommentDetailViewModel: ObservableObject {
         service: any CommentsServiceProtocol,
         capabilities: CommentsCapabilityResolver,
         coordinator: CommentsModerationCoordinator,
+        draftStore: any CommentDraftStoring,
         titleResolver: PostTitleResolver,
         tracker: (any CommentsTracker)? = nil,
         noticePresenter: (any NoticePresenting)? = nil
@@ -139,6 +222,7 @@ final class CommentDetailViewModel: ObservableObject {
         self.capabilities = capabilities
         canModerate = capabilities.canModerate
         self.coordinator = coordinator
+        self.draftStore = draftStore
         self.titleResolver = titleResolver
         self.tracker = tracker
         self.noticePresenter = noticePresenter
@@ -146,9 +230,7 @@ final class CommentDetailViewModel: ObservableObject {
         // (e.g. the parent comment) hides this one, and a status change that
         // lands meanwhile must still correct the header/toolbar. Lives for the
         // VM's lifetime.
-        eventSubscription = coordinator.events
-            .filter { $0.commentID == commentID }
-            .sink { [weak self] in self?.handle($0) }
+        eventSubscription = coordinator.events.sink { [weak self] in self?.handle($0) }
     }
 
     func onAppear() async {
@@ -251,14 +333,25 @@ final class CommentDetailViewModel: ObservableObject {
 
     // MARK: - Coordinator events
 
+    /// Routes every coordinator event: this comment's own events drive the
+    /// screen; the parent's content edits (made on the parent's own detail
+    /// screen) refresh the "In reply to" strip in place instead of showing a
+    /// stale snippet until the next full fetch. Everything else is ignored.
     private func handle(_ event: CommentChangeEvent) {
+        if event.commentID == parentPreview?.id {
+            if case .contentChanged(_, let contentHTML, _) = event {
+                parentPreview?.snippet = CommentListItem.snippet(fromHTML: contentHTML)
+            }
+            return
+        }
+        guard event.commentID == commentID else { return }
         switch event {
         case .statusChanged(_, let to):
             // A status change proves the comment exists at a known status. Clear
             // any prior terminal state (e.g. a delete that later proved false)
             // so the toolbar can re-enable, then apply the status. The loaded
-            // detail is the screen's status source of truth (header, pill, and
-            // toolbar model all read it).
+            // detail is the screen's status source of truth (header, pill,
+            // toolbar model, and Reply/Edit gating all read it).
             isDeleted = false
             if var detail = loadedDetail {
                 detail.status = to
@@ -268,6 +361,22 @@ final class CommentDetailViewModel: ObservableObject {
             // The comment is gone: a terminal state that turns the toolbar off
             // and dismisses the screen.
             isDeleted = true
+        case .contentChanged(_, let contentHTML, let contentRaw):
+            if var detail = loadedDetail {
+                detail.contentHTML = contentHTML
+                detail.contentRaw = contentRaw
+                content = .loaded(detail)
+            }
+        case .replyCreated:
+            // The reply is a different comment; this screen's own status is
+            // corrected by the approve step's statusChanged event when
+            // relevant. Not a pure no-op, though: the cached reply count feeds
+            // `trashConfirmation`, so it must be bumped when known, or a parent
+            // that just gained its first reply could be trashed with no
+            // confirmation.
+            if let count = numberOfReplies {
+                numberOfReplies = count + 1
+            }
         }
     }
 }

@@ -10,7 +10,6 @@ import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import WordPressIntelligence
-import CocoaLumberjack
 import PulseUI
 
 extension SupportDataProvider {
@@ -23,9 +22,6 @@ extension SupportDataProvider {
         userDataProvider: WpCurrentUserDataProvider(
             wpcomClient: WordPressDotComClient()
         ),
-        supportConversationDataProvider: WpSupportConversationDataProvider(
-            wpcomClient: WordPressDotComClient()
-        ),
         diagnosticsDataProvider: WpDiagnosticsDataProvider(),
         mediaHost: WordPressDotComClient(),
         delegate: WpSupportDelegate()
@@ -33,11 +29,15 @@ extension SupportDataProvider {
 }
 
 actor WpLogDataProvider: ApplicationLogDataProvider {
+    /// Logs are only uploaded when the user shares crash reports: `EventLoggingDelegate` won't send a queued log
+    /// otherwise, so a form that offered them would promise what it can't deliver.
+    nonisolated var canShareApplicationLogs: Bool {
+        !UserSettings.userHasOptedOutOfCrashLogging
+    }
+
     func fetchApplicationLogs() async throws -> [Support.ApplicationLog] {
-        try WPLogger.shared().fileLogger
-            .logFileManager
-            .sortedLogFileInfos
-            .compactMap { try ApplicationLog(filePath: $0.filePath) }
+        try LogFileStore.shared.logFiles()
+            .compactMap { try ApplicationLog(filePath: $0.url.path) }
     }
 
     func deleteApplicationLogs(in logs: [Support.ApplicationLog]) async throws {
@@ -102,34 +102,6 @@ class WpSupportDelegate: NSObject, SupportDelegate {
         case .failToReplyToBotConversation(let error):
             WPAnalytics.track(.supportChatbot, properties: [
                 "subaction": "error-replying-to-conversation",
-                "error": error.localizedDescription
-            ])
-        case .viewSupportTicketList:
-            WPAnalytics.track(.supportTickets, properties: [
-                "subaction": "view-list"
-            ])
-        case .viewSupportTicket(let id):
-            WPAnalytics.track(.supportTickets, properties: [
-                "subaction": "view-ticket",
-                "ticket_id": id
-            ])
-        case .createSupportTicket:
-            WPAnalytics.track(.supportTickets, properties: [
-                "subaction": "create-ticket",
-            ])
-        case .failToCreateSupportTicket(let error):
-            WPAnalytics.track(.supportTickets, properties: [
-                "subaction": "error-creating-ticket",
-                "error": error.localizedDescription
-            ])
-        case .replyToSupportTicket(let id):
-            WPAnalytics.track(.supportTickets, properties: [
-                "subaction": "reply-to-ticket",
-                "ticket_id": id
-            ])
-        case .failToReplyToSupportTicket(let error):
-            WPAnalytics.track(.supportTickets, properties: [
-                "subaction": "error-replying-to-ticket",
                 "error": error.localizedDescription
             ])
         case .viewDiagnostics:
@@ -265,77 +237,6 @@ actor WpCurrentUserDataProvider: CurrentUserDataProvider {
     }
 }
 
-actor WpSupportConversationDataProvider: SupportConversationDataProvider {
-
-    let maximumUploadSize: UInt64 = 30_000_000 // 30MB
-
-    private let wpcomClient: WordPressDotComClient
-
-    init(wpcomClient: WordPressDotComClient) {
-        self.wpcomClient = wpcomClient
-    }
-
-    nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]> {
-        return DiskCachedAndFetchedResult(fetchedResult: {
-            try await self.wpcomClient.api
-                .supportTickets
-                .getSupportConversationList()
-                .data
-                .map { $0.asConversationSummary() }
-        }, cacheKey: "support-conversation-list")
-    }
-
-    nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation> {
-        return DiskCachedAndFetchedResult(fetchedResult: {
-            try await self.wpcomClient.api
-                .supportTickets
-                .getSupportConversation(conversationId: id)
-                .data
-                .asConversation()
-        }, cacheKey: "support-conversation-\(id)")
-    }
-
-    func createSupportConversation(
-        subject: String,
-        message: String,
-        user: SupportUser,
-        attachments: [URL]
-    ) async throws -> Conversation {
-        let params = CreateSupportTicketParams(
-            subject: subject,
-            message: message,
-            application: "jetpack",
-            attachments: attachments.map { $0.path() }
-        )
-
-        return try await self.wpcomClient.api
-            .supportTickets
-            .createSupportTicket(params: params)
-            .data
-            .asConversation()
-    }
-
-    func replyToSupportConversation(
-        id: UInt64,
-        message: String,
-        user: SupportUser,
-        attachments: [URL]
-    ) async throws -> Conversation {
-        let params = AddMessageToSupportConversationParams(
-            message: message,
-            attachments: attachments.map { $0.path() }
-        )
-
-        let conversation = try await self.wpcomClient.api
-            .supportTickets
-            .addMessageToSupportConversation(conversationId: id, params: params)
-            .data
-            .asConversation()
-
-        return conversation
-    }
-}
-
 actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
     func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
         try await DiskCache.shared.diskUsage()
@@ -345,8 +246,6 @@ actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
         try await DiskCache.shared.removeAll(progress: progress)
     }
 }
-
-extension WPComApiClient: @retroactive @unchecked Sendable {}
 
 extension WpComUserInfo {
     func asSupportIdentity() async throws -> SupportUser {
@@ -448,71 +347,6 @@ extension WordPressAPIInternal.BotMessage {
     }
 }
 
-extension SupportConversationSummary {
-    func asConversationSummary() -> Support.ConversationSummary {
-        Support.ConversationSummary(
-            id: self.id,
-            title: self.title,
-            description: self.description,
-            status: conversationStatus(from: self.status),
-            lastMessageSentAt: self.updatedAt
-        )
-    }
-}
-
-extension SupportConversation {
-    func asConversation() -> Conversation {
-        Conversation(
-            id: self.id,
-            title: self.title,
-            description: self.description,
-            lastMessageSentAt: self.updatedAt,
-            status: conversationStatus(from: self.status),
-            messages: self.messages.map { $0.asMessage() }
-        )
-    }
-}
-
-extension SupportMessage {
-    func asMessage() -> Message {
-        return switch self.author {
-        case .user(let user): Message(
-            id: self.id,
-            content: self.content,
-            createdAt: self.createdAt,
-            authorName: user.displayName,
-            authorIsUser: true,
-            attachments: self.attachments.compactMap { $0.asAttachment() }
-        )
-        case .supportAgent(let agent): Message(
-            id: self.id,
-            content: self.content,
-            createdAt: self.createdAt,
-            authorName: agent.name,
-            authorIsUser: false,
-            attachments: self.attachments.compactMap { $0.asAttachment() }
-        )
-        }
-    }
-}
-
-extension SupportAttachment {
-    func asAttachment() -> Support.Attachment? {
-        guard let url = URL(string: self.url) else {
-            return nil
-        }
-
-        return Support.Attachment(
-            id: self.id,
-            filename: self.filename,
-            contentType: self.contentType,
-            fileSize: self.size,
-            url: url,
-            dimensions: nil
-        )
-    }
-}
-
 fileprivate func summarize(_ text: String) async -> String {
     if #available(iOS 26.0, *) {
         do {
@@ -526,17 +360,5 @@ fileprivate func summarize(_ text: String) async -> String {
         } else {
             return text
         }
-    }
-}
-
-fileprivate func conversationStatus(from string: String) -> Support.ConversationStatus {
-    switch string {
-    case "open": .waitingForSupport
-    case "closed": .closed
-    case "pending": .waitingForUser
-    case "solved": .resolved
-    case "new": .waitingForSupport
-    case "hold": .waitingForSupport
-    default: .unknown
     }
 }

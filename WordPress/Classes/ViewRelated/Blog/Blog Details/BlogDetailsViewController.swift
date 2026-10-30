@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 import WordPressData
 import WordPressShared
@@ -24,6 +25,7 @@ public class BlogDetailsViewController: UIViewController {
 
     private lazy var blogService = BlogService(coreDataStack: ContextManager.shared)
     private var hasLoggedDomainCreditPromptShownEvent = false
+    private var accountAvatarSubscription: AnyCancellable?
 
     init(blog: Blog) {
         self.blog = blog
@@ -51,6 +53,7 @@ public class BlogDetailsViewController: UIViewController {
 
         tableViewModel = BlogDetailsTableViewModel(blog: blog, viewController: self)
         tableViewModel?.configure(tableView: tableView)
+        accountAvatarSubscription = observeAccountAvatar()
         // - warning: This needs to be populated early because tableViewModel.sections
         // are what drive programmatical navigation with universal links
         tableViewModel?.configureTableViewData()
@@ -84,8 +87,6 @@ public class BlogDetailsViewController: UIViewController {
         }
 
         observeManagedObjectContextObjectsDidChangeNotification()
-        observeGravatarImageUpdate()
-        downloadGravatarImage()
 
         registerForTraitChanges([UITraitHorizontalSizeClass.self], action: #selector(handleTraitChanges))
     }
@@ -159,12 +160,7 @@ public class BlogDetailsViewController: UIViewController {
             }
         }
 
-        if let service = CustomPostTypeService(blog: blog) {
-            tableViewModel?.hasCustomPostTypes = (try? await service.customTypes())?.isEmpty == false
-        } else {
-            tableViewModel?.hasCustomPostTypes = false
-        }
-
+        tableViewModel?.updateCustomPostTypesObservationIfNeeded()
         configureTableViewData()
         reloadTableViewPreservingSelection()
     }
@@ -228,7 +224,7 @@ public class BlogDetailsViewController: UIViewController {
 
         let destructiveTitle = NSLocalizedString("Remove Site", comment: "Button to remove a site from the app")
 
-        let alertStyle: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let alertStyle: UIAlertController.Style = traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: alertStyle)
 
         alertController.addCancelActionWithTitle(SharedStrings.Button.cancel, handler: nil)

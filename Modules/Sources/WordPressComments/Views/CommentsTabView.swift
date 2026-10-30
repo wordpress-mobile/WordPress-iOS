@@ -136,7 +136,7 @@ private struct AdaptiveTabBarRepresentable: UIViewRepresentable {
             _selection = selection
         }
 
-        @objc func tabChanged(_ tabBar: AdaptiveTabBar) {
+        @MainActor @objc func tabChanged(_ tabBar: AdaptiveTabBar) {
             if items.indices.contains(tabBar.selectedIndex) {
                 selection = items[tabBar.selectedIndex]
             }

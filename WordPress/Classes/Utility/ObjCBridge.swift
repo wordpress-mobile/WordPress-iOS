@@ -22,7 +22,13 @@ import WordPressData
         AppRatingUtility.shared.incrementSignificantEvent()
     }
 
-    @objc public class var unreadNotificationsCount: Int {
-        ZendeskUtils.unreadNotificationsCount
+    /// The in-app Notifications bell state, for the legacy Objective-C tab bar.
+    @objc @MainActor public class var hasNewNotificationActivity: Bool {
+        NotificationActivityService.shared.hasNewActivity
+    }
+
+    /// Name of the notification posted when the bell state changes.
+    @objc public class var notificationActivityDidChangeNotification: NSNotification.Name {
+        .notificationActivityDidChange
     }
 }

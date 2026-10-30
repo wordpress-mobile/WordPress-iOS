@@ -37,7 +37,7 @@ class GutenbergWebNavigationController: UINavigationController {
 
         guard let menuViewControllerClass = NSClassFromString("UIDocumentMenuViewController"), // Silence deprecation warning.
             viewControllerToPresent.isKind(of: menuViewControllerClass),
-            UIDevice.current.userInterfaceIdiom == .phone
+            traitCollection.userInterfaceIdiom == .phone
         else {
             return
         }

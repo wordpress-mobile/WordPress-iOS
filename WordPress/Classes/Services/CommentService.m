@@ -7,6 +7,7 @@
 
 @import WordPressShared;
 @import WordPressSharedUI;
+@import WordPressSharedObjC;
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 40;
 NSInteger const  WPNumberOfCommentsToSync = 100;
@@ -353,7 +354,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             }
         } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
-        DDLogError(@"Error loading comment for blog: %@", error);
+        WPLogError(@"Error loading comment for blog: %@", error);
         if (failure) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
@@ -396,7 +397,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             }
         } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
-        DDLogError(@"Error loading comment for post: %@", error);
+        WPLogError(@"Error loading comment for post: %@", error);
         if (failure) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
@@ -691,7 +692,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSString *content = string;
     content = [RichContentFormatter removeTrailingBreakTags:content];
-    content = [RichContentFormatter formatContentString:content isPrivateSite:isPrivateSite];
+    // Comment content is formatted when it's synced, not when it's displayed, so there is no
+    // view to size gallery images for. Size them for the largest display scale.
+    // TODO: Modernization - `UIScreen.mainScreen` assumes a single, fixed display. Size gallery
+    // images when the comment is displayed instead: https://github.com/wordpress-mobile/WordPress-iOS/issues/26252
+    content = [RichContentFormatter formatContentString:content
+                                          isPrivateSite:isPrivateSite
+                                                 bounds:UIScreen.mainScreen.bounds
+                                        traitCollection:UITraitCollection.largestDisplayScale];
     return content;
 }
 
@@ -933,7 +941,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         void (^failureBlock)(NSError *) = ^(NSError *error) {
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 Comment *comment = [context existingObjectWithID:commentObjectID error:nil];
-                DDLogError(@"Error while %@ comment: %@", comment.isLiked ? @"liking" : @"unliking", error);
+                WPLogError(@"Error while %@ comment: %@", comment.isLiked ? @"liking" : @"unliking", error);
 
                 comment.isLiked = isLikedOriginally;
                 comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1);
@@ -967,7 +975,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSError *error;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"Error fetching orphaned comments: %@", error);
+        WPLogError(@"Error fetching orphaned comments: %@", error);
     }
     for (Comment *comment in results) {
         [context deleteObject:comment];
@@ -1009,7 +1017,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                             success();
                         }
                     } failure:^(NSError *error) {
-                        DDLogError(@"Error moderating comment: %@", error);
+                        WPLogError(@"Error moderating comment: %@", error);
                         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                             Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
                             commentInContext.status = prevStatus;
@@ -1043,7 +1051,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             for (Comment *comment in existingComments) {
                 // Don't delete unpublished comments
                 if (![commentsToKeep containsObject:comment] && comment.commentID != 0) {
-                    DDLogInfo(@"Deleting Comment: %@", comment);
+                    WPLogInfo(@"Deleting Comment: %@", comment);
                     [blog.managedObjectContext deleteObject:comment];
                 }
             }
@@ -1093,7 +1101,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (NSString *)formattedHierarchyElement:(NSNumber *)commentID
 {
-    return [NSString stringWithFormat:@"%010u", [commentID integerValue]];
+    return [NSString stringWithFormat:@"%010ld", (long)[commentID integerValue]];
 }
 
 - (void)createHierarchicalCommentWithContent:(NSString *)content
@@ -1124,7 +1132,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     fetchRequest.fetchLimit = 1;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);
+        WPLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);
         return nil;
     }
 
@@ -1162,7 +1170,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     [context obtainPermanentIDsForObjects:@[comment] error:&error];
     if (error) {
-        DDLogError(@"%@ error obtaining permanent ID for a hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
+        WPLogError(@"%@ error obtaining permanent ID for a hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
     }
 
     return comment;
@@ -1292,7 +1300,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSError *error = nil;
     NSArray *fetchedObjects = [post.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"Error fetching top level comments for page %i : %@", page, error);
+        WPLogError(@"Error fetching top level comments for page %lu : %@", (unsigned long)page, error);
     }
     return fetchedObjects;
 }

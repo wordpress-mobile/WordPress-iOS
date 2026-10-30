@@ -1,6 +1,6 @@
 ---
 name: ios-sim-navigation
-description: Drive an iOS app running in a Simulator via WebDriverAgent (WDA) to tap, swipe, scroll, type, take screenshots, inspect the accessibility tree, automate, or verify a UI flow. Use when the work specifically targets a running Simulator app (e.g. running an end-to-end test, automating an in-app flow, verifying on-screen state via the WDA tree, scripting taps in a simulator). Do not use for non-Simulator UI work, headless code paths, or UI tasks on real devices.
+description: Drive an iOS app running in a Simulator on iOS versions earlier than 27 via WebDriverAgent (WDA) to tap, swipe, scroll, type, take screenshots, inspect the accessibility tree, automate, or verify a UI flow. Use when the work specifically targets a running Simulator app (e.g. running an end-to-end test, automating an in-app flow, verifying on-screen state via the WDA tree, scripting taps in a simulator). Use Xcode MCP to navigate iOS 27 simulators. Do not use for non-Simulator UI work, headless code paths, or UI tasks on real devices.
 ---
 
 # iOS Simulator Navigation with WebDriverAgent

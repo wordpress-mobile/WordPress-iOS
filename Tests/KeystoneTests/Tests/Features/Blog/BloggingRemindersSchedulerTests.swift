@@ -2,7 +2,10 @@ import XCTest
 @testable import WordPress
 
 class NotificationSchedulerMock: NotificationScheduler {
-    typealias AddNotificationMock = (_ request: UNNotificationRequest, _ completionHandler: ((Error?) -> Void)?) -> Void
+    typealias AddNotificationMock = (
+        _ request: UNNotificationRequest,
+        _ completionHandler: (@Sendable (Error?) -> Void)?
+    ) -> Void
     typealias RemoveNotificationMock = (_ requestIdentifier: String) -> Void
 
     let addNotificationMock: AddNotificationMock
@@ -16,7 +19,10 @@ class NotificationSchedulerMock: NotificationScheduler {
         self.removeNotificationMock = removeNotificationMock
     }
 
-    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)? = nil) {
+    func add(
+        _ request: UNNotificationRequest,
+        withCompletionHandler completionHandler: (@Sendable (Error?) -> Void)? = nil
+    ) {
         addNotificationMock(request, completionHandler)
     }
 

@@ -1,19 +1,20 @@
+import Combine
 import UIKit
-import WordPressData
 
 final class MyProfileIconView: UIImageView {
-    private let hidesWhenEmpty: Bool
+    private var avatarSubscription: AnyCancellable?
 
-    init(hidesWhenEmpty: Bool = false) {
-        self.hidesWhenEmpty = hidesWhenEmpty
-
+    init() {
         super.init(frame: .zero)
 
         backgroundColor = .secondarySystemBackground
 
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
-
-        refresh()
+        // Hide only without an account: `AccountAvatar.image` is also nil while
+        // loading and for an email without a Gravatar.
+        isHidden = !AccountHelper.isDotcomAvailable()
+        avatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
+            self?.image = avatar ?? .gravatarPlaceholderImage
+        }
 
         layer.masksToBounds = true
 
@@ -31,23 +32,5 @@ final class MyProfileIconView: UIImageView {
         super.layoutSubviews()
 
         layer.cornerRadius = bounds.width / 2
-    }
-
-    private func refresh() {
-        if let email {
-            isHidden = false
-            downloadGravatar(for: email, gravatarRating: .x, forceRefresh: false)
-        } else {
-            isHidden = true
-        }
-    }
-
-    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
-        guard let email, notification.userInfoHasEmail(email) else { return }
-        downloadGravatar(for: email, gravatarRating: .x, forceRefresh: true)
-    }
-
-    private var email: String? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.email
     }
 }

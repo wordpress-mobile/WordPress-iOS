@@ -446,7 +446,10 @@ private extension PromptRemindersSchedulerTests {
         var requests = [UNNotificationRequest]()
         var removedIdentifiers = [String]()
 
-        func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
+        func add(
+            _ request: UNNotificationRequest,
+            withCompletionHandler completionHandler: (@Sendable (Error?) -> Void)?
+        ) {
             requests.append(request)
             completionHandler?(nil)
         }

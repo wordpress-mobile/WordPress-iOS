@@ -19,14 +19,16 @@ class MySiteViewModel {
         Blog.lastUsedOrFirst(in: coreDataStack.mainContext)
     }
 
+    /// - Parameter showsSingleColumn: `true` when the site menu has no column of its own,
+    ///   as on every iPhone. The dashboard is only the first screen in that layout.
     func getSection(
         for blog: Blog,
         jetpackFeaturesEnabled: Bool,
-        splitViewControllerIsHorizontallyCompact: Bool
+        showsSingleColumn: Bool
     ) -> MySiteViewController.Section {
         let shouldShowDashboard = jetpackFeaturesEnabled
         && blog.isAccessibleThroughWPCom
-        && splitViewControllerIsHorizontallyCompact
+        && showsSingleColumn
 
         return shouldShowDashboard ? .dashboard : .siteMenu
     }

@@ -16,8 +16,12 @@ struct CommentsListView: View {
                 Button {
                     openComment(item.id, item)
                 } label: {
-                    CommentRowView(item: item, titleState: titleResolver.titleState(for: item.postID))
-                        .contentShape(Rectangle())
+                    CommentRowView(
+                        item: item,
+                        titleState: titleResolver.titleState(for: item.postID),
+                        showsPendingStatus: viewModel.filter == .all
+                    )
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }

@@ -13,10 +13,6 @@ public extension UIApplication {
     @objc var currentStatusBarFrame: CGRect {
         mainWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero
     }
-
-    @objc var currentStatusBarOrientation: UIInterfaceOrientation {
-        mainWindow?.windowScene?.interfaceOrientation ?? .unknown
-    }
 }
 
 public extension UIApplication {

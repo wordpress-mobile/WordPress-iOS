@@ -128,7 +128,7 @@ public class JetpackLoginViewController: UIViewController {
     }
 
     private func toggleHidingImageView(for collection: UITraitCollection) {
-        jetpackImage.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
+        jetpackImage.isHidden = collection.verticalSizeClass == .compact
     }
 
     // MARK: - UI Helpers

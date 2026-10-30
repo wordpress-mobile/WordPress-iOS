@@ -3,33 +3,32 @@ import Combine
 import UIKit
 import SwiftUI
 
+/// Drives the Notifications bell across SwiftUI and UIKit surfaces from the
+/// account-scoped ``NotificationActivityService``. No longer reads the
+/// deprecated `applicationIconBadgeNumber` or the Zendesk unread count.
+@MainActor
 final class NotificationsButtonViewModel: ObservableObject {
-    @Published private(set) var counter = 0
+    @Published private(set) var hasNewActivity = false
     @Published private(set) var image: UIImage?
 
     private var cancellables: [AnyCancellable] = []
-    private let badgeObserver = NotificationBadgeObserver()
 
-    init() {
-        refresh()
-
-        NotificationCenter.default
-            .publisher(for: NSNotification.ZendeskPushNotificationReceivedNotification)
-            .sink { [weak self] _ in self?.refresh() }
+    /// - Parameter scope: The scope of the list the bell opens. The bell has no badge when that
+    ///   list doesn't track the account's activity.
+    init(scope: NotificationsListScope = .all, activityService: NotificationActivityService = .shared) {
+        guard scope.tracksAccountActivity else {
+            update(hasNewActivity: false)
+            return
+        }
+        activityService.$hasNewActivity
+            .sink { [weak self] in self?.update(hasNewActivity: $0) }
             .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: NSNotification.ZendeskPushNotificationClearedNotification)
-            .sink { [weak self] _ in self?.refresh() }
-            .store(in: &cancellables)
-
-        badgeObserver.onChange = { [weak self] in self?.refresh() }
     }
 
-    private func refresh() {
-        counter = UIApplication.shared.applicationIconBadgeNumber - ZendeskUtils.unreadNotificationsCount
+    private func update(hasNewActivity: Bool) {
+        self.hasNewActivity = hasNewActivity
 
-        if counter > 0 {
+        if hasNewActivity {
             image = UIImage(systemName: "bell.badge")?
                 .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [.systemRed, .label]))
         } else {
@@ -38,24 +37,16 @@ final class NotificationsButtonViewModel: ObservableObject {
     }
 }
 
-final class NotificationBadgeObserver: NSObject {
-    var onChange: () -> Void = {}
+/// The bell icon for SwiftUI surfaces, with a badge when there is new activity.
+struct NotificationsBellImage: View {
+    let hasNewActivity: Bool
 
-    private let keyPath = "applicationIconBadgeNumber"
-
-    deinit {
-        UIApplication.shared.removeObserver(self, forKeyPath: keyPath)
-    }
-
-    /// - warning: The `applicationIconBadgeNumber` API is getting deprecated,
-    /// and it has some issues that seemingly prevent it being used from Combine.
-    override init() {
-        super.init()
-
-        UIApplication.shared.addObserver(self, forKeyPath: keyPath, options: [.new], context: nil)
-    }
-
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        onChange()
+    var body: some View {
+        if hasNewActivity {
+            Image(systemName: "bell.badge")
+                .foregroundStyle(.red, .primary)
+        } else {
+            Image(systemName: "bell")
+        }
     }
 }

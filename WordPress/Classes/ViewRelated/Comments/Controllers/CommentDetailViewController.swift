@@ -6,7 +6,9 @@ import Aztec
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
-    static let NotificationCommentDeletedNotification = NSNotification.Name(rawValue: "NotificationCommentDeletedNotification")
+    static let NotificationCommentDeletedNotification = NSNotification.Name(
+        rawValue: "NotificationCommentDeletedNotification"
+    )
 }
 let userInfoCommentIdKey = "commentID"
 
@@ -26,7 +28,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
-    private var sections = [SectionType] ()
+    private var sections = [SectionType]()
     private var rows = [RowType]()
     private var commentStatus: CommentStatusType? {
         didSet {
@@ -52,15 +54,15 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     private var viewIsVisible: Bool {
-        return navigationController?.visibleViewController == self
+        navigationController?.visibleViewController == self
     }
 
     private var siteID: NSNumber? {
-        return comment.blog?.dotComID ?? notification?.metaSiteID
+        comment.blog?.dotComID ?? notification?.metaSiteID
     }
 
     private var replyID: Int32 {
-        return comment.replyID
+        comment.replyID
     }
 
     private var isCommentReplied: Bool {
@@ -90,7 +92,11 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         if view.effectiveUserInterfaceLayoutDirection == .rightToLeft {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.baseWritingDirection = .rightToLeft
-            attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: .init(location: 0, length: attributedString.length))
+            attributedString.addAttribute(
+                .paragraphStyle,
+                value: paragraphStyle,
+                range: .init(location: 0, length: attributedString.length)
+            )
         }
 
         cell.textLabel?.attributedText = attributedString
@@ -103,8 +109,14 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
             NSLayoutConstraint.activate([
                 textLabel.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
                 textLabel.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor),
-                textLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: Constants.replyIndicatorVerticalSpacing),
-                textLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -Constants.replyIndicatorVerticalSpacing)
+                textLabel.topAnchor.constraint(
+                    equalTo: cell.contentView.topAnchor,
+                    constant: Constants.replyIndicatorVerticalSpacing
+                ),
+                textLabel.bottomAnchor.constraint(
+                    equalTo: cell.contentView.bottomAnchor,
+                    constant: -Constants.replyIndicatorVerticalSpacing
+                )
             ])
             textLabel.accessibilityIdentifier = .replyIndicatorTextIdentifier
         }
@@ -114,11 +126,13 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: .deleteButtonText,
-                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                       normalColor: Constants.deleteButtonNormalColor,
-                       highlightedColor: Constants.deleteButtonHighlightColor,
-                       buttonInsets: Constants.deleteButtonInsets)
+        cell.configure(
+            buttonTitle: .deleteButtonText,
+            titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+            normalColor: Constants.deleteButtonNormalColor,
+            highlightedColor: Constants.deleteButtonHighlightColor,
+            buttonInsets: Constants.deleteButtonInsets
+        )
         cell.accessibilityIdentifier = .deleteButtonAccessibilityId
         cell.delegate = self
         return cell
@@ -126,37 +140,40 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     private lazy var trashButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: .trashButtonText,
-                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                       normalColor: Constants.deleteButtonNormalColor,
-                       highlightedColor: Constants.trashButtonHighlightColor,
-                       borderColor: .clear,
-                       buttonInsets: Constants.deleteButtonInsets,
-                       backgroundColor: Constants.trashButtonBackgroundColor)
+        cell.configure(
+            buttonTitle: .trashButtonText,
+            titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+            normalColor: Constants.deleteButtonNormalColor,
+            highlightedColor: Constants.trashButtonHighlightColor,
+            borderColor: .clear,
+            buttonInsets: Constants.deleteButtonInsets,
+            backgroundColor: Constants.trashButtonBackgroundColor
+        )
         cell.accessibilityIdentifier = .trashButtonAccessibilityId
         cell.delegate = self
         return cell
     }()
 
     private lazy var commentService: CommentService = {
-        return .init(coreDataStack: ContextManager.shared)
+        .init(coreDataStack: ContextManager.shared)
     }()
 
     /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
     /// However, since this class is still initialized in Objective-C files, it cannot declare `ContentCoordinator` as the init parameter, unless the protocol
     /// is `@objc`-ified. Let's move this to the init parameter once the caller has been converted to Swift.
     private lazy var contentCoordinator: ContentCoordinator = {
-        return DefaultContentCoordinator(controller: self, context: managedObjectContext)
+        DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
     // Sometimes the parent information of a comment reply notification is in the meta block.
     private var notificationParentComment: Comment? {
         guard let parentID = notification?.metaParentID,
-              let siteID = notification?.metaSiteID,
-              let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
-              let parentComment = blog.comment(withID: parentID) else {
-                  return nil
-              }
+            let siteID = notification?.metaSiteID,
+            let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
+            let parentComment = blog.comment(withID: parentID)
+        else {
+            return nil
+        }
 
         return parentComment
     }
@@ -180,23 +197,31 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     // MARK: Nav Bar Buttons
 
     private(set) lazy var editBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .edit,
-                               target: self,
-                               action: #selector(editButtonTapped))
-        button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
+        let button = UIBarButtonItem(
+            barButtonSystemItem: .edit,
+            target: self,
+            action: #selector(editButtonTapped)
+        )
+        button.accessibilityLabel = NSLocalizedString(
+            "Edit comment",
+            comment: "Accessibility label for button to edit a comment from a notification"
+        )
         return button
     }()
 
     private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: comment.allowsModeration()
-            ? UIImage(systemName: "ellipsis")
-            : UIImage(systemName: "square.and.arrow.up"),
+                ? UIImage(systemName: "ellipsis")
+                : UIImage(systemName: "square.and.arrow.up"),
             style: .plain,
             target: self,
             action: #selector(buttonShareCommentTapped)
         )
-        button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
+        button.accessibilityLabel = NSLocalizedString(
+            "Share comment",
+            comment: "Accessibility label for button to share a comment from a notification"
+        )
         return button
     }()
 
@@ -221,10 +246,12 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    init(comment: Comment,
-         notification: WordPressData.Notification,
-         notificationDelegate: CommentDetailsNotificationDelegate?,
-         managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(
+        comment: Comment,
+        notification: WordPressData.Notification,
+        notificationDelegate: CommentDetailsNotificationDelegate?,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) {
         self.comment = comment
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.notification = notification
@@ -279,13 +306,20 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     // Show an empty view with the given values.
-    func showNoResultsView(title: String, subtitle: String? = nil, imageName: String? = nil, accessoryView: UIView? = nil) {
+    func showNoResultsView(
+        title: String,
+        subtitle: String? = nil,
+        imageName: String? = nil,
+        accessoryView: UIView? = nil
+    ) {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
-                                     title: title,
-                                     subtitle: subtitle,
-                                     image: imageName,
-                                     accessoryView: accessoryView)
+        configureAndDisplayNoResults(
+            on: tableView,
+            title: title,
+            subtitle: subtitle,
+            image: imageName,
+            accessoryView: accessoryView
+        )
     }
 }
 
@@ -324,7 +358,7 @@ private extension CommentDetailViewController {
     /// This needs to be computed because the frame size changes on orientation change.
     /// NOTE: There's no need to flip the insets for RTL language, since it will be automatically applied.
     var insetsForHiddenCellSeparator: UIEdgeInsets {
-        return .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
+        .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
     }
 
     func configureNavigationBar() {
@@ -350,7 +384,9 @@ private extension CommentDetailViewController {
 
         // get rid of the separator lines
         tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-        tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
+        tableView.tableFooterView = UIView(
+            frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin)
+        )
 
         // assign 20pt leading inset to the table view, as per the design.
         tableView.directionalLayoutMargins = .init(
@@ -360,7 +396,10 @@ private extension CommentDetailViewController {
             trailing: Constants.tableHorizontalInset
         )
 
-        tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        tableView.register(
+            CommentContentTableViewCell.defaultNib,
+            forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID
+        )
 
         view.addSubview(tableView)
         tableView.pinEdges()
@@ -427,8 +466,11 @@ private extension CommentDetailViewController {
     func configureHeaderCell() {
         // if the comment is a reply, show the author of the parent comment.
         if let parentComment = self.parentComment ?? notificationParentComment {
-            return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
-                                        subtitle: (parentComment.contentPreviewForDisplay() ?? "").trimmingCharacters(in: .whitespacesAndNewlines))
+            return headerCell.configure(
+                for: .reply(parentComment.authorForDisplay()),
+                subtitle: (parentComment.contentPreviewForDisplay() ?? "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+            )
         }
 
         // otherwise, if this is a comment to a post, show the post title instead.
@@ -472,7 +514,9 @@ private extension CommentDetailViewController {
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: .moderationCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .moderationCellIdentifier)
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: .moderationCellIdentifier)
+            ?? .init(style: .subtitle, reuseIdentifier: .moderationCellIdentifier)
 
         cell.selectionStyle = .none
         cell.tintColor = Style.tintColor
@@ -546,7 +590,8 @@ private extension CommentDetailViewController {
     // Shows the comment thread with the Notification comment highlighted.
     func navigateToNotificationComment() {
         if let blog = comment.blog,
-           !blog.supports(.wpComRESTAPI) {
+            !blog.supports(.wpComRESTAPI)
+        {
             openWebView(for: comment.commentURL())
             return
         }
@@ -558,51 +603,64 @@ private extension CommentDetailViewController {
         // Empty Back Button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
 
-        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: siteID,
-                                                          commentID: NSNumber(value: comment.commentID),
-                                                          source: .commentNotification)
+        try? contentCoordinator.displayCommentsWithPostId(
+            NSNumber(value: comment.postID),
+            siteID: siteID,
+            commentID: NSNumber(value: comment.commentID),
+            source: .commentNotification
+        )
     }
 
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
         guard let parentComment,
-              let siteID,
-              let blog = comment.blog,
-              blog.supports(.wpComRESTAPI) else {
+            let siteID,
+            let blog = comment.blog,
+            blog.supports(.wpComRESTAPI)
+        else {
             let parentCommentURL = URL(string: parentComment?.link ?? "")
             openWebView(for: parentCommentURL)
             return
         }
 
-        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: siteID,
-                                                          commentID: NSNumber(value: parentComment.commentID),
-                                                          source: .mySiteComment)
+        try? contentCoordinator.displayCommentsWithPostId(
+            NSNumber(value: comment.postID),
+            siteID: siteID,
+            commentID: NSNumber(value: parentComment.commentID),
+            source: .mySiteComment
+        )
     }
 
     func navigateToReplyComment() {
         guard let siteID,
-              isCommentReplied else {
+            isCommentReplied
+        else {
             return
         }
 
-        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: siteID,
-                                                          commentID: NSNumber(value: replyID),
-                                                          source: isNotificationComment ? .commentNotification : .mySiteComment)
+        try? contentCoordinator.displayCommentsWithPostId(
+            NSNumber(value: comment.postID),
+            siteID: siteID,
+            commentID: NSNumber(value: replyID),
+            source: isNotificationComment ? .commentNotification : .mySiteComment
+        )
     }
 
     func navigateToPost() {
         guard let blog = comment.blog,
-              let siteID,
-              blog.supports(.wpComRESTAPI) else {
+            let siteID,
+            blog.supports(.wpComRESTAPI)
+        else {
             let postPermalinkURL = URL(string: comment.post?.permaLink ?? "")
             openWebView(for: postPermalinkURL)
             return
         }
 
-        let readerViewController = ReaderDetailViewController.controllerWithPostID(NSNumber(value: comment.postID), siteID: siteID, isFeed: false)
+        let readerViewController = ReaderDetailViewController.controllerWithPostID(
+            NSNumber(value: comment.postID),
+            siteID: siteID,
+            isFeed: false
+        )
         if isSidebarModeEnabled {
             let navigationController = UINavigationController(rootViewController: readerViewController)
             navigationController.modalPresentationStyle = .pageSheet
@@ -614,26 +672,34 @@ private extension CommentDetailViewController {
 
     func openWebView(for url: URL?) {
         guard let url else {
-            DDLogError("\(Self.classNameWithoutNamespaces()): Attempted to open an invalid URL [\(url?.absoluteString ?? "")]")
+            DDLogError(
+                "\(Self.classNameWithoutNamespaces()): Attempted to open an invalid URL [\(url?.absoluteString ?? "")]"
+            )
             return
         }
 
-        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "comment_detail")
+        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(
+            url: url,
+            source: "comment_detail"
+        )
         let navigationControllerToPresent = UINavigationController(rootViewController: viewController)
 
         present(navigationControllerToPresent, animated: true, completion: nil)
     }
 
     @objc func editButtonTapped() {
-        let editCommentTableViewController = EditCommentTableViewController(comment: comment, completion: { [weak self] comment, commentChanged in
-            guard commentChanged else {
-                return
-            }
+        let editCommentTableViewController = EditCommentTableViewController(
+            comment: comment,
+            completion: { [weak self] comment, commentChanged in
+                guard commentChanged else {
+                    return
+                }
 
-            self?.comment = comment
-            self?.refreshData()
-            self?.updateComment()
-        })
+                self?.comment = comment
+                self?.refreshData()
+                self?.updateComment()
+            }
+        )
 
         CommentAnalytics.trackCommentEditorOpened(comment: comment)
         let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
@@ -655,16 +721,20 @@ private extension CommentDetailViewController {
         // Regardless of success or failure track the user's intent to save a change.
         CommentAnalytics.trackCommentEdited(comment: comment)
 
-        commentService.uploadComment(comment,
-                                     success: { [weak self] in
-                                        // The comment might have changed its approval status
-                                        self?.refreshData()
-                                     },
-                                     failure: { [weak self] _ in
-                                        let message = NSLocalizedString("There has been an unexpected error while editing your comment",
-                                                                        comment: "Error displayed if a comment fails to get updated")
-                                        self?.displayNotice(title: message)
-                                     })
+        commentService.uploadComment(
+            comment,
+            success: { [weak self] in
+                // The comment might have changed its approval status
+                self?.refreshData()
+            },
+            failure: { [weak self] _ in
+                let message = NSLocalizedString(
+                    "There has been an unexpected error while editing your comment",
+                    comment: "Error displayed if a comment fails to get updated"
+                )
+                self?.displayNotice(title: message)
+            }
+        )
     }
 
     @objc private func buttonShareCommentTapped(_ button: UIBarButtonItem) {
@@ -679,7 +749,10 @@ private extension CommentDetailViewController {
         // track share intent.
         WPAnalytics.track(.siteCommentsCommentShared)
 
-        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(
+            activityItems: [commentURL as Any],
+            applicationActivities: nil
+        )
         activityViewController.popoverPresentationController?.sourceItem = sourceItem
         present(activityViewController, animated: true, completion: nil)
     }
@@ -710,9 +783,18 @@ private extension String {
     static let deleteButtonAccessibilityId = "delete-comment-button"
 
     // MARK: Localizatio
-    static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
-    static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
-    static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
+    static let replyIndicatorLabelText = NSLocalizedString(
+        "You replied to this comment.",
+        comment: "Informs that the user has replied to this comment."
+    )
+    static let deleteButtonText = NSLocalizedString(
+        "Delete Permanently",
+        comment: "Title for button on the comment details page that deletes the comment when tapped."
+    )
+    static let trashButtonText = NSLocalizedString(
+        "Move to Trash",
+        comment: "Title for button on the comment details page that moves the comment to trash when tapped."
+    )
 }
 
 private extension CommentStatusType {
@@ -735,81 +817,112 @@ private extension CommentStatusType {
 private extension CommentDetailViewController {
     func unapproveComment() {
         if isNotificationComment {
-            WPAppAnalytics.track(.notificationsCommentUnapproved, properties: Constants.notificationDetailSource, blogID: notification?.metaSiteID)
+            WPAppAnalytics.track(
+                .notificationsCommentUnapproved,
+                properties: Constants.notificationDetailSource,
+                blogID: notification?.metaSiteID
+            )
         } else {
             CommentAnalytics.trackCommentUnApproved(comment: comment)
         }
 
-        commentService.unapproveComment(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] _ in
-            self?.displayNotice(title: ModerationMessages.pendingFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
+        commentService.unapproveComment(
+            comment,
+            success: { [weak self] in
+                self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
+                self?.refreshData()
+            },
+            failure: { [weak self] _ in
+                self?.displayNotice(title: ModerationMessages.pendingFail)
+                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            }
+        )
     }
 
     func approveComment() {
-        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentApproved, properties: Constants.notificationDetailSource, blogID: notification?.metaSiteID)
+        if isNotificationComment {
+            WPAppAnalytics.track(
+                .notificationsCommentApproved,
+                properties: Constants.notificationDetailSource,
+                blogID: notification?.metaSiteID
+            )
         } else {
             CommentAnalytics.trackCommentApproved(comment: comment)
         }
 
-        commentService.approve(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.approveSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] _ in
-            self?.displayNotice(title: ModerationMessages.approveFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
+        commentService.approve(
+            comment,
+            success: { [weak self] in
+                self?.showActionableNotice(title: ModerationMessages.approveSuccess)
+                self?.refreshData()
+            },
+            failure: { [weak self] _ in
+                self?.displayNotice(title: ModerationMessages.approveFail)
+                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            }
+        )
     }
 
     func spamComment() {
-        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, blogID: notification?.metaSiteID)
+        if isNotificationComment {
+            WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, blogID: notification?.metaSiteID)
         } else {
             CommentAnalytics.trackCommentSpammed(comment: comment)
         }
 
-        commentService.spamComment(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.spamSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] _ in
-            self?.displayNotice(title: ModerationMessages.spamFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
+        commentService.spamComment(
+            comment,
+            success: { [weak self] in
+                self?.showActionableNotice(title: ModerationMessages.spamSuccess)
+                self?.refreshData()
+            },
+            failure: { [weak self] _ in
+                self?.displayNotice(title: ModerationMessages.spamFail)
+                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            }
+        )
     }
 
     func trashComment() {
-        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentTrashed, blogID: notification?.metaSiteID)
+        if isNotificationComment {
+            WPAppAnalytics.track(.notificationsCommentTrashed, blogID: notification?.metaSiteID)
         } else {
             CommentAnalytics.trackCommentTrashed(comment: comment)
         }
 
         trashButtonCell.isLoading = true
 
-        commentService.trashComment(comment, success: { [weak self] in
-            self?.trashButtonCell.isLoading = false
-            self?.showActionableNotice(title: ModerationMessages.trashSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] _ in
-            self?.trashButtonCell.isLoading = false
-            self?.displayNotice(title: ModerationMessages.trashFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
+        commentService.trashComment(
+            comment,
+            success: { [weak self] in
+                self?.trashButtonCell.isLoading = false
+                self?.showActionableNotice(title: ModerationMessages.trashSuccess)
+                self?.refreshData()
+            },
+            failure: { [weak self] _ in
+                self?.trashButtonCell.isLoading = false
+                self?.displayNotice(title: ModerationMessages.trashFail)
+                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            }
+        )
     }
 
     func deleteComment(completion: ((Bool) -> Void)? = nil) {
         CommentAnalytics.trackCommentTrashed(comment: comment)
         deleteButtonCell.isLoading = true
 
-        commentService.delete(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.deleteSuccess)
-            completion?(true)
-        }, failure: { [weak self] _ in
-            self?.deleteButtonCell.isLoading = false
-            self?.displayNotice(title: ModerationMessages.deleteFail)
-            completion?(false)
-        })
+        commentService.delete(
+            comment,
+            success: { [weak self] in
+                self?.showActionableNotice(title: ModerationMessages.deleteSuccess)
+                completion?(true)
+            },
+            failure: { [weak self] _ in
+                self?.deleteButtonCell.isLoading = false
+                self?.displayNotice(title: ModerationMessages.deleteFail)
+                completion?(false)
+            }
+        )
     }
 
     func notifyDelegateCommentModerated() {
@@ -817,9 +930,11 @@ private extension CommentDetailViewController {
     }
 
     func postNotificationCommentDeleted(_ commentID: Int32) {
-        NotificationCenter.default.post(name: .NotificationCommentDeletedNotification,
-                                        object: nil,
-                                        userInfo: [userInfoCommentIdKey: commentID])
+        NotificationCenter.default.post(
+            name: .NotificationCommentDeletedNotification,
+            object: nil,
+            userInfo: [userInfoCommentIdKey: commentID]
+        )
     }
 
     func showActionableNotice(title: String) {
@@ -835,12 +950,14 @@ private extension CommentDetailViewController {
         // Dismiss any old notices to avoid stacked Next notices.
         dismissNotice()
 
-        displayActionableNotice(title: title,
-                                style: NormalNoticeStyle(showNextArrow: true),
-                                actionTitle: ModerationMessages.next,
-                                actionHandler: { [weak self] _ in
-            self?.showNextComment()
-        })
+        displayActionableNotice(
+            title: title,
+            style: NormalNoticeStyle(showNextArrow: true),
+            actionTitle: ModerationMessages.next,
+            actionHandler: { [weak self] _ in
+                self?.showNextComment()
+            }
+        )
     }
 
     func showNextComment() {
@@ -853,16 +970,46 @@ private extension CommentDetailViewController {
     }
 
     struct ModerationMessages {
-        static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
-        static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
-        static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
-        static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
-        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
-        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
-        static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
-        static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
-        static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
-        static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
+        static let pendingSuccess = NSLocalizedString(
+            "Comment set to pending.",
+            comment: "Message displayed when pending a comment succeeds."
+        )
+        static let pendingFail = NSLocalizedString(
+            "Error setting comment to pending.",
+            comment: "Message displayed when pending a comment fails."
+        )
+        static let approveSuccess = NSLocalizedString(
+            "Comment approved.",
+            comment: "Message displayed when approving a comment succeeds."
+        )
+        static let approveFail = NSLocalizedString(
+            "Error approving comment.",
+            comment: "Message displayed when approving a comment fails."
+        )
+        static let spamSuccess = NSLocalizedString(
+            "Comment marked as spam.",
+            comment: "Message displayed when spamming a comment succeeds."
+        )
+        static let spamFail = NSLocalizedString(
+            "Error marking comment as spam.",
+            comment: "Message displayed when spamming a comment fails."
+        )
+        static let trashSuccess = NSLocalizedString(
+            "Comment moved to trash.",
+            comment: "Message displayed when trashing a comment succeeds."
+        )
+        static let trashFail = NSLocalizedString(
+            "Error moving comment to trash.",
+            comment: "Message displayed when trashing a comment fails."
+        )
+        static let deleteSuccess = NSLocalizedString(
+            "Comment deleted.",
+            comment: "Message displayed when deleting a comment succeeds."
+        )
+        static let deleteFail = NSLocalizedString(
+            "Error deleting comment.",
+            comment: "Message displayed when deleting a comment fails."
+        )
         static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
     }
 }
@@ -872,7 +1019,7 @@ private extension CommentDetailViewController {
 extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -885,7 +1032,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -902,7 +1049,10 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 return headerCell
 
             case .content:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                guard
+                    let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID)
+                        as? CommentContentTableViewCell
+                else {
                     return .init()
                 }
 
@@ -932,7 +1082,10 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .content:
             return nil
         case .moderation:
-            return NSLocalizedString("STATUS", comment: "Section title for the moderation section of the comment details screen.")
+            return NSLocalizedString(
+                "STATUS",
+                comment: "Section title for the moderation section of the comment details screen."
+            )
         }
     }
 
@@ -1022,8 +1175,8 @@ private extension CommentDetailViewController {
                 }
                 self.commentService.uploadComment(
                     reply,
-                    success: { [weak self] in
-                        self?.refreshCommentReplyIfNeeded()
+                    success: {
+                        self.refreshCommentReplyIfNeeded()
                         continuation.resume(returning: TaggedManagedObjectID(reply))
                     },
                     failure: { error in

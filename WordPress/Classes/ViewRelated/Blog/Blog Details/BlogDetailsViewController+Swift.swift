@@ -6,6 +6,7 @@ import WordPressData
 import WordPressShared
 import WordPressAPI
 import WordPressCore
+import WordPressUI
 
 // MARK: - BlogDetailsViewController (Misc)
 
@@ -77,7 +78,7 @@ extension BlogDetailsViewController {
         trackEvent(.openedPosts, from: source)
 
         if blog.usesCustomPostTypeViewsForPostsAndPages {
-            showPinnedPostType(.posts)
+            showPostType(.post)
             return
         }
 
@@ -90,7 +91,7 @@ extension BlogDetailsViewController {
         trackEvent(.openedPages, from: source)
 
         if blog.usesCustomPostTypeViewsForPostsAndPages {
-            showPinnedPostType(.pages)
+            showPostType(.page)
             return
         }
 
@@ -99,7 +100,7 @@ extension BlogDetailsViewController {
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
-    public func showCustomPostTypes() {
+    func showPostType(_ postType: PostTypeReference) {
         let feature = NSLocalizedString(
             "applicationPasswordRequired.feature.customPosts",
             value: "Custom Post Types",
@@ -111,34 +112,9 @@ extension BlogDetailsViewController {
             source: "custom_post_types",
             presentingViewController: self
         ) { [blog, weak self] client in
-            CustomPostTypesView(
-                blog: blog,
-                service: CustomPostTypeService(client: client, blog: blog),
-                presentingViewController: self
-            )
-        }
-        let controller = UIHostingController(rootView: rootView)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        presentationDelegate?.presentBlogDetailsViewController(controller)
-    }
-
-    func showPinnedPostType(_ postType: PinnedPostType) {
-        let feature = NSLocalizedString(
-            "applicationPasswordRequired.feature.customPosts",
-            value: "Custom Post Types",
-            comment: "Feature name for managing custom post types in the app"
-        )
-        let rootView = ApplicationPasswordRequiredView(
-            blog: blog,
-            localizedFeatureName: feature,
-            source: "custom_post_types",
-            presentingViewController: self
-        ) { [blog, weak self] client in
-            PinnedPostTypeView<CustomPostTabView>(
-                blog: blog,
-                service: CustomPostTypeService(client: client, blog: blog),
-                postType: postType,
-                presentingViewController: self
+            PostTypeResolverView<CustomPostTabView>(
+                service: CustomPostTypeService(client: client),
+                postType: postType
             ) { resolved in
                 CustomPostTabView(
                     client: client,
@@ -398,11 +374,7 @@ extension BlogDetailsViewController {
             onClose: nil
         )
 
-        let navigationController = UINavigationController(rootViewController: webViewController)
-        if traitCollection.userInterfaceIdiom == .pad {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-        present(navigationController, animated: true, completion: nil)
+        presentCoveringWindow(webViewController)
     }
 
     public func showViewAdmin() {
@@ -482,7 +454,6 @@ public enum BlogDetailsNavigationSource: Int {
         case .notification: "notification"
         case .shortcut: "shortcut"
         case .todayStatsCard: "todays_stats_card"
-        default: ""
         }
     }
 }

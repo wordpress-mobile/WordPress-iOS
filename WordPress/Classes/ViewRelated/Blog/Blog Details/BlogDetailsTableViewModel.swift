@@ -1,5 +1,7 @@
+import Combine
 import Foundation
 import UIKit
+import WordPressAPI
 import WordPressLegacy
 import WordPressShared
 import WordPressSharedObjC
@@ -26,8 +28,17 @@ private struct Section {
     }
 }
 
+@MainActor
 @objc public final class BlogDetailsTableViewModel: NSObject {
-    var blog: Blog
+    var blog: Blog {
+        didSet {
+            guard blog != oldValue else { return }
+            // Rebuild right away so that no row keeps the previous site's custom post types.
+            customPostTypes = []
+            configureTableViewData()
+            restartCustomPostTypesObservation()
+        }
+    }
     private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
     private var sections: [Section] = []
@@ -35,8 +46,9 @@ private struct Section {
     var restorableSelectedRow: BlogDetailsRowKind? {
         didSet {
             if let row = restorableSelectedRow,
-               let section = sections.first(where: { $0.rows.contains { $0.kind == row } }),
-               [.jetpackBrandingCard, .domainCredit].contains(section.category) {
+                let section = sections.first(where: { $0.rows.contains { $0.kind == row } }),
+                [.jetpackBrandingCard, .domainCredit].contains(section.category)
+            {
                 restorableSelectedRow = nil
             }
         }
@@ -54,13 +66,43 @@ private struct Section {
         }
     }
 
-    var hasCustomPostTypes = false
+    var customPostTypes: [PostTypeDetailsWithEditContext] = []
     var useSiteMenuStyle = false
 
-    @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
+    private let usesWordPressLayout: Bool
+    private let makeCustomPostTypeService: (Blog) -> CustomPostTypeService.SiteMenuService?
+    private var customPostTypesObservation:
+        (cacheIdentity: CustomPostTypeService.CacheIdentity, task: Task<Void, Never>)?
+    private var credentialChangeObservation: AnyCancellable?
+
+    init(
+        blog: Blog,
+        viewController: BlogDetailsViewController,
+        usesWordPressLayout: Bool = AppConfiguration.isWordPress,
+        makeCustomPostTypeService: @escaping (Blog) -> CustomPostTypeService.SiteMenuService? =
+            CustomPostTypeService.makeForSiteMenu(blog:),
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.blog = blog
         self.viewController = viewController
+        self.usesWordPressLayout = usesWordPressLayout
+        self.makeCustomPostTypeService = makeCustomPostTypeService
         super.init()
+
+        // A new application password can change how the site is reached. The notification does not
+        // say which site changed, so every site menu checks whether its own cache record moved.
+        let passwordUpdates = notificationCenter.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated)
+        credentialChangeObservation =
+            passwordUpdates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateCustomPostTypesObservationIfNeeded()
+            }
+        restartCustomPostTypesObservation()
+    }
+
+    deinit {
+        customPostTypesObservation?.task.cancel()
     }
 
     @objc public func configure(tableView: UITableView) {
@@ -73,12 +115,21 @@ private struct Section {
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.removeSite)
 
         // Register header/footer views
-        tableView.register(BlogDetailsSectionFooterView.self, forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionFooter)
+        tableView.register(
+            BlogDetailsSectionFooterView.self,
+            forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionFooter
+        )
 
         // Register special card cells
         tableView.register(MigrationSuccessCell.self, forCellReuseIdentifier: CellIdentifiers.migrationSuccess)
-        tableView.register(JetpackBrandingMenuCardCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard)
-        tableView.register(JetpackRemoteInstallTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackInstall)
+        tableView.register(
+            JetpackBrandingMenuCardCell.self,
+            forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard
+        )
+        tableView.register(
+            JetpackRemoteInstallTableViewCell.self,
+            forCellReuseIdentifier: CellIdentifiers.jetpackInstall
+        )
         tableView.register(ExtensiveLoggingCell.self, forCellReuseIdentifier: CellIdentifiers.extensiveLogging)
         tableView.register(XMLRPCDisabledCell.self, forCellReuseIdentifier: CellIdentifiers.xmlrpcDisabled)
 
@@ -117,7 +168,7 @@ private struct Section {
             newSections.append(buildHomeSection())
         }
 
-        if AppConfiguration.isWordPress {
+        if usesWordPressLayout {
             if viewController.shouldAddJetpackSection() {
                 newSections.append(buildJetpackSection())
             }
@@ -221,7 +272,12 @@ private struct Section {
                 if rowItem.showsSelectionState {
                     restorableSelectedRow = row
 
-                    tableView?.selectRow(at: indexPath, animated: false, scrollPosition: optimumScrollPosition(for: indexPath))
+                    tableView?
+                        .selectRow(
+                            at: indexPath,
+                            animated: false,
+                            scrollPosition: optimumScrollPosition(for: indexPath)
+                        )
                 }
 
                 // Call the row's action
@@ -238,6 +294,93 @@ private struct Section {
             }
         }
         return nil
+    }
+}
+
+// MARK: - Custom post types
+
+extension BlogDetailsTableViewModel {
+    /// Moves the observation of the site's custom post types to the site's current cache record,
+    /// if the record changed. Call it after anything that can change how the site is reached,
+    /// such as a metadata sync: the site can switch from the WordPress.com proxy to direct access
+    /// without an `applicationPasswordUpdated` notification.
+    func updateCustomPostTypesObservationIfNeeded() {
+        let siteMenuService = makeCustomPostTypeService(blog)
+        guard siteMenuService?.cacheIdentity != customPostTypesObservation?.cacheIdentity else { return }
+        // No sync has written to the new record yet: its first read would remove every row.
+        startCustomPostTypesObservation(with: siteMenuService, syncingFirst: true)
+    }
+}
+
+private extension BlogDetailsTableViewModel {
+    func restartCustomPostTypesObservation() {
+        startCustomPostTypesObservation(with: makeCustomPostTypeService(blog), syncingFirst: false)
+    }
+
+    /// Replaces the observation of the site's custom post types. The rows stay as they are until
+    /// the new observation's first read.
+    ///
+    /// - Parameter syncingFirst: Whether to sync the post types before the first read. If the sync
+    ///   fails, the first read waits for the next cache update.
+    func startCustomPostTypesObservation(
+        with siteMenuService: CustomPostTypeService.SiteMenuService?,
+        syncingFirst: Bool
+    ) {
+        customPostTypesObservation?.task.cancel()
+        customPostTypesObservation = nil
+
+        guard let siteMenuService else {
+            if !customPostTypes.isEmpty {
+                applyCustomPostTypes([])
+            }
+            return
+        }
+        let service = siteMenuService.service
+
+        let task = Task { [weak self] in
+            let updates: AnyPublisher<Void, Never>
+            do {
+                updates = try await service.customTypesUpdates()
+            } catch {
+                Loggers.app.error("Failed to observe custom post types: \(error)")
+                return
+            }
+
+            // Subscribe before the first read so that no write between the two goes unnoticed.
+            // Buffering one signal is enough: every read returns the latest state, so updates
+            // that arrive during a read only need one more read after it.
+            let (signals, continuation) = AsyncStream.makeStream(of: Void.self, bufferingPolicy: .bufferingNewest(1))
+            let subscription = updates.sink { continuation.yield() }
+            defer { subscription.cancel() }
+
+            do {
+                if syncingFirst {
+                    try await service.refresh()
+                }
+                continuation.yield()
+            } catch {
+                Loggers.app.error("Failed to sync custom post types: \(error)")
+            }
+
+            for await _ in signals {
+                guard !Task.isCancelled else { return }
+                do {
+                    let types = try await service.customTypes()
+                    guard !Task.isCancelled, let self else { return }
+                    self.applyCustomPostTypes(types)
+                } catch {
+                    Loggers.app.error("Failed to read custom post types: \(error)")
+                }
+            }
+        }
+        customPostTypesObservation = (siteMenuService.cacheIdentity, task)
+    }
+
+    func applyCustomPostTypes(_ types: [PostTypeDetailsWithEditContext]) {
+        guard types != customPostTypes else { return }
+        customPostTypes = types
+        configureTableViewData()
+        reloadTableViewPreservingSelection()
     }
 }
 
@@ -393,14 +536,17 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < sections.count,
-              let footerTitle = sections[section].footerTitle,
-              !footerTitle.isEmpty else {
+            let footerTitle = sections[section].footerTitle,
+            !footerTitle.isEmpty
+        else {
             return nil
         }
 
-        guard let footerView = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: CellIdentifiers.sectionFooterIdentifier
-        ) as? BlogDetailsSectionFooterView else {
+        guard
+            let footerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: CellIdentifiers.sectionFooterIdentifier
+            ) as? BlogDetailsSectionFooterView
+        else {
             return nil
         }
 
@@ -416,14 +562,15 @@ private extension BlogDetailsTableViewModel {
         indexPath: IndexPath,
         row: Row
     ) -> UITableViewCell {
-        let identifier = switch row.kind {
-        case .removeSite:
-            CellIdentifiers.removeSite
-        case .jetpackSettings, .siteSettings, .domain:
-            CellIdentifiers.settings
-        default:
-            CellIdentifiers.standard
-        }
+        let identifier =
+            switch row.kind {
+            case .removeSite:
+                CellIdentifiers.removeSite
+            case .jetpackSettings, .siteSettings, .domain:
+                CellIdentifiers.settings
+            default:
+                CellIdentifiers.standard
+            }
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         cell.accessibilityHint = row.accessibilityHint
@@ -456,10 +603,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureJetpackInstallCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.jetpackInstall
-        ) as? JetpackRemoteInstallTableViewCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.jetpackInstall
+            ) as? JetpackRemoteInstallTableViewCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -468,10 +617,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureMigrationSuccessCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.migrationSuccess
-        ) as? MigrationSuccessCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.migrationSuccess
+            ) as? MigrationSuccessCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -483,10 +634,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureJetpackBrandingCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.jetpackBrandingCard
-        ) as? JetpackBrandingMenuCardCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.jetpackBrandingCard
+            ) as? JetpackBrandingMenuCardCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -495,10 +648,12 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureExtensiveLoggingCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.extensiveLogging
-        ) as? ExtensiveLoggingCell,
-              let viewController else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.extensiveLogging
+            ) as? ExtensiveLoggingCell,
+            let viewController
+        else {
             return UITableViewCell()
         }
 
@@ -507,9 +662,11 @@ private extension BlogDetailsTableViewModel {
     }
 
     func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.xmlrpcDisabled
-        ) as? XMLRPCDisabledCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.xmlrpcDisabled
+            ) as? XMLRPCDisabledCell
+        else {
             return UITableViewCell()
         }
 
@@ -531,11 +688,12 @@ private extension BlogDetailsTableViewModel {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 50))
                 .foregroundStyle(.orange)
-        } actions: {
-            Button { [weak self, weak viewController] in
-                viewController?.dismiss(animated: true) {
-                    self?.presentJetpackConnection()
-                }
+        } actions: { [weak self, weak viewController] in
+            Button {
+                viewController?
+                    .dismiss(animated: true) {
+                        self?.presentJetpackConnection()
+                    }
             } label: {
                 Text(XMLRPCDisabledAlertStrings.connectJetpack)
                     .font(.headline)
@@ -545,10 +703,14 @@ private extension BlogDetailsTableViewModel {
             .controlSize(.extraLarge)
 
             Button { [weak viewController] in
-                let url = URL(string: "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/")!
-                viewController?.dismiss(animated: true) {
-                    UIApplication.shared.open(url)
-                }
+                let url = URL(
+                    string:
+                        "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/"
+                )!
+                viewController?
+                    .dismiss(animated: true) {
+                        UIApplication.shared.open(url)
+                    }
             } label: {
                 Text(XMLRPCDisabledAlertStrings.learnMore)
             }
@@ -561,9 +723,10 @@ private extension BlogDetailsTableViewModel {
         let controller = UIViewController.jetpackConnection(blog: blog)
         controller.promptType = .bypassXMLRPC
         controller.completionBlock = { [weak controller, weak self] in
-            controller?.dismiss(animated: true) {
-                self?.viewController?.refresh()
-            }
+            controller?
+                .dismiss(animated: true) {
+                    self?.viewController?.refresh()
+                }
         }
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
             systemItem: .close,
@@ -578,7 +741,7 @@ private extension BlogDetailsTableViewModel {
 
 private extension BlogDetailsTableViewModel {
     func buildHomeSection() -> Section {
-        return Section(rows: [Row.home(viewController: viewController)], category: .home)
+        Section(rows: [Row.home(viewController: viewController)], category: .home)
     }
 
     func buildContentSection() -> Section {
@@ -593,23 +756,21 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
 
-        if blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
-                .filter { !$0.isBuiltInPostOrPage }
-            for type in pinned {
-                rows.append(Row.pinnedPostType(type, viewController: viewController))
-            }
-            if !pinned.isEmpty || hasCustomPostTypes {
-                rows.append(Row.customPostTypes(viewController: viewController))
-            }
-        }
+        rows += customPostTypeRows()
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
         return Section(title: title, rows: rows, category: .content)
     }
 
+    /// The rows go at the end of their section so that the rows above keep their index paths
+    /// when custom post types appear. `reloadTableViewPreservingSelection` re-runs the selected
+    /// row's action when its index path changes, which replaces the detail screen in sidebar mode.
+    func customPostTypeRows() -> [Row] {
+        customPostTypes.map { Row.customPostType($0, viewController: viewController) }
+    }
+
     func buildRemoveSiteSection() -> Section {
-        return Section(rows: [Row.removeSite(viewController: viewController)], category: .removeSite)
+        Section(rows: [Row.removeSite(viewController: viewController)], category: .removeSite)
     }
 
     func buildJetpackSection() -> Section {
@@ -639,11 +800,12 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.blaze(viewController: viewController))
         }
 
-        let title = if blog.supports(.jetpackSettings) {
-            Strings.jetpackSection
-        } else {
-            ""
-        }
+        let title =
+            if blog.supports(.jetpackSettings) {
+                Strings.jetpackSection
+            } else {
+                ""
+            }
 
         return Section(title: title, rows: rows, category: .jetpack)
     }
@@ -678,16 +840,7 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
-        if blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
-                .filter { !$0.isBuiltInPostOrPage }
-            for type in pinned {
-                rows.append(Row.pinnedPostType(type, viewController: viewController))
-            }
-            if !pinned.isEmpty || hasCustomPostTypes {
-                rows.append(Row.customPostTypes(viewController: viewController))
-            }
-        }
+        rows += customPostTypeRows()
 
         let title = Strings.publishSection
         return Section(title: title, rows: rows, category: .content)
@@ -849,7 +1002,9 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.domains(viewController: viewController))
         }
 
-        secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
+        if blog.supports(.applicationPasswords) {
+            secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
+        }
 
         // Site Settings (always included)
         secondSectionRows.append(Row.siteSettings(viewController: viewController))
@@ -864,29 +1019,35 @@ private extension BlogDetailsTableViewModel {
         var shouldAddSectionTitle = true
 
         if !firstSectionRows.isEmpty {
-            sections.append(Section(
-                title: sectionTitle,
-                rows: firstSectionRows,
-                category: .maintenance
-            ))
+            sections.append(
+                Section(
+                    title: sectionTitle,
+                    rows: firstSectionRows,
+                    category: .maintenance
+                )
+            )
             shouldAddSectionTitle = false
         }
 
         if !secondSectionRows.isEmpty {
-            sections.append(Section(
-                title: shouldAddSectionTitle ? sectionTitle : nil,
-                rows: secondSectionRows,
-                category: .maintenance
-            ))
+            sections.append(
+                Section(
+                    title: shouldAddSectionTitle ? sectionTitle : nil,
+                    rows: secondSectionRows,
+                    category: .maintenance
+                )
+            )
             shouldAddSectionTitle = false
         }
 
         if !thirdSectionRows.isEmpty {
-            sections.append(Section(
-                title: shouldAddSectionTitle ? sectionTitle : nil,
-                rows: thirdSectionRows,
-                category: .maintenance
-            ))
+            sections.append(
+                Section(
+                    title: shouldAddSectionTitle ? sectionTitle : nil,
+                    rows: thirdSectionRows,
+                    category: .maintenance
+                )
+            )
         }
 
         return sections
@@ -905,7 +1066,8 @@ private extension BlogDetailsTableViewModel {
         }
         let context = ContextManager.shared.mainContext
         guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
-              let dateCreated = defaultAccount.dateCreated else {
+            let dateCreated = defaultAccount.dateCreated
+        else {
             return false
         }
         return dateCreated < hideWPAdminDate
@@ -941,7 +1103,7 @@ private enum SectionCategory {
     case maintenance
 }
 
-enum BlogDetailsRowKind {
+enum BlogDetailsRowKind: Equatable {
     case reminders
     case domain
     case stats
@@ -950,7 +1112,6 @@ enum BlogDetailsRowKind {
     case themes
     case media
     case pages
-    case customPostTypes
     case activity
     case backup
     case scan
@@ -971,7 +1132,7 @@ enum BlogDetailsRowKind {
     case viewSite
     case admin
     case siteSettings
-    case pinnedPostType
+    case customPostType(slug: String)
     case removeSite
 }
 
@@ -1058,24 +1219,16 @@ extension Row {
         )
     }
 
-    static func customPostTypes(viewController: BlogDetailsViewController?) -> Row {
+    static func customPostType(
+        _ details: PostTypeDetailsWithEditContext,
+        viewController: BlogDetailsViewController?
+    ) -> Row {
         Row(
-            kind: .customPostTypes,
-            title: CustomPostTypesView.title,
-            image: UIImage(systemName: "ellipsis"),
+            kind: .customPostType(slug: details.slug),
+            title: details.name,
+            image: UIImage(dashicon: details.icon),
             action: { [weak viewController] _ in
-                viewController?.showCustomPostTypes()
-            }
-        )
-    }
-
-    static func pinnedPostType(_ type: PinnedPostType, viewController: BlogDetailsViewController?) -> Row {
-        Row(
-            kind: .pinnedPostType,
-            title: type.name,
-            image: UIImage(dashicon: type.icon),
-            action: { [weak viewController] _ in
-                viewController?.showPinnedPostType(type)
+                viewController?.showPostType(.details(details))
             }
         )
     }
@@ -1236,6 +1389,8 @@ extension Row {
             kind: .me,
             title: Strings.me,
             image: icon ?? UIImage.gridicon(.userCircle),
+            // A tint color renders the image as a template, which flattens the avatar to a solid shape.
+            imageColor: icon == nil ? .label : nil,
             action: { [weak viewController] _ in
                 viewController?.showMe()
             }
@@ -1243,7 +1398,8 @@ extension Row {
     }
 
     static func sharing(viewController: BlogDetailsViewController?) -> Row {
-        let sharingTitle = AppConfiguration.isWordPress
+        let sharingTitle =
+            AppConfiguration.isWordPress
             ? Strings.sharing
             : Strings.socialRowTitle
         return Row(
@@ -1260,7 +1416,8 @@ extension Row {
     }
 
     static func people(viewController: BlogDetailsViewController?) -> Row {
-        let title = viewController?.shouldShowSubscribersRow == true
+        let title =
+            viewController?.shouldShowSubscribersRow == true
             ? Strings.users
             : Strings.people
         return Row(
@@ -1310,7 +1467,8 @@ extension Row {
             title: Strings.plugins,
             image: UIImage(named: "site-menu-plugins"),
             action: { [weak viewController] userInfo in
-                let showManagement = (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
+                let showManagement =
+                    (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
                 if showManagement {
                     viewController?.showManagePluginsScreen()
                 } else {
@@ -1627,7 +1785,8 @@ private enum XMLRPCDisabledAlertStrings {
     )
     static let description = NSLocalizedString(
         "blogDetails.xmlrpcDisabled.alert.description",
-        value: "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
+        value:
+            "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
         comment: "Description explaining options to restore functionality when XML-RPC is disabled"
     )
     static let connectJetpack = NSLocalizedString(
