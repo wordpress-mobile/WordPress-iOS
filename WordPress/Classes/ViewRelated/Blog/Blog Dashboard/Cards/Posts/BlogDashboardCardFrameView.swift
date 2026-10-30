@@ -129,7 +129,12 @@ class BlogDashboardCardFrameView: UIView {
         if !ellipsisButton.isHidden {
             mainStackViewTrailingConstraint?.constant = -Constants.mainStackViewTrailingPadding
             if #available(iOS 26, *) {
-                buttonContainerStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0)
+                buttonContainerStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+                    top: 5,
+                    leading: 0,
+                    bottom: 0,
+                    trailing: 0
+                )
                 buttonContainerStackView.isLayoutMarginsRelativeArrangement = true
             }
         }
@@ -182,17 +187,19 @@ class BlogDashboardCardFrameView: UIView {
         addSubview(buttonContainerStackView)
 
         NSLayoutConstraint.activate([
-            buttonContainerStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.buttonContainerStackViewPadding),
-            buttonContainerStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.buttonContainerStackViewPadding)
+            buttonContainerStackView.topAnchor.constraint(
+                equalTo: topAnchor,
+                constant: Constants.buttonContainerStackViewPadding
+            ),
+            buttonContainerStackView.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -Constants.buttonContainerStackViewPadding
+            )
         ])
 
         buttonContainerStackView.addArrangedSubviews([
             ellipsisButton
         ])
-    }
-
-    func removeButtonContainerStackView() {
-        buttonContainerStackView.removeFromSuperview()
     }
 
     /// Adds the "more" button with the given actions to the corner of the cell.
@@ -211,9 +218,9 @@ class BlogDashboardCardFrameView: UIView {
 
     private func updateEllipsisButtonState() {
         ellipsisButton.isHidden = onEllipsisButtonTap == nil
-        let headerPadding = ellipsisButton.isHidden ?
-            Constants.headerPaddingWithEllipsisButtonHidden :
-            Constants.headerPaddingWithEllipsisButtonShown
+        let headerPadding =
+            ellipsisButton.isHidden
+            ? Constants.headerPaddingWithEllipsisButtonHidden : Constants.headerPaddingWithEllipsisButtonShown
         headerStackView.directionalLayoutMargins = headerPadding
     }
 
@@ -246,8 +253,7 @@ class BlogDashboardCardFrameView: UIView {
     @objc private func headerTapped() {
         if let onHeaderTap {
             onHeaderTap()
-        }
-        else {
+        } else {
             onViewTap?()
         }
     }
@@ -255,18 +261,31 @@ class BlogDashboardCardFrameView: UIView {
     private static func titleAttributedText(title: String, hint: String?, font: UIFont?) -> NSAttributedString {
         let titleString = NSMutableAttributedString(string: title)
         if let hint, let range = title.nsRange(of: hint) {
-            titleString.addAttributes([
-                .foregroundColor: UIAppColor.primary,
-                .font: font as Any
-            ], range: range)
+            titleString.addAttributes(
+                [
+                    .foregroundColor: UIAppColor.primary,
+                    .font: font as Any
+                ],
+                range: range
+            )
         }
         return titleString
     }
 
     private enum Constants {
         static let bottomPadding: CGFloat = 8
-        static let headerPaddingWithEllipsisButtonHidden = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 8, trailing: 16)
-        static let headerPaddingWithEllipsisButtonShown = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 8, trailing: 8)
+        static let headerPaddingWithEllipsisButtonHidden = NSDirectionalEdgeInsets(
+            top: 12,
+            leading: 16,
+            bottom: 8,
+            trailing: 16
+        )
+        static let headerPaddingWithEllipsisButtonShown = NSDirectionalEdgeInsets(
+            top: 12,
+            leading: 16,
+            bottom: 8,
+            trailing: 8
+        )
         static let headerHorizontalSpacing: CGFloat = 5
         static let cornerRadius = DesignConstants.radius(.large)
         static let buttonContainerStackViewPadding: CGFloat = 8
@@ -274,6 +293,9 @@ class BlogDashboardCardFrameView: UIView {
     }
 
     private enum Strings {
-        static let ellipsisButtonAccessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for more button in dashboard quick start card.")
+        static let ellipsisButtonAccessibilityLabel = NSLocalizedString(
+            "More",
+            comment: "Accessibility label for more button in dashboard quick start card."
+        )
     }
 }
