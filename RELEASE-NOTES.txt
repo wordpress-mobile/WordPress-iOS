@@ -12,6 +12,7 @@
 * [*] Reader: Fix the spacing around headings in posts [#26170]
 * [*] Stats: Fix the back button missing on iPhone Duo and on Plus and Pro Max iPhones in landscape [#26207]
 * [**] iPad and large iPhones: Screens now adapt to the app window's size in split view, Stage Manager and landscape, not the device type [#26201]
+* [*] Experimental editor: Recover from editor crashes, and ask before saving while media is still uploading [#26267]
 
 
 27.4
