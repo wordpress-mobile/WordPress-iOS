@@ -1,24 +1,11 @@
 #import "WPTabBarController.h"
 
-#import "AccountService.h"
-#import "BlogService.h"
-
-#import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-@import WordPressData;
 
-@import Gridicons;
 @import WordPressData;
 @import WordPressShared;
 @import WordPressSharedObjCUI;
 @import WordPressUI;
-
-static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
-
-NSString * const WPNewPostURLParamTitleKey = @"title";
-NSString * const WPNewPostURLParamContentKey = @"content";
-NSString * const WPNewPostURLParamTagsKey = @"tags";
-NSString * const WPNewPostURLParamImageKey = @"image";
 
 NSString * const WPTabBarCurrentlySelectedScreenSites = @"Blog List";
 NSString * const WPTabBarCurrentlySelectedScreenReader = @"Reader";
@@ -26,9 +13,6 @@ NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications"
 
 NSNotificationName const WPTabBarHeightChangedNotification = @"WPTabBarHeightChangedNotification";
 static NSString * const WPTabBarFrameKeyPath = @"frame";
-
-static NSInteger const WPTabBarIconOffsetiPad = 7;
-static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
@@ -198,18 +182,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return _meViewController;
-}
-
-- (UIEdgeInsets)tabBarIconImageInsets
-{
-    CGFloat offset = 0;
-    if ([WPDeviceIdentification isiPad]) {
-        offset = WPTabBarIconOffsetiPad;
-    } else {
-        offset = WPTabBarIconOffsetiPhone;
-    }
-
-    return UIEdgeInsetsMake(offset, 0, -offset, 0);
 }
 
 - (void)reloadTabs
@@ -515,23 +487,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self updateNotificationBadgeVisibility];
 
     [self trackTabAccessOnViewDidAppear];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
-{
-    if ([presented isKindOfClass:[FancyAlertViewController class]]) {
-        return [[FancyAlertPresentationController alloc] initWithPresentedViewController:presented
-                                                                presentingViewController:presenting];
-    }
-
-    return nil;
 }
 
 @end
