@@ -12,9 +12,8 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
 
     /// Sets the animation based on the language orientation
     private var animation: LottieAnimation? {
-        traitCollection.layoutDirection == .leftToRight ?
-        LottieAnimation.named(Constants.animationLtr) :
-        LottieAnimation.named(Constants.animationRtl)
+        traitCollection.layoutDirection == .leftToRight
+            ? LottieAnimation.named(Constants.animationLtr) : LottieAnimation.named(Constants.animationRtl)
     }
 
     // MARK: Lazy Loading General Views
@@ -172,9 +171,11 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
             return
         }
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
-                                                                 source: .card,
-                                                                 blog: viewController.blog)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
+            in: viewController,
+            source: .card,
+            blog: viewController.blog
+        )
         presenter?.trackLinkTapped()
     }
 }
@@ -187,7 +188,7 @@ private extension JetpackBrandingMenuCardCell {
 
     // Defines the structure of the contextual menu items.
     private var contextMenuItems: [MenuItem] {
-        return [.remindLater(remindMeLaterTapped), .hide(hideThisTapped)]
+        [.remindLater(remindMeLaterTapped), .hide(hideThisTapped)]
     }
 
     // MARK: Menu Creation
@@ -240,15 +241,21 @@ private extension JetpackBrandingMenuCardCell {
     }
 
     enum Strings {
-        static let learnMoreButtonText = NSLocalizedString("jetpack.menuCard.learnMore",
-                                                           value: "Learn more",
-                                                           comment: "Title of a button that displays a blog post in a web view.")
-        static let remindMeLaterMenuItemTitle = NSLocalizedString("jetpack.menuCard.remindLater",
-                                                                  value: "Remind me later",
-                                                                  comment: "Menu item title to hide the card for now and show it later.")
-        static let hideCardMenuItemTitle = NSLocalizedString("jetpack.menuCard.hide",
-                                                                  value: "Hide this",
-                                                                  comment: "Menu item title to hide the card.")
+        static let learnMoreButtonText = NSLocalizedString(
+            "jetpack.menuCard.learnMore",
+            value: "Learn more",
+            comment: "Title of a button that displays a blog post in a web view."
+        )
+        static let remindMeLaterMenuItemTitle = NSLocalizedString(
+            "jetpack.menuCard.remindLater",
+            value: "Remind me later",
+            comment: "Menu item title to hide the card for now and show it later."
+        )
+        static let hideCardMenuItemTitle = NSLocalizedString(
+            "jetpack.menuCard.hide",
+            value: "Hide this",
+            comment: "Menu item title to hide the card."
+        )
     }
 
     enum MenuItem {
@@ -276,7 +283,7 @@ private extension JetpackBrandingMenuCardCell {
         var toAction: UIAction {
             switch self {
             case .remindLater(let handler),
-                 .hide(let handler):
+                .hide(let handler):
                 return UIAction(title: title, image: image, attributes: []) { _ in
                     handler()
                 }
