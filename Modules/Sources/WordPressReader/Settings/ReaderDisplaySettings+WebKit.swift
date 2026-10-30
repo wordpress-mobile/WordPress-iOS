@@ -8,8 +8,21 @@ extension ReaderDisplaySettings {
     /// of the app.
     @MainActor
     func makeStyles(tintColor: UIColor) -> String {
-        Self.baseStylesheet.appending(makeStyleOverrides(tintColor: tintColor))
+        Self.baseStylesheet
+            .appending(Self.webFontStylesheet)
+            .appending(makeStyleOverrides(tintColor: tintColor))
     }
+
+    /// `@font-face` rules for the web fonts used by the font settings: Noto Serif,
+    /// served from fonts.wp.com. See `readerWebFonts.css`.
+    public static let webFontStylesheet: String = {
+        guard let fileURL = Bundle.module.url(forResource: "readerWebFonts", withExtension: "css"),
+              let string = try? String(contentsOf: fileURL, encoding: .utf8) else {
+            assertionFailure("readerWebFonts.css missing")
+            return ""
+        }
+        return string
+    }()
 
     private static let baseStylesheet: String = {
         guard let fileURL = Bundle.module.url(forResource: "gutenbergContentStyles", withExtension: "css"),
