@@ -60,7 +60,7 @@ final class JetpackBannerWrapperViewController: UIViewController {
         guard JetpackBrandingVisibility.all.enabled, !isModal() else {
             return
         }
-        let textProvider = JetpackBrandingTextProvider(screen: screen)
+        let textProvider = JetpackBrandingTextProvider()
         let jetpackBannerView = JetpackBannerView()
         jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)

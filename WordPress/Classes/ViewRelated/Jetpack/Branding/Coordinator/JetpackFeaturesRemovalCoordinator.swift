@@ -9,37 +9,13 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     /// Enum describing the current phase of the Jetpack features removal
     enum GeneralPhase: String {
         case normal
-        case one
-        case two
-        case three
-        case four
-        case newUsers = "new_users"
         case selfHosted = "self_hosted"
         case staticScreens = "static_screens"
-
-        func frequencyConfig(
-            remoteConfigStore: RemoteConfigStore = RemoteConfigStore()
-        ) -> OverlayFrequencyTracker.FrequencyConfig {
-            switch self {
-            case .one:
-                fallthrough
-            case .two:
-                return .init(featureSpecificInDays: 7, generalInDays: 2)
-            case .three:
-                return .init(featureSpecificInDays: 4, generalInDays: 1)
-            case .four:
-                let frequency: Int? = RemoteConfigParameter.phaseFourOverlayFrequency.value(using: remoteConfigStore)
-                return .init(featureSpecificInDays: 0, generalInDays: frequency ?? -1)
-            default:
-                return .defaultConfig
-            }
-        }
     }
 
     /// Enum describing the current phase of the site creation flow removal
     enum SiteCreationPhase: String {
         case normal
-        case one
         case two
     }
 
@@ -51,7 +27,6 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         case login
         case appOpen = "app_open"
         case disabledEntryPoint = "disabled_entry_point"
-        case phaseFourOverlay = "phase_four_overlay"
 
         /// Used to differentiate between last saved dates for different phases.
         /// Should return a dynamic value if each phase should be treated differently.
@@ -87,8 +62,6 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
                 fallthrough
             case .appOpen:
                 return .showOnce
-            case .phaseFourOverlay:
-                return .respectFrequencyConfig
             }
         }
     }
@@ -124,15 +97,6 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal
         }
         return hasBlog() ? .two : .normal
-    }
-
-    static func removalDeadline(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) -> Date? {
-        guard let dateString: String = RemoteConfigParameter.jetpackDeadline.value(using: remoteConfigStore) else {
-            return nil
-        }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.date(from: dateString)
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
@@ -175,24 +139,12 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
 
     /// Used to determine if the Jetpack features are to be displayed or not based on the removal phase regardless of the app UI state.
     private static func shouldShowJetpackFeaturesBasedOnCurrentPhase() -> Bool {
-        let phase = generalPhase()
-        switch phase {
-        case .four, .newUsers, .selfHosted:
-            return false
-        default:
-            return true
-        }
+        generalPhase() != .selfHosted
     }
 
     /// Used to determine if the Jetpack features are enabled or not based on the removal phase regardless of the app UI state.
     private static func shouldEnableJetpackFeaturesBasedOnCurrentPhase() -> Bool {
-        let phase = generalPhase()
-        switch phase {
-        case .four, .newUsers, .selfHosted, .staticScreens:
-            return false
-        default:
-            return true
-        }
+        generalPhase() == .normal
     }
 
     /// Used to display feature-specific or feature-collection overlays.
@@ -215,7 +167,6 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         onDidDismiss: JetpackOverlayDismissCallback? = nil
     ) {
         let phase = generalPhase()
-        let frequencyConfig = phase.frequencyConfig()
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
 
         let coordinator = JetpackDefaultOverlayCoordinator()
@@ -228,7 +179,6 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
         let frequencyTracker = OverlayFrequencyTracker(
             source: source,
             type: .featuresRemoval,
-            frequencyConfig: frequencyConfig,
             phaseString: frequencyTrackerPhaseString
         )
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {

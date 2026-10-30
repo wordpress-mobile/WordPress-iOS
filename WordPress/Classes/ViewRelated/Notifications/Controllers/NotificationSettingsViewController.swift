@@ -340,7 +340,7 @@ private extension NotificationSettingsViewController {
 
         labelView.translatesAutoresizingMaskIntoConstraints = false
 
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.notificationsSettings)
+        let textProvider = JetpackBrandingTextProvider()
         let badgeView = JetpackButton.makeBadgeView(
             title: textProvider.brandingText(),
             topPadding: FooterMetrics.jetpackBadgeTopPadding,

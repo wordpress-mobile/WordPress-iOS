@@ -166,12 +166,12 @@ class RootViewCoordinator {
         isReaderInWordPressAppEnabled: Bool
     ) -> AppUIType {
         switch phase {
-        case .four, .newUsers, .selfHosted:
+        case .normal:
+            return .normal
+        case .selfHosted:
             return .simplified
         case .staticScreens:
             return isReaderInWordPressAppEnabled ? .staticScreensWithReader : .staticScreens
-        default:
-            return .normal
         }
     }
 
