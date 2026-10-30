@@ -40,6 +40,8 @@ audit_stop_process() {
 audit_start() {
   AUDIT_UID="$1"
   mkdir -p "$AUDIT_DIR"
+  # The rest of the checkout is world-readable; the audit logs shouldn't be.
+  chmod 0700 "$AUDIT_DIR"
   audit_started=true
   echo "--- :mag: Starting the audit logs"
 
@@ -78,8 +80,15 @@ audit_start() {
 
   # Endpoint Security, as root. A prefilter keeps only lines that mention the
   # reviewer's user ID; audit-summarize.py checks each event's process exactly.
+  # `exec` events include the process's whole environment, which holds the
+  # Anthropic key, so it's removed before anything is written. Unchanged files'
+  # `close` events are dropped too: they double the size and add nothing.
   mkfifo "$AUDIT_DIR/.es-fifo"
-  grep -E "\"[er]uid\" *: *${AUDIT_UID}[^0-9]" < "$AUDIT_DIR/.es-fifo" | gzip -1 > "$AUDIT_DIR/es-events.jsonl.gz" &
+  grep -E "\"[er]uid\" *: *${AUDIT_UID}[^0-9]" < "$AUDIT_DIR/.es-fifo" \
+    | jq -R -c 'fromjson?
+        | select(.event.close == null or .event.close.modified)
+        | if .event.exec then .event.exec.env = "(removed)" else . end' \
+    | gzip -1 > "$AUDIT_DIR/es-events.jsonl.gz" &
   AUDIT_ES_GZIP_PID=$!
   # The build user reads the output, so the redirect is meant to run without sudo.
   # shellcheck disable=SC2024
@@ -119,6 +128,28 @@ audit_canary() {
   as_reviewer "curl -sS -o /dev/null --max-time 20 '${AUDIT_CANARY_URL}'; head -c 1 /etc/hosts > /dev/null" || true
 }
 
+# Last line of defence: removes any audit or evidence file that contains one of this job's
+# secrets, whatever put it there. The values are passed to grep on a file
+# descriptor, never as arguments, so other users can't see them with `ps`.
+audit_remove_secrets() {
+  local secrets file contains
+  secrets=$(for var in ANTHROPIC_API_KEY GITHUB_TOKEN GH_TOKEN SPACEFAST_TOKEN BUILDKITE_AGENT_ACCESS_TOKEN AWS_SECRET_ACCESS_KEY; do
+    [[ -n "${!var:-}" ]] && printf '%s\n' "${!var}"
+  done)
+  [[ -n "$secrets" ]] || return 0
+  while IFS= read -r -d '' file; do
+    if [[ "$file" == *.gz ]]; then
+      contains=$(gzip -dc "$file" 2>/dev/null | grep -c -F -f <(printf '%s\n' "$secrets") || true)
+    else
+      contains=$(grep -c -a -F -f <(printf '%s\n' "$secrets") "$file" 2>/dev/null || true)
+    fi
+    if [[ "${contains:-0}" != 0 ]]; then
+      rm -f "$file"
+      audit_note "REMOVED ${file}: it contained one of this job's secrets"
+    fi
+  done < <(find "$AUDIT_DIR" "${EVIDENCE_DIR:-$AUDIT_DIR}" -type f -print0)
+}
+
 audit_stop() {
   [[ "$audit_started" == true ]] || return 0
   audit_started=false
@@ -147,6 +178,8 @@ audit_stop() {
   python3 -I .buildkite/claude/audit-summarize.py "$AUDIT_DIR" "$AUDIT_UID" \
     || audit_note "Summary: FAILED"
   echo "Summarized in $((SECONDS - started))s."
+
+  audit_remove_secrets
 
   # Did each log record the canary?
   found() { [[ -f "$AUDIT_DIR/$1" ]] && grep -qF -- "$2" "$AUDIT_DIR/$1"; }
