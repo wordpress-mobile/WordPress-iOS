@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import CoreData
 import WordPressKit
 import WordPressShared
@@ -139,7 +138,7 @@ public class Notification: NSManagedObject {
         }
 
         guard let timestamp, let timestampAsDate = Date.dateWithISO8601String(timestamp) else {
-            DDLogError("Error: couldn't parse date [\(String(describing: self.timestamp))] for notification with id [\(notificationId)]")
+            Loggers.data.error("Error: couldn't parse date [\(String(describing: self.timestamp))] for notification with id [\(notificationId)]")
             return Date()
         }
 
