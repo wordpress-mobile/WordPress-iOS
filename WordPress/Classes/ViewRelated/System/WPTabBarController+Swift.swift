@@ -192,7 +192,7 @@ extension WPTabBarController {
 
     @objc public func switchNotificationsTabToNotificationSettings() {
         showNotificationsTab()
-        notificationsNavigationController?.popToRootViewController(animated: false)
+        notificationsNavigationController.popToRootViewController(animated: false)
         notificationsViewController?.showNotificationSettings()
     }
 }

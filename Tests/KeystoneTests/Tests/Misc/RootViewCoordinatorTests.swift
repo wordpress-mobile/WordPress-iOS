@@ -297,6 +297,71 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertNotNil(tabBar.notificationsViewController)
     }
 
+    func testTabsKeepTheirNavigationControllersWhenTheAccountOrAppUIChanges() {
+        // Given
+        signInToWordPressDotCom()
+        let tabBarController = WPTabBarController(staticScreens: false)
+        let tabs = tabBarController.viewControllers ?? []
+        let tabBarItems = tabs.map(\.tabBarItem)
+
+        // When
+        postSignInFinishedNotification()
+        UserSettings.defaultDotComUUID = nil
+        postAccountChangeNotification()
+        tabBarController.shouldUseStaticNotifications = true
+
+        // Then
+        let tabsAfter = tabBarController.viewControllers ?? []
+        XCTAssertEqual(tabsAfter.count, 4)
+        XCTAssertTrue(zip(tabs, tabsAfter).allSatisfy { $0 === $1 })
+        XCTAssertTrue(zip(tabBarItems, tabsAfter.map(\.tabBarItem)).allSatisfy { $0 === $1 })
+    }
+
+    func testAccountChangeWithAnAccountKeepsTheReaderTabWorking() throws {
+        // Given
+        let account = signInToWordPressDotCom()
+        let tabBarController = WPTabBarController(staticScreens: false)
+
+        // When the default account is posted again, as when the same account signs in again
+        NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: account)
+
+        // Then the Reader tab shows the screen of a presenter that is still alive
+        let readerPresenter = try XCTUnwrap(tabBarController.readerPresenter)
+        XCTAssertIdentical(tabBarController.readerNavigationController.viewControllers.first, readerPresenter.sidebar)
+    }
+
+    func testSignOutShowsTheLoggedOutReaderInTheSameTab() {
+        // Given
+        signInToWordPressDotCom()
+        let tabBarController = WPTabBarController(staticScreens: false)
+        let readerNavigationController = tabBarController.readerNavigationController
+
+        // When
+        UserSettings.defaultDotComUUID = nil
+        postAccountChangeNotification()
+
+        // Then
+        XCTAssertIdentical(tabBarController.readerNavigationController, readerNavigationController)
+        XCTAssertEqual(readerNavigationController.viewControllers.count, 1)
+        XCTAssertTrue(readerNavigationController.viewControllers.first is ReaderLoggedOutViewController)
+    }
+
+    func testStaticNotificationsSwapsTheFirstScreenAndKeepsTheSelectedTab() {
+        // Given
+        let tabBarController = WPTabBarController(staticScreens: false)
+        tabBarController.selectedIndex = WPTab.notifications.rawValue
+        let notificationsNavigationController = tabBarController.notificationsNavigationController
+
+        // When
+        tabBarController.shouldUseStaticNotifications = true
+
+        // Then
+        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertNil(tabBarController.notificationsViewController)
+        XCTAssertEqual(notificationsNavigationController.viewControllers.count, 1)
+        XCTAssertTrue(notificationsNavigationController.viewControllers.first is MovedToJetpackViewController)
+    }
+
     // MARK: - Helpers
 
     private func makeCoordinator(
@@ -342,9 +407,18 @@ final class RootViewCoordinatorTests: XCTestCase {
         NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
-    private func signInToWordPressDotCom() {
+    @discardableResult
+    private func signInToWordPressDotCom() -> WPAccount {
         let account = AccountBuilder(contextManager.mainContext).with(username: "RootViewCoordinatorTests").build()
         UserSettings.defaultDotComUUID = account.uuid
+        return account
+    }
+
+    private func postSignInFinishedNotification() {
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification),
+            object: nil
+        )
     }
 }
 

@@ -45,9 +45,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
-    @objc public func prepareForTabBarPresentation() -> UINavigationController {
+    /// Replaces the screens in the Reader tab's `navigationController` with the Reader's first screen.
+    @objc(prepareForTabBarPresentationInNavigationController:)
+    public func prepareForTabBarPresentation(in navigationController: UINavigationController) {
         guard AccountHelper.isDotcomAvailable() else {
-            return UINavigationController(rootViewController: ReaderLoggedOutViewController())
+            navigationController.navigationBar.prefersLargeTitles = false
+            navigationController.setViewControllers([ReaderLoggedOutViewController()], animated: false)
+            return
         }
 
         sidebar.onViewDidLoad = { [weak self] in
@@ -55,10 +59,10 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
         sidebarViewModel.isCompact = true
         sidebarViewModel.restoreSelection(defaultValue: nil)
-        mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
+        mainNavigationController = navigationController
         mainNavigationController.navigationBar.prefersLargeTitles = true
+        mainNavigationController.setViewControllers([sidebar], animated: false) // Loads sidebar lazily
         sidebar.navigationItem.backButtonDisplayMode = .minimal
-        return mainNavigationController
     }
 
     // TODO: (reader) rework
