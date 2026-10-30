@@ -23,6 +23,18 @@ audit_started=false
 
 audit_note() { echo "$*" | tee -a "$AUDIT_DIR/audit-checks.txt"; }
 
+# Stops processes by name: SIGINT so they can flush their output, then SIGKILL
+# after $2 seconds.
+audit_stop_process() {
+  sudo -n pkill -INT -x "$1" > /dev/null 2>&1 || return 0
+  for _ in $(seq 1 "$2"); do
+    sudo -n pgrep -x "$1" > /dev/null 2>&1 || return 0
+    sleep 1
+  done
+  echo "Warning: $1 didn't stop on SIGINT, so it was killed."
+  sudo -n pkill -KILL -x "$1" > /dev/null 2>&1 || true
+}
+
 # $1 = reviewer user ID. Everything here is best-effort: a log that doesn't
 # start is reported in audit-checks.txt, and the review still runs.
 audit_start() {
@@ -112,10 +124,15 @@ audit_stop() {
   audit_started=false
   echo "--- :mag: Collecting the audit logs"
 
-  sudo -n pkill -INT -x eslogger > /dev/null 2>&1 || true
-  if [[ -n "${AUDIT_ES_GZIP_PID:-}" ]]; then wait "$AUDIT_ES_GZIP_PID" || true; fi
-  sudo -n pkill -INT -x tcpdump > /dev/null 2>&1 || true
-  sleep 1
+  local started=$SECONDS
+  audit_stop_process eslogger 10
+  if [[ -n "${AUDIT_ES_GZIP_PID:-}" ]]; then
+    for _ in $(seq 1 60); do kill -0 "$AUDIT_ES_GZIP_PID" 2>/dev/null || break; sleep 1; done
+    if kill -0 "$AUDIT_ES_GZIP_PID" 2>/dev/null; then
+      echo "Warning: the Endpoint Security log was still being written after 60 seconds."
+    fi
+  fi
+  audit_stop_process tcpdump 10
   sudo -n pfctl -a "$AUDIT_PF_ANCHOR" -F all > /dev/null 2>&1 || true
   if [[ -n "${AUDIT_PF_TOKEN:-}" ]]; then sudo -n pfctl -X "$AUDIT_PF_TOKEN" > /dev/null 2>&1 || true; fi
   kill "${AUDIT_LISTENER_PID:-}" 2>/dev/null || true
@@ -124,8 +141,12 @@ audit_stop() {
 
   tcpdump -n -e -tttt -r "$AUDIT_DIR/network.pcap" > "$AUDIT_DIR/network.txt" 2>/dev/null || true
   tcpdump -n -tttt -r "$AUDIT_DIR/dns.pcap" > "$AUDIT_DIR/dns.txt" 2>/dev/null || true
+  echo "Logs stopped in $((SECONDS - started))s. Sizes:"
+  ls -l "$AUDIT_DIR" | awk 'NR > 1 {print "  " $5 "\t" $NF}'
+  started=$SECONDS
   python3 -I .buildkite/claude/audit-summarize.py "$AUDIT_DIR" "$AUDIT_UID" \
     || audit_note "Summary: FAILED"
+  echo "Summarized in $((SECONDS - started))s."
 
   # Did each log record the canary?
   found() { [[ -f "$AUDIT_DIR/$1" ]] && grep -qF -- "$2" "$AUDIT_DIR/$1"; }

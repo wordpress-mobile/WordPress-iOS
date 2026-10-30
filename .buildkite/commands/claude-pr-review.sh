@@ -277,6 +277,7 @@ tail -n +1 -F "$TRANSCRIPT_FILE" 2>/dev/null > >(jq --unbuffered -R -r '
     "Claude finished: \(.subtype // "?"), \(.num_turns // 0) turns, $\(.total_cost_usd // 0)"
   else empty end') &
 transcript_follower=$!
+disown "$transcript_follower"
 reviewer_status=0
 as_reviewer "bash ~/run-review.sh" || reviewer_status=$?
 echo "The reviewer session ended."
