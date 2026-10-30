@@ -93,12 +93,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // We need to set up the swift-log logging system right after app launch, so that logs can be written
-        // into the log handlers configured below.
-        LoggingSystem.bootstrap { label in
-            AppLogLevelHandler.makeAppHandler(label: label)
-        }
-
         // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
         let libraryLogger = WordPressLibraryLogger()
         TracksLogging.delegate = libraryLogger

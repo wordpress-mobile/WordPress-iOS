@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import CocoaLumberjackSwift
 
 @objc(BlockedAuthor)
 public final class BlockedAuthor: NSManagedObject {
@@ -24,7 +23,7 @@ public extension BlockedAuthor {
             let result = try context.fetch(request)
             return result
         } catch {
-            DDLogError("Couldn't fetch blocked author with error: \(error.localizedDescription)")
+            Loggers.data.error("Couldn't fetch blocked author with error: \(error.localizedDescription)")
             return []
         }
     }
