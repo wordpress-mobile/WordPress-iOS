@@ -175,6 +175,7 @@ class PostCoordinator: NSObject {
         let post = post.getOriginal()
         do {
             try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
+            searchManager.indexItem(post)
         } catch {
             trackError(error, operation: "post-patch", post: post)
             handleError(error, for: post)
@@ -566,6 +567,7 @@ class PostCoordinator: NSObject {
         case .success:
             worker.retryDelay = syncRetryDelay
             worker.error = nil
+            searchManager.indexItem(operation.post)
             postDidUpdateNotification(for: operation.post) // TODO: Use syncEvents
 
             if let revision = operation.post.getLatestRevisionNeedingSync() {

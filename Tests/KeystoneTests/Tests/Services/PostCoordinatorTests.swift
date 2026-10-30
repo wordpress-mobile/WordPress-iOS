@@ -368,6 +368,136 @@ class PostCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
     }
 
+    /// Scenario: the user updates a published post. Spotlight gets the new title.
+    func testSaveReindexesPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a published post with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .publish
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN a server that accepts the change
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = "publish"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        try await coordinator.save(post)
+
+        // THEN the post is reindexed with the new title
+        XCTAssertEqual(searchManager.indexedTitles, ["title-b"])
+    }
+
+    /// Scenario: the user permanently deletes a trashed post.
+    func testDeleteRemovesSearchableItem() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a trashed post
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .trash
+        post.postID = 974
+        let searchableIdentifier = try XCTUnwrap(post.uniqueIdentifier)
+
+        // GIVEN a server that deletes it
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
+            var post = WordPressComPost.mock
+            post.status = "trash"
+            return try! HTTPStubsResponse(value: post, statusCode: 200)
+        }
+
+        // WHEN
+        await coordinator.delete(post)
+
+        // THEN its Spotlight item is removed
+        XCTAssertNil(post.managedObjectContext)
+        XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
+    }
+
+    /// Scenario: the user edits the title of a synced draft.
+    func testSyncReindexesDraft() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN a server that accepts the change
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = "draft"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        coordinator.setNeedsSync(for: revision)
+        try await coordinator.waitForSync(post, to: revision)
+
+        // THEN the draft is reindexed with the new title
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-b"])
+    }
+
+    /// Scenario: the user restores a trashed post, which moves it to drafts.
+    func testRestoreReindexesPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a trashed post
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .trash
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+
+        // GIVEN a server that restores it
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-a"
+            post.status = "draft"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        try await coordinator.restore(post)
+
+        // THEN the post is back in Spotlight
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-a"])
+    }
+
     func testPauseSyncing() async throws {
         // GIVEN a draft post that needs sync
         let post = PostBuilder(mainContext, blog: blog).build()
@@ -625,11 +755,16 @@ class PostCoordinatorTests: CoreDataTestCase {
 }
 
 private final class SearchManagerSpy: SearchManaging {
+    private(set) var indexedTitles: [String] = []
     private(set) var deletedIdentifiers: [String] = []
 
-    func indexItem(_ item: SearchableItemConvertable) {}
+    func indexItem(_ item: SearchableItemConvertable) {
+        indexedTitles.append(item.searchTitle ?? "")
+    }
 
-    func deleteSearchableItem(_ item: SearchableItemConvertable) {}
+    func deleteSearchableItem(_ item: SearchableItemConvertable) {
+        deletedIdentifiers.append(contentsOf: [item.uniqueIdentifier].compactMap { $0 })
+    }
 
     func deleteSearchableItems(withIdentifiers identifiers: [String]) {
         deletedIdentifiers.append(contentsOf: identifiers)
