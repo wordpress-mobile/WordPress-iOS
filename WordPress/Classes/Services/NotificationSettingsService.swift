@@ -141,7 +141,7 @@ class NotificationSettingsService {
     ///
     @objc open func registerDeviceForPushNotifications(_ token: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
         if token.isEmpty {
-            DDLogWarn("Error: registerDeviceForPushNotifications called with an empty token!")
+            Loggers.app.warning("Error: registerDeviceForPushNotifications called with an empty token!")
             return
         }
 
@@ -163,7 +163,7 @@ class NotificationSettingsService {
     ///
     @objc open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
         if deviceId.isEmpty {
-            DDLogWarn("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
+            Loggers.app.warning("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
             return
         }
 

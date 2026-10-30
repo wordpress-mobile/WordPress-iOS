@@ -256,7 +256,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
             let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
                 as? NoteBlockTableViewCell
         else {
-            DDLogError("Failed dequeueing NoteBlockTableViewCell.")
+            Loggers.app.error("Failed dequeueing NoteBlockTableViewCell.")
             return UITableViewCell()
         }
 
@@ -851,7 +851,7 @@ extension NotificationDetailsViewController {
     private func showCommentDetails(with note: WordPressData.Notification) {
         guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note)
         else {
-            DDLogError("Notification Details: failed creating Comment Detail view.")
+            Loggers.app.error("Notification Details: failed creating Comment Detail view.")
             return
         }
 

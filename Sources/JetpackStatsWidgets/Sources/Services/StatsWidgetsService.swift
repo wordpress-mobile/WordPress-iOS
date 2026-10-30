@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import BuildSettingsKit
 import WordPressKit
 import JetpackStatsWidgetsCore
@@ -172,7 +171,7 @@ class StatsWidgetsService {
             }
 
             if let error {
-                DDLogError(
+                Loggers.widgets.error(
                     "This Week Widget: Error fetching summary: \(String(describing: error.localizedDescription))"
                 )
                 completion(.failure(error))

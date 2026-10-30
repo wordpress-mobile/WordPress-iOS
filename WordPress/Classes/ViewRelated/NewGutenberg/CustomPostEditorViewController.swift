@@ -184,7 +184,7 @@ private extension CustomPostEditorViewController {
         } catch {
             // Without the editor's content (e.g. after a crash), let the user discard
             // their changes rather than trapping them in the editor.
-            DDLogError("Failed to get editor content: \(error)")
+            Loggers.app.error("Failed to get editor content: \(error)")
             changed = true
             canSave = false
         }

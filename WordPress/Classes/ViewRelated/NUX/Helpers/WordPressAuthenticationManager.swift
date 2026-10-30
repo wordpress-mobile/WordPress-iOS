@@ -149,7 +149,7 @@ extension WordPressAuthenticationManager {
         guard let currentBlog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(),
             currentBlog.objectID == blogId.objectID
         else {
-            DDLogWarn("Requested sign in to a site that is not the currently visible one")
+            Loggers.app.warning("Requested sign in to a site that is not the currently visible one")
             return
         }
 

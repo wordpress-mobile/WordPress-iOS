@@ -153,7 +153,7 @@ struct DomainsService {
             if let existingDomain = managedDomainWithName(remoteDomain.domainName, forSite: siteID, in: context),
                let blog = blogForSiteID(siteID, in: context) {
                 existingDomain.updateWith(remoteDomain, blog: blog)
-                DDLogDebug("Updated domain \(existingDomain)")
+                Loggers.app.debug("Updated domain \(existingDomain)")
             } else {
                 create(remoteDomain, forSite: siteID, in: context)
             }
@@ -164,7 +164,7 @@ struct DomainsService {
         guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
             let error = "Tried to obtain a Blog for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
-            DDLogError("\(error)")
+            Loggers.app.error("\(error)")
             return nil
         }
 
@@ -192,7 +192,7 @@ struct DomainsService {
 
         let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
-        DDLogDebug("Created domain \(managedDomain)")
+        Loggers.app.debug("Created domain \(managedDomain)")
     }
 
     private func domainsForSite(_ siteID: Int, in context: NSManagedObjectContext) -> [Domain] {
@@ -205,7 +205,7 @@ struct DomainsService {
         do {
             domains = try context.fetch(request) as! [ManagedDomain]
         } catch {
-            DDLogError("Error fetching domains: \(error)")
+            Loggers.app.error("Error fetching domains: \(error)")
             domains = []
         }
 
@@ -219,7 +219,7 @@ struct DomainsService {
         request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
         let objects = (try? context.fetch(request) as? [NSManagedObject]) ?? []
         for object in objects {
-            DDLogDebug("Removing domain: \(object)")
+            Loggers.app.debug("Removing domain: \(object)")
             context.delete(object)
         }
     }

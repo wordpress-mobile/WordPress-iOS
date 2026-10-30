@@ -70,7 +70,7 @@ private extension BlockEditorSettingsService {
                     self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
                 }
             case .failure(let err):
-                DDLogError("Error loading active theme: \(err)")
+                Loggers.app.error("Error loading active theme: \(err)")
                 completion(.failure(err))
             }
         }
@@ -132,7 +132,7 @@ private extension BlockEditorSettingsService {
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
                 }
             case .failure(let err):
-                DDLogError("Error fetching editor settings: \(err)")
+                Loggers.app.error("Error fetching editor settings: \(err)")
                 // The user may not have the gutenberg plugin installed so try /wp/v2/themes to maintain feature support.
                 // In WP 5.9 we may be able to skip this attempt.
                 self.fetchTheme(completion)

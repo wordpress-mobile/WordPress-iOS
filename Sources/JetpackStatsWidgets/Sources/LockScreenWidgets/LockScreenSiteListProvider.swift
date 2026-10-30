@@ -1,5 +1,4 @@
 import BuildSettingsKit
-import CocoaLumberjackSwift
 import Foundation
 import JetpackStatsWidgetsCore
 import WidgetKit
@@ -58,7 +57,7 @@ struct LockScreenSiteListProvider<T: HomeWidgetData>: AppIntentTimelineProvider 
                     entry = .siteSelected(widgetData, context)
                 }
             } catch {
-                DDLogError(
+                Loggers.widgets.error(
                     "LockScreen StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)"
                 )
                 entry = .siteSelected(widgetData, context)
@@ -73,7 +72,7 @@ struct LockScreenSiteListProvider<T: HomeWidgetData>: AppIntentTimelineProvider 
             case .loggedOut:
                 return Timeline(entries: [.loggedOut], policy: .never)
             case .jetpackFeatureDisabled:
-                DDLogError("LockScreen StatsWidgets: lock screen widget should have Jetpack feature disable error")
+                Loggers.widgets.error("LockScreen StatsWidgets: lock screen widget should have Jetpack feature disable error")
                 return Timeline(entries: [.noData], policy: .never)
             }
         }

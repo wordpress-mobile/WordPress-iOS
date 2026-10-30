@@ -69,7 +69,7 @@ class EditCommentTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let tableSection = TableSections(rawValue: indexPath.section) else {
-            DDLogError("Edit Comment: invalid table section.")
+            Loggers.app.error("Edit Comment: invalid table section.")
             return UITableViewCell()
         }
 
@@ -93,7 +93,7 @@ class EditCommentTableViewController: UITableViewController {
         case TableSections.emailAddress:
             cell.configure(text: updatedEmailAddress, style: .email, disabled: editingDisabled)
         default:
-            DDLogError("Edit Comment: unsupported table section.")
+            Loggers.app.error("Edit Comment: unsupported table section.")
             break
         }
 

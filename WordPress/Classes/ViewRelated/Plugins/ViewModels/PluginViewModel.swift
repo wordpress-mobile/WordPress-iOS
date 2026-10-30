@@ -536,7 +536,7 @@ class PluginViewModel: Observable {
 
     private func presentDomainRegistration(for directoryEntry: PluginDirectoryEntry) {
         guard let blog = BlogService.blog(with: site) else {
-            DDLogError("Error obtaining the blog from the jetpack site ref.")
+            Loggers.app.error("Error obtaining the blog from the jetpack site ref.")
             return
         }
 

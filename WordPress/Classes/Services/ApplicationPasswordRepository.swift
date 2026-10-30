@@ -204,8 +204,8 @@ private extension ApplicationPasswordRepository {
             try await storage.delete(invalidPasswords)
         }
 
-        DDLogInfo("\(passwords.count) passwords stored for user (\(siteUsername)) on \(siteUrl).")
-        DDLogInfo(
+        Loggers.app.info("\(passwords.count) passwords stored for user (\(siteUsername)) on \(siteUrl).")
+        Loggers.app.info(
             "\(validPasswords.count) have been verified, and \(invalidPasswords.count) invalid ones have been deleted."
         )
 
@@ -267,7 +267,7 @@ private extension ApplicationPasswordRepository {
         try await storage.save(.init(password: password, owners: owners))
         try await assign(password, apiRootURL: apiRootURL, to: blogId)
 
-        DDLogInfo("Application password is created for user \(siteUsername) to access REST API at \(apiRootURL)")
+        Loggers.app.info("Application password is created for user \(siteUsername) to access REST API at \(apiRootURL)")
 
         Task { @MainActor in
             NotificationCenter.default.post(name: SelfHostedSiteAuthenticator.applicationPasswordUpdated, object: nil)

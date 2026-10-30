@@ -36,7 +36,7 @@ class RootViewCoordinator {
             /// Accessing RootViewPresenter before root view is presented is incorrect behavior
             /// It shows either inconsistent order of app dependency initialization
             /// or that RootViewPresenter contains actions unrelated to presented views
-            DDLogWarn("RootViewPresenter is accessed before root view is presented")
+            Loggers.app.warning("RootViewPresenter is accessed before root view is presented")
             let rootViewPresenter = shared.createPresenter(shared.currentAppUIType)
             shared.rootViewPresenter = rootViewPresenter
             return rootViewPresenter

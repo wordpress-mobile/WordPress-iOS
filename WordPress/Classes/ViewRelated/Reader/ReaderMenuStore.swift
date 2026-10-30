@@ -31,7 +31,7 @@ final class ReaderMenuStore: ReaderMenuStoreProtocol {
             self?.fetchTabBarItemsAndFollowedSites()
         }, failure: { [weak self] error in
             self?.fetchTabBarItemsAndFollowedSites()
-            DDLogError("Error syncing menu: \(String(describing: error))")
+            Loggers.app.error("Error syncing menu: \(String(describing: error))")
         })
     }
 
@@ -45,7 +45,7 @@ final class ReaderMenuStore: ReaderMenuStoreProtocol {
         service.fetchAllFollowedSites(success: { [weak self] in
             self?.isLoading = false
         }, failure: { [weak self] error in
-            DDLogError("Could not sync sites: \(String(describing: error))")
+            Loggers.app.error("Could not sync sites: \(String(describing: error))")
             self?.isLoading = false
         })
         onCompletion?()

@@ -131,7 +131,7 @@ struct DebugMenuView: View {
             showSuccessNotice()
         }
         Button(Strings.sendTestCrash) {
-            DDLogInfo("Initiating user-requested crash")
+            Loggers.app.info("Initiating user-requested crash")
             WordPressAppDelegate.crashLogging?.crash()
         }
         if let eventLogging = WordPressAppDelegate.eventLogging {

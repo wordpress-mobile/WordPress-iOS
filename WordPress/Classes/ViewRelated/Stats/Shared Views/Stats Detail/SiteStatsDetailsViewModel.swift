@@ -88,7 +88,7 @@ class SiteStatsDetailsViewModel: Observable {
                 .store(in: &cancellables)
             refreshEmailsSummary()
         } else {
-            DDLogError("Stats Details cannot be loaded for StatSection: \(statSection)")
+            Loggers.app.error("Stats Details cannot be loaded for StatSection: \(statSection)")
         }
     }
 
@@ -109,7 +109,7 @@ class SiteStatsDetailsViewModel: Observable {
         } else if statSection == .subscribersEmailsSummary {
             return subscribersStore.emailsSummary.value == .error
         } else {
-            DDLogError("Stats Details cannot be loaded for StatSection: \(statSection)")
+            Loggers.app.error("Stats Details cannot be loaded for StatSection: \(statSection)")
             return true
         }
     }

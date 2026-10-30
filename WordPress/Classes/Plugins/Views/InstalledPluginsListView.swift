@@ -279,7 +279,7 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         do {
             try await self.service.uninstalledPlugin(slug: slug)
         } catch {
-            DDLogError("Failed to uninstall plugin: \(error)")
+            Loggers.app.error("Failed to uninstall plugin: \(error)")
         }
     }
 }

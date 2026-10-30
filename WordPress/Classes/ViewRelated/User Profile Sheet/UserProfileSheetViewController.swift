@@ -140,7 +140,7 @@ private extension UserProfileSheetViewController {
         guard let urlString = url,
               !urlString.isEmpty,
               let siteURL = URL(string: urlString) else {
-            DDLogError("User Profile: Error creating URL from site string.")
+            Loggers.app.error("User Profile: Error creating URL from site string.")
             return
         }
 

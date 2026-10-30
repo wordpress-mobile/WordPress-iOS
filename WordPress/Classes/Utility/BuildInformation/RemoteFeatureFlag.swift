@@ -175,7 +175,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         if let remoteValue = remoteStore.value(for: remoteKey) { // The value may not be in the cache if this is the first run
             return remoteValue
         }
-        DDLogInfo("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
+        Loggers.app.info("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
         return defaultValue
     }
 }

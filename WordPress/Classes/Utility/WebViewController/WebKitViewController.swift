@@ -593,7 +593,7 @@ extension WebKitViewController: WKUIDelegate {
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+        Loggers.app.info("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
 
         // Don't show Frame Load Interrupted errors
         let code = (error as NSError).code
@@ -605,7 +605,7 @@ extension WebKitViewController: WKUIDelegate {
             ReachabilityUtils.showNoInternetConnectionNotice()
             reloadWhenConnectionRestored()
         } else {
-            DDLogError("WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
+            Loggers.app.error("WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
         }
     }
 

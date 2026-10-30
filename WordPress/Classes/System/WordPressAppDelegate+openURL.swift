@@ -9,7 +9,7 @@ import WordPressShared
     @discardableResult
     func handle(url: URL) -> Bool {
         let redactedURL = LoggingURLRedactor.redactedURL(url)
-        DDLogInfo("Application launched with URL: \(redactedURL)")
+        Loggers.app.info("Application launched with URL: \(redactedURL)")
 
         if QRLoginCoordinator.didHandle(url: url) {
             return true

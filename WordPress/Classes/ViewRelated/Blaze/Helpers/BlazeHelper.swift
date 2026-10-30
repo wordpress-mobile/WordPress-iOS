@@ -20,7 +20,7 @@ enum BlazeHelper {
     static func hideBlazeCard(for blog: Blog?) {
         guard let blog,
               let siteID = blog.dotComID?.intValue else {
-            DDLogError("Blaze: error hiding blaze card.")
+            Loggers.app.error("Blaze: error hiding blaze card.")
             return
         }
         BlogDashboardPersonalizationService(siteID: siteID)

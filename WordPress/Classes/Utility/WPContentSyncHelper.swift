@@ -78,7 +78,7 @@ public class WPContentSyncHelper: NSObject {
             self?.syncContentEnded()
         }, failure: {
             [weak self] (error: NSError) in
-            DDLogInfo("Error syncing more: \(error)")
+            Loggers.app.info("Error syncing more: \(error)")
             self?.syncContentEnded(error: true)
         })
 

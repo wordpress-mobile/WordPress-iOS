@@ -91,7 +91,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
                 ] as [String: Any],
                 blog: blog
             )
-            DDLogError("Failed to create an application password: \(error)")
+            Loggers.app.error("Failed to create an application password: \(error)")
         }
     }
 

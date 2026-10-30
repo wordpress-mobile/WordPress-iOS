@@ -271,7 +271,7 @@ class MediaCoordinator: NSObject {
     ///
     func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
-            DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
+            Loggers.app.error("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
         }
 
@@ -292,7 +292,7 @@ class MediaCoordinator: NSObject {
     ///
     func addMedia(_ media: Media, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .local else {
-            DDLogError("Can't try to upload Media that isn't local only. \(String(describing: media))")
+            Loggers.app.error("Can't try to upload Media that isn't local only. \(String(describing: media))")
             return
         }
         media.addPostsObject(post)

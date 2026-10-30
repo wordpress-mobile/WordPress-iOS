@@ -169,7 +169,7 @@ private struct SubmitFeedbackView: View {
 
             dismiss()
         case .failure(let error):
-            DDLogError("Submitting feedback failed: \(error)")
+            Loggers.app.error("Submitting feedback failed: \(error)")
 
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             WPError.showAlert(withTitle: Strings.failureAlertTitle, message: error.localizedDescription)

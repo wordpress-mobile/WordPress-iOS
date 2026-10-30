@@ -45,7 +45,7 @@ extension WizardNavigation: WizardDelegate {
     func nextStep() {
         guard let nextStepIndex = pointer.nextIndex else {
             // If we find this statement in Fabric, it suggests 11388 might not have been resolved
-            DDLogInfo("We've exceeded the max index of our wizard navigation steps (i.e., \(pointer.currentIndex)")
+            Loggers.app.info("We've exceeded the max index of our wizard navigation steps (i.e., \(pointer.currentIndex)")
             return
         }
 
@@ -54,7 +54,7 @@ extension WizardNavigation: WizardDelegate {
 
         // If we find this statement in Fabric, it's likely that we haven't resolved 11388
         if viewControllers.contains(nextViewController) {
-            DDLogInfo("Attempting to push \(String(describing: nextViewController.title)) when it's already on the navigation stack!")
+            Loggers.app.info("Attempting to push \(String(describing: nextViewController.title)) when it's already on the navigation stack!")
         }
 
         pushViewController(nextViewController, animated: true)

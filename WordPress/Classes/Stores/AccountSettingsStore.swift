@@ -74,7 +74,7 @@ private extension AccountSettingsStore {
         state.usernameSaveState = .loading
 
         service?.changeUsername(to: username, success: { [weak self] in
-            DDLogInfo("Saving \(username) username succeeded")
+            Loggers.app.info("Saving \(username) username succeeded")
 
             DispatchQueue.main.async {
                 self?.transaction { state in
@@ -82,7 +82,7 @@ private extension AccountSettingsStore {
                 }
             }
         }, failure: { [weak self] in
-            DDLogInfo("Saving \(username) username failed")
+            Loggers.app.info("Saving \(username) username failed")
 
             DispatchQueue.main.async {
                 self?.transaction { state in
@@ -100,7 +100,7 @@ private extension AccountSettingsStore {
         state.suggestUsernamesState = .loading
 
         service?.suggestUsernames(base: username) { [weak self] suggestions in
-            DDLogInfo("Usernames suggestion finished finding \(suggestions.count) usernames")
+            Loggers.app.info("Usernames suggestion finished finding \(suggestions.count) usernames")
 
             DispatchQueue.main.async {
                 self?.transaction { state in

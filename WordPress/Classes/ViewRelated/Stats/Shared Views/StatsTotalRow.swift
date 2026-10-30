@@ -582,7 +582,7 @@ private extension StatsTotalRow {
                 self?.imageView.image = image
                 self?.imageView.backgroundColor = .clear
             } catch {
-                DDLogInfo("Error downloading image: \(error.localizedDescription). From URL: \(iconURL).")
+                Loggers.app.info("Error downloading image: \(error.localizedDescription). From URL: \(iconURL).")
                 self?.imageView.isHidden = true
             }
         }
@@ -650,7 +650,7 @@ private extension StatsTotalRow {
                 statSection == .periodPostsAndPages || statSection == .periodAuthors
             {
                 guard let postID = rowData?.postID else {
-                    DDLogInfo("No postID available to show Post Stats.")
+                    Loggers.app.info("No postID available to show Post Stats.")
                     return
                 }
                 delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
@@ -665,7 +665,7 @@ private extension StatsTotalRow {
             return
         }
 
-        DDLogInfo("Stat row selection action not supported.")
+        Loggers.app.info("Stat row selection action not supported.")
     }
 
     func toggleExpandedState() {

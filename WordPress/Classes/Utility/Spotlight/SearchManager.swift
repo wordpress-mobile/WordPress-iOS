@@ -39,7 +39,7 @@ import WordPressUI
             guard let error else {
                 return
             }
-            DDLogError("Could not index post. Error: \(error.localizedDescription)")
+            Loggers.app.error("Could not index post. Error: \(error.localizedDescription)")
         })
     }
 
@@ -69,7 +69,7 @@ import WordPressUI
             guard let error else {
                 return
             }
-            DDLogError("Could not delete CSSearchableItem item. Error: \(error.localizedDescription)")
+            Loggers.app.error("Could not delete CSSearchableItem item. Error: \(error.localizedDescription)")
         })
     }
 
@@ -96,7 +96,7 @@ import WordPressUI
             guard let error else {
                 return
             }
-            DDLogError("Could not delete CSSearchableItem items for domains: \(domains.joined(separator: ", ")). Error: \(error.localizedDescription)")
+            Loggers.app.error("Could not delete CSSearchableItem items for domains: \(domains.joined(separator: ", ")). Error: \(error.localizedDescription)")
         })
     }
 
@@ -110,7 +110,7 @@ import WordPressUI
             guard let error else {
                 return
             }
-            DDLogError("Could not delete all CSSearchableItem items. Error: \(error.localizedDescription)")
+            Loggers.app.error("Could not delete all CSSearchableItem items. Error: \(error.localizedDescription)")
         })
     }
 
@@ -179,7 +179,7 @@ import WordPressUI
 
     fileprivate func handleAbstractPost(domainString: String, identifier: String) -> Bool {
         guard let postID = NumberFormatter().number(from: identifier) else {
-            DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
+            Loggers.app.error("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
             return false
         }
 
@@ -187,13 +187,13 @@ import WordPressUI
             fetchPost(postID, blogID: siteID, onSuccess: { [weak self] apost in
                 self?.navigateToScreen(for: apost)
                 }, onFailure: {
-                    DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
+                    Loggers.app.error("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
             fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] apost in
                 self?.navigateToScreen(for: apost, isDotCom: false)
                 }, onFailure: {
-                    DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
+                    Loggers.app.error("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
             })
         }
 
@@ -203,7 +203,7 @@ import WordPressUI
     fileprivate func handleReaderPost(domainString: String, identifier: String) -> Bool {
         guard let siteID = validWPComSiteID(with: domainString),
             let readerPostID = NumberFormatter().number(from: identifier) else {
-                DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
+                Loggers.app.error("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
                 return false
         }
         var properties = [AnyHashable: Any]()
@@ -211,7 +211,7 @@ import WordPressUI
         properties[WPAppAnalyticsKeyPostID] = readerPostID
         WPAppAnalytics.track(.spotlightSearchOpenedReaderPost, withProperties: properties)
         openReader(for: readerPostID, siteID: siteID, onFailure: {
-            DDLogError("Search manager unable to open reader for readerPostID:\(readerPostID) siteID:\(siteID)")
+            Loggers.app.error("Search manager unable to open reader for readerPostID:\(readerPostID) siteID:\(siteID)")
         })
 
         return true
@@ -227,13 +227,13 @@ import WordPressUI
             fetchBlog(siteID, onSuccess: { [weak self] blog in
                 self?.openSiteDetailsScreen(for: blog)
                 }, onFailure: {
-                    DDLogError("Search manager unable to open site - siteID:\(siteID)")
+                    Loggers.app.error("Search manager unable to open site - siteID:\(siteID)")
             })
         } else {
             fetchSelfHostedBlog(siteID, onSuccess: { [weak self] blog in
                 self?.openSiteDetailsScreen(for: blog)
                 }, onFailure: {
-                    DDLogError("Search manager unable to open self hosted site - xmlrpc:\(siteID)")
+                    Loggers.app.error("Search manager unable to open self hosted site - xmlrpc:\(siteID)")
             })
         }
         return true

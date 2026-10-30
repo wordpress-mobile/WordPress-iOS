@@ -50,7 +50,7 @@ open class UsersService {
 
             onCompletion(profile)
         }, failure: { error in
-            DDLogError("\(error.debugDescription)")
+            Loggers.app.error("\(error.debugDescription)")
             onCompletion(nil)
         })
     }

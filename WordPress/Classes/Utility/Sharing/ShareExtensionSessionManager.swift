@@ -63,7 +63,7 @@ import WordPressKit
     /// passed into init().
     ///
     @objc func startBackgroundSession() {
-        DDLogInfo("Initializing background session: \(backgroundSession)")
+        Loggers.app.info("Initializing background session: \(backgroundSession)")
     }
 
     /// Displays a notification to the user about the successful/error-ridden post if necessary.
@@ -117,7 +117,7 @@ import WordPressKit
                         ActionDispatcher.dispatch(NoticeAction.post(notice))
                     }
                 } catch {
-                    DDLogError("Unable to create user notification for share extension session with.")
+                    Loggers.app.error("Unable to create user notification for share extension session with.")
                 }
             }
         }
@@ -136,7 +136,7 @@ import WordPressKit
                 completionHandler()
             }
         }
-        DDLogInfo("Completed processing post and media upload for session \(backgroundSessionIdentifier).")
+        Loggers.app.info("Completed processing post and media upload for session \(backgroundSessionIdentifier).")
     }
 
     /// Logs the error and updates the upload op's status with `Error`
@@ -149,7 +149,7 @@ import WordPressKit
         guard !uploadOpObjectIDs.isEmpty else {
             return
         }
-        DDLogError("\(errorString)")
+        Loggers.app.error("\(errorString)")
         for uploadOpObjectID in uploadOpObjectIDs {
             coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
         }
@@ -218,7 +218,7 @@ import WordPressKit
             }
 
             if let postID = post.postID {
-                DDLogInfo("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
+                Loggers.app.info("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
                 postUploadOp.remotePostID = postID.int64Value
             }
             postUploadOp.currentStatus = .complete
@@ -262,7 +262,7 @@ import WordPressKit
         }
 
         guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
-            DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
+            Loggers.app.error("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
             return
         }
 
@@ -278,7 +278,7 @@ import WordPressKit
                 if let error = error as NSError? {
                     errorString += ": \(error.localizedDescription)"
                 }
-                DDLogError("\(errorString)")
+                Loggers.app.error("\(errorString)")
                 syncGroup.leave()
             })
         }
@@ -310,11 +310,11 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
 
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
-            DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
+            Loggers.app.error("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
             return
         }
         guard let postUploadOp = combinePostAndMediaContent(for: groupID) else {
-            DDLogError("Unable to append media to the post for Group ID \(groupID).")
+            Loggers.app.error("Unable to append media to the post for Group ID \(groupID).")
             return
         }
 
@@ -324,7 +324,7 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
 
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         if let error {
-            DDLogError("Background session invalidated by the system. Session:\(session) Error:\(error).")
+            Loggers.app.error("Background session invalidated by the system. Session:\(session) Error:\(error).")
 
             // We are only going to send errors to Tracks that are NOT related to the "lite" tracks client
             // in the share extension. See https://github.com/wordpress-mobile/WordPress-iOS/issues/9789
@@ -333,7 +333,7 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
                 WPAppAnalytics.track(.shareExtensionError, error: error)
             }
         } else {
-            DDLogError("Background session explicitly invalidated by WPiOS. Session:\(session).")
+            Loggers.app.error("Background session explicitly invalidated by WPiOS. Session:\(session).")
         }
     }
 }
@@ -343,12 +343,12 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
 extension ShareExtensionSessionManager: URLSessionTaskDelegate {
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        DDLogDebug("didSendBodyData [session:\(session) task:\(task.debugDescription) bytesSent:\(bytesSent) totalBytesSent:\(totalBytesSent) totalBytesExpectedToSend:\(totalBytesExpectedToSend)]")
+        Loggers.app.debug("didSendBodyData [session:\(session) task:\(task.debugDescription) bytesSent:\(bytesSent) totalBytesSent:\(totalBytesSent) totalBytesExpectedToSend:\(totalBytesExpectedToSend)]")
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let uploadOps = coreDataStack.fetchSessionUploadOps(for: task.taskIdentifier, with: backgroundSessionIdentifier) else {
-            DDLogError("Background session tasks were not found in shared database. Session:\(session) Task:\(task.debugDescription).")
+            Loggers.app.error("Background session tasks were not found in shared database. Session:\(session) Task:\(task.debugDescription).")
             return
         }
 
@@ -365,7 +365,7 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
             }
             coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOp.objectID)
         }
-        DDLogInfo("Background session task completed. Session:\(session) Task:\(task.debugDescription).")
+        Loggers.app.info("Background session task completed. Session:\(session) Task:\(task.debugDescription).")
     }
 }
 
@@ -377,7 +377,7 @@ extension ShareExtensionSessionManager: URLSessionDataDelegate {
         guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
             let response = object as? [String: AnyObject],
             let media = response["media"] as? [[String: AnyObject]] else {
-                DDLogError("Error parsing server response data. Task:\(dataTask.debugDescription)")
+                Loggers.app.error("Error parsing server response data. Task:\(dataTask.debugDescription)")
                 return
         }
 

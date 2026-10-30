@@ -3,7 +3,7 @@ import WordPressShared
 
 struct AssertionLogger: WordPressShared.AssertionLogging {
     func trackAssertion(message: String, filename: String, line: UInt, userInfo: [String: Any]?) {
-        DDLogError("WPAssertionFailure in \(filename)–\(line): \(message)\n\(userInfo ?? [:])")
+        Loggers.app.error("WPAssertionFailure in \(filename)–\(line): \(message)\n\(userInfo ?? [:])")
 
         WPAnalytics.track(.assertionFailure, properties: {
             var properties: [String: Any] = [

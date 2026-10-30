@@ -392,7 +392,7 @@ class MediaImportService: NSObject {
             errorLogMessage = " with unknown error"
         }
         let nerror = error.toNSError()
-        DDLogError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
+        Loggers.app.error("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
     }
 
     // MARK: - Media export configurations

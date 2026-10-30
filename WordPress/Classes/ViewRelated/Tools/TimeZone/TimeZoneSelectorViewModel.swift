@@ -67,7 +67,7 @@ final class TimeZoneSelectorViewModel: ObservableObject {
             updateSuggestions()
         } catch {
             self.error = error
-            DDLogError("Error loading timezones: \(error)")
+            Loggers.app.error("Error loading timezones: \(error)")
         }
 
         isLoading = false

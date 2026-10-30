@@ -808,7 +808,7 @@ private extension DomainSelectionViewController {
 private extension DomainSelectionViewController {
     private func pushRegisterDomainDetailsViewController() {
         guard let siteID = coordinator?.site?.dotComID?.intValue else {
-            DDLogError("Cannot register domains for sites without a dotComID")
+            Loggers.app.error("Cannot register domains for sites without a dotComID")
             return
         }
 

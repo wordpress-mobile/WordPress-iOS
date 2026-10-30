@@ -229,7 +229,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private func show(_ viewController: UIViewController) {
         if let splitViewController {
             guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
-                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping show")
+                Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping show")
                 return
             }
             (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
@@ -239,7 +239,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
-                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping show")
+                Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping show")
                 return
             }
 
@@ -253,7 +253,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         if let splitViewController {
             // Don't push a view controller on top of another with the same content
             guard !contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
-                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping push")
+                Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping push")
                 return
             }
             let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
@@ -262,7 +262,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
-                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping push")
+                Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping push")
                 return
             }
 

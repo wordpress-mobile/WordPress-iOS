@@ -1,5 +1,4 @@
 import BuildSettingsKit
-import CocoaLumberjackSwift
 import Foundation
 import JetpackStatsWidgetsCore
 import WidgetKit
@@ -53,7 +52,7 @@ struct SiteListProvider<T: HomeWidgetData>: AppIntentTimelineProvider {
                 let newWidgetData = try await service.fetchStats(for: widgetData)
                 entry = .siteSelected(newWidgetData, context)
             } catch {
-                DDLogError(
+                Loggers.widgets.error(
                     "StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)"
                 )
                 entry = .siteSelected(widgetData, context)

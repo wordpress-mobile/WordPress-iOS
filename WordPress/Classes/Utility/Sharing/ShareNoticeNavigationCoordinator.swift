@@ -12,7 +12,7 @@ class ShareNoticeNavigationCoordinator {
                 presentEditor(for: post, source: ShareNoticeConstants.notificationSourceSuccess)
             }
         }, onFailure: {
-            DDLogError("Could not fetch post from share notification.")
+            Loggers.app.error("Could not fetch post from share notification.")
         })
     }
 
@@ -29,7 +29,7 @@ class ShareNoticeNavigationCoordinator {
             guard let post else { return }
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: post.blog, then: .posts)
         }, onFailure: {
-            DDLogError("Could not fetch post from share notification.")
+            Loggers.app.error("Could not fetch post from share notification.")
         })
     }
 
@@ -39,7 +39,7 @@ class ShareNoticeNavigationCoordinator {
                 RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
             }
         }, onFailure: {
-            DDLogError("Could not fetch blog from share notification.")
+            Loggers.app.error("Could not fetch blog from share notification.")
         })
     }
 

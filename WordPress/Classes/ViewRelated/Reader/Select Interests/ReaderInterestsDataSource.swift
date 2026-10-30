@@ -90,7 +90,7 @@ class ReaderInterestsDataSource {
                 }
                 .map { ReaderInterestViewModel(interest: $0) }
         }) { [weak self] (error: Error) in
-            DDLogError("Error: Could not retrieve reader interests: \(String(describing: error))")
+            Loggers.app.error("Error: Could not retrieve reader interests: \(String(describing: error))")
 
             self?.interests = []
         }

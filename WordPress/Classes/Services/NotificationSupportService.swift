@@ -33,7 +33,7 @@ final class NotificationSupportService {
                 serviceName: configuration.keychainServiceName
             )
         } catch {
-            DDLogDebug("Error while saving Notification Service Extension OAuth token: \(error)")
+            Loggers.app.debug("Error while saving Notification Service Extension OAuth token: \(error)")
         }
     }
 
@@ -49,7 +49,7 @@ final class NotificationSupportService {
                 serviceName: configuration.keychainServiceName
             )
         } catch {
-            DDLogDebug("Error while saving Notification Service Extension username: \(error)")
+            Loggers.app.debug("Error while saving Notification Service Extension username: \(error)")
         }
     }
 
@@ -65,7 +65,7 @@ final class NotificationSupportService {
                 serviceName: configuration.keychainServiceName
             )
         } catch {
-            DDLogDebug("Error while saving Notification Service Extension userID: \(error)")
+            Loggers.app.debug("Error while saving Notification Service Extension userID: \(error)")
         }
     }
 
@@ -79,7 +79,7 @@ final class NotificationSupportService {
                 serviceName: configuration.keychainServiceName
             )
         } catch {
-            DDLogDebug("Error while removing Notification Service Extension OAuth token: \(error)")
+            Loggers.app.debug("Error while removing Notification Service Extension OAuth token: \(error)")
         }
     }
 
@@ -93,7 +93,7 @@ final class NotificationSupportService {
                 serviceName: configuration.keychainServiceName
             )
         } catch {
-            DDLogDebug("Error while removing Notification Service Extension username: \(error)")
+            Loggers.app.debug("Error while removing Notification Service Extension username: \(error)")
         }
     }
 
@@ -107,7 +107,7 @@ final class NotificationSupportService {
                 serviceName: configuration.keychainServiceName
             )
         } catch {
-            DDLogDebug("Error while removing Notification Service Extension userID: \(error)")
+            Loggers.app.debug("Error while removing Notification Service Extension userID: \(error)")
         }
     }
 }

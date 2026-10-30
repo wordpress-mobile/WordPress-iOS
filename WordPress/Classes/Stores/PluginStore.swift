@@ -209,7 +209,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     override func logError(_ error: String) {
-        DDLogError("\(error)")
+        Loggers.app.error("\(error)")
     }
 
     func processQueries() {
@@ -611,7 +611,7 @@ private extension PluginStore {
 
     func refreshPlugins(site: JetpackSiteRef) {
         guard !isFetchingPlugins(site: site) else {
-            DDLogInfo("Plugin refresh triggered while one was in progress")
+            Loggers.app.info("Plugin refresh triggered while one was in progress")
             return
         }
         fetchPlugins(site: site)
@@ -619,7 +619,7 @@ private extension PluginStore {
 
     func refreshFeaturedPlugins() {
         guard !isFetchingFeatured() else {
-            DDLogInfo("Featured plugins refresh triggered while one was in progress")
+            Loggers.app.info("Featured plugins refresh triggered while one was in progress")
             return
         }
         fetchFeaturedPlugins()
@@ -627,7 +627,7 @@ private extension PluginStore {
 
     func refreshFeed(feed: PluginDirectoryFeedType) {
         guard !isFetchingFeed(feed: feed) else {
-            DDLogInfo("Plugin feed refresh triggered while one was in progress")
+            Loggers.app.info("Plugin feed refresh triggered while one was in progress")
             return
         }
         fetchPluginDirectoryFeed(feed: feed)

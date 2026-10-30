@@ -58,7 +58,7 @@ extension NSItemProvider {
                     if let image = value as? UIImage {
                         completion(image, nil)
                     } else {
-                        DDLogError("Failed to load image for provider with registered types \(registeredTypeIdentifiers) with error \(String(describing: error))")
+                        Loggers.app.error("Failed to load image for provider with registered types \(registeredTypeIdentifiers) with error \(String(describing: error))")
 
                         completion(nil, error)
                     }
@@ -73,13 +73,13 @@ extension NSItemProvider {
                     if let image {
                         completion(image, nil)
                     } else {
-                        DDLogError("Failed to load image for provider with registered types \(registeredTypeIdentifiers) with error \(String(describing: error))")
+                        Loggers.app.error("Failed to load image for provider with registered types \(registeredTypeIdentifiers) with error \(String(describing: error))")
                         completion(nil, error)
                     }
                 }
             }
         } else {
-            DDLogError("No image representation available for provider with registered types: \(registeredTypeIdentifiers)")
+            Loggers.app.error("No image representation available for provider with registered types: \(registeredTypeIdentifiers)")
             DispatchQueue.main.async {
                 completion(nil, nil)
             }
