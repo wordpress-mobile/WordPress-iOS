@@ -35,7 +35,30 @@ AUDIT_UPLOAD_SECONDS=120
 AUDIT_ARCHIVE="build/audit-log.tar.gz"
 audit_started=false
 
+AUDIT_FAILURES=()
+
 audit_note() { echo "$*" | tee -a "$AUDIT_DIR/audit-checks.txt"; }
+
+# Records something that means the run can't be audited. The review doesn't
+# start, or its result isn't posted.
+audit_fail() {
+  AUDIT_FAILURES+=("$*")
+  audit_note "$*"
+}
+
+# Stops the run, before Claude starts, if any log isn't running.
+audit_require_running() {
+  if ! sudo -n pgrep -x eslogger > /dev/null 2>&1; then audit_fail "Endpoint Security log: not running"; fi
+  if ! kill -0 "${AUDIT_ES_FILTER_PID:-}" 2>/dev/null; then audit_fail "Endpoint Security filter: not running"; fi
+  if ! kill -0 "${AUDIT_LISTENER_PID:-}" 2>/dev/null; then audit_fail "Hook log: the listener isn't running"; fi
+  local tcpdumps
+  tcpdumps=$(sudo -n pgrep -x tcpdump 2>/dev/null | wc -l | tr -d ' ' || true)
+  if [[ "${tcpdumps:-0}" -lt 2 ]]; then audit_fail "Network log: ${tcpdumps:-0} of 2 tcpdump processes are running"; fi
+  if [[ ${#AUDIT_FAILURES[@]} -gt 0 ]]; then
+    echo "^^^ +++ The review can't be audited, so Claude will not run: ${AUDIT_FAILURES[*]}"
+    exit 2
+  fi
+}
 
 # Stops processes by name: SIGINT so they can flush their output, then SIGTERM,
 # then SIGKILL, each after $2 seconds. Prints the signal that stopped them.
@@ -114,8 +137,8 @@ audit_flush() {
   if [[ "$count" -gt 0 ]]; then echo "Uploaded ${count} audit log part(s)."; fi
 }
 
-# $1 = reviewer user ID, $2 = reviewer home. Everything here is best-effort: a
-# log that doesn't start is reported in audit-checks.txt, and the review still runs.
+# $1 = reviewer user ID, $2 = reviewer home. A log that doesn't start is recorded
+# with audit_fail, and audit_require_running stops the run.
 audit_start() {
   AUDIT_UID="$1"
   local reviewer_home="$2"
@@ -155,10 +178,10 @@ audit_start() {
       && sudo -n install -o root -g wheel -m 0644 "$AUDIT_DIR/managed-settings.json" "${AUDIT_MANAGED_DIR}/managed-settings.json"; then
       audit_note "Hook log: listening on 127.0.0.1:${port}"
     else
-      audit_note "Hook log: FAILED to install the managed settings"
+      audit_fail "Hook log: FAILED to install the managed settings"
     fi
   else
-    audit_note "Hook log: FAILED to start the listener (see hook-listener.err)"
+    audit_fail "Hook log: FAILED to start the listener (see hook-listener.err)"
   fi
 
   # Endpoint Security, as root. grep cheaply keeps only lines that mention the
@@ -177,7 +200,7 @@ audit_start() {
   if sudo -n pgrep -x eslogger > /dev/null; then
     audit_note "Endpoint Security log: running (${AUDIT_ES_EVENTS[*]})"
   else
-    audit_note "Endpoint Security log: FAILED to start: $(head -c 500 "$AUDIT_DIR/eslogger.err" | tr '\n' ' ')"
+    audit_fail "Endpoint Security log: FAILED to start: $(head -c 500 "$AUDIT_DIR/eslogger.err" | tr '\n' ' ')"
   fi
 
   # Network. pf logs the first packet of each connection the reviewer makes
@@ -200,7 +223,7 @@ audit_start() {
     sleep 1
     audit_note "Network log: pf rule loaded; DNS on ${interface:-en0}"
   else
-    audit_note "Network log: FAILED to load the pf rule: $(head -c 500 "$AUDIT_DIR/pf.err" | tr '\n' ' ')"
+    audit_fail "Network log: FAILED to load the pf rule: $(head -c 500 "$AUDIT_DIR/pf.err" | tr '\n' ' ')"
   fi
 
   # Uploads parts until audit_stop creates the stop file.
@@ -259,7 +282,7 @@ audit_stop() {
   audit_note "Endpoint Security log: stopped with $(audit_stop_process eslogger 5)"
   for _ in $(seq 1 60); do kill -0 "${AUDIT_ES_FILTER_PID:-}" 2>/dev/null || break; sleep 1; done
   if kill -0 "${AUDIT_ES_FILTER_PID:-}" 2>/dev/null; then
-    audit_note "Warning: the Endpoint Security filter was still running after 60 seconds."
+    audit_fail "Endpoint Security filter: still running after 60 seconds"
   fi
   audit_note "Network log: stopped with $(audit_stop_process tcpdump 5)"
   sudo -n pfctl -a "$AUDIT_PF_ANCHOR" -F all > /dev/null 2>&1 || true
@@ -284,22 +307,24 @@ audit_stop() {
   for file in "$AUDIT_LIVE"/network/*.pcap; do tcpdump -n -e -tttt -r "$file" >> "$AUDIT_DIR/network.txt" 2>/dev/null || true; done
   for file in "$AUDIT_LIVE"/dns/*.pcap; do tcpdump -n -tttt -r "$file" >> "$AUDIT_DIR/dns.txt" 2>/dev/null || true; done
   python3 -I .buildkite/claude/audit-summarize.py "$AUDIT_DIR" "$AUDIT_UID" "$AUDIT_LIVE/es" \
-    || audit_note "Summary: FAILED"
+    || audit_fail "Summary: FAILED"
   echo "Summarized in $((SECONDS - started))s."
 
   audit_remove_secrets "$AUDIT_DIR" "${EVIDENCE_DIR:-$AUDIT_DIR}"
 
   # Did each log record the canary?
   found() { [[ -f "$AUDIT_DIR/$1" ]] && grep -qF -- "$2" "$AUDIT_DIR/$1"; }
-  if found processes.txt claude-audit-canary; then audit_note "Check: the canary's curl is in processes.txt"; else audit_note "Check: MISSING the canary's curl in processes.txt"; fi
-  if found files-read.txt etc/hosts; then audit_note "Check: the canary's read of /etc/hosts is in files-read.txt"; else audit_note "Check: MISSING the canary's read of /etc/hosts in files-read.txt"; fi
-  if found network-summary.txt example.com; then audit_note "Check: the canary's connection to example.com is in network-summary.txt"; else audit_note "Check: MISSING the canary's connection to example.com in network-summary.txt"; fi
+  if found processes.txt claude-audit-canary; then audit_note "Check: the canary's curl is in processes.txt"; else audit_fail "Check: MISSING the canary's curl in processes.txt"; fi
+  if found files-read.txt etc/hosts; then audit_note "Check: the canary's read of /etc/hosts is in files-read.txt"; else audit_fail "Check: MISSING the canary's read of /etc/hosts in files-read.txt"; fi
+  if found network-summary.txt example.com; then audit_note "Check: the canary's connection to example.com is in network-summary.txt"; else audit_fail "Check: MISSING the canary's connection to example.com in network-summary.txt"; fi
 
   # Every tool call should be in both the hook log and the transcript.
   local hook_calls transcript_calls
   hook_calls=$(jq -s '[.[] | select(.record.hook_event_name? == "PreToolUse")] | length' "$AUDIT_DIR/hooks.jsonl" 2>/dev/null || echo "?")
   transcript_calls=$(jq -s '[.[] | select(.type == "assistant") | .message.content[]? | select(.type == "tool_use")] | length' "$AUDIT_DIR/transcript.jsonl" 2>/dev/null || echo "?")
   audit_note "Check: ${hook_calls} tool call(s) in hooks.jsonl, ${transcript_calls} in transcript.jsonl"
+  if [[ -s "$AUDIT_DIR/es-filter.err" ]]; then audit_fail "Endpoint Security filter: failed (see es-filter.err)"; fi
+  if grep -q '^REMOVED' "$AUDIT_DIR/audit-checks.txt"; then audit_fail "A log was removed because it contained a secret"; fi
   for file in event-counts.txt network-summary.txt; do
     [[ -s "$AUDIT_DIR/$file" ]] && { echo "${file}:"; head -n 30 "$AUDIT_DIR/$file"; }
   done

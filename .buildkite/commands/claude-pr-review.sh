@@ -191,6 +191,7 @@ sudo -n mkdir -p "$REVIEWER_HOME/.ssh"
 
 # Before the reviewer user runs anything.
 audit_start "$reviewer_id" "$REVIEWER_HOME"
+audit_require_running
 
 echo "--- :wordpress: Installing what the test sites need"
 # Homebrew belongs to the build user, so install here; the reviewer only runs them.
@@ -285,6 +286,7 @@ fi
 
 # ── Review ───────────────────────────────────────────────────────────
 audit_canary
+audit_require_running
 
 echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
 # Claude's transcript, in a root-owned folder, append-only (`sappnd`): the
@@ -352,6 +354,10 @@ if [[ "$reviewer_status" == 3 ]]; then
   exit 2
 elif [[ "$reviewer_status" != 0 ]]; then
   echo "^^^ +++ The reviewer script failed (exit ${reviewer_status}), so there is no verdict."
+  exit 2
+fi
+if [[ ${#AUDIT_FAILURES[@]} -gt 0 ]]; then
+  echo "^^^ +++ The review can't be audited, so nothing will be posted: ${AUDIT_FAILURES[*]}"
   exit 2
 fi
 
