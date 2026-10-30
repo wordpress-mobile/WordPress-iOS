@@ -299,6 +299,27 @@ if as_reviewer "cd ~/wordpress-ios/${EVIDENCE_DIR} && tar -cf - ." > "$evidence_
 fi
 rm -f "$evidence_tar"
 find "$EVIDENCE_DIR" -mindepth 1 ! -type f ! -type d -print -delete | sed 's/^/Removed (not a plain file): /'
+
+# The test sites, the simulator and anything Claude left running outlive the
+# session. Stop them all before any step that uses a secret, so none of them
+# can watch for it.
+# Its launchd domains go first, so nothing it registered (such as a
+# LaunchAgent) is started again.
+echo "--- :octagonal_sign: Stopping everything ${REVIEWER} left running"
+for domain in "gui/${reviewer_id}" "user/${reviewer_id}"; do
+  sudo -n launchctl bootout "$domain" > /dev/null 2>&1 || true
+done
+for _ in 1 2 3 4 5; do
+  sudo -n pkill -KILL -u "$REVIEWER" 2>/dev/null || true
+  sleep 2
+  pgrep -u "$REVIEWER" > /dev/null || break
+done
+if pgrep -u "$REVIEWER" > /dev/null; then
+  ps -o pid=,comm= -U "$REVIEWER" | sed 's/^/  still running: /'
+  echo "^^^ +++ Processes of ${REVIEWER} are still running, so nothing will be posted."
+  exit 2
+fi
+echo "No processes of ${REVIEWER} are left."
 audit_stop
 if [[ "$reviewer_status" == 3 ]]; then
   echo "^^^ +++ The reviewer user could reach the build user's secrets, so Claude did not run."
@@ -361,8 +382,9 @@ else
   fi
   if [[ -x "$sf_bin" ]]; then
     # Additive, so other PRs' files in the Space are kept.
-    if (cd "$stage" && "$sf_bin" publish . --publish-mode additive --space "$SPACEFAST_SPACE" --team "$SPACEFAST_TEAM" \
-          --token "$SPACEFAST_TOKEN" --json --wait) > "$AUDIT_DIR/spacefast-publish.json" 2> "$AUDIT_DIR/spacefast-publish.err"; then
+    # sf reads the token from SPACEFAST_TOKEN, which keeps it out of `ps`.
+    if (cd "$stage" && SPACEFAST_TOKEN="$SPACEFAST_TOKEN" "$sf_bin" publish . --publish-mode additive --space "$SPACEFAST_SPACE" \
+          --team "$SPACEFAST_TEAM" --json --wait) > "$AUDIT_DIR/spacefast-publish.json" 2> "$AUDIT_DIR/spacefast-publish.err"; then
       published=yes
       for file in "${media[@]}"; do
         url="${SPACEFAST_BASE_URL%/}/${media_path}/$(basename "$file")"
