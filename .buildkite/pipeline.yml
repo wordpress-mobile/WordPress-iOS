@@ -172,7 +172,8 @@ steps:
     plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
       - "build/claude-review/**/*"
-      # Logs of everything the reviewer user did (.buildkite/claude/audit.sh)
+      # Logs of everything the reviewer user did (.buildkite/claude/audit.sh).
+      # The raw logs are uploaded in parts during the run, to build/claude-audit-live/.
       - "build/claude-audit/**/*"
     retry:
       automatic:

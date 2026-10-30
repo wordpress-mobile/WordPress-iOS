@@ -164,7 +164,7 @@ fi
 sudo -n mkdir -p "$REVIEWER_HOME/.ssh"
 
 # Before the reviewer user runs anything.
-audit_start "$reviewer_id"
+audit_start "$reviewer_id" "$REVIEWER_HOME"
 
 echo "--- :wordpress: Installing what the test sites need"
 # Homebrew belongs to the build user, so install here; the reviewer only runs them.
@@ -174,7 +174,7 @@ echo "--- :wordpress: Installing what the test sites need"
 echo "--- :card_file_box: Copying the checkout for ${REVIEWER}"
 # APFS clones, so this is quick and uses no extra space.
 sudo -n cp -cR "$PWD" "$REVIEWER_REPO" 2>/dev/null || sudo -n ditto "$PWD" "$REVIEWER_REPO"
-sudo -n rm -rf "${REVIEWER_REPO:?}/${AUDIT_DIR}"
+sudo -n rm -rf "${REVIEWER_REPO:?}/${AUDIT_DIR}" "${REVIEWER_REPO:?}/${AUDIT_RAW}" "${REVIEWER_REPO:?}/${AUDIT_LIVE}"
 sudo -n cp .buildkite/claude/pr-review-schema.json "$REVIEWER_HOME/schema.json"
 sudo -n cp .buildkite/commands/claude-pr-review-as-reviewer.sh "$REVIEWER_HOME/run-review.sh"
 
