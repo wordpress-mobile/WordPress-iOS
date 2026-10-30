@@ -1,4 +1,3 @@
-import CocoaLumberjackSwift
 import Foundation
 import CoreData
 
@@ -118,7 +117,7 @@ class CoreDataIterativeMigrator {
             }
 
             // Migrate the model to the next step
-            DDLogWarn("⚠️ Attempting migration from \(modelNames[index]) to \(modelNames[index + 1])")
+            Loggers.data.warning("⚠️ Attempting migration from \(modelNames[index]) to \(modelNames[index + 1])")
 
             do {
                 try migrateStore(at: sourceStore, storeType: storeType, fromModel: modelFrom, toModel: modelTo, with: migrateWithModel)
@@ -169,7 +168,7 @@ private extension CoreDataIterativeMigrator {
                 }
             }
         } catch {
-            DDLogError("⛔️ Error while moving original source store to a backup location: \(error)")
+            Loggers.data.error("⛔️ Error while moving original source store to a backup location: \(error)")
             throw error
         }
 
@@ -191,7 +190,7 @@ private extension CoreDataIterativeMigrator {
                 }
             }
         } catch {
-            DDLogError("⛔️ Error while copying migrated over the original files: \(error)")
+            Loggers.data.error("⛔️ Error while copying migrated over the original files: \(error)")
             throw error
         }
     }
@@ -207,7 +206,7 @@ private extension CoreDataIterativeMigrator {
                 try fileManager.removeItem(atPath: fullPath)
             }
         } catch {
-            DDLogError("⛔️ Error while deleting backup copies of the original file before migration: \(error)")
+            Loggers.data.error("⛔️ Error while deleting backup copies of the original file before migration: \(error)")
             throw error
         }
     }

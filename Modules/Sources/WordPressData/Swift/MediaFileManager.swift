@@ -1,4 +1,3 @@
-import CocoaLumberjackSwift
 import Foundation
 import CoreData
 import WordPressShared
@@ -254,7 +253,7 @@ public class MediaFileManager: NSObject {
             case .success:
                 onCompletion?()
             case let .failure(error):
-                DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
+                Loggers.data.error("Error while attempting to clean local media: \(error.localizedDescription)")
                 onError?(error)
             }
         }, on: .main)
@@ -277,12 +276,12 @@ public class MediaFileManager: NSObject {
                     try fileManager.removeItem(at: url)
                     removedCount += 1
                 } catch {
-                    DDLogError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                    Loggers.data.error("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
         }
         if removedCount > 0 {
-            DDLogInfo("Media: removed \(removedCount) file(s) during cleanup.")
+            Loggers.data.info("Media: removed \(removedCount) file(s) during cleanup.")
         }
     }
 }

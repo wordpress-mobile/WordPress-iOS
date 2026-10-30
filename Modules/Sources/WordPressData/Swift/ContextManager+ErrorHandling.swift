@@ -1,4 +1,3 @@
-import CocoaLumberjackSwift
 import CoreData
 
 // Imported from CoreData.CoreDataErrors
@@ -67,7 +66,7 @@ extension ContextManager {
         do {
             try context.obtainPermanentIDs(for: inserted)
         } catch {
-            DDLogError("Error obtaining permanent object IDs for \(inserted), \(error)")
+            Loggers.data.error("Error obtaining permanent object IDs for \(inserted), \(error)")
         }
 
         do {
@@ -84,8 +83,8 @@ private extension ContextManager {
         let isMainContext = context == mainContext
         let exceptionName: NSExceptionName = isMainContext ? .coreDataSaveMainException : .coreDataSaveDerivedException
         let reason = reasonForError(error)
-        DDLogError("Unresolved Core Data save error: \(error)")
-        DDLogError("Generating exception with reason:\n\(reason)")
+        Loggers.data.error("Unresolved Core Data save error: \(error)")
+        Loggers.data.error("Generating exception with reason:\n\(reason)")
         // Sentry is choking when userInfo is too big and not sending crash reports
         // For debugging we can still see the userInfo details since we're logging the full error above
         let exception = NSException(name: exceptionName, reason: reason, userInfo: nil)

@@ -1,6 +1,5 @@
 import Foundation
 import BuildSettingsKit
-import CocoaLumberjackSwift
 
 /// Encapsulates media file operations relative to the shared container's Media directory.
 ///
@@ -26,7 +25,7 @@ public final class ShareMediaFileManager: Sendable {
             do {
                 try fileManager.createDirectory(at: mediaDirectoryURL, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                DDLogError("Error creating local media directory: \(error)")
+                Loggers.shareExtension.error("Error creating local media directory: \(error)")
             }
         }
         return mediaDirectoryURL
@@ -57,7 +56,7 @@ public final class ShareMediaFileManager: Sendable {
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
         } catch {
-            DDLogError("Error retrieving contents of shared container media directory: \(error)")
+            Loggers.shareExtension.error("Error retrieving contents of shared container media directory: \(error)")
             return
         }
 
@@ -68,12 +67,12 @@ public final class ShareMediaFileManager: Sendable {
                     try fileManager.removeItem(at: url)
                     removedCount += 1
                 } catch {
-                    DDLogError("Error while removing Media at path: \(error.localizedDescription) - \(url.path)")
+                    Loggers.shareExtension.error("Error while removing Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
         }
         if removedCount > 0 {
-            DDLogInfo("Shared container media: removed \(removedCount) file(s) during cleanup.")
+            Loggers.shareExtension.info("Shared container media: removed \(removedCount) file(s) during cleanup.")
         }
     }
 
@@ -91,9 +90,9 @@ public final class ShareMediaFileManager: Sendable {
         if fileManager.fileExists(atPath: fullPath.path) {
             do {
                 try fileManager.removeItem(at: fullPath)
-                DDLogInfo("Shared container media: removed \(fullPath.path) during cleanup.")
+                Loggers.shareExtension.info("Shared container media: removed \(fullPath.path) during cleanup.")
             } catch {
-                DDLogError("Error while removing Media file at path: \(error.localizedDescription) - \(fullPath.path)")
+                Loggers.shareExtension.error("Error while removing Media file at path: \(error.localizedDescription) - \(fullPath.path)")
             }
         }
     }
