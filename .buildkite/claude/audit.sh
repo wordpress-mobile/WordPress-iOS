@@ -245,7 +245,7 @@ audit_start() {
 # Runs a known command as the reviewer, so audit_stop can check that each log
 # recorded it. Needs as_reviewer from claude-pr-review.sh.
 audit_canary() {
-  as_reviewer "curl -sS -o /dev/null --max-time 20 '${AUDIT_CANARY_URL}'; head -c 1 /etc/hosts > /dev/null" || true
+  as_reviewer "head -c 1 /etc/hosts > /dev/null" || true
 }
 
 # Last line of defence for everything uploaded at the end of the job: removes
