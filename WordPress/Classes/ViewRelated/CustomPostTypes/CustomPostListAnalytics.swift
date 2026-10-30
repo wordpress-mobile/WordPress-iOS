@@ -7,8 +7,13 @@ final class CustomPostListAnalytics {
     private let track: (WPAnalyticsEvent, [AnyHashable: Any]) -> Void
     private var hasTrackedOpened = false
 
-    init(track: @escaping (WPAnalyticsEvent, [AnyHashable: Any]) -> Void = { WPAnalytics.track($0, properties: $1) }) {
+    init(track: @escaping (WPAnalyticsEvent, [AnyHashable: Any]) -> Void) {
         self.track = track
+    }
+
+    convenience init(blog: some BlogAnalyticsRepresentable) {
+        let blogProperties = blog.analyticsProperties
+        self.init { WPAnalytics.track($0, properties: $1, blogProperties: blogProperties) }
     }
 
     func opened(properties: [AnyHashable: Any]) {
