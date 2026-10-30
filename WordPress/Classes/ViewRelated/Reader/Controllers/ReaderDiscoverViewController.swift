@@ -66,7 +66,14 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         if traitCollection.horizontalSizeClass == .regular {
             notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
                 guard let self else { return }
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
+                self.navigationItem.rightBarButtonItems = [
+                    UIBarButtonItem(
+                        image: $0,
+                        style: .plain,
+                        target: self,
+                        action: #selector(buttonShowNotificationsTapped)
+                    )
+                ]
             }
         }
     }
@@ -76,15 +83,18 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     }
 
     private func setupHeaderView() {
-        tags.$objects.sink { [weak self] tags in
-            self?.configureHeader(tags: tags)
-        }.store(in: &cancellables)
+        tags.$objects
+            .sink { [weak self] tags in
+                self?.configureHeader(tags: tags)
+            }
+            .store(in: &cancellables)
 
         headerView.delegate = self
     }
 
     private func configureHeader(tags: [ReaderTagTopic]) {
-        let channels = tags
+        let channels =
+            tags
             .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
             .map(ReaderDiscoverChannel.tag)
 
@@ -155,7 +165,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     // MARK: ReaderDiscoverHeaderViewDelegate
 
-    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel) {
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
+    {
         self.selectedChannel = selection
         configureStream(for: selection)
         WPAnalytics.track(.readerDiscoverChannelSelected, properties: selection.analyticsProperties)
@@ -225,7 +236,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
     /// Whether the current view controller is visible
     private var isVisible: Bool {
-        return isViewLoaded && view.window != nil
+        isViewLoaded && view.window != nil
     }
 
     init(topic: ReaderAbstractTopic, stream: ReaderStream = .discover, sorting: ReaderSortingOption = .noSorting) {
@@ -268,7 +279,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
             let shouldShowSeparator: Bool = {
                 guard let cards,
-                      let nextCard = cards[safe: indexPath.row + 1] else {
+                    let nextCard = cards[safe: indexPath.row + 1]
+                else {
                     return true
                 }
                 return !nextCard.isRecommendationCard
@@ -290,7 +302,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
+    {
         super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
 
         if let posts = content.content as? [ReaderCard], let post = posts[indexPath.row].post {
@@ -299,7 +312,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     private func makeRecommendedTagsCell(for interests: [ReaderTagTopic]) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderRecommendedTagsCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderRecommendedTagsCell
         cell.configure(with: interests, delegate: self)
         cell.accessibilityIdentifier = "topics-card-cell"
         hideSeparator(for: cell)
@@ -307,7 +321,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     private func makeRecommendedSitesCell(for sites: [ReaderSiteTopic]) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderRecommendedSitesCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderRecommendedSitesCell
         cell.configure(with: sites, delegate: self)
         hideSeparator(for: cell)
         return cell
@@ -319,17 +334,26 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
     // MARK: - Sync
 
-    override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
+    override func fetch(
+        for topic: ReaderAbstractTopic,
+        success: @escaping ((Int, Bool) -> Void),
+        failure: @escaping ((Error?) -> Void)
+    ) {
         page = 1
         refreshCount += 1
 
-        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
-            self?.trackContentPresented()
-            success(cardsCount, hasMore)
-        }, failure: { [weak self] error in
-            self?.trackContentPresented()
-            failure(error)
-        })
+        cardsService.fetch(
+            isFirstPage: true,
+            refreshCount: refreshCount,
+            success: { [weak self] cardsCount, hasMore in
+                self?.trackContentPresented()
+                success(cardsCount, hasMore)
+            },
+            failure: { [weak self] error in
+                self?.trackContentPresented()
+                failure(error)
+            }
+        )
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
@@ -338,19 +362,23 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         page += 1
         WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
 
-        cardsService.fetch(isFirstPage: false, success: { _, hasMore in
-            success?(hasMore)
-        }, failure: { error in
-            guard let error else {
-                return
-            }
+        cardsService.fetch(
+            isFirstPage: false,
+            success: { _, hasMore in
+                success?(hasMore)
+            },
+            failure: { error in
+                guard let error else {
+                    return
+                }
 
-            failure?(error as NSError)
-        })
+                failure?(error as NSError)
+            }
+        )
     }
 
     override var topicPostsCount: Int {
-        return cards?.count ?? 0
+        cards?.count ?? 0
     }
 
     override func syncIfAppropriate(forceSync: Bool = false) {
@@ -382,25 +410,28 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
-        return NSPredicate(format: "post != NULL OR topics.@count != 0 OR sites.@count != 0")
+        NSPredicate(format: "post != NULL OR topics.@count != 0 OR sites.@count != 0")
     }
 
     private func addObservers() {
         // Listens for when a site is blocked
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(siteBlocked(_:)),
-                                               name: .ReaderSiteBlocked,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(siteBlocked(_:)),
+            name: .ReaderSiteBlocked,
+            object: nil
+        )
     }
 
     /// Update the post card when a site is blocked from post details.
     ///
     @objc private func siteBlocked(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
-              let posts = content.content as? [ReaderCard], // let posts = cards
-              let contentPost = posts.first(where: { $0.post?.postID == post.postID }),
-              let indexPath = content.indexPath(forObject: contentPost) else {
+            let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
+            let posts = content.content as? [ReaderCard], // let posts = cards
+            let contentPost = posts.first(where: { $0.post?.postID == post.postID }),
+            let indexPath = content.indexPath(forObject: contentPost)
+        else {
             return
         }
 
