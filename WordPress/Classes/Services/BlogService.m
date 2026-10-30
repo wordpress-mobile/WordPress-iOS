@@ -317,6 +317,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [self unscheduleBloggingRemindersFor:blog];
     [self removeWordPressApiCachedDataForBlog:blog];
     [self evictWordPressClientForBlog:blog];
+    [[SearchManager shared] deleteSearchableItemsForBlog:blog];
 
     WPAccount *account = blog.account;
 
@@ -385,6 +386,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             if ([toDelete containsObject:blog.dotComID]) {
                 [self unscheduleBloggingRemindersFor:blog];
                 [self evictWordPressClientForBlog:blog];
+                [[SearchManager shared] deleteSearchableItemsForBlog:blog];
                 // Consider switching this to a call to removeBlog in the future
                 // to consolidate behaviour @frosty
                 [context deleteObject:blog];
