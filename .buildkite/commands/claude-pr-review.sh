@@ -286,6 +286,9 @@ fi
 
 # ── Review ───────────────────────────────────────────────────────────
 audit_canary
+echo "TEST: killing eslogger on purpose."
+sudo -n pkill -KILL -x eslogger || true
+sleep 1
 audit_require_running
 
 echo "--- :claude: Reviewing PR #${PR_NUMBER} as ${REVIEWER}"
