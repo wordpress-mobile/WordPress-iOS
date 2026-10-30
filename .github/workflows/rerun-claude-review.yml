@@ -1,0 +1,22 @@
+name: 🤖 Re-run the Claude PR review
+
+# Requesting a review from wpmobilebot re-runs the `Claude PR Review` step on
+# the PR's latest Buildkite build. The review script removes the request when
+# it starts and when it finishes, so it can be requested again.
+
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  rerun-claude-review:
+    if: ${{ github.event.requested_reviewer.login == 'wpmobilebot' && github.event.pull_request.draft == false }}
+    uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@v1.1.2
+    with:
+      org-slug: automattic
+      pipeline-slug: wordpress-ios
+      retry-step-key: claude_pr_review
+      build-commit-sha: ${{ github.event.pull_request.head.sha }}
+      cancel-running-github-jobs: false
+    secrets:
+      buildkite-api-token: ${{ secrets.TRIGGER_BK_BUILD_TOKEN }}
