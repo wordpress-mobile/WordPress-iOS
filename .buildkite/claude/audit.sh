@@ -273,5 +273,10 @@ audit_stop() {
   for file in event-counts.txt network-summary.txt; do
     [[ -s "$AUDIT_DIR/$file" ]] && { echo "${file}:"; head -n 30 "$AUDIT_DIR/$file"; }
   done
+
+  # Lists of paths compress well. Small files stay readable in Buildkite.
+  while IFS= read -r -d '' file; do
+    gzip -9 "$file" || true
+  done < <(find "$AUDIT_DIR" -type f \( -name '*.txt' -o -name '*.jsonl' \) -size +1M -print0)
   return 0
 }
