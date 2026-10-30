@@ -1,6 +1,5 @@
 import BuildSettingsKit
 import Foundation
-import Logging
 import SwiftUI
 import UIKit
 
@@ -8,15 +7,7 @@ let isRunningTests = NSClassFromString("XCTestCase") != nil
 let appDelegateClass =
     isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
 
-// swift-log MUST be set up before the app delegate is created.
-//
-// A `Logger` keeps the handler it was created with, and the delegate's stored properties create `ContextManager.shared`,
-// which logs. A logger created before this point would write to stdout, and never to the log files, for the whole launch.
-if !isRunningTests {
-    LoggingSystem.bootstrap { label in
-        AppLogLevelHandler.makeAppHandler(label: label)
-    }
-}
+WordPressAppDelegate.bootstrapLogging()
 
 // The secrets MUST be configured before the app launches.
 //

@@ -726,6 +726,17 @@ extension WordPressAppDelegate {
         WPLogger.configureLoggerLevelWithExtraDebug()
     }
 
+    /// Sets up swift-log. Every `main.swift` MUST call this before it creates the app delegate.
+    ///
+    /// A `Logger` keeps the handler it was created with, and the delegate's stored properties create
+    /// `ContextManager.shared`, which logs. A logger created before this call would write to stdout,
+    /// and never to the log files, until the app quits.
+    public static func bootstrapLogging() {
+        LoggingSystem.bootstrap { label in
+            AppLogLevelHandler.makeAppHandler(label: label)
+        }
+    }
+
     @objc public class func setLogLevel(_ level: DDLogLevel) {
         CocoaLumberjackSwift.dynamicLogLevel = level
         AppLogLevel.shared.current = Logging.Logger.Level(level)
