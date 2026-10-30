@@ -365,6 +365,12 @@ if [[ -z "$REVIEW" ]] || ! jq -e '.verdict == "pass" or .verdict == "fail"' <<<"
   echo "^^^ +++ Claude's review did not complete, so there is no verdict."
   exit 2
 fi
+# Claude's result is posted publicly, and it was written by a process that had
+# the Anthropic key.
+if audit_text_has_secret "$REVIEW"; then
+  echo "^^^ +++ Claude's result contains one of this job's secrets, so nothing will be posted."
+  exit 2
+fi
 echo "$REVIEW" > "${EVIDENCE_DIR}/result.json"
 VERDICT=$(jq -r .verdict <<<"$REVIEW")
 

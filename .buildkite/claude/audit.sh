@@ -66,6 +66,12 @@ audit_has_secret() {
   fi
 }
 
+# Exits 0 if the text in $1 contains one of this job's secrets.
+audit_text_has_secret() {
+  [[ -n "${AUDIT_SECRETS:-}" ]] || return 1
+  grep -q -a -F -f <(printf '%s\n' "$AUDIT_SECRETS") <<<"$1"
+}
+
 # Uploads one part as a Buildkite artifact, unless it contains a secret.
 audit_upload_part() {
   if audit_has_secret "$1"; then

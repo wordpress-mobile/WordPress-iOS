@@ -2,7 +2,7 @@ name: 🤖 Re-run the Claude PR review
 
 # Requesting a review from wpmobilebot re-runs the `Claude PR Review` step on
 # the PR's latest Buildkite build. The review script removes the request when
-# it finishes, so it can be requested again.
+# it starts and when it finishes, so it can be requested again.
 
 on:
   pull_request:
