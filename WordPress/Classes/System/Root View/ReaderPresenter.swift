@@ -55,10 +55,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         mainNavigationController.navigationBar.prefersLargeTitles = true
         sidebar.navigationItem.backButtonDisplayMode = .minimal
-        if let selection = sidebarViewModel.selection {
-            mainNavigationController.setViewControllers([sidebar, makeViewController(for: selection)], animated: false)
-        }
-        observeSelection(skipInitialSelection: true)
+        observeSelection()
         return mainNavigationController
     }
 
@@ -82,7 +79,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // MARK: - Navigation
 
-    private func observeSelection(skipInitialSelection: Bool = false) {
+    private func observeSelection() {
         // The initial screen is part of setting up the stack, so it isn't animated.
         // The publisher emits the current selection synchronously on subscription.
         isNavigationAnimated = false
@@ -90,7 +87,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
         // -warning: List occasionally sets the selection to `nil` when switching items.
         selectionObserver = sidebarViewModel.$selection
-            .dropFirst(skipInitialSelection ? 1 : 0)
             .compactMap { $0 }
             .removeDuplicates { [weak self] in
                 guard $0 == $1, let self, let splitViewController else { return false }

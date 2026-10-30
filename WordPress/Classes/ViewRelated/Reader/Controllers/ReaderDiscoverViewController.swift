@@ -476,3 +476,9 @@ extension ReaderDiscoverStreamViewController: ReaderRecommendationsCellDelegate 
         }
     }
 }
+
+extension ReaderDiscoverViewController: ContentIdentifiable {
+    var contentIdentifier: String? {
+        "https://wordpress.com/discover"
+    }
+}
