@@ -1,4 +1,3 @@
-import CocoaLumberjackSwift
 import CoreData
 import Foundation
 import UniformTypeIdentifiers
@@ -130,14 +129,14 @@ public class Media: NSManagedObject {
             do {
                 try fileManager.removeItem(atPath: path)
             } catch {
-                DDLogInfo("Error removing media file: \(error)")
+                Loggers.data.info("Error removing media file: \(error)")
             }
         }
         if let path = absoluteThumbnailLocalURL?.path, fileManager.fileExists(atPath: path) {
             do {
                 try fileManager.removeItem(atPath: path)
             } catch {
-                DDLogInfo("Error removing media file: \(error)")
+                Loggers.data.info("Error removing media file: \(error)")
             }
         }
         super.prepareForDeletion()
@@ -155,7 +154,7 @@ public class Media: NSManagedObject {
             }
             return mediaDirectory.appendingPathComponent((localPath as NSString).lastPathComponent)
         } catch {
-            DDLogInfo("Error resolving Media directory: \(error)")
+            Loggers.data.info("Error resolving Media directory: \(error)")
             return nil
         }
     }

@@ -7,6 +7,8 @@ let isRunningTests = NSClassFromString("XCTestCase") != nil
 let appDelegateClass =
     isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
 
+WordPressAppDelegate.bootstrapLogging()
+
 // The secrets MUST be configured before the app launches.
 //
 // This is because `BuildSettings` are not propagated through the app via chain injection but accessed via a `static` `current` property for convenience.
