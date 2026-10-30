@@ -636,6 +636,8 @@ import WordPressShared
     case applicationPasswordReauthPrompted
 
     case wpcomWebSignIn
+    case wpcomSignInGateShown
+    case wpcomSignInGateDismissed
 
     // MARK: - Jetpack Stats
 
@@ -1794,6 +1796,10 @@ import WordPressShared
 
         case .wpcomWebSignIn:
             return "wpcom_web_sign_in"
+        case .wpcomSignInGateShown:
+            return "wpcom_sign_in_gate_shown"
+        case .wpcomSignInGateDismissed:
+            return "wpcom_sign_in_gate_dismissed"
 
         // MARK: - Jetpack Stats
 
