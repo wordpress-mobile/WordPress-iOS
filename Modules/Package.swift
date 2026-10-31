@@ -373,7 +373,6 @@ let package = Package(
             resources: [.process("Resources")]
         ),
         .testTarget(name: "JetpackStatsTests", dependencies: ["JetpackStats"]),
-        .testTarget(name: "SFHFKeychainUtilsTests", dependencies: ["SFHFKeychainUtils"]),
         .testTarget(
             name: "JetpackStatsWidgetsCoreTests",
             dependencies: [.target(name: "JetpackStatsWidgetsCore")],
