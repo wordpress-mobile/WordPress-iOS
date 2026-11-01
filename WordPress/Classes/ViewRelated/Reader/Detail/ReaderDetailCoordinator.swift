@@ -226,6 +226,10 @@ class ReaderDetailCoordinator {
         var requestedHandles = Set<String>()
         // Posts typically have few mentions, so resolving them sequentially keeps this simple without meaningful delay.
         for mention in mentions {
+            guard !Task.isCancelled else {
+                return
+            }
+
             let key = Self.normalizedMentionHandle(mention.handle)
             guard mentionProfiles[key] == nil, requestedHandles.insert(key).inserted else {
                 continue

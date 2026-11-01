@@ -174,6 +174,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }()
 
     private var translationAvailabilityTask: Task<Void, Never>?
+    private var mentionProfilesTask: Task<Void, Never>?
     private var isTranslating = false
     var translationAvailability: TranslationAvailability = .unavailable
 
@@ -267,7 +268,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func render(_ post: ReaderPost) {
-        Task { @MainActor [weak coordinator] in
+        mentionProfilesTask?.cancel()
+        mentionProfilesTask = Task { @MainActor [weak coordinator] in
             await coordinator?.resolveMentionProfiles(for: post)
         }
 
@@ -492,6 +494,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         scrollObserver?.invalidate()
         toolbarUpdateTimer?.invalidate()
         translationAvailabilityTask?.cancel()
+        mentionProfilesTask?.cancel()
         NotificationCenter.default.removeObserver(self)
     }
 
