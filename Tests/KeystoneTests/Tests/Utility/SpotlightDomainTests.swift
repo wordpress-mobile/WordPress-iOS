@@ -32,4 +32,29 @@ struct SpotlightDomainTests {
         // THEN the unique identifier that tap handling decodes keeps the site ID
         #expect(readerItem.uniqueIdentifier == "readerPost|~~~|80511|~~~|975")
     }
+
+    /// Scenario: a self-hosted site connects Jetpack after its posts were
+    /// indexed, then the user removes the site.
+    @Test("Site removal covers items indexed before Jetpack connected")
+    func siteDomainsIncludeTheXMLRPCAddress() {
+        // GIVEN a self-hosted site whose posts are indexed under its XML-RPC address
+        let site = BlogBuilder(context, dotComID: nil).with(url: "https://example.com").build()
+        site.xmlrpc = "https://example.com/xmlrpc.php"
+        #expect(site.searchDomain == "https://example.com/xmlrpc.php")
+
+        // WHEN the site gets a site ID
+        site.dotComID = 777
+
+        // THEN site removal targets both the new domain and the one the posts were indexed under
+        #expect(site.searchDomain == "777")
+        #expect(site.searchDomains == ["777", "https://example.com/xmlrpc.php"])
+    }
+
+    @Test("A site without an XML-RPC address has only its site ID domain")
+    func siteDomainsWithoutXMLRPCAddress() {
+        let site = BlogBuilder(context, dotComID: 80511).build()
+        site.xmlrpc = nil
+
+        #expect(site.searchDomains == ["80511"])
+    }
 }
