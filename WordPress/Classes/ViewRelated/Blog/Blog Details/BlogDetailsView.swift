@@ -44,6 +44,7 @@ struct BlogDetailsView: View {
                     .selectionDisabled()
                     .id(section.category)
                     .id(viewModel.blog.objectID)
+                    .id(viewModel.blog.jetpackConnectionActivePlugins)
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
