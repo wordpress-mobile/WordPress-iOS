@@ -63,7 +63,7 @@ struct BlogMissingCredentialsTests {
 
 /// Keeps the application password (keyed by site URL) apart from the XML-RPC password (keyed by
 /// XML-RPC endpoint), which `MockKeychainService` does not.
-private final class ServiceKeyedKeychain: KeychainAccessible {
+final class ServiceKeyedKeychain: KeychainAccessible {
     struct NotFound: Error {}
 
     var items: [String: String] = [:]

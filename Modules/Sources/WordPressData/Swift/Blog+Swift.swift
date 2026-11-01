@@ -84,6 +84,19 @@ extension Blog {
         }
     }
 
+    /// The password to send with XML-RPC requests.
+    ///
+    /// Unlike `password`, this prefers the application password. Sites migrated by `ApplicationPasswordRepository`
+    /// still have the account password stored, and WordPress may stop accepting account passwords over XML-RPC
+    /// (https://core.trac.wordpress.org/ticket/62789). Requests that sign in through wp-login.php must keep using
+    /// `password`, because it doesn't accept application passwords.
+    @objc public var xmlrpcPassword: String? {
+        if let token = try? getApplicationToken(using: keychain) {
+            return token
+        }
+        return password
+    }
+
     /// Stores the relationship to the `BlockEditorSettings` which is an optional entity that holds settings realated to the BlockEditor. These are features
     /// such as Global Styles and Full Site Editing settings and capabilities.
     ///
