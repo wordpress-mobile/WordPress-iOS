@@ -147,7 +147,7 @@ class PostCoordinator: NSObject {
             // Keep Spotlight current for every save, not only for the
             // transition to scheduled or published, so edits to the title
             // or content of an existing post reach the index.
-            searchManager.indexItem(post)
+            updateSearchIndex(for: post)
 
             if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
                 if post.status == .scheduled {
@@ -175,7 +175,7 @@ class PostCoordinator: NSObject {
         let post = post.getOriginal()
         do {
             try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
-            searchManager.indexItem(post)
+            updateSearchIndex(for: post)
         } catch {
             trackError(error, operation: "post-patch", post: post)
             handleError(error, for: post)
@@ -243,8 +243,23 @@ class PostCoordinator: NSObject {
     }
 
     func didResolveConflict(for post: AbstractPost) {
+        // The conflict screen saves through `PostRepository` directly, so
+        // the sync started below finds nothing to upload and won't reindex.
+        updateSearchIndex(for: post)
         postConflictResolvedNotification(for: post)
         startSync(for: post) // Clears the error associated with the post
+    }
+
+    /// Indexes the post, or removes its existing item when the post is no
+    /// longer searchable (for example, when it was trashed on the server).
+    /// Indexing an unsearchable post writes nothing, so the old item would
+    /// otherwise stay in Spotlight.
+    private func updateSearchIndex(for post: AbstractPost) {
+        if post.isSearchable {
+            searchManager.indexItem(post)
+        } else {
+            searchManager.deleteSearchableItem(post)
+        }
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
@@ -567,7 +582,7 @@ class PostCoordinator: NSObject {
         case .success:
             worker.retryDelay = syncRetryDelay
             worker.error = nil
-            searchManager.indexItem(operation.post)
+            updateSearchIndex(for: operation.post)
             postDidUpdateNotification(for: operation.post) // TODO: Use syncEvents
 
             if let revision = operation.post.getLatestRevisionNeedingSync() {
