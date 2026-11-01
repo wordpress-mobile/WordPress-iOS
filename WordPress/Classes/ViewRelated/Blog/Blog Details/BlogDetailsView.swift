@@ -4,6 +4,7 @@ import WordPressUI
 struct BlogDetailsView: View {
     @ObservedObject var viewModel: BlogDetailsTableViewModel
     var headerViewController: UIViewController?
+    var headerEmbedID = UUID()
     let refresh: () async -> Void
 
     var body: some View {
@@ -24,6 +25,7 @@ struct BlogDetailsView: View {
                 Section {
                 } header: {
                     BlogDetailsHeader(controller: headerViewController)
+                        .id(headerEmbedID)
                         .frame(width: headerWidth)
                         .listRowInsets(EdgeInsets())
                 }

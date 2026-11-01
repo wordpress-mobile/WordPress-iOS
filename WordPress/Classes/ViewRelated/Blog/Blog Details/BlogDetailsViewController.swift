@@ -23,7 +23,10 @@ public class BlogDetailsViewController: UIViewController {
     public weak var presentedSiteSettingsViewController: UIViewController?
 
     var headerViewController: UIViewController? {
-        didSet { hostingController?.rootView.headerViewController = headerViewController }
+        didSet {
+            hostingController?.rootView.headerViewController = headerViewController
+            hostingController?.rootView.headerEmbedID = UUID()
+        }
     }
     lazy var onRefresh: () async -> Void = { [weak self] in
         await self?.refreshMenu()
