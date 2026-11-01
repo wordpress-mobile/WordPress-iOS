@@ -111,7 +111,7 @@ extension BlogService {
         // The Objective-C initializer returns nil for missing credentials, which Swift imports as non-optional.
         guard let xmlrpcApi = blog.xmlrpcApi,
             let username = blog.username,
-            let password = blog.password
+            let password = blog.xmlrpcPassword
         else {
             return nil
         }

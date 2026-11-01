@@ -101,7 +101,7 @@ private extension MediaRepository {
             return MediaServiceRemoteCoreREST(client: WordPressClientFactory.shared.instance(for: site))
         }
 
-        if let username = blog.username, let password = blog.password, let api = blog.xmlrpcApi {
+        if let username = blog.username, let password = blog.xmlrpcPassword, let api = blog.xmlrpcApi {
             return MediaServiceRemoteXMLRPC(api: api, username: username, password: password)
         }
 

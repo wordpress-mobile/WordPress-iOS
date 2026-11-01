@@ -28,7 +28,7 @@ class TagsService: TaxonomyServiceProtocol {
             return TaxonomyServiceRemoteREST(wordPressComRestApi: api, siteID: siteID)
         }
 
-        if let username = blog.username, let password = blog.password, let xmlrpcApi = blog.xmlrpcApi {
+        if let username = blog.username, let password = blog.xmlrpcPassword, let xmlrpcApi = blog.xmlrpcApi {
             return TaxonomyServiceRemoteXMLRPC(api: xmlrpcApi, username: username, password: password)
         }
 

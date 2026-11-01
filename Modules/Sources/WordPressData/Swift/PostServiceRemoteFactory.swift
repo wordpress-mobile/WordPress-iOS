@@ -13,7 +13,7 @@ import WordPressShared
 
         if let api = blog.xmlrpcApi,
            let username = blog.username,
-           let password = blog.password {
+           let password = blog.xmlrpcPassword {
             return PostServiceRemoteXMLRPC(api: api, username: username, password: password)
         }
 

@@ -167,7 +167,7 @@ extension BlogService {
             failWithoutRequest(Blog.BlogCredentialsError.blogUsernameMissing)
             return
         }
-        guard let password = blog.password ?? (try? blog.getApplicationToken()) else {
+        guard let password = blog.xmlrpcPassword else {
             failWithoutRequest(Blog.BlogCredentialsError.blogPasswordMissing)
             return
         }

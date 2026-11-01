@@ -524,7 +524,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     }
 
     // The password can be missing from the keychain, e.g. after a backup is restored to a new device.
-    NSString *password = blog.password;
+    NSString *password = blog.xmlrpcPassword;
     if (blog.xmlrpcApi && blog.username && password) {
         return [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:password];
     }
