@@ -696,7 +696,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         blogDetailsViewController.remove()
         if let header {
             addChild(header)
-            stackView.insertArrangedSubview(header.view, at: 0)
+            let dashboardView = blogDashboardViewController?.view
+            let index =
+                stackView.arrangedSubviews.firstIndex { $0 === dashboardView } ?? stackView.arrangedSubviews.count
+            stackView.insertArrangedSubview(header.view, at: index)
             header.didMove(toParent: self)
         }
         scrollView.isHidden = false
@@ -721,7 +724,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             blogDetailsViewController.onRefresh = { [weak self] in
                 await self?.refreshSiteMenu()
             }
-            add(blogDetailsViewController)
+            addChild(blogDetailsViewController)
+            view.insertSubview(blogDetailsViewController.view, aboveSubview: scrollView)
+            blogDetailsViewController.didMove(toParent: self)
             blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
             view.pinSubviewToAllEdges(blogDetailsViewController.view)
         }
