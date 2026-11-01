@@ -467,6 +467,42 @@ class PostCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-b"])
     }
 
+    /// Scenario: the user edits a draft that was trashed on the web.
+    func testSyncRemovesItemWhenPostIsTrashedOnServer() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let searchableIdentifier = try XCTUnwrap(post.uniqueIdentifier)
+        let revision = post.createRevision()
+        revision.content = "content-b"
+
+        // GIVEN a server where the post is in the trash
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.status = "trash"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        coordinator.setNeedsSync(for: revision)
+        try await coordinator.waitForSync(post, to: revision)
+
+        // THEN its Spotlight item is removed
+        XCTAssertEqual(post.status, .trash)
+        XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
+    }
+
     /// Scenario: the user restores a trashed post, which moves it to drafts.
     func testRestoreReindexesPost() async throws {
         let searchManager = SearchManagerSpy()
@@ -496,6 +532,82 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // THEN the post is back in Spotlight
         XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-a"])
+    }
+
+    /// Scenario: the user resolves a conflict by keeping their version.
+    func testResolveConflictWithLocalVersionReindexesPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN a server that accepts the overwrite
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = "draft"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN the conflict screen saves the local version
+        try await PostRepository(coreDataStack: contextManager).save(post, overwrite: true)
+        coordinator.didResolveConflict(for: post)
+
+        // THEN the post is reindexed with the title that was kept
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-b"])
+    }
+
+    /// Scenario: the user resolves a conflict by taking the server's version.
+    func testResolveConflictWithRemoteVersionReindexesPost() throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN the server's version
+        let remotePost = try XCTUnwrap(
+            RemotePost(siteID: 80511, status: "draft", title: "title-remote", content: "content-remote")
+        )
+        remotePost.postID = 974
+        remotePost.authorID = 29043
+        remotePost.date = Date()
+        remotePost.dateModified = Date()
+        remotePost.tags = []
+        remotePost.categories = []
+        remotePost.metadata = []
+        remotePost.format = "standard"
+        remotePost.type = "post"
+
+        // WHEN the conflict screen applies it
+        try PostRepository(coreDataStack: contextManager).resolveConflict(for: post, pickingRemoteRevision: remotePost)
+        coordinator.didResolveConflict(for: post)
+
+        // THEN the post is reindexed with the title that was kept
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-remote"])
     }
 
     func testPauseSyncing() async throws {
