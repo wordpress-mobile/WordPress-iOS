@@ -58,9 +58,10 @@ struct ShareExtractorTextFileTests {
         let context = StubExtensionContext(items: [item])
 
         return await withCheckedContinuation { continuation in
-            ShareExtractor(extensionContext: context).loadShare { outcome in
-                continuation.resume(returning: outcome.share)
-            }
+            ShareExtractor(extensionContext: context)
+                .loadShare { outcome in
+                    continuation.resume(returning: outcome.share)
+                }
         }
     }
 }
