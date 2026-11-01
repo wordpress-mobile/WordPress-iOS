@@ -129,7 +129,7 @@ private struct BlogDetailsMenuRow: View {
                     .accessibilityHidden(true)
             } else if showsDisclosureIndicator {
                 Spacer()
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.footnote.weight(.semibold))
                     .foregroundStyle(Color(uiColor: .tertiaryLabel))
                     .accessibilityHidden(true)
