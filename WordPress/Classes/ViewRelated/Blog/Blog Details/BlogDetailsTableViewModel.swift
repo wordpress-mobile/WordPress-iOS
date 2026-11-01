@@ -25,6 +25,7 @@ extension BlogDetailsTableViewModel {
     var blog: Blog {
         didSet {
             guard blog != oldValue else { return }
+            pendingDefaultSubsection = nil
             // Rebuild right away so that no row keeps the previous site's custom post types.
             customPostTypes = []
             configureTableViewData()
@@ -34,6 +35,8 @@ extension BlogDetailsTableViewModel {
     private weak var viewController: BlogDetailsViewController?
     @Published private(set) var sections: [Section] = []
     @Published private(set) var selectedRowID: Row.ID?
+    // Metadata can add the initial sidebar destination after the menu appears.
+    private var pendingDefaultSubsection: BlogDetailsRowKind?
 
     var gravatarIcon: UIImage? {
         didSet { configureTableViewData() }
@@ -79,7 +82,7 @@ extension BlogDetailsTableViewModel {
 
     @objc public func viewWillAppear() {
         if !isSplitViewDisplayed {
-            selectedRowID = nil
+            clearSelection()
         }
     }
 
@@ -144,6 +147,7 @@ extension BlogDetailsTableViewModel {
         }
 
         sections = newSections
+        showPendingDefaultSubsection()
     }
 
     var isSplitViewDisplayed: Bool {
@@ -161,10 +165,12 @@ extension BlogDetailsTableViewModel {
     }
 
     func clearSelection() {
+        pendingDefaultSubsection = nil
         selectedRowID = nil
     }
 
     func select(_ row: Row) {
+        pendingDefaultSubsection = nil
         guard !isSplitViewDisplayed || selectedRowID != row.id else { return }
         row.action?([:])
         if row.showsSelectionState {
@@ -175,12 +181,17 @@ extension BlogDetailsTableViewModel {
     @objc public func showInitialDetailsForBlog() {
         guard isSplitViewDisplayed else { return }
 
-        let row = defaultSubsection()
+        pendingDefaultSubsection = defaultSubsection()
+        showPendingDefaultSubsection()
+    }
 
-        self.showDetailView(for: row)
+    private func showPendingDefaultSubsection() {
+        guard isSplitViewDisplayed, let row = pendingDefaultSubsection else { return }
+        showDetailView(for: row)
     }
 
     func showDetailViewForMe(userInfo: [String: Any]) -> MeViewController {
+        pendingDefaultSubsection = nil
         guard let viewController else {
             wpAssertionFailure("The view controller should not be nil")
             return MeViewController()
@@ -191,6 +202,7 @@ extension BlogDetailsTableViewModel {
 
     func showDetailView(for row: BlogDetailsRowKind, userInfo: [String: Any] = [:]) {
         guard let item = sections.lazy.flatMap(\.rows).first(where: { $0.kind == row }) else { return }
+        pendingDefaultSubsection = nil
         if item.showsSelectionState {
             selectedRowID = item.id
         }
