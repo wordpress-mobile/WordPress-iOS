@@ -112,7 +112,8 @@ private extension BorderedButtonTableViewCell {
         selectionStyle = .none
         accessibilityTraits = .button
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+        registerForTraitChanges(UITraitCollection.systemTraitsAffectingColorAppearance) {
+            (self: Self, _: UITraitCollection) in
             self.updateButtonBorderColors()
         }
 

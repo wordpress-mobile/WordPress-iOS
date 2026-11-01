@@ -51,10 +51,9 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         container.pinEdges(.vertical)
         container.pinCenter()
 
-        registerForTraitChanges([
-            UITraitUserInterfaceStyle.self,
-            UITraitDisplayScale.self
-        ]) { (self: Self, _: UITraitCollection) in
+        registerForTraitChanges(
+            UITraitCollection.systemTraitsAffectingColorAppearance + [UITraitDisplayScale.self]
+        ) { (self: Self, _: UITraitCollection) in
             self.refreshButtonBackgroundImage()
         }
     }
