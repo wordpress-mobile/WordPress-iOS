@@ -28,36 +28,14 @@ private struct WebView: UIViewRepresentable {
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
-        let styledHTML = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body {
-                    font-family: -apple-system;
-                    font-size: 16px;
-                    line-height: 1.5;
-                    margin: 16px;
-                    padding: 0;
-                }
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            </style>
-        </head>
-        <body>
-            \(content)
-        </body>
-        </html>
-        """
-
-        webView.loadHTMLString(styledHTML, baseURL: nil)
+        webView.loadPluginInfoSection(content)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate {
-        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction
+        ) async -> WKNavigationActionPolicy {
             if navigationAction.navigationType == .other {
                 return .allow
             }
@@ -70,5 +48,36 @@ private struct WebView: UIViewRepresentable {
 
             return .cancel
         }
+    }
+}
+
+extension WKWebView {
+    func loadPluginInfoSection(_ content: String) {
+        let styledHTML = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        font-family: -apple-system;
+                        font-size: 16px;
+                        line-height: 1.5;
+                        margin: 16px;
+                        padding: 0;
+                    }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                </style>
+            </head>
+            <body>
+                \(content)
+            </body>
+            </html>
+            """
+
+        loadHTMLString(styledHTML, baseURL: nil)
     }
 }
