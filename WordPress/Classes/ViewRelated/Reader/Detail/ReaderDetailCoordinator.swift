@@ -209,7 +209,10 @@ class ReaderDetailCoordinator {
         )
     }
 
-    /// The author of a post decides how many people it mentions, so this limits the requests one post can make.
+    /// The most mentions to look up for one post. Mentions past this limit open in the web view.
+    ///
+    /// Opening a post sends one request per mentioned user, and anyone can publish a post with thousands of
+    /// mentions. Without a limit, each reader who opens that post would send thousands of API requests.
     static let maxMentionProfileLookups = 10
 
     @MainActor
