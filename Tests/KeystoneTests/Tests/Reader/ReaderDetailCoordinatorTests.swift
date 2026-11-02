@@ -164,6 +164,62 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         XCTAssertTrue(profileService.requestedHandles.isEmpty)
     }
 
+    @MainActor
+    func testResolveMentionProfilesLimitsLookups() async {
+        let post = makeMentionPost(handles: (0...ReaderDetailCoordinator.maxMentionProfileLookups).map { "user\($0)" })
+        let profileService = ReaderUserProfileServiceMock()
+        let coordinator = ReaderDetailCoordinator(
+            readerUserProfileService: profileService,
+            view: ReaderDetailViewMock()
+        )
+        coordinator.post = post
+
+        await coordinator.resolveMentionProfiles(for: post)
+
+        XCTAssertEqual(profileService.requestedHandles.count, ReaderDetailCoordinator.maxMentionProfileLookups)
+    }
+
+    @MainActor
+    func testResolveMentionProfilesStopsWhenCancelled() async {
+        let post = makeMentionPost(handles: ["first", "second"])
+        let profileService = ReaderUserProfileServiceMock()
+        profileService.onFetch = { withUnsafeCurrentTask { $0?.cancel() } }
+        let coordinator = ReaderDetailCoordinator(
+            readerUserProfileService: profileService,
+            view: ReaderDetailViewMock()
+        )
+        coordinator.post = post
+
+        await Task { await coordinator.resolveMentionProfiles(for: post) }.value
+
+        XCTAssertEqual(profileService.requestedHandles, ["first"])
+    }
+
+    @MainActor
+    func testResolvedMentionPresentsProfile() async {
+        let post = makeMentionPost()
+        let profileService = ReaderUserProfileServiceMock()
+        profileService.profile = ReaderUserProfile(
+            username: "example-user",
+            displayName: "Example User",
+            avatarURL: nil,
+            siteURL: nil,
+            bio: nil
+        )
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(readerUserProfileService: profileService, view: viewMock)
+        coordinator.post = post
+
+        await coordinator.resolveMentionProfiles(for: post)
+        coordinator.handle(mentionURL)
+
+        let presentedViewController = (viewMock.didCallPresentWith as? UINavigationController)?.viewControllers.first
+        XCTAssertEqual(
+            presentedViewController.map { String(describing: type(of: $0)) },
+            "ReaderUserProfileViewController"
+        )
+    }
+
     /// Tell the view to scroll when URL is a hash link
     ///
     func testScrollWhenUrlIsHash() {
@@ -194,6 +250,21 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
     private var mentionURL: URL {
         URL(string: "https://example.wordpress.com/mentions/example-user/")!
+    }
+
+    private func makeMentionPost(handles: [String]) -> ReaderPost {
+        let post = makeReaderPost()
+        post.isWPCom = true
+        post.content =
+            handles.map { handle in
+                """
+                <a href="https://example.wordpress.com/mentions/\(handle)/"
+                   data-type="fragment-mention"
+                   data-username="\(handle)">@\(handle)</a>
+                """
+            }
+            .joined(separator: "\n")
+        return post
     }
 
     private func makeMentionPost() -> ReaderPost {
@@ -254,10 +325,13 @@ private class ReaderPostServiceMock: ReaderPostService {
 
 private final class ReaderUserProfileServiceMock: ReaderUserProfileService {
     private(set) var requestedHandles: [String] = []
+    var profile: ReaderUserProfile?
+    var onFetch: (() -> Void)?
 
     func fetchProfile(handle: String) async -> ReaderUserProfile? {
         requestedHandles.append(handle)
-        return nil
+        onFetch?()
+        return profile
     }
 }
 

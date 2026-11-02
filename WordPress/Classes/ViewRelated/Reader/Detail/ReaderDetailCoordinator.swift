@@ -209,6 +209,9 @@ class ReaderDetailCoordinator {
         )
     }
 
+    /// The author of a post decides how many people it mentions, so this limits the requests one post can make.
+    static let maxMentionProfileLookups = 10
+
     @MainActor
     func resolveMentionProfiles(for post: ReaderPost) async {
         guard post.isWPCom, let content = post.content else {
@@ -226,7 +229,7 @@ class ReaderDetailCoordinator {
         var requestedHandles = Set<String>()
         // Posts typically have few mentions, so resolving them sequentially keeps this simple without meaningful delay.
         for mention in mentions {
-            guard !Task.isCancelled else {
+            guard !Task.isCancelled, requestedHandles.count < Self.maxMentionProfileLookups else {
                 return
             }
 
