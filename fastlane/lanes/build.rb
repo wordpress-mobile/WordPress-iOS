@@ -209,7 +209,7 @@ platform :ios do
 
     next unless create_release
 
-    archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
+    archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
     build_code = build_code_current

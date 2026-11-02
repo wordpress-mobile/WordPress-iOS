@@ -543,17 +543,24 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         return returnedItem
     }
 
+    /// Reads a text file, detecting its encoding.
+    ///
+    /// This goes through `NSString` because `String(contentsOf:usedEncoding:)` keeps a UTF-8 byte
+    /// order mark on iOS 18. A leading `U+FEFF` hides a Markdown file's title heading from us.
+    private func readText(at url: URL) throws -> String {
+        var encoding: UInt = 0
+        return try NSString(contentsOf: url, usedEncoding: &encoding) as String
+    }
+
     private func handlePlainTextFile(url: URL) -> ExtractedItem? {
         var returnedItem = ExtractedItem()
-        var encoding = String.Encoding.utf8
-        let rawText = (try? String(contentsOf: url, usedEncoding: &encoding)) ?? ""
+        let rawText = (try? readText(at: url)) ?? ""
         returnedItem.importedText = rawText.escapeHtmlNamedEntities()
         return returnedItem
     }
 
     private func handleMarkdown(url: URL, item: ExtractedItem? = nil) -> ExtractedItem? {
-        var encoding = String.Encoding.utf8
-        guard let md = try? String(contentsOf: url, usedEncoding: &encoding) else {
+        guard let md = try? readText(at: url) else {
             return item
         }
 
