@@ -372,7 +372,7 @@ private extension SupportTableViewController {
     func extraDebugToggled() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.userDefaults.set(newValue, forKey: UserDefaultsKeys.extraDebug)
-            WPLogger.configureLoggerLevelWithExtraDebug()
+            WordPressAppDelegate.updateLogLevel()
         }
     }
 

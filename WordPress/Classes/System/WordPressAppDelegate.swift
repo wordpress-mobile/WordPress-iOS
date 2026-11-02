@@ -379,6 +379,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureAppRatingUtility()
 
         WordPressAppDelegate.restoreExtraDebugSetting()
+        WordPressAppDelegate.updateLogLevel()
         printDebugLaunchInfo()
 
         #if DEBUG
@@ -729,7 +730,19 @@ extension WordPressAppDelegate {
 
         store.set((savedValue as NSString).boolValue, forKey: "extra_debug")
         store.removeObject(forKey: "orig_extra_debug")
-        WPLogger.configureLoggerLevelWithExtraDebug()
+    }
+
+    /// Sets the log level from the "extra debug" setting and the signed-in state.
+    ///
+    /// The setting is out of reach on the sign-in screens, so signed-out users get the same logs
+    /// as if it were on. Their saved setting doesn't change.
+    static func updateLogLevel() {
+        let extraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug")
+        setLogLevel(logLevel(extraDebug: extraDebug, isLoggedIn: AccountHelper.isLoggedIn))
+    }
+
+    static func logLevel(extraDebug: Bool, isLoggedIn: Bool) -> DDLogLevel {
+        extraDebug || !isLoggedIn ? .verbose : .info
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
@@ -754,6 +767,13 @@ extension WordPressAppDelegate {
             self,
             selector: #selector(handleDefaultAccountChangedNotification(_:)),
             name: NSNotification.Name.wpAccountDefaultWordPressComAccountChanged,
+            object: nil
+        )
+
+        nc.addObserver(
+            self,
+            selector: #selector(handleSignInDidFinishNotification(_:)),
+            name: NSNotification.Name(WordPressAuthenticationManager.WPSigninDidFinishNotification),
             object: nil
         )
 
@@ -794,7 +814,14 @@ extension WordPressAppDelegate {
             clearReaderStuff()
         }
 
+        WordPressAppDelegate.updateLogLevel()
+
         WPAnalytics.track(.defaultAccountChanged)
+    }
+
+    /// Signing in to a self-hosted site doesn't change the default WordPress.com account.
+    @objc fileprivate func handleSignInDidFinishNotification(_ notification: NSNotification) {
+        WordPressAppDelegate.updateLogLevel()
     }
 
     @objc fileprivate func handleLowMemoryWarningNotification(_ notification: NSNotification) {

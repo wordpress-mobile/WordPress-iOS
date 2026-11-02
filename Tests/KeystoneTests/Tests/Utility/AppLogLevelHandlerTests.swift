@@ -109,6 +109,19 @@ struct AppLoggingWiringTests {
     }
 }
 
+struct LogLevelTests {
+
+    @Test(arguments: [
+        (false, true, DDLogLevel.info),
+        (true, true, .verbose),
+        (false, false, .verbose),
+        (true, false, .verbose)
+    ])
+    func usesVerboseUnlessSignedInWithExtraDebugOff(extraDebug: Bool, isLoggedIn: Bool, expected: DDLogLevel) {
+        #expect(WordPressAppDelegate.logLevel(extraDebug: extraDebug, isLoggedIn: isLoggedIn) == expected)
+    }
+}
+
 struct RestoreExtraDebugSettingTests {
 
     private let store = InMemoryUserDefaults()
