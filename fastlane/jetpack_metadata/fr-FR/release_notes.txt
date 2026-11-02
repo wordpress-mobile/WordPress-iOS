@@ -1,0 +1,10 @@
+Avez-vous entendu ? Nous avons rendu l’onglet Notifications et la cloche plus précis, même lorsque les notifications système ou les badges d’icône sont désactivés. Maintenant, vous êtes toujours au courant.
+
+Les types d’articles personnalisés apparaissent désormais directement dans le menu du site après les commentaires, triés par nom pour plus de facilité : plus besoin d’épingles personnalisées.
+
+Enfin, nous avons corrigé plusieurs bugs, simplement pour faciliter l’expérience de votre application.
+
+- Dans le Lecteur, les images en ligne ne disparaîtront pas sur les appareils exécutant iOS 27.
+- Les chargements n’échoueront plus si le nom du fichier contient des espaces. (bonne-nouvelle-tout le monde.jpg)
+- Nous avons réparé un plantage causé par le partage de certains types de fichiers texte.
+- Les utilisateurs d’iPad se réjouissent : l’application ne restera pas bloquée dans la mise en page de la barre d’onglets compacte lorsque vous redimensionnez l’écran ou changez d’application.

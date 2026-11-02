@@ -5,6 +5,7 @@
 
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 @interface StatsViewController () <NoResultsViewControllerDelegate>
 
@@ -77,7 +78,7 @@
 - (void)setBlog:(Blog *)blog
 {
     _blog = blog;
-    DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
+    WPLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 }
 
 - (void)addStatsViewControllerToView
@@ -121,7 +122,7 @@
         [self.loadingIndicator stopAnimating];
         [weakSelf promptForJetpackCredentials];
     } failure:^(NSError * _Nonnull error) {
-        DDLogError(@"Error refreshing blog status when loading stats: %@", error);
+        WPLogError(@"Error refreshing blog status when loading stats: %@", error);
         [self.loadingIndicator stopAnimating];
         [weakSelf promptForJetpackCredentials];
     }];
@@ -200,7 +201,7 @@
         [weakSelf initStats];
         weakSelf.isActivatingStatsModule = NO;
     } failure:^(NSError *error) {
-        DDLogError(@"Error activating stats module: %@", error);
+        WPLogError(@"Error activating stats module: %@", error);
         [weakSelf showStatsModuleDisabled];
         weakSelf.isActivatingStatsModule = NO;
     }];

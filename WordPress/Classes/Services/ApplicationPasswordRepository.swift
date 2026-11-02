@@ -35,18 +35,18 @@ actor ApplicationPasswordRepository {
         keychain: AppKeychain()
     )
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let storage: ApplicationPasswordStorage
     private var inflightTasks: [TaggedManagedObjectID<Blog>: Task<ApplicationPassword, Error>] = [:]
 
     static func forTesting(
-        coreDataStack: CoreDataStackSwift,
+        coreDataStack: CoreDataStack,
         keychain: KeychainAccessible
     ) -> ApplicationPasswordRepository {
         ApplicationPasswordRepository(coreDataStack: coreDataStack, keychain: keychain)
     }
 
-    private init(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) {
+    private init(coreDataStack: CoreDataStack, keychain: KeychainAccessible) {
         self.coreDataStack = coreDataStack
         self.storage = .init(keychain: keychain)
     }

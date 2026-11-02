@@ -52,10 +52,22 @@ class NoteBlockTableViewCell: WPTableViewCell {
         refreshSeparators()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        preservesSuperviewLayoutMargins = true
+        selectionStyle = .blue
+        contentView.isOpaque = false
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+        contentView.preservesSuperviewLayoutMargins = true
+
         backgroundView = separatorsView
         backgroundColor = .secondarySystemGroupedBackground
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Public API
@@ -80,6 +92,6 @@ class NoteBlockTableViewCell: WPTableViewCell {
     }
 
     @objc class func reuseIdentifier() -> String {
-        return classNameWithoutNamespaces()
+        classNameWithoutNamespaces()
     }
 }

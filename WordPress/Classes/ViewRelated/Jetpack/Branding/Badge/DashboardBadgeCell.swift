@@ -5,7 +5,7 @@ import WordPressData
 class DashboardBadgeCell: UICollectionViewCell, Reusable {
 
     private lazy var jetpackButton: JetpackButton = {
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.home)
+        let textProvider = JetpackBrandingTextProvider()
         let button = JetpackButton(style: .badge, title: textProvider.brandingText())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)

@@ -84,7 +84,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         [self.managedObjectContext performBlock:^{
             if (error) {
                 [self trackUploadError:error blog:blog];
-                DDLogError(@"Error uploading media: %@", error);
+                WPLogError(@"Error uploading media: %@", error);
             }
             NSError *customError = [self customMediaUploadError:error remote:remote];
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
@@ -137,7 +137,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
-                DDLogError(@"Error retrieving media object: %@", error);
+                WPLogError(@"Error retrieving media object: %@", error);
                 if (failure){
                     failureBlock(error);
                 }
@@ -196,7 +196,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
-                DDLogError(@"Error updating media object: %@", error);
+                WPLogError(@"Error updating media object: %@", error);
                 if (failure){
                     failure(error);
                 }

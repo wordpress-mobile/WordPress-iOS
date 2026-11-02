@@ -65,6 +65,21 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Failed to insert media",
             comment: "Error message when media insertion fails"
         )
+    case .failedToLoadSelectedMedia:
+        NSLocalizedString(
+            "editor.media.failedToLoadSelected",
+            value: "The selected media could not be loaded. It may not be fully downloaded to this device.",
+            comment: "Error message when media picked in the block inserter cannot be loaded, e.g. an iCloud photo"
+        )
+    case .failedToProcessCapturedMedia:
+        NSLocalizedString(
+            "editor.media.failedToProcessCaptured",
+            value: "The captured media could not be processed.",
+            comment:
+                "Error message when a photo or video taken with the camera from the block inserter cannot be processed"
+        )
+    case .ok:
+        SharedStrings.Button.ok
     case .patterns:
         NSLocalizedString("editor.patterns.title", value: "Patterns", comment: "Navigation title for patterns view")
     case .noPatternsFound:
@@ -120,6 +135,24 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             "editor.error.title",
             value: "Editor Error",
             comment: "Title shown when the editor encounters an error"
+        )
+    case .editorCrashedTitle:
+        NSLocalizedString(
+            "editor.crashed.title",
+            value: "The editor stopped working",
+            comment: "Title shown over the editor after it crashes"
+        )
+    case .editorCrashedDescription:
+        NSLocalizedString(
+            "editor.crashed.description",
+            value: "Reload the editor to continue editing.",
+            comment: "Message shown over the editor after it crashes, above a button to reload it"
+        )
+    case .editorCrashedReload:
+        NSLocalizedString(
+            "editor.crashed.reload",
+            value: "Reload Editor",
+            comment: "Button title to reload the editor after it crashes"
         )
     case .lockdownModeTitle:
         NSLocalizedString(

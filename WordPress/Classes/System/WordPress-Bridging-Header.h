@@ -51,4 +51,3 @@
 #import "WPTabBarController.h"
 #import "WPLogger.h"
 
-FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

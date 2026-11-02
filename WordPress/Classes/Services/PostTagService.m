@@ -2,6 +2,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressKit;
+@import WordPressSharedObjC;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -203,7 +204,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
     NSError *error;
     NSArray<PostTag *> *existingTags = [context executeFetchRequest:request error:&error];
     if (error) {
-        DDLogError(@"Error when retrieving PostTags by tagIDs: %@", error);
+        WPLogError(@"Error when retrieving PostTags by tagIDs: %@", error);
         return [NSArray array];
     }
 
@@ -287,7 +288,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
 {
-    DDLogError(@"Error occurred with %@ - error: %@", [self class], error);
+    WPLogError(@"Error occurred with %@ - error: %@", [self class], error);
     if (failure) {
         failure(error);
     }

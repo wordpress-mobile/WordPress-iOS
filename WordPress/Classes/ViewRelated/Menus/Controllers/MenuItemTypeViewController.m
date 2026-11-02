@@ -3,6 +3,7 @@
 #import "BlogService.h"
 #import "WordPress-Swift.h"
 @import WordPressData;
+@import WordPressSharedObjC;
 
 @interface MenuItemTypeViewController () <MenuItemTypeViewDelegate>
 
@@ -61,7 +62,7 @@
         // synced post types
         [weakSelf addCustomBlogPostTypesIfNeeded:blog];
     } failure:^(NSError *error) {
-        DDLogError(@"Error syncing post-types for Menus: %@", error);
+        WPLogError(@"Error syncing post-types for Menus: %@", error);
     }];
 }
 

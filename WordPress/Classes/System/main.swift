@@ -22,6 +22,16 @@ UIApplicationMain(
 )
 
 final class TestingAppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        // The test host never builds the app's root view, so the Jetpack features state would otherwise
+        // depend on whichever account a test leaves behind. Default to every feature being available.
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
+        return true
+    }
+
     /// Opt the unit test host into the UIScene life cycle. iOS 27 removed the legacy
     /// window life cycle, so a plain `UIWindow()` created here crashes the host at launch.
     /// Mirrors `WordPressAppDelegate`'s programmatic scene opt-in.

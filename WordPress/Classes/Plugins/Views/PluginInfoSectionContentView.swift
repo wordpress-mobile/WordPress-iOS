@@ -5,14 +5,21 @@ struct PluginInfoSectionContentView: View {
     let title: String
     let content: String
 
+    /// The plugin's WordPress.org page, which is where `content` comes from.
+    ///
+    /// WebKit sends it as the HTTP referrer. YouTube embeds show "Error 153" without one:
+    /// https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
+    let baseURL: URL?
+
     var body: some View {
-        WebView(content: content)
+        WebView(content: content, baseURL: baseURL)
             .navigationTitle(title)
     }
 }
 
 private struct WebView: UIViewRepresentable {
     let content: String
+    let baseURL: URL?
 
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
@@ -28,36 +35,14 @@ private struct WebView: UIViewRepresentable {
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
-        let styledHTML = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body {
-                    font-family: -apple-system;
-                    font-size: 16px;
-                    line-height: 1.5;
-                    margin: 16px;
-                    padding: 0;
-                }
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            </style>
-        </head>
-        <body>
-            \(content)
-        </body>
-        </html>
-        """
-
-        webView.loadHTMLString(styledHTML, baseURL: nil)
+        webView.loadPluginInfoSection(content, baseURL: baseURL)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate {
-        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction
+        ) async -> WKNavigationActionPolicy {
             if navigationAction.navigationType == .other {
                 return .allow
             }
@@ -70,5 +55,43 @@ private struct WebView: UIViewRepresentable {
 
             return .cancel
         }
+    }
+}
+
+extension WKWebView {
+    func loadPluginInfoSection(_ content: String, baseURL: URL?) {
+        // WordPress.org embeds are 750x422 iframes. Browsers don't derive an aspect ratio from an iframe's
+        // size attributes, so `height: auto` needs an explicit one to keep the player's shape.
+        let styledHTML = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        font-family: -apple-system;
+                        font-size: 16px;
+                        line-height: 1.5;
+                        margin: 16px;
+                        padding: 0;
+                    }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                    iframe {
+                        max-width: 100%;
+                        height: auto;
+                        aspect-ratio: 16 / 9;
+                    }
+                </style>
+            </head>
+            <body>
+                \(content)
+            </body>
+            </html>
+            """
+
+        loadHTMLString(styledHTML, baseURL: baseURL)
     }
 }

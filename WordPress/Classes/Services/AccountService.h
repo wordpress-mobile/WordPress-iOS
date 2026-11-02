@@ -9,8 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class RemoteUser;
 @protocol CoreDataStack;
 
-extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
-
 @interface AccountService : NSObject
 
 @property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;

@@ -89,6 +89,128 @@ struct PostGBKEditorViewControllerTests {
         #expect(reported?.isEmpty == true)
     }
 
+    @Test("tracks whether the editor locked saving")
+    func tracksSavingLock() {
+        let viewController = makeViewController()
+
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+        #expect(viewController.isSavingLocked)
+
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: false)
+        )
+        #expect(!viewController.isSavingLocked)
+    }
+
+    @Test("clears the saving lock when the editor becomes unavailable")
+    func clearsSavingLockWhenUnavailable() {
+        let viewController = makeViewController()
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+
+        // The reloaded editor reports its availability again, so a lock from
+        // before the crash must not keep asking before saves.
+        viewController.editorDidBecomeUnavailable(viewController.editorViewController)
+
+        #expect(!viewController.isSavingLocked)
+    }
+
+    @Test("saves without asking while saving is unlocked")
+    func savesWithoutAskingWhenUnlocked() {
+        let viewController = makeViewController()
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
+        var didSave = false
+        viewController.performAfterConfirmingSavingLock { didSave = true }
+
+        #expect(didSave)
+        #expect(viewController.presentedViewController == nil)
+    }
+
+    @Test("asks before saving while saving is locked")
+    func asksBeforeSavingWhenLocked() throws {
+        let viewController = makeViewController()
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+
+        var didSave = false
+        viewController.performAfterConfirmingSavingLock { didSave = true }
+
+        // A lock is advisory, so the user can still choose to save.
+        #expect(!didSave)
+        let alert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(alert.title == PostEditorStrings.notReadyPostTitle)
+        #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.continueAnyway])
+    }
+
+    @Test("says page in the saving lock alerts for pages")
+    func saysPageInSavingLockAlerts() throws {
+        let viewController = makeViewController(postType: .page)
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
+        viewController.editor(
+            viewController.editorViewController,
+            didUpdateSaveAvailability: EditorSaveAvailability(isSaveable: true, isSavingLocked: true)
+        )
+
+        viewController.performAfterConfirmingSavingLock {}
+        let saveAlert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(saveAlert.title == PostEditorStrings.notReadyPageTitle)
+        #expect(saveAlert.message == PostEditorStrings.savePageWhileNotReadyMessage)
+
+        // A fresh view controller, since the save alert is still presented.
+        let leaveViewController = makeViewController(postType: .page)
+        window.rootViewController = leaveViewController
+        leaveViewController.showLeaveWhileSavingLockedAlert {}
+        let leaveAlert = try #require(leaveViewController.presentedViewController as? UIAlertController)
+        #expect(leaveAlert.title == PostEditorStrings.notReadyPageTitle)
+        #expect(leaveAlert.message == PostEditorStrings.leavePageWhileNotReadyMessage)
+    }
+
+    @Test("asks before leaving while saving is locked")
+    func asksBeforeLeavingWhenLocked() throws {
+        let viewController = makeViewController()
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
+        var didLeave = false
+        viewController.showLeaveWhileSavingLockedAlert { didLeave = true }
+
+        #expect(!didLeave)
+        let alert = try #require(viewController.presentedViewController as? UIAlertController)
+        #expect(alert.message == PostEditorStrings.leavePostWhileNotReadyMessage)
+        #expect(alert.actions.map(\.title) == [PostEditorStrings.keepEditing, PostEditorStrings.leave])
+    }
+
+    private func makeViewController(postType: PostTypeDetails = .post) -> PostGBKEditorViewController {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        return PostGBKEditorViewController(
+            postId: nil,
+            postType: postType,
+            title: "",
+            content: "",
+            status: "draft",
+            blog: blog
+        )
+    }
+
     /// Returns the media the picker has actually preselected.
     ///
     /// Read from the embedded collection view controller, which the picker adds as
