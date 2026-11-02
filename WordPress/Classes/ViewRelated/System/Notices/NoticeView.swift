@@ -33,7 +33,6 @@ class NoticeView: UIView {
         super.init(frame: .zero)
 
         configure()
-        preferredContentSizeDidChange()
 
         registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
             self.preferredContentSizeDidChange()
