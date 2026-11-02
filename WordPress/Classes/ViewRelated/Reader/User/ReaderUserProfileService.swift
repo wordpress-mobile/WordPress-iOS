@@ -16,20 +16,23 @@ protocol ReaderUserProfileService {
 }
 
 final class WordPressComReaderUserProfileService: ReaderUserProfileService {
-    private let wordPressComRestApi: WordPressComRestApi?
+    private let wordPressComRestApi: () -> WordPressComRestApi?
 
     init(coreDataStack: CoreDataStack) {
-        self.wordPressComRestApi = coreDataStack.performQuery { context in
-            try? WPAccount.defaultWordPressComAccountRestAPI(in: context)
+        self.wordPressComRestApi = {
+            coreDataStack.performQuery { context in
+                try? WPAccount.defaultWordPressComAccountRestAPI(in: context)
+            }
         }
     }
 
-    init(wordPressComRestApi: WordPressComRestApi?) {
+    init(wordPressComRestApi: @escaping () -> WordPressComRestApi?) {
         self.wordPressComRestApi = wordPressComRestApi
     }
 
     func fetchProfile(handle: String) async -> ReaderUserProfile? {
-        guard let wordPressComRestApi,
+        // Look up the API for every request. Signing out invalidates the account's API, and making a request on it crashes.
+        guard let wordPressComRestApi = wordPressComRestApi(),
             let encodedHandle = handle.addingPercentEncoding(withAllowedCharacters: Self.handleAllowedCharacters)
         else {
             return nil
