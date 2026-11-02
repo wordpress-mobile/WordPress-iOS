@@ -17,7 +17,7 @@ struct ReaderUserProfileServiceTests {
             "description": "Writes about bread."
         ]
 
-        let profile = await WordPressComReaderUserProfileService(wordPressComRestApi: { api })
+        let profile = await WordPressComReaderUserProfileService(wordPressComRestApi: api)
             .fetchProfile(handle: "Example-User")
 
         #expect(api.requestedURLString == "rest/v1.1/users/Example-User")
@@ -37,7 +37,7 @@ struct ReaderUserProfileServiceTests {
     func encodesHandle() async {
         let api = WordPressComRestApiStub()
 
-        _ = await WordPressComReaderUserProfileService(wordPressComRestApi: { api })
+        _ = await WordPressComReaderUserProfileService(wordPressComRestApi: api)
             .fetchProfile(handle: "a/b?c")
 
         #expect(api.requestedURLString == "rest/v1.1/users/a%2Fb%3Fc")
@@ -48,7 +48,7 @@ struct ReaderUserProfileServiceTests {
         let api = WordPressComRestApiStub()
         api.body = ["user_login": "someone-else", "display_name": "Someone Else"]
 
-        let profile = await WordPressComReaderUserProfileService(wordPressComRestApi: { api })
+        let profile = await WordPressComReaderUserProfileService(wordPressComRestApi: api)
             .fetchProfile(handle: "example-user")
 
         #expect(profile == nil)
@@ -60,28 +60,13 @@ struct ReaderUserProfileServiceTests {
         api.fails = true
 
         #expect(
-            await WordPressComReaderUserProfileService(wordPressComRestApi: { api })
+            await WordPressComReaderUserProfileService(wordPressComRestApi: api)
                 .fetchProfile(handle: "example-user") == nil
         )
         #expect(
-            await WordPressComReaderUserProfileService(wordPressComRestApi: { nil })
+            await WordPressComReaderUserProfileService(wordPressComRestApi: nil)
                 .fetchProfile(handle: "example-user") == nil
         )
-    }
-
-    @Test("Stops using an account's API once the account is signed out")
-    func signedOutDuringLookups() async {
-        let api = WordPressComRestApiStub()
-        api.body = ["user_login": "example-user"]
-        var currentApi: WordPressComRestApi? = api
-        let service = WordPressComReaderUserProfileService(wordPressComRestApi: { currentApi })
-
-        #expect(await service.fetchProfile(handle: "example-user") != nil)
-
-        currentApi = nil
-
-        #expect(await service.fetchProfile(handle: "example-user") == nil)
-        #expect(api.requestCount == 1)
     }
 
     @Test("Uses the username when the display name is blank")
@@ -124,7 +109,7 @@ struct ReaderUserProfileServiceTests {
         let api = WordPressComRestApiStub()
         api.body = ["user_login": "example-user", "display_name": displayName]
         api.body["description"] = description
-        return await WordPressComReaderUserProfileService(wordPressComRestApi: { api })
+        return await WordPressComReaderUserProfileService(wordPressComRestApi: api)
             .fetchProfile(handle: "example-user")
     }
 }
@@ -133,7 +118,6 @@ private final class WordPressComRestApiStub: WordPressComRestApi {
     var body: [String: Any] = [:]
     var fails = false
     private(set) var requestedURLString: String?
-    private(set) var requestCount = 0
 
     override func perform(
         _ method: HTTPRequestBuilder.Method,
@@ -142,7 +126,6 @@ private final class WordPressComRestApiStub: WordPressComRestApi {
         fulfilling progress: Progress? = nil
     ) async -> APIResult<AnyObject> {
         requestedURLString = URLString
-        requestCount += 1
         if fails {
             return .failure(.connection(.init(.notConnectedToInternet)))
         }
