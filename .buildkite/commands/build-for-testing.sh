@@ -19,7 +19,20 @@ fi
 source "$(dirname "${BASH_SOURCE[0]}")/install-a8c-secrets.sh"
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane "build_${APP}_for_testing"
+SCAN_RESULT_BUNDLE=1 bundle exec fastlane "build_${APP}_for_testing"
+
+echo "--- :stopwatch: Upload build timeline"
+SCHEME="$(tr '[:lower:]' '[:upper:]' <<< "${APP:0:1}")${APP:1}"
+XCRESULT="fastlane/test_output/${SCHEME}.xcresult"
+xcrun xcresulttool get log --type build --path "$XCRESULT" > "build-log-${APP}.json"
+gzip -k "build-log-${APP}.json"
+upload_artifact "build-log-${APP}.json.gz"
+TASKS=$(jq '[.. | objects | select(.duration? != null)] | length' "build-log-${APP}.json")
+echo "Build log holds ${TASKS} timed tasks"
+if [[ "$TASKS" -lt 1000 ]]; then
+  echo "Expected a per-task build timeline, but found only ${TASKS} timed tasks"
+  exit 1
+fi
 
 echo "--- :swift: Saving Swift Packages cache"
 save_swiftpm_cache --package-resolved Modules/Package.resolved --artifacts DerivedData/SourcePackages
