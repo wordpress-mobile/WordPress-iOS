@@ -486,7 +486,7 @@ private extension ZendeskUtils {
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
         guard !haveUserInfo else {
-                DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
+                DDLogDebug("Using existing Zendesk identity: \(maskedEmail(ZendeskUtils.sharedInstance.userEmail ?? ""))")
                 completion(true, false)
                 return
         }
@@ -574,7 +574,7 @@ private extension ZendeskUtils {
 
         let zendeskIdentity = Identity.createAnonymous(name: ZendeskUtils.sharedInstance.userName, email: userEmail)
         Zendesk.instance?.setIdentity(zendeskIdentity)
-        DDLogDebug("Zendesk identity created with email '\(userEmail)' and name '\(ZendeskUtils.sharedInstance.userName ?? "")'.")
+        DDLogDebug("Zendesk identity created with email '\(maskedEmail(userEmail))'.")
         registerDeviceIfNeeded()
         completion(true)
     }
@@ -668,7 +668,7 @@ private extension ZendeskUtils {
         var userProfile = [String: String]()
         userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
-        DDLogDebug("Zendesk - saving profile to User Defaults: \(userProfile)")
+        DDLogDebug("Zendesk - saving profile to User Defaults: \(maskedEmail(ZendeskUtils.sharedInstance.userEmail ?? ""))")
         UserPersistentStoreFactory.instance().set(userProfile, forKey: Constants.zendeskProfileUDKey)
     }
 
@@ -677,8 +677,8 @@ private extension ZendeskUtils {
             return false
         }
 
-        DDLogDebug("Zendesk - read profile from User Defaults: \(userProfile)")
         ZendeskUtils.sharedInstance.userEmail = userProfile.valueAsString(forKey: Constants.profileEmailKey)
+        DDLogDebug("Zendesk - read profile from User Defaults: \(maskedEmail(ZendeskUtils.sharedInstance.userEmail ?? ""))")
         ZendeskUtils.sharedInstance.userName = userProfile.valueAsString(forKey: Constants.profileNameKey)
         ZendeskUtils.sharedInstance.userNameConfirmed = true
 
@@ -1216,6 +1216,13 @@ extension ZendeskUtils {
 
 extension ZendeskUtils {
     static var automatticEmails = ["@automattic.com", "@a8c.com"]
+
+    /// Hides everything but the first character before the "@", for writing an address to the logs.
+    static func maskedEmail(_ email: String) -> String {
+        let domainIndex = email.lastIndex(of: "@") ?? email.endIndex
+        let localPart = email[..<domainIndex]
+        return localPart.prefix(1) + String(repeating: "*", count: max(localPart.count - 1, 0)) + email[domainIndex...]
+    }
 
     /// Insert "+testing" to Automattic email address.
     /// - SeeAlso: https://github.com/wordpress-mobile/WordPress-iOS/issues/23794
