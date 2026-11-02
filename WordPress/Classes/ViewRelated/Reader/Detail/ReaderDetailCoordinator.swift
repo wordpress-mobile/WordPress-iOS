@@ -209,6 +209,12 @@ class ReaderDetailCoordinator {
         )
     }
 
+    /// The most mentions to look up for one post. Mentions past this limit open in the web view.
+    ///
+    /// Opening a post sends one request per mentioned user, and anyone can publish a post with thousands of
+    /// mentions. Without a limit, each reader who opens that post would send thousands of API requests.
+    static let maxMentionProfileLookups = 10
+
     @MainActor
     func resolveMentionProfiles(for post: ReaderPost) async {
         guard post.isWPCom, let content = post.content else {
@@ -226,7 +232,7 @@ class ReaderDetailCoordinator {
         var requestedHandles = Set<String>()
         // Posts typically have few mentions, so resolving them sequentially keeps this simple without meaningful delay.
         for mention in mentions {
-            guard !Task.isCancelled else {
+            guard !Task.isCancelled, requestedHandles.count < Self.maxMentionProfileLookups else {
                 return
             }
 
