@@ -26,7 +26,7 @@ SCHEME="$(tr '[:lower:]' '[:upper:]' <<< "${APP:0:1}")${APP:1}"
 XCRESULT="fastlane/test_output/${SCHEME}.xcresult"
 xcrun xcresulttool get log --type build --path "$XCRESULT" > "build-log-${APP}.json"
 gzip -k "build-log-${APP}.json"
-upload_artifact "build-log-${APP}.json.gz"
+buildkite-agent artifact upload "build-log-${APP}.json.gz"
 TASKS=$(jq '[.. | objects | select(.duration? != null)] | length' "build-log-${APP}.json")
 echo "Build log holds ${TASKS} timed tasks"
 if [[ "$TASKS" -lt 1000 ]]; then
