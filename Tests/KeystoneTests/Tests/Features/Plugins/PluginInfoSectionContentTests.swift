@@ -32,6 +32,28 @@ struct PluginInfoSectionContentTests {
         #expect(values["pageWidth"] == values["screenWidth"])
     }
 
+    @Test func usesTheTextColorOfTheInterfaceStyle() async throws {
+        let light = try await textColor(in: .light)
+        let dark = try await textColor(in: .dark)
+
+        #expect(light == "rgb(0, 0, 0)")
+        #expect(dark == "rgb(255, 255, 255)")
+    }
+
+    /// Web views only pick up the interface style from a window.
+    private func textColor(in style: UIUserInterfaceStyle) async throws -> String? {
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 402, height: 800))
+        window.overrideUserInterfaceStyle = style
+        window.isHidden = false
+        defer { window.isHidden = true }
+
+        let webView = WKWebView(frame: window.bounds)
+        window.addSubview(webView)
+        try await NavigationDelegate().load("<p>Text</p>", baseURL: nil, in: webView)
+
+        return try await webView.evaluateJavaScript("getComputedStyle(document.body).color") as? String
+    }
+
     private func load(_ content: String, baseURL: URL?) async throws -> WKWebView {
         let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 402, height: 800))
         let delegate = NavigationDelegate()
