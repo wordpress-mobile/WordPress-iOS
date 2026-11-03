@@ -6,7 +6,7 @@ struct ZendeskUtilsMaskedEmailTests {
 
     @Test(
         arguments: [
-            ("jeremy.massel@gmail.com", "j************@gmail.com"),
+            ("jane.doe@example.com", "j*******@example.com"),
             ("first+tag@example.com", "f********@example.com"),
             ("a@example.com", "a@example.com"),
             ("quoted@name@example.com", "q**********@example.com"),
