@@ -337,11 +337,27 @@ open class WordPressComRestApi: NSObject {
 
     // MARK: - Async
 
-    private lazy var urlSession: URLSession = {
+    // Swift lazy properties are not thread safe. Concurrent first reads can release one
+    // session twice, so every read goes through this lock.
+    private let sessionLock = NSLock()
+
+    var urlSession: URLSession {
+        sessionLock.lock()
+        defer { sessionLock.unlock() }
+        return unsynchronizedURLSession
+    }
+
+    var uploadURLSession: URLSession {
+        sessionLock.lock()
+        defer { sessionLock.unlock() }
+        return unsynchronizedUploadURLSession
+    }
+
+    private lazy var unsynchronizedURLSession: URLSession = {
         URLSession(configuration: sessionConfiguration(background: false))
     }()
 
-    private lazy var uploadURLSession: URLSession = {
+    private lazy var unsynchronizedUploadURLSession: URLSession = {
         let configuration = sessionConfiguration(background: backgroundUploads)
         configuration.sharedContainerIdentifier = self.sharedContainerIdentifier
         if configuration.identifier != nil {

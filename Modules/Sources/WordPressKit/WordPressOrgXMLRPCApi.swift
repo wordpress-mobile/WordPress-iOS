@@ -32,11 +32,27 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
         wpxmlrpc.WPXMLRPCFaultErrorDomain
     }
 
-    private lazy var urlSession: URLSession = makeSession(configuration: .default)
-    private lazy var uploadURLSession: URLSession = {
+    // Swift lazy properties are not thread safe. Concurrent first reads can release one
+    // session twice, so every read goes through this lock.
+    private let sessionLock = NSLock()
+
+    var urlSession: URLSession {
+        sessionLock.lock()
+        defer { sessionLock.unlock() }
+        return unsynchronizedURLSession
+    }
+
+    var uploadURLSession: URLSession {
+        sessionLock.lock()
+        defer { sessionLock.unlock() }
+        return unsynchronizedUploadURLSession
+    }
+
+    private lazy var unsynchronizedURLSession: URLSession = makeSession(configuration: .default)
+    private lazy var unsynchronizedUploadURLSession: URLSession = {
         backgroundUploads
             ? makeSession(configuration: .background(withIdentifier: self.backgroundSessionIdentifier))
-            : urlSession
+            : unsynchronizedURLSession
     }()
 
     private func makeSession(configuration sessionConfiguration: URLSessionConfiguration) -> URLSession {
