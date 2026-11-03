@@ -1,6 +1,7 @@
 27.5
 -----
 * [*] Reader: Tapping a mention in a post now shows that person's profile [#25793]
+* [*] Plugins: Fix plugin descriptions being unreadable in dark mode and the Watch on YouTube button not responding [#26330]
 * [*] Plugins: Fix YouTube videos in plugin descriptions showing a player error and running off the screen [#26327]
 * [***] The app now requires iOS 18 or later. Devices running iOS 17 no longer receive app updates [#26154]
 * [*] Keep profile pictures up to date across the app after changing your Gravatar [#26163]

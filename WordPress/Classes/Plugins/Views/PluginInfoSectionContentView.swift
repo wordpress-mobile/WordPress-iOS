@@ -7,7 +7,8 @@ struct PluginInfoSectionContentView: View {
 
     /// The plugin's WordPress.org page, which is where `content` comes from.
     ///
-    /// WebKit sends it as the HTTP referrer. YouTube embeds show "Error 153" without one:
+    /// It gives the document a web origin, which WebKit sends as the HTTP referrer (`https://wordpress.org/`,
+    /// without the path). YouTube embeds show "Error 153" without one:
     /// https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
     let baseURL: URL?
 
@@ -27,6 +28,7 @@ private struct WebView: UIViewRepresentable {
         webView.isOpaque = false
         webView.scrollView.backgroundColor = .clear
         webView.navigationDelegate = context.coordinator
+        webView.uiDelegate = context.coordinator
         return webView
     }
 
@@ -38,7 +40,7 @@ private struct WebView: UIViewRepresentable {
         webView.loadPluginInfoSection(content, baseURL: baseURL)
     }
 
-    class Coordinator: NSObject, WKNavigationDelegate {
+    class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         func webView(
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction
@@ -55,6 +57,20 @@ private struct WebView: UIViewRepresentable {
 
             return .cancel
         }
+
+        /// Embeds such as the YouTube player open links with `window.open`, which doesn't go through the
+        /// navigation policy above, and which WebKit ignores unless this method is implemented.
+        func webView(
+            _ webView: WKWebView,
+            createWebViewWith configuration: WKWebViewConfiguration,
+            for navigationAction: WKNavigationAction,
+            windowFeatures: WKWindowFeatures
+        ) -> WKWebView? {
+            if let url = navigationAction.request.url {
+                UIApplication.shared.open(url)
+            }
+            return nil
+        }
     }
 }
 
@@ -68,6 +84,9 @@ extension WKWebView {
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
+                    :root {
+                        color-scheme: light dark;
+                    }
                     body {
                         font-family: -apple-system;
                         font-size: 16px;
