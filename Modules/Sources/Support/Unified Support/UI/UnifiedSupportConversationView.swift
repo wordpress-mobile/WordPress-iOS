@@ -42,8 +42,14 @@ struct UnifiedSupportConversationView: View {
             scrollToBottom()
         }
         // A notice takes a bottom inset of its own, which moves the bar below the conversation up. Following
-        // it keeps the last message from ending up behind that bar.
-        .onChange(of: viewModel.notice?.id) {
+        // it keeps the last message from ending up behind that bar. Only a notice arriving is worth
+        // following: one going away hands the room back, and scrolling then would just take the reader
+        // somewhere they didn't ask to go.
+        .onChange(of: viewModel.notice?.id) { _, notice in
+            guard notice != nil else {
+                return
+            }
+
             // The inset is only applied once this update is laid out, so following it waits for the next
             // one.
             DispatchQueue.main.async {
