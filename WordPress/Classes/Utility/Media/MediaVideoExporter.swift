@@ -232,8 +232,8 @@ class MediaVideoExporter: MediaExporter {
     ///
     /// A cancel in the first microseconds of an export can trap inside
     /// `states(updateInterval:)`, or leave the export stuck with no callback.
-    /// `export(to:as:)` runs in an unstructured task so that task cancellation
-    /// doesn't call `cancelExport()` straight away. The gate sends it instead.
+    /// `export(to:as:)` runs in an unstructured task, so cancelling the caller
+    /// doesn't cancel the session straight away. The gate cancels that task instead.
     private func export(
         _ session: AVAssetExportSession,
         to url: URL,
@@ -241,9 +241,9 @@ class MediaVideoExporter: MediaExporter {
         progress: Progress
     ) async throws {
         try Task.checkCancellation()
-        let gate = ExportCancelGate(session: session)
+        let export = Task { try await session.export(to: url, as: fileType) }
+        let gate = ExportCancelGate { export.cancel() }
         try await withTaskCancellationHandler {
-            let export = Task { try await session.export(to: url, as: fileType) }
             let observer = Task {
                 for await state in session.states(updateInterval: 0.1) {
                     guard case .exporting(let exportProgress) = state else { continue }
@@ -367,16 +367,16 @@ class MediaVideoExporter: MediaExporter {
     }
 }
 
-/// Sends `cancelExport()` only after the session has been seen in `.exporting`.
+/// Runs a cancel only after the session has been seen in `.exporting`.
 private final class ExportCancelGate: @unchecked Sendable {
     private let lock = NSLock()
-    private let session: AVAssetExportSession
+    private let cancel: @Sendable () -> Void
     private var cancelRequested = false
     private var exporting = false
     private var cancelSent = false
 
-    init(session: AVAssetExportSession) {
-        self.session = session
+    init(cancel: @escaping @Sendable () -> Void) {
+        self.cancel = cancel
     }
 
     func requestCancel() {
@@ -395,7 +395,7 @@ private final class ExportCancelGate: @unchecked Sendable {
             return true
         }
         if send {
-            session.cancelExport()
+            cancel()
         }
     }
 }
