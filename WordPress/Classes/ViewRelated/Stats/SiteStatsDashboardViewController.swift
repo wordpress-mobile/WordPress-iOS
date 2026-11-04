@@ -288,14 +288,16 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func enableNewStats() {
-        WPAnalytics.track(.statsNewStatsEnabled)
-
-        FeatureFlagOverrideStore().override(RemoteFeatureFlag.newStats, withValue: true)
-
-        // Update the traffic view controller to show new stats
+        // Update the traffic view controller to show new stats. The side effects below are
+        // sticky, so they must not run unless the swap actually happens: opting in from a
+        // state where New Stats can't be built would pin the choice without ever showing it.
         guard let trafficVC = createNewTrafficViewController() else {
             return
         }
+
+        WPAnalytics.track(.statsNewStatsEnabled)
+
+        FeatureFlagOverrideStore().override(RemoteFeatureFlag.newStats, withValue: true)
 
         trafficTab = TrafficTab(viewController: trafficVC, isNewStats: true)
         showChildViewController(trafficTableViewController)
