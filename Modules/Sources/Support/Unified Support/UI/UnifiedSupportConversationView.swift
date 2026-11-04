@@ -6,7 +6,9 @@ struct UnifiedSupportConversationView: View {
 
     @StateObject private var viewModel: UnifiedSupportConversationViewModel
     @EnvironmentObject private var context: UnifiedSupportContext
-    @Namespace private var bottom
+
+    /// A conversation is read from the bottom, so that's where it opens and where it stays.
+    @State private var scrollPosition = ScrollPosition(edge: .bottom)
 
     init(viewModel: @autoclosure @escaping () -> UnifiedSupportConversationViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
@@ -24,24 +26,25 @@ struct UnifiedSupportConversationView: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                content
-                    .padding(.top, 8)
-
-                Color.clear
-                    .frame(height: 1)
-                    .id(bottom)
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .onChange(of: viewModel.messages.count) {
-                scrollToBottom(using: proxy, animated: true)
-            }
-            .onChange(of: viewModel.isAssistantTyping) {
-                scrollToBottom(using: proxy, animated: true)
-            }
-            .onAppear {
-                scrollToBottom(using: proxy, animated: false)
+        ScrollView {
+            content
+                .padding(.top, 8)
+        }
+        .scrollPosition($scrollPosition)
+        .scrollDismissesKeyboard(.interactively)
+        .onChange(of: viewModel.messages.last?.id) {
+            scrollToBottom()
+        }
+        .onChange(of: viewModel.isAssistantTyping) {
+            scrollToBottom()
+        }
+        // A notice takes a bottom inset of its own, which moves the bar below the conversation up. Following
+        // it keeps the last message from ending up behind that bar.
+        .onChange(of: viewModel.notice?.id) {
+            // The inset is only applied once this update is laid out, so following it waits for the next
+            // one.
+            DispatchQueue.main.async {
+                scrollToBottom()
             }
         }
         .safeAreaInset(edge: .bottom) { bottomBar }
@@ -106,13 +109,9 @@ struct UnifiedSupportConversationView: View {
         }
     }
 
-    private func scrollToBottom(using proxy: ScrollViewProxy, animated: Bool) {
-        guard animated else {
-            proxy.scrollTo(bottom, anchor: .bottom)
-            return
-        }
+    private func scrollToBottom() {
         withAnimation {
-            proxy.scrollTo(bottom, anchor: .bottom)
+            scrollPosition.scrollTo(edge: .bottom)
         }
     }
 }
