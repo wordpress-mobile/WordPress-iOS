@@ -20,13 +20,24 @@ struct UnifiedSupportReplySheet: View {
     /// The imports still running, so that leaving the form stops them.
     @State private var attachmentImports = UnifiedSupportAttachmentImports()
 
+    /// Keeps the message field the size it was before a word is written, so the form doesn't resize under
+    /// the user as they start typing.
+    @ScaledMetric(relativeTo: .body)
+    private var messageMinimumHeight: CGFloat = 120
+
     var body: some View {
         NavigationStack {
             Form {
                 Section(UnifiedSupportLocalization.message) {
-                    TextEditor(text: $viewModel.replyDraft.message)
-                        .focused($isMessageFocused)
-                        .frame(minHeight: 120)
+                    // A field rather than an editor: an editor insets its own text, which leaves the
+                    // message sitting a few points right of every other row, and it has no placeholder.
+                    TextField(
+                        UnifiedSupportLocalization.messagePlaceholder,
+                        text: $viewModel.replyDraft.message,
+                        axis: .vertical
+                    )
+                    .focused($isMessageFocused)
+                    .frame(minHeight: messageMinimumHeight, alignment: .top)
                 }
 
                 UnifiedSupportAttachmentPicker(
