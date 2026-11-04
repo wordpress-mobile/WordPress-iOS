@@ -409,7 +409,7 @@ DEPENDENCIES
   anthropic (~> 2.4)
   danger-dangermattic (~> 1.4)
   dotenv
-  fastlane (~> 2.241)
+  fastlane (~> 2.241, >= 2.241.1)
   fastlane-plugin-firebase_app_distribution (~> 1.0)
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit (~> 15.1)

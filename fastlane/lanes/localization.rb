@@ -379,11 +379,6 @@ platform :ios do
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
 
-    screenshot_comment = <<~COMMENT.chomp
-      translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
-      No specified characters limit here, but try to keep as short as the source one.
-    COMMENT
-
     files = {
       whats_new: JETPACK_RELEASE_NOTES_PATH,
       app_store_name: {
@@ -405,11 +400,8 @@ platform :ios do
           Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
         COMMENT
       },
-      **(1..6).to_h do |i|
-        [
-          "screenshot-text-#{i}",
-          { path: File.join(custom_metadata_folder, "promo_screenshot_#{i}.txt"), comment: screenshot_comment }
-        ]
+      **JETPACK_SCREENSHOT_STRINGS.to_h do |key, file|
+        [key, { path: File.join(custom_metadata_folder, file), comment: jetpack_screenshot_comment(key) }]
       end
     }
 
@@ -642,5 +634,25 @@ platform :ios do
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
+  end
+
+  # The translator comment for a string drawn on the Jetpack App Store screenshots.
+  def jetpack_screenshot_comment(key)
+    case key
+    when 'screenshot-title'
+      <<~COMMENT.chomp
+        translators: The headline of the first App Store screenshot, drawn in large type beside the WordPress and Jetpack logos.
+        Keep it short: it's set on up to three lines, and a long translation is set smaller.
+      COMMENT
+    when /-feature$/
+      <<~COMMENT.chomp
+        translators: The name of the feature an App Store screenshot shows, drawn in bold at the start of its headline and followed by the next string. Keep the full stop, or your language's equivalent.
+      COMMENT
+    else
+      <<~COMMENT.chomp
+        translators: The rest of an App Store screenshot's headline, drawn after the feature's name in bold.
+        Keep it short: the whole headline is set on up to two lines, and a long translation is set smaller.
+      COMMENT
+    end
   end
 end
