@@ -13,10 +13,13 @@ class WebViewControllerConfiguration: NSObject {
     /// Opens any new pages in Safari. Otherwise, a new web view will be opened
     var opensNewInSafari = false
 
-    /// Lets the web view fill the screen, so the page scrolls under the navigation bar and the home
-    /// indicator instead of stopping at them.
+    /// Lets the web view fill the screen, so the page scrolls under the bars above and below it instead of
+    /// stopping at them.
     ///
-    /// The page's own content stays clear of the bars: the web view's scroll view insets it.
+    /// What sits below is the screen's business, not this flag's: the home indicator, and whatever else the
+    /// presenting controller keeps down there, such as a tab bar.
+    ///
+    /// The page's own content stays clear of all of it: the web view's scroll view insets it.
     var ignoresSafeArea = false
 
     /// The behavior to use for allowing links to be loaded by the web view based

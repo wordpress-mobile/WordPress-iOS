@@ -122,8 +122,9 @@ struct RootSupportView: View {
         }
     }
 
-    /// The documentation is a web page, so it gets the whole screen: it scrolls under the navigation bar
-    /// and the home indicator the way a browser does.
+    /// The documentation is a web page, so it gets the whole screen: it scrolls under the bars above and
+    /// below it the way a browser does. Reached from the Me tab, below means the tab bar as well as the
+    /// home indicator.
     private var helpCenterWebView: some View {
         WebKitView(configuration: Self.helpCenterConfiguration())
             .ignoresSafeArea(edges: [.top, .bottom])
