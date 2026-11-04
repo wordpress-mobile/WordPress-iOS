@@ -291,7 +291,96 @@ struct FixtureSetTests {
         #expect(fixtures.response(for: get("/slow")).delay == 1.5)
     }
 
+    @Test func bodyFileIsServedAsItIs() throws {
+        let image = Data([0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10])
+        let fixtures = try makeFixtureSet(
+            [
+                "images/header.json": mapping(
+                    #"{"urlPath": "/2025/08/header.jpg"}"#,
+                    response: #"{"status": 200, "bodyFileName": "images/header.jpg"}"#
+                )
+            ],
+            files: ["images/header.jpg": image]
+        )
+
+        let response = fixtures.response(for: get("/2025/08/header.jpg?w=600"))
+        #expect(response.status == 200)
+        #expect(response.body == image)
+        #expect(response.headers["Content-Type"] == "image/jpeg")
+    }
+
+    @Test func bodyFileKeepsTheContentTypeItIsGiven() throws {
+        let fixtures = try makeFixtureSet(
+            [
+                "avatar.json": mapping(
+                    #"{"urlPathPattern": "/avatar/.*"}"#,
+                    response: #"{"status": 200, "bodyFileName": "avatar", "headers": {"Content-Type": "image/png"}}"#
+                )
+            ],
+            files: ["avatar": Data([0x89, 0x50])]
+        )
+
+        #expect(fixtures.response(for: get("/avatar/abc")).headers["Content-Type"] == "image/png")
+    }
+
+    // MARK: - Overlays
+
+    @Test func overlayReplacesTheMappingAtTheSamePath() throws {
+        let fixtures = try makeFixtureSet(
+            [
+                "wpcom/me.json": mapping(#"{"urlPath": "/me"}"#, response: #"{"status": 200, "body": "English"}"#),
+                "wpcom/sites.json": mapping(#"{"urlPath": "/sites"}"#, response: #"{"status": 200, "body": "Sites"}"#)
+            ],
+            overlay: [
+                "wpcom/me.json": mapping(#"{"urlPath": "/me"}"#, response: #"{"status": 200, "body": "日本語"}"#)
+            ]
+        )
+
+        #expect(fixtures.response(for: get("/me")).text == "日本語")
+        #expect(fixtures.response(for: get("/sites")).text == "Sites")
+    }
+
+    @Test func overlayCanAddMappings() throws {
+        let fixtures = try makeFixtureSet(
+            ["me.json": mapping(#"{"urlPath": "/me"}"#)],
+            overlay: ["extra.json": mapping(#"{"urlPath": "/extra"}"#)]
+        )
+
+        #expect(fixtures.response(for: get("/me")).status == 200)
+        #expect(fixtures.response(for: get("/extra")).status == 200)
+    }
+
     // MARK: - Loading
+
+    @Test func rejectsAMissingBodyFile() throws {
+        let error = #expect(throws: FixtureError.self) {
+            try makeFixtureSet([
+                "header.json": mapping(
+                    #"{"urlPath": "/header.jpg"}"#,
+                    response: #"{"status": 200, "bodyFileName": "header.jpg"}"#
+                )
+            ])
+        }
+
+        #expect(error?.file == "header.json")
+        #expect(error?.reason == "its bodyFileName, __files/header.jpg, can't be read")
+    }
+
+    @Test func rejectsABodyFileWithABody() throws {
+        let error = #expect(throws: FixtureError.self) {
+            try makeFixtureSet(
+                [
+                    "header.json": mapping(
+                        #"{"urlPath": "/h"}"#,
+                        response: #"{"status": 200, "body": "x", "bodyFileName": "h.jpg"}"#
+                    )
+                ],
+                files: ["h.jpg": Data([1])]
+            )
+        }
+
+        #expect(error?.file == "header.json")
+    }
 
     @Test func rejectsAMatcherItDoesNotSupport() throws {
         let error = #expect(throws: FixtureError.self) {
