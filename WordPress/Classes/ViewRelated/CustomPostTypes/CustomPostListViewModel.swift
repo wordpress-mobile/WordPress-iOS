@@ -452,7 +452,7 @@ final class CustomPostListViewModel: ObservableObject {
 
         switch navigation {
         case .stats(let post):
-            if FeatureFlag.newStats.enabled {
+            if RemoteFeatureFlag.newStats.enabled() {
                 let statsVC = PostStatsViewController(
                     postID: Int(post.id),
                     postTitle: post.title?.raw ?? "",

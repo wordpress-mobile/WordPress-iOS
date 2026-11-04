@@ -643,9 +643,17 @@ extension WordPressAppDelegate {
     /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
-        /// - warning: must be called before the `update(using:then:)`.
-        if remoteFeatureFlagStore.isFreshInstall {
-            FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+        /// New Stats is on for fresh installs regardless of the remote rollout. The guard on
+        /// an existing override matters if `FeatureFlagDeviceId` is ever cleared without the
+        /// rest of the defaults (a partial restore, the debug menu): the pin must not
+        /// overwrite a deliberate opt-out.
+        ///
+        /// - warning: must run before anything reads `remoteFeatureFlagStore.deviceID` —
+        /// including `update(using:then:)` below — because reading it creates it, which makes
+        /// `isFreshInstall` false.
+        let overrideStore = FeatureFlagOverrideStore()
+        if remoteFeatureFlagStore.isFreshInstall, !overrideStore.isOverridden(RemoteFeatureFlag.newStats) {
+            overrideStore.override(RemoteFeatureFlag.newStats, withValue: true)
         }
 
         var api: WordPressComRestApi

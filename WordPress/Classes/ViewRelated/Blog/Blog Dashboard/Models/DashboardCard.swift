@@ -170,7 +170,7 @@ enum DashboardCard: String, CaseIterable, Sendable {
     /// the normal legacy-fallback signal, not a bug. The stored `authToken` is
     /// read directly precisely because it has no such side effects.
     static func newStatsActive(for blog: Blog) -> Bool {
-        guard FeatureFlag.newStats.enabled,
+        guard RemoteFeatureFlag.newStats.enabled(),
               blog.dotComID != nil,
               let authToken = blog.account?.authToken,
               !authToken.isEmpty else {

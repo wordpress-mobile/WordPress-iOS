@@ -150,7 +150,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             WPAppAnalyticsKeyTabSource: "dashboard",
             WPAppAnalyticsKeyTapSource: "quick_actions"
         ]
-        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+        if event == .statsAccessed, RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
         WPAppAnalytics.track(event, properties: properties, blog: blog)
