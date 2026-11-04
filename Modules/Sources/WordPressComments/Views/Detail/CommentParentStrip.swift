@@ -33,5 +33,6 @@ struct CommentParentStrip: View {
             }
         }
         .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
     }
 }
