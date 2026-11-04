@@ -25,6 +25,9 @@ class JetpackUITestCase: XCTestCase {
     /// their tests.
     class var resetsAppBeforeEachTest: Bool { true }
 
+    /// Launch arguments the suite adds to the ones every test launches the app with.
+    var additionalLaunchArguments: [String] { [] }
+
     /// Whether the next test has to start from a reset app even if its suite shares a sign-in:
     /// the first test of the run, and the test after one from a suite that resets, since such a
     /// suite is free to leave the app changed.
@@ -88,6 +91,7 @@ class JetpackUITestCase: XCTestCase {
                 "-ui-test-http-log", requestLog.path(percentEncoded: false)
             ]
         }
+        app.launchArguments += additionalLaunchArguments
         if Self.resetsAppBeforeEachTest || Self.nextTestMustReset || Self.backend != Self.previousBackend {
             app.launchArguments.append("-ui-test-reset-everything")
         }
