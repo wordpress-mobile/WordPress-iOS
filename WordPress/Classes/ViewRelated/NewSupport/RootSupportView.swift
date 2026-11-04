@@ -112,8 +112,7 @@ struct RootSupportView: View {
     @ViewBuilder
     private var communitySupportLink: some View {
         NavigationLink {
-            let url = URL(string: "https://apps.wordpress.com/support/mobile/")!
-            WebKitView(configuration: WebViewControllerConfiguration(url: url))
+            helpCenterWebView
         } label: {
             SupportAreaRow(
                 imageName: "book.pages",
@@ -121,6 +120,20 @@ struct RootSupportView: View {
                 detail: Strings.helpCenterDetail
             )
         }
+    }
+
+    /// The documentation is a web page, so it gets the whole screen: it scrolls under the navigation bar
+    /// and the home indicator the way a browser does.
+    private var helpCenterWebView: some View {
+        WebKitView(configuration: Self.helpCenterConfiguration())
+            .ignoresSafeArea(edges: [.top, .bottom])
+    }
+
+    private static func helpCenterConfiguration() -> WebViewControllerConfiguration {
+        let url = URL(string: "https://apps.wordpress.com/support/mobile/")!
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.ignoresSafeArea = true
+        return configuration
     }
 
     @ViewBuilder
