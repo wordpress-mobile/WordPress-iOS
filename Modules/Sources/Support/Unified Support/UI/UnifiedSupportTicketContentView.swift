@@ -5,6 +5,9 @@ struct UnifiedSupportTicketContentView: View {
 
     @ObservedObject var viewModel: UnifiedSupportConversationViewModel
 
+    /// Whether the subject is still on screen, which is what tells the navigation bar to leave it alone.
+    @Binding var isTitleVisible: Bool
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             header
@@ -13,8 +16,8 @@ struct UnifiedSupportTicketContentView: View {
                 Text(viewModel.title)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color.accentColor)
                     .accessibilityAddTraits(.isHeader)
+                    .onScrollVisibilityChange { isTitleVisible = $0 }
             }
 
             ForEach(viewModel.messages) { message in

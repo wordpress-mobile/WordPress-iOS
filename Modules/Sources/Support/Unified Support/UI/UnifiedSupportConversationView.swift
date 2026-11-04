@@ -10,6 +10,9 @@ struct UnifiedSupportConversationView: View {
     /// A conversation is read from the bottom, so that's where it opens and where it stays.
     @State private var scrollPosition = ScrollPosition(edge: .bottom)
 
+    /// Whether a ticket's subject is on screen, which is what keeps the navigation bar from repeating it.
+    @State private var isTitleVisible = true
+
     init(viewModel: @autoclosure @escaping () -> UnifiedSupportConversationViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
     }
@@ -54,6 +57,9 @@ struct UnifiedSupportConversationView: View {
             }
         }
         .unifiedSupportNotice($viewModel.notice)
+        // A ticket's subject scrolls away with the conversation, so the bar picks it up once it's gone.
+        // Showing it in both places at once would just say the same thing twice.
+        .navigationTitle(isTitleVisible ? "" : viewModel.title)
         .navigationBarTitleDisplayMode(.inline)
         .unifiedSupportAutoRefresh(every: .seconds(60)) {
             await viewModel.refreshSilently()
@@ -84,7 +90,7 @@ struct UnifiedSupportConversationView: View {
         if viewModel.isBot {
             UnifiedSupportChatContentView(viewModel: viewModel)
         } else {
-            UnifiedSupportTicketContentView(viewModel: viewModel)
+            UnifiedSupportTicketContentView(viewModel: viewModel, isTitleVisible: $isTitleVisible)
         }
     }
 
