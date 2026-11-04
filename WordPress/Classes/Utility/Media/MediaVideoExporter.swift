@@ -215,19 +215,7 @@ class MediaVideoExporter: MediaExporter {
             session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         }
 
-        try await withThrowingTaskGroup(of: Void.self) { group in
-            group.addTask {
-                for await state in session.states(updateInterval: 0.1) {
-                    if case .exporting(let exportProgress) = state {
-                        progress.completedUnitCount = Int64(
-                            Double(MediaExportProgressUnits.done) * exportProgress.fractionCompleted
-                        )
-                    }
-                }
-            }
-            defer { group.cancelAll() }
-            try await session.export(to: mediaURL, as: AVFileType(rawValue: outputType))
-        }
+        try await export(session, to: mediaURL, as: AVFileType(rawValue: outputType), progress: progress)
 
         let pixelSize = await mediaURL.videoPixelSize
         progress.completedUnitCount = MediaExportProgressUnits.done
@@ -238,6 +226,40 @@ class MediaVideoExporter: MediaExporter {
             height: pixelSize.height,
             duration: CMTimeGetSeconds(duration)
         )
+    }
+
+    /// Runs the export, holding any cancel until the session is seen in `.exporting`.
+    ///
+    /// A cancel in the first microseconds of an export can trap inside
+    /// `states(updateInterval:)`, or leave the export stuck with no callback.
+    /// `export(to:as:)` runs in an unstructured task so that task cancellation
+    /// doesn't call `cancelExport()` straight away. The gate sends it instead.
+    private func export(
+        _ session: AVAssetExportSession,
+        to url: URL,
+        as fileType: AVFileType,
+        progress: Progress
+    ) async throws {
+        try Task.checkCancellation()
+        let gate = ExportCancelGate(session: session)
+        try await withTaskCancellationHandler {
+            let export = Task { try await session.export(to: url, as: fileType) }
+            let observer = Task {
+                for await state in session.states(updateInterval: 0.1) {
+                    guard case .exporting(let exportProgress) = state else { continue }
+                    progress.completedUnitCount = Int64(
+                        Double(MediaExportProgressUnits.done) * exportProgress.fractionCompleted
+                    )
+                    gate.sessionIsExporting()
+                }
+            }
+            defer { observer.cancel() }
+            try await export.value
+        } onCancel: {
+            gate.requestCancel()
+        }
+        // The export can finish before a held cancel is sent.
+        try Task.checkCancellation()
     }
 
     /// Reports a failure and marks the progress as finished.
@@ -342,5 +364,38 @@ class MediaVideoExporter: MediaExporter {
             .avi
         ]
         return types.map(\.identifier)
+    }
+}
+
+/// Sends `cancelExport()` only after the session has been seen in `.exporting`.
+private final class ExportCancelGate: @unchecked Sendable {
+    private let lock = NSLock()
+    private let session: AVAssetExportSession
+    private var cancelRequested = false
+    private var exporting = false
+    private var cancelSent = false
+
+    init(session: AVAssetExportSession) {
+        self.session = session
+    }
+
+    func requestCancel() {
+        update { cancelRequested = true }
+    }
+
+    func sessionIsExporting() {
+        update { exporting = true }
+    }
+
+    private func update(_ change: () -> Void) {
+        let send: Bool = lock.withLock {
+            change()
+            guard cancelRequested, exporting, !cancelSent else { return false }
+            cancelSent = true
+            return true
+        }
+        if send {
+            session.cancelExport()
+        }
     }
 }
