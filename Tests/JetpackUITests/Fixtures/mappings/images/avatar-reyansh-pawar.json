@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/avatar/4b7ac5a2b497adbd473313b0701023a4"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "avatars/reyansh-pawar.png"
+  }
+}

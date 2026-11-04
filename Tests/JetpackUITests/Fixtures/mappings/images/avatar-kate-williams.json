@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/avatar/e31f50d91bb2f5b278038898680ea194"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "avatars/kate-williams.png"
+  }
+}

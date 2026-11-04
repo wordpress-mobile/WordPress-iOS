@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/avatar/b9dadbf067e5583eaf82abefc49727bb"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "avatars/pamela-nguyen.png"
+  }
+}
