@@ -129,10 +129,12 @@ struct UnifiedSupportClosedBanner: View {
                 .font(.subheadline)
             Spacer(minLength: 0)
         }
-        .foregroundStyle(Color(.systemRed))
+        // A closed ticket is where a conversation ends, not something that went wrong, so it's told in
+        // the same grey the rest of the screen explains itself in.
+        .foregroundStyle(.secondary)
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemRed).opacity(0.1))
+        .background(Color(.secondarySystemFill))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
