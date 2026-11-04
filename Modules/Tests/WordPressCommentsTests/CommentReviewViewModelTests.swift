@@ -191,6 +191,7 @@ struct CommentReviewViewModelTests {
         await load.value
         session.perform(.approve, id: 1)
         await waitUntil { service.setStatusInvocations.count == 1 }
+        let displayedDetail = session.detail
         session.close()
         if fails {
             service.failSetStatus(callIndex: 0, with: FakeServiceError())
@@ -201,10 +202,37 @@ struct CommentReviewViewModelTests {
         if fails { await waitUntil { !notices.presented.isEmpty } }
         #expect(session.isDismissed)
         #expect(!session.isComplete)
-        #expect(session.detail == nil)
+        #expect(session.detail === displayedDetail)
+        #expect(session.position == 0)
+        #expect(!session.canSkip)
+        #expect(!session.canModerate)
         #expect(session.moderatedCount == 0)
         #expect(list.items.map(\.id) == (fails ? [1, 2] : [2]))
         #expect(notices.presented.count == (fails ? 1 : 0))
+    }
+
+    @Test func closeRetainsEntryAndRejectsFurtherActionsAndExternalEvents() async {
+        let service = loadedService()
+        let coordinator = CommentsModerationCoordinator(service: service)
+        let session = makeSession(service: service, coordinator: coordinator)
+        await session.loadCurrent(id: 1)
+        let displayedDetail = session.detail
+        let fetchCount = service.fetchCommentInvocations.count
+
+        session.close()
+        coordinator.noteExternalStatus(id: 1, to: .approved)
+        session.skip(id: 1)
+        session.perform(.approve, id: 1)
+        await session.loadCurrent(id: 1, retry: true)
+
+        #expect(session.isDismissed)
+        #expect(session.detail === displayedDetail)
+        #expect(session.position == 0)
+        #expect(session.outcomes.isEmpty)
+        #expect(!session.canSkip)
+        #expect(!session.canModerate)
+        #expect(service.fetchCommentInvocations.count == fetchCount)
+        #expect(service.setStatusInvocations.isEmpty)
     }
 
     @Test func eventsDuringSubmissionWaitForItsResult() async {
@@ -252,6 +280,12 @@ struct CommentReviewViewModelTests {
         #expect(session.skippedCount == 1)
         #expect(!session.canSkip)
         session.skip(id: 2)
+        #expect(session.skippedCount == 1)
+        session.close()
+        session.close()
+        #expect(session.isDismissed)
+        #expect(session.isComplete)
+        #expect(session.moderatedCount == 1)
         #expect(session.skippedCount == 1)
     }
 

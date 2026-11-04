@@ -19,7 +19,7 @@ final class CommentReviewViewModel: ObservableObject, Identifiable {
     @Published private(set) var pendingAction: CommentModerationAction?
     @Published private(set) var isDismissed = false
 
-    var isComplete: Bool { !isDismissed && position == batch.count }
+    var isComplete: Bool { position == batch.count }
     var moderatedCount: Int { outcomes.values.filter { $0 == .moderated }.count }
     var skippedCount: Int { outcomes.values.filter { $0 == .skipped }.count }
     var canSkip: Bool { !isDismissed && detail != nil && pendingAction == nil }
@@ -68,10 +68,10 @@ final class CommentReviewViewModel: ObservableObject, Identifiable {
         record(.skipped, id: id)
     }
 
+    /// Ends the session while retaining its content for the dismissal animation.
     func close() {
         isDismissed = true
         subscription = nil
-        detail = nil
     }
 
     func perform(_ action: CommentModerationAction, id: Int64) {
