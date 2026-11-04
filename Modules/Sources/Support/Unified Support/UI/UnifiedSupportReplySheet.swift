@@ -20,11 +20,6 @@ struct UnifiedSupportReplySheet: View {
     /// The imports still running, so that leaving the form stops them.
     @State private var attachmentImports = UnifiedSupportAttachmentImports()
 
-    /// Keeps the message field the size it was before a word is written, so the form doesn't resize under
-    /// the user as they start typing.
-    @ScaledMetric(relativeTo: .body)
-    private var messageMinimumHeight: CGFloat = 120
-
     var body: some View {
         NavigationStack {
             Form {
@@ -36,8 +31,12 @@ struct UnifiedSupportReplySheet: View {
                         text: $viewModel.replyDraft.message,
                         axis: .vertical
                     )
+                    // The lines are reserved on the field rather than by a frame around it, so the whole
+                    // box is somewhere a reply can be written: a field sizes to its text, which leaves a
+                    // frame's spare height outside it, where a tap lands on nothing. It also keeps the
+                    // form from resizing under the user as they start typing.
+                    .lineLimit(5...)
                     .focused($isMessageFocused)
-                    .frame(minHeight: messageMinimumHeight, alignment: .top)
                 }
 
                 UnifiedSupportAttachmentPicker(
