@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/2025/08/gated-content-wordpress-header.jpg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/gated-content-wordpress-header.jpg"
+  }
+}

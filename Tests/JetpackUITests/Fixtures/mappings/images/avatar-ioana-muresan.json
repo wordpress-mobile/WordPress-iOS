@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/avatar/37139c6b60c339da4ddf54b22c17b32d04bae30dd49f9a08502672da8507a0a6"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "avatars/ioana-muresan.png"
+  }
+}

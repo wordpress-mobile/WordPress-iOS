@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/avatar/[0-9a-f]+"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "avatars/person.png"
+  },
+  "priority": 10
+}
