@@ -125,6 +125,9 @@ struct ResponseDefinition: Sendable {
     /// Header values may contain template expressions, like the body.
     let headers: [String: String]
     let body: String
+    /// A file under the fixtures' `__files` directory to answer with, as is, in place of `body`:
+    /// an image, say. WireMock's `bodyFileName`.
+    let bodyFileName: String?
     /// Generates the body in place of `body`, for a mapping that names the `stats-series`
     /// transformer.
     let series: StatsSeries?
@@ -297,6 +300,10 @@ extension StubMapping {
         if jsonBody != nil, let text = JSONText.value(at: ["response", "jsonBody"], in: document) {
             body = String(decoding: text, as: UTF8.self)
         }
+        let bodyFileName: String? = try response.take("bodyFileName")
+        if bodyFileName != nil, !body.isEmpty || jsonBody != nil || series != nil {
+            throw UnsupportedMapping("a response with a bodyFileName can't also have a body, jsonBody or transformer")
+        }
         let isJSON = jsonBody != nil || series != nil
         if isJSON, !headers.keys.contains(where: { $0.caseInsensitiveCompare("Content-Type") == .orderedSame }) {
             headers["Content-Type"] = "application/json"
@@ -307,6 +314,7 @@ extension StubMapping {
             status: try response.take("status") ?? 200,
             headers: headers,
             body: body,
+            bodyFileName: bodyFileName,
             series: series,
             delay: TimeInterval(delay) / 1000
         )
