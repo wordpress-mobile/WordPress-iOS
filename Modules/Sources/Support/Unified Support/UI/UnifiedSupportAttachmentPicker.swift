@@ -53,10 +53,6 @@ struct UnifiedSupportAttachmentPicker: View {
         let validation = UnifiedSupportAttachmentValidator(maximumUploadSize: maximumUploadSize).validate(files)
 
         Section {
-            Text(UnifiedSupportLocalization.attachmentsDescription)
-                .font(.body)
-                .foregroundStyle(.secondary)
-
             if let loadingErrorMessage {
                 ErrorView(title: UnifiedSupportLocalization.attachmentsFailedTitle, message: loadingErrorMessage)
             }
@@ -78,6 +74,8 @@ struct UnifiedSupportAttachmentPicker: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+        } footer: {
+            Text(UnifiedSupportLocalization.attachmentsDescription)
         }
         .listRowSeparator(.hidden)
     }

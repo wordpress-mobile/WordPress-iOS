@@ -26,37 +26,35 @@ struct ApplicationLogPicker: View {
 
     private var picker: some View {
         Section {
-            VStack(alignment: .leading, spacing: 12) {
-                Toggle(isOn: $includeApplicationLogs.animation(.easeInOut(duration: 0.3))) {
-                    Text(Localization.includeApplicationLogs)
-                        .font(.body)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                self.includeApplicationLogs.toggle()
-                            }
+            Toggle(isOn: $includeApplicationLogs.animation(.easeInOut(duration: 0.3))) {
+                Text(Localization.includeApplicationLogs)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            self.includeApplicationLogs.toggle()
                         }
-                }
-
-                Text(Localization.applicationLogsDescription)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }.padding(4)
+                    }
+            }
         } header: {
             Text(Localization.applicationLogs)
         } footer: {
-            if includeApplicationLogs {
-                switch self.state {
-                case .loading: ProgressView()
-                case .loaded(let logs):
-                    applicationLogList(logs)
-                case .error(let error):
-                    ErrorView(
-                        title: Localization.unableToLoadApplicationLogs,
-                        message: error
-                    )
+            VStack(alignment: .leading, spacing: 8) {
+                Text(Localization.applicationLogsDescription)
+
+                if includeApplicationLogs {
+                    switch self.state {
+                    case .loading: ProgressView()
+                    case .loaded(let logs):
+                        applicationLogList(logs)
+                    case .error(let error):
+                        ErrorView(
+                            title: Localization.unableToLoadApplicationLogs,
+                            message: error
+                        )
+                    }
                 }
             }
-        }.task {
+        }
+        .task {
             await loadApplicationLogs()
         }
     }
@@ -131,7 +129,8 @@ struct ApplicationLogRow: View {
                 ApplicationLogPicker(
                     includeApplicationLogs: $includeApplicationLogs
                 )
-            }.environmentObject(SupportDataProvider.testing)
+            }
+            .environmentObject(SupportDataProvider.testing)
         }
     }
 
