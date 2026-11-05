@@ -6,6 +6,30 @@ import Security
 /// the classifier and its tests cannot drift to different spellings.
 let sfhfKeychainErrorDomain = "SFHFKeychainUtilsErrorDomain"
 
+/// The typed error contract of `KeychainAccessible`: a missing item is
+/// `.notFound`, everything else is `.failure` carrying the raw Keychain
+/// `OSStatus`. Encoding this in the type (instead of recovering it after the
+/// fact by sniffing an `NSError` domain/code) keeps the real implementations
+/// and the test doubles from drifting apart.
+public enum KeychainError: Error, Equatable {
+    case notFound
+    case failure(OSStatus)
+}
+
+/// Bridges to `NSError` exactly as the `SFHFKeychainUtils` errors it replaces
+/// did, so crash logging and wrapping errors (`DataMigrationError.errorCode`,
+/// `underlying-error-code`) keep the raw `OSStatus`.
+extension KeychainError: CustomNSError {
+    public static var errorDomain: String { sfhfKeychainErrorDomain }
+
+    public var errorCode: Int {
+        switch self {
+        case .notFound: Int(errSecItemNotFound)
+        case .failure(let status): Int(status)
+        }
+    }
+}
+
 /// The underlying Keychain `OSStatus` for an error produced by
 /// `SFHFKeychainUtils`, or `nil` when the error is not from that domain.
 ///
@@ -20,12 +44,16 @@ func keychainErrorCode(error: Error) -> OSStatus? {
     return OSStatus(truncatingIfNeeded: nsError.code)
 }
 
-/// Whether an error from `SFHFKeychainUtils` is a real failure rather than the
-/// expected not-found. A not-found surfaces either as a non-SFHF error (reads)
-/// or as an SFHF error whose code is `errSecItemNotFound` (deletes).
-public func isRealKeychainFailure(_ error: Error) -> Bool {
-    guard let code = keychainErrorCode(error: error) else { return false }
-    return code != errSecItemNotFound
+/// Maps an error thrown by `SFHFKeychainUtils` onto the typed contract.
+///
+/// A not-found surfaces either as a non-SFHF error (reads) or as an SFHF error
+/// whose code is `errSecItemNotFound` (deletes). Anything else is a real
+/// failure — including `-1999` ("item present, no password data"): rethrowing
+/// it instead of treating it as not-found preserves the previous behavior,
+/// where such an item does not fall back to another access group.
+func keychainError(from error: Error) -> KeychainError {
+    guard let status = keychainErrorCode(error: error) else { return .notFound }
+    return status == errSecItemNotFound ? .notFound : .failure(status)
 }
 
 private let keychainLogger = Logger(label: (Bundle.main.bundleIdentifier ?? "org.wordpress") + ".keychain")

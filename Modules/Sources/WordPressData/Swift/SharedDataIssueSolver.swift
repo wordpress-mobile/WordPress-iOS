@@ -9,6 +9,7 @@ public final class SharedDataIssueSolver {
     private let sharedDefaults: UserPersistentRepository?
     private let localFileStore: LocalFileStore
     private let appGroupName: String
+    private let brand: AppBrand
 
     public init(
         contextManager: CoreDataStack = ContextManager.shared,
@@ -16,7 +17,8 @@ public final class SharedDataIssueSolver {
         sharedKeychain: KeychainAccessible? = SharedKeychain(),
         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
         localFileStore: LocalFileStore = FileManager.default,
-        appGroupName: String = BuildSettings.current.appGroupName
+        appGroupName: String = BuildSettings.current.appGroupName,
+        brand: AppBrand = BuildSettings.current.brand
     ) {
         self.contextManager = contextManager
         self.appKeychain = appKeychain
@@ -24,6 +26,7 @@ public final class SharedDataIssueSolver {
         self.sharedDefaults = sharedDefaults
         self.localFileStore = localFileStore
         self.appGroupName = appGroupName
+        self.brand = brand
     }
 
     public func migrateAuthKey() {
@@ -42,7 +45,7 @@ public final class SharedDataIssueSolver {
         // keychain read in the codebase. The WordPress app publishes the
         // token there at export time (and pre-change versions wrote it
         // there by default).
-        guard BuildSettings.current.brand == .jetpack,
+        guard brand == .jetpack,
             let sharedKeychain,
             let token = try? sharedKeychain.getPassword(
                 for: username,
