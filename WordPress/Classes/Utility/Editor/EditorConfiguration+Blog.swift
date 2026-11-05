@@ -44,7 +44,9 @@ extension EditorConfiguration {
         let siteURL = blog.url.flatMap { URL(string: $0) } ?? URL(string: "https://example.com")!
         let siteApiRoot = siteApiRootString.flatMap { URL(string: $0) } ?? URL(string: "https://example.com/wp-json")!
 
-        var builder = EditorConfigurationBuilder(
+        // The editor assets endpoint is left unset: GutenbergKit builds it from `siteApiRoot` and
+        // `siteApiNamespace`, including the `?rest_route=` roots of sites using plain permalinks.
+        self = EditorConfigurationBuilder(
             postType: postType,
             siteURL: siteURL,
             siteApiRoot: siteApiRoot
@@ -59,43 +61,7 @@ extension EditorConfiguration {
         .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
         .setEnableNetworkLogging(ExtensiveLogging.enabled)
         .setNetworkFallbackMode(.automatic)
-
-        // Build editor assets endpoint
-        let namespacePath = siteApiNamespace.first.map { $0.hasSuffix("/") ? $0 : $0 + "/" } ?? ""
-        builder = builder.setEditorAssetsEndpoint(
-            Self.appendingRESTPath("wpcom/v2/\(namespacePath)editor-assets", to: siteApiRoot)
-        )
-
-        self = builder.build()
-    }
-
-    /// Appends a REST API path to a site's API root.
-    ///
-    /// Sites using plain permalinks have no path-based REST root — WordPress advertises the
-    /// query form `https://example.com/?rest_route=/` instead — so the path belongs in the
-    /// `rest_route` value rather than the URL path:
-    ///
-    /// ```
-    /// https://example.com/?rest_route=/ + wpcom/v2/editor-assets
-    ///     -> https://example.com/?rest_route=/wpcom/v2/editor-assets
-    /// ```
-    ///
-    /// Path-based roots keep the usual behavior. This mirrors `@wordpress/api-fetch`'s root URL
-    /// middleware and GutenbergKit's native URL builders, so every layer resolves the same
-    /// endpoints for a given site.
-    ///
-    /// - Parameters:
-    ///   - path: The REST path to append, without a leading slash.
-    ///   - apiRoot: The site's REST API root.
-    /// - Returns: The endpoint URL, or `apiRoot` unchanged if the result isn't a valid URL.
-    static func appendingRESTPath(_ path: String, to apiRoot: URL) -> URL {
-        // Concatenate onto the root's full string rather than appending path components, so a
-        // query-based root grows its `rest_route` value instead of stranding it behind the path.
-        // One slash is kept between the two whether the root ends in `wp-json/`, `wp-json`,
-        // `?rest_route=/`, or `?rest_route=`.
-        let root = apiRoot.absoluteString
-        let separator = root.hasSuffix("/") ? "" : "/"
-        return URL(string: root + separator + path) ?? apiRoot
+        .build()
     }
 
     /// Returns true if the plugins should be enabled for the given blog.
