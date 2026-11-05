@@ -163,14 +163,26 @@ final class AppStoreScreenshots: JetpackUITestCase {
         let card = stream.post(titled: readerPostTitle)
         let author = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", Fixture.readerPostAuthor))
             .firstMatch
+        let window = app.windows.firstMatch
         for _ in 0..<3 {
-            // A card that's being replaced has an infinite frame, and asking whether it's hittable
-            // then fails the test rather than answering no, so this goes by its frame.
-            guard card.poll(timeout: 30, until: { $0.exists && $0.frame.minY.isFinite && !$0.frame.isEmpty }) else {
+            // A card that's being replaced has an infinite frame, and asking whether it's hittable,
+            // or tapping it, then fails the test rather than missing. So this reads the card's frame
+            // once and taps that point on the screen.
+            var frame = CGRect.null
+            let found = card.poll(timeout: 30) { card in
+                frame = card.exists ? card.frame : .null
+                return frame.minY.isFinite && !frame.isEmpty
+                    && window.frame.contains(CGPoint(x: frame.midX, y: frame.midY))
+            }
+            guard found else {
                 continue
             }
-            card.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
-            try stream.waitFor(backButton)
+            window.coordinate(withNormalizedOffset: .zero)
+                .withOffset(CGVector(dx: frame.midX - window.frame.minX, dy: frame.midY - window.frame.minY))
+                .tap()
+            guard backButton.pollForExistence(timeout: 10) else {
+                continue
+            }
             if author.pollForExistence(timeout: 10) {
                 return
             }
