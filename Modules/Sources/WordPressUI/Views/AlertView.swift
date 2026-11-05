@@ -7,6 +7,8 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
     @ViewBuilder var actions: () -> Actions
 
     @State private var horizontalSafeArea: CGFloat = 0
+    /// Read before `body` caps the size at `xxLarge`.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     public init(
         @ViewBuilder header: @escaping () -> Header,
@@ -20,8 +22,12 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            content()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // The content is an illustration. At accessibility text sizes, leave it out and give the text
+            // its room. The sheet then fits the text and buttons (see `alertView(hostedBy:)`).
+            if !dynamicTypeSize.isAccessibilitySize {
+                content()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
             header()
                 .padding(.horizontal, 8)
                 .padding(.bottom, 32)
@@ -58,6 +64,7 @@ extension AlertView {
 extension UISheetPresentationController.Detent {
     /// The height for a sheet that shows an ``AlertView``: half the screen, or taller when the
     /// alert needs more room, such as on the iPhone Duo's outer screen or with a large text size.
+    /// At accessibility text sizes the alert has no illustration, so the sheet fits its text and buttons.
     @MainActor
     public static func alertView<Content: View>(
         hostedBy hostVC: UIHostingController<Content>
@@ -79,7 +86,8 @@ extension UISheetPresentationController.Detent {
                     .sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
                     .height
             }
-            return min(max(medium, height), context.maximumDetentValue)
+            let minimum = sizeCategory.isAccessibilityCategory ? 0 : medium
+            return min(max(minimum, height), context.maximumDetentValue)
         }
     }
 }
