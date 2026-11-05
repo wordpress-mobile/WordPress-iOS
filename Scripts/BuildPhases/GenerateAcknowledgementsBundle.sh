@@ -23,7 +23,10 @@ if [ -f /opt/homebrew/bin/swift-package-list ]; then
     echo "swift-package-list: $SOURCE_PACKAGES_PATH"
     echo "swift-package-list: $OUTPUT_PATH"
 
-    swift-package-list "$PACKAGE_PATH" --custom-source-packages-path "$SOURCE_PACKAGES_PATH" --requires-license | tee "$OUTPUT_PATH"
+    # swift-package-list 5 prints a table by default. Ask for JSON and let it
+    # write package-list.json into the output directory itself, so nothing
+    # else on stdout can end up in the manifest.
+    swift-package-list "$PACKAGE_PATH" --custom-source-packages-path "$SOURCE_PACKAGES_PATH" --requires-license --output-type json --output-path "$DERIVED_FILE_DIR"
     test -s "$OUTPUT_PATH"
     cp "$OUTPUT_PATH" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/package-list.json"
     echo "swift-package-list: ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/package-list.json"
