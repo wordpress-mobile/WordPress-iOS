@@ -15,8 +15,9 @@ env:
   # The iPhone Duo's screenshots need an app built with the iOS 27.1 SDK: built with an older one,
   # the app runs letterboxed on the Duo's outer display.
   IMAGE_ID: xcode-27.1
-  # Interpolated into the steps below when the pipeline is uploaded.
-  SCREENSHOTS_APP: ${SCREENSHOTS_APP:-jetpack}
+
+# The app, SCREENSHOTS_APP, is passed to each command as an argument. Buildkite fills it in when it
+# uploads the pipeline; an environment variable set here wouldn't reach the jobs, which run in a VM.
 
 # The App Store languages the screenshots are taken in: the ones with headlines in
 # fastlane/appstoreres/jetpack_metadata and fastlane/appstoreres/metadata.
@@ -56,29 +57,29 @@ x-screenshots: &screenshots
 steps:
   - label: "🛠 Build ${SCREENSHOTS_APP:-jetpack} for Screenshots"
     key: "build"
-    command: ".buildkite/commands/build-for-app-store-screenshots.sh"
+    command: ".buildkite/commands/build-for-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack}"
     plugins: [$CI_TOOLKIT_PLUGIN]
 
   - label: "📸 iPhone 18 Pro Max {{matrix}}"
     key: "screenshots_iphone"
-    command: ".buildkite/commands/take-app-store-screenshots.sh 'iPhone 18 Pro Max' '{{matrix}}'"
+    command: ".buildkite/commands/take-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack} 'iPhone 18 Pro Max' '{{matrix}}'"
     matrix: *locales
     <<: *screenshots
 
   - label: "📸 iPad Pro 13-inch (M5) {{matrix}}"
     key: "screenshots_ipad"
-    command: ".buildkite/commands/take-app-store-screenshots.sh 'iPad Pro 13-inch (M5)' '{{matrix}}'"
+    command: ".buildkite/commands/take-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack} 'iPad Pro 13-inch (M5)' '{{matrix}}'"
     matrix: *locales
     <<: *screenshots
 
   - label: "📸 iPhone Duo {{matrix}}"
     key: "screenshots_duo"
-    command: ".buildkite/commands/take-app-store-screenshots.sh 'iPhone Duo' '{{matrix}}'"
+    command: ".buildkite/commands/take-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack} 'iPhone Duo' '{{matrix}}'"
     matrix: *locales
     <<: *screenshots
 
   - label: "🖼️ Compose Screenshots"
-    command: ".buildkite/commands/compose-app-store-screenshots.sh"
+    command: ".buildkite/commands/compose-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack}"
     # Compose whatever was taken, so that one failed job doesn't hide all the others' screenshots.
     depends_on:
       - step: "screenshots_iphone"

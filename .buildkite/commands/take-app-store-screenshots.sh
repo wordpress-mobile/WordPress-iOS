@@ -1,12 +1,12 @@
 #!/bin/bash -eu
 
-# Takes the App Store screenshots of the app in SCREENSHOTS_APP (`jetpack` or `wordpress`) for one
-# device and one language, from the build the build step uploaded.
-# Usage: take-app-store-screenshots.sh DEVICE LOCALE
+# Takes an app's App Store screenshots, `jetpack` or `wordpress`, for one device and one language,
+# from the build the build step uploaded.
+# Usage: take-app-store-screenshots.sh APP DEVICE LOCALE
 
-DEVICE=${1:?Usage $0 DEVICE LOCALE}
-LOCALE=${2:?Usage $0 DEVICE LOCALE}
-APP=${SCREENSHOTS_APP:-jetpack}
+APP=${1:?Usage $0 APP DEVICE LOCALE}
+DEVICE=${2:?Usage $0 APP DEVICE LOCALE}
+LOCALE=${3:?Usage $0 APP DEVICE LOCALE}
 
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products-screenshots.tar
