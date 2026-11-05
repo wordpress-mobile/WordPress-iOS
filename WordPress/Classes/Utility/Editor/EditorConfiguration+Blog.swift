@@ -44,8 +44,6 @@ extension EditorConfiguration {
         let siteURL = blog.url.flatMap { URL(string: $0) } ?? URL(string: "https://example.com")!
         let siteApiRoot = siteApiRootString.flatMap { URL(string: $0) } ?? URL(string: "https://example.com/wp-json")!
 
-        // The editor assets endpoint is left unset: GutenbergKit builds it from `siteApiRoot` and
-        // `siteApiNamespace`, including the `?rest_route=` roots of sites using plain permalinks.
         self = EditorConfigurationBuilder(
             postType: postType,
             siteURL: siteURL,
