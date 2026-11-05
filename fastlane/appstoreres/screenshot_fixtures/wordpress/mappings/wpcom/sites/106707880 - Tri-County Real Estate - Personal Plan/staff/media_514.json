@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/media/514"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 514,
+      "date": "2025-04-18T16:45:00",
+      "date_gmt": "2025-04-18T16:45:00",
+      "guid": {
+        "rendered": "https://tricountyrealestate.files.wordpress.com/2025/03/daniel-whitfield.png",
+        "raw": "https://tricountyrealestate.files.wordpress.com/2025/03/daniel-whitfield.png"
+      },
+      "modified": "2025-04-18T16:45:00",
+      "modified_gmt": "2025-04-18T16:45:00",
+      "slug": "daniel-whitfield",
+      "status": "inherit",
+      "type": "attachment",
+      "link": "https://tricountyrealestate.wordpress.com/staff/daniel-whitfield/daniel-whitfield/",
+      "title": {
+        "raw": "Daniel Whitfield",
+        "rendered": "Daniel Whitfield"
+      },
+      "author": 742098,
+      "comment_status": "open",
+      "ping_status": "closed",
+      "template": "",
+      "meta": {},
+      "permalink_template": "https://tricountyrealestate.wordpress.com/?attachment_id=514",
+      "generated_slug": "daniel-whitfield",
+      "description": {
+        "raw": "",
+        "rendered": ""
+      },
+      "caption": {
+        "raw": "",
+        "rendered": ""
+      },
+      "alt_text": "Daniel Whitfield",
+      "password": "",
+      "media_type": "image",
+      "mime_type": "image/png",
+      "missing_image_sizes": [],
+      "post": 704,
+      "source_url": "https://tricountyrealestate.files.wordpress.com/2025/03/daniel-whitfield.png",
+      "media_details": {
+        "width": 600,
+        "height": 600,
+        "file": "2025/03/daniel-whitfield.png",
+        "sizes": {},
+        "image_meta": {}
+      }
+    }
+  }
+}

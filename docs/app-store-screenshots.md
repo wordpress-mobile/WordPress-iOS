@@ -12,13 +12,17 @@ Both apps use the same test, fixtures, devices and compositor. What differs:
 
 | | Jetpack | WordPress |
 |---|---|---|
-| Screens | Stats, Editor, Reader, Notifications | Editor, Posts, Media, My Site |
+| Screens | Stats, Editor, Reader, Notifications | Editor, Staff (a custom post type), Media, Pages |
 | Raw screenshots | `fastlane/jetpack_screenshots/` | `fastlane/wordpress_screenshots/` |
 | Headlines | `fastlane/appstoreres/jetpack_metadata/` | `fastlane/appstoreres/metadata/` |
 | Final screenshots | `fastlane/jetpack_promo_screenshots/` | `fastlane/promo_screenshots/` |
 | Title screen logo | WordPress and Jetpack | WordPress |
 
-The WordPress app leaves Stats, the Reader and Notifications to the Jetpack app, and shows a poster about it in their place, so its screenshots show what it does have. The fixtures answer the WordPress app's feature flags request the way WordPress.com does (`feature_flags_wordpress.json`), so it shows what its users see.
+The WordPress app leaves Stats, the Reader and Notifications to the Jetpack app, and shows a poster about it in their place, so its screenshots show what it does have.
+
+The WordPress screenshots load fixtures of their own over the UI tests' ones, from `fastlane/appstoreres/screenshot_fixtures/wordpress/`. They make the fixture site, Tri-County Real Estate, an Atomic site, since the app only shows custom post types on sites it reaches through the core REST API, and give it a Staff post type with four agents. The UI tests don't see any of it. An app's own fixtures are laid out like `Tests/JetpackUITests/Fixtures/mappings`, and replace any file there at the same path; their images go in the UI tests' `Fixtures/__files`, which is where `bodyFileName` is read from.
+
+The agents' headshots are placeholders for now: Gravatar's generated `retro` patterns, in `Fixtures/__files/images/staff/`.
 
 The examples below use the Jetpack lanes; the WordPress ones work the same way.
 
@@ -93,7 +97,7 @@ For each language with a translation, the lane writes a copy of every fixture fi
 - An entry of a few words or more is replaced wherever it appears, such as a paragraph inside a post. A shorter one, such as a post called "Home", only replaces a value that's exactly that, so it can't change a word inside other text. To translate a short heading inside HTML, include its tag in the entry, as `<strong>How to book</strong>` does.
 - Notifications mark names and post titles in their text. A translation has to keep each of those, exactly as it's translated on its own, or the lane stops and says which.
 
-To add content, find the screen's text in `Tests/JetpackUITests/Fixtures`, add it to `en.json` exactly as it is there, and add its translations.
+To add content, find the screen's text in `Tests/JetpackUITests/Fixtures` or an app's own screenshot fixtures, add it to `en.json` exactly as it is there, and add its translations.
 
 ### Changing what's on screen
 

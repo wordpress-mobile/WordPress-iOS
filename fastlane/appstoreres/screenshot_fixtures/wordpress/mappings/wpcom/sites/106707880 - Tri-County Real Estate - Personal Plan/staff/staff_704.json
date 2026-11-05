@@ -1,0 +1,49 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/staff/704"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 704,
+      "date": "2025-04-18T16:45:00",
+      "date_gmt": "2025-04-18T16:45:00",
+      "guid": {
+        "rendered": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=704",
+        "raw": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=704"
+      },
+      "modified": "2025-04-18T16:45:00",
+      "modified_gmt": "2025-04-18T16:45:00",
+      "slug": "daniel-whitfield",
+      "status": "publish",
+      "type": "staff",
+      "link": "https://tricountyrealestate.wordpress.com/staff/daniel-whitfield/",
+      "password": "",
+      "permalink_template": "https://tricountyrealestate.wordpress.com/staff/%pagename%/",
+      "generated_slug": "daniel-whitfield",
+      "title": {
+        "raw": "Daniel Whitfield",
+        "rendered": "Daniel Whitfield"
+      },
+      "content": {
+        "raw": "<!-- wp:paragraph -->\n<p>Daniel helps families moving to the area find the right neighborhood, school and commute. He grew up here, and knows every street by its coffee shop.</p>\n<!-- /wp:paragraph -->",
+        "rendered": "\n<p>Daniel helps families moving to the area find the right neighborhood, school and commute. He grew up here, and knows every street by its coffee shop.</p>\n",
+        "protected": false,
+        "block_version": 1
+      },
+      "excerpt": {
+        "raw": "",
+        "rendered": "<p>Daniel helps families moving to the area find the right neighborhood, school and commute. He grew up here, and knows every street by its coffee shop.</p>\n",
+        "protected": false
+      },
+      "author": 742098,
+      "featured_media": 514,
+      "comment_status": "closed",
+      "ping_status": "closed",
+      "template": "",
+      "meta": {},
+      "class_list": []
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/staff/701"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 701,
+      "date": "2025-03-04T09:12:00",
+      "date_gmt": "2025-03-04T09:12:00",
+      "guid": {
+        "rendered": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=701",
+        "raw": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=701"
+      },
+      "modified": "2025-03-04T09:12:00",
+      "modified_gmt": "2025-03-04T09:12:00",
+      "slug": "maya-okafor",
+      "status": "publish",
+      "type": "staff",
+      "link": "https://tricountyrealestate.wordpress.com/staff/maya-okafor/",
+      "password": "",
+      "permalink_template": "https://tricountyrealestate.wordpress.com/staff/%pagename%/",
+      "generated_slug": "maya-okafor",
+      "title": {
+        "raw": "Maya Okafor",
+        "rendered": "Maya Okafor"
+      },
+      "content": {
+        "raw": "<!-- wp:paragraph -->\n<p>Maya has led Tri-County Real Estate since 2014, and has helped more than 600 families buy and sell across the county. She still shows homes herself every weekend.</p>\n<!-- /wp:paragraph -->",
+        "rendered": "\n<p>Maya has led Tri-County Real Estate since 2014, and has helped more than 600 families buy and sell across the county. She still shows homes herself every weekend.</p>\n",
+        "protected": false,
+        "block_version": 1
+      },
+      "excerpt": {
+        "raw": "",
+        "rendered": "<p>Maya has led Tri-County Real Estate since 2014, and has helped more than 600 families buy and sell across the county. She still shows homes herself every weekend.</p>\n",
+        "protected": false
+      },
+      "author": 742098,
+      "featured_media": 511,
+      "comment_status": "closed",
+      "ping_status": "closed",
+      "template": "",
+      "meta": {},
+      "class_list": []
+    }
+  }
+}

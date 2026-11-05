@@ -58,6 +58,9 @@ end
 # - `promo`: where the composed screenshots go, for `deliver` to upload.
 # - `overview`: an image per locale and device of all its composed screenshots, for review.
 # - `logo`: drawn on the title screen.
+# - `fixtures`: fixtures only the app's screenshots load, over the UI tests' ones. Its `mappings` folder
+#   is laid out like theirs, and replaces any of their files at the same path. Images go in the UI
+#   tests' `__files`, since `bodyFileName` is read from there.
 SCREENSHOT_APPS = {
   'jetpack' => {
     name: 'Jetpack',
@@ -79,6 +82,8 @@ SCREENSHOT_APPS = {
     promo: WORDPRESS_PROMO_SCREENSHOTS_PATH,
     overview: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'wordpress_screenshots_overview'),
     logo: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppImages.xcassets', 'icon-wp-filled.imageset', 'icon-wp-filled.pdf'),
+    # The fixture site as an Atomic one, whose custom post types the app shows, with a Staff type.
+    fixtures: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'screenshot_fixtures', 'wordpress'),
     strings: screenshot_strings(4)
   }
 }.freeze
@@ -302,9 +307,9 @@ platform :ios do
           'TEST_RUNNER_SCREENSHOTS_OUTPUT_DIR' => settings[:raw],
           'TEST_RUNNER_SCREENSHOTS_LANGUAGE' => locale
         }
-        overlay = translated_fixtures(locale)
-        if overlay
-          environment['TEST_RUNNER_SCREENSHOTS_FIXTURES_OVERLAY'] = overlay
+        overlay = screenshot_fixtures(settings, locale)
+        environment['TEST_RUNNER_SCREENSHOTS_FIXTURES_OVERLAY'] = overlay if overlay
+        if File.exist?(File.join(SCREENSHOT_CONTENT_PATH, "#{locale}.json"))
           # The test finds the posts it opens by their titles, which are translated too.
           environment['TEST_RUNNER_SCREENSHOTS_CONTENT'] = File.join(SCREENSHOT_CONTENT_PATH, "#{locale}.json")
         end
@@ -408,19 +413,36 @@ platform :ios do
     false
   end
 
-  # Writes the fixtures with their content translated into `locale` to a temporary directory, and
-  # returns it, or nil when there's no translation of the content for that locale, which leaves it
-  # in English.
-  def translated_fixtures(locale)
+  # Writes the fixtures `app`'s screenshots in `locale` load over the UI tests' fixtures to a temporary
+  # directory, and returns it, or nil when there are none:
+  #
+  # - The app's own fixtures, from its `fixtures` folder, if it has one: content that's only in its
+  #   screenshots.
+  # - Every fixture with content to translate, translated into `locale`, when there's a translation of
+  #   the content for that locale. Without one, the content stays in English.
+  def screenshot_fixtures(settings, locale)
+    own = settings[:fixtures] if settings[:fixtures] && Dir.exist?(settings[:fixtures])
     translations = File.join(SCREENSHOT_CONTENT_PATH, "#{locale}.json")
-    return nil unless File.exist?(translations)
-
-    english = JSON.parse(File.read(File.join(SCREENSHOT_CONTENT_PATH, 'en.json')))
-    translated = JSON.parse(File.read(translations))
-    report_mismatched_content_keys(locale, english: english, translated: translated)
+    translated = JSON.parse(File.read(translations)) if File.exist?(translations)
+    return nil if own.nil? && translated.nil?
 
     overlay = Dir.mktmpdir("fixtures-#{locale}")
-    ScreenshotContentHelper.write_overlay(fixtures: UI_TEST_FIXTURES_PATH, english: english, translated: translated, output: overlay)
+    if translated
+      english = JSON.parse(File.read(File.join(SCREENSHOT_CONTENT_PATH, 'en.json')))
+      report_mismatched_content_keys(locale, english: english, translated: translated)
+      ScreenshotContentHelper.write_overlay(fixtures: UI_TEST_FIXTURES_PATH, english: english, translated: translated, output: overlay)
+    end
+    return overlay if own.nil?
+
+    # The app's own fixtures replace any UI test fixture at the same path, and are translated too.
+    FileUtils.mkdir_p(File.join(overlay, 'mappings'))
+    FileUtils.cp_r(File.join(own, 'mappings', '.'), File.join(overlay, 'mappings'))
+    if translated
+      Dir.mktmpdir('own-fixtures') do |own_translated|
+        ScreenshotContentHelper.write_overlay(fixtures: own, english: english, translated: translated, output: own_translated)
+        FileUtils.cp_r(File.join(own_translated, 'mappings', '.'), File.join(overlay, 'mappings')) if Dir.exist?(File.join(own_translated, 'mappings'))
+      end
+    end
     overlay
   end
 
