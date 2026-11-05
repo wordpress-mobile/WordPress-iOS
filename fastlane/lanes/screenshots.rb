@@ -420,6 +420,7 @@ platform :ios do
   #   screenshots.
   # - Every fixture with content to translate, translated into `locale`, when there's a translation of
   #   the content for that locale. Without one, the content stays in English.
+  # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def screenshot_fixtures(settings, locale)
     own = settings[:fixtures] if settings[:fixtures] && Dir.exist?(settings[:fixtures])
     translations = File.join(SCREENSHOT_CONTENT_PATH, "#{locale}.json")
@@ -477,6 +478,7 @@ platform :ios do
   #
   # Not every runtime runs every device: iOS 27.1 runs only the iPhone Duo, so creating an iPhone 18
   # Pro Max on it fails with "Incompatible device".
+  # rubocop:disable-next Metrics/AbcSize
   def newest_runtime(for:)
     device_type = binding.local_variable_get(:for)
     runtimes = JSON.parse(sh('xcrun', 'simctl', 'list', 'runtimes', 'available', '--json', log: false))['runtimes']
