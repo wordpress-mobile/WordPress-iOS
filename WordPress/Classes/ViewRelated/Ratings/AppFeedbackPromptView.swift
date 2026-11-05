@@ -11,6 +11,8 @@ class AppFeedbackPromptView: UIView {
     private let rightButton = RoundedButton()
     private let buttonStack = UIStackView()
     private var lastAvailableWidth: CGFloat?
+    /// Active while the buttons are stacked, so they span the same width as the text above them.
+    private var stackedWidthConstraints: [NSLayoutConstraint] = []
 
     // MARK: - UIView's Methods
 
@@ -126,12 +128,30 @@ class AppFeedbackPromptView: UIView {
 
         if buttonStack.axis != axis {
             buttonStack.axis = axis
+            updateLayout(for: axis)
             setNeedsLayout()
+        }
+    }
+
+    private func updateLayout(for axis: NSLayoutConstraint.Axis) {
+        let isStacked = axis == .vertical
+        for button in [leftButton, rightButton] {
+            button.verticalEdgeInset =
+                isStacked ? LayoutConstants.stackedButtonVerticalInset : LayoutConstants.buttonVerticalInset
+        }
+        if isStacked {
+            NSLayoutConstraint.activate(stackedWidthConstraints)
+        } else {
+            NSLayoutConstraint.deactivate(stackedWidthConstraints)
         }
     }
 
     func setupConstraints() {
         let safeArea = safeAreaLayoutGuide
+        stackedWidthConstraints = [
+            buttonStack.leadingAnchor.constraint(equalTo: label.leadingAnchor),
+            buttonStack.trailingAnchor.constraint(equalTo: label.trailingAnchor)
+        ]
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.basePadding),
             label.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -LayoutConstants.basePadding),
@@ -184,5 +204,7 @@ class AppFeedbackPromptView: UIView {
         // Lines the text up with the section titles in the list below.
         static let labelHorizontalPadding: CGFloat = 20.0
         static let buttonSpacing: CGFloat = 10.0
+        static let buttonVerticalInset: CGFloat = 5.0
+        static let stackedButtonVerticalInset: CGFloat = 12.0
     }
 }
