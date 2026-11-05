@@ -30,7 +30,8 @@ BETA_APP_DESCRIPTION_PATH_READER = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'r
 # from reading the build settings to pick a simulator, which takes about 30 s on CI.
 #
 # The unit tests ran about 50 s faster on `iPhone 17 Pro` (measured in #26298), but on the
-# `xcode-27.2` image that device exists only on the iOS 26.5 runtime, which can't boot it.
+# `xcode-27.2` image that device exists only on the iOS 26.5 runtime. There, launching the
+# WordPress test host crashed the simulator service (`Mach error -308 - (ipc/mig) server died`).
 CI_SIMULATOR_DEVICE = 'iPhone 18 Pro'
 CI_DEPLOYMENT_TARGET = XcconfigHelper.fetch(
   path: File.join(PROJECT_ROOT_FOLDER, 'Config', 'Common.xcconfig'),
