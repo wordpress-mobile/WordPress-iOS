@@ -23,10 +23,14 @@ class SiteCreationAnalyticsHelper {
     private static let previewModeKey = "preview_mode"
     private static let verticalSlugKey = "vertical_slug"
     private static let recommendedKey = "recommended"
+    private static let siteCreationFlowKey = "site_creation_flow"
 
     // MARK: - Lifecycle
-    static func trackSiteCreationAccessed(source: String) {
-        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+    static func trackSiteCreationAccessed(source: String, flow: SiteCreationFlow) {
+        WPAnalytics.track(
+            .enhancedSiteCreationAccessed,
+            withProperties: ["source": source, siteCreationFlowKey: flow.name]
+        )
     }
 
     // MARK: - Site Intent
@@ -96,8 +100,10 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSuccessLoading, withProperties: commonProperties(siteDesign))
     }
 
-    static func trackSiteCreationSuccess(_ siteDesign: RemoteSiteDesign?) {
-        WPAnalytics.track(.createdSite, withProperties: commonProperties(siteDesign))
+    static func trackSiteCreationSuccess(_ siteDesign: RemoteSiteDesign?, flow: SiteCreationFlow) {
+        var properties = commonProperties(siteDesign)
+        properties[siteCreationFlowKey] = flow.name
+        WPAnalytics.track(.createdSite, withProperties: properties)
     }
 
     static func trackSiteCreationSuccessPreviewViewed(_ siteDesign: RemoteSiteDesign?) {
