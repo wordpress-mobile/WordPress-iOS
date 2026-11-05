@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/infocusphotographers\\.files\\.wordpress\\.com)?/2019/05/camera\\-macro\\-optics\\-122400\\.jpg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/camera-macro-optics-122400.jpg"
+  }
+}

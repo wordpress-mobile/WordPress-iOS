@@ -1,10 +1,12 @@
-// Composes the Jetpack App Store screenshots from the raw screenshots the `AppStoreScreenshots` UI
-// test captures: a headline over a soft background, and the screenshot in a device frame.
+// Composes the App Store screenshots from the raw screenshots the `AppStoreScreenshots` UI test
+// captures: a headline over a soft background, and the screenshot in a device frame.
 //
-// Run by `bundle exec fastlane create_jetpack_promo_screenshots`, as:
+// Run by `bundle exec fastlane create_jetpack_promo_screenshots` and `create_promo_screenshots`, as:
 //
-//     xcrun swift compose.swift <raw screenshots> <headlines> <output> [<overview>]
+//     xcrun swift compose.swift [--logo <pdf>] <raw screenshots> <headlines> <output> [<overview>]
 //
+// - --logo is the PDF drawn above the title screen's headline: the app's logo. Without it, the
+//   title screen has the headline alone.
 // - <raw screenshots> has a folder per locale holding `<device>-<index>-<name>.png`.
 // - <headlines> has a folder per locale holding the headline strings (see `Headlines`). A locale
 //   without all of them is skipped, so the App Store shows the English screenshots there rather
@@ -604,10 +606,15 @@ struct RawScreenshot {
     }
 }
 
-let arguments = CommandLine.arguments
+var arguments = CommandLine.arguments
+var logoURL: URL?
+if let option = arguments.firstIndex(of: "--logo"), option + 1 < arguments.count {
+    logoURL = URL(filePath: arguments[option + 1])
+    arguments.removeSubrange(option...(option + 1))
+}
 guard (4...5).contains(arguments.count) else {
     FileHandle.standardError.write(
-        Data("Usage: compose.swift <raw screenshots> <headlines> <output> [<overview>]\n".utf8)
+        Data("Usage: compose.swift [--logo <pdf>] <raw screenshots> <headlines> <output> [<overview>]\n".utf8)
     )
     exit(64)
 }
@@ -617,14 +624,8 @@ let outputRoot = URL(filePath: arguments[3])
 let overviewRoot = arguments.count > 4 ? URL(filePath: arguments[4]) : nil
 let fileManager = FileManager.default
 
-// The WordPress and Jetpack logos, from the app's assets.
-let logoURL = URL(filePath: #filePath)
-    .deletingLastPathComponent()
-    .appending(
-        path: "../../Sources/Jetpack/Resources/Assets.xcassets/wp-jp-circular-lockup.imageset/wp-jp-circular-lockup.pdf"
-    )
-let logo = CGPDFDocument(logoURL as CFURL)?.page(at: 1)
-if logo == nil {
+let logo = logoURL.flatMap { CGPDFDocument($0 as CFURL)?.page(at: 1) }
+if let logoURL, logo == nil {
     print("Warning: couldn't load the logo from \(logoURL.standardized.path)")
 }
 

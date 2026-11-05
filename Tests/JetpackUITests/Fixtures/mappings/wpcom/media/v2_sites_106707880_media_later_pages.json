@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/wp/v2/sites/106707880/media",
+    "queryParameters": {
+      "page": {
+        "matches": "[2-9]|[1-9][0-9]+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": []
+  }
+}
