@@ -4,6 +4,10 @@
 # Takes the Jetpack App Store screenshots: one job per device and language, then one that composes
 # them. Start it with `bundle exec fastlane trigger_jetpack_screenshots`. See docs/app-store-screenshots.md.
 
+# Below everything else's default of 0, so that its 50-odd jobs only take Mac agents nothing else
+# is waiting for, and never hold up a PR or trunk build. (The release pipelines are at 1.)
+priority: -1
+
 agents:
   queue: mac
 env:
