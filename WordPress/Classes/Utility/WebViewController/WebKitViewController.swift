@@ -92,6 +92,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc var customTitle: String?
     @objc var displayStatusInNavigationBar = true
     private let opensNewInSafari: Bool
+    private let ignoresSafeArea: Bool
     let linkBehavior: LinkBehavior
 
     private var reachabilityObserver: Any?
@@ -126,6 +127,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationDelegate = configuration.navigationDelegate
         linkBehavior = configuration.linkBehavior
         opensNewInSafari = configuration.opensNewInSafari
+        ignoresSafeArea = configuration.ignoresSafeArea
         onClose = configuration.onClose
         analyticsSource = configuration.analyticsSource
         displayStatusInNavigationBar = configuration.displayStatusInNavigationBar
@@ -146,6 +148,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationDelegate = parent.navigationDelegate
         linkBehavior = parent.linkBehavior
         opensNewInSafari = parent.opensNewInSafari
+        ignoresSafeArea = parent.ignoresSafeArea
         analyticsSource = source
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
@@ -175,10 +178,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         view.backgroundColor = UIColor(light: UIAppColor.gray(.shade0), dark: .systemBackground)
 
-        let stackView = UIStackView(arrangedSubviews: [
-            progressView,
-            webView
-        ])
+        let stackView = UIStackView(arrangedSubviews: ignoresSafeArea ? [webView] : [progressView, webView])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
@@ -193,16 +193,36 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         NSLayoutConstraint.activate(edgeConstraints)
 
-        // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) then center the horizontal constraints vertically
         let safeArea = self.view.safeAreaLayoutGuide
 
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
 
-        // this constraint saved as a variable so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
-        let stackViewBottom = stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
-        stackViewBottomAnchor = stackViewBottom
-        NSLayoutConstraint.activate([stackViewBottom])
+        if ignoresSafeArea {
+            // The web view covers the screen, so the page scrolls under the bars rather than stopping at
+            // them. Its scroll view still insets the page's own content, so nothing is hidden behind them.
+            NSLayoutConstraint.activate([
+                stackView.topAnchor.constraint(equalTo: view.topAnchor),
+                stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+
+            // The progress bar isn't part of the stack here: at the top of the screen it would sit behind
+            // the navigation bar, where there's nothing to see.
+            progressView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(progressView)
+            NSLayoutConstraint.activate([
+                progressView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+                progressView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                progressView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            ])
+        } else {
+            // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) then center the horizontal constraints vertically
+            stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+
+            // this constraint saved as a variable so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
+            let stackViewBottom = stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            stackViewBottomAnchor = stackViewBottom
+            NSLayoutConstraint.activate([stackViewBottom])
+        }
 
         let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
         stackWidthConstraint.priority = UILayoutPriority.defaultLow
