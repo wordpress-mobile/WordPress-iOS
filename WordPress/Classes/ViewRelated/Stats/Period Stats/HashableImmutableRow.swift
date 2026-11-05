@@ -27,14 +27,10 @@ extension StatsHashableImmuTableRow {
 
 // MARK: - Helpers
 
-struct AnyHashableSectionWithRows: Hashable {
-    let rows: [AnyHashableImmuTableRow]
-}
-
 extension ImmuTableDiffableDataSourceSnapshot {
     mutating func addSection(_ rows: [any HashableImmutableRow]) {
         let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
-        let section = AnyHashableSectionWithRows(rows: rows)
+        let section = ImmuTableDiffableSectionID.rows(rows)
         appendSections([section])
         appendItems(rows, toSection: section)
     }
@@ -42,7 +38,7 @@ extension ImmuTableDiffableDataSourceSnapshot {
     static func singleSectionSnapshot(_ rows: [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
         var snapshot = ImmuTableDiffableDataSourceSnapshot()
         let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
-        let section = AnyHashableSectionWithRows(rows: rows)
+        let section = ImmuTableDiffableSectionID.rows(rows)
         snapshot.appendSections([section])
         snapshot.appendItems(rows, toSection: section)
         return snapshot
@@ -52,7 +48,7 @@ extension ImmuTableDiffableDataSourceSnapshot {
         var snapshot = ImmuTableDiffableDataSourceSnapshot()
         let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
         for row in rows {
-            let section = AnyHashableSectionWithRows(rows: [row])
+            let section = ImmuTableDiffableSectionID.rows([row])
             snapshot.appendSections([section])
             snapshot.appendItems([row], toSection: section)
         }
