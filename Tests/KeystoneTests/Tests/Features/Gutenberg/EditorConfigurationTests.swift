@@ -69,7 +69,10 @@ struct EditorConfigurationTests {
         let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "YXRvbWljdXNlcjp0ZXN0LWFwcC1wYXNzd29yZC0xMjM0" // Base64 encoding of "atomicuser:test-app-password-1234"
 
-        #expect(config.siteApiRoot == URL(string: "https://67890.example.com/wp-json/")!, "Should use self-hosted API URL")
+        #expect(
+            config.siteApiRoot == URL(string: "https://67890.example.com/wp-json/")!,
+            "Should use self-hosted API URL"
+        )
         #expect(config.authHeader == "Basic \(base64Credentials)", "Should use Basic authentication")
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
     }
@@ -90,7 +93,10 @@ struct EditorConfigurationTests {
         let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "c2VsZmhvc3RlZHVzZXI6dGVzdC1hcHAtcGFzc3dvcmQtMTIzNA==" // Base64 encoding of "selfhosteduser:test-app-password-1234"
 
-        #expect(config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/")!, "Should use self-hosted API URL")
+        #expect(
+            config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/")!,
+            "Should use self-hosted API URL"
+        )
         #expect(config.authHeader == "Basic \(base64Credentials)", "Should use Basic authentication")
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
     }
@@ -134,5 +140,29 @@ struct EditorConfigurationTests {
         #expect(config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/"), "Should use self-hosted API URL")
         #expect(config.authHeader == "Basic \(base64Credentials)", "Should use Basic authentication")
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
+    }
+
+    // MARK: - Editor Assets Endpoint
+
+    /// GutenbergKit builds the endpoint from the API root and namespace. An endpoint set here
+    /// overrides that, and a hand-built one broke sites using plain permalinks, whose root is
+    /// the query form `?rest_route=/`.
+    @Test("Editor assets endpoint is left for GutenbergKit to build")
+    func editorAssetsEndpointIsUnset() async throws {
+        let context = self.context
+
+        let blog = BlogBuilder(context)
+            .with(atomic: false)
+            .isNotHostedAtWPcom()
+            .with(username: "selfhosteduser")
+            .with(url: "https://self-hosted.org")
+            .withApplicationPassword("test-app-password-1234", using: keychain)
+            .with(restApiRootURL: "https://self-hosted.org/?rest_route=/")
+            .build()
+
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
+
+        #expect(config.siteApiRoot == URL(string: "https://self-hosted.org/?rest_route=/"))
+        #expect(config.editorAssetsEndpoint == nil, "Should not override GutenbergKit's endpoint")
     }
 }
