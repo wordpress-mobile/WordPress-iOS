@@ -1,1 +1,1 @@
-Posts.
+Custom post types.

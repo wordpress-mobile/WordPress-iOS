@@ -1,0 +1,89 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/types/staff"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "capabilities": {
+        "edit_post": "edit_post",
+        "read_post": "read_post",
+        "delete_post": "delete_post",
+        "edit_posts": "edit_posts",
+        "edit_others_posts": "edit_others_posts",
+        "delete_posts": "delete_posts",
+        "publish_posts": "publish_posts",
+        "read_private_posts": "read_private_posts",
+        "read": "read",
+        "delete_private_posts": "delete_private_posts",
+        "delete_published_posts": "delete_published_posts",
+        "delete_others_posts": "delete_others_posts",
+        "edit_private_posts": "edit_private_posts",
+        "edit_published_posts": "edit_published_posts",
+        "create_posts": "edit_posts"
+      },
+      "description": "",
+      "hierarchical": false,
+      "has_archive": false,
+      "visibility": {
+        "show_in_nav_menus": true,
+        "show_ui": true
+      },
+      "viewable": true,
+      "labels": {
+        "name": "Staff",
+        "singular_name": "Staff Member",
+        "add_new": "Add New",
+        "add_new_item": "Add New Staff Member",
+        "edit_item": "Edit Staff Member",
+        "new_item": "New Staff Member",
+        "view_item": "View Staff Member",
+        "view_items": "View Staff",
+        "search_items": "Search Staff",
+        "not_found": "No staff found.",
+        "not_found_in_trash": "No staff found in Trash.",
+        "parent_item_colon": null,
+        "all_items": "All Staff",
+        "archives": "Staff Member Archives",
+        "attributes": "Staff Member Attributes",
+        "insert_into_item": "Insert into staff member",
+        "uploaded_to_this_item": "Uploaded to this staff member",
+        "featured_image": "Featured image",
+        "set_featured_image": "Set featured image",
+        "remove_featured_image": "Remove featured image",
+        "use_featured_image": "Use as featured image",
+        "filter_items_list": "Filter staff list",
+        "filter_by_date": "Filter by date",
+        "items_list_navigation": "Staff list navigation",
+        "items_list": "Staff list",
+        "item_published": "Staff Member published.",
+        "item_published_privately": "Staff Member published privately.",
+        "item_reverted_to_draft": "Staff Member reverted to draft.",
+        "item_trashed": "Staff Member trashed.",
+        "item_scheduled": "Staff Member scheduled.",
+        "item_updated": "Staff Member updated.",
+        "item_link": "Staff Member Link",
+        "item_link_description": "A link to a staff member.",
+        "menu_name": "Staff",
+        "name_admin_bar": "Staff Member",
+        "template_name": "Single item: Staff Member"
+      },
+      "name": "Staff",
+      "slug": "staff",
+      "icon": "dashicons-groups",
+      "supports": {
+        "title": true,
+        "editor": true,
+        "thumbnail": true,
+        "excerpt": true,
+        "revisions": true
+      },
+      "taxonomies": [],
+      "rest_base": "staff",
+      "rest_namespace": "wp/v2",
+      "template": [],
+      "template_lock": false
+    }
+  }
+}

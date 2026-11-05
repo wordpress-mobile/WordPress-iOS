@@ -1,1 +1,1 @@
-Posts.
+Tipos de post personalizados.

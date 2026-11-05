@@ -1,0 +1,176 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/staff"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "X-WP-Total": "4",
+      "X-WP-TotalPages": "1"
+    },
+    "jsonBody": [
+      {
+        "id": 701,
+        "date": "2025-03-04T09:12:00",
+        "date_gmt": "2025-03-04T09:12:00",
+        "guid": {
+          "rendered": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=701",
+          "raw": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=701"
+        },
+        "modified": "2025-03-04T09:12:00",
+        "modified_gmt": "2025-03-04T09:12:00",
+        "slug": "maya-okafor",
+        "status": "publish",
+        "type": "staff",
+        "link": "https://tricountyrealestate.wordpress.com/staff/maya-okafor/",
+        "password": "",
+        "permalink_template": "https://tricountyrealestate.wordpress.com/staff/%pagename%/",
+        "generated_slug": "maya-okafor",
+        "title": {
+          "raw": "Maya Okafor",
+          "rendered": "Maya Okafor"
+        },
+        "content": {
+          "raw": "<!-- wp:paragraph -->\n<p>Maya has led Tri-County Real Estate since 2014, and has helped more than 600 families buy and sell across the county. She still shows homes herself every weekend.</p>\n<!-- /wp:paragraph -->",
+          "rendered": "\n<p>Maya has led Tri-County Real Estate since 2014, and has helped more than 600 families buy and sell across the county. She still shows homes herself every weekend.</p>\n",
+          "protected": false,
+          "block_version": 1
+        },
+        "excerpt": {
+          "raw": "",
+          "rendered": "<p>Maya has led Tri-County Real Estate since 2014, and has helped more than 600 families buy and sell across the county. She still shows homes herself every weekend.</p>\n",
+          "protected": false
+        },
+        "author": 742098,
+        "featured_media": 511,
+        "comment_status": "closed",
+        "ping_status": "closed",
+        "template": "",
+        "meta": {},
+        "class_list": []
+      },
+      {
+        "id": 702,
+        "date": "2025-03-11T14:30:00",
+        "date_gmt": "2025-03-11T14:30:00",
+        "guid": {
+          "rendered": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=702",
+          "raw": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=702"
+        },
+        "modified": "2025-03-11T14:30:00",
+        "modified_gmt": "2025-03-11T14:30:00",
+        "slug": "tomas-lindqvist",
+        "status": "publish",
+        "type": "staff",
+        "link": "https://tricountyrealestate.wordpress.com/staff/tomas-lindqvist/",
+        "password": "",
+        "permalink_template": "https://tricountyrealestate.wordpress.com/staff/%pagename%/",
+        "generated_slug": "tomas-lindqvist",
+        "title": {
+          "raw": "Tomás Lindqvist",
+          "rendered": "Tomás Lindqvist"
+        },
+        "content": {
+          "raw": "<!-- wp:paragraph -->\n<p>Tomás works with first-time buyers, from the first viewing to the keys. Before joining us he was a mortgage advisor, so no question about rates scares him.</p>\n<!-- /wp:paragraph -->",
+          "rendered": "\n<p>Tomás works with first-time buyers, from the first viewing to the keys. Before joining us he was a mortgage advisor, so no question about rates scares him.</p>\n",
+          "protected": false,
+          "block_version": 1
+        },
+        "excerpt": {
+          "raw": "",
+          "rendered": "<p>Tomás works with first-time buyers, from the first viewing to the keys. Before joining us he was a mortgage advisor, so no question about rates scares him.</p>\n",
+          "protected": false
+        },
+        "author": 742098,
+        "featured_media": 512,
+        "comment_status": "closed",
+        "ping_status": "closed",
+        "template": "",
+        "meta": {},
+        "class_list": []
+      },
+      {
+        "id": 703,
+        "date": "2025-04-02T10:05:00",
+        "date_gmt": "2025-04-02T10:05:00",
+        "guid": {
+          "rendered": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=703",
+          "raw": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=703"
+        },
+        "modified": "2025-04-02T10:05:00",
+        "modified_gmt": "2025-04-02T10:05:00",
+        "slug": "priya-raman",
+        "status": "publish",
+        "type": "staff",
+        "link": "https://tricountyrealestate.wordpress.com/staff/priya-raman/",
+        "password": "",
+        "permalink_template": "https://tricountyrealestate.wordpress.com/staff/%pagename%/",
+        "generated_slug": "priya-raman",
+        "title": {
+          "raw": "Priya Raman",
+          "rendered": "Priya Raman"
+        },
+        "content": {
+          "raw": "<!-- wp:paragraph -->\n<p>Priya prices and markets our listings, and stages many of them herself. Her homes sell in 21 days on average, a week faster than the county's.</p>\n<!-- /wp:paragraph -->",
+          "rendered": "\n<p>Priya prices and markets our listings, and stages many of them herself. Her homes sell in 21 days on average, a week faster than the county's.</p>\n",
+          "protected": false,
+          "block_version": 1
+        },
+        "excerpt": {
+          "raw": "",
+          "rendered": "<p>Priya prices and markets our listings, and stages many of them herself. Her homes sell in 21 days on average, a week faster than the county's.</p>\n",
+          "protected": false
+        },
+        "author": 742098,
+        "featured_media": 513,
+        "comment_status": "closed",
+        "ping_status": "closed",
+        "template": "",
+        "meta": {},
+        "class_list": []
+      },
+      {
+        "id": 704,
+        "date": "2025-04-18T16:45:00",
+        "date_gmt": "2025-04-18T16:45:00",
+        "guid": {
+          "rendered": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=704",
+          "raw": "https://tricountyrealestate.wordpress.com/?post_type=staff&p=704"
+        },
+        "modified": "2025-04-18T16:45:00",
+        "modified_gmt": "2025-04-18T16:45:00",
+        "slug": "daniel-whitfield",
+        "status": "publish",
+        "type": "staff",
+        "link": "https://tricountyrealestate.wordpress.com/staff/daniel-whitfield/",
+        "password": "",
+        "permalink_template": "https://tricountyrealestate.wordpress.com/staff/%pagename%/",
+        "generated_slug": "daniel-whitfield",
+        "title": {
+          "raw": "Daniel Whitfield",
+          "rendered": "Daniel Whitfield"
+        },
+        "content": {
+          "raw": "<!-- wp:paragraph -->\n<p>Daniel helps families moving to the area find the right neighborhood, school and commute. He grew up here, and knows every street by its coffee shop.</p>\n<!-- /wp:paragraph -->",
+          "rendered": "\n<p>Daniel helps families moving to the area find the right neighborhood, school and commute. He grew up here, and knows every street by its coffee shop.</p>\n",
+          "protected": false,
+          "block_version": 1
+        },
+        "excerpt": {
+          "raw": "",
+          "rendered": "<p>Daniel helps families moving to the area find the right neighborhood, school and commute. He grew up here, and knows every street by its coffee shop.</p>\n",
+          "protected": false
+        },
+        "author": 742098,
+        "featured_media": 514,
+        "comment_status": "closed",
+        "ping_status": "closed",
+        "template": "",
+        "meta": {},
+        "class_list": []
+      }
+    ]
+  }
+}

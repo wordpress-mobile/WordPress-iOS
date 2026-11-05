@@ -26,6 +26,14 @@ final class AppStoreScreenshots: JetpackUITestCase {
         configuration.content["editor.title"] ?? "Book Your Summer Sessions"
     }
 
+    /// The WordPress screenshots' custom post type, by its name in the screenshot's language.
+    private var staffTypeName: String {
+        configuration.content["wordpress.staff.typeName"] ?? "Staff"
+    }
+
+    /// The first of the Staff posts, by its title, a name, which isn't translated.
+    private let firstStaffMember = "Maya Okafor"
+
     /// The Reader post the screenshot opens, by its title in the screenshot's language.
     private var readerPostTitle: String {
         configuration.content["reader.title"] ?? "How to Collect Email Addresses with Gated Content on WordPress Sites"
@@ -83,8 +91,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try mySite.tap(app.cells[isPad ? "Blog Post Row" : "quick_actions_posts"])
         let posts = app.tables["PostsTable"]
         try mySite.waitFor(posts)
-        try mySite.select(tab: posts.buttons["drafts"].firstMatch)
-        try mySite.tap(posts.staticTexts[draftTitle].firstMatch)
+        try openDraft(in: posts, from: mySite)
         let editor = try EditorScreen(app: app)
         try save(2, "Editor")
         if configuration.innerDisplayRequests == nil {
@@ -126,11 +133,15 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try save(4, "Notifications")
     }
 
-    /// The WordPress app's screenshots: the editor, posts, media and My Site.
+    /// The WordPress app's screenshots: the editor, a custom post type, media and pages.
     ///
     /// The WordPress app leaves Stats, the Reader and Notifications to the Jetpack app, and shows a
     /// poster about it in their place, so its screenshots show what it has instead. Its My Site has
     /// no quick actions, so it opens everything from the site's menu, on an iPhone as on an iPad.
+    ///
+    /// The custom post type, Staff, is in the WordPress screenshots' own fixtures, which also make the
+    /// site an Atomic one: the app only shows custom post types on sites it reaches with the core
+    /// REST API.
     private func captureWordPressScreenshots(isPad: Bool) throws {
         var mySite = try openMySite(isPad: isPad)
 
@@ -138,22 +149,20 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try mySite.tap(app.cells["Blog Post Row"])
         let posts = app.tables["PostsTable"]
         try mySite.waitFor(posts)
-        try mySite.select(tab: posts.buttons["drafts"].firstMatch)
-        try mySite.tap(posts.staticTexts[draftTitle].firstMatch)
+        try openDraft(in: posts, from: mySite)
         let editor = try EditorScreen(app: app)
         try save(1, "Editor")
         if configuration.innerDisplayRequests == nil {
             editor.close()
+            mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
         } else {
             mySite = try returnToMySite(from: mySite, goingBack: false) ?? mySite
-            try mySite.tap(app.cells["Blog Post Row"])
-            try mySite.waitFor(posts)
         }
 
-        // 2. Posts: the published ones, with their featured images.
-        try mySite.select(tab: posts.buttons["published"].firstMatch)
-        try mySite.waitFor(posts.cells.firstMatch)
-        try save(2, "Posts")
+        // 2. Staff, a custom post type: its rows have no identifier, so it's found by its name.
+        try mySite.tap(app.cells.containing(.staticText, identifier: staffTypeName).firstMatch)
+        try mySite.waitFor(app.staticTexts[firstStaffMember].firstMatch)
+        try save(2, "Staff")
         mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
 
         // 3. Media.
@@ -163,12 +172,32 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try save(3, "Media")
         mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
 
-        // 4. My Site, the site's menu. On an iPad the menu is always beside the last screen, so this
-        // goes back to the site's home first.
-        if isPad {
-            try mySite.tap(app.cells["Home Row"])
+        // 4. Pages: the published ones.
+        try mySite.tap(app.cells["Site Pages Row"])
+        let pages = app.tables["PagesTable"]
+        try mySite.waitFor(pages)
+        try mySite.select(tab: pages.buttons["published"].firstMatch)
+        try mySite.waitFor(pages.cells.firstMatch)
+        try save(4, "Pages")
+    }
+
+    /// Opens the draft the editor screenshot shows, from the posts list.
+    ///
+    /// The list opens on its published posts. Switching to drafts while those are still loading can
+    /// leave the drafts tab empty, without ever asking for drafts, so this waits for the published
+    /// posts first, and switches tabs again if the drafts still don't come.
+    private func openDraft(in posts: XCUIElement, from screen: ScreenObject) throws {
+        _ = posts.cells.firstMatch.pollForExistence(timeout: 30)
+        let draft = posts.staticTexts[draftTitle].firstMatch
+        for _ in 0..<3 {
+            try screen.select(tab: posts.buttons["drafts"].firstMatch)
+            if draft.pollForExistence(timeout: 15) {
+                try screen.tap(draft)
+                return
+            }
+            try screen.select(tab: posts.buttons["published"].firstMatch)
         }
-        try save(4, "MySite")
+        throw ScreenObject.ElementNotReachedError(element: "\(draft)", expectation: "did not appear")
     }
 
     /// Returns to My Site after a screenshot.

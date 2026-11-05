@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/tricountyrealestate\\.files\\.wordpress\\.com)?/2025/03/tomas-lindqvist\\.png"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/staff/tomas-lindqvist.png"
+  }
+}

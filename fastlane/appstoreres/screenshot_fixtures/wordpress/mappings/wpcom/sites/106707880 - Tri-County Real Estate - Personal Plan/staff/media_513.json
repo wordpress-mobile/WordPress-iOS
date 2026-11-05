@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/media/513"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 513,
+      "date": "2025-04-02T10:05:00",
+      "date_gmt": "2025-04-02T10:05:00",
+      "guid": {
+        "rendered": "https://tricountyrealestate.files.wordpress.com/2025/03/priya-raman.png",
+        "raw": "https://tricountyrealestate.files.wordpress.com/2025/03/priya-raman.png"
+      },
+      "modified": "2025-04-02T10:05:00",
+      "modified_gmt": "2025-04-02T10:05:00",
+      "slug": "priya-raman",
+      "status": "inherit",
+      "type": "attachment",
+      "link": "https://tricountyrealestate.wordpress.com/staff/priya-raman/priya-raman/",
+      "title": {
+        "raw": "Priya Raman",
+        "rendered": "Priya Raman"
+      },
+      "author": 742098,
+      "comment_status": "open",
+      "ping_status": "closed",
+      "template": "",
+      "meta": {},
+      "permalink_template": "https://tricountyrealestate.wordpress.com/?attachment_id=513",
+      "generated_slug": "priya-raman",
+      "description": {
+        "raw": "",
+        "rendered": ""
+      },
+      "caption": {
+        "raw": "",
+        "rendered": ""
+      },
+      "alt_text": "Priya Raman",
+      "password": "",
+      "media_type": "image",
+      "mime_type": "image/png",
+      "missing_image_sizes": [],
+      "post": 703,
+      "source_url": "https://tricountyrealestate.files.wordpress.com/2025/03/priya-raman.png",
+      "media_details": {
+        "width": 600,
+        "height": 600,
+        "file": "2025/03/priya-raman.png",
+        "sizes": {},
+        "image_meta": {}
+      }
+    }
+  }
+}
