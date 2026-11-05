@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 ---
 
-# Takes the Jetpack App Store screenshots: one job per device and language, then one that composes
-# them. Start it with `bundle exec fastlane trigger_jetpack_screenshots`. See docs/app-store-screenshots.md.
+# Takes an app's App Store screenshots: one job per device and language, then one that composes
+# them. The app is SCREENSHOTS_APP, `jetpack` or `wordpress`. Start it with
+# `bundle exec fastlane trigger_app_store_screenshots app:<app>`. See docs/app-store-screenshots.md.
 
 # Below everything else's default of 0, so that its 50-odd jobs only take Mac agents nothing else
 # is waiting for, and never hold up a PR or trunk build. (The release pipelines are at 1.)
@@ -14,8 +15,11 @@ env:
   # The iPhone Duo's screenshots need an app built with the iOS 27.1 SDK: built with an older one,
   # the app runs letterboxed on the Duo's outer display.
   IMAGE_ID: xcode-27.1
+  # Interpolated into the steps below when the pipeline is uploaded.
+  SCREENSHOTS_APP: ${SCREENSHOTS_APP:-jetpack}
 
-# The App Store languages the screenshots are taken in: the folders in fastlane/appstoreres/jetpack_metadata.
+# The App Store languages the screenshots are taken in: the ones with headlines in
+# fastlane/appstoreres/jetpack_metadata and fastlane/appstoreres/metadata.
 x-locales: &locales
   - "ar-SA"
   - "de-DE"
@@ -38,11 +42,11 @@ x-locales: &locales
 # A step per device, because a matrix can make at most 50 jobs and three devices in 17 languages
 # would be 51.
 x-screenshots: &screenshots
-  depends_on: "build_jetpack"
+  depends_on: "build"
   plugins: [$CI_TOOLKIT_PLUGIN]
   timeout_in_minutes: 30
   artifact_paths:
-    - "fastlane/jetpack_screenshots/**/*.png"
+    - "fastlane/${SCREENSHOTS_APP:-jetpack}_screenshots/**/*.png"
     - "build/results/screenshots/*.log"
   retry:
     automatic:
@@ -50,9 +54,9 @@ x-screenshots: &screenshots
         limit: 1
 
 steps:
-  - label: "🛠 :jetpack: Build for Screenshots"
-    key: "build_jetpack"
-    command: ".buildkite/commands/build-for-testing.sh jetpack http_fixtures:true"
+  - label: "🛠 Build ${SCREENSHOTS_APP:-jetpack} for Screenshots"
+    key: "build"
+    command: ".buildkite/commands/build-for-app-store-screenshots.sh"
     plugins: [$CI_TOOLKIT_PLUGIN]
 
   - label: "📸 iPhone 18 Pro Max {{matrix}}"
@@ -85,5 +89,5 @@ steps:
         allow_failure: true
     plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
-      - "fastlane/jetpack_promo_screenshots.zip"
-      - "fastlane/jetpack_screenshots_overview/*.png"
+      - "fastlane/${SCREENSHOTS_APP:-jetpack}_promo_screenshots.zip"
+      - "fastlane/${SCREENSHOTS_APP:-jetpack}_screenshots_overview/*.png"

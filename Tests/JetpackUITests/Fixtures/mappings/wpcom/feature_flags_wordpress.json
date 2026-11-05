@@ -1,0 +1,30 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPath": "/wpcom/v2/mobile/feature-flags",
+    "queryParameters": {
+      "identifier": {
+        "equalTo": "org.wordpress"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "dashboard_card_activity_log": true,
+      "dashboard_card_domain": false,
+      "dashboard_card_free_to_paid_plans": true,
+      "dashboard_card_pages": true,
+      "jp_removal_one": true,
+      "jp_removal_two": true,
+      "jp_removal_three": true,
+      "jp_removal_four": false,
+      "jp_removal_static_posters": true,
+      "jp_removal_new_users": false,
+      "jp_removal_self_hosted": true,
+      "stats_traffic_subscribers_tabs": true,
+      "wordpress_ios_reader": false
+    }
+  }
+}

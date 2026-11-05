@@ -312,12 +312,6 @@ platform :ios do
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
 
-    # Translator comments for App Store metadata
-    screenshot_comment = <<~COMMENT.chomp
-      translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
-      No specified characters limit here, but try to keep as short as the source one.
-    COMMENT
-
     standard_whats_new_comment = "translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed."
 
     files = {
@@ -354,11 +348,8 @@ platform :ios do
           It's in a haiku format and may be more difficult to translate; maybe come up with something equally awesome in haiku.
         COMMENT
       },
-      **(1..7).to_h do |i|
-        [
-          "app_store_screenshot-#{i}",
-          { path: File.join(custom_metadata_folder, "promo_screenshot_#{i}.txt"), comment: screenshot_comment }
-        ]
+      **WORDPRESS_SCREENSHOT_STRINGS.to_h do |key, file|
+        [key, { path: File.join(custom_metadata_folder, file), comment: screenshot_comment(key, logo: 'the WordPress logo') }]
       end
     }
 
@@ -401,7 +392,7 @@ platform :ios do
         COMMENT
       },
       **JETPACK_SCREENSHOT_STRINGS.to_h do |key, file|
-        [key, { path: File.join(custom_metadata_folder, file), comment: jetpack_screenshot_comment(key) }]
+        [key, { path: File.join(custom_metadata_folder, file), comment: screenshot_comment(key, logo: 'the WordPress and Jetpack logos') }]
       end
     }
 
@@ -636,12 +627,14 @@ platform :ios do
     )
   end
 
-  # The translator comment for a string drawn on the Jetpack App Store screenshots.
-  def jetpack_screenshot_comment(key)
+  # The translator comment for a string drawn on the App Store screenshots.
+  #
+  # @param [String] logo What the title screen shows beside its headline.
+  def screenshot_comment(key, logo:)
     case key
     when 'screenshot-title'
       <<~COMMENT.chomp
-        translators: The headline of the first App Store screenshot, drawn in large type beside the WordPress and Jetpack logos.
+        translators: The headline of the first App Store screenshot, drawn in large type beside #{logo}.
         Keep it short: it's set on up to three lines, and a long translation is set smaller.
       COMMENT
     when /-feature$/
