@@ -69,7 +69,10 @@ struct EditorConfigurationTests {
         let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "YXRvbWljdXNlcjp0ZXN0LWFwcC1wYXNzd29yZC0xMjM0" // Base64 encoding of "atomicuser:test-app-password-1234"
 
-        #expect(config.siteApiRoot == URL(string: "https://67890.example.com/wp-json/")!, "Should use self-hosted API URL")
+        #expect(
+            config.siteApiRoot == URL(string: "https://67890.example.com/wp-json/")!,
+            "Should use self-hosted API URL"
+        )
         #expect(config.authHeader == "Basic \(base64Credentials)", "Should use Basic authentication")
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
     }
@@ -90,7 +93,10 @@ struct EditorConfigurationTests {
         let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "c2VsZmhvc3RlZHVzZXI6dGVzdC1hcHAtcGFzc3dvcmQtMTIzNA==" // Base64 encoding of "selfhosteduser:test-app-password-1234"
 
-        #expect(config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/")!, "Should use self-hosted API URL")
+        #expect(
+            config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/")!,
+            "Should use self-hosted API URL"
+        )
         #expect(config.authHeader == "Basic \(base64Credentials)", "Should use Basic authentication")
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
     }
