@@ -94,12 +94,9 @@ final class AppStoreScreenshots: JetpackUITestCase {
         let posts = app.tables["PostsTable"]
         try mySite.waitFor(posts)
         try openDraft(in: posts, from: mySite)
-        let editor = try EditorScreen(app: app)
+        _ = try EditorScreen(app: app)
         try save(2, "Editor")
-        if configuration.innerDisplayRequests == nil {
-            editor.close()
-        }
-        mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
+        mySite = try relaunch(isPad: isPad)
 
         // 3. Reader. `ReaderScreen` waits for its menu to be hittable as a whole, which it isn't
         // beside the iPad's stream, or beside the iPhone Duo's side strip, so this taps the row.
@@ -152,14 +149,9 @@ final class AppStoreScreenshots: JetpackUITestCase {
         let posts = app.tables["PostsTable"]
         try mySite.waitFor(posts)
         try openDraft(in: posts, from: mySite)
-        let editor = try EditorScreen(app: app)
+        _ = try EditorScreen(app: app)
         try save(1, "Editor")
-        if configuration.innerDisplayRequests == nil {
-            editor.close()
-            mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
-        } else {
-            mySite = try returnToMySite(from: mySite, goingBack: false) ?? mySite
-        }
+        mySite = try relaunch(isPad: isPad)
 
         // 2. Staff, a custom post type: its rows have no identifier, so it's found by its name.
         try mySite.tap(app.cells.containing(.staticText, identifier: staffTypeName).firstMatch)
@@ -213,15 +205,25 @@ final class AppStoreScreenshots: JetpackUITestCase {
     ///   always beside the screen, and the screen replaces My Site rather than covering it.
     private func returnToMySite(from screen: ScreenObject, goingBack: Bool) throws -> MySiteScreen? {
         if configuration.innerDisplayRequests != nil {
-            app.terminate()
-            app.launchArguments.removeAll { $0 == "-ui-test-reset-everything" }
-            app.launch()
+            return try relaunch(isPad: false)
         } else if goingBack {
             try goBack(from: screen)
         } else {
             return nil
         }
         return try MySiteScreen(app: app)
+    }
+
+    /// Relaunches the app, still signed in, and returns to My Site.
+    ///
+    /// The test leaves the editor this way rather than closing it. Closing a draft the editor
+    /// considers changed asks whether to discard the changes, in a sheet whose buttons only have
+    /// labels in the app's language, and the test runs in every language.
+    private func relaunch(isPad: Bool) throws -> MySiteScreen {
+        app.terminate()
+        app.launchArguments.removeAll { $0 == "-ui-test-reset-everything" }
+        app.launch()
+        return try openMySite(isPad: isPad)
     }
 
     /// Waits for My Site after a launch.
