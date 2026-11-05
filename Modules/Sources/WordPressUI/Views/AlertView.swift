@@ -6,6 +6,8 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
     @ViewBuilder let content: () -> Content
     @ViewBuilder var actions: () -> Actions
 
+    @State private var horizontalSafeArea: CGFloat = 0
+
     public init(
         @ViewBuilder header: @escaping () -> Header,
         @ViewBuilder content: @escaping () -> Content,
@@ -32,6 +34,15 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
             .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(24)
+        // The sheet covers a side inset such as the strip on the iPhone Duo's outer screen, so keep only
+        // the part of the horizontal safe area that both sides share, and center the content in the sheet.
+        .padding(.horizontal, horizontalSafeArea)
+        .ignoresSafeArea(.container, edges: .horizontal)
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            min(proxy.safeAreaInsets.leading, proxy.safeAreaInsets.trailing)
+        } action: {
+            horizontalSafeArea = $0
+        }
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 }
@@ -57,7 +68,9 @@ extension UISheetPresentationController.Detent {
             let medium = UISheetPresentationController.Detent.medium().resolvedValue(in: context) ?? halfHeight
             guard let hostVC else { return medium }
             // The sheet's width is only known once it has been laid out.
-            let width = hostVC.view.bounds.inset(by: hostVC.view.safeAreaInsets).width
+            // Match the content's width: the sheet keeps only the horizontal inset both sides share (see `body`).
+            let safeArea = hostVC.view.safeAreaInsets
+            let width = hostVC.view.bounds.width - 2 * min(safeArea.left, safeArea.right)
             guard width > 0 else { return medium }
             let sizeCategory = context.containerTraitCollection.preferredContentSizeCategory
             let height = cache.height(width: width, sizeCategory: sizeCategory) {
@@ -144,9 +157,15 @@ public struct AlertDismissButton: View {
             dismiss()
             onDismiss?()
         } label: {
-            Text(AppLocalizedString("shared.button.ok", value: "OK", comment: "A shared button title used in different contexts"))
-                .font(.headline)
-                .frame(maxWidth: .infinity)
+            Text(
+                AppLocalizedString(
+                    "shared.button.ok",
+                    value: "OK",
+                    comment: "A shared button title used in different contexts"
+                )
+            )
+            .font(.headline)
+            .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.roundedRectangle(radius: 8))
@@ -162,16 +181,22 @@ private final class PreviewAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let button = UIButton(primaryAction: UIAction(title: "Show") { [weak self] _ in
-            self?.showAlertView()
-        })
+        let button = UIButton(
+            primaryAction: UIAction(title: "Show") { [weak self] _ in
+                self?.showAlertView()
+            }
+        )
         view.addSubview(button)
         button.pinCenter()
     }
 
     private func showAlertView() {
         let alert = AlertView {
-            AlertHeaderView(title: "Post Saved", description: "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.")
+            AlertHeaderView(
+                title: "Post Saved",
+                description:
+                    "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices."
+            )
         } content: {
             ScaledImage("icon-bookmark", bundle: .module, height: 78)
                 .foregroundStyle(.secondary)
