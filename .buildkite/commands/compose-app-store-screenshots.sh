@@ -1,9 +1,10 @@
 #!/bin/bash -eu
 
-# Composes the App Store screenshots of the app in SCREENSHOTS_APP (`jetpack` or `wordpress`) from
-# the raw ones every screenshot job uploaded.
+# Composes an app's App Store screenshots, `jetpack` or `wordpress`, from the raw ones every
+# screenshot job uploaded.
+# Usage: compose-app-store-screenshots.sh APP
 
-APP=${SCREENSHOTS_APP:-jetpack}
+APP=${1:?Usage $0 APP}
 if [[ "$APP" == "jetpack" ]]; then
   LANE=create_jetpack_promo_screenshots
   PROMO=jetpack_promo_screenshots

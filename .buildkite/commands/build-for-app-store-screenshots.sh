@@ -1,10 +1,11 @@
 #!/bin/bash -eu
 
-# Builds what the App Store screenshot jobs run, for the app in SCREENSHOTS_APP (`jetpack` or
-# `wordpress`): the Jetpack app and its UI tests, and the WordPress app for its screenshots. The
-# set-up is the same as `build-for-testing.sh`'s.
+# Builds what the App Store screenshot jobs run for an app, `jetpack` or `wordpress`: the Jetpack app
+# and its UI tests, and the WordPress app for its screenshots. The set-up is the same as
+# `build-for-testing.sh`'s.
+# Usage: build-for-app-store-screenshots.sh APP
 
-APP=${SCREENSHOTS_APP:-jetpack}
+APP=${1:?Usage $0 APP}
 
 "$(dirname "${BASH_SOURCE[0]}")/install-swift-package-list.sh"
 
