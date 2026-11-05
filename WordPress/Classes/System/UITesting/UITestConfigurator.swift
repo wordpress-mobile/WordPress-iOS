@@ -1,4 +1,6 @@
 import UIKit
+import WordPressApiCache
+import WordPressCore
 import WordPressData
 
 #if UI_TEST_HTTP_FIXTURES
@@ -23,6 +25,15 @@ struct UITestConfigurator {
     private static func resetEverything() {
         // Remove CoreData DB
         ContextManager.shared.resetEverything()
+
+        // Remove the wordpress-rs cache, which keeps a site's posts, media and post types. A sync
+        // only fetches what's changed on the server, so a cache left from an earlier launch would
+        // keep showing what that launch was sent.
+        do {
+            try WordPressApiCache.deleteOnDiskCache()
+        } catch {
+            Loggers.app.error("Failed to delete the WordPress API cache: \(error)")
+        }
 
         // Clear user defaults.
         for key in UserDefaults.standard.dictionaryRepresentation().keys {
