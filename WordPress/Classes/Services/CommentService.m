@@ -1181,9 +1181,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSParameterAssert(comment.managedObjectContext != nil);
 
     // Update depth and hierarchy
-    NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
+    NSNumber *commentID = @(comment.commentID);
 
-    if (commentID != 0) {
+    if (comment.commentID == 0) {
         // A new comment will have a 0 commentID. If 0 is used when formatting the hierarchy,
         // the comment will preceed any other comment in its level of the hierarchy.
         // Instead we'll pass a number so large as to ensure the comment will appear last in a list.

@@ -90,6 +90,48 @@ extension CommentServiceTests {
         })
         wait(for: [exp], timeout: 2)
     }
+
+    // MARK: Comments Snippet
+
+    func testReplyToPostUsesTheServerCommentIDInHierarchy() {
+        let post = makeReaderPost()
+        remoteMock.replyToReturn = makeRemoteComment(id: 42)
+
+        let exp = expectation(description: "Reply should succeed")
+        service.reply(to: post, content: "Reply") { comment in
+            XCTAssertEqual(comment?.hierarchy, "0000000042")
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
+    }
+}
+
+// MARK: - Comments Snippet Helpers
+
+private extension CommentServiceTests {
+    static let postID: NSNumber = 2
+
+    func makeReaderPost() -> ReaderPost {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 1
+        post.postID = Self.postID
+        contextManager.saveContextAndWait(mainContext)
+        return post
+    }
+
+    func makeRemoteComment(id: Int, parentID: Int = 0) -> RemoteComment {
+        let comment = RemoteComment()
+        comment.commentID = NSNumber(value: id)
+        comment.parentID = NSNumber(value: parentID)
+        comment.postID = Self.postID
+        comment.status = CommentStatusType.approved.description
+        comment.content = "Comment \(id)"
+        comment.date = Date()
+        return comment
+    }
 }
 
 // MARK: - Mocks
@@ -122,6 +164,21 @@ private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {
             } else {
                 failure(nil)
             }
+        }
+    }
+
+    // related to syncing comments
+    var replyToReturn: RemoteComment?
+
+    override func replyToPost(
+        withID postID: NSNumber,
+        content: String,
+        success: ((RemoteComment?) -> Void)?,
+        failure: ((Error?) -> Void)?
+    ) {
+        let reply = replyToReturn
+        DispatchQueue.global().async {
+            success?(reply)
         }
     }
 }
