@@ -9,6 +9,5 @@ extension BlogDetailsViewController {
 
     func reloadTableView() {
         configureTableViewData()
-        reloadTableViewPreservingSelection()
     }
 }
