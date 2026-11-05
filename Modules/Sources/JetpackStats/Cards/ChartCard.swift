@@ -77,7 +77,7 @@ struct ChartCard: View {
     }
 
     private func makeHeaderViewModel(for metric: SiteMetric) -> ChartCardHeaderView.ViewModel {
-        let data = viewModel.chartData[selectedMetric] ?? mockChartData
+        let data = viewModel.chartData[selectedMetric] ?? viewModel.placeholderChartData
         return ChartCardHeaderView.ViewModel(
             trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
             metricTitle: metric.localizedTitle,
@@ -118,7 +118,7 @@ struct ChartCard: View {
     @ViewBuilder
     private var chartContentView: some View {
         if viewModel.isFirstLoad {
-            mainChartView(metric: selectedMetric, data: mockChartData)
+            mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData)
                 .redacted(reason: .placeholder)
                 .opacity(0.2)
                 .pulsating()
@@ -155,17 +155,13 @@ struct ChartCard: View {
     }
 
     private func loadingErrorView(with message: String) -> some View {
-        mainChartView(metric: selectedMetric, data: mockChartData)
+        mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData)
             .redacted(reason: .placeholder)
             .grayscale(1)
             .opacity(0.1)
             .overlay {
                 SimpleErrorView(message: message)
             }
-    }
-
-    private var mockChartData: ChartData {
-        ChartData.mock(metric: .views, granularity: dateRange.dateInterval.preferredGranularity, range: dateRange)
     }
 
     // MARK: - Header View
