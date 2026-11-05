@@ -208,7 +208,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
     /// - Parameter goingBack: Whether the screen was pushed from My Site, and has to be popped.
     /// - Returns: My Site, or nil when nothing had to happen: on an iPad, where the site's menu is
     ///   always beside the screen, and the screen replaces My Site rather than covering it.
-    private func returnToMySite(from screen: ScreenObject, goingBack: Bool) throws -> MySiteScreen? {
+    private func returnToMySite(from screen: ScreenObject, goingBack: Bool) throws -> ScreenObject? {
         if configuration.innerDisplayRequests != nil {
             return try relaunch(isPad: false)
         } else if goingBack {
@@ -216,7 +216,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
         } else {
             return nil
         }
-        return try MySiteScreen(app: app)
+        return try openMySite(isPad: false)
     }
 
     /// A row of the site's menu. Its identifier is on a button inside the row's cell, or on an
@@ -230,7 +230,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
     /// The test leaves the editor this way rather than closing it. Closing a draft the editor
     /// considers changed asks whether to discard the changes, in a sheet whose buttons only have
     /// labels in the app's language, and the test runs in every language.
-    private func relaunch(isPad: Bool) throws -> MySiteScreen {
+    private func relaunch(isPad: Bool) throws -> ScreenObject {
         app.terminate()
         app.launchArguments.removeAll { $0 == "-ui-test-reset-everything" }
         app.launch()
@@ -241,7 +241,12 @@ final class AppStoreScreenshots: JetpackUITestCase {
     ///
     /// An iPad can reopen on the site menu item it last showed, such as Stats, even after a reset,
     /// so this selects Home first.
-    private func openMySite(isPad: Bool) throws -> MySiteScreen {
+    private func openMySite(isPad: Bool) throws -> ScreenObject {
+        // The WordPress app's iPad layout has no Home for the site, only its menu beside the screen
+        // the menu last opened.
+        if isPad, configuration.appBundleIdentifier == Configuration.wordPressBundleIdentifier {
+            return try SiteMenuScreen(app: app)
+        }
         if isPad {
             let home = siteMenuRow("Home Row")
             if home.pollForExistence(timeout: 60), !app.otherElements["my_site"].exists {
