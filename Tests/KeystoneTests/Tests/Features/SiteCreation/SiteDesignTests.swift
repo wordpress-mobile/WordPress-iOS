@@ -12,7 +12,7 @@ class SiteDesignTests: XCTestCase {
 
         // given
         let siteDesignPreviewVC = SiteDesignPreviewViewController(
-            siteDesign: remoteDesign, selectedPreviewDevice: nil, createsSite: false, sectionType: .standard, onDismissWithDeviceSelected: nil, completion: {_ in })
+            siteDesign: remoteDesign, selectedPreviewDevice: nil, context: .siteCreation(createsSite: false), sectionType: .standard, onDismissWithDeviceSelected: nil, completion: {_ in })
         let expectedPrimaryTitle = "Choose"
 
         // when
@@ -28,7 +28,7 @@ class SiteDesignTests: XCTestCase {
 
         // given
         let siteDesignPreviewVC = SiteDesignPreviewViewController(
-            siteDesign: remoteDesign, selectedPreviewDevice: nil, createsSite: true, sectionType: .standard, onDismissWithDeviceSelected: nil, completion: {_ in })
+            siteDesign: remoteDesign, selectedPreviewDevice: nil, context: .siteCreation(createsSite: true), sectionType: .standard, onDismissWithDeviceSelected: nil, completion: {_ in })
         let expectedPrimaryTitle = "Create Site"
 
         // when
@@ -38,5 +38,14 @@ class SiteDesignTests: XCTestCase {
         // then
         let currentTitle = siteDesignPreviewVC.primaryActionButton.currentTitle
         XCTAssertEqual(expectedPrimaryTitle, currentTitle)
+    }
+
+    func testSiteDesignPreviewButtonTextOnDashboard() throws {
+        let siteDesignPreviewVC = SiteDesignPreviewViewController(
+            siteDesign: remoteDesign, selectedPreviewDevice: nil, context: .dashboard, sectionType: .standard, onDismissWithDeviceSelected: nil, completion: {_ in })
+
+        siteDesignPreviewVC.loadViewIfNeeded()
+
+        XCTAssertEqual(siteDesignPreviewVC.primaryActionButton.currentTitle, "Apply")
     }
 }
