@@ -116,8 +116,10 @@ class AppFeedbackPromptView: UIView {
         }
 
         // The yes button is at least as wide as the no button (see `setupConstraints`).
-        let leftWidth = leftButton.intrinsicContentSize.width
-        let rightWidth = rightButton.intrinsicContentSize.width
+        // Measure the titles on one line. A button that has already wrapped its title reports the wrapped width.
+        let unlimited = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+        let leftWidth = leftButton.sizeThatFits(unlimited).width
+        let rightWidth = rightButton.sizeThatFits(unlimited).width
         let rowWidth = max(leftWidth, rightWidth) + LayoutConstants.buttonSpacing + rightWidth
         let axis: NSLayoutConstraint.Axis =
             rowWidth + 2 * LayoutConstants.basePadding > availableWidth ? .vertical : .horizontal
@@ -179,7 +181,8 @@ class AppFeedbackPromptView: UIView {
     private struct LayoutConstants {
         static let labelMinimumHeight: CGFloat = 18.0
         static let basePadding: CGFloat = 15.0
-        static let labelHorizontalPadding: CGFloat = 37.0
+        // Lines the text up with the section titles in the list below.
+        static let labelHorizontalPadding: CGFloat = 20.0
         static let buttonSpacing: CGFloat = 10.0
     }
 }
