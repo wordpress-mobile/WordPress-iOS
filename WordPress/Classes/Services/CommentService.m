@@ -1217,6 +1217,30 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page totalComments:(NSNumber *)totalComments forPost:(ReaderPost *)post
 {
+    NSUInteger newCommentCount = 0;
+    NSArray<Comment *> *commentsToKeep = [self upsertHierarchicalComments:comments
+                                                            totalComments:totalComments
+                                                                  forPost:post
+                                                          newCommentCount:&newCommentCount];
+
+    // Remove deleted comments
+    // When merging the first fetched page of comments, clear out anything that was previously
+    // cached and missing from the comments just synced. This provides for a clean slate and
+    // helps avoid certain cases where some pages might not be resynced, creating gaps in the content.
+    if (page == 1) {
+        [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
+        [self deleteUnownedCommentsInContext:post.managedObjectContext];
+    }
+
+    return newCommentCount > 0;
+}
+
+// Inserts or updates the synced comments and returns them. Deletes nothing.
+- (NSArray<Comment *> *)upsertHierarchicalComments:(NSArray *)comments
+                                     totalComments:(NSNumber *)totalComments
+                                           forPost:(ReaderPost *)post
+                                   newCommentCount:(NSUInteger *)newCommentCountOut
+{
     NSParameterAssert(post.managedObjectContext != nil);
 
     NSMutableSet<NSNumber *> *visibleCommentIds = [NSMutableSet new];
@@ -1254,15 +1278,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         [commentsToKeep addObject:comment];
     }
 
-    // Remove deleted comments
-    // When merging the first fetched page of comments, clear out anything that was previously
-    // cached and missing from the comments just synced. This provides for a clean slate and
-    // helps avoid certain cases where some pages might not be resynced, creating gaps in the content.
-    if (page == 1) {
-        [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
-        [self deleteUnownedCommentsInContext:post.managedObjectContext];
-    }
-
     // Prefer the authoritative total the server just returned. Fall back to a floor of the
     // number of comments merged only if the server didn't provide a total.
     if (totalComments && ([totalComments integerValue] > 0)) {
@@ -1271,7 +1286,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         post.commentCount = @([commentsToKeep count]);
     }
 
-    return newCommentCount > 0;
+    if (newCommentCountOut) {
+        *newCommentCountOut = newCommentCount;
+    }
+    return commentsToKeep;
 }
 
 // Does not save context
