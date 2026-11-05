@@ -50,6 +50,10 @@ bundle exec fastlane jetpack_screenshots language:de-DE device:"iPhone 18 Pro Ma
 
 `skip_build:true` reuses the app from the last run. `language` takes a comma-separated list.
 
+### Temporary translations
+
+For now, every App Store language has headlines and on-screen content translated by Claude, not by translators: the `screenshot_*.txt` files in each `fastlane/appstoreres/jetpack_metadata/<locale>/` folder and every `<locale>.json` in `fastlane/appstoreres/jetpack_screenshot_content/`. They're placeholders until both go through the translation pipeline. The headlines are replaced the first time `download_jetpack_promo_strings` runs after GlotPress has them; the on-screen content has no pipeline yet.
+
 ### Translating what's on screen
 
 The app's own text is in each language already. The content (post titles, the draft in the editor, the Reader post, notifications) comes from the fixtures, which are in English, so it's translated separately:
