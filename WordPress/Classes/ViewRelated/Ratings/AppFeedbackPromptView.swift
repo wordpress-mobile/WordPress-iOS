@@ -111,6 +111,8 @@ class AppFeedbackPromptView: UIView {
     private func evaluateStackAxisMode() {
         leftButton.updateFontSizeToMatchSystem()
         rightButton.updateFontSizeToMatchSystem()
+        // Several lines of large centered text are hard to read, so align it like body text.
+        label.textAlignment = traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .natural : .center
 
         let availableWidth = bounds.inset(by: safeAreaInsets).width
         guard availableWidth > 0 else {
