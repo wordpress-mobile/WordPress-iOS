@@ -26,6 +26,16 @@ The test runs against the fixtures, so every screenshot shows the same account a
 
 Each device gets a simulator of its own, called "Screenshots iPhone 18 Pro Max" and so on, which the lane creates the first time. It sets the simulator to light mode and its status bar to 9:41 with full signal and battery.
 
+### On CI
+
+```bash
+bundle exec fastlane trigger_jetpack_screenshots
+```
+
+This starts `.buildkite/app-store-screenshots.yml` on the current branch, which needs a Buildkite API token in `BUILDKITE_TOKEN`. It builds the app once, on the Xcode 27.1 image, then runs a job per device and language: 51 jobs, in a matrix step per device, since a matrix can make at most 50. A last job composes whatever was taken, and its artifacts are the composed screenshots, zipped as `fastlane/jetpack_promo_screenshots.zip` in the layout the upload lane reads, and the overview of each language.
+
+A new language needs adding to the pipeline's `x-locales` list.
+
 ### The iPhone Duo
 
 The iPhone Duo needs **Xcode 27.1 or later**: an app built with an older SDK runs letterboxed on its outer display. Run the lane with that Xcode selected, for every device, since they share one build:

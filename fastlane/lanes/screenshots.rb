@@ -176,6 +176,24 @@ platform :ios do
     UI.success("Raw screenshots are in #{JETPACK_RAW_SCREENSHOTS_PATH}. Next, run `create_jetpack_promo_screenshots`.")
   end
 
+  # Takes the Jetpack App Store screenshots on CI, in every language on every device, by starting
+  # `.buildkite/app-store-screenshots.yml` on the current branch. It runs a job per device and
+  # language, then one that composes them; the composed screenshots are its artifacts.
+  #
+  # Starting a build needs a Buildkite API token in `BUILDKITE_TOKEN`.
+  #
+  desc 'Takes the Jetpack App Store screenshots on CI'
+  lane :trigger_jetpack_screenshots do
+    build_url = buildkite_trigger_build(
+      buildkite_organization: BUILDKITE_ORGANIZATION,
+      buildkite_pipeline: BUILDKITE_PIPELINE,
+      branch: git_branch,
+      pipeline_file: 'app-store-screenshots.yml',
+      message: 'App Store Screenshots'
+    )
+    UI.success("Screenshots build started: #{build_url}")
+  end
+
   # Composes the Jetpack App Store screenshots from the raw ones `jetpack_screenshots` takes: each gets
   # its headline above it, fitted to its language, and is set in a device frame.
   #
