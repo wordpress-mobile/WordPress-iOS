@@ -41,6 +41,17 @@ struct UITestConfigurator {
         }
     }
 
+    /// Whether the app is taking the App Store screenshots, which leave out what doesn't belong in
+    /// marketing, such as beta badges. Set by the `-ui-test-app-store-screenshots` launch argument,
+    /// which only a build for the UI tests reads.
+    static var isTakingAppStoreScreenshots: Bool {
+        #if UI_TEST_HTTP_FIXTURES
+        UserDefaults.standard.bool(forKey: "ui-test-app-store-screenshots")
+        #else
+        false
+        #endif
+    }
+
     #if UI_TEST_HTTP_FIXTURES
     /// Whether the app is answering its network requests from fixtures.
     static var isServingHTTPFixtures: Bool {

@@ -54,7 +54,9 @@ final class AppStoreScreenshots: JetpackUITestCase {
         guard let configuration else { return [] }
         var arguments = [
             "-AppleLanguages", "(\(configuration.language))",
-            "-AppleLocale", configuration.locale
+            "-AppleLocale", configuration.locale,
+            // Leaves out what doesn't belong in marketing, such as beta badges.
+            "-ui-test-app-store-screenshots", "YES"
         ]
         if let overlay = configuration.fixturesOverlay {
             arguments += ["-ui-test-http-fixtures-overlay", overlay.path(percentEncoded: false)]
