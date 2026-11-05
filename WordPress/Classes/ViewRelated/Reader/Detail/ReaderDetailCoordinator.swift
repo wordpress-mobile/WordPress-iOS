@@ -219,9 +219,9 @@ class ReaderDetailCoordinator {
     /// Fetch Comments for the current post.
     ///
     func fetchComments(for post: ReaderPost) {
-        commentService.syncHierarchicalComments(for: post,
-                                   topLevelComments: commentsDisplayed,
-                                            success: { [weak self] _, totalComments in
+        commentService.syncCommentsSnippet(for: post,
+                              topLevelComments: commentsDisplayed,
+                                       success: { [weak self] totalComments in
                                                 self?.updateCommentsFor(post: post, totalComments: totalComments?.intValue ?? 0)
                                             }, failure: { error in
                                                 DDLogError("Failed fetching post detail comments: \(String(describing: error))")
