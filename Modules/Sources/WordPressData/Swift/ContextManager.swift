@@ -1,5 +1,4 @@
 import CoreData
-import CocoaLumberjackSwift
 import Foundation
 import WordPressShared
 
@@ -118,7 +117,7 @@ public class ContextManager: NSObject, CoreDataStack {
 
     static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
         guard FileManager.default.fileExists(atPath: storeURL.path) else {
-            DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
+            Loggers.data.info("No store exists at \(storeURL).  Skipping migration.")
             return
         }
 
@@ -132,7 +131,7 @@ public class ContextManager: NSObject, CoreDataStack {
             return
         }
 
-        DDLogWarn("Migration required for persistent store.")
+        Loggers.data.warning("Migration required for persistent store.")
 
         guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd") else {
             fatalError("Can't find WordPress.momd")
@@ -258,7 +257,7 @@ private extension ContextManager {
         do {
             try migrateDataModelsIfNecessary(storeURL: storeURL, objectModel: objectModel)
         } catch {
-            DDLogError("Unable to migrate store: \(error)")
+            Loggers.data.error("Unable to migrate store: \(error)")
             // startupEvent.add(error: error as NSError)
         }
 
@@ -272,7 +271,7 @@ private extension ContextManager {
                 return
             }
 
-            DDLogError("Error opening the database. \(error)\nDeleting the file and trying again")
+            Loggers.data.error("Error opening the database. \(error)\nDeleting the file and trying again")
             // startupEvent.add(error: error)
 
             // make a backup of the old database
