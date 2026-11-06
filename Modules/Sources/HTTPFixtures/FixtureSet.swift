@@ -10,25 +10,43 @@ import os
 /// directory. See `StubMapping` and `ResponseTemplate` for the parts of the format that are
 /// supported.
 ///
+/// A response's `bodyFileName` names a file under the `__files` directory, beside `mappings`,
+/// which is answered with as it is. That's how images are served.
+///
 /// Mappings match on the path, query and body of a request, never its host, so one set answers
 /// for every host the app talks to.
 public final class FixtureSet: Sendable {
     /// The mappings, in the order they're tried.
     private let mappings: [StubMapping]
+    /// The contents of the files responses name in `bodyFileName`, keyed by that name.
+    private let bodyFiles: [String: Data]
     private let scenarioStates = OSAllocatedUnfairLock<[String: String]>(initialState: [:])
     private let now: @Sendable () -> Date
 
     /// - Parameters:
     ///   - directory: The directory that contains the `mappings` directory.
+    ///   - overlay: Another directory with a `mappings` directory, whose files replace the ones at
+    ///     the same paths under `directory`. The App Store screenshots use one to show the fixtures'
+    ///     content translated, without changing the content the UI tests assert on.
     ///   - now: The clock `{{now}}` template expressions read.
-    public init(directory: URL, now: @escaping @Sendable () -> Date = { Date() }) throws(FixtureError) {
+    public init(
+        directory: URL,
+        overlay: URL? = nil,
+        now: @escaping @Sendable () -> Date = { Date() }
+    ) throws(FixtureError) {
         let mappingsDirectory = directory.appending(path: "mappings", directoryHint: .isDirectory)
-        let files = Self.jsonFiles(in: mappingsDirectory)
+        var files = Self.jsonFiles(in: mappingsDirectory)
+        if let overlay {
+            let replacements = Self.jsonFiles(in: overlay.appending(path: "mappings", directoryHint: .isDirectory))
+            let replaced = Set(replacements.map(\.path))
+            files = (files.filter { !replaced.contains($0.path) } + replacements).sorted { $0.path < $1.path }
+        }
         guard !files.isEmpty else {
             throw FixtureError(file: "mappings", reason: "no mappings found in \(mappingsDirectory.path())")
         }
 
         var mappings: [StubMapping] = []
+        var bodyFiles: [String: Data] = [:]
         for file in files {
             guard let data = try? Data(contentsOf: file.url) else {
                 throw FixtureError(file: file.path, reason: "the file can't be read")
@@ -36,8 +54,16 @@ public final class FixtureSet: Sendable {
 
             let mapping = try StubMapping(data: data, source: file.path)
             try Self.validateTemplates(of: mapping)
+            if let name = mapping.response.bodyFileName, bodyFiles[name] == nil {
+                let bodyFile = directory.appending(path: "__files").appending(path: name)
+                guard let data = try? Data(contentsOf: bodyFile) else {
+                    throw FixtureError(file: file.path, reason: "its bodyFileName, __files/\(name), can't be read")
+                }
+                bodyFiles[name] = data
+            }
             mappings.append(mapping)
         }
+        self.bodyFiles = bodyFiles
 
         self.mappings = mappings.sorted {
             ($0.priority, -$0.specificity, $0.source) < ($1.priority, -$1.specificity, $1.source)
@@ -64,8 +90,20 @@ public final class FixtureSet: Sendable {
 
         do throws(ResponseTemplate.Failure) {
             var template = ResponseTemplate(request: request, now: now())
-            let headers = try match.response.headers.mapValues { value throws(ResponseTemplate.Failure) in
+            var headers = try match.response.headers.mapValues { value throws(ResponseTemplate.Failure) in
                 try template.render(value)
+            }
+            if let name = match.response.bodyFileName, let data = bodyFiles[name] {
+                if !headers.keys.contains(where: { $0.caseInsensitiveCompare("Content-Type") == .orderedSame }) {
+                    headers["Content-Type"] = Self.contentType(ofFileNamed: name)
+                }
+                return StubResponse(
+                    status: match.response.status,
+                    headers: headers,
+                    body: data,
+                    delay: match.response.delay,
+                    source: match.source
+                )
             }
             let body =
                 if let series = match.response.series {
@@ -82,6 +120,20 @@ public final class FixtureSet: Sendable {
             )
         } catch {
             return .error(status: 500, code: "invalid_fixture", message: error.reason, source: match.source)
+        }
+    }
+
+    /// The content type of a body file, from its extension.
+    private static func contentType(ofFileNamed name: String) -> String {
+        switch URL(filePath: name).pathExtension.lowercased() {
+        case "jpg", "jpeg": "image/jpeg"
+        case "png": "image/png"
+        case "gif": "image/gif"
+        case "webp": "image/webp"
+        case "svg": "image/svg+xml"
+        case "json": "application/json"
+        case "html": "text/html"
+        default: "application/octet-stream"
         }
     }
 
