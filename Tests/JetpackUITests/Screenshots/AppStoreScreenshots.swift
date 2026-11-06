@@ -126,8 +126,12 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try notifications.waitFor(notifications.notifications.firstMatch)
         if isPad {
             // The iPad shows a notification beside the list, and a comment makes a better one than
-            // the list of likes it opens with.
-            try notifications.tap(notifications.notification(beginningWith: Fixture.commenter))
+            // the list of likes it opens with. The commenter's name isn't at the start of the
+            // notification in every language: Arabic puts the verb first.
+            let comment = notifications.table.cells
+                .containing(NSPredicate(format: "label CONTAINS %@", Fixture.commenter))
+                .firstMatch
+            try notifications.tap(comment)
         }
         try save(4, "Notifications")
     }
