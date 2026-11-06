@@ -26,7 +26,7 @@ extension WPTabBarController {
     @objc public func observeAccountAvatar() {
         meTabAvatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
             self?.performTabBarItemUpdate {
-                self?.meNavigationController.tabBarItem.configureAccountAvatar(avatar)
+                self?.meSplitViewController.tabBarItem.configureAccountAvatar(avatar)
             }
         }
     }
