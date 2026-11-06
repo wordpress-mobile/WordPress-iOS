@@ -3,6 +3,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
+// CI probe: app-only changes should skip package tests while keeping catalog coverage.
 let isRunningTests = NSClassFromString("XCTestCase") != nil
 let appDelegateClass =
     isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
