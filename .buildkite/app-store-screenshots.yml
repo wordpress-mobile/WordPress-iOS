@@ -49,6 +49,7 @@ x-screenshots: &screenshots
   artifact_paths:
     - "fastlane/${SCREENSHOTS_APP:-jetpack}_screenshots/**/*.png"
     - "build/results/screenshots/*.log"
+    - "build/results/screenshots/*.xcresult.zip"
   retry:
     automatic:
       - exit_status: "*"

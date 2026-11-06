@@ -16,10 +16,13 @@ require_relative 'screenshot_content_helper'
 #   an app runs letterboxed on the iPhone Duo's outer display.
 # - `inner_display`: the iPhone Duo's inner display, in points. The simulator only models the outer
 #   one, so the lane shows the inner one by moving the app to a resizable display of its size.
+# - `inner_pixels`: the size of that display's screenshots once the app is on it.
 SCREENSHOT_DEVICES = {
   'iPhone 18 Pro Max' => { type: 'com.apple.CoreSimulator.SimDeviceType.iPhone-18-Pro-Max' },
   'iPad Pro 13-inch (M5)' => { type: 'com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-12GB' },
-  'iPhone Duo' => { type: 'com.apple.CoreSimulator.SimDeviceType.iPhone-Duo', sdk: '27.1', inner_display: '669x951' }
+  'iPhone Duo' => {
+    type: 'com.apple.CoreSimulator.SimDeviceType.iPhone-Duo', sdk: '27.1', inner_display: '669x951', inner_pixels: [2007, 2853]
+  }
 }.freeze
 
 # How long one run of the screenshot test, for one app, device and language, may take.
@@ -314,6 +317,7 @@ platform :ios do
           environment['TEST_RUNNER_SCREENSHOTS_CONTENT'] = File.join(SCREENSHOT_CONTENT_PATH, "#{locale}.json")
         end
         requests = nil
+        inner_failures = []
         if device_settings[:inner_display]
           requests = Dir.mktmpdir('inner-display-requests')
           environment['TEST_RUNNER_SCREENSHOTS_INNER_DISPLAY_REQUESTS'] = requests
@@ -333,7 +337,11 @@ platform :ios do
         # longer has stopped, and is ended so that the other runs still happen.
         deadline = Time.now + SCREENSHOT_RUN_TIMEOUT
         until Process.waitpid(pid, Process::WNOHANG)
-          answer_inner_display_requests(requests, udid: udid, size: device_settings[:inner_display]) if requests
+          if requests
+            inner_failures += answer_inner_display_requests(
+              requests, udid: udid, size: device_settings[:inner_display], pixels: device_settings[:inner_pixels]
+            )
+          end
           if Time.now > deadline
             UI.error("#{name}: #{locale} has taken more than #{SCREENSHOT_RUN_TIMEOUT / 60} minutes, so it's being stopped.")
             Process.kill('INT', pid)
@@ -344,6 +352,7 @@ platform :ios do
         end
         Process.wait(pid) if process_running?(pid)
         failures << "#{name}: #{locale} (see #{run}.log and #{run}.xcresult)" unless $CHILD_STATUS&.success?
+        failures += inner_failures.map { |screenshot| "#{name}: #{locale}: the inner display never showed the app for #{File.basename(screenshot)}" }
         FileUtils.rm_rf([requests, overlay].compact)
       end
     end
@@ -373,8 +382,12 @@ platform :ios do
   # For each request, this moves the app to a resizable display the inner display's size (`unfolds`
   # it), screenshots that display to the path the request names, moves the app back, and answers.
   # The test can't do any of it itself: it runs in the simulator, and can't tap on that display.
-  def answer_inner_display_requests(requests, udid:, size:)
-    Dir.glob(File.join(requests, '*.request')).each do |request|
+  #
+  # @return [Array<String>] The screenshots that couldn't be taken, because the display never showed
+  #   the app. Those aren't saved, so that a screenshot of the wrong size isn't composed.
+  # rubocop:disable-next Metrics/AbcSize
+  def answer_inner_display_requests(requests, udid:, size:, pixels:)
+    Dir.glob(File.join(requests, '*.request')).filter_map do |request|
       output = File.read(request).strip
       File.delete(request)
 
@@ -382,9 +395,15 @@ platform :ios do
         'xcrun', 'devicectl', 'device', 'appResize', 'start', '--device', udid, '--preferred-size', size,
         %i[out err] => File::NULL
       )
-      # Give the app time to move and lay itself out for the larger display.
-      sleep(5)
-      sh('xcrun', 'simctl', 'io', udid, 'screenshot', '--display=Resizable', output, log: false)
+      # Until the app has moved, the resizable display is a much larger, black one. Wait for it to
+      # be the inner display's size, then give the app time to lay itself out for it.
+      shown = screenshot_resizable_display(udid: udid, output: output, pixels: pixels, timeout: 30)
+      if shown
+        sleep(3)
+        sh('xcrun', 'simctl', 'io', udid, 'screenshot', '--display=Resizable', output, log: false)
+      else
+        FileUtils.rm_f(output)
+      end
       # Stopping the resize session folds the app back onto the outer display. It doesn't always
       # stop when it's asked to, and then it's made to.
       Process.kill('INT', resize)
@@ -392,7 +411,26 @@ platform :ios do
       Process.wait(resize) if process_running?(resize)
 
       FileUtils.touch(request.sub(/\.request$/, '.done'))
+      output unless shown
     end
+  end
+
+  # Screenshots the resizable display to `output` until it's `pixels` in size, for up to `timeout`
+  # seconds, and returns whether it got there.
+  def screenshot_resizable_display(udid:, output:, pixels:, timeout:)
+    deadline = Time.now + timeout
+    loop do
+      sh('xcrun', 'simctl', 'io', udid, 'screenshot', '--display=Resizable', output, log: false, error_callback: ->(_) {})
+      return true if File.exist?(output) && png_size(output) == pixels
+      return false if Time.now > deadline
+
+      sleep(1)
+    end
+  end
+
+  # The width and height of the PNG at `path`, from its header.
+  def png_size(path)
+    File.binread(path, 24).unpack('x16NN')
   end
 
   # Waits up to `timeout` seconds for the child process `pid` to exit, and returns whether it did.

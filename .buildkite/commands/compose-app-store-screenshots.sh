@@ -20,8 +20,13 @@ echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 🖼️ Composing"
-bundle exec fastlane "$LANE"
+# The compositor fails when it has left out screenshots it couldn't use, after composing the rest,
+# so the rest are still zipped below, and the job still fails.
+STATUS=0
+bundle exec fastlane "$LANE" || STATUS=$?
 
 echo "--- 📦 Zipping the screenshots"
 # In the folder layout `update_${APP}_metadata_on_app_store_connect` uploads from.
 (cd fastlane && zip -rq "${APP}_promo_screenshots.zip" "$PROMO")
+
+exit $STATUS
