@@ -385,34 +385,41 @@ platform :ios do
   #
   # @return [Array<String>] The screenshots that couldn't be taken, because the display never showed
   #   the app. Those aren't saved, so that a screenshot of the wrong size isn't composed.
-  # rubocop:disable-next Metrics/AbcSize
   def answer_inner_display_requests(requests, udid:, size:, pixels:)
     Dir.glob(File.join(requests, '*.request')).filter_map do |request|
       output = File.read(request).strip
       File.delete(request)
 
-      resize = Process.spawn(
-        'xcrun', 'devicectl', 'device', 'appResize', 'start', '--device', udid, '--preferred-size', size,
-        %i[out err] => File::NULL
-      )
-      # Until the app has moved, the resizable display is a much larger, black one. Wait for it to
-      # be the inner display's size, then give the app time to lay itself out for it.
-      shown = screenshot_resizable_display(udid: udid, output: output, pixels: pixels, timeout: 30)
-      if shown
-        sleep(3)
-        sh('xcrun', 'simctl', 'io', udid, 'screenshot', '--display=Resizable', output, log: false)
-      else
-        FileUtils.rm_f(output)
-      end
-      # Stopping the resize session folds the app back onto the outer display. It doesn't always
-      # stop when it's asked to, and then it's made to.
-      Process.kill('INT', resize)
-      Process.kill('KILL', resize) unless exited_within?(resize, timeout: 15)
-      Process.wait(resize) if process_running?(resize)
+      # The app sometimes doesn't move to the resizable display, on CI, and then a new resize
+      # session usually moves it.
+      shown = (1..3).any? { unfold_and_screenshot(udid: udid, size: size, pixels: pixels, output: output) }
+      FileUtils.rm_f(output) unless shown
 
       FileUtils.touch(request.sub(/\.request$/, '.done'))
       output unless shown
     end
+  end
+
+  # Moves the app to a resizable display `size` points in size, screenshots it to `output` once
+  # it's showing the app, and moves the app back. Returns whether the display showed the app.
+  def unfold_and_screenshot(udid:, size:, pixels:, output:)
+    resize = Process.spawn(
+      'xcrun', 'devicectl', 'device', 'appResize', 'start', '--device', udid, '--preferred-size', size,
+      %i[out err] => File::NULL
+    )
+    # Until the app has moved, the resizable display is a much larger, black one. Wait for it to be
+    # the inner display's size, then give the app time to lay itself out for it.
+    shown = screenshot_resizable_display(udid: udid, output: output, pixels: pixels, timeout: 15)
+    if shown
+      sleep(3)
+      sh('xcrun', 'simctl', 'io', udid, 'screenshot', '--display=Resizable', output, log: false)
+    end
+    # Stopping the resize session folds the app back onto the outer display. It doesn't always stop
+    # when it's asked to, and then it's made to.
+    Process.kill('INT', resize)
+    Process.kill('KILL', resize) unless exited_within?(resize, timeout: 15)
+    Process.wait(resize) if process_running?(resize)
+    shown
   end
 
   # Screenshots the resizable display to `output` until it's `pixels` in size, for up to `timeout`
