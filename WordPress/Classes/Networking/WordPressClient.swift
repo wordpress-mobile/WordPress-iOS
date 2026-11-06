@@ -66,6 +66,8 @@ public final class WordPressClientFactory: Sendable {
 }
 
 extension WordPressClient {
+    /// Posted when a site rejects the application password of a client that requests the site directly. The object
+    /// is the blog's `TaggedManagedObjectID<Blog>`.
     static var requestedWithInvalidAuthenticationNotification: Foundation.Notification.Name {
         .init("WordPressClient.requestedWithInvalidAuthenticationNotification")
     }
@@ -192,7 +194,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
     }
 }
 
-private class AppNotifier: @unchecked Sendable, WpAppNotifier {
+class AppNotifier: @unchecked Sendable, WpAppNotifier {
     let site: WordPressSite
     let coreDataStack: CoreDataStack
 
@@ -202,10 +204,19 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
     }
 
     func requestedWithInvalidAuthentication(requestUrl: String) async {
-        NotificationCenter.default.post(
-            name: WordPressClient.requestedWithInvalidAuthenticationNotification,
-            object: site.blogId
-        )
+        switch site.transport {
+        case .direct:
+            NotificationCenter.default.post(
+                name: WordPressClient.requestedWithInvalidAuthenticationNotification,
+                object: site.blogId
+            )
+        case .dotComProxy:
+            // The site rejected the WordPress.com account's token, not an application password, so the account
+            // needs the WordPress.com sign-in. The transport is fixed when the client is created, so this holds
+            // even after the token is cleared, when the request is sent without credentials and the blog's
+            // `WordPressSite` can no longer be built.
+            NotificationCenter.default.post(name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken, object: nil)
+        }
     }
 }
 
