@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
-# Usage: should-skip-job.sh --job-type [validation|localization|build]
+# Usage: should-skip-job.sh --job-type [validation|localization|build|swift-packages]
+# --job-type swift-packages: Skip cross-platform package tests for app-only PR changes.
 # --job-type validation: For jobs like unit/instrumented tests, manifest validation…
 #     Skip when changes are limited to documentation, tooling, non-code files, and localization files
 # --job-type localization: For jobs doing linting, especially ones that might include linting of localization files
@@ -38,7 +39,7 @@ LOCALIZATION="localization"
 
 # Check if arguments are valid
 if [ -z "${1:-}" ] || [ "$1" != "--job-type" ] || [ -z "${2:-}" ]; then
-  echo "Error: Must specify --job-type [$VALIDATION|$BUILD|$LOCALIZATION]"
+  echo "Error: Must specify --job-type [$VALIDATION|$BUILD|$LOCALIZATION|swift-packages]"
   buildkite-agent step cancel
   exit 15
 fi
@@ -55,6 +56,29 @@ show_skip_message() {
 
 job_type="$2"
 case "$job_type" in
+  swift-packages)
+    # The root package and its local dependency live in Package.swift and Modules/.
+    # Keep Swift build tooling, package fixtures and unknown paths relevant.
+    if [[ "${BUILDKITE_SOURCE:-}" != webhook || ! "${BUILDKITE_PULL_REQUEST:-}" =~ ^[0-9]+$ ]]; then
+      exit 1
+    fi
+
+    # Include both sides of renames, including moves out of Modules/.
+    config_index=${GIT_CONFIG_COUNT:-0}
+    export GIT_CONFIG_COUNT=$((config_index + 1))
+    export "GIT_CONFIG_KEY_${config_index}=diff.renames" "GIT_CONFIG_VALUE_${config_index}=false"
+
+    PATTERNS=(
+      'WordPress/*' 'Tests/*' 'Sources/*' 'docs/*' '!(*/*).md' 'RELEASE-NOTES.txt' '.gitignore'
+      # Swift package tests do not use Ruby/Fastlane; catalog coverage has its own check.
+      'fastlane/*' 'Gemfile' 'Gemfile.lock'
+    )
+    if pr_changed_files --all-match "${PATTERNS[@]}"; then
+      BUILDKITE_LABEL='Swift package tests' show_skip_message "$job_type"
+      exit 0
+    fi
+    exit 1
+    ;;
   $VALIDATION)
     # We should skip if changes are limited to documentation, tooling, non-code files, and localization files
     PATTERNS=("${COMMON_PATTERNS[@]}" "${LOCALIZATION_PATTERNS[@]}")
@@ -84,7 +108,7 @@ case "$job_type" in
     exit 1
     ;;
   *)
-    echo "Error: Job type must be either '$VALIDATION', '$BUILD', or '$LOCALIZATION'"
+    echo "Error: Job type must be '$VALIDATION', '$BUILD', '$LOCALIZATION', or 'swift-packages'"
     buildkite-agent step cancel
     exit 15
     ;;
