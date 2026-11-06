@@ -374,7 +374,8 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try? FileManager.default.removeItem(at: done)
         try Data(file.path(percentEncoded: false).utf8).write(to: request)
 
-        let deadline = Date(timeIntervalSinceNow: 120)
+        // The lane may try a few times to move the app to the inner display.
+        let deadline = Date(timeIntervalSinceNow: 240)
         while !FileManager.default.fileExists(atPath: done.path(percentEncoded: false)) {
             guard Date() < deadline else {
                 throw ScreenObject.ElementNotReachedError(
