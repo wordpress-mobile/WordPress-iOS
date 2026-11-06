@@ -5,13 +5,7 @@ import WordPressShared
 class JetpackBrandingMenuCardPresenter {
 
     struct Config {
-
-        enum CardType {
-            case compact, expanded
-        }
-
         let description: String
-        let type: CardType
     }
 
     // MARK: Private Variables
@@ -46,7 +40,7 @@ class JetpackBrandingMenuCardPresenter {
         guard phase == .selfHosted else {
             return nil
         }
-        return .init(description: Strings.selfHostedPhaseDescription, type: .expanded)
+        return .init(description: Strings.selfHostedPhaseDescription)
     }
 
     func shouldShowTopCard() -> Bool {
