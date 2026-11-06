@@ -84,6 +84,8 @@ private struct MetricItemView<Metric: MetricType>: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("chart_card_metric_\(data.metric)")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     // MARK: - Private Views

@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/search-terms/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "search_terms": [
+          {
+            "term": "wedding photographer near me",
+            "views": 41
+          },
+          {
+            "term": "in focus photography",
+            "views": 33
+          },
+          {
+            "term": "engagement photo ideas",
+            "views": 19
+          },
+          {
+            "term": "outdoor wedding photos",
+            "views": 12
+          }
+        ],
+        "encrypted_search_terms": 362,
+        "other_search_terms": 9,
+        "total_search_terms": 476
+      }
+    }
+  }
+}

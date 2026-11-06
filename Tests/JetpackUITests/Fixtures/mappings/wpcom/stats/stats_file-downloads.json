@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/file-downloads/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "files": [
+          {
+            "filename": "/2019/05/pricing-guide.pdf",
+            "downloads": 57
+          },
+          {
+            "filename": "/2019/05/wedding-day-checklist.pdf",
+            "downloads": 34
+          },
+          {
+            "filename": "/2019/03/photo-contest-rules.pdf",
+            "downloads": 12
+          }
+        ],
+        "other_downloads": 3,
+        "total_downloads": 106
+      }
+    }
+  }
+}

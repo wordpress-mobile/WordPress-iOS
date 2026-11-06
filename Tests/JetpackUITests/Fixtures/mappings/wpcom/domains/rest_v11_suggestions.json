@@ -1,0 +1,75 @@
+{
+    "request": {
+      "urlPath": "/rest/v1.1/domains/suggestions",
+      "method": "GET"
+    },
+    "response": {
+      "status": 200,
+      "jsonBody": [
+        {
+            "domain_name": "domainexample.com",
+            "relevance": 1,
+            "supports_privacy": true,
+            "vendor": "donuts",
+            "match_reasons": ["tld-common"],
+            "product_id": 6,
+            "product_slug": "domain_reg",
+            "cost": "19,00\u00a0\u20ac",
+            "raw_price": 19,
+            "currency_code": "EUR"
+        }, 
+        {
+            "domain_name": "domainexample.ink",
+            "relevance": 1,
+            "supports_privacy": true,
+            "vendor": "donuts",
+            "product_id": 359,
+            "product_slug": "dotink_domain",
+            "cost": "26,00\u00a0\u20ac",
+            "raw_price": 26,
+            "currency_code": "EUR"
+        },
+        {
+            "domain_name": "domainexample.blog",
+            "relevance": 0.99,
+            "supports_privacy": true,
+            "vendor": "donuts",
+            "match_reasons": ["tld-common"],
+            "product_id": 76,
+            "product_slug": "dotblog_domain",
+            "cost": "22,00\u00a0\u20ac",
+            "raw_price": 22,
+            "currency_code": "EUR",
+            "sale_cost": 4.84
+        }, 
+        {
+            "domain_name": "domainexample.org",
+            "relevance": 0.98,
+            "supports_privacy": true,
+            "vendor": "donuts",
+            "match_reasons": ["tld-common"],
+            "product_id": 6,
+            "product_slug": "domain_reg",
+            "cost": "19,00\u00a0\u20ac",
+            "raw_price": 19,
+            "currency_code": "EUR"
+        }, 
+        {
+            "domain_name": "domainexample.maison",
+            "relevance": 0.93,
+            "supports_privacy": true,
+            "vendor": "donuts",
+            "product_id": 200,
+            "product_slug": "dotmaison_domain",
+            "cost": "49,00\u00a0\u20ac",
+            "raw_price": 49,
+            "currency_code": "EUR"
+        }
+    ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Connection": "keep-alive",
+        "Cache-Control": "no-cache, must-revalidate, max-age=0"
+      }
+    }
+  }

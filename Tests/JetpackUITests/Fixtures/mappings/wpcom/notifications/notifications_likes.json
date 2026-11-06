@@ -1,0 +1,203 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/rest/v1.2/sites/.*/posts/56/likes.*",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      },
+      "number": {
+        "matches": "(.*)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 6,
+      "i_like": true,
+      "likes": [
+        {
+          "ID": 152748359,
+          "login": "testuser01",
+          "email": "test@example.com",
+          "name": "Amechie Ajimobi",
+          "first_name": "Amechie",
+          "last_name": "Ajimobi",
+          "nice_name": "Amechie",
+          "URL": "",
+          "avatar_URL": "https://1.gravatar.com/avatar/11bcf6345930a9fbde5e6f0985c3f24a?s=256&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D256&r=G",
+          "profile_URL": "",
+          "ip_address": false,
+          "site_ID": 106707880,
+          "site_visible": true,
+          "default_avatar": false,
+          "date_liked": "{{now}}",
+          "bio": "",
+          "primary_blog": "https://infocusphotographers.wpcomstaging.com",
+          "preferred_blog": {
+            "id": null,
+            "name": "Testing Site",
+            "url": "https://infocusphotographers.wpcomstaging.com",
+            "icon": {
+              "img": "",
+              "ico": ""
+            }
+          }
+        },
+        {
+          "ID": 152748360,
+          "login": "testuser02",
+          "email": "test02@example.com",
+          "name": "Tester Two",
+          "first_name": "Tester",
+          "last_name": "Two",
+          "nice_name": "Tester",
+          "URL": "",
+          "avatar_URL": "",
+          "profile_URL": "",
+          "ip_address": false,
+          "site_ID": 106707880,
+          "site_visible": true,
+          "default_avatar": false,
+          "date_liked": "{{now}}",
+          "bio": "",
+          "primary_blog": "https://infocusphotographers.wpcomstaging.com",
+          "preferred_blog": {
+            "id": null,
+            "name": "Testing Site",
+            "url": "https://infocusphotographers.wpcomstaging.com",
+            "icon": {
+              "img": "",
+              "ico": ""
+            }
+          }
+        },
+        {
+          "ID": 152748361,
+          "login": "testuser03",
+          "email": "test03@example.com",
+          "name": "Tester Three",
+          "first_name": "Tester",
+          "last_name": "Three",
+          "nice_name": "Tester",
+          "URL": "",
+          "avatar_URL": "",
+          "profile_URL": "",
+          "ip_address": false,
+          "site_ID": 106707880,
+          "site_visible": true,
+          "default_avatar": false,
+          "date_liked": "{{now}}",
+          "bio": "",
+          "primary_blog": "https://infocusphotographers.wpcomstaging.com",
+          "preferred_blog": {
+            "id": null,
+            "name": "Testing Site",
+            "url": "https://infocusphotographers.wpcomstaging.com",
+            "icon": {
+              "img": "",
+              "ico": ""
+            }
+          }
+        },
+        {
+          "ID": 152748362,
+          "login": "testuser04",
+          "email": "test04@example.com",
+          "name": "Tester Four",
+          "first_name": "Tester",
+          "last_name": "Four",
+          "nice_name": "Tester",
+          "URL": "",
+          "avatar_URL": "",
+          "profile_URL": "",
+          "ip_address": false,
+          "site_ID": 106707880,
+          "site_visible": true,
+          "default_avatar": false,
+          "date_liked": "{{now}}",
+          "bio": "",
+          "primary_blog": "https://infocusphotographers.wpcomstaging.com",
+          "preferred_blog": {
+            "id": null,
+            "name": "Testing Site",
+            "url": "https://infocusphotographers.wpcomstaging.com",
+            "icon": {
+              "img": "",
+              "ico": ""
+            }
+          }
+        },
+        {
+          "ID": 152748363,
+          "login": "testuser05",
+          "email": "test05@example.com",
+          "name": "Tester Five",
+          "first_name": "Tester",
+          "last_name": "Five",
+          "nice_name": "Tester",
+          "URL": "",
+          "avatar_URL": "",
+          "profile_URL": "",
+          "ip_address": false,
+          "site_ID": 106707880,
+          "site_visible": true,
+          "default_avatar": false,
+          "date_liked": "{{now}}",
+          "bio": "",
+          "primary_blog": "https://infocusphotographers.wpcomstaging.com",
+          "preferred_blog": {
+            "id": null,
+            "name": "Testing Site",
+            "url": "https://infocusphotographers.wpcomstaging.com",
+            "icon": {
+              "img": "",
+              "ico": ""
+            }
+          }
+        },
+        {
+          "ID": 152748364,
+          "login": "testuser06",
+          "email": "test06@example.com",
+          "name": "Tester Six",
+          "first_name": "Tester",
+          "last_name": "Six",
+          "nice_name": "Tester",
+          "URL": "",
+          "avatar_URL": "",
+          "profile_URL": "",
+          "ip_address": false,
+          "site_ID": 106707880,
+          "site_visible": true,
+          "default_avatar": false,
+          "date_liked": "{{now}}",
+          "bio": "",
+          "primary_blog": "https://infocusphotographers.wpcomstaging.com",
+          "preferred_blog": {
+            "id": null,
+            "name": "Testing Site",
+            "url": "https://infocusphotographers.wpcomstaging.com",
+            "icon": {
+              "img": "",
+              "ico": ""
+            }
+          }
+        }
+      ],
+      "meta": {
+        "links": {
+          "help": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/posts/56/likes/help",
+          "post": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/56",
+          "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+        }
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

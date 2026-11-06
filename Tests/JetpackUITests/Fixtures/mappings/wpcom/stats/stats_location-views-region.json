@@ -1,0 +1,49 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/location-views/region/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "views": [
+          {
+            "location": "California",
+            "country_code": "US",
+            "views": 512
+          },
+          {
+            "location": "England",
+            "country_code": "GB",
+            "views": 356
+          },
+          {
+            "location": "New York",
+            "country_code": "US",
+            "views": 301
+          },
+          {
+            "location": "Ontario",
+            "country_code": "CA",
+            "views": 187
+          },
+          {
+            "location": "Texas",
+            "country_code": "US",
+            "views": 164
+          },
+          {
+            "location": "New South Wales",
+            "country_code": "AU",
+            "views": 121
+          }
+        ],
+        "other_views": 1371,
+        "total_views": 3012
+      }
+    }
+  }
+}

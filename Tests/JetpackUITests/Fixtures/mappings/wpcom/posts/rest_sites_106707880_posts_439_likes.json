@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.2/sites/106707880/posts/439/likes"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 0,
+      "i_like": false,
+      "likes": []
+    }
+  }
+}
