@@ -2,8 +2,11 @@ import XCTest
 
 /// Captures the raw screenshots the App Store screenshots are composed from.
 ///
-/// Run by `bundle exec fastlane jetpack_screenshots`, which runs it once per device and language
-/// and then frames the results. See docs/app-store-screenshots.md.
+/// Run by `bundle exec fastlane jetpack_screenshots` and `wordpress_screenshots`, which run it once
+/// per device and language. See docs/app-store-screenshots.md.
+///
+/// The test target is Jetpack's, and it screenshots the WordPress app by launching it by its bundle
+/// identifier, once the lane has installed it.
 ///
 /// Runs against the fixtures, so every screenshot shows the same account and content. The test is
 /// skipped unless the lane gives it somewhere to save the screenshots.
@@ -23,6 +26,14 @@ final class AppStoreScreenshots: JetpackUITestCase {
         configuration.content["editor.title"] ?? "Book Your Summer Sessions"
     }
 
+    /// The WordPress screenshots' custom post type, by its name in the screenshot's language.
+    private var staffTypeName: String {
+        configuration.content["wordpress.staff.typeName"] ?? "Staff"
+    }
+
+    /// The first of the Staff posts, by its title, a name, which isn't translated.
+    private let firstStaffMember = "Maya Okafor"
+
     /// The Reader post the screenshot opens, by its title in the screenshot's language.
     private var readerPostTitle: String {
         configuration.content["reader.title"] ?? "How to Collect Email Addresses with Gated Content on WordPress Sites"
@@ -35,11 +46,17 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try await super.setUp()
     }
 
+    override var appBundleIdentifier: String? {
+        configuration?.appBundleIdentifier
+    }
+
     override var additionalLaunchArguments: [String] {
         guard let configuration else { return [] }
         var arguments = [
             "-AppleLanguages", "(\(configuration.language))",
-            "-AppleLocale", configuration.locale
+            "-AppleLocale", configuration.locale,
+            // Leaves out what doesn't belong in marketing, such as beta badges.
+            "-ui-test-app-store-screenshots", "YES"
         ]
         if let overlay = configuration.fixturesOverlay {
             arguments += ["-ui-test-http-fixtures-overlay", overlay.path(percentEncoded: false)]
@@ -54,6 +71,15 @@ final class AppStoreScreenshots: JetpackUITestCase {
     // the other tabs are in a sidebar instead of a tab bar.
     func testCaptureScreenshots() throws {
         let isPad = UIDevice.current.userInterfaceIdiom == .pad
+        if configuration.appBundleIdentifier == Configuration.wordPressBundleIdentifier {
+            try captureWordPressScreenshots(isPad: isPad)
+        } else {
+            try captureJetpackScreenshots(isPad: isPad)
+        }
+    }
+
+    /// The Jetpack app's screenshots: Stats, the editor, the Reader and Notifications.
+    private func captureJetpackScreenshots(isPad: Bool) throws {
         var mySite = try openMySite(isPad: isPad)
 
         // 1. Stats
@@ -67,14 +93,10 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try mySite.tap(app.cells[isPad ? "Blog Post Row" : "quick_actions_posts"])
         let posts = app.tables["PostsTable"]
         try mySite.waitFor(posts)
-        try mySite.select(tab: posts.buttons["drafts"].firstMatch)
-        try mySite.tap(posts.staticTexts[draftTitle].firstMatch)
-        let editor = try EditorScreen(app: app)
+        try openDraft(in: posts, from: mySite)
+        _ = try EditorScreen(app: app)
         try save(2, "Editor")
-        if configuration.innerDisplayRequests == nil {
-            editor.close()
-        }
-        mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
+        mySite = try relaunch(isPad: isPad)
 
         // 3. Reader. `ReaderScreen` waits for its menu to be hittable as a whole, which it isn't
         // beside the iPad's stream, or beside the iPhone Duo's side strip, so this taps the row.
@@ -104,10 +126,76 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try notifications.waitFor(notifications.notifications.firstMatch)
         if isPad {
             // The iPad shows a notification beside the list, and a comment makes a better one than
-            // the list of likes it opens with.
-            try notifications.tap(notifications.notification(beginningWith: Fixture.commenter))
+            // the list of likes it opens with. The commenter's name isn't at the start of the
+            // notification in every language: Arabic puts the verb first.
+            let comment = notifications.table.cells
+                .containing(NSPredicate(format: "label CONTAINS %@", Fixture.commenter))
+                .firstMatch
+            try notifications.tap(comment)
         }
         try save(4, "Notifications")
+    }
+
+    /// The WordPress app's screenshots: the editor, a custom post type, media and pages.
+    ///
+    /// The WordPress app leaves Stats, the Reader and Notifications to the Jetpack app, and shows a
+    /// poster about it in their place, so its screenshots show what it has instead. Its My Site has
+    /// no quick actions, so it opens everything from the site's menu, on an iPhone as on an iPad.
+    ///
+    /// The custom post type, Staff, is in the WordPress screenshots' own fixtures, which also make the
+    /// site an Atomic one: the app only shows custom post types on sites it reaches with the core
+    /// REST API.
+    private func captureWordPressScreenshots(isPad: Bool) throws {
+        var mySite = try openMySite(isPad: isPad)
+
+        // 1. Editor, with a draft that has a quote and an image.
+        try mySite.tap(app.cells["Blog Post Row"])
+        let posts = app.tables["PostsTable"]
+        try mySite.waitFor(posts)
+        try openDraft(in: posts, from: mySite)
+        _ = try EditorScreen(app: app)
+        try save(1, "Editor")
+        mySite = try relaunch(isPad: isPad)
+
+        // 2. Staff, a custom post type: its rows have no identifier, so it's found by its name.
+        try mySite.tap(app.cells.containing(.staticText, identifier: staffTypeName).firstMatch)
+        try mySite.waitFor(app.staticTexts[firstStaffMember].firstMatch)
+        try save(2, "Staff")
+        mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
+
+        // 3. Media.
+        try mySite.tap(app.cells["Media Row"])
+        // The library's grid is a SwiftUI view, whose items are images rather than cells.
+        try mySite.waitFor(app.scrollViews.images.firstMatch)
+        try save(3, "Media")
+        mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
+
+        // 4. Pages: the published ones.
+        try mySite.tap(app.cells["Site Pages Row"])
+        let pages = app.tables["PagesTable"]
+        try mySite.waitFor(pages)
+        try mySite.select(tab: pages.buttons["published"].firstMatch)
+        try mySite.waitFor(pages.cells.firstMatch)
+        try save(4, "Pages")
+    }
+
+    /// Opens the draft the editor screenshot shows, from the posts list.
+    ///
+    /// The list opens on its published posts. Switching to drafts while those are still loading can
+    /// leave the drafts tab empty, without ever asking for drafts, so this waits for the published
+    /// posts first, and switches tabs again if the drafts still don't come.
+    private func openDraft(in posts: XCUIElement, from screen: ScreenObject) throws {
+        _ = posts.cells.firstMatch.pollForExistence(timeout: 30)
+        let draft = posts.staticTexts[draftTitle].firstMatch
+        for _ in 0..<3 {
+            try screen.select(tab: posts.buttons["drafts"].firstMatch)
+            if draft.pollForExistence(timeout: 15) {
+                try screen.tap(draft)
+                return
+            }
+            try screen.select(tab: posts.buttons["published"].firstMatch)
+        }
+        throw ScreenObject.ElementNotReachedError(element: "\(draft)", expectation: "did not appear")
     }
 
     /// Returns to My Site after a screenshot.
@@ -119,24 +207,39 @@ final class AppStoreScreenshots: JetpackUITestCase {
     /// - Parameter goingBack: Whether the screen was pushed from My Site, and has to be popped.
     /// - Returns: My Site, or nil when nothing had to happen: on an iPad, where the site's menu is
     ///   always beside the screen, and the screen replaces My Site rather than covering it.
-    private func returnToMySite(from screen: ScreenObject, goingBack: Bool) throws -> MySiteScreen? {
+    private func returnToMySite(from screen: ScreenObject, goingBack: Bool) throws -> ScreenObject? {
         if configuration.innerDisplayRequests != nil {
-            app.terminate()
-            app.launchArguments.removeAll { $0 == "-ui-test-reset-everything" }
-            app.launch()
+            return try relaunch(isPad: false)
         } else if goingBack {
             try goBack(from: screen)
         } else {
             return nil
         }
-        return try MySiteScreen(app: app)
+        return try openMySite(isPad: false)
+    }
+
+    /// Relaunches the app, still signed in, and returns to My Site.
+    ///
+    /// The test leaves the editor this way rather than closing it. Closing a draft the editor
+    /// considers changed asks whether to discard the changes, in a sheet whose buttons only have
+    /// labels in the app's language, and the test runs in every language.
+    private func relaunch(isPad: Bool) throws -> ScreenObject {
+        app.terminate()
+        app.launchArguments.removeAll { $0 == "-ui-test-reset-everything" }
+        app.launch()
+        return try openMySite(isPad: isPad)
     }
 
     /// Waits for My Site after a launch.
     ///
     /// An iPad can reopen on the site menu item it last showed, such as Stats, even after a reset,
     /// so this selects Home first.
-    private func openMySite(isPad: Bool) throws -> MySiteScreen {
+    private func openMySite(isPad: Bool) throws -> ScreenObject {
+        // The WordPress app's iPad layout has no Home for the site, only its menu beside the screen
+        // the menu last opened.
+        if isPad, configuration.appBundleIdentifier == Configuration.wordPressBundleIdentifier {
+            return try SiteMenuScreen(app: app)
+        }
         if isPad {
             let home = app.cells["Home Row"]
             if home.pollForExistence(timeout: 60), !app.otherElements["my_site"].exists {
@@ -267,7 +370,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
     /// The simulator only models the Duo's outer display. The lane shows the inner one by moving the
     /// app to a resizable display the inner one's size, which only the Mac can do, and which the test
     /// can't tap on. So the test asks for it with a file, the lane takes the screenshot and moves the
-    /// app back, and then answers with another file. See `jetpack_screenshots` in
+    /// app back, and then answers with another file. See `take_app_store_screenshots` in
     /// `fastlane/lanes/screenshots.rb`.
     private func captureInnerDisplay(to file: URL, requests: URL, name: String) throws {
         let request = requests.appending(path: "\(name).request")
@@ -275,7 +378,8 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try? FileManager.default.removeItem(at: done)
         try Data(file.path(percentEncoded: false).utf8).write(to: request)
 
-        let deadline = Date(timeIntervalSinceNow: 120)
+        // The lane may try a few times to move the app to the inner display.
+        let deadline = Date(timeIntervalSinceNow: 240)
         while !FileManager.default.fileExists(atPath: done.path(percentEncoded: false)) {
             guard Date() < deadline else {
                 throw ScreenObject.ElementNotReachedError(
@@ -299,6 +403,10 @@ final class AppStoreScreenshots: JetpackUITestCase {
 
     /// What the lane passes in, through `TEST_RUNNER_`-prefixed environment variables.
     struct Configuration {
+        static let wordPressBundleIdentifier = "org.wordpress"
+
+        /// The app to screenshot, or nil for the Jetpack app.
+        let appBundleIdentifier: String?
         /// Where to save the screenshots, on the Mac.
         let outputDirectory: URL
         /// The App Store locale the screenshots are for, such as `de-DE`, which is also the
@@ -311,16 +419,17 @@ final class AppStoreScreenshots: JetpackUITestCase {
         let innerDisplayRequests: URL?
         /// Fixtures with the content translated into `language`, which replace the English ones.
         let fixturesOverlay: URL?
-        /// The translations of that content, by key, from `fastlane/appstoreres/jetpack_screenshot_content`.
+        /// The translations of that content, by key, from `fastlane/appstoreres/screenshot_content`.
         let content: [String: String]
 
         init(environment: [String: String]) throws {
             guard let directory = environment["SCREENSHOTS_OUTPUT_DIR"], !directory.isEmpty else {
                 throw XCTSkip(
-                    "Captures the App Store screenshots. Run it with `bundle exec fastlane jetpack_screenshots`."
+                    "Captures the App Store screenshots. Run it with `bundle exec fastlane jetpack_screenshots` or `wordpress_screenshots`."
                 )
             }
             outputDirectory = URL(filePath: directory)
+            appBundleIdentifier = environment["SCREENSHOTS_APP"].flatMap { $0 == "com.automattic.jetpack" ? nil : $0 }
             language = environment["SCREENSHOTS_LANGUAGE"] ?? "en-US"
             locale = environment["SCREENSHOTS_LOCALE"] ?? language.replacingOccurrences(of: "-", with: "_")
             deviceName = environment["SIMULATOR_DEVICE_NAME"] ?? "Simulator"

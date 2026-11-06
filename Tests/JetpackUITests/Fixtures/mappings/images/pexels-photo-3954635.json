@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/dotcompatterns\\.files\\.wordpress\\.com)?/2021/02/pexels-photo-3954635\\.jpeg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/pexels-photo-3954635.jpeg"
+  }
+}

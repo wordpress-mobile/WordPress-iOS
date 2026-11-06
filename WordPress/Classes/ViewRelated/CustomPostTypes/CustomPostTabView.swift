@@ -145,14 +145,16 @@ struct CustomPostTabView: View {
                     Text(details.name)
                         .font(.headline)
                         .lineLimit(1)
-                    Text(Strings.betaBadge)
-                        .font(.caption2.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(AppColor.primary)
-                        .clipShape(Capsule())
-                        .fixedSize(horizontal: true, vertical: false)
+                    if !UITestConfigurator.isTakingAppStoreScreenshots {
+                        Text(Strings.betaBadge)
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(AppColor.primary)
+                            .clipShape(Capsule())
+                            .fixedSize(horizontal: true, vertical: false)
+                    }
                 }
                 .accessibilityElement(children: .combine)
             }

@@ -53,11 +53,26 @@ extension WordPressApiCache {
         case failed(OnDiskCacheFailure)
     }
 
-    private static func bootstrap() -> WordPressApiCache {
-        let cacheURL = URL.libraryDirectory.appending(path: "app.sqlite")
+    /// Where `shared` keeps its database.
+    private static var onDiskCacheURL: URL {
+        URL.libraryDirectory.appending(path: "app.sqlite")
+    }
 
+    /// Deletes the database `shared` opens, with its journal files.
+    ///
+    /// Only call this before anything uses `shared`, which would otherwise keep using the deleted
+    /// file. UI tests use it to start the app with nothing cached, as they do with Core Data.
+    public static func deleteOnDiskCache() throws {
+        let fileManager = FileManager.default
+        if fileManager.fileExists(at: onDiskCacheURL) {
+            try fileManager.removeItem(at: onDiskCacheURL)
+        }
+        try removeSiblingFiles(of: onDiskCacheURL)
+    }
+
+    private static func bootstrap() -> WordPressApiCache {
         let cache: WordPressApiCache
-        switch onDiskCache(at: cacheURL) {
+        switch onDiskCache(at: onDiskCacheURL) {
         case .opened(let opened):
             cache = opened
         case .recovered(let recovered, let failure):

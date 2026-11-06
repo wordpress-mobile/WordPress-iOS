@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/infocusphotographers\\.files\\.wordpress\\.com)?/2016/02/photo\\-1453857271477\\-4f9a4081966e1\\.jpeg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/photo-1453857271477-4f9a4081966e1.jpeg"
+  }
+}

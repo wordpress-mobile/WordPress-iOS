@@ -1,17 +1,27 @@
 #!/bin/bash -eu
 
-# Takes the App Store screenshots for one device and one language, from the app the build step built.
-# Usage: take-app-store-screenshots.sh DEVICE LOCALE
+# Takes an app's App Store screenshots, `jetpack` or `wordpress`, for one device and one language,
+# from the build the build step uploaded.
+# Usage: take-app-store-screenshots.sh APP DEVICE LOCALE
 
-DEVICE=${1:?Usage $0 DEVICE LOCALE}
-LOCALE=${2:?Usage $0 DEVICE LOCALE}
+APP=${1:?Usage $0 APP DEVICE LOCALE}
+DEVICE=${2:?Usage $0 APP DEVICE LOCALE}
+LOCALE=${3:?Usage $0 APP DEVICE LOCALE}
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products-jetpack.tar
-tar -xf build-products-jetpack.tar
+download_artifact build-products-screenshots.tar
+tar -xf build-products-screenshots.tar
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- 📸 Taking the screenshots: $DEVICE, $LOCALE"
-bundle exec fastlane jetpack_screenshots language:"$LOCALE" device:"$DEVICE" skip_build:true
+echo "--- 📸 Taking the screenshots: $APP, $DEVICE, $LOCALE"
+STATUS=0
+bundle exec fastlane "${APP}_screenshots" language:"$LOCALE" device:"$DEVICE" skip_build:true || STATUS=$?
+
+# A failed run's result bundle has the app's screen and requests at the failure, for working out why.
+if [[ $STATUS -ne 0 ]]; then
+  echo "--- 📦 Zipping the result bundle"
+  (cd build/results/screenshots && for result in *.xcresult; do zip -qr "$result.zip" "$result"; done)
+fi
+exit $STATUS
