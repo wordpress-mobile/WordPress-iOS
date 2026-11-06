@@ -58,7 +58,7 @@ job_type="$2"
 case "$job_type" in
   swift-packages)
     # The root package and its local dependency live in Package.swift and Modules/.
-    # Keep Swift build tooling, package fixtures and unknown paths relevant.
+    # Extend the existing validation exclusions with app-only paths.
     if [[ "${BUILDKITE_SOURCE:-}" != webhook || ! "${BUILDKITE_PULL_REQUEST:-}" =~ ^[0-9]+$ ]]; then
       exit 1
     fi
@@ -69,9 +69,8 @@ case "$job_type" in
     export "GIT_CONFIG_KEY_${config_index}=diff.renames" "GIT_CONFIG_VALUE_${config_index}=false"
 
     PATTERNS=(
-      'WordPress/*' 'Tests/*' 'Sources/*' 'docs/*' '!(*/*).md' 'RELEASE-NOTES.txt' '.gitignore'
-      # Swift package tests do not use Ruby/Fastlane; catalog coverage has its own check.
-      'fastlane/*' 'Gemfile' 'Gemfile.lock'
+      "${COMMON_PATTERNS[@]}" "${LOCALIZATION_PATTERNS[@]}"
+      'WordPress/*' 'Tests/*' 'Sources/*'
     )
     if pr_changed_files --all-match "${PATTERNS[@]}"; then
       BUILDKITE_LABEL='Swift package tests' show_skip_message "$job_type"
