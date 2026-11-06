@@ -104,8 +104,7 @@ public class WPAccount: NSManagedObject {
 
     public override func didTurnIntoFault() {
         super.didTurnIntoFault()
-        _private_wordPressComRestApi = nil
-        cachedToken = nil
+        discardCachedToken()
     }
 
     // MARK: - Auth Token (Keychain)
@@ -120,21 +119,33 @@ public class WPAccount: NSManagedObject {
         if let cachedToken {
             return cachedToken
         }
-        let token = try? Self.token(
+        let token = authTokenInKeychain
+        cachedToken = token
+        return token
+    }
+
+    /// The token stored in the keychain, bypassing `authToken`'s cache.
+    ///
+    /// The cache belongs to this managed object instance. A token written through an instance in another
+    /// context does not invalidate it, so only the keychain tells which token is current.
+    var authTokenInKeychain: String? {
+        try? Self.token(
             forUsername: username,
             serviceName: keychainServiceName,
             migration: keychainMigration,
             keychain: keychain
         )
-        cachedToken = token
-        return token
+    }
+
+    /// Drops this instance's cached token and REST API, so the next access reads the token from the keychain.
+    func discardCachedToken() {
+        cachedToken = nil
+        _private_wordPressComRestApi = nil
     }
 
     private func _setAuthToken(_ authToken: String?) {
-        cachedToken = nil
-
         // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
-        _private_wordPressComRestApi = nil
+        discardCachedToken()
 
         do {
             try keychain.setPassword(for: username, to: authToken, serviceName: keychainServiceName)

@@ -23,6 +23,10 @@ import WordPressShared
             return CommentServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 
+        if blog.isMissingRequiredWordPressComToken {
+            return nil
+        }
+
         // The REST API does not have information about comment "likes". We'll continue to use WordPress.com API for now.
         if let site = try? WordPressSite(blog: blog) {
             return CommentServiceRemoteCoreRESTAPI(client: WordPressClientFactory.shared.instance(for: site))

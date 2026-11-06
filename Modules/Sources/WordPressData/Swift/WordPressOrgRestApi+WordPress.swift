@@ -3,8 +3,10 @@ import WordPressShared
 import WordPressKit
 
 private func apiBase(blog: Blog) -> URL? {
+    // A blog with an account is reached through WordPress.com, never through its own REST API. It reaches this
+    // point when the account has no token, an expected state (the app shows the WordPress.com re-authentication
+    // gate), or when the blog has no WordPress.com ID.
     guard blog.account == nil else {
-        assertionFailure(".com support has not been implemented yet")
         return nil
     }
 

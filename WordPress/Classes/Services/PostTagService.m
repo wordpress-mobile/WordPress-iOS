@@ -7,6 +7,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static const NSInteger PostTagIdDefaultValue = -1;
+NSErrorDomain const PostTagServiceErrorDomain = @"PostTagServiceErrorDomain";
 
 @interface PostTagService ()
 
@@ -27,6 +28,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
                 failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
     NSManagedObjectID *blogObjectID = blog.objectID;
     [remote getTagsWithSuccess:^(NSArray <RemotePostTag *> *remoteTags) {
         [self.managedObjectContext performBlock:^{
@@ -58,6 +63,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
     paging.offset = offset ?: @(0);
     
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
     NSManagedObjectID *blogObjectID = blog.objectID;
     [remote getTagsWithPaging:paging
                       success:^(NSArray<RemotePostTag *> *remoteTags) {
@@ -82,6 +91,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
                   failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
     RemoteTaxonomyPaging *paging = [RemoteTaxonomyPaging new];
     paging.orderBy = RemoteTaxonomyPagingResultsOrderingByCount;
     paging.order = RemoteTaxonomyPagingOrderDescending;
@@ -106,6 +119,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
 {
     NSParameterAssert(nameQuery.length > 0);
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
     NSManagedObjectID *blogObjectID = blog.objectID;
     [remote searchTagsWithName:nameQuery
                        success:^(NSArray<RemotePostTag *> *remoteTags) {
@@ -132,6 +149,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
           failure:(nullable void (^)(NSError *error))failure
 {
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
 
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
 
@@ -173,11 +194,13 @@ static const NSInteger PostTagIdDefaultValue = -1;
         return instance;
     }
 
-    if ([blog supports:BlogFeatureWpComRESTAPI]) {
-        if (blog.wordPressComRestApi) {
-            return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
-        }
-    } else if (blog.xmlrpcApi) {
+    if ([blog supports:BlogFeatureWpComRESTAPI] && blog.wordPressComRestApi) {
+        return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
+    }
+    if (blog.isMissingRequiredWordPressComToken) {
+        return nil;
+    }
+    if (blog.xmlrpcApi) {
         return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
     return nil;
@@ -242,6 +265,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
 {
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
     [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
         if (success) {
             PostTag *localTag = [[self saveRemoteTags:@[tag] toBlog:blog] firstObject];
@@ -260,6 +287,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
 {
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+    if (!remote) {
+        [self handleError:[self noRemoteError] forBlog:blog withFailure:failure];
+        return;
+    }
     [remote updateTag:remoteTag success:^(RemotePostTag * _Nonnull updatedTag) {
         tag.tagID = updatedTag.tagID;
         tag.tagDescription = updatedTag.tagDescription;
@@ -284,6 +315,11 @@ static const NSInteger PostTagIdDefaultValue = -1;
     remoteTag.postCount = tag.postCount;
 
     return remoteTag;
+}
+
+- (NSError *)noRemoteError
+{
+    return [NSError errorWithDomain:PostTagServiceErrorDomain code:PostTagServiceErrorNoRemoteForBlog userInfo:nil];
 }
 
 - (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
