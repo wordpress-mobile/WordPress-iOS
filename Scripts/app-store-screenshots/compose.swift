@@ -343,70 +343,83 @@ struct Layout {
 
     func px(_ fraction: CGFloat) -> CGFloat { (fraction * canvas.width).rounded() }
 
-    /// The layout for a raw screenshot, by its size, and the name its composed files start with.
+    /// The layout for a raw screenshot, by its size, and the name its composed files start with, or
+    /// nil for a size the App Store doesn't take. Each size is matched exactly, since a screenshot
+    /// of any other size is a broken one, such as a display captured before the app was on it.
     ///
     /// The App Store orders a device's screenshots by file name. An iPhone Duo's outer and inner
     /// display share one set, so their names put the inner display, the larger, first.
-    static func forScreenshot(of size: CGSize) -> (kind: String, layout: Layout) {
-        let aspect = size.width / size.height
+    static func forScreenshot(of size: CGSize) -> (kind: String, layout: Layout)? {
         switch (Int(size.width), Int(size.height)) {
         case (2007, 2853):
             // iPhone Duo, inner display: nearly as square as an iPad, with smaller corners than a phone.
-            return ("DuoInner", Layout(
-                canvas: size,
-                headlineTop: 0.065,
-                headlineWidth: 0.8,
-                headlineSizes: 0.045...0.068,
-                titleSizes: 0.06...0.09,
-                deviceWidth: 0.78,
-                deviceSpacing: 0.045,
-                bezel: 0.018,
-                screenCornerRadius: 0.035,
-                logoHeight: 0.15
-            ))
+            return (
+                "DuoInner",
+                Layout(
+                    canvas: size,
+                    headlineTop: 0.065,
+                    headlineWidth: 0.8,
+                    headlineSizes: 0.045...0.068,
+                    titleSizes: 0.06...0.09,
+                    deviceWidth: 0.78,
+                    deviceSpacing: 0.045,
+                    bezel: 0.018,
+                    screenCornerRadius: 0.035,
+                    logoHeight: 0.15
+                )
+            )
         case (1398, 2034):
             // iPhone Duo, outer display: a short phone.
-            return ("DuoOuter", Layout(
-                canvas: size,
-                headlineTop: 0.065,
-                headlineWidth: 0.82,
-                headlineSizes: 0.05...0.075,
-                titleSizes: 0.065...0.095,
-                deviceWidth: 0.74,
-                deviceSpacing: 0.045,
-                bezel: 0.024,
-                screenCornerRadius: 0.09,
-                logoHeight: 0.17
-            ))
+            return (
+                "DuoOuter",
+                Layout(
+                    canvas: size,
+                    headlineTop: 0.065,
+                    headlineWidth: 0.82,
+                    headlineSizes: 0.05...0.075,
+                    titleSizes: 0.065...0.095,
+                    deviceWidth: 0.74,
+                    deviceSpacing: 0.045,
+                    bezel: 0.024,
+                    screenCornerRadius: 0.09,
+                    logoHeight: 0.17
+                )
+            )
+        case (2064, 2752):
+            return (
+                "iPad",
+                Layout(
+                    canvas: size,
+                    headlineTop: 0.065,
+                    headlineWidth: 0.8,
+                    headlineSizes: 0.04...0.062,
+                    titleSizes: 0.055...0.085,
+                    deviceWidth: 0.8,
+                    deviceSpacing: 0.045,
+                    bezel: 0.016,
+                    screenCornerRadius: 0.025,
+                    logoHeight: 0.14
+                )
+            )
+        case (1320, 2868):
+            return (
+                "iPhone",
+                Layout(
+                    canvas: size,
+                    headlineTop: 0.075,
+                    headlineWidth: 0.86,
+                    headlineSizes: 0.06...0.088,
+                    titleSizes: 0.075...0.11,
+                    deviceWidth: 0.86,
+                    deviceSpacing: 0.05,
+                    bezel: 0.026,
+                    screenCornerRadius: 0.13,
+                    logoHeight: 0.2
+                )
+            )
         default:
-            break
+            return nil
         }
-        if aspect > 0.6 {
-            return ("iPad", Layout(
-                canvas: size,
-                headlineTop: 0.065,
-                headlineWidth: 0.8,
-                headlineSizes: 0.04...0.062,
-                titleSizes: 0.055...0.085,
-                deviceWidth: 0.8,
-                deviceSpacing: 0.045,
-                bezel: 0.016,
-                screenCornerRadius: 0.025,
-                logoHeight: 0.14
-            ))
-        }
-        return ("iPhone", Layout(
-            canvas: size,
-            headlineTop: 0.075,
-            headlineWidth: 0.86,
-            headlineSizes: 0.06...0.088,
-            titleSizes: 0.075...0.11,
-            deviceWidth: 0.86,
-            deviceSpacing: 0.05,
-            bezel: 0.026,
-            screenCornerRadius: 0.13,
-            logoHeight: 0.2
-        ))
     }
 }
 
@@ -631,6 +644,9 @@ if let logoURL, logo == nil {
 
 var written = 0
 var warnings: [String] = []
+var errors: [String] = []
+// The kinds of layout composed in each locale, so that two devices can't write the same files.
+var composedKinds: Set<String> = []
 let locales = ((try? fileManager.contentsOfDirectory(atPath: rawRoot.path(percentEncoded: false))) ?? []).sorted()
 
 for locale in locales {
@@ -659,9 +675,29 @@ for locale in locales {
 
     for device in Set(screenshots.map(\.device)).sorted() {
         let deviceScreenshots = screenshots.filter { $0.device == device }
-        let images = deviceScreenshots.compactMap { screenshot in loadImage(screenshot.file).map { (screenshot, $0) } }
-        guard let first = images.first?.1 else { continue }
-        let (kind, layout) = Layout.forScreenshot(of: CGSize(width: first.width, height: first.height))
+        let loaded = deviceScreenshots.compactMap { screenshot in loadImage(screenshot.file).map { (screenshot, $0) } }
+        guard let first = loaded.first?.1 else { continue }
+        let size = CGSize(width: first.width, height: first.height)
+        guard let (kind, layout) = Layout.forScreenshot(of: size) else {
+            errors.append("\(locale) \(device): \(first.width)×\(first.height) isn't a size the App Store takes")
+            continue
+        }
+        // Every screenshot of a device is the same size. One that isn't was taken wrongly, and is left
+        // out rather than set in the wrong layout.
+        let images = loaded.filter { screenshot, image in
+            guard image.width == first.width, image.height == first.height else {
+                errors.append(
+                    "\(locale) \(screenshot.file.lastPathComponent): \(image.width)×\(image.height), not \(first.width)×\(first.height)"
+                )
+                return false
+            }
+            return true
+        }
+        guard !composedKinds.contains("\(locale) \(kind)") else {
+            errors.append("\(locale) \(device): another device's screenshots are already composed as \(kind)")
+            continue
+        }
+        composedKinds.insert("\(locale) \(kind)")
         var composed: [CGImage] = []
 
         // The feature headlines share one size: the largest every one of them fits at.
@@ -757,7 +793,14 @@ for locale in locales {
 }
 
 print("Wrote \(written) screenshots to \(outputRoot.standardized.path)")
+if !errors.isEmpty {
+    print("\nThese screenshots were left out, and need taking again:")
+    errors.forEach { print("- \($0)") }
+}
 if !warnings.isEmpty {
     print("\nThese headlines don't fit, and were set smaller on extra lines. Consider asking for shorter translations:")
     warnings.forEach { print("- \($0)") }
+}
+if !errors.isEmpty {
+    exit(1)
 }

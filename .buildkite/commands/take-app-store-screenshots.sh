@@ -16,4 +16,12 @@ echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 📸 Taking the screenshots: $APP, $DEVICE, $LOCALE"
-bundle exec fastlane "${APP}_screenshots" language:"$LOCALE" device:"$DEVICE" skip_build:true
+STATUS=0
+bundle exec fastlane "${APP}_screenshots" language:"$LOCALE" device:"$DEVICE" skip_build:true || STATUS=$?
+
+# A failed run's result bundle has the app's screen and requests at the failure, for working out why.
+if [[ $STATUS -ne 0 ]]; then
+  echo "--- 📦 Zipping the result bundle"
+  (cd build/results/screenshots && for result in *.xcresult; do zip -qr "$result.zip" "$result"; done)
+fi
+exit $STATUS
