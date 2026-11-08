@@ -2,6 +2,7 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 import WordPressData
+import WordPressKit
 import WordPressUI
 
 /// Encapsulates CoreSpotlight operations for WPiOS
@@ -331,12 +332,10 @@ fileprivate extension SearchManager {
         guard let blog = identifier.blog(in: coreDataStack.mainContext) else {
             return nil
         }
-        // A cached copy opens immediately; the network fetch covers posts
-        // that are indexed but no longer cached locally.
-        if let post = identifier.post(in: coreDataStack.mainContext) {
-            return post
-        }
-
+        // Fetch from the server first: it refreshes the saved copy, so the
+        // editor, the trash check, and the choice of screen see changes made
+        // on the web since the last sync. The saved copy is the fallback when
+        // the server can't be reached, for example offline.
         let postRepository = PostRepository(coreDataStack: coreDataStack)
         do {
             let postObjectID = try await postRepository.getPost(
@@ -344,8 +343,11 @@ fileprivate extension SearchManager {
                 from: .init(blog)
             )
             return try coreDataStack.mainContext.existingObject(with: postObjectID)
-        } catch {
+        } catch PostServiceRemoteError.notFound {
+            // Deleted on the server: don't open a copy that no longer exists.
             return nil
+        } catch {
+            return identifier.post(in: coreDataStack.mainContext)
         }
     }
 
