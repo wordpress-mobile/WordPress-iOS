@@ -27,6 +27,9 @@ public struct RemotePostCreateParameters: Equatable {
     public var commentStatus: RemotePostDiscussionState?
     public var pingStatus: RemotePostDiscussionState?
 
+    // TODO: Refactor RemotePostDiscussionSettings to preserve optional statuses
+    // through diffing and updates. Keep the legacy WordPress.com fallback
+    // in its encoder.
     /// Legacy view for the WordPress.com REST encoder and change detection.
     /// An unknown status reads as open. XML-RPC creates encode the optional statuses directly.
     public var discussion: RemotePostDiscussionSettings {
