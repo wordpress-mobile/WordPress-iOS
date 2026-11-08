@@ -1,6 +1,6 @@
 GCC_WARN_UNUSED_PARAMETER = YES
 WARNING_CFLAGS = -Wno-nullability-completeness
-IPHONEOS_DEPLOYMENT_TARGET = 17.0
+IPHONEOS_DEPLOYMENT_TARGET = 18.0
 CODE_SIGN_STYLE = Manual
 
 // Temporarily disable this build settings. There are too many new warnings (mostly using deprecated APIs)

@@ -6,7 +6,12 @@ struct UnifiedSupportConversationView: View {
 
     @StateObject private var viewModel: UnifiedSupportConversationViewModel
     @EnvironmentObject private var context: UnifiedSupportContext
-    @Namespace private var bottom
+
+    /// A conversation is read from the bottom, so that's where it opens and where it stays.
+    @State private var scrollPosition = ScrollPosition(edge: .bottom)
+
+    /// Whether a ticket's subject is on screen, which is what keeps the navigation bar from repeating it.
+    @State private var isTitleVisible = true
 
     init(viewModel: @autoclosure @escaping () -> UnifiedSupportConversationViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
@@ -24,24 +29,31 @@ struct UnifiedSupportConversationView: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                content
-                    .padding(.top, 8)
+        ScrollView {
+            content
+                .padding(.top, 8)
+        }
+        .scrollPosition($scrollPosition)
+        .scrollDismissesKeyboard(.interactively)
+        .onChange(of: viewModel.messages.last?.id) {
+            scrollToBottom()
+        }
+        .onChange(of: viewModel.isAssistantTyping) {
+            scrollToBottom()
+        }
+        // A notice takes a bottom inset of its own, which moves the bar below the conversation up. Following
+        // it keeps the last message from ending up behind that bar. Only a notice arriving is worth
+        // following: one going away hands the room back, and scrolling then would just take the reader
+        // somewhere they didn't ask to go.
+        .onChange(of: viewModel.notice?.id) { _, notice in
+            guard notice != nil else {
+                return
+            }
 
-                Color.clear
-                    .frame(height: 1)
-                    .id(bottom)
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .onChange(of: viewModel.messages.count) {
-                scrollToBottom(using: proxy, animated: true)
-            }
-            .onChange(of: viewModel.isAssistantTyping) {
-                scrollToBottom(using: proxy, animated: true)
-            }
-            .onAppear {
-                scrollToBottom(using: proxy, animated: false)
+            // The inset is only applied once this update is laid out, so following it waits for the next
+            // one.
+            DispatchQueue.main.async {
+                scrollToBottom()
             }
         }
         .safeAreaInset(edge: .bottom) { bottomBar }
@@ -51,6 +63,9 @@ struct UnifiedSupportConversationView: View {
             }
         }
         .unifiedSupportNotice($viewModel.notice)
+        // A ticket's subject scrolls away with the conversation, so the bar picks it up once it's gone.
+        // Showing it in both places at once would just say the same thing twice.
+        .navigationTitle(isTitleVisible ? "" : viewModel.title)
         .navigationBarTitleDisplayMode(.inline)
         .unifiedSupportAutoRefresh(every: .seconds(60)) {
             await viewModel.refreshSilently()
@@ -81,7 +96,7 @@ struct UnifiedSupportConversationView: View {
         if viewModel.isBot {
             UnifiedSupportChatContentView(viewModel: viewModel)
         } else {
-            UnifiedSupportTicketContentView(viewModel: viewModel)
+            UnifiedSupportTicketContentView(viewModel: viewModel, isTitleVisible: $isTitleVisible)
         }
     }
 
@@ -106,13 +121,9 @@ struct UnifiedSupportConversationView: View {
         }
     }
 
-    private func scrollToBottom(using proxy: ScrollViewProxy, animated: Bool) {
-        guard animated else {
-            proxy.scrollTo(bottom, anchor: .bottom)
-            return
-        }
+    private func scrollToBottom() {
         withAnimation {
-            proxy.scrollTo(bottom, anchor: .bottom)
+            scrollPosition.scrollTo(edge: .bottom)
         }
     }
 }

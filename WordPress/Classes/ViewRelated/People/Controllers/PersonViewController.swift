@@ -544,7 +544,7 @@ extension PersonViewController {
         else {
             return nil
         }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.person)
+        let textProvider = JetpackBrandingTextProvider()
         return JetpackButton.makeBadgeView(title: textProvider.brandingText(),
                                            target: self,
                                            selector: #selector(jetpackButtonTapped))

@@ -13,6 +13,10 @@ struct UnifiedSupportComposer: View {
 
     @FocusState private var isFocused: Bool
 
+    /// Keeps the button a circle around the arrow as the text size grows.
+    @ScaledMetric(relativeTo: .body)
+    private var sendButtonSize: CGFloat = 36
+
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 12, style: .continuous)
     }
@@ -52,9 +56,9 @@ struct UnifiedSupportComposer: View {
     private var sendButton: some View {
         Button(action: sendIfPossible) {
             Image(systemName: "arrow.up")
-                .font(.system(size: 16, weight: .semibold))
+                .font(.body.weight(.semibold))
                 .foregroundStyle(isSendEnabled ? Color.white : Color(.systemGray6))
-                .frame(width: 36, height: 36)
+                .frame(width: sendButtonSize, height: sendButtonSize)
                 .background(isSendEnabled ? Color.accentColor : Color(.systemGray3))
                 .clipShape(Circle())
         }

@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import WordPress
 @testable import WordPressData
 
@@ -7,7 +8,6 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
     private var mockUserDefaults: InMemoryUserDefaults!
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase = .normal
     private var savedAppUIType: RootViewCoordinator.AppUIType?
-    private var remoteConfigStore = RemoteConfigStoreMock()
     private var currentDateProvider: MockCurrentDateProvider!
 
     override func setUp() {
@@ -15,145 +15,42 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         mockUserDefaults = InMemoryUserDefaults()
         savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
         currentDateProvider = MockCurrentDateProvider()
-        let account = AccountBuilder(contextManager.mainContext).build()
-        UserSettings.defaultDotComUUID = account.uuid
     }
 
     override func tearDown() {
-        UserSettings.defaultDotComUUID = nil
         JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
     }
 
     func testShouldShowTopCardBasedOnPhase() {
         // Given
-        let blog = BlogBuilder(mainContext)
-            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: blog,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
+        let presenter = makePresenter(blog: makeJetpackBlog())
 
         // Normal phase
         setPhase(phase: .normal)
         XCTAssertFalse(presenter.shouldShowTopCard())
 
-        // Phase One
-        setPhase(phase: .one)
+        // Static screens phase
+        setPhase(phase: .staticScreens)
         XCTAssertFalse(presenter.shouldShowTopCard())
 
-        // Phase Two
-        setPhase(phase: .two)
-        XCTAssertFalse(presenter.shouldShowTopCard())
-
-        // Phase Three
-        setPhase(phase: .three)
-        XCTAssertTrue(presenter.shouldShowTopCard())
-
-        // Phase Four
-        setPhase(phase: .four)
-        XCTAssertFalse(presenter.shouldShowTopCard())
-
-        // Phase New Users
-        setPhase(phase: .newUsers)
-        XCTAssertFalse(presenter.shouldShowTopCard())
-
-        // Phase Self Hosted
-        UserSettings.defaultDotComUUID = nil
+        // Self-hosted phase
         setPhase(phase: .selfHosted)
         XCTAssertTrue(presenter.shouldShowTopCard())
     }
 
-    func testShouldShowBottomCardBasedOnPhase() {
+    func testTopCardIsHiddenForSitesWithoutJetpack() {
         // Given
-        let blog = BlogBuilder(mainContext)
-            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: blog,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
-
-        // Normal phase
-        setPhase(phase: .normal)
-        XCTAssertFalse(presenter.shouldShowBottomCard())
-
-        // Phase One
-        setPhase(phase: .one)
-        XCTAssertFalse(presenter.shouldShowBottomCard())
-
-        // Phase Two
-        setPhase(phase: .two)
-        XCTAssertFalse(presenter.shouldShowBottomCard())
-
-        // Phase Three
-        setPhase(phase: .three)
-        XCTAssertFalse(presenter.shouldShowBottomCard())
-
-        // Phase Four
-        setPhase(phase: .four)
-        XCTAssertTrue(presenter.shouldShowBottomCard())
-
-        // Phase New Users
-        setPhase(phase: .newUsers)
-        XCTAssertTrue(presenter.shouldShowBottomCard())
-
-        // Phase Self Hosted
-        UserSettings.defaultDotComUUID = nil
+        let presenter = makePresenter(blog: BlogBuilder(mainContext).build())
         setPhase(phase: .selfHosted)
-        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // When & Then
+        XCTAssertFalse(presenter.shouldShowTopCard())
     }
 
-    func testPhaseThreeCardConfig() throws {
+    func testSelfHostedCardConfig() throws {
         // Given
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
-            remoteConfigStore: remoteConfigStore,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
-        setPhase(phase: .three)
-        remoteConfigStore.phaseThreeBlogPostUrl = "example.com"
-
-        // When
-        let config = try XCTUnwrap(presenter.cardConfig())
-
-        // Then
-        XCTAssertEqual(
-            config.description,
-            "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon."
-        )
-        XCTAssertEqual(config.type, .expanded)
-    }
-
-    func testPhaseFourCardConfig() throws {
-        // Given
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
-            remoteConfigStore: remoteConfigStore,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
-        setPhase(phase: .four)
-
-        // When
-        let config = try XCTUnwrap(presenter.cardConfig())
-
-        // Then
-        XCTAssertEqual(config.description, "Switch to Jetpack")
-        XCTAssertEqual(config.type, .compact)
-    }
-
-    func testPhaseNewUsersCardConfig() throws {
-        // Given
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
-            remoteConfigStore: remoteConfigStore,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
-        setPhase(phase: .newUsers)
-        remoteConfigStore.phaseNewUsersBlogPostUrl = "example.com"
+        let presenter = makePresenter(blog: makeJetpackBlog())
+        setPhase(phase: .selfHosted)
 
         // When
         let config = try XCTUnwrap(presenter.cardConfig())
@@ -166,39 +63,22 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         XCTAssertEqual(config.type, .expanded)
     }
 
-    func testPhaseSelfHostedCardConfig() throws {
+    func testNoCardConfigOutsideSelfHostedPhase() {
         // Given
-        UserSettings.defaultDotComUUID = nil
-        let blog = BlogBuilder(mainContext)
-            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: blog,
-            remoteConfigStore: remoteConfigStore,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
-        setPhase(phase: .selfHosted)
-        remoteConfigStore.phaseSelfHostedBlogPostUrl = "example.com"
+        let presenter = makePresenter(blog: makeJetpackBlog())
 
-        // When
-        let config = try XCTUnwrap(presenter.cardConfig())
+        // When & Then
+        setPhase(phase: .normal)
+        XCTAssertNil(presenter.cardConfig())
 
-        // Then
-        XCTAssertEqual(
-            config.description,
-            "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack."
-        )
-        XCTAssertEqual(config.type, .expanded)
+        setPhase(phase: .staticScreens)
+        XCTAssertNil(presenter.cardConfig())
     }
 
     func testHidingTheMenuCard() {
         // Given
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults
-        )
-        setPhase(phase: .three)
+        let presenter = makePresenter(blog: makeJetpackBlog())
+        setPhase(phase: .selfHosted)
 
         // When
         presenter.hideThisTapped()
@@ -211,13 +91,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         // Given
         let secondsInDay = TimeInterval(86_400)
         let currentDate = Date()
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults,
-            currentDateProvider: currentDateProvider
-        )
-        setPhase(phase: .three)
+        let presenter = makePresenter(blog: makeJetpackBlog())
+        setPhase(phase: .selfHosted)
         currentDateProvider.dateToReturn = currentDate
 
         // When
@@ -230,23 +105,33 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     func testRemindMeLaterTappedAndIntervalPassed() {
         // Given
-        let secondsInSevenDays = TimeInterval(86_400 * 4)
+        let secondsInFourDays = TimeInterval(86_400 * 4)
         let currentDate = Date()
-        let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
-            phaseProvider: { self.phase },
-            persistenceStore: mockUserDefaults,
-            currentDateProvider: currentDateProvider
-        )
-        setPhase(phase: .three)
+        let presenter = makePresenter(blog: makeJetpackBlog())
+        setPhase(phase: .selfHosted)
         currentDateProvider.dateToReturn = currentDate
 
         // When
         presenter.remindLaterTapped()
-        currentDateProvider.dateToReturn = currentDate.addingTimeInterval(secondsInSevenDays + 1)
+        currentDateProvider.dateToReturn = currentDate.addingTimeInterval(secondsInFourDays + 1)
 
         // Then
         XCTAssertTrue(presenter.shouldShowTopCard())
+    }
+
+    // MARK: Helpers
+
+    private func makeJetpackBlog() -> Blog {
+        BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
+    }
+
+    private func makePresenter(blog: Blog?) -> JetpackBrandingMenuCardPresenter {
+        JetpackBrandingMenuCardPresenter(
+            blog: blog,
+            phaseProvider: { self.phase },
+            persistenceStore: mockUserDefaults,
+            currentDateProvider: currentDateProvider
+        )
     }
 
     private func setPhase(phase: JetpackFeaturesRemovalCoordinator.GeneralPhase) {

@@ -986,10 +986,7 @@ private extension MySiteViewController {
         if isViewOnScreen() && !RootViewCoordinator.shared.isSiteCreationActive {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
-                let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
-                let source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource =
-                    phase == .four ? .phaseFourOverlay : .appOpen
-                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: source, blog: self.blog)
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
             }
         }
     }

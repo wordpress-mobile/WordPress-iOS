@@ -42,7 +42,9 @@ class EditorMediaUtility {
         let thumbnailGenerator = MediaVideoExporter(url: sourceURL)
         thumbnailGenerator.exportPreviewImageForVideo(atURL: sourceURL, imageOptions: nil, onCompletion: { exportResult in
             guard let image = UIImage(contentsOfFile: exportResult.url.path) else {
-                onFailure()
+                DispatchQueue.main.async {
+                    onFailure()
+                }
                 return
             }
             DispatchQueue.main.async {
@@ -50,7 +52,9 @@ class EditorMediaUtility {
             }
         }, onError: { error in
             DDLogError("Unable to grab frame from video = \(sourceURL). Details: \(error.localizedDescription)")
-            onFailure()
+            DispatchQueue.main.async {
+                onFailure()
+            }
         })
     }
 

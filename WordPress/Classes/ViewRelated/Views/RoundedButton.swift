@@ -48,6 +48,26 @@ class RoundedButton: UIButton {
         }
     }
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        commonInit()
+    }
+
+    private func commonInit() {
+        updateFontSizeToMatchSystem()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.updateFontSizeToMatchSystem()
+        }
+    }
+
     override func tintColorDidChange() {
         super.tintColorDidChange()
 
@@ -100,13 +120,6 @@ class RoundedButton: UIButton {
 
         if isCircular {
             layer.cornerRadius = frame.size.width / 2
-        }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            updateFontSizeToMatchSystem()
         }
     }
 

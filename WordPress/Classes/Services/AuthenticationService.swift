@@ -20,44 +20,35 @@ class AuthenticationService {
 
     // MARK: - Self Hosted
 
+    @MainActor
     func loadAuthCookiesForSelfHosted(
         into cookieJar: CookieJar,
         loginURL: URL,
         username: String,
-        password: String,
-        success: @escaping () -> Void,
-        failure: @escaping (Error) -> Void) {
-
-        cookieJar.hasWordPressSelfHostedAuthCookie(for: loginURL, username: username) { hasCookie in
-                guard !hasCookie else {
-                    success()
-                    return
-                }
-
-                self.getAuthCookiesForSelfHosted(loginURL: loginURL, username: username, password: password, success: { cookies in
-                    cookieJar.setCookies(cookies) {
-                        success()
-                    }
-                }) { error in
-                    // Make sure this error scenario isn't silently ignored.
-                    WordPressAppDelegate.crashLogging?.logError(error)
-
-                    // Even if getting the auth cookies fail, we'll still try to load the URL
-                    // so that the user sees a reasonable error situation on screen.
-                    // We could opt to create a special screen but for now I'd rather users report
-                    // the issue when it happens.
-                    failure(error)
-                }
+        password: String
+    ) async throws {
+        guard await !cookieJar.hasWordPressSelfHostedAuthCookie(for: loginURL, username: username) else {
+            return
         }
+
+        let cookies: [HTTPCookie]
+        do {
+            cookies = try await getAuthCookiesForSelfHosted(loginURL: loginURL, username: username, password: password)
+        } catch {
+            // Make sure this error scenario isn't silently ignored.
+            WordPressAppDelegate.crashLogging?.logError(error)
+            throw error
+        }
+
+        await cookieJar.setCookies(cookies)
     }
 
-    func getAuthCookiesForSelfHosted(
+    @MainActor
+    private func getAuthCookiesForSelfHosted(
         loginURL: URL,
         username: String,
-        password: String,
-        success: @escaping (_ cookies: [HTTPCookie]) -> Void,
-        failure: @escaping (Error) -> Void) {
-
+        password: String
+    ) async throws -> [HTTPCookie] {
         let headers = [String: String]()
         let parameters = [
             "log": username,
@@ -65,63 +56,40 @@ class AuthenticationService {
             "rememberme": "true"
         ]
 
-        requestAuthCookies(
-            from: loginURL,
-            headers: headers,
-            parameters: parameters,
-            success: success,
-            failure: failure)
+        return try await requestAuthCookies(from: loginURL, headers: headers, parameters: parameters)
     }
 
     // MARK: - WP.com
 
+    @MainActor
     func loadAuthCookiesForWPCom(
         into cookieJar: CookieJar,
         username: String,
-        authToken: String,
-        success: @escaping () -> Void,
-        failure: @escaping (Error) -> Void) {
+        authToken: String
+    ) async throws {
+        guard await !cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false) else {
+            // The stored cookie can be stale but we'll try to use it and refresh it if the request fails.
+            return
+        }
 
-        cookieJar.hasWordPressComAuthCookie(
-            username: username,
-            atomicSite: false) { hasCookie in
+        let cookies: [HTTPCookie]
+        do {
+            cookies = try await getAuthCookiesForWPCom(username: username, authToken: authToken)
+        } catch {
+            // Make sure this error scenario isn't silently ignored.
+            WordPressAppDelegate.crashLogging?.logError(error)
+            throw error
+        }
 
-                guard !hasCookie else {
-                    // The stored cookie can be stale but we'll try to use it and refresh it if the request fails.
-                    success()
-                    return
-                }
+        await cookieJar.setCookies(cookies)
 
-                self.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
-                    cookieJar.setCookies(cookies) {
-
-                        cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false) { hasCookie in
-                            guard hasCookie else {
-                                failure(RequestAuthCookieError.wpcomCookieNotReturned)
-                                return
-                            }
-                            success()
-                        }
-                    }
-                }) { error in
-                    // Make sure this error scenario isn't silently ignored.
-                    WordPressAppDelegate.crashLogging?.logError(error)
-
-                    // Even if getting the auth cookies fail, we'll still try to load the URL
-                    // so that the user sees a reasonable error situation on screen.
-                    // We could opt to create a special screen but for now I'd rather users report
-                    // the issue when it happens.
-                    failure(error)
-                }
+        guard await cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false) else {
+            throw RequestAuthCookieError.wpcomCookieNotReturned
         }
     }
 
-    func getAuthCookiesForWPCom(
-        username: String,
-        authToken: String,
-        success: @escaping (_ cookies: [HTTPCookie]) -> Void,
-        failure: @escaping (Error) -> Void) {
-
+    @MainActor
+    private func getAuthCookiesForWPCom(username: String, authToken: String) async throws -> [HTTPCookie] {
         let loginURL = URL(string: AuthenticationService.wpComLoginEndpoint)!
         let headers = [
             "Authorization": "Bearer \(authToken)"
@@ -131,23 +99,17 @@ class AuthenticationService {
             "rememberme": "true"
         ]
 
-        requestAuthCookies(
-            from: loginURL,
-            headers: headers,
-            parameters: parameters,
-            success: success,
-            failure: failure)
+        return try await requestAuthCookies(from: loginURL, headers: headers, parameters: parameters)
     }
 
     // MARK: - Request Construction
 
+    @MainActor
     private func requestAuthCookies(
         from url: URL,
         headers: [String: String],
-        parameters: [String: String],
-        success: @escaping (_ cookies: [HTTPCookie]) -> Void,
-        failure: @escaping (Error) -> Void) {
-
+        parameters: [String: String]
+    ) async throws -> [HTTPCookie] {
         // We don't want these cookies persisted in other sessions
         let session = URLSession(configuration: .ephemeral)
         var request = URLRequest(url: url)
@@ -160,31 +122,19 @@ class AuthenticationService {
         }
         request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")
 
-        let task = session.dataTask(with: request) { _, response, error in
-            if let error {
-                DispatchQueue.main.async {
-                    failure(error)
-                }
-                return
-            }
+        let (_, response) = try await session.data(for: request)
 
-            // The following code is a bit complicated to read, apologies.
-            // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
-            // those cookies with the ones from the current session. The reason behind this is that
-            // iOS's URLSession processes the cookies from such header before this callback is executed,
-            // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
-            // the response). The only way to combine both is to just add them together here manually.
-            //
-            // To know if you can remove this, you'll have to test this code live and in our unit tests
-            // and compare the session cookies.
-            let responseCookies = self.cookies(from: response, loginURL: url)
-            let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
-            DispatchQueue.main.async {
-                success(cookies)
-            }
-        }
-
-        task.resume()
+        // The following code is a bit complicated to read, apologies.
+        // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
+        // those cookies with the ones from the current session. The reason behind this is that
+        // iOS's URLSession processes the cookies from such header before the request returns,
+        // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
+        // the response). The only way to combine both is to just add them together here manually.
+        //
+        // To know if you can remove this, you'll have to test this code live and in our unit tests
+        // and compare the session cookies.
+        let responseCookies = self.cookies(from: response, loginURL: url)
+        return (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
     }
 
     private func body(withParameters parameters: [String: String]) -> Data? {
@@ -203,7 +153,7 @@ class AuthenticationService {
 
     // MARK: - Response Parsing
 
-    private func cookies(from response: URLResponse?, loginURL: URL) -> [HTTPCookie] {
+    private func cookies(from response: URLResponse, loginURL: URL) -> [HTTPCookie] {
         guard let httpResponse = response as? HTTPURLResponse,
             let headers = httpResponse.allHeaderFields as? [String: String] else {
                 return []

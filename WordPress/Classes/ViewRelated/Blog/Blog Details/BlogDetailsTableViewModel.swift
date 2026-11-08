@@ -199,10 +199,6 @@ private struct Section {
             newSections.append(buildRemoveSiteSection())
         }
 
-        if viewController.shouldShowBottomJetpackBrandingMenuCard {
-            newSections.append(Section(rows: [], category: .jetpackBrandingCard))
-        }
-
         sections = newSections
     }
 

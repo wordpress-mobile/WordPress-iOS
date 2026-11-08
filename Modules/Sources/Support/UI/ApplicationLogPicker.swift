@@ -26,37 +26,44 @@ struct ApplicationLogPicker: View {
 
     private var picker: some View {
         Section {
-            VStack(alignment: .leading, spacing: 12) {
-                Toggle(isOn: $includeApplicationLogs.animation(.easeInOut(duration: 0.3))) {
-                    Text(Localization.includeApplicationLogs)
-                        .font(.body)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                self.includeApplicationLogs.toggle()
-                            }
+            Toggle(isOn: $includeApplicationLogs.animation(.easeInOut(duration: 0.3))) {
+                Text(Localization.includeApplicationLogs)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            self.includeApplicationLogs.toggle()
                         }
-                }
+                    }
+            }
 
-                Text(Localization.applicationLogsDescription)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }.padding(4)
+            if includeApplicationLogs {
+                switch self.state {
+                case .loading:
+                    ProgressView()
+                case .loaded(let logs):
+                    ForEach(logs, id: \.path) { log in
+                        ApplicationLogRow(log: log)
+                    }
+                // Reported in the footer instead: the error is drawn as a card of its own, which makes a
+                // poor row of a card.
+                case .error:
+                    EmptyView()
+                }
+            }
         } header: {
             Text(Localization.applicationLogs)
         } footer: {
-            if includeApplicationLogs {
-                switch self.state {
-                case .loading: ProgressView()
-                case .loaded(let logs):
-                    applicationLogList(logs)
-                case .error(let error):
+            VStack(alignment: .leading, spacing: 8) {
+                Text(Localization.applicationLogsDescription)
+
+                if includeApplicationLogs, case .error(let error) = self.state {
                     ErrorView(
                         title: Localization.unableToLoadApplicationLogs,
                         message: error
                     )
                 }
             }
-        }.task {
+        }
+        .task {
             await loadApplicationLogs()
         }
     }
@@ -69,57 +76,32 @@ struct ApplicationLogPicker: View {
             self.state = .error(error.localizedDescription)
         }
     }
-
-    @ViewBuilder
-    func applicationLogList(_ applicationLogs: [ApplicationLog]) -> some View {
-        // Show a brief list of logs
-        VStack(alignment: .leading, spacing: 8) {
-            Text(Localization.logFilesToUpload)
-            ForEach(applicationLogs, id: \.path) { log in
-                ApplicationLogRow(log: log)
-            }
-        }
-        .padding(.vertical)
-        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-    }
 }
 
 struct ApplicationLogRow: View {
     let log: ApplicationLog
 
+    /// Matches the icon column the attachment rows use, and keeps it growing with the text.
+    @ScaledMetric(relativeTo: .body)
+    private var iconWidth: CGFloat = 24
+
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(spacing: 12) {
             Image(systemName: "doc.text")
-                .font(.title2)
-                .foregroundColor(.accentColor)
-                .frame(width: 32, height: 32)
+                .frame(width: iconWidth)
+                .foregroundStyle(Color.accentColor)
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 2) {
+                // A log is named for the day it covers, so the end of the name is the part worth keeping.
                 Text(log.path.lastPathComponent)
-                    .font(.body)
-                    .foregroundColor(.primary)
                     .lineLimit(1)
+                    .truncationMode(.middle)
 
-                Text(formatDate(log.modifiedAt))
+                Text(log.modifiedAt.formatted(date: .numeric, time: .shortened))
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
-
-            Spacer()
         }
-        .padding()
-        .background(Color.clear)
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
-        )
-    }
-
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
     }
 }
 
@@ -131,7 +113,8 @@ struct ApplicationLogRow: View {
                 ApplicationLogPicker(
                     includeApplicationLogs: $includeApplicationLogs
                 )
-            }.environmentObject(SupportDataProvider.testing)
+            }
+            .environmentObject(SupportDataProvider.testing)
         }
     }
 
