@@ -9,11 +9,13 @@ struct TabData: FilterTabBarItem, Equatable {
     var totalCount: String?
     var dataRows: [StatsTotalRowData]
 
-    init(tabTitle: String,
-         itemSubtitle: String,
-         dataSubtitle: String,
-         totalCount: String? = nil,
-         dataRows: [StatsTotalRowData]) {
+    init(
+        tabTitle: String,
+        itemSubtitle: String,
+        dataSubtitle: String,
+        totalCount: String? = nil,
+        dataRows: [StatsTotalRowData]
+    ) {
         self.tabTitle = tabTitle
         self.itemSubtitle = itemSubtitle
         self.dataSubtitle = dataSubtitle
@@ -22,35 +24,59 @@ struct TabData: FilterTabBarItem, Equatable {
     }
 
     var title: String {
-        return self.tabTitle
+        self.tabTitle
     }
 
     var accessibilityIdentifier: String {
-        return self.tabTitle.localizedLowercase
+        self.tabTitle.localizedLowercase
     }
 }
 
-class TabbedTotalsCell: StatsBaseCell, NibLoadable {
+class TabbedTotalsCell: StatsBaseCell {
 
     // MARK: - Properties
 
-    @IBOutlet weak var topSeparatorLine: UIView!
-    @IBOutlet weak var filterTabBar: FilterTabBar!
-    @IBOutlet weak var labelsStackView: UIStackView!
-    @IBOutlet weak var totalCountView: UIView!
-    @IBOutlet weak var totalCountLabel: UILabel!
-    @IBOutlet weak var itemSubtitleLabel: UILabel!
-    @IBOutlet weak var dataSubtitleLabel: UILabel!
-
-    @IBOutlet private var labelsContainer: UIView!
-
-    @IBOutlet weak var rowsStackView: UIStackView!
-    @IBOutlet weak var bottomSeparatorLine: UIView!
-    @IBOutlet weak var noResultsView: UIView!
+    private let topSeparatorLine = makeSeparator()
+    private let filterTabBar: FilterTabBar = {
+        let filterTabBar = FilterTabBar()
+        filterTabBar.backgroundColor = .white
+        return filterTabBar
+    }()
+    private let labelsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        return stackView
+    }()
+    private let totalCountView = makeWhiteView()
+    private let totalCountLabel = UILabel.makeStatsLabel(
+        text: "Total: 9999",
+        textStyle: .subheadline,
+        textAlignment: .center
+    )
+    private let itemSubtitleLabel = makeSubtitleLabel(textAlignment: .left)
+    private let dataSubtitleLabel = makeSubtitleLabel(textAlignment: .right)
+    private let labelsContainer = makeWhiteView()
+    private let rowsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        return stackView
+    }()
+    private let bottomSeparatorLine = makeSeparator()
+    private let noResultsView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        view.backgroundColor = .clear
+        return view
+    }()
 
     private lazy var noResultsViewController: NoResultsViewController = {
-       let controller = NoResultsViewController.controller()
-        controller.configure(title: NSLocalizedString("No data yet", comment: "Text shown when there is no data to display in the stats list view."))
+        let controller = NoResultsViewController.controller()
+        controller.configure(
+            title: NSLocalizedString(
+                "No data yet",
+                comment: "Text shown when there is no data to display in the stats list view."
+            )
+        )
         controller.hideImageView(true)
         return controller
     }()
@@ -63,21 +89,103 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
     private var forDetails = false
 
     override var accessibilityElements: [Any]? {
-            get {
-                return [headingLabel, filterTabBar, rowsStackView].compactMap { $0 }
-            }
-            set { }
+        get {
+            [headingLabel, filterTabBar, rowsStackView].compactMap { $0 }
         }
+        set {}
+    }
+
+    // MARK: - Init
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+
+        totalCountView.addSubview(totalCountLabel)
+        labelsContainer.addSubview(itemSubtitleLabel)
+        labelsContainer.addSubview(dataSubtitleLabel)
+        [totalCountView, labelsContainer].forEach(labelsStackView.addArrangedSubview)
+
+        let contentStackView = UIStackView(arrangedSubviews: [
+            filterTabBar, labelsStackView, rowsStackView, noResultsView
+        ])
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.axis = .vertical
+        [contentStackView, topSeparatorLine, bottomSeparatorLine].forEach(contentView.addSubview)
+
+        let topConstraint = contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor)
+        let bottomConstraint = contentView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor)
+        bottomConstraint.priority = UILayoutPriority(999)
+        NSLayoutConstraint.activate([
+            topConstraint,
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor),
+            bottomConstraint,
+
+            filterTabBar.heightAnchor.constraint(equalToConstant: 46),
+
+            totalCountLabel.topAnchor.constraint(equalTo: totalCountView.topAnchor, constant: 19),
+            totalCountLabel.leadingAnchor.constraint(equalTo: totalCountView.leadingAnchor, constant: 16),
+            totalCountView.trailingAnchor.constraint(equalTo: totalCountLabel.trailingAnchor, constant: 16),
+            totalCountView.bottomAnchor.constraint(equalTo: totalCountLabel.bottomAnchor, constant: 19),
+
+            itemSubtitleLabel.topAnchor.constraint(equalTo: labelsContainer.topAnchor, constant: 7),
+            itemSubtitleLabel.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor, constant: 16),
+            labelsContainer.bottomAnchor.constraint(equalTo: itemSubtitleLabel.bottomAnchor, constant: 7),
+            dataSubtitleLabel.topAnchor.constraint(equalTo: labelsContainer.topAnchor, constant: 7),
+            labelsContainer.trailingAnchor.constraint(equalTo: dataSubtitleLabel.trailingAnchor, constant: 16),
+            labelsContainer.bottomAnchor.constraint(equalTo: dataSubtitleLabel.bottomAnchor, constant: 7),
+
+            topSeparatorLine.topAnchor.constraint(equalTo: contentView.topAnchor),
+            topSeparatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: topSeparatorLine.trailingAnchor),
+
+            bottomSeparatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: bottomSeparatorLine.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomSeparatorLine.bottomAnchor)
+        ])
+        self.topConstraint = topConstraint
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private static func makeSeparator() -> UIView {
+        let view = UIView.makeStatsSeparator()
+        view.backgroundColor = UIColor(white: 0.667, alpha: 1)
+        return view
+    }
+
+    private static func makeWhiteView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }
+
+    private static func makeSubtitleLabel(textAlignment: NSTextAlignment) -> UILabel {
+        UILabel.makeStatsLabel(
+            text: "Label",
+            textStyle: .footnote,
+            textColor: UIColor(white: 0.333, alpha: 1),
+            textAlignment: textAlignment
+        )
+    }
 
     // MARK: - Configure
 
-    func configure(tabsData: [TabData],
-                   statSection: StatSection? = nil,
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
-                   siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
-                   showTotalCount: Bool,
-                   selectedIndex: Int = 0,
-                   forDetails: Bool = false) {
+    func configure(
+        tabsData: [TabData],
+        statSection: StatSection? = nil,
+        siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
+        siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+        showTotalCount: Bool,
+        selectedIndex: Int = 0,
+        forDetails: Bool = false
+    ) {
         self.tabsData = tabsData
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
@@ -157,12 +265,14 @@ private extension TabbedTotalsCell {
             return
         }
 
-        addRows(tabsData[filterTabBar.selectedIndex].dataRows,
-                toStackView: rowsStackView,
-                forType: .insights,
-                limitRowsDisplayed: true,
-                rowDelegate: self,
-                viewMoreDelegate: self)
+        addRows(
+            tabsData[filterTabBar.selectedIndex].dataRows,
+            toStackView: rowsStackView,
+            forType: .insights,
+            limitRowsDisplayed: true,
+            rowDelegate: self,
+            viewMoreDelegate: self
+        )
     }
 }
 

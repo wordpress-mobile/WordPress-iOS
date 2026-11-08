@@ -199,10 +199,6 @@ private struct Section {
             newSections.append(buildRemoveSiteSection())
         }
 
-        if viewController.shouldShowBottomJetpackBrandingMenuCard {
-            newSections.append(Section(rows: [], category: .jetpackBrandingCard))
-        }
-
         sections = newSections
     }
 
@@ -1389,6 +1385,8 @@ extension Row {
             kind: .me,
             title: Strings.me,
             image: icon ?? UIImage.gridicon(.userCircle),
+            // A tint color renders the image as a template, which flattens the avatar to a solid shape.
+            imageColor: icon == nil ? .label : nil,
             action: { [weak viewController] _ in
                 viewController?.showMe()
             }

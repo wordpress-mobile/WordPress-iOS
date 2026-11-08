@@ -254,7 +254,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                     [self didSyncBlog];
                                 }
                                 failure:^(NSError * __unused error) {
-                                    DDLogDebug(@"MenusViewController could not sync menus for blog");
+                                    WPLogDebug(@"MenusViewController could not sync menus for blog");
                                     [self showNoResultsWithTitle:[self noResultsErrorTitle]];
                                 }];
 }
@@ -498,7 +498,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     }
     highestInteger = highestInteger + 1;
     NSString *menuStr = NSLocalizedString(@"Menu", @"The default text used for filling the name of a menu when creating it.");
-    return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
+    return [NSString stringWithFormat:@"%@ %ld", menuStr, (long)highestInteger];
 }
 
 - (MenuItemEditingViewController *)editingControllerWithItem:(MenuItem *)item

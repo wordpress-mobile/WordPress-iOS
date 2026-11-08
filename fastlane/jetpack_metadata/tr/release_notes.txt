@@ -1,0 +1,10 @@
+Duydun mu? Sistem bildirimleri veya simge rozetleri devre dışı bırakılmış olsa bile Bildirimler sekmesini ve zilini daha doğru hale getirdik. Artık her zaman biliniyorsunuz.
+
+Özel gönderi türleri artık doğrudan site menüsünde Yorumlar'dan sonra görünür, ekstra kolaylık için ada göre sıralanır, artık özel pinlere gerek kalmaz.
+
+Son olarak, uygulama deneyiminizi biraz kolaylaştırmak için birkaç hatayı hallettik.
+
+- Okuyucu'da, iOS 27 çalıştıran cihazlarda satır içi görseller kaybolmaz.
+- Dosya adı boşluk içeriyorsa yüklemeler artık başarısız olmaz. (haberler-herkes.jpg)
+- Belirli türde metin dosyalarının paylaşılmasıyla oluşan bir çökme sorununu düzelttik.
+- iPad kullanıcıları sevinecekler; ekranı yeniden boyutlandırdığınızda veya uygulamaları değiştirdiğinizde uygulama kompakt sekme çubuğu düzeninde takılmayacaktır.

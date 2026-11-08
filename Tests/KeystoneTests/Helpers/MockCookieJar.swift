@@ -5,10 +5,6 @@ import WebKit
 class MockCookieJar: HTTPCookieStorage {
     var _cookies = [HTTPCookie]()
 
-    override func cookies(for URL: URL) -> [HTTPCookie]? {
-        return _cookies
-    }
-
     override var cookies: [HTTPCookie]? {
         return _cookies
     }
@@ -55,12 +51,12 @@ extension HTTPCookieStorage {
 }
 
 extension WKHTTPCookieStore {
-    func setWordPressCookie(username: String, domain: String) {
+    func setWordPressCookie(username: String, domain: String) async {
         let cookie = wordPressCookie(username: username, domain: domain)
-        setCookie(cookie)
+        await setCookie(cookie)
     }
 
-    func setWordPressComCookie(username: String) {
-        setWordPressCookie(username: username, domain: ".wordpress.com")
+    func setWordPressComCookie(username: String) async {
+        await setWordPressCookie(username: username, domain: ".wordpress.com")
     }
 }

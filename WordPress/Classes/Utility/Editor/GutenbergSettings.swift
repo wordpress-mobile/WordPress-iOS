@@ -54,7 +54,7 @@ class GutenbergSettings {
 
     // MARK: - Internal variables
     private let database: KeyValueDatabase
-    private var coreDataStack: CoreDataStackSwift {
+    private var coreDataStack: CoreDataStack {
         AppEnvironment.current.contextManager
     }
 

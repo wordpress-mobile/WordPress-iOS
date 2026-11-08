@@ -6,6 +6,7 @@
 @import WordPressKitModels;
 @import WordPressShared;
 @import NSObject_SafeExpectations;
+@import WordPressSharedObjC;
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";
@@ -220,14 +221,14 @@ PostServiceType const PostServiceTypeAny = @"any";
         NSError *error;
         NSArray *existingPosts = [context executeFetchRequest:request error:&error];
         if (error) {
-            DDLogError(@"Error fetching existing posts for purging: %@", error);
+            WPLogError(@"Error fetching existing posts for purging: %@", error);
         } else {
             NSSet *postsToKeep = [NSSet setWithArray:posts];
             NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
             // Delete the posts not being updated.
             [postsToDelete minusSet:postsToKeep];
             for (AbstractPost *post in postsToDelete) {
-                DDLogInfo(@"Deleting Post: %@", post);
+                WPLogInfo(@"Deleting Post: %@", post);
                 [context deleteObject:post];
             }
         }

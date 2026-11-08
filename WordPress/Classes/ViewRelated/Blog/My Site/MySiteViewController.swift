@@ -301,7 +301,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
 
-        if isSidebarModeEnabled {
+        // `staticScreensWithReader` hides the bell so that Reader is the only entrance to the
+        // Reader notifications list.
+        if isSidebarModeEnabled && !JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader() {
             notificationsButtonViewModel.$image
                 .sink { [weak self] in
                     guard let self else { return }
@@ -984,10 +986,7 @@ private extension MySiteViewController {
         if isViewOnScreen() && !RootViewCoordinator.shared.isSiteCreationActive {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
-                let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
-                let source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource =
-                    phase == .four ? .phaseFourOverlay : .appOpen
-                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: source, blog: self.blog)
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
             }
         }
     }

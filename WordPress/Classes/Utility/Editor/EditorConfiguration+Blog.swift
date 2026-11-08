@@ -44,7 +44,7 @@ extension EditorConfiguration {
         let siteURL = blog.url.flatMap { URL(string: $0) } ?? URL(string: "https://example.com")!
         let siteApiRoot = siteApiRootString.flatMap { URL(string: $0) } ?? URL(string: "https://example.com/wp-json")!
 
-        var builder = EditorConfigurationBuilder(
+        self = EditorConfigurationBuilder(
             postType: postType,
             siteURL: siteURL,
             siteApiRoot: siteApiRoot
@@ -59,17 +59,7 @@ extension EditorConfiguration {
         .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
         .setEnableNetworkLogging(ExtensiveLogging.enabled)
         .setNetworkFallbackMode(.automatic)
-
-        // Build editor assets endpoint
-        var editorAssetsEndpoint = siteApiRoot
-        editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
-        if let namespace = siteApiNamespace.first {
-            editorAssetsEndpoint.appendPathComponent(namespace)
-        }
-        editorAssetsEndpoint.appendPathComponent("editor-assets")
-        builder = builder.setEditorAssetsEndpoint(editorAssetsEndpoint)
-
-        self = builder.build()
+        .build()
     }
 
     /// Returns true if the plugins should be enabled for the given blog.

@@ -106,7 +106,7 @@ extension PostingActivityViewController: PostingActivityDayDelegate {
 private extension PostingActivityViewController {
 
     func addLegend() {
-        let legend = PostingActivityLegend.loadFromNib()
+        let legend = PostingActivityLegend()
         legend.backgroundColor = .secondarySystemGroupedBackground
         legendView.addSubview(legend)
     }

@@ -368,6 +368,248 @@ class PostCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
     }
 
+    /// Scenario: the user updates a published post. Spotlight gets the new title.
+    func testSaveReindexesPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a published post with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .publish
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN a server that accepts the change
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = "publish"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        try await coordinator.save(post)
+
+        // THEN the post is reindexed with the new title
+        XCTAssertEqual(searchManager.indexedTitles, ["title-b"])
+    }
+
+    /// Scenario: the user permanently deletes a trashed post.
+    func testDeleteRemovesSearchableItem() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a trashed post
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .trash
+        post.postID = 974
+        let searchableIdentifier = try XCTUnwrap(post.uniqueIdentifier)
+
+        // GIVEN a server that deletes it
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
+            var post = WordPressComPost.mock
+            post.status = "trash"
+            return try! HTTPStubsResponse(value: post, statusCode: 200)
+        }
+
+        // WHEN
+        await coordinator.delete(post)
+
+        // THEN its Spotlight item is removed
+        XCTAssertNil(post.managedObjectContext)
+        XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
+    }
+
+    /// Scenario: the user edits the title of a synced draft.
+    func testSyncReindexesDraft() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN a server that accepts the change
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = "draft"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        coordinator.setNeedsSync(for: revision)
+        try await coordinator.waitForSync(post, to: revision)
+
+        // THEN the draft is reindexed with the new title
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-b"])
+    }
+
+    /// Scenario: the user edits a draft that was trashed on the web.
+    func testSyncRemovesItemWhenPostIsTrashedOnServer() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let searchableIdentifier = try XCTUnwrap(post.uniqueIdentifier)
+        let revision = post.createRevision()
+        revision.content = "content-b"
+
+        // GIVEN a server where the post is in the trash
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.status = "trash"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        coordinator.setNeedsSync(for: revision)
+        try await coordinator.waitForSync(post, to: revision)
+
+        // THEN its Spotlight item is removed
+        XCTAssertEqual(post.status, .trash)
+        XCTAssertEqual(searchManager.deletedIdentifiers, [searchableIdentifier])
+    }
+
+    /// Scenario: the user restores a trashed post, which moves it to drafts.
+    func testRestoreReindexesPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a trashed post
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .trash
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+
+        // GIVEN a server that restores it
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-a"
+            post.status = "draft"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        try await coordinator.restore(post)
+
+        // THEN the post is back in Spotlight
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-a"])
+    }
+
+    /// Scenario: the user resolves a conflict by keeping their version.
+    func testResolveConflictWithLocalVersionReindexesPost() async throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN a server that accepts the overwrite
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = "draft"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN the conflict screen saves the local version
+        try await PostRepository(coreDataStack: contextManager).save(post, overwrite: true)
+        coordinator.didResolveConflict(for: post)
+
+        // THEN the post is reindexed with the title that was kept
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-b"])
+    }
+
+    /// Scenario: the user resolves a conflict by taking the server's version.
+    func testResolveConflictWithRemoteVersionReindexesPost() throws {
+        let searchManager = SearchManagerSpy()
+        coordinator = PostCoordinator(
+            mediaCoordinator: mediaCoordinator,
+            coreDataStack: contextManager,
+            searchManager: searchManager
+        )
+
+        // GIVEN a synced draft with a local title change
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        // GIVEN the server's version
+        let remotePost = try XCTUnwrap(
+            RemotePost(siteID: 80511, status: "draft", title: "title-remote", content: "content-remote")
+        )
+        remotePost.postID = 974
+        remotePost.authorID = 29043
+        remotePost.date = Date()
+        remotePost.dateModified = Date()
+        remotePost.tags = []
+        remotePost.categories = []
+        remotePost.metadata = []
+        remotePost.format = "standard"
+        remotePost.type = "post"
+
+        // WHEN the conflict screen applies it
+        try PostRepository(coreDataStack: contextManager).resolveConflict(for: post, pickingRemoteRevision: remotePost)
+        coordinator.didResolveConflict(for: post)
+
+        // THEN the post is reindexed with the title that was kept
+        XCTAssertEqual(searchManager.indexedTitles, ["[Draft] title-remote"])
+    }
+
     func testPauseSyncing() async throws {
         // GIVEN a draft post that needs sync
         let post = PostBuilder(mainContext, blog: blog).build()
@@ -625,11 +867,16 @@ class PostCoordinatorTests: CoreDataTestCase {
 }
 
 private final class SearchManagerSpy: SearchManaging {
+    private(set) var indexedTitles: [String] = []
     private(set) var deletedIdentifiers: [String] = []
 
-    func indexItem(_ item: SearchableItemConvertable) {}
+    func indexItem(_ item: SearchableItemConvertable) {
+        indexedTitles.append(item.searchTitle ?? "")
+    }
 
-    func deleteSearchableItem(_ item: SearchableItemConvertable) {}
+    func deleteSearchableItem(_ item: SearchableItemConvertable) {
+        deletedIdentifiers.append(contentsOf: [item.uniqueIdentifier].compactMap { $0 })
+    }
 
     func deleteSearchableItems(withIdentifiers identifiers: [String]) {
         deletedIdentifiers.append(contentsOf: identifiers)

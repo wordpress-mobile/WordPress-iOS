@@ -84,13 +84,13 @@ final class MigrationWelcomeViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail) { [weak self] () -> Void in
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(accountAvatarAction: { [weak self] () -> Void in
             guard let self else {
                 return
             }
             self.tracker.track(.welcomeScreenAvatarTapped)
             self.viewModel.configuration.actionsConfiguration.secondaryHandler?()
-        }
+        })
     }
 
     private func setupBottomSheet() {

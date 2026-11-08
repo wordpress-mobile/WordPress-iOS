@@ -85,4 +85,20 @@ extension Blog {
             return xmlrpc
         }
     }
+
+    /// Every Spotlight domain the site's items may be indexed under.
+    ///
+    /// A self-hosted site's items are indexed under its XML-RPC address until
+    /// Jetpack gives it a site ID. Items indexed before that keep the old
+    /// domain, so removing the site must delete both.
+    public var searchDomains: [String] {
+        var domains: [String] = []
+        if let dotComID, dotComID.intValue > 0 {
+            domains.append(dotComID.stringValue)
+        }
+        if let xmlrpc, !xmlrpc.isEmpty {
+            domains.append(xmlrpc)
+        }
+        return domains
+    }
 }

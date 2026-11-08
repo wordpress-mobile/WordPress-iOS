@@ -8,16 +8,10 @@ import WordPressKit
 
 @objc public class EditorSettingsService: NSObject {
 
-    let coreDataStack: CoreDataStackSwift
+    let coreDataStack: CoreDataStack
 
-    init(coreDataStack: CoreDataStackSwift) {
-        self.coreDataStack = coreDataStack
-    }
-
-    // For Objective-C compatibility, but we don't want Swift code to use it
-    @available(swift, obsoleted: 1.0)
     @objc public init(coreDataStack: CoreDataStack) {
-        self.coreDataStack = coreDataStack as! CoreDataStackSwift
+        self.coreDataStack = coreDataStack
     }
 
     @objc(syncEditorSettingsForBlog:success:failure:)

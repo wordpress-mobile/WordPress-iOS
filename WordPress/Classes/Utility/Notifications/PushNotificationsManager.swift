@@ -76,7 +76,7 @@ public final class PushNotificationsManager: NSObject {
             sharedApplication.registerForRemoteNotifications()
         }
         sharedApplication.unregisterForRemoteNotifications()
-        sharedApplication.applicationIconBadgeNumber = 0
+        NotificationActivityService.clearAppIconBadge()
         didRegisterForRemoteNotifications = false
     }
 
@@ -199,11 +199,10 @@ public final class PushNotificationsManager: NSObject {
         DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
-        // Badge: Update. Only WordPress pushes carry a badge (support pushes omit
-        // it), so it is also the signal that the bell may need a refresh.
+        // Badge: Update. WordPress push payloads carry an absolute count; the
+        // supported UserNotifications writer applies it (support pushes omit it).
         if let badgeCountNumber = userInfo.number(forKeyPath: Notification.badgePath)?.intValue {
-            sharedApplication.applicationIconBadgeNumber = badgeCountNumber
-            NotificationActivityService.pushDidArrive()
+            NotificationActivityService.pushDidUpdateBadge(count: badgeCountNumber)
         }
 
         // Badge: Reset

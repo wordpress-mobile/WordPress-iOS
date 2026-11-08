@@ -1,0 +1,10 @@
+¿Te has enterado? Hemos hecho que la pestaña Notificaciones y la campana sean más precisas, incluso cuando las notificaciones del sistema o las etiquetas de los iconos estén desactivadas. Ahora siempre estarás al día de todo.
+
+Ahora, los tipos de contenido personalizado aparecen directamente en el menú del sitio después de Comentarios, ordenados por nombre para mayor comodidad: ya no hace falta añadir pines personalizados.
+
+Por último, hemos solucionado varios errores, solo para que la experiencia de tu aplicación sea un poco más fácil.
+
+- En el Lector, las imágenes integradas no desaparecerán en los dispositivos con iOS 27.
+- Las subidas ya no fallarán si el nombre del archivo contiene espacios. (good-news-everyone.jpg)
+- Hemos corregido un fallo causado por compartir ciertos tipos de archivos de texto.
+- Los usuarios de iPad están de enhorabuena: la aplicación no se atascará en el diseño de la barra de pestañas compacta cuando cambies el tamaño de la pantalla o de aplicación.

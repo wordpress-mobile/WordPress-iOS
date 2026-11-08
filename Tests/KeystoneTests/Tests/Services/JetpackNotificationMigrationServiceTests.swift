@@ -5,38 +5,35 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
     private var sut: JetpackNotificationMigrationService!
     private var remoteNotificationsRegister: RemoteNotificationRegisterMock!
-    private var remoteFeatureFlagStore: RemoteFeatureFlagStoreMock!
     private var userDefaults: UserDefaultsMock!
+    private var savedAppUIType: RootViewCoordinator.AppUIType?
 
     override func setUpWithError() throws {
+        // `shouldPresentNotifications()` also hides notifications when Jetpack features are disabled.
+        // Pin the UI type so these tests only exercise the migration logic.
+        savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
         remoteNotificationsRegister = RemoteNotificationRegisterMock()
-        remoteFeatureFlagStore = RemoteFeatureFlagStoreMock()
         userDefaults = UserDefaultsMock()
     }
 
     override func tearDownWithError() throws {
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
         sut = nil
         remoteNotificationsRegister = nil
-        remoteFeatureFlagStore = nil
         userDefaults = nil
     }
 
     // MARK: - Should show notification control
 
-    func testShouldShowNotificationControlInWordPressWhenFeatureFlagEnabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+    func testShouldShowNotificationControlInWordPress() {
+        setup(isWordPress: true)
 
         XCTAssertTrue(sut.shouldShowNotificationControl())
     }
 
-    func testShouldHideNotificationControlInWordPressWhenFeatureFlagDisabled() {
-        setup(preventDuplicateNotificationsFlag: false, isWordPress: true)
-
-        XCTAssertFalse(sut.shouldShowNotificationControl())
-    }
-
-    func testShouldHideNotificationControlInJetpackWhenFeatureFlagEnabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: false)
+    func testShouldHideNotificationControlInJetpack() {
+        setup(isWordPress: false)
 
         XCTAssertFalse(sut.shouldShowNotificationControl())
     }
@@ -44,7 +41,7 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     // MARK: - WordPress notifications enabled
 
     func testWordPressNotificationsEnabledWhenRegisteredForRemoteNotications() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+        setup(isWordPress: true)
 
         remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
         XCTAssertFalse(sut.wordPressNotificationsEnabled)
@@ -54,7 +51,7 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     }
 
     func testRemoteNotificationsRegisteredWhenWordPressNotificationsEnabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+        setup(isWordPress: true)
 
         sut.wordPressNotificationsEnabled = false
         XCTAssertTrue(remoteNotificationsRegister.unregisterForRemoteNotificationsCalled)
@@ -65,37 +62,30 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
     // MARK: - Should present WordPress notifications
 
-    func testShouldHideNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsDisabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+    func testShouldHideNotificationsInWordPressWhenWordPressNotificationsDisabled() {
+        setup(isWordPress: true)
         sut.wordPressNotificationsEnabled = false
 
         XCTAssertFalse(sut.shouldPresentNotifications())
     }
 
     func testShouldPresentNotificationsBeforeWordPressNotificationsToggledAndNotificationsRegistered() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+        setup(isWordPress: true)
         remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
         userDefaults.wordPressNotificationsToggled = false
 
         XCTAssertTrue(sut.shouldPresentNotifications())
     }
 
-    func testShouldPresentNotificationsInWordPressWhenFeatureFlagDisabledAndWordPressNotificationsDisabled() {
-        setup(preventDuplicateNotificationsFlag: false, isWordPress: true)
-        sut.wordPressNotificationsEnabled = false
-
-        XCTAssertTrue(sut.shouldPresentNotifications())
-    }
-
-    func testShouldPresentNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsEnabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+    func testShouldPresentNotificationsInWordPressWhenWordPressNotificationsEnabled() {
+        setup(isWordPress: true)
         sut.wordPressNotificationsEnabled = true
 
         XCTAssertTrue(sut.shouldPresentNotifications())
     }
 
     func testShouldPresentNotificationsInJetpack() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: false)
+        setup(isWordPress: false)
 
         XCTAssertTrue(sut.shouldPresentNotifications())
     }
@@ -104,14 +94,9 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 // MARK: - Helpers
 
 private extension JetpackNotificationMigrationServiceTests {
-    func setup(preventDuplicateNotificationsFlag: Bool,
-               isWordPress: Bool) {
-
-        remoteFeatureFlagStore.isPreventDuplicateNotifications = preventDuplicateNotificationsFlag
-
+    func setup(isWordPress: Bool) {
         sut = JetpackNotificationMigrationService(
             remoteNotificationRegister: remoteNotificationsRegister,
-            featureFlagStore: remoteFeatureFlagStore,
             userDefaults: userDefaults,
             isWordPress: isWordPress
         )
@@ -134,20 +119,6 @@ private class RemoteNotificationRegisterMock: RemoteNotificationRegister {
     func unregisterForRemoteNotifications() {
         isRegisteredForRemoteNotifications = false
         unregisterForRemoteNotificationsCalled = true
-    }
-}
-
-private extension JetpackNotificationMigrationServiceTests {
-    class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
-        var isPreventDuplicateNotifications = false
-
-        override func value(for flagKey: String) -> Bool? {
-            if flagKey == RemoteFeatureFlag.jetpackMigrationPreventDuplicateNotifications.remoteKey {
-                return isPreventDuplicateNotifications
-            }
-
-            return false
-        }
     }
 }
 

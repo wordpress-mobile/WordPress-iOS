@@ -36,16 +36,6 @@ struct MigrationViewControllerFactory {
         viewController(for: coordinator.currentStep)
     }
 
-    private func makeAccount() -> WPAccount? {
-        let context = ContextManager.shared.mainContext
-        do {
-            return try WPAccount.lookupDefaultWordPressComAccount(in: context)
-        } catch {
-            DDLogError("Account lookup failed with error: \(error)")
-            return nil
-        }
-    }
-
     // MARK: - View Controllers
 
     private func makeWelcomeViewModel(handlers: ActionHandlers) -> MigrationWelcomeViewModel {
@@ -58,7 +48,7 @@ struct MigrationViewControllerFactory {
             secondaryHandler: secondaryHandler
         )
 
-        return .init(account: makeAccount(), actions: actions)
+        return .init(actions: actions)
     }
 
     private func makeWelcomeViewController() -> UIViewController {

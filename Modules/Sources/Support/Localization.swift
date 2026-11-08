@@ -21,11 +21,6 @@ enum Localization {
         value: "Including logs can help our team investigate issues. Logs may contain recent app activity.",
         comment: "Description explaining why including logs is helpful"
     )
-    static let logFilesToUpload = NSLocalizedString(
-        "com.jetpack.support.logFilesToUpload",
-        value: "The following log files will be uploaded:",
-        comment: "Text indicating which log files will be included in the support request"
-    )
     static let unableToLoadApplicationLogs = NSLocalizedString(
         "com.jetpack.support.unableToLoadApplicationLogs",
         value: "Unable to load application logs",

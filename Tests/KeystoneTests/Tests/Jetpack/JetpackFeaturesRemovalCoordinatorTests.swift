@@ -1,418 +1,104 @@
+import BuildSettingsKit
+import Foundation
+import Testing
 import XCTest
+
 @testable import WordPress
-@testable import WordPressData
 
-final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
+@Suite("JetpackFeaturesRemovalCoordinator")
+struct JetpackFeaturesRemovalCoordinatorTests {
 
-    private var mockUserDefaults: InMemoryUserDefaults!
+    // MARK: General Phase
+
+    @Test("WordPress app with a WordPress.com account shows static screens")
+    func wordPressWithDotComAccount() {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(app: .wordpress, hasDotComAccount: true)
+        #expect(phase == .staticScreens)
+    }
+
+    @Test("WordPress app without a WordPress.com account shows the simplified UI")
+    func wordPressWithoutDotComAccount() {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(app: .wordpress, hasDotComAccount: false)
+        #expect(phase == .selfHosted)
+    }
+
+    @Test("Other apps show every feature", arguments: [AppBrand.jetpack, .reader], [true, false])
+    func otherApps(app: AppBrand, hasDotComAccount: Bool) {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(app: app, hasDotComAccount: hasDotComAccount)
+        #expect(phase == .normal)
+    }
+
+    @Test(
+        "Phases map to the expected app UI",
+        arguments: [
+            (JetpackFeaturesRemovalCoordinator.GeneralPhase.normal, false, RootViewCoordinator.AppUIType.normal),
+            (.normal, true, .normal),
+            (.staticScreens, false, .staticScreens),
+            (.staticScreens, true, .staticScreensWithReader),
+            (.selfHosted, false, .simplified),
+            (.selfHosted, true, .simplified)
+        ]
+    )
+    func appUIType(
+        phase: JetpackFeaturesRemovalCoordinator.GeneralPhase,
+        isReaderInWordPressAppEnabled: Bool,
+        expected: RootViewCoordinator.AppUIType
+    ) {
+        let appUIType = RootViewCoordinator.appUIType(
+            for: phase,
+            isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
+        )
+        #expect(appUIType == expected)
+    }
+
+    // MARK: Site Creation Phase
+
+    @Test("WordPress app with a site shows the site creation overlay")
+    func wordPressSiteCreationWithBlog() {
+        let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(app: .wordpress, hasBlog: true)
+        #expect(phase == .two)
+    }
+
+    @Test("WordPress app without a site allows site creation")
+    func wordPressSiteCreationWithoutBlog() {
+        let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(app: .wordpress, hasBlog: false)
+        #expect(phase == .normal)
+    }
+
+    @Test("Other apps allow site creation", arguments: [AppBrand.jetpack, .reader], [true, false])
+    func otherAppsSiteCreation(app: AppBrand, hasBlog: Bool) {
+        let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(app: app, hasBlog: hasBlog)
+        #expect(phase == .normal)
+    }
+}
+
+/// These tests set the shared `currentAppUIType`, so they run as XCTest rather than in parallel with Swift Testing.
+final class JetpackFeaturesRemovalCoordinatorAppUITypeTests: XCTestCase {
+    private var savedAppUIType: RootViewCoordinator.AppUIType?
 
     override func setUp() {
-        contextManager.useAsSharedInstance(untilTestFinished: self)
-        mockUserDefaults = InMemoryUserDefaults()
-        let account = AccountBuilder(contextManager.mainContext).with(username: "test-account-JetpackFeaturesRemovalCoordinatorTests").build()
-        UserSettings.defaultDotComUUID = account.uuid
+        super.setUp()
+        savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
     }
 
     override func tearDown() {
-        UserSettings.defaultDotComUUID = nil
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
+        super.tearDown()
     }
 
-    // MARK: General Phase Tests
+    func testStaticScreensWithReaderKeepsJetpackFeaturesDisabled() {
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
 
-    func testNormalGeneralPhase() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .normal)
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled())
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures())
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderAvailable())
     }
 
-    func testReturnNormalPhaseForLoggedOutUsers() {
-        // Given
-        UserSettings.defaultDotComUUID = nil
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .normal)
-    }
-
-    func testNewUsersGeneralPhase() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .newUsers)
-    }
-
-    func testNewUsersGeneralPhasePrecedence() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: true, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .newUsers)
-    }
-
-    func testSelfHostedGeneralPhase() {
-        // Given
-        UserSettings.defaultDotComUUID = nil
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: true)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .selfHosted)
-    }
-
-    func testGeneralPhaseIfSelfHostedIsEnabledWhileLoggedIn() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: true)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .one)
-    }
-
-    func testGeneralPhaseOne() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .one)
-    }
-
-    func testGeneralPhaseTwo() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .two)
-    }
-
-    func testGeneralPhaseTwoPrecedence() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .two)
-    }
-
-    func testGeneralPhaseThree() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: true, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .three)
-    }
-
-    func testGeneralPhaseThreePrecedence() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .three)
-    }
-
-    func testGeneralPhaseFour() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .four)
-    }
-
-    func testGeneralPhaseFourPrecedence() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .four)
-    }
-
-    // MARK: Site Creation Phase Tests
-
-    func testNormalSiteCreationPhase() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-
-        // When
-        let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .normal)
-    }
-
-    func testSiteCreationPhaseOne() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-
-        // When
-        var flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-        var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .one)
-
-        // When
-        flags = generateFlags(phaseOne: false, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        remote.flags = flags
-        store.update(using: remote, waitOn: self)
-        phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .one)
-
-        // When
-        flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: true, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
-        remote.flags = flags
-        store.update(using: remote, waitOn: self)
-        phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .one)
-    }
-
-    func testSiteCreationPhaseTwo() throws {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-
-        // When
-        var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-        _ = BlogBuilder(mainContext).build()
-        try mainContext.save()
-        var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-        // Then
-        XCTAssertEqual(phase, .two)
-
-        // When
-        flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
-        remote.flags = flags
-        store.update(using: remote, waitOn: self)
-        phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .two)
-    }
-
-    func testSiteCreationPhaseNormalWhenUserHasNoBlog() throws {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-
-        // When
-        var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-        var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-        // Then
-        XCTAssertEqual(phase, .normal)
-
-        // When
-        flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
-        remote.flags = flags
-        store.update(using: remote, waitOn: self)
-        phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .normal)
-    }
-
-    func testSiteCreationPhaseTwoPrecedence() throws {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-
-        // When
-        var flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
-        let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote, waitOn: self)
-        _ = BlogBuilder(mainContext).build()
-        try mainContext.save()
-        var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .two)
-
-        // When
-        flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
-        remote.flags = flags
-        store.update(using: remote, waitOn: self)
-        phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
-        // Then
-        XCTAssertEqual(phase, .two)
-    }
-
-    // MARK: Removal Deadline
-
-    func testFetchingRemovalDeadline() {
-        // Given
-        let remoteConfigStore = RemoteConfigStore(persistenceStore: mockUserDefaults)
-        mockUserDefaults.set(["jp_deadline": "2022-10-10"], forKey: RemoteConfigStore.Constants.CachedResponseKey)
-
-        // When
-        let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
-
-        XCTAssertEqual(deadline?.components.year, 2022)
-        XCTAssertEqual(deadline?.components.month, 10)
-        XCTAssertEqual(deadline?.components.day, 10)
-    }
-
-    func testRemovalDeadlineDoesNotExist() {
-        // Given
-        let remoteConfigStore = RemoteConfigStore(persistenceStore: mockUserDefaults)
-
-        // When
-        let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
-
-        XCTAssertNil(deadline)
-    }
-
-    // MARK: Offline Scenarios
-
-    func testWordPressOfflineState() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        // assume that the user fails to request for remote feature flags and we fall back to the default values.
-        let remote = MockFeatureFlagRemote()
-        store.update(using: remote, waitOn: self)
-
-        // When
-        // assume that we're requesting from the WordPress app.
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, app: .wordpress)
-
-        // Then
-        XCTAssertEqual(phase, .staticScreens)
-    }
-
-    func testJetpackOfflineState() {
-        // Given
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        // assume that the user fails to request for remote feature flags and we fall back to the default values.
-        let remote = MockFeatureFlagRemote()
-        store.update(using: remote, waitOn: self)
-
-        // When
-        // assume that we're requesting from the Jetpack app.
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, app: .jetpack)
-
-        // Then
-        XCTAssertEqual(phase, .normal)
-    }
-
-    // MARK: Helpers
-
-    private func generateFlags(phaseOne: Bool,
-                               phaseTwo: Bool,
-                               phaseThree: Bool,
-                               phaseFour: Bool,
-                               phaseStaticScreens: Bool = false,
-                               phaseNewUsers: Bool,
-                               phaseSelfHosted: Bool) -> [WordPressKit.FeatureFlag] {
-        return [
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.remoteKey, value: phaseOne),
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.remoteKey, value: phaseTwo),
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.remoteKey, value: phaseThree),
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey, value: phaseFour),
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.remoteKey, value: phaseStaticScreens),
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey, value: phaseNewUsers),
-            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.remoteKey, value: phaseSelfHosted),
-        ]
-    }
-}
-
-private extension Date {
-    var components: DateComponents {
-        return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
-                                               from: self)
-    }
-}
-
-internal extension RemoteFeatureFlagStore {
-    func update(using remote: FeatureFlagRemote, waitOn test: XCTestCase) {
-        let exp = test.expectation(description: "Store finishes update")
-        update(using: remote) {
-            exp.fulfill()
-        }
-        test.wait(for: [exp], timeout: 1)
+    func testStaticScreensUIKeepsReaderUnavailable() {
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreens
+
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled())
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures())
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.isReaderAvailable())
     }
 }

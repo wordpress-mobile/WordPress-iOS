@@ -55,4 +55,3 @@ FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 #import <WordPress/WPTabBarController.h>
 #import <WordPress/WPLogger.h>
 
-FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

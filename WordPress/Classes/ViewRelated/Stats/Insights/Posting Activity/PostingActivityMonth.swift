@@ -2,13 +2,35 @@ import UIKit
 import WordPressKit
 import WordPressShared
 
-class PostingActivityMonth: UIView, NibLoadable {
+class PostingActivityMonth: UIView {
 
     // MARK: - Properties
 
-    @IBOutlet weak var weeksStackView: UIStackView!
-    @IBOutlet weak var monthLabel: UILabel!
-    @IBOutlet weak var viewWidthConstraint: NSLayoutConstraint!
+    private let weeksStackView: UIStackView = {
+        let weeks = (0..<6)
+            .map { _ in
+                let week = UIStackView()
+                week.axis = .vertical
+                week.distribution = .fillEqually
+                week.spacing = 2
+                return week
+            }
+        let stackView = UIStackView(arrangedSubviews: weeks)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fillEqually
+        stackView.spacing = 2
+        return stackView
+    }()
+
+    private let monthLabel: UILabel = {
+        let label = UILabel.makeStatsLabel(text: "Month", textStyle: .footnote)
+        label.textAlignment = .center
+        label.setContentHuggingPriority(.required, for: .vertical)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        return label
+    }()
+
+    private var viewWidthConstraint: NSLayoutConstraint!
 
     private var month: Date?
     private var monthData: [PostingStreakEvent]?
@@ -39,7 +61,43 @@ class PostingActivityMonth: UIView, NibLoadable {
 
             return [elementForSelf]
         }
-        set { }
+        set {}
+    }
+
+    // MARK: - Init
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        applyStatsXibRootDefaults(size: CGSize(width: 151, height: 135))
+
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(weeksStackView)
+        contentView.addSubview(monthLabel)
+        addSubview(contentView)
+
+        viewWidthConstraint = contentView.widthAnchor.constraint(equalToConstant: 118)
+        NSLayoutConstraint.activate([
+            contentView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            contentView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            viewWidthConstraint,
+            contentView.heightAnchor.constraint(equalToConstant: 135),
+
+            weeksStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            weeksStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            contentView.trailingAnchor.constraint(equalTo: weeksStackView.trailingAnchor, constant: 18),
+            weeksStackView.heightAnchor.constraint(equalToConstant: 96),
+
+            monthLabel.topAnchor.constraint(equalTo: weeksStackView.bottomAnchor, constant: 8),
+            monthLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: monthLabel.trailingAnchor),
+            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: monthLabel.bottomAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Configure
@@ -91,8 +149,9 @@ private extension PostingActivityMonth {
 
     func addDays() {
         guard let monthData,
-        let firstDay = monthData.first,
-        let lastDay = monthData.last else {
+            let firstDay = monthData.first,
+            let lastDay = monthData.last
+        else {
             return
         }
 
@@ -109,14 +168,16 @@ private extension PostingActivityMonth {
 
         while dayIndex < monthData.count {
             guard weekIndex < weeksStackView.arrangedSubviews.count,
-                let weekStackView = weeksStackView.arrangedSubviews[weekIndex] as? UIStackView else {
-                    break
+                let weekStackView = weeksStackView.arrangedSubviews[weekIndex] as? UIStackView
+            else {
+                break
             }
 
             for dayPosition in 0...6 {
                 // For the first and last weeks, add placeholder days so the stack view is spaced properly.
-                if (weekIndex == 0 && dayPosition < firstDayPosition) ||
-                    (dayIndex >= monthData.count && dayPosition > lastDayPosition) {
+                if (weekIndex == 0 && dayPosition < firstDayPosition)
+                    || (dayIndex >= monthData.count && dayPosition > lastDayPosition)
+                {
                     addDayToStackView(stackView: weekStackView)
                 } else {
                     guard dayIndex < monthData.count else {
@@ -133,7 +194,7 @@ private extension PostingActivityMonth {
     }
 
     func addDayToStackView(stackView: UIStackView, dayData: PostingStreakEvent? = nil) {
-        let dayView = PostingActivityDay.loadFromNib()
+        let dayView = PostingActivityDay()
         dayView.configure(dayData: dayData, delegate: postingActivityDayDelegate)
         stackView.addArrangedSubview(dayView)
     }
@@ -178,7 +239,7 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         get {
             (accessibilityContainer as? UIView)?.bounds ?? CGRect.zero
         }
-        set { }
+        set {}
     }
 
     override init(accessibilityContainer container: Any) {
@@ -224,12 +285,16 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         }
 
         if event.postCount == 1 {
-            accessibilityValue = String(format: Strings.dayAndPostsSingular,
-                                        monthDayFormatter.string(from: event.date))
+            accessibilityValue = String(
+                format: Strings.dayAndPostsSingular,
+                monthDayFormatter.string(from: event.date)
+            )
         } else {
-            accessibilityValue = String(format: Strings.dayAndPostsPlural,
-                                        monthDayFormatter.string(from: event.date),
-                                        event.postCount)
+            accessibilityValue = String(
+                format: Strings.dayAndPostsPlural,
+                monthDayFormatter.string(from: event.date),
+                event.postCount
+            )
         }
     }
 
@@ -253,15 +318,23 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
 
     private enum Strings {
         static let noPosts =
-            NSLocalizedString("No posts.",
-                              comment: "Accessibility value for a Stats' Posting Activity Month if there are no posts.")
+            NSLocalizedString(
+                "No posts.",
+                comment: "Accessibility value for a Stats' Posting Activity Month if there are no posts."
+            )
         static let dayAndPostsSingular =
-            NSLocalizedString("%@. 1 post.",
-                              comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
-                                + " The first parameter is day (e.g. November 2019).")
+            NSLocalizedString(
+                "%@. 1 post.",
+                comment:
+                    "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
+                    + " The first parameter is day (e.g. November 2019)."
+            )
         static let dayAndPostsPlural =
-            NSLocalizedString("%@. %d posts.",
-                              comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
-                                + " The first parameter is day (e.g. November 2019). The second parameter is the number of posts.")
+            NSLocalizedString(
+                "%@. %d posts.",
+                comment:
+                    "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
+                    + " The first parameter is day (e.g. November 2019). The second parameter is the number of posts."
+            )
     }
 }

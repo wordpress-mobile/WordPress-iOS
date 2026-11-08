@@ -1,12 +1,11 @@
 import SwiftUI
 import ShareExtensionCore
-import CocoaLumberjack
 
 struct SupportActivityDetailsView: View {
     @StateObject private var viewModel: SupportActivityDetailsViewModel
     @Environment(\.dismiss) private var dismiss
 
-    init(logFile: DDLogFileInfo) {
+    init(logFile: AppLogFile) {
         _viewModel = StateObject(wrappedValue: SupportActivityDetailsViewModel(logFile: logFile))
     }
 
@@ -44,7 +43,7 @@ private final class SupportActivityDetailsViewModel: ObservableObject {
     let logLines: [String]
     let logDate: String
 
-    init(logFile: DDLogFileInfo) {
+    init(logFile: AppLogFile) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.doesRelativeDateFormatting = true
@@ -52,7 +51,7 @@ private final class SupportActivityDetailsViewModel: ObservableObject {
 
         self.logDate = logFile.creationDate.map(dateFormatter.string) ?? ""
 
-        guard let logData = try? Data(contentsOf: URL(fileURLWithPath: logFile.filePath)),
+        guard let logData = try? Data(contentsOf: logFile.url),
               let logText = String(data: logData, encoding: .utf8) else {
             self.logLines = []
             return

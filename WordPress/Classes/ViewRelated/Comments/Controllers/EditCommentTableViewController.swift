@@ -17,7 +17,7 @@ class EditCommentTableViewController: UITableViewController {
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
     // So save and use one instance of the cell.
-    private let commentContentCell = InlineEditableMultiLineCell.loadFromNib()
+    private let commentContentCell = InlineEditableMultiLineCell(style: .default, reuseIdentifier: nil)
 
     // A closure executed when the view is dismissed.
     // Returns the Comment object and a Bool indicating if the Comment has been changed.
@@ -136,10 +136,10 @@ private extension EditCommentTableViewController {
     func setupTableView() {
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
-        tableView.register(InlineEditableSingleLineCell.defaultNib,
+        tableView.register(InlineEditableSingleLineCell.self,
                            forCellReuseIdentifier: InlineEditableSingleLineCell.defaultReuseID)
 
-        tableView.register(InlineEditableMultiLineCell.defaultNib,
+        tableView.register(InlineEditableMultiLineCell.self,
                            forCellReuseIdentifier: InlineEditableMultiLineCell.defaultReuseID)
     }
 

@@ -11,9 +11,9 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 ///
 class ReaderSiteSearchService {
 
-    let coreDataStack: CoreDataStackSwift
+    let coreDataStack: CoreDataStack
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
     }
 

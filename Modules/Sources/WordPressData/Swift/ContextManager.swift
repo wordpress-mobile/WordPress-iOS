@@ -9,7 +9,7 @@ import WordPressShared
 let ContextManagerModelNameCurrent = "$CURRENT"
 
 @objc
-public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
+public class ContextManager: NSObject, CoreDataStack {
     static var inMemoryStoreURL: URL {
         URL(fileURLWithPath: "/dev/null")
     }
@@ -95,47 +95,6 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
                 }
             }
         )
-    }
-
-    public func performAndSave<T>(
-        _ block: @escaping (NSManagedObjectContext) throws -> T,
-        completion: ((Result<T, Error>) -> Void)?,
-        on queue: DispatchQueue
-    ) {
-        let context = newDerivedContext()
-        self.writerQueue.addOperation(
-            AsyncBlockOperation { done in
-                context.perform {
-                    let result = Result(catching: { try block(context) })
-                    if case .success = result {
-                        self.save(context, .alreadyInContextQueue)
-                    }
-                    queue.async { completion?(result) }
-                    done()
-                }
-            }
-        )
-    }
-
-    public func performAndSave<T>(
-        _ block: @escaping (NSManagedObjectContext) -> T,
-        completion: ((T) -> Void)?,
-        on queue: DispatchQueue
-    ) {
-        performAndSave(
-            block,
-            completion: { (result: Result<T, Error>) in
-                // It's safe to force-unwrap here, since the `block` does not throw an error.
-                completion?(try! result.get())
-            },
-            on: queue
-        )
-    }
-
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
-        try await withCheckedThrowingContinuation { continuation in
-            performAndSave(block, completion: { continuation.resume(with: $0) }, on: DispatchQueue.global())
-        }
     }
 
     @objc

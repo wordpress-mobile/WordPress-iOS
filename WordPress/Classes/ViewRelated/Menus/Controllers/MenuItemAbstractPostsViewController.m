@@ -3,6 +3,7 @@
 #import "MenuPostServiceOptions.h"
 @import WordPressData;
 @import WordPressKit;
+@import WordPressSharedObjC;
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 
@@ -178,9 +179,9 @@
         if (self.additionalPostsAvailableForSync) {
             self.defersFooterViewMessageUpdates = YES;
         }
-        DDLogDebug(@"MenuItemSourcePostView: Updating fetch request with search predicate matching: %@", searchText);
+        WPLogDebug(@"MenuItemSourcePostView: Updating fetch request with search predicate matching: %@", searchText);
     } else {
-        DDLogDebug(@"MenuItemSourcePostView: Updating fetch request with default predicate");
+        WPLogDebug(@"MenuItemSourcePostView: Updating fetch request with default predicate");
         predicate = defaultPredicate;
     }
 
@@ -203,7 +204,7 @@
         [self hideLoadingSourcesIndicator];
     };
 
-    DDLogDebug(@"MenuItemSourcePostView: Searching posts via PostService");
+    WPLogDebug(@"MenuItemSourcePostView: Searching posts via PostService");
     MenuPostService *service = [[MenuPostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     MenuPostServiceSyncOptions *options = [self syncOptions];
     options.search = searchText;

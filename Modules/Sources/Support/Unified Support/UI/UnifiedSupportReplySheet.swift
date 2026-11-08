@@ -24,9 +24,19 @@ struct UnifiedSupportReplySheet: View {
         NavigationStack {
             Form {
                 Section(UnifiedSupportLocalization.message) {
-                    TextEditor(text: $viewModel.replyDraft.message)
-                        .focused($isMessageFocused)
-                        .frame(minHeight: 120)
+                    // A field rather than an editor: an editor insets its own text, which leaves the
+                    // message sitting a few points right of every other row, and it has no placeholder.
+                    TextField(
+                        UnifiedSupportLocalization.messagePlaceholder,
+                        text: $viewModel.replyDraft.message,
+                        axis: .vertical
+                    )
+                    // The lines are reserved on the field rather than by a frame around it, so the whole
+                    // box is somewhere a reply can be written: a field sizes to its text, which leaves a
+                    // frame's spare height outside it, where a tap lands on nothing. It also keeps the
+                    // form from resizing under the user as they start typing.
+                    .lineLimit(5...)
+                    .focused($isMessageFocused)
                 }
 
                 UnifiedSupportAttachmentPicker(

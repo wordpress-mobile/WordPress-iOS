@@ -316,31 +316,31 @@ struct PluginDetailsView: View {
 
         if let content = info.sectionContent(id: "description") {
             NavigationLink(Strings.description) {
-                PluginInfoSectionContentView(title: Strings.description, content: content)
+                PluginInfoSectionContentView(title: Strings.description, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "installation") {
             NavigationLink(Strings.installation) {
-                PluginInfoSectionContentView(title: Strings.installation, content: content)
+                PluginInfoSectionContentView(title: Strings.installation, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "faq") {
             NavigationLink(Strings.faq) {
-                PluginInfoSectionContentView(title: Strings.faq, content: content)
+                PluginInfoSectionContentView(title: Strings.faq, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "changelog") {
             NavigationLink(Strings.changelog) {
-                PluginInfoSectionContentView(title: Strings.changelog, content: content)
+                PluginInfoSectionContentView(title: Strings.changelog, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "reviews") {
             NavigationLink {
-                PluginInfoSectionContentView(title: Strings.reviews, content: content)
+                PluginInfoSectionContentView(title: Strings.reviews, content: content, baseURL: wpOrgURL)
             } label: {
                 HStack {
                     Text(Strings.reviews)

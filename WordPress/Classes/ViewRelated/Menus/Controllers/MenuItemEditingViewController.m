@@ -6,6 +6,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 
@@ -76,7 +77,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
         NSError *error;
         MenuItem *itemInContext = [scratchContext existingObjectWithID:itemObjectID error:&error];
         if (error) {
-            DDLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
+            WPLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
         }
         self->_item = itemInContext;
     }];

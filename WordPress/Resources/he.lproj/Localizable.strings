@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-09 09:54:22+0000 */
+/* Translation-Revision-Date: 2026-10-23 09:56:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: he_IL */
@@ -6678,6 +6678,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "לא ניתן היה למצור את כתובת ה-URL של האתר הנוכחי";
 
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "אתרי WordPress.com מנוהלים באמצעות החשבון שלך ב-WordPress.com, כך שסיסמאות אפליקציה אינן זמינות.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "עליך להתחבר באמצעות המשתמש \"%@\"";
 
@@ -7105,6 +7108,168 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "אין אפשרות לטעון את ההודעה";
 
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "להוסיף פרטים נוספים";
+
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "טוען קובץ מצורף…";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%%⁦%1$d⁩ התאמה";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "פתיחת קישור: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "קשור:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "השיחה הזאת סגורה. לא ניתן עוד להשיב לה.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "עדכון אחרון %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "טוען את השיחה…";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "יש להקליד הודעה…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "שליחה";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "הועבר לתמיכה אנושית";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "סייען הבינה המלאכותית מקליד";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "אפשר להתחיל שיחה עם צוות התמיכה שלנו כדי לקבל מענה לשאלותיך.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "עדיין אין שיחות";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "טוען שיחות…";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "קבלת עזרה";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "משהו השתבש. יש לנסות שוב מאוחר יותר.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "משהו השתבש";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "ממש עכשיו";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "יומני האפליקציה אינם זמינים כרגע.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "שיחה חדשה";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "יש לבצע כניסה ל-WordPress.com כדי לקבל עזרה מצוות התמיכה שלנו.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "יש לבדוק את החיבור לאינטרנט ולנסות שוב.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "אין רשת זמינה";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "תשובה";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "קבצים מצורפים";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "ניתן להוסיף צילומי מסך, סרטונים או מסמכים שמציגים את הבעיה.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "לא ניתן לצרף את הקובץ";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "עיון בקבצים";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "ספריית תמונות";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "הגעת לגודל המרבי. רק ⁦%1$d⁩ מתוך ⁦%2$d⁩ קבצים יישלחו";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "הסרת %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "קובץ זה גדול מדי לשליחה.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "קבצים אלה גדולים מדי לשליחה.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "ביטול";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "המשך כתיבה";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "ביטול";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "ההודעה והקובץ המצורף אליה יאבדו.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "האם לבטל את התשובה הזו?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "התשובה שלך לא נשלחה";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "יש לנסות שוב";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "הודעה";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "אישור";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "אופציונלי";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "שליחה";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "שולח…";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "התשובה שלך נשלחה. יש לבדוק את האימייל שלך לקבלת עדכונים.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "התחלת שיחה";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "סייען בינה מלאכותית";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "סגור";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "בתהליך";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "נפתר";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "לא ידוע";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "יש לנסות שוב";
+
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "בעבודה";
 
@@ -7125,6 +7290,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "לענות ל-%1$@";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "התשובה נשלחת";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "ביטול";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "מחיקת טיוטה";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "המשך עריכה";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "שמירת טיוטה";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "שליחה";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "השליחה תאשר גם תגובה זו.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "התגובות לפוסט הזה סגורות.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "שליחת התשובה נכשלה.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "התשובה הזאת כבר פורסמה.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "התשובה נשלחה לצורך אישור.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "התשובה נשלחה.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "השארת תשובה…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "תשובה";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "למחוק טיוטה";
@@ -7167,6 +7374,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "העברה ל'בהמתנה'";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "תשובה";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "שחזור";
@@ -7224,6 +7434,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "תגובת זבל";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "הועבר לפח";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "לבטל את השינויים";
@@ -7407,6 +7620,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "דביק";
+
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "הועבר לפח";
 
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "לא ניתן לבטל פעולה זו.";
@@ -11372,6 +11588,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "רשום לעדכונים";
 
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "…הצגת פריטים נוספים";
+
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "פעולות נוספות";
 
@@ -11546,6 +11765,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Footer text explaining the saved posts export and import feature */
 "reader.savedPosts.settings.footer" = "אפשר לייצא את הפוסטים שנשמרו כקובץ JSON לצורך גיבוי, או לייבא קובץ שכבר יצאת. דילוג על פוסטים כפולים מתבצע באופן אוטומטי.";
 
+/* Button to import saved Reader posts from a JSON file */
+"reader.savedPosts.settings.import" = "ייבוא פוסטים שמורים";
+
 /* Title of alert shown after importing saved posts */
 "reader.savedPosts.settings.importCompleteTitle" = "הייבוא הושלם";
 
@@ -11701,6 +11923,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.welcome.subtitle" = "להצטרף לקהילת הבלוגים הגדולה בעולם";
 
 /* Reader app primary navigation tab bar */
+"readerApp.tabBar.discover" = "לגלות דברים חדשים";
+
+/* Reader app primary navigation tab bar */
 "readerApp.tabBar.me" = "אני";
 
 /* Reader app primary navigation tab bar */
@@ -11805,6 +12030,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "גרסאות קודמות";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "ביטול השיתוף";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "משהו השתבש במהלך הקריאה של התוכן ששיתפת. יש לנסות שוב.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "אין אפשרות לטעון את התוכן ששותף";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "ביטול";
 
@@ -11813,6 +12047,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "אפשרויות מדיה";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "אישור";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "לא ניתן היה לטעון פריט משותף אחד או יותר, והמערכת דילגה עליהם.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "המערכת דילגה על חלק מהתוכן";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "לנסות שוב";
@@ -12390,6 +12633,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "מנויים";
 
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "הפוסט האחרון %1$@ קיבל %2$@ לייקים.";
+
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "הפוסט האחרון %1$@ קיבל לייק %2$@.";
+
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "סך כל המנויים ב-WordPress.com: %@";
 
@@ -12732,6 +12981,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "תסריט לבוט האפליקציה של Jetpack לנייד";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "אפשר לשאול שאלה ולקבל עזרה מקבוצת המתנדבים שלנו.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "פורומי הקהילה";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "אפשר לקבל תשובות מצוות התמיכה שלנו בכל עת";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "קבלת עזרה";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "אפשר לשאול שאלה בפורום הקהילה ולקבל עזרה מקבוצת המתנדבים שלנו.";
 
@@ -12820,6 +13081,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "תגיות";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "מפעיל";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "פריטים אלה יימחקו:";
 
@@ -12904,6 +13168,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "שגיאה";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "אירעה שגיאה במהלך עדכון הסיסמה";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "שגיאה";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "מידע ביוגרפי";

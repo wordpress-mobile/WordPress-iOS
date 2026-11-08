@@ -17,7 +17,7 @@ import WordPressUI
     ) -> Bool
 }
 
-class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
+class InlineEditableNameValueCell: WPTableViewCell, Reusable {
     typealias ValueSanitizerBlock = (_ value: String?) -> String?
 
     fileprivate enum Const {
@@ -32,9 +32,26 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         }
     }
 
-    @IBOutlet weak var nameValueWidthRatioConstraint: NSLayoutConstraint!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var valueTextField: UITextField!
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isOpaque = false
+        label.backgroundColor = nil
+        label.contentMode = .left
+        label.textAlignment = .natural
+        // Tapping the label focuses the text field.
+        label.isUserInteractionEnabled = true
+        label.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
+        label.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
+        return label
+    }()
+    let valueTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.autocapitalizationType = .none
+        textField.minimumFontSize = 17
+        return textField
+    }()
     weak var delegate: InlineEditableNameValueCellDelegate?
     var valueSanitizer: ValueSanitizerBlock?
 
@@ -45,8 +62,29 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         }
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        clipsToBounds = true
+        preservesSuperviewLayoutMargins = true
+        contentView.isOpaque = false
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+        contentView.preservesSuperviewLayoutMargins = true
+        contentView.insetsLayoutMarginsFromSafeArea = false
+
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(valueTextField)
+        NSLayoutConstraint.activate([
+            nameLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            contentView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: nameLabel.bottomAnchor),
+            valueTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            valueTextField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(equalTo: valueTextField.trailingAnchor, constant: 16),
+            contentView.bottomAnchor.constraint(equalTo: valueTextField.bottomAnchor)
+        ])
+
         selectionStyle = .none
 
         nameLabel.textColor = Const.Color.nameText
@@ -80,6 +118,10 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         }
 
         accessoryType = .none
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     @objc func textFieldDidChange(textField: UITextField) {

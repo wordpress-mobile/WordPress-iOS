@@ -9,7 +9,6 @@
 @import WordPressSharedUI;
 
 #import "WordPress-Swift.h"
-NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService
 
@@ -215,7 +214,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             }
         });
     } failure:^(NSError *error) {
-        DDLogError(@"Failed to fetch user details for account %@.  %@", account, error);
+        WPLogError(@"Failed to fetch user details for account %@.  %@", account, error);
         if (failure) {
             failure(error);
         }
@@ -259,7 +258,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         WPAccount *account = [context existingObjectWithID:objectID error:nil];
         [self updateDefaultBlogIfNeeded:account inContext:context];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:nil];
     }];
 }
 
@@ -276,7 +274,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     Blog *defaultBlog = [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
 
     if (!defaultBlog) {
-        DDLogError(@"Error: The Default Blog could not be loaded");
+        WPLogError(@"Error: The Default Blog could not be loaded");
         return;
     }
 
@@ -307,7 +305,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
 
         if (purge) {
-            DDLogWarn(@"Removing account since it has no blogs associated and it's not the default account: %@", accountInContext);
+            WPLogWarning(@"Removing account since it has no blogs associated and it's not the default account: %@", accountInContext);
             [context deleteObject:accountInContext];
         }
     }];

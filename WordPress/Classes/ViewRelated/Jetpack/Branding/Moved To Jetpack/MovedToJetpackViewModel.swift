@@ -21,9 +21,21 @@ struct MovedToJetpackViewModel {
 
     let source: MovedToJetpackSource
 
+    /// Whether the app shows the live Reader, in which case the copy must not present Reader as
+    /// exclusive to Jetpack.
+    let isReaderAvailable: Bool
+
     let animationLtr: String = Constants.wpJetpackLogoAnimationLtr
 
     let animationRtl: String = Constants.wpJetpackLogoAnimationRtl
+
+    init(
+        source: MovedToJetpackSource,
+        isReaderAvailable: Bool = JetpackFeaturesRemovalCoordinator.isReaderAvailable()
+    ) {
+        self.source = source
+        self.isReaderAvailable = isReaderAvailable
+    }
 
     var title: String {
         switch source {
@@ -37,7 +49,9 @@ struct MovedToJetpackViewModel {
     }
 
     var description: String {
-        return Strings.description
+        // The Reader poster is never shown while Reader is available, so this covers the
+        // Notifications and Stats posters.
+        isReaderAvailable ? Strings.descriptionWithoutReader : Strings.description
     }
 
     var hint: String {
@@ -84,6 +98,14 @@ extension MovedToJetpackViewModel {
             "movedToJetpack.description",
             value: "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.",
             comment: "Description for the static screen displayed prompting users to switch the Jetpack app."
+        )
+
+        static let descriptionWithoutReader = NSLocalizedString(
+            "movedToJetpack.descriptionWithoutReader",
+            value:
+                "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Notifications and more.",
+            comment:
+                "Description for the static screen prompting users to switch to the Jetpack app, used while the WordPress app shows Reader."
         )
 
         static let hint = NSLocalizedString(
