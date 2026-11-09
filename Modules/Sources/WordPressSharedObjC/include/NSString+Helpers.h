@@ -2,7 +2,6 @@
 
 @interface NSString (Helpers)
 
-- (NSMutableDictionary *)dictionaryFromQueryString;
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
 - (NSString *)wp_stringByUrlEncoding;

@@ -81,33 +81,6 @@ static NSString *const Ellipsis =  @"\u2026";
     return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
 }
 
-- (NSMutableDictionary *)dictionaryFromQueryString
-{
-    if (!self) {
-        return nil;
-    }
-
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-
-    NSArray *pairs = [self componentsSeparatedByString:@"&"];
-    for (NSString *pair in pairs) {
-        NSRange separator = [pair rangeOfString:@"="];
-        NSString *key, *value;
-        if (separator.location != NSNotFound) {
-            key = [pair substringToIndex:separator.location];
-            value = [[pair substringFromIndex:separator.location + 1] stringByRemovingPercentEncoding];
-        } else {
-            key = pair;
-            value = @"";
-        }
-
-        key = [key stringByRemovingPercentEncoding];
-        [result setObject:value forKey:key];
-    }
-
-    return result;
-}
-
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji
 {
     NSMutableString *result = [NSMutableString stringWithString:self];
