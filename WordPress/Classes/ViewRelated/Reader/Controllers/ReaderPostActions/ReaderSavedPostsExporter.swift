@@ -162,7 +162,10 @@ struct ReaderSavedPostsExporter {
         filenameDateFormatter.dateFormat = "yyyy-MM-dd"
         let dateSuffix = filenameDateFormatter.string(from: Date())
         let fileName = "\(appName)-Saved-Posts-\(dateSuffix).json"
-        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+        // Each export gets its own folder, so two exports on the same day don't write one file.
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let fileURL = directory.appendingPathComponent(fileName)
         try data.write(to: fileURL)
 
         return fileURL
