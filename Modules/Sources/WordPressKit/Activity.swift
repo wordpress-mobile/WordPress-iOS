@@ -1,5 +1,5 @@
 import Foundation
-import WordPressKitModels
+import WordPressShared
 
 public struct Activity: Decodable {
 

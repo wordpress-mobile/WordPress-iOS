@@ -7,7 +7,6 @@ extension StatsEvent {
         switch self {
         case .statsMainScreenShown: .jetpackStatsMainScreenShown
         case .trafficTabShown: .jetpackStatsTrafficTabShown
-        case .realtimeTabShown: .jetpackStatsRealtimeTabShown
         case .subscribersTabShown: .jetpackStatsSubscribersTabShown
         case .adsTabShown: .jetpackStatsAdsTabShown
         case .postDetailsScreenShown: .jetpackStatsPostDetailsScreenShown

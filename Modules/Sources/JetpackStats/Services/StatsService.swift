@@ -12,8 +12,6 @@ actor StatsService: StatsServiceProtocol {
     private let api: WordPressComRestApi
     private let service: StatsServiceRemoteV2
     private let siteTimeZone: TimeZone
-    // Temporary
-    private var mocks: MockStatsService
     private let postLikesStore: (any PostLikesStore)?
 
     // Cache
@@ -56,7 +54,6 @@ actor StatsService: StatsServiceProtocol {
             siteTimezone: timeZone
         )
         self.siteTimeZone = timeZone
-        self.mocks = MockStatsService(timeZone: timeZone)
         self.postLikesStore = postLikesStore
     }
 
@@ -450,10 +447,6 @@ actor StatsService: StatsServiceProtocol {
                 throw StatsServiceError.unavailable
             }
         }
-    }
-
-    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListResponse {
-        try await mocks.getRealtimeTopListData(item)
     }
 
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
