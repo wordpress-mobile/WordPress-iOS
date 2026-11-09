@@ -343,6 +343,7 @@ private final class ReaderPostCellView: UIView {
     }
 
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {
+        buttons.bookmark.isHidden = !viewModel.isBookmarkEnabled
         buttons.bookmark.configuration = {
             var configuration = buttons.bookmark.configuration ?? .plain()
             configuration.image =

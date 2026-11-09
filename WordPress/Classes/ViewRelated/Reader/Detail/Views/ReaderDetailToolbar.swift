@@ -13,6 +13,7 @@ class ReaderDetailToolbar {
 
     private var likeCountObserver: NSKeyValueObservation?
     private var commentCountObserver: NSKeyValueObservation?
+    private var savedPostsObserver: NSObjectProtocol?
 
     /// The buttons currently shown in the toolbar.
     ///
@@ -58,6 +59,7 @@ class ReaderDetailToolbar {
         guard let viewController, let post else { return }
 
         let layout = Layout(
+            showsSaveButton: isLoggedIn(),
             showsReblogButton: isLoggedIn() && !post.isBlogPrivate,
             showsCommentButton: shouldShowCommentActionButton,
             showsLikeButton: post.isLikesEnabled
@@ -72,7 +74,7 @@ class ReaderDetailToolbar {
 
         let buttons = Buttons(
             // Custom views, so they can sit on the frosted capsules on iOS 26+.
-            saveForLater: makeCustomButton(action: #selector(didTapSaveForLater)),
+            saveForLater: layout.showsSaveButton ? makeCustomButton(action: #selector(didTapSaveForLater)) : nil,
             reblog: layout.showsReblogButton ? makeCustomButton(action: #selector(didTapReblog)) : nil,
             comment: layout.showsCommentButton ? makeCustomButton(action: #selector(didTapComment)) : nil,
             like: layout.showsLikeButton ? makeCustomButton(action: #selector(didTapLike)) : nil
@@ -85,7 +87,9 @@ class ReaderDetailToolbar {
     // MARK: - Configure Buttons
 
     private func configure(_ buttons: Buttons, for post: ReaderPost) {
-        configureSaveForLaterButton(buttons.saveForLater, for: post)
+        if let saveForLater = buttons.saveForLater {
+            configureSaveForLaterButton(saveForLater, for: post)
+        }
         if let reblog = buttons.reblog {
             configureReblogButton(reblog)
         }
@@ -100,7 +104,7 @@ class ReaderDetailToolbar {
     }
 
     private func configureSaveForLaterButton(_ button: UIBarButtonItem, for post: ReaderPost) {
-        let isSaved = post.isSavedForLater
+        let isSaved = post.isSavedForDisplay
 
         configureCustomButton(
             button,
@@ -295,6 +299,8 @@ private extension ReaderDetailToolbar {
 
     /// Which of the optional buttons the toolbar shows.
     struct Layout: Equatable {
+        /// Hidden when signed out: saved posts are kept in the WordPress.com account.
+        let showsSaveButton: Bool
         /// Hidden when the user can't reblog the post: signed out, or a private site.
         let showsReblogButton: Bool
         let showsCommentButton: Bool
@@ -302,7 +308,7 @@ private extension ReaderDetailToolbar {
     }
 
     struct Buttons {
-        let saveForLater: UIBarButtonItem
+        let saveForLater: UIBarButtonItem?
         let reblog: UIBarButtonItem?
         let comment: UIBarButtonItem?
         let like: UIBarButtonItem?
@@ -311,7 +317,7 @@ private extension ReaderDetailToolbar {
         let capsules: [UIBarButtonItem]
 
         init(
-            saveForLater: UIBarButtonItem,
+            saveForLater: UIBarButtonItem?,
             reblog: UIBarButtonItem?,
             comment: UIBarButtonItem?,
             like: UIBarButtonItem?
@@ -335,11 +341,18 @@ private extension ReaderDetailToolbar {
         }
 
         var layout: Layout {
-            Layout(showsReblogButton: reblog != nil, showsCommentButton: comment != nil, showsLikeButton: like != nil)
+            Layout(
+                showsSaveButton: saveForLater != nil,
+                showsReblogButton: reblog != nil,
+                showsCommentButton: comment != nil,
+                showsLikeButton: like != nil
+            )
         }
 
         var toolbarItems: [UIBarButtonItem] {
             if #available(iOS 26, *) {
+                // Without save and reblog, such as signed out, comment and like stay on the right.
+                guard saveForLater != nil || reblog != nil else { return [.flexibleSpace()] + capsules }
                 return [capsules[0], .flexibleSpace()] + capsules.dropFirst()
             }
 
@@ -349,7 +362,9 @@ private extension ReaderDetailToolbar {
                 items.append(.flexibleSpace())
             }
 
-            items.append(saveForLater)
+            if let saveForLater {
+                items.append(saveForLater)
+            }
 
             if let reblog {
                 if #unavailable(iOS 26) {
@@ -560,10 +575,25 @@ private extension ReaderDetailToolbar {
 
             self?.updateToolbarItems()
         }
+
+        // Saved posts kept in the account change outside Core Data.
+        if savedPostsObserver == nil {
+            savedPostsObserver = NotificationCenter.default.addObserver(
+                forName: .readerSavedPostsDidChange,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.updateToolbarItems()
+            }
+        }
     }
 
     func unsubscribePostChanges() {
         likeCountObserver?.invalidate()
         commentCountObserver?.invalidate()
+        if let savedPostsObserver {
+            NotificationCenter.default.removeObserver(savedPostsObserver)
+            self.savedPostsObserver = nil
+        }
     }
 }

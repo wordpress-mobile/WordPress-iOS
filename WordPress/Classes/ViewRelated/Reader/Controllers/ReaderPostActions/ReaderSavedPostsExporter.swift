@@ -1,8 +1,10 @@
 import Foundation
-import CoreData
-import WordPressData
+import WordPressAPI
+import WordPressAPIInternal
+import WordPressShared
 
-/// Handles exporting and importing saved Reader posts as JSON files.
+/// Exports the saved Reader posts kept in the WordPress.com account as a JSON file, and saves the
+/// posts in such a file to the account.
 struct ReaderSavedPostsExporter {
 
     struct Envelope: Codable {
@@ -29,54 +31,117 @@ struct ReaderSavedPostsExporter {
         var isFeed: Bool
     }
 
-    /// Fetches all saved Reader posts and writes them to a temporary JSON file.
+    /// Writes the account's saved posts to a temporary JSON file.
     ///
-    /// The Core Data fetch, JSON encoding, and file write all run off the main
-    /// thread so a large export doesn't block the UI.
-    ///
-    /// - Parameter coreDataStack: The Core Data stack.
     /// - Returns: The file URL of the exported JSON, or `nil` if there are no saved posts.
-    func export(coreDataStack: CoreDataStack) async throws -> URL? {
-        // Do the Core Data work on a background context and only return value
-        // types (no managed objects escape the closure).
-        let exportedPosts: [ExportedPost] = try await coreDataStack.performQuery { context in
-            let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
-            request.predicate = NSPredicate(format: "isSavedForLater == YES")
-            request.sortDescriptors = [NSSortDescriptor(key: "sortDate", ascending: false)]
+    func export(collection: any ReaderSavedPostsCollectionProtocol) async throws -> URL? {
+        try await Self.loadAllPages(of: collection)
+        let items = try await collection.loadItems()
+        return try Self.writeExportFile(items.map(Self.exportedPost(for:)))
+    }
 
-            let posts = try context.fetch(request)
-            let dateFormatter = ISO8601DateFormatter()
+    /// The cache only has the pages the Saved screen has loaded, so the rest are loaded first. A
+    /// failure fails the export rather than writing part of the list.
+    private static func loadAllPages(of collection: any ReaderSavedPostsCollectionProtocol) async throws {
+        // The account keeps at most 1,000 saves, which is 25 pages.
+        let maxPages = 50
+        var page = try await collection.refresh()
+        var pageCount = 1
+        while page.hasMore, pageCount < maxPages {
+            page = try await collection.loadNextPage()
+            pageCount += 1
+        }
+    }
 
-            return posts.map { post in
-                let tags = post.tagsForDisplay()
-                let featuredImage = post.featuredImage
+    /// Saves the posts from an export file in the account. Posts already saved stay as they are.
+    ///
+    /// - Returns: How many posts were saved, skipped because they're missing the IDs the API
+    ///   needs, or failed.
+    @MainActor
+    static func importPostsToAccount(
+        _ posts: [ExportedPost],
+        store: ReaderSavedPostsStore
+    ) async -> ImportResult {
+        do {
+            let result = try await store.save(posts.map(identity(for:)))
+            return ImportResult(imported: result.saved, skipped: result.unsaveable, failed: result.failed)
+        } catch {
+            Loggers.app.error("Import: saving to the account failed: \(String(describing: error))")
+            return ImportResult(imported: 0, skipped: 0, failed: posts.count)
+        }
+    }
 
-                // Use int64Value (not uintValue) so the inherited BasePost.postID default
-                // of -1 isn't reinterpreted as UInt.max and exported as a valid ID.
-                func positiveUInt(_ number: NSNumber?) -> UInt? {
-                    guard let value = number?.int64Value, value > 0 else { return nil }
-                    return UInt(value)
-                }
+    /// The identity of a post from an export file. It's read like a Core Data post: an RSS item's
+    /// post ID is its feed item ID.
+    static func identity(for post: ExportedPost) -> ReaderPostSaveIdentity {
+        ReaderSavedPostsSync.identity(
+            postID: post.postID.map { NSNumber(value: $0) },
+            siteID: post.siteID.map { NSNumber(value: $0) },
+            feedID: post.feedID.map { NSNumber(value: $0) },
+            feedItemID: post.feedItemID.map { NSNumber(value: $0) },
+            isExternal: post.isFeed,
+            permaLink: post.url
+        )
+    }
 
-                return ExportedPost(
-                    title: post.titleForDisplay(),
-                    url: post.permaLink ?? "",
-                    author: post.authorForDisplay() ?? "",
-                    siteName: post.blogNameForDisplay() ?? "",
-                    siteURL: post.blogURL ?? "",
-                    date: post.dateForDisplay().map { dateFormatter.string(from: $0) },
-                    summary: post.contentPreviewForDisplay() ?? "",
-                    tags: tags.isEmpty ? nil : tags,
-                    featuredImageURL: (featuredImage?.isEmpty ?? true) ? nil : featuredImage,
-                    siteID: positiveUInt(post.siteID),
-                    postID: positiveUInt(post.postID),
-                    feedID: positiveUInt(post.feedID),
-                    feedItemID: positiveUInt(post.feedItemID),
-                    isFeed: post.isExternal
-                )
+    /// A post from the account's saved list, as an export file has it.
+    static func exportedPost(for item: ReaderSavedListItem) -> ExportedPost {
+        let post = item.post
+        let identity = post?.identity
+        let url = identity?.url ?? Self.url(of: item.key) ?? ""
+
+        func positive(_ value: UInt64?) -> UInt? {
+            guard let value, value > 0 else { return nil }
+            return UInt(value)
+        }
+        func plainText(_ html: String?) -> String? {
+            html.flatMap { ($0 as NSString).makePlainText().nonEmptyString() }
+        }
+
+        var siteID = positive(identity?.siteId)
+        var postID = positive(identity?.id)
+        var feedItemID = positive(identity?.feedItemId)
+        var isFeed = identity?.isExternal ?? false
+        // A post saved just now has only its key.
+        if identity == nil {
+            switch item.key {
+            case let .post(blogId, postId):
+                siteID = positive(blogId)
+                postID = postId > 0 ? UInt(postId) : nil
+            case let .feedItem(feedItemId):
+                feedItemID = positive(feedItemId)
+                isFeed = true
+            case .url:
+                break
             }
         }
 
+        return ExportedPost(
+            title: plainText(post?.title) ?? url,
+            url: url,
+            author: post?.authorName ?? "",
+            siteName: post?.siteName ?? "",
+            siteURL: post?.siteUrl ?? post?.feedUrl ?? "",
+            date: post?.date.map { ISO8601DateFormatter().string(from: $0) },
+            summary: plainText(post?.excerpt) ?? "",
+            tags: nil,
+            featuredImageURL: post?.featuredImage?.nonEmptyString(),
+            siteID: siteID,
+            postID: postID,
+            feedID: positive(identity?.feedId),
+            feedItemID: feedItemID,
+            isFeed: isFeed
+        )
+    }
+
+    private static func url(of key: ReaderSavedKey) -> String? {
+        if case let .url(url) = key { url } else { nil }
+    }
+
+    /// Writes the posts to a temporary JSON file.
+    ///
+    /// - Returns: The file URL of the exported JSON, or `nil` if there are no posts.
+    static func writeExportFile(_ exportedPosts: [ExportedPost]) throws -> URL? {
         guard !exportedPosts.isEmpty else { return nil }
 
         let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
@@ -120,195 +185,8 @@ struct ReaderSavedPostsExporter {
         }
     }
 
-    /// The maximum number of posts to fetch from the API at the same time.
-    ///
-    /// Imports run in parallel for speed, but the concurrency is bounded so a
-    /// large export file doesn't overwhelm the API with requests.
-    private static let maxConcurrentImports = 4
-
-    /// Imports saved posts by fetching each one from the API, then marking it as saved.
-    /// This ensures posts are created through the normal Core Data pipeline with all required fields.
-    ///
-    /// - Parameters:
-    ///   - posts: Parsed post entries from a JSON export file.
-    ///   - coreDataStack: The Core Data stack.
-    ///   - progress: Updated as posts are processed so callers can surface import progress.
-    /// - Returns: A summary of how many posts were imported, skipped, or failed.
-    static func importPosts(
-        _ posts: [ExportedPost],
-        coreDataStack: CoreDataStack,
-        progress: Progress
-    ) async -> ImportResult {
-        // Fetch existing saved post URLs for deduplication.
-        let existingURLs: Set<String>
-        do {
-            existingURLs = try await coreDataStack.performQuery { context in
-                try fetchSavedPostURLs(in: context)
-            }
-        } catch {
-            return ImportResult(imported: 0, skipped: 0, failed: posts.count)
-        }
-
-        // Filter to posts that need importing (have usable identifiers, not already saved).
-        // Feed posts identify themselves with feedID/feedItemID; site posts use siteID/postID.
-        var toImport: [(siteID: UInt, postID: UInt, isFeed: Bool)] = []
-        var skipped = 0
-
-        for post in posts {
-            guard !post.url.isEmpty else {
-                skipped += 1
-                continue
-            }
-
-            if existingURLs.contains(post.url) {
-                skipped += 1
-                continue
-            }
-
-            let siteIdentifier: UInt?
-            let postIdentifier: UInt?
-            if post.isFeed {
-                siteIdentifier = post.feedID
-                postIdentifier = post.feedItemID
-            } else {
-                siteIdentifier = post.siteID
-                postIdentifier = post.postID
-            }
-
-            guard let siteID = siteIdentifier, siteID > 0,
-                let postID = postIdentifier, postID > 0
-            else {
-                Loggers.app.error("Import: skipping post with missing identifiers: \(post.url)")
-                skipped += 1
-                continue
-            }
-
-            toImport.append((siteID: siteID, postID: postID, isFeed: post.isFeed))
-        }
-
-        guard !toImport.isEmpty else {
-            return ImportResult(imported: 0, skipped: skipped, failed: 0)
-        }
-
-        progress.totalUnitCount = Int64(toImport.count)
-        progress.completedUnitCount = 0
-
-        let service = ReaderPostService(coreDataStack: coreDataStack)
-
-        var imported = 0
-        var failed = 0
-
-        // Import posts in parallel, but bound the concurrency so we don't flood
-        // the API. Counter and progress mutations happen here in the parent task
-        // as each child task finishes, so they stay single-threaded.
-        await withTaskGroup(of: Bool.self) { group in
-            var iterator = toImport.makeIterator()
-
-            func addNextTask() {
-                guard let entry = iterator.next() else { return }
-                group.addTask {
-                    await importPost(
-                        siteID: entry.siteID,
-                        postID: entry.postID,
-                        isFeed: entry.isFeed,
-                        service: service,
-                        coreDataStack: coreDataStack
-                    )
-                }
-            }
-
-            for _ in 0..<maxConcurrentImports {
-                addNextTask()
-            }
-
-            while let didImport = await group.next() {
-                if didImport {
-                    imported += 1
-                } else {
-                    failed += 1
-                }
-                progress.completedUnitCount += 1
-                addNextTask()
-            }
-        }
-
-        return ImportResult(imported: imported, skipped: skipped, failed: failed)
-    }
-
-    /// Fetches a single post from the API and marks it as saved.
-    /// - Returns: `true` if the post was imported, `false` if it couldn't be fetched.
-    private static func importPost(
-        siteID: UInt,
-        postID: UInt,
-        isFeed: Bool,
-        service: ReaderPostService,
-        coreDataStack: CoreDataStack
-    ) async -> Bool {
-        do {
-            let postID = try await fetchPost(
-                siteID: siteID,
-                postID: postID,
-                isFeed: isFeed,
-                service: service
-            )
-            try await coreDataStack.performAndSave { [postID] context in
-                let post = try context.existingObject(with: postID)
-                if !post.isSavedForLater {
-                    post.isSavedForLater = true
-                }
-            }
-            return true
-        } catch {
-            Loggers.app.error(
-                "Import: failed to fetch post \(postID) from site \(siteID): \(String(describing: error))"
-            )
-            return false
-        }
-    }
-
-    /// Wraps `ReaderPostService.fetchPost` as an async call, returning the
-    /// typed object ID of the fetched post.
-    private static func fetchPost(
-        siteID: UInt,
-        postID: UInt,
-        isFeed: Bool,
-        service: ReaderPostService
-    ) async throws -> TaggedManagedObjectID<ReaderPost> {
-        try await withCheckedThrowingContinuation { continuation in
-            service.fetchPost(
-                postID,
-                forSite: siteID,
-                isFeed: isFeed,
-                success: { post in
-                    if let post {
-                        continuation.resume(returning: TaggedManagedObjectID(post))
-                    } else {
-                        continuation.resume(throwing: ImportError.postUnavailable)
-                    }
-                },
-                failure: { error in
-                    if let error {
-                        continuation.resume(throwing: error)
-                    } else {
-                        continuation.resume(throwing: ImportError.postUnavailable)
-                    }
-                }
-            )
-        }
-    }
-
-    private static func fetchSavedPostURLs(in context: NSManagedObjectContext) throws -> Set<String> {
-        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "isSavedForLater == YES")
-        request.propertiesToFetch = ["permaLink"]
-
-        let posts = try context.fetch(request)
-        return Set(posts.compactMap(\.permaLink))
-    }
-
     enum ImportError: LocalizedError {
         case invalidFormat
-        case postUnavailable
 
         var errorDescription: String? {
             switch self {
@@ -318,8 +196,6 @@ struct ReaderSavedPostsExporter {
                     value: "The selected file is not a valid saved posts export.",
                     comment: "Error when the imported file doesn't match the expected JSON format"
                 )
-            case .postUnavailable:
-                return nil
             }
         }
     }

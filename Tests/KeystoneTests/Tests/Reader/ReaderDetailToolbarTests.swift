@@ -110,7 +110,26 @@ struct ReaderDetailToolbarTests {
 
         let labels = buttons(in: viewController.toolbarItems).map(\.accessibilityLabel)
         #expect(labels.contains("Reblog post") == showsReblog)
-        #expect(labels.count == (showsReblog ? 2 : 1)) // Save, and reblog when shown
+        // Save when signed in, and reblog when shown.
+        #expect(labels.count == (isLoggedIn ? 1 : 0) + (showsReblog ? 1 : 0))
+    }
+
+    @Test("the save button is hidden when signed out, because saved posts are kept in the account")
+    func saveButtonNeedsAnAccount() throws {
+        let context = ContextManager.forTesting().mainContext
+        let post = ReaderPostBuilder(context).build()
+        post.isLikesEnabled = true
+        post.commentsOpen = false
+        post.commentCount = 0
+        let viewController = UIViewController()
+        let toolbar = ReaderDetailToolbar(isLoggedIn: { false })
+
+        toolbar.configure(for: post, in: viewController)
+
+        let items = try #require(viewController.toolbarItems)
+        let labels = buttons(in: items).map(\.accessibilityLabel)
+        #expect(labels.count == 1) // Like only
+        #expect(items.first?.customView == nil) // A space first, so like stays on the right
     }
 
     @Test("a frosted capsule fits its buttons after a count changes width")

@@ -1,348 +1,188 @@
-import XCTest
-import WordPressData
+import Foundation
+import Testing
+import WordPressAPI
+import WordPressAPIInternal
 
 @testable import WordPress
 
 @MainActor
-class ReaderSavedPostsExporterTests: CoreDataTestCase {
-
-    private let exporter = ReaderSavedPostsExporter()
+struct ReaderSavedPostsExporterTests {
 
     // MARK: - Export
 
-    func testExportReturnsNilWhenNoSavedPosts() async throws {
-        let result = try await exporter.export(coreDataStack: contextManager)
-        XCTAssertNil(result)
+    @Test("Nothing is exported when the account has no saved posts")
+    func exportReturnsNilWhenEmpty() async throws {
+        let collection = FakeReaderSavedPostsCollection()
+
+        #expect(try await ReaderSavedPostsExporter().export(collection: collection) == nil)
     }
 
-    func testExportReturnsNilWhenPostsExistButNoneAreSaved() async throws {
-        let post = makeReaderPost()
-        post.isSavedForLater = false
-        try mainContext.save()
-
-        let result = try await exporter.export(coreDataStack: contextManager)
-        XCTAssertNil(result)
-    }
-
-    func testExportCreatesJSONFileWithSavedPosts() async throws {
-        let post = makeReaderPost()
-        post.postTitle = "Test Post"
-        post.permaLink = "https://example.com/test-post"
-        post.authorDisplayName = "Jane Doe"
-        post.blogName = "Example Blog"
-        post.blogURL = "https://example.com"
-        post.summary = "A short summary"
-        post.featuredImage = "https://example.com/image.jpg"
-        post.tags = "swift, ios"
-        post.siteID = 12345
-        post.postID = 67890
-        post.isExternal = false
-        post.isSavedForLater = true
-        post.sortDate = Date(timeIntervalSince1970: 1000000)
-        post.date_created_gmt = Date(timeIntervalSince1970: 1000000)
-        try mainContext.save()
-
-        let url = try await exporter.export(coreDataStack: contextManager)
-        let fileURL = try XCTUnwrap(url)
-
-        let data = try Data(contentsOf: fileURL)
-        let envelope = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-
-        XCTAssertEqual(envelope["postCount"] as? Int, 1)
-        XCTAssertNotNil(envelope["exportDate"])
-
-        let posts = try XCTUnwrap(envelope["posts"] as? [[String: Any]])
-        XCTAssertEqual(posts.count, 1)
-
-        let exported = posts[0]
-        XCTAssertEqual(exported["title"] as? String, "Test Post")
-        XCTAssertEqual(exported["url"] as? String, "https://example.com/test-post")
-        XCTAssertEqual(exported["author"] as? String, "Jane Doe")
-        XCTAssertEqual(exported["siteName"] as? String, "Example Blog")
-        XCTAssertEqual(exported["siteURL"] as? String, "https://example.com")
-        XCTAssertEqual(exported["summary"] as? String, "A short summary")
-        XCTAssertEqual(exported["featuredImageURL"] as? String, "https://example.com/image.jpg")
-        XCTAssertEqual(exported["tags"] as? [String], ["swift", "ios"])
-        XCTAssertEqual((exported["siteID"] as? NSNumber)?.intValue, 12345)
-        XCTAssertEqual((exported["postID"] as? NSNumber)?.intValue, 67890)
-        XCTAssertEqual(exported["isFeed"] as? Bool, false)
-    }
-
-    func testExportOnlyIncludesSavedPosts() async throws {
-        let saved = makeReaderPost()
-        saved.postTitle = "Saved"
-        saved.permaLink = "https://example.com/saved"
-        saved.isSavedForLater = true
-        saved.sortDate = Date()
-
-        let unsaved = makeReaderPost()
-        unsaved.postTitle = "Unsaved"
-        unsaved.permaLink = "https://example.com/unsaved"
-        unsaved.isSavedForLater = false
-        unsaved.sortDate = Date()
-
-        try mainContext.save()
-
-        let url = try await exporter.export(coreDataStack: contextManager)
-        let fileURL = try XCTUnwrap(url)
-        let data = try Data(contentsOf: fileURL)
-        let envelope = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        let posts = try XCTUnwrap(envelope["posts"] as? [[String: Any]])
-
-        XCTAssertEqual(posts.count, 1)
-        XCTAssertEqual(posts[0]["title"] as? String, "Saved")
-    }
-
-    func testExportOmitsEmptyOptionalFields() async throws {
-        let post = makeReaderPost()
-        post.permaLink = "https://example.com/minimal"
-        post.isSavedForLater = true
-        post.sortDate = Date()
-        try mainContext.save()
-
-        let url = try await exporter.export(coreDataStack: contextManager)
-        let fileURL = try XCTUnwrap(url)
-        let data = try Data(contentsOf: fileURL)
-        let envelope = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        let posts = try XCTUnwrap(envelope["posts"] as? [[String: Any]])
-        let exported = posts[0]
-
-        XCTAssertNil(exported["featuredImageURL"])
-        XCTAssertNil(exported["tags"])
-    }
-
-    func testExportFileNameContainsDate() async throws {
-        let post = makeReaderPost()
-        post.permaLink = "https://example.com/test"
-        post.isSavedForLater = true
-        post.sortDate = Date()
-        try mainContext.save()
-
-        let url = try await exporter.export(coreDataStack: contextManager)
-        let fileURL = try XCTUnwrap(url)
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let todayString = dateFormatter.string(from: Date())
-
-        XCTAssertTrue(fileURL.lastPathComponent.contains(todayString))
-        XCTAssertEqual(fileURL.pathExtension, "json")
-    }
-
-    // MARK: - parseExportFile
-
-    func testParseExportFileReturnsPosts() throws {
-        let envelope = ReaderSavedPostsExporter.Envelope(
-            exportDate: "2026-04-23",
-            postCount: 2,
-            posts: [
-                makeExportedPost(url: "https://example.com/1", siteID: 100, postID: 1),
-                makeExportedPost(url: "https://example.com/2", siteID: 200, postID: 2)
-            ],
-            appVersion: "Test 1.0"
-        )
-        let fileURL = try writeEnvelopeToTempFile(envelope)
-        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
-
-        XCTAssertEqual(posts.count, 2)
-        XCTAssertEqual(posts[0].url, "https://example.com/1")
-    }
-
-    func testParseExportFileThrowsForInvalidFormat() throws {
-        let json: [String: Any] = ["notPosts": true]
-        let fileURL = try writeJSONToTempFile(json)
-
-        XCTAssertThrowsError(try ReaderSavedPostsExporter.parseExportFile(at: fileURL))
-    }
-
-    func testParseExportFileThrowsForNonJSON() throws {
-        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("bad-\(UUID().uuidString).json")
-        try "not json".write(to: fileURL, atomically: true, encoding: .utf8)
-
-        XCTAssertThrowsError(try ReaderSavedPostsExporter.parseExportFile(at: fileURL))
-    }
-
-    // MARK: - Import filtering
-
-    func testImportSkipsPostsAlreadySaved() async throws {
-        let existing = makeReaderPost()
-        existing.permaLink = "https://example.com/already-saved"
-        existing.isSavedForLater = true
-        existing.sortDate = Date()
-        try mainContext.save()
-
-        let posts = [makeExportedPost(url: "https://example.com/already-saved", siteID: 100, postID: 1)]
-
-        let result = await ReaderSavedPostsExporter.importPosts(
-            posts,
-            coreDataStack: contextManager,
-            progress: Progress()
-        )
-
-        XCTAssertEqual(result.imported, 0)
-        XCTAssertEqual(result.skipped, 1)
-        XCTAssertEqual(result.failed, 0)
-    }
-
-    func testImportSkipsPostsWithMissingSiteID() async {
-        let posts = [makeExportedPost(url: "https://example.com/no-site", siteID: nil, postID: 1)]
-
-        let result = await ReaderSavedPostsExporter.importPosts(
-            posts,
-            coreDataStack: contextManager,
-            progress: Progress()
-        )
-
-        XCTAssertEqual(result.imported, 0)
-        XCTAssertEqual(result.skipped, 1)
-        XCTAssertEqual(result.failed, 0)
-    }
-
-    func testImportSkipsPostsWithMissingPostID() async {
-        let posts = [makeExportedPost(url: "https://example.com/no-post-id", siteID: 100, postID: nil)]
-
-        let result = await ReaderSavedPostsExporter.importPosts(
-            posts,
-            coreDataStack: contextManager,
-            progress: Progress()
-        )
-
-        XCTAssertEqual(result.imported, 0)
-        XCTAssertEqual(result.skipped, 1)
-        XCTAssertEqual(result.failed, 0)
-    }
-
-    func testImportSkipsPostsWithEmptyURL() async {
-        let posts = [makeExportedPost(url: "", siteID: 100, postID: 1)]
-
-        let result = await ReaderSavedPostsExporter.importPosts(
-            posts,
-            coreDataStack: contextManager,
-            progress: Progress()
-        )
-
-        XCTAssertEqual(result.imported, 0)
-        XCTAssertEqual(result.skipped, 1)
-        XCTAssertEqual(result.failed, 0)
-    }
-
-    func testImportReturnsEmptyResultForEmptyPostsList() async {
-        let result = await ReaderSavedPostsExporter.importPosts(
-            [],
-            coreDataStack: contextManager,
-            progress: Progress()
-        )
-
-        XCTAssertEqual(result.imported, 0)
-        XCTAssertEqual(result.skipped, 0)
-        XCTAssertEqual(result.failed, 0)
-    }
-
-    // MARK: - Round-trip (export -> parse)
-
-    func testExportThenParsePreservesAllFields() async throws {
-        let post = makeReaderPost()
-        post.postTitle = "Round Trip"
-        post.permaLink = "https://example.com/round-trip"
-        post.authorDisplayName = "Author"
-        post.blogName = "Blog"
-        post.blogURL = "https://blog.example.com"
-        post.summary = "Summary text"
-        post.featuredImage = "https://example.com/img.jpg"
-        post.tags = "tag1, tag2"
-        post.siteID = 999
-        post.postID = 888
-        post.isExternal = false
-        post.isSavedForLater = true
-        post.sortDate = Date()
-        post.date_created_gmt = Date(timeIntervalSince1970: 1700000000)
-        try mainContext.save()
-
-        let url = try await exporter.export(coreDataStack: contextManager)
-        let fileURL = try XCTUnwrap(url)
-        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
-
-        XCTAssertEqual(posts.count, 1)
-        let exported = posts[0]
-        XCTAssertEqual(exported.title, "Round Trip")
-        XCTAssertEqual(exported.url, "https://example.com/round-trip")
-        XCTAssertEqual(exported.author, "Author")
-        XCTAssertEqual(exported.siteName, "Blog")
-        XCTAssertEqual(exported.siteURL, "https://blog.example.com")
-        XCTAssertEqual(exported.summary, "Summary text")
-        XCTAssertEqual(exported.featuredImageURL, "https://example.com/img.jpg")
-        XCTAssertEqual(exported.tags, ["tag1", "tag2"])
-        XCTAssertEqual(exported.siteID, 999)
-        XCTAssertEqual(exported.postID, 888)
-        XCTAssertNil(exported.feedID)
-        XCTAssertNil(exported.feedItemID)
-        XCTAssertEqual(exported.isFeed, false)
-        XCTAssertNotNil(exported.date)
-    }
-
-    func testExportFeedPostUsesFeedIdentifiers() async throws {
-        let post = makeReaderPost()
-        post.postTitle = "Feed Item"
-        post.permaLink = "https://feeds.example.com/item"
-        post.feedID = 42
-        post.feedItemID = 7
-        post.isExternal = true
-        post.isSavedForLater = true
-        post.sortDate = Date()
-        try mainContext.save()
-
-        let url = try await exporter.export(coreDataStack: contextManager)
-        let fileURL = try XCTUnwrap(url)
-        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
-
-        XCTAssertEqual(posts.count, 1)
-        let exported = posts[0]
-        XCTAssertEqual(exported.isFeed, true)
-        XCTAssertEqual(exported.feedID, 42)
-        XCTAssertEqual(exported.feedItemID, 7)
-        XCTAssertNil(exported.siteID)
-        XCTAssertNil(exported.postID)
-    }
-
-    func testImportSkipsFeedPostWithMissingFeedIdentifiers() async {
-        let posts = [
-            makeExportedPost(
-                url: "https://feeds.example.com/missing",
-                siteID: nil,
-                postID: nil,
-                isFeed: true
-            )
+    @Test("Export writes the account's saved list, and the file reads back")
+    func exportThenParse() async throws {
+        let collection = FakeReaderSavedPostsCollection()
+        collection.items = [
+            ReaderSavedPostsViewModelTests.postItem(postID: 1, siteID: 100, title: "First &amp; best"),
+            ReaderSavedPostsViewModelTests.postItem(postID: 2, siteID: 100)
         ]
 
-        let result = await ReaderSavedPostsExporter.importPosts(
-            posts,
-            coreDataStack: contextManager,
-            progress: Progress()
+        let fileURL = try #require(try await ReaderSavedPostsExporter().export(collection: collection))
+        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+
+        #expect(posts.map(\.postID) == [1, 2])
+        #expect(posts[0].title == "First & best")
+        #expect(posts[0].summary == "An excerpt")
+        #expect(posts[0].siteName == "Site")
+        #expect(posts[0].author == "Author")
+        #expect(posts[0].url == "https://example.com/1")
+        #expect(posts[0].featuredImageURL == "https://example.com/image.jpg")
+        #expect(posts[0].siteID == 100)
+        #expect(!posts[0].isFeed)
+    }
+
+    @Test("Export includes the pages nobody has scrolled to yet")
+    func exportLoadsEveryPage() async throws {
+        let collection = FakeReaderSavedPostsCollection()
+        collection.items = [ReaderSavedPostsViewModelTests.postItem(postID: 1, siteID: 100)]
+        collection.info = ReaderSavedListInfo(state: .idle, hasMore: true)
+        collection.nextPages = [
+            [ReaderSavedPostsViewModelTests.postItem(postID: 2, siteID: 100)],
+            [ReaderSavedPostsViewModelTests.postItem(postID: 3, siteID: 100)]
+        ]
+
+        let fileURL = try #require(try await ReaderSavedPostsExporter().export(collection: collection))
+        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+
+        #expect(posts.map(\.postID) == [1, 2, 3])
+    }
+
+    @Test("A feed item is exported with its feed identifiers")
+    func exportFeedItem() {
+        let identity = ReaderPostSaveIdentity(
+            id: 55,
+            siteId: nil,
+            feedId: 7,
+            feedItemId: 55,
+            isExternal: true,
+            url: "https://feed.example.com/item"
+        )
+        let item = ReaderSavedListItem(
+            key: .feedItem(feedItemId: 55),
+            post: ReaderPostRecord(key: .feedItem(feedItemId: 55), identity: identity, title: "Feed post"),
+            isRecent: false,
+            isLocalOnly: false
         )
 
-        XCTAssertEqual(result.imported, 0)
-        XCTAssertEqual(result.skipped, 1)
-        XCTAssertEqual(result.failed, 0)
-    }
-}
+        let post = ReaderSavedPostsExporter.exportedPost(for: item)
 
-// MARK: - Helpers
-
-private extension ReaderSavedPostsExporterTests {
-    func makeReaderPost() -> ReaderPost {
-        NSEntityDescription.insertNewObject(
-            forEntityName: "ReaderPost",
-            into: mainContext
-        ) as! ReaderPost
+        #expect(post.isFeed)
+        #expect(post.feedID == 7)
+        #expect(post.feedItemID == 55)
+        #expect(post.siteID == nil)
     }
 
-    func makeExportedPost(
-        url: String,
+    @Test("A save the list hasn't sent yet is exported from its key")
+    func exportRecentSave() {
+        let item = ReaderSavedListItem(key: .post(blogId: 100, postId: 5), isRecent: true, isLocalOnly: false)
+
+        let post = ReaderSavedPostsExporter.exportedPost(for: item)
+
+        #expect(post.siteID == 100)
+        #expect(post.postID == 5)
+        #expect(!post.isFeed)
+    }
+
+    // MARK: - Parse
+
+    @Test("A file that isn't a saved posts export is rejected")
+    func parseRejectsOtherJSON() throws {
+        let fileURL = try Self.write(Data(#"{"notPosts": true}"#.utf8))
+
+        #expect(throws: ReaderSavedPostsExporter.ImportError.self) {
+            try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+        }
+    }
+
+    @Test("A file that isn't JSON is rejected")
+    func parseRejectsNonJSON() throws {
+        let fileURL = try Self.write(Data("not json".utf8))
+
+        #expect(throws: (any Error).self) {
+            try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+        }
+    }
+
+    // MARK: - Import
+
+    @Test("An exported WordPress.com post is saved under its site and post ID")
+    func identityForSitePost() {
+        let identity = ReaderSavedPostsExporter.identity(for: Self.exportedPost(siteID: 100, postID: 1))
+
+        #expect(identity.savedKey == .post(blogId: 100, postId: 1))
+    }
+
+    @Test("An exported feed post is saved under its feed item")
+    func identityForFeedPost() {
+        let post = Self.exportedPost(siteID: nil, postID: 55, feedID: 7, feedItemID: 55, isFeed: true)
+
+        #expect(ReaderSavedPostsExporter.identity(for: post).savedKey == .feedItem(feedItemId: 55))
+    }
+
+    @Test("Import sends the file's posts straight to the account")
+    func importSavesToTheAccount() async throws {
+        let service = FakeReaderSavedService()
+        let store = ReaderSavedPostsStore(
+            coreDataStack: ContextManager.forTesting(),
+            track: { _, _ in },
+            makeSession: { _ in
+                .init(userID: 42, service: service, savedPosts: FakeReaderSavedPostsCollection(), client: nil)
+            },
+            removeAccountData: { _ in },
+            observesAccountChanges: false
+        )
+
+        let result = await ReaderSavedPostsExporter.importPostsToAccount(
+            [
+                Self.exportedPost(siteID: 100, postID: 1),
+                Self.exportedPost(siteID: nil, postID: 55, feedID: 7, feedItemID: 55, isFeed: true),
+                Self.exportedPost(siteID: nil, postID: nil, url: "")
+            ],
+            store: store
+        )
+
+        #expect(result.imported == 2)
+        #expect(result.skipped == 1)
+        #expect(result.failed == 0)
+        #expect(service.bulkImports == [[.post(blogId: 100, postId: 1), .feedItem(feedItemId: 55)]])
+    }
+
+    @Test("Import fails every post without an account")
+    func importWithoutAccount() async {
+        let store = ReaderSavedPostsStore(
+            coreDataStack: ContextManager.forTesting(),
+            track: { _, _ in },
+            makeSession: { _ in nil },
+            removeAccountData: { _ in },
+            observesAccountChanges: false
+        )
+
+        let result = await ReaderSavedPostsExporter.importPostsToAccount(
+            [Self.exportedPost(siteID: 100, postID: 1)],
+            store: store
+        )
+
+        #expect(result.imported == 0)
+        #expect(result.failed == 1)
+    }
+
+    // MARK: - Helpers
+
+    static func exportedPost(
         siteID: UInt?,
         postID: UInt?,
         feedID: UInt? = nil,
         feedItemID: UInt? = nil,
-        isFeed: Bool = false
+        isFeed: Bool = false,
+        url: String = "https://example.com/post"
     ) -> ReaderSavedPostsExporter.ExportedPost {
         ReaderSavedPostsExporter.ExportedPost(
             title: "",
@@ -362,18 +202,8 @@ private extension ReaderSavedPostsExporterTests {
         )
     }
 
-    func writeJSONToTempFile(_ json: [String: Any]) throws -> URL {
-        let data = try JSONSerialization.data(withJSONObject: json)
-        let fileURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString + ".json")
-        try data.write(to: fileURL)
-        return fileURL
-    }
-
-    func writeEnvelopeToTempFile(_ envelope: ReaderSavedPostsExporter.Envelope) throws -> URL {
-        let data = try JSONEncoder().encode(envelope)
-        let fileURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString + ".json")
+    static func write(_ data: Data) throws -> URL {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".json")
         try data.write(to: fileURL)
         return fileURL
     }

@@ -1,13 +1,13 @@
 import SwiftUI
-import WordPressData
 import WordPressShared
 import UniformTypeIdentifiers
 
 struct ReaderSavedPostsSettingsView: View {
     @StateObject private var viewModel: ReaderSavedPostsSettingsViewModel
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared) {
-        _viewModel = StateObject(wrappedValue: ReaderSavedPostsSettingsViewModel(coreDataStack: coreDataStack))
+    @MainActor
+    init() {
+        _viewModel = StateObject(wrappedValue: ReaderSavedPostsSettingsViewModel(store: .shared))
     }
 
     var body: some View {
@@ -27,10 +27,10 @@ struct ReaderSavedPostsSettingsView: View {
                 }
                 .disabled(viewModel.isBusy)
 
-                if let progress = viewModel.importProgress {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ProgressView(progress)
-                        Text(viewModel.importStatusText)
+                if viewModel.isImporting {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                        Text(Strings.importingStatus)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
@@ -75,6 +75,7 @@ struct ReaderSavedPostsSettingsView: View {
 
 // MARK: - ViewModel
 
+/// Imports and exports the saved posts kept in the WordPress.com account.
 @MainActor
 final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published var exportedFileURL: IdentifiableURL?
@@ -82,21 +83,19 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published var isShowingImportResult = false
     @Published var isShowingError = false
     @Published var isExporting = false
-    @Published var importProgress: Progress?
-    @Published var importStatusText = ""
+    @Published var isImporting = false
 
     /// Whether an import or export is currently in flight.
-    var isBusy: Bool { importProgress != nil || isExporting }
+    var isBusy: Bool { isImporting || isExporting }
 
     @Published private(set) var importResultMessage = ""
     @Published private(set) var errorMessage = ""
 
-    private let coreDataStack: CoreDataStack
+    private let store: ReaderSavedPostsStore
     private let exporter = ReaderSavedPostsExporter()
-    private var progressObservation: NSKeyValueObservation?
 
-    init(coreDataStack: CoreDataStack) {
-        self.coreDataStack = coreDataStack
+    init(store: ReaderSavedPostsStore) {
+        self.store = store
     }
 
     func viewAppeared() {
@@ -105,88 +104,76 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
 
     func exportSavedPosts() {
         guard !isBusy else { return }
+        guard let savedPosts = store.savedPosts else {
+            showError(Strings.signInRequired)
+            return
+        }
         isExporting = true
         Task {
             defer { isExporting = false }
             do {
-                guard let fileURL = try await exporter.export(coreDataStack: coreDataStack) else {
-                    errorMessage = Strings.exportEmpty
-                    isShowingError = true
+                guard let fileURL = try await exporter.export(collection: savedPosts) else {
+                    showError(Strings.exportEmpty)
                     return
                 }
                 exportedFileURL = IdentifiableURL(value: fileURL)
                 WPAnalytics.track(.readerSavedPostsExported)
             } catch {
-                errorMessage = Strings.exportError
-                isShowingError = true
+                showError(Strings.exportError)
             }
         }
     }
 
     func handleFileImport(_ result: Result<URL, Error>) {
-        switch result {
-        case .success(let url):
-            guard url.startAccessingSecurityScopedResource() else {
-                errorMessage = Strings.importError
-                isShowingError = true
-                return
-            }
-
-            let posts: [ReaderSavedPostsExporter.ExportedPost]
-            do {
-                posts = try ReaderSavedPostsExporter.parseExportFile(at: url)
-            } catch {
-                url.stopAccessingSecurityScopedResource()
-                errorMessage = error.localizedDescription
-                isShowingError = true
-                return
-            }
-
-            url.stopAccessingSecurityScopedResource()
-
-            let progress = Progress(totalUnitCount: Int64(posts.count))
-            importProgress = progress
-            importStatusText = String.localizedStringWithFormat(Strings.importProgressFormat, 0, posts.count)
-
-            progressObservation = progress.observe(\.completedUnitCount) { [weak self] progress, _ in
-                Task { @MainActor in
-                    self?.importStatusText = String.localizedStringWithFormat(
-                        Strings.importProgressFormat,
-                        Int(progress.completedUnitCount),
-                        Int(progress.totalUnitCount)
-                    )
-                }
-            }
-
-            Task {
-                let importResult = await ReaderSavedPostsExporter.importPosts(
-                    posts,
-                    coreDataStack: coreDataStack,
-                    progress: progress
-                )
-                progressObservation = nil
-                importProgress = nil
-                importResultMessage = String.localizedStringWithFormat(
-                    Strings.importResultFormat,
-                    importResult.imported,
-                    importResult.skipped,
-                    importResult.failed
-                )
-                isShowingImportResult = true
-                WPAnalytics.track(
-                    .readerSavedPostsImported,
-                    properties: [
-                        "imported": importResult.imported,
-                        "skipped": importResult.skipped,
-                        "failed": importResult.failed
-                    ]
-                )
-            }
-
-        case .failure:
-            errorMessage = Strings.importError
-            isShowingError = true
+        guard case .success(let url) = result else {
+            showError(Strings.importError)
+            return
         }
+        guard store.isActive else {
+            showError(Strings.signInRequired)
+            return
+        }
+        guard url.startAccessingSecurityScopedResource() else {
+            showError(Strings.importError)
+            return
+        }
+
+        let posts: [ReaderSavedPostsExporter.ExportedPost]
+        do {
+            posts = try ReaderSavedPostsExporter.parseExportFile(at: url)
+        } catch {
+            url.stopAccessingSecurityScopedResource()
+            showError(error.localizedDescription)
+            return
+        }
+        url.stopAccessingSecurityScopedResource()
+
+        isImporting = true
+        Task {
+            // The posts go straight to the account.
+            let importResult = await ReaderSavedPostsExporter.importPostsToAccount(posts, store: store)
+            isImporting = false
+            importResultMessage = String.localizedStringWithFormat(
+                Strings.importResultFormat,
+                importResult.imported,
+                importResult.skipped,
+                importResult.failed
+            )
+            isShowingImportResult = true
+            WPAnalytics.track(
+                .readerSavedPostsImported,
+                properties: [
+                    "imported": importResult.imported,
+                    "skipped": importResult.skipped,
+                    "failed": importResult.failed
+                ]
+            )
+        }
+    }
+
+    private func showError(_ message: String) {
+        errorMessage = message
+        isShowingError = true
     }
 }
 
@@ -264,10 +251,15 @@ private enum Strings {
         comment:
             "Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count."
     )
-    static let importProgressFormat = NSLocalizedString(
-        "reader.savedPosts.settings.importProgress",
-        value: "Fetching post %1$d of %2$d…",
-        comment: "Progress text during import. %1$d is current post number, %2$d is total."
+    static let importingStatus = NSLocalizedString(
+        "reader.savedPosts.settings.importingStatus",
+        value: "Saving posts to your account…",
+        comment: "Status text shown while the posts in an imported file are saved to the WordPress.com account"
+    )
+    static let signInRequired = NSLocalizedString(
+        "reader.savedPosts.settings.signInRequired",
+        value: "Sign in to WordPress.com to import or export saved posts.",
+        comment: "Error shown in saved posts settings when there's no WordPress.com account"
     )
     static let errorTitle = NSLocalizedString(
         "reader.savedPosts.settings.errorTitle",
