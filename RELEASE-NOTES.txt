@@ -5,6 +5,7 @@
 * [***] The app now requires iOS 18 or later. Devices running iOS 17 no longer receive app updates [#26154]
 * [*] Keep profile pictures up to date across the app after changing your Gravatar [#26163]
 * [*] Fix tab bar titles showing truncated and misaligned on iOS 26 [#26162]
+* [*] Reader: Fix the fade behind Show More on long comments showing black in light mode or white on a colored reading theme [#26369]
 * [*] Reader: Load related post thumbnails and other images whose address redirects [#26296]
 * [*] Reader: Show a name for every subscription, including sites the app cannot load [#26274]
 * [*] Share Extension: Fix a crash when sharing a photo [#26251]
