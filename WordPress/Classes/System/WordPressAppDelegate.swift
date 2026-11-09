@@ -211,6 +211,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         windowManager.showUI()
         restoreAppState()
 
+        // Hands this device's saved Reader posts to the account once, then refreshes which are saved.
+        if !UIApplication.shared.isRunningTestSuite() {
+            ReaderSavedPostsStore.shared.start()
+        }
+
         DebugMenuViewController.configure(in: window)
     }
 
