@@ -10,8 +10,3 @@ extension ReusableCell {
         return String(describing: self)
     }
 }
-
-protocol ModelSettableCell: ReusableCell {
-    associatedtype DataType
-    var model: DataType? {get set}
-}
