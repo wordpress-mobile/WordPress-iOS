@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct CommentsListView: View {
+    @State private var selectedComment: CommentListItem?
+
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
     let router: CommentsDetailRouter
@@ -10,14 +12,20 @@ struct CommentsListView: View {
     var body: some View {
         List {
             ForEach(viewModel.items) { item in
-                NavigationLink {
-                    CommentDetailView(commentID: item.id, seed: item, router: router)
+                Button {
+                    selectedComment = item
                 } label: {
-                    CommentRowView(
-                        item: item,
-                        titleState: titleResolver.titleState(for: item.postID),
-                        showsPendingStatus: viewModel.filter == .all
-                    )
+                    HStack {
+                        CommentRowView(
+                            item: item,
+                            titleState: titleResolver.titleState(for: item.postID),
+                            showsPendingStatus: viewModel.filter == .all
+                        )
+                        Image(systemName: "chevron.forward")
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(.tertiary)
+                            .accessibilityHidden(true)
+                    }
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
@@ -36,6 +44,7 @@ struct CommentsListView: View {
             }
         }
         .listStyle(.plain)
+        .background(detailLink)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 if viewModel.canReview {
@@ -73,5 +82,25 @@ struct CommentsListView: View {
         .task(id: viewModel.filter) {
             await viewModel.onAppear()
         }
+    }
+
+    // Moderation can remove the selected row while its detail is still open.
+    private var detailLink: some View {
+        NavigationLink(
+            isActive: Binding(
+                get: { selectedComment != nil },
+                set: { isActive in
+                    if !isActive { selectedComment = nil }
+                }
+            )
+        ) {
+            if let selectedComment {
+                CommentDetailView(commentID: selectedComment.id, seed: selectedComment, router: router)
+                    .id(selectedComment.id)
+            }
+        } label: {
+            EmptyView()
+        }
+        .hidden()
     }
 }
