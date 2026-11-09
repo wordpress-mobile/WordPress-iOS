@@ -211,7 +211,8 @@ struct SelfHostedSiteAuthenticator {
                 credentials: credentials,
                 apiRootURL: apiRootURL,
                 apiDiscovery: details,
-                context: context
+                context: context,
+                from: viewController
             )
             trackSuccess(url: details.parsedSiteUrl.url())
             return result
@@ -291,7 +292,8 @@ struct SelfHostedSiteAuthenticator {
         credentials: WpApiApplicationPasswordDetails,
         apiRootURL: URL,
         apiDiscovery: AutoDiscoveryAttemptSuccess,
-        context: SignInContext
+        context: SignInContext,
+        from viewController: UIViewController
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         SVProgressHUD.show()
         defer {
@@ -308,6 +310,9 @@ struct SelfHostedSiteAuthenticator {
             apiDiscovery: apiDiscovery,
             context: context
         )
+
+        // The restriction can also arrive while the site is being saved.
+        try await undoSignInIfAgeRestricted(from: viewController)
 
         switch context {
         case .default:
@@ -492,6 +497,14 @@ struct SelfHostedSiteAuthenticator {
     private func refuseIfAgeRestricted(from viewController: UIViewController) throws(SignInError) {
         let controller = ageRequirementController ?? AgeRequirementCoordinator.shared
         guard !controller.refuseSignInIfRestricted(from: viewController) else {
+            throw .ageRestricted
+        }
+    }
+
+    @MainActor
+    private func undoSignInIfAgeRestricted(from viewController: UIViewController) async throws(SignInError) {
+        let controller = ageRequirementController ?? AgeRequirementCoordinator.shared
+        if await controller.undoSignInIfRestricted(from: viewController) {
             throw .ageRestricted
         }
     }

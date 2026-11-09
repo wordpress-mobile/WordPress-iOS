@@ -32,6 +32,10 @@ protocol AgeRequirementEnforcing: AnyObject {
 protocol AgeRequirementAccessControlling: AnyObject {
     /// Returns `true` and presents the restriction alert from `viewController` when the process is age restricted.
     @discardableResult func refuseSignInIfRestricted(from viewController: UIViewController) -> Bool
+
+    /// Call after a sign-in has saved its account or site. When the process became age restricted while the sign-in
+    /// was saving, signs out, removes local sites, presents the restriction alert and returns `true`.
+    func undoSignInIfRestricted(from viewController: UIViewController) async -> Bool
 }
 
 @MainActor
@@ -45,6 +49,7 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
 
     private var didCheck = false
     private(set) var isRestricted = false
+    private var enforcement: Task<UIViewController?, Never>?
 
     convenience init() {
         self.init(
@@ -94,8 +99,10 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
                 track(.allowed, userState: userState)
             case .sharing:
                 isRestricted = true
-                let presenter = await enforcer.enforceRestriction(userState: userState)
-                let hadAccountOrSites = userState.wpComSignedIn || userState.selfHostedSiteCount > 0
+                // Read the state again: a sign-in may have finished while the result was pending.
+                let currentState = enforcer.userState
+                let presenter = await enforce()
+                let hadAccountOrSites = currentState.wpComSignedIn || currentState.selfHostedSiteCount > 0
                 presentRestrictionAlert(
                     from: presenter,
                     message: hadAccountOrSites ? Strings.signedOutMessage : Strings.signedOutUserMessage
@@ -118,6 +125,26 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
         }
         presentRestrictionAlert(from: viewController, message: Strings.signedOutUserMessage)
         return true
+    }
+
+    func undoSignInIfRestricted(from viewController: UIViewController) async -> Bool {
+        guard isRestricted else {
+            return false
+        }
+        let presenter = await enforce()
+        presentRestrictionAlert(from: presenter ?? viewController, message: Strings.signedOutUserMessage)
+        return true
+    }
+
+    /// Runs one enforcement at a time, each against the sign-in state at the moment it starts.
+    private func enforce() async -> UIViewController? {
+        let previous = enforcement
+        let task = Task { [enforcer] in
+            _ = await previous?.value
+            return await enforcer.enforceRestriction(userState: enforcer.userState)
+        }
+        enforcement = task
+        return await task.value
     }
 
     private func track(_ outcome: AgeRequirementCheckOutcome, userState: AgeRequirementUserState) {
