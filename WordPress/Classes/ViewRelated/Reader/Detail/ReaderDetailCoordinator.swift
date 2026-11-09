@@ -278,10 +278,10 @@ class ReaderDetailCoordinator {
     /// Fetch Comments for the current post.
     ///
     func fetchComments(for post: ReaderPost) {
-        commentService.syncHierarchicalComments(
+        commentService.syncCommentsSnippet(
             for: post,
             topLevelComments: commentsDisplayed,
-            success: { [weak self] _, totalComments in
+            success: { [weak self] totalComments in
                 self?.updateCommentsFor(post: post, totalComments: totalComments?.intValue ?? 0)
             },
             failure: { error in

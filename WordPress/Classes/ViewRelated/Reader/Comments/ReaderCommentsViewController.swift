@@ -606,8 +606,29 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 extension ReaderCommentsViewController {
     func showCommentComposer(viewModel: CommentCreateViewModel) {
         let composerVC = CommentCreateViewController(viewModel: viewModel)
+        composerVC.onCommentPosted = { [weak self] commentID in
+            self?.revealPostedComment(commentID)
+        }
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
+    }
+
+    /// Scrolls to the posted comment and flashes it. A comment held for moderation is not in the list,
+    /// so nothing happens. The loaded check keeps `revealFoundComment` from falling back to paging.
+    private func revealPostedComment(_ commentID: TaggedManagedObjectID<Comment>) {
+        guard let tableVC,
+            let comment = try? ContextManager.shared.mainContext.existingObject(with: commentID),
+            tableVC.indexPath(forCommentWithID: comment.commentID) != nil
+        else {
+            return
+        }
+        // A new top-level comment sorts after every thread. While pages remain, it sits after the last
+        // loaded row, and revealing it there loads the next page above it, which pushes it off screen and
+        // loses the reading position. Keep the position; the comment appears when the reader gets there.
+        if comment.parentID == 0, syncHelper?.hasMoreContent == true {
+            return
+        }
+        revealFoundComment(comment.commentID, in: tableVC)
     }
 }
 
