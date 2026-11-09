@@ -64,7 +64,11 @@ struct ReaderSavedPostsExporter {
     ) async -> ImportResult {
         do {
             let result = try await store.save(posts.map(identity(for:)))
-            return ImportResult(imported: result.saved, skipped: result.unsaveable, failed: result.failed)
+            return ImportResult(
+                imported: result.saved,
+                skipped: result.alreadySaved + result.unsaveable,
+                failed: result.failed
+            )
         } catch {
             Loggers.app.error("Import: saving to the account failed: \(String(describing: error))")
             return ImportResult(imported: 0, skipped: 0, failed: posts.count)

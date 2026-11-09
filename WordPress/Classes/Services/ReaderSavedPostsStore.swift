@@ -192,14 +192,18 @@ final class ReaderSavedPostsStore {
     }
 
     /// Saves the given posts in the account, such as the ones in an imported file. Unlike the
-    /// one-time import of this device's saves, this runs every time it's called.
+    /// one-time import of this device's saves, this runs every time it's called. Posts the account
+    /// already has aren't sent again.
     func save(_ identities: [ReaderPostSaveIdentity]) async throws -> ReaderSavedPostsSync.SaveResult {
-        guard let service else {
+        guard let service, let savedPosts = session?.savedPosts else {
             throw StoreError.notActive
         }
-        let plan = ReaderSavedPostsSync.importPlan(for: identities)
-        var result = ReaderSavedPostsSync.SaveResult(unsaveable: plan.unsaveableCount)
-
+        let newIdentities = identities.filter { service.status(post: $0) != .saved }
+        let plan = ReaderSavedPostsSync.importPlan(for: newIdentities)
+        var result = ReaderSavedPostsSync.SaveResult(
+            alreadySaved: identities.count - newIdentities.count,
+            unsaveable: plan.unsaveableCount
+        )
         if !plan.bulkKeys.isEmpty {
             let results = try await service.import(keys: plan.bulkKeys)
             let rejected = ReaderSavedPostsSync.rejectedKeys(plan.bulkKeys, results: results)
@@ -218,6 +222,15 @@ final class ReaderSavedPostsStore {
             } catch {
                 Loggers.app.warning("Reader saved posts: saving a URL failed: \(String(describing: error))")
                 result.failed += 1
+            }
+        }
+
+        if result.saved > 0 {
+            // Saved posts only reach the saved list through a refresh of the list itself.
+            do {
+                _ = try await savedPosts.refresh()
+            } catch {
+                Loggers.app.error("Reader saved posts: refreshing the list failed: \(String(describing: error))")
             }
         }
         return result
@@ -363,6 +376,8 @@ enum ReaderSavedPostsSync {
 
     /// What happened to posts sent with ``ReaderSavedPostsStore/save(_:)``.
     struct SaveResult: Equatable {
+        /// Posts the account had saved already, which weren't sent again.
+        var alreadySaved = 0
         var saved = 0
         /// Posts the server refused, or that failed to send.
         var failed = 0

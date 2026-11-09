@@ -445,6 +445,37 @@ final class ReaderSavedPostsStoreTests {
         #expect(service.savedURLs == ["https://example.com/page"])
     }
 
+    @Test("Saving a list skips posts the account has, and refreshes the saved list")
+    func saveListSkipsSavedPostsAndRefreshes() async throws {
+        service.savedKeys = [.post(blogId: 100, postId: 7)]
+
+        let store = makeStore()
+        await store.start()?.value
+        let refreshesBefore = savedPosts.refreshCount
+        let result = try await store.save([
+            ReaderSavedPostsSyncTests.identity(id: 7, siteID: 100),
+            ReaderSavedPostsSyncTests.identity(id: 8, siteID: 100)
+        ])
+
+        #expect(result == .init(alreadySaved: 1, saved: 1))
+        #expect(service.bulkImports == [[.post(blogId: 100, postId: 8)]])
+        #expect(savedPosts.refreshCount == refreshesBefore + 1)
+    }
+
+    @Test("Saving only posts the account has doesn't refresh the saved list")
+    func saveListOfSavedPostsDoesNotRefresh() async throws {
+        service.savedKeys = [.post(blogId: 100, postId: 7)]
+
+        let store = makeStore()
+        await store.start()?.value
+        let refreshesBefore = savedPosts.refreshCount
+        let result = try await store.save([ReaderSavedPostsSyncTests.identity(id: 7, siteID: 100)])
+
+        #expect(result == .init(alreadySaved: 1))
+        #expect(service.bulkImports.isEmpty)
+        #expect(savedPosts.refreshCount == refreshesBefore)
+    }
+
     @Test("Signing out drops the session and deletes the account's data")
     func removeAccountDropsSession() async throws {
         let store = makeStore()
