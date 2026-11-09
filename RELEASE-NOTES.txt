@@ -28,6 +28,7 @@
 * [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
 * [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
 * [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
+* [**] Experimental editor: Apply your Media settings to uploaded photos and videos, including image size, quality, video resolution, and location removal [#26367]
 
 
 27.4
