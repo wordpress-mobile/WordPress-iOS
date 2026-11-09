@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A model to represent known WordPress.com timezones
 ///
