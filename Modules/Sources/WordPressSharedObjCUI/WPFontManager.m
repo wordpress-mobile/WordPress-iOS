@@ -18,11 +18,6 @@ static NSString * const FontTypeOTF = @"otf";
     return [UIFont italicSystemFontOfSize:size];
 }
 
-+ (UIFont *)systemBoldFontOfSize:(CGFloat)size
-{
-    return [UIFont systemFontOfSize:size weight:UIFontWeightBold];
-}
-
 + (UIFont *)systemSemiBoldFontOfSize:(CGFloat)size
 {
     return [UIFont systemFontOfSize:size weight:UIFontWeightSemibold];
@@ -63,11 +58,6 @@ static NSString* const NotoRegularFileName = @"NotoSerif-Regular";
 + (UIFont *)notoBoldFontOfSize:(CGFloat)size
 {
     return [self fontNamed:NotoBoldFontName resourceName:NotoBoldFileName fontType:FontTypeTTF size:size];
-}
-
-+ (UIFont *)notoBoldItalicFontOfSize:(CGFloat)size;
-{
-    return [self fontNamed:NotoBoldItalicFontName resourceName:NotoBoldItalicFileName fontType:FontTypeTTF size:size];
 }
 
 + (UIFont *)notoItalicFontOfSize:(CGFloat)size;

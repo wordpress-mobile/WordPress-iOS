@@ -236,17 +236,6 @@ extension WPStyleGuide {
         return customNotoFontNamed("NotoSerif-Italic", forTextStyle: style)
     }
 
-    /// Creates a NotoSerif BoldItalic UIFont for the user current text size settings.
-    ///
-    /// - Parameters:
-    ///     - style: The desired UIFontTextStyle.
-    ///
-    /// - Returns: The created font.
-    ///
-    @objc public class func notoBoldItalicFontForTextStyle(_ style: UIFont.TextStyle) -> UIFont {
-        return customNotoFontNamed("NotoSerif-BoldItalic", forTextStyle: style)
-    }
-
     /// Creates a Noto UIFont for the user current text size settings.
     ///
     /// - Parameters:

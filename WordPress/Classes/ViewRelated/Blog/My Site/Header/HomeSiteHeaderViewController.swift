@@ -134,9 +134,10 @@ extension HomeSiteHeaderViewController: BlogDetailHeaderViewDelegate {
                 self?.addSiteTapped(siteType: $0)
             },
             onSiteSelected: { [weak self] site in
+                let presented = self?.presentedViewController
                 self?.switchToBlog(site)
                 RecentSitesService().touch(blog: site)
-                self?.dismiss(animated: true) { [weak self] in
+                presented?.dismiss(animated: true) { [weak self] in
                     self?.onBlogListDismiss?()
                 }
             }

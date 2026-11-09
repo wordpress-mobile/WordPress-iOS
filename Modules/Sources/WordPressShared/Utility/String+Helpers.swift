@@ -28,14 +28,6 @@ extension String {
         return isEmpty ? nil : self
     }
 
-    /// Returns a string without the character at the specified index.
-    /// This is a non-mutating version of `String.remove(at:)`.
-    public func removing(at index: Index) -> String {
-        var copy = self
-        copy.remove(at: index)
-        return copy
-    }
-
     /// Returns a count of valid text characters.
     /// - Note : This implementation is influenced by `-wordCount` in `NSString+Helpers`.
     public var characterCount: Int {

@@ -1,6 +1,8 @@
 27.5
 -----
 * [*] Reader: Fix the comments list jumping to the top and hiding your new comment after posting it [#26357]
+* [*] Self-hosted sites: Fix new posts having comments closed instead of following the site's discussion settings [#26356]
+* [*] Reader: Tapping a mention in a post now shows that person's profile [#25793]
 * [*] Plugins: Fix plugin descriptions being unreadable in dark mode and the Watch on YouTube button not responding [#26330]
 * [*] Plugins: Fix YouTube videos in plugin descriptions showing a player error and running off the screen [#26327]
 * [***] The app now requires iOS 18 or later. Devices running iOS 17 no longer receive app updates [#26154]
