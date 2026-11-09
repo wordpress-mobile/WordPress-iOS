@@ -28,7 +28,7 @@ final class CommentContentShowMoreOverlay: UIView {
         gradientLayer.locations = [0.0, 0.5, 1.0]
         layer.addSublayer(gradientLayer)
         updateGradientColors()
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+        registerForTraitChanges(UITraitCollection.systemTraitsAffectingColorAppearance) { (self: Self, _) in
             self.updateGradientColors()
         }
 
@@ -57,8 +57,10 @@ final class CommentContentShowMoreOverlay: UIView {
         button.pinEdges([.horizontal, .bottom])
     }
 
-    /// `CGColor` doesn't adapt to light and dark mode, so resolve the color
-    /// against the view's traits, and again whenever the appearance changes.
+    /// `CGColor` doesn't adapt to the view's appearance, so resolve the color
+    /// against the view's traits, and again whenever a trait that affects
+    /// colors changes: light or dark mode, the elevated level of a sheet,
+    /// or Increase Contrast.
     private func updateGradientColors() {
         let color = fadeColor.resolvedColor(with: traitCollection)
         gradientLayer.colors = [

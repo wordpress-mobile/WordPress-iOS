@@ -18,6 +18,48 @@ struct CommentContentShowMoreOverlayTests {
         #expect(try fadeEndColor(of: overlay) == resolved(.systemBackground, .light))
     }
 
+    @Test("the fade matches the gray of a sheet in dark mode")
+    func fadeFollowsElevatedLevel() throws {
+        let overlay = CommentContentShowMoreOverlay()
+        let elevatedDark = UITraitCollection {
+            $0.userInterfaceStyle = .dark
+            $0.userInterfaceLevel = .elevated
+        }
+
+        // The overlay is already dark before it's added to the sheet, so
+        // only the level changes.
+        overlay.traitOverrides.userInterfaceStyle = .dark
+        overlay.updateTraitsIfNeeded()
+        overlay.traitOverrides.userInterfaceLevel = .elevated
+        overlay.updateTraitsIfNeeded()
+
+        let expected = UIColor.systemBackground.resolvedColor(with: elevatedDark).cgColor
+        #expect(expected != resolved(.systemBackground, .dark))
+        #expect(try fadeEndColor(of: overlay) == expected)
+    }
+
+    @Test("the fade follows Increase Contrast on a sheet in dark mode")
+    func fadeFollowsContrast() throws {
+        let overlay = CommentContentShowMoreOverlay()
+        let sheet = UITraitCollection {
+            $0.userInterfaceStyle = .dark
+            $0.userInterfaceLevel = .elevated
+        }
+        let highContrastSheet = sheet.modifyingTraits { $0.accessibilityContrast = .high }
+
+        overlay.traitOverrides.userInterfaceStyle = .dark
+        overlay.traitOverrides.userInterfaceLevel = .elevated
+        overlay.updateTraitsIfNeeded()
+        let normal = UIColor.systemBackground.resolvedColor(with: sheet).cgColor
+        #expect(try fadeEndColor(of: overlay) == normal)
+
+        overlay.traitOverrides.accessibilityContrast = .high
+        overlay.updateTraitsIfNeeded()
+        let highContrast = UIColor.systemBackground.resolvedColor(with: highContrastSheet).cgColor
+        #expect(highContrast != normal)
+        #expect(try fadeEndColor(of: overlay) == highContrast)
+    }
+
     @Test("the fade uses the color it is given")
     func fadeUsesFadeColor() throws {
         let overlay = CommentContentShowMoreOverlay()
