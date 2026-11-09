@@ -77,19 +77,9 @@
     return [self colorWithR:0 G:135 B:190 alpha:1.0];
 }
 
-+ (UIColor *)lightBlue
-{
-    return [self colorWithR:120 G:220 B:250 alpha:1.0];
-}
-
 + (UIColor *)mediumBlue
 {
     return [self colorWithR:0 G:170 B:220 alpha:1.0];
-}
-
-+ (UIColor *)darkBlue
-{
-    return [self colorWithR:0 G:80 B:130 alpha:1.0];
 }
 
 
@@ -100,52 +90,9 @@
     return [self colorWithR:135 G:166 B:188 alpha:1.0];
 }
 
-+ (UIColor *)lightGrey
-{
-    return [self colorWithR:243 G:246 B:248 alpha:1.0];
-}
-
-+ (UIColor *)greyLighten30
-{
-    return [self colorWithR:233 G:239 B:243 alpha:1.0];
-}
-
-+ (UIColor *)greyLighten20
-{
-    return [self colorWithR:200 G:215 B:225 alpha:1.0];
-}
-
-+ (UIColor *)greyLighten10
-{
-    return [self colorWithR:168 G:190 B:206 alpha:1.0];
-}
-
-+ (UIColor *)greyDarken10
-{
-    return [self colorWithR:102 G:142 B:170 alpha:1.0];
-}
-
-+ (UIColor *)greyDarken20
-{
-    return [self colorWithR:79 G:116 B:142 alpha:1.0];
-}
-
-+ (UIColor *)greyDarken30
-{
-    return [self colorWithR:61 G:89 B:109 alpha:1.0];
-}
-
 + (UIColor *)darkGrey
 {
     return [self colorWithR:46 G:68 B:83 alpha:1.0];
-}
-
-
-#pragma mark - Oranges
-
-+ (UIColor *)jazzyOrange
-{
-    return [self colorWithR:240 G:130 B:30 alpha:1.0];
 }
 
 @end

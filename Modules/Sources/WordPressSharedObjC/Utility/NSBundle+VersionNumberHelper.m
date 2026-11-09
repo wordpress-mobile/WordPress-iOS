@@ -20,10 +20,4 @@
     return appVersion;
 }
 
-- (NSString *)bundleVersion
-{
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-    return infoDictionary[(NSString *)kCFBundleVersionKey] ?: [NSString new];
-}
-
 @end
