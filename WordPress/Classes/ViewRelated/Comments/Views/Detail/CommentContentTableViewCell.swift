@@ -355,6 +355,15 @@ private extension CommentContentTableViewCell {
             }
             return displaySetting.color.secondaryForeground
         }
+
+        // Show More Overlay
+
+        var showMoreFadeColor: UIColor {
+            guard let displaySetting, customizationEnabled else {
+                return .systemBackground
+            }
+            return displaySetting.color.background
+        }
     }
 }
 
@@ -445,6 +454,8 @@ private extension CommentContentTableViewCell {
         likeButton?.tintColor = displaySetting.color.secondaryForeground
 
         accessoryButton?.tintColor = displaySetting.color.secondaryForeground
+
+        showMoreOverlay?.fadeColor = style.showMoreFadeColor
     }
 
     private func getShowMoreOverlay() -> UIView {
@@ -453,6 +464,7 @@ private extension CommentContentTableViewCell {
         }
 
         let overlay = CommentContentShowMoreOverlay()
+        overlay.fadeColor = style.showMoreFadeColor
         overlay.onTap = { [weak self] in
             self?.showMoreButtonTapped()
         }

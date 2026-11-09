@@ -142,6 +142,13 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressReaderTests",
+        "name" : "WordPressReaderTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressDataTests",
         "name" : "WordPressDataTests"
       }
