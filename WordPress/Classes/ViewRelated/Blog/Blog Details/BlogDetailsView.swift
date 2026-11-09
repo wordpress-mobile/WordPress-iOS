@@ -38,6 +38,22 @@ struct BlogDetailsView: View {
                 menuSection(viewModel.sections[index])
             }
         }
+        .background(commentsLink)
+    }
+
+    // Menu cards can shift section indices while Comments is open.
+    @ViewBuilder
+    private var commentsLink: some View {
+        if let destination = viewModel.commentsView {
+            NavigationLink(isActive: $isShowingComments) {
+                destination
+                    .id(viewModel.blog.objectID)
+                    .hidesAppTabBar()
+            } label: {
+                EmptyView()
+            }
+            .hidden()
+        }
     }
 
     private func menuSection(_ section: BlogDetailsTableViewModel.Section) -> some View {
@@ -85,23 +101,12 @@ struct BlogDetailsView: View {
 
     @ViewBuilder
     private func menuButton(_ row: BlogDetailsTableViewModel.Row) -> some View {
-        if let destination = viewModel.commentsDestination(for: row) {
-            NavigationLink(
-                isActive: Binding(
-                    get: { isShowingComments },
-                    set: { isActive in
-                        if isActive, !isShowingComments {
-                            viewModel.trackCommentsOpened()
-                        }
-                        isShowingComments = isActive
-                    }
-                )
-            ) {
-                destination
-                    .id(viewModel.blog.objectID)
-                    .hidesAppTabBar()
+        if viewModel.commentsDestination(for: row) != nil {
+            Button {
+                viewModel.trackCommentsOpened()
+                isShowingComments = true
             } label: {
-                BlogDetailsMenuRow(row: row)
+                BlogDetailsMenuRow(row: row, showsDisclosureIndicator: row.showsDisclosureIndicator)
             }
         } else if viewModel.isSplitViewDisplayed, row.showsSelectionState {
             BlogDetailsMenuRow(row: row)

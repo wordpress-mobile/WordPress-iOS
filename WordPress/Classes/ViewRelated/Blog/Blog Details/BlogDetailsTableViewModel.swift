@@ -45,7 +45,7 @@ extension BlogDetailsTableViewModel {
     }
 
     var customPostTypes: [PostTypeDetailsWithEditContext] = []
-    private var commentsView: CommentsView?
+    private(set) var commentsView: CommentsView?
 
     private let usesWordPressLayout: Bool
     private let makeCustomPostTypeService: (Blog) -> CustomPostTypeService.SiteMenuService?
