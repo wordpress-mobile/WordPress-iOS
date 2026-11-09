@@ -1,7 +1,7 @@
-/Modules/Sources/UITestsFoundation/ @wordpress-mobile/mobile-ui-testing-squad
-/WordPress/WordPressUITests/ @wordpress-mobile/mobile-ui-testing-squad
-/WordPress/WordPressScreenshotGeneration/ @wordpress-mobile/mobile-ui-testing-squad
-/WordPress/JetpackScreenshotGeneration/ @wordpress-mobile/mobile-ui-testing-squad
+/Modules/Sources/UITestsFoundation/ @wordpress-mobile/wpmobile-team
+/WordPress/WordPressUITests/ @wordpress-mobile/wpmobile-team
+/WordPress/WordPressScreenshotGeneration/ @wordpress-mobile/wpmobile-team
+/WordPress/JetpackScreenshotGeneration/ @wordpress-mobile/wpmobile-team
 
 # Ruby dependency surface
 Gemfile*              @wordpress-mobile/apps-infra-tooling
