@@ -3,6 +3,7 @@ import GutenbergKit
 import ImageIO
 import Testing
 import UniformTypeIdentifiers
+import WordPressData
 import WordPressShared
 
 @testable import WordPress
@@ -109,6 +110,28 @@ struct GBKMediaUploadProcessorTests {
         for url in outputURLs {
             #expect(max(try imageSize(at: url).width, try imageSize(at: url).height) == 200)
         }
+    }
+
+    /// `MediaImageExporter` writes the decoded type, not the claimed one, and
+    /// some types ImageIO writes have no MIME type (e.g. PBM, KTX).
+    @Test func exportIsRemovedWhenItsMIMETypeIsUnknown() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        let exportDirectoryID = UUID()
+        let processor = GBKMediaUploadProcessor(
+            videoDurationLimit: nil,
+            makeMediaSettings: makeSettingsFactory(settings),
+            exportDirectoryID: exportDirectoryID,
+            sourceDirectory: sourceDirectory
+        )
+        let url = try stageImageWithoutMIMEType(as: "photo.png")
+
+        await #expect(throws: MediaURLExporter.URLExportError.unknownFileUTI) {
+            try await processor.processFile(at: url, mimeType: "image/png", filename: "photo.png")
+        }
+        let exportDirectory = MediaDirectory.temporary(id: exportDirectoryID).url
+        let exports = (try? FileManager.default.contentsOfDirectory(atPath: exportDirectory.path)) ?? []
+        #expect(exports.isEmpty)
     }
 
     @Test func clonedSourceIsRemovedAfterExport() async throws {
@@ -348,6 +371,29 @@ struct GBKMediaUploadProcessorTests {
         let destination = try makeStagingURL(name ?? filename)
         try FileManager.default.copyItem(at: try fixtureURL(filename), to: destination)
         return destination
+    }
+
+    /// Re-encodes a fixture in a type ImageIO can write that has an extension
+    /// but no MIME type.
+    private func stageImageWithoutMIMEType(as name: String) throws -> URL {
+        let writableTypes = Set((CGImageDestinationCopyTypeIdentifiers() as? [String]) ?? [])
+        let type = try #require(
+            ["public.pbm", "org.khronos.ktx", "com.ilm.openexr-image"]
+                .filter(writableTypes.contains)
+                .compactMap(UTType.init)
+                .first { $0.preferredMIMEType == nil && $0.preferredFilenameExtension != nil }
+        )
+        let source = try #require(
+            CGImageSourceCreateWithURL(try fixtureURL("test-image-device-photo-gps.jpg") as CFURL, nil)
+        )
+        let image = try #require(CGImageSourceCreateImageAtIndex(source, 0, nil))
+        let destinationURL = try makeStagingURL(name)
+        let destination = try #require(
+            CGImageDestinationCreateWithURL(destinationURL as CFURL, type.identifier as CFString, 1, nil)
+        )
+        CGImageDestinationAddImage(destination, image, nil)
+        try #require(CGImageDestinationFinalize(destination))
+        return destinationURL
     }
 
     private func stage(_ contents: String, as name: String) throws -> URL {
