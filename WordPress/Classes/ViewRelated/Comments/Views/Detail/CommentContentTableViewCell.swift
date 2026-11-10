@@ -4,7 +4,6 @@ import WordPressUI
 import WordPressReader
 import Gravatar
 import Combine
-import SwiftUI
 
 final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
@@ -356,6 +355,15 @@ private extension CommentContentTableViewCell {
             }
             return displaySetting.color.secondaryForeground
         }
+
+        // Show More Overlay
+
+        var showMoreFadeColor: UIColor {
+            guard let displaySetting, customizationEnabled else {
+                return .systemBackground
+            }
+            return displaySetting.color.background
+        }
     }
 }
 
@@ -446,6 +454,8 @@ private extension CommentContentTableViewCell {
         likeButton?.tintColor = displaySetting.color.secondaryForeground
 
         accessoryButton?.tintColor = displaySetting.color.secondaryForeground
+
+        showMoreOverlay?.fadeColor = style.showMoreFadeColor
     }
 
     private func getShowMoreOverlay() -> UIView {
@@ -454,6 +464,7 @@ private extension CommentContentTableViewCell {
         }
 
         let overlay = CommentContentShowMoreOverlay()
+        overlay.fadeColor = style.showMoreFadeColor
         overlay.onTap = { [weak self] in
             self?.showMoreButtonTapped()
         }
@@ -575,16 +586,10 @@ private extension CommentContentTableViewCell {
             return
         }
         let viewModel = ReaderUserProfileViewModel(comment: comment)
-        let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
-        let navigationVC = UINavigationController(rootViewController: profileVC)
-        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .close,
-            primaryAction: .init { [weak profileVC] _ in
-                profileVC?.presentingViewController?.dismiss(animated: true)
-            }
-        )
-        navigationVC.sheetPresentationController?.detents = [.medium()]
-        window?.topmostPresentedViewController?.present(navigationVC, animated: true)
+        guard let presentingViewController = window?.topmostPresentedViewController else {
+            return
+        }
+        ReaderUserProfilePresenter.present(viewModel, from: presentingViewController)
     }
 
     @objc func accessoryButtonTapped() {

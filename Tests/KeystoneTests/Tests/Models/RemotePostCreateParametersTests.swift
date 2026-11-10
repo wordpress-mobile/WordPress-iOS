@@ -1,6 +1,7 @@
 import Testing
 @testable import WordPress
 @testable import WordPressData
+import WordPressKit
 
 @Suite("RemotePostCreateParameters Tests")
 @MainActor
@@ -10,6 +11,91 @@ struct RemotePostCreateParametersTests {
     private var mainContext: NSManagedObjectContext { contextManager.mainContext }
 
     // MARK: - Initialization Tests
+
+    @Test(arguments: [true, false], [true, false])
+    func initializationPreservesPostDiscussion(allowComments: Bool, allowPings: Bool) {
+        let post = Post(context: mainContext)
+        post.allowComments = allowComments
+        post.allowPings = allowPings
+
+        let parameters = RemotePostCreateParameters(post: post)
+
+        #expect(parameters.commentStatus == (allowComments ? .open : .closed))
+        #expect(parameters.pingStatus == (allowPings ? .open : .closed))
+    }
+
+    @Test(
+        arguments: [
+            (nil, true, nil),
+            (nil, false, .closed),
+            (.open, true, .open),
+            (.open, false, .closed),
+            (.closed, true, .open),
+            (.closed, false, .closed)
+        ] as [(RemotePostDiscussionState?, Bool, RemotePostDiscussionState?)]
+    )
+    func applyPromotesUnknownDiscussionOnlyWhenClosing(
+        current: RemotePostDiscussionState?,
+        isOpen: Bool,
+        expected: RemotePostDiscussionState?
+    ) {
+        var parameters = RemotePostCreateParameters(type: "post", status: "draft")
+        parameters.commentStatus = current
+        parameters.pingStatus = current
+        var changes = RemotePostUpdateParameters()
+        changes.discussion = .init(allowComments: isOpen, allowPings: isOpen)
+
+        parameters.apply(changes)
+
+        #expect(parameters.commentStatus == expected)
+        #expect(parameters.pingStatus == expected)
+    }
+
+    @Test func initializationUsesCachedClosedDefaults() {
+        let blog = Blog(context: mainContext)
+        blog.settings = BlogSettings(context: mainContext)
+        blog.settings?.commentsAllowed = false
+        blog.settings?.pingbackInboundEnabled = false
+
+        let parameters = RemotePostCreateParameters(post: blog.createPost())
+
+        #expect(parameters.commentStatus == .closed)
+        #expect(parameters.pingStatus == .closed)
+    }
+
+    @Test func initializationOmitsPageDiscussion() {
+        let page = Page(context: mainContext)
+
+        let parameters = RemotePostCreateParameters(post: page)
+
+        #expect(parameters.commentStatus == nil)
+        #expect(parameters.pingStatus == nil)
+    }
+
+    @Test(arguments: [nil, "invalid"] as [String?])
+    func initializationDoesNotInventUnknownDiscussion(commentsStatus: String?) {
+        let post = Post(context: mainContext)
+        post.commentsStatus = commentsStatus
+        post.pingsStatus = nil
+
+        let parameters = RemotePostCreateParameters(post: post)
+
+        #expect(parameters.commentStatus == nil)
+        #expect(parameters.pingStatus == nil)
+    }
+
+    @Test func titleOnlyEditPreservesDiscussionOverride() {
+        let post = Post(context: mainContext)
+        post.allowComments = false
+        post.allowPings = true
+        let original = RemotePostCreateParameters(post: post)
+        post.postTitle = "Updated title"
+
+        let changes = RemotePostCreateParameters(post: post).changes(from: original)
+
+        #expect(changes.title == "Updated title")
+        #expect(changes.discussion == nil)
+    }
 
     @Test("Basic initialization with required parameters")
     func basicInitialization() {
@@ -53,7 +139,9 @@ struct RemotePostCreateParametersTests {
         let parameters = RemotePostCreateParameters(post: post)
 
         #expect(parameters.metadata.contains(RemotePostMetadataItem(id: nil, key: "_wpas_mess", value: "message-a")))
-        #expect(parameters.metadata.contains(RemotePostMetadataItem(id: nil, key: "_wpas_skip_publicize_123", value: "1")))
+        #expect(
+            parameters.metadata.contains(RemotePostMetadataItem(id: nil, key: "_wpas_skip_publicize_123", value: "1"))
+        )
     }
 
     @Test("Direct metadata manipulation")

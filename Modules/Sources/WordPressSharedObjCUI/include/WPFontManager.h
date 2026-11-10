@@ -7,7 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIFont *)systemLightFontOfSize:(CGFloat)size;
 + (UIFont *)systemItalicFontOfSize:(CGFloat)size;
-+ (UIFont *)systemBoldFontOfSize:(CGFloat)size;
 + (UIFont *)systemSemiBoldFontOfSize:(CGFloat)size;
 + (UIFont *)systemRegularFontOfSize:(CGFloat)size;
 + (UIFont *)systemMediumFontOfSize:(CGFloat)size;
@@ -17,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 + (void)loadNotoFontFamily;
 + (UIFont *)notoBoldFontOfSize:(CGFloat)size;
-+ (UIFont *)notoBoldItalicFontOfSize:(CGFloat)size;
 + (UIFont *)notoItalicFontOfSize:(CGFloat)size;
 + (UIFont *)notoRegularFontOfSize:(CGFloat)size;
 

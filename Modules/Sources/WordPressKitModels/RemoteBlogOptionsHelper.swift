@@ -79,6 +79,18 @@ import WordPressShared
         if options["blog_public"] != nil {
             remoteSettings.privacy = options.number(forKeyPath: "blog_public.value")
         }
+        func discussionDefault(forKey key: String) -> NSNumber? {
+            switch options.string(forKeyPath: "\(key).value") {
+            case "open"?:
+                NSNumber(value: true)
+            case "closed"?:
+                NSNumber(value: false)
+            default:
+                nil
+            }
+        }
+        remoteSettings.commentsAllowed = discussionDefault(forKey: "default_comment_status")
+        remoteSettings.pingbackInboundEnabled = discussionDefault(forKey: "default_ping_status")
         return remoteSettings
     }
 }
