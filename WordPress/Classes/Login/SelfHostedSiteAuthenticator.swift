@@ -203,15 +203,16 @@ struct SelfHostedSiteAuthenticator {
                 credentials = try await authenticate(details: details, from: viewController)
             }
 
-            // Re-check after authentication: the restriction can arrive while the sign-in flow is in progress.
-            try refuseIfAgeRestricted(from: viewController)
+            // The age check runs alongside the sign-in. Wait for its result before saving anything.
+            try await waitForAgeCheckAndRefuseIfRestricted(from: viewController)
 
             let apiRootURL = details.apiRootUrl.asURL()
             let result = try await handle(
                 credentials: credentials,
                 apiRootURL: apiRootURL,
                 apiDiscovery: details,
-                context: context
+                context: context,
+                from: viewController
             )
             trackSuccess(url: details.parsedSiteUrl.url())
             return result
@@ -291,7 +292,8 @@ struct SelfHostedSiteAuthenticator {
         credentials: WpApiApplicationPasswordDetails,
         apiRootURL: URL,
         apiDiscovery: AutoDiscoveryAttemptSuccess,
-        context: SignInContext
+        context: SignInContext,
+        from viewController: UIViewController
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         SVProgressHUD.show()
         defer {
@@ -308,6 +310,9 @@ struct SelfHostedSiteAuthenticator {
             apiDiscovery: apiDiscovery,
             context: context
         )
+
+        // If waiting for the age check timed out, the restriction can also arrive while the site is being saved.
+        try await undoSignInIfAgeRestricted(from: viewController)
 
         switch context {
         case .default:
@@ -489,9 +494,24 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
+    private func waitForAgeCheckAndRefuseIfRestricted(from viewController: UIViewController) async throws(SignInError) {
+        let controller = ageRequirementController ?? AgeRequirementCoordinator.shared
+        await controller.waitForCheck(from: viewController)
+        try refuseIfAgeRestricted(from: viewController)
+    }
+
+    @MainActor
     private func refuseIfAgeRestricted(from viewController: UIViewController) throws(SignInError) {
         let controller = ageRequirementController ?? AgeRequirementCoordinator.shared
         guard !controller.refuseSignInIfRestricted(from: viewController) else {
+            throw .ageRestricted
+        }
+    }
+
+    @MainActor
+    private func undoSignInIfAgeRestricted(from viewController: UIViewController) async throws(SignInError) {
+        let controller = ageRequirementController ?? AgeRequirementCoordinator.shared
+        if await controller.undoSignInIfRestricted(from: viewController) {
             throw .ageRestricted
         }
     }

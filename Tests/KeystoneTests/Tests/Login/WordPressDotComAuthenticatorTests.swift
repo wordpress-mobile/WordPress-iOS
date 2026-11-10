@@ -243,6 +243,130 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         try XCTAssertNil(WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
         await fulfillment(of: [completion], timeout: 0.1)
     }
+
+    /// Sign-in starts while the age check is pending, then waits for the result before saving anything.
+    @MainActor
+    func testSignInWaitsForPendingAgeCheckBeforeSaving() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        let accountDetailsRequested = expectation(description: "account details requested")
+        HTTPStubs.onStubActivation { request, _, _ in
+            if request.url?.path == "/rest/v1.1/me" {
+                accountDetailsRequested.fulfill()
+            }
+        }
+        defer { HTTPStubs.onStubActivation(nil) }
+        let sitesRequested = expectation(description: "sites requested")
+        sitesRequested.isInverted = true
+        stub(condition: isPath("/rest/v1.2/me/sites")) { _ in
+            sitesRequested.fulfill()
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let service = GatedAgeRangeService()
+        let coordinator = AgeRequirementCoordinator(
+            service: service,
+            enforcer: AgeRequirementEnforcerRecorder { .init(wpComSignedIn: false, selfHostedSiteCount: 0) },
+            analyticsTracker: AgeRequirementAnalyticsTrackerNoop(),
+            isSupported: true,
+            signInWaitTimeout: .seconds(60)
+        )
+        let anchor = AgeRequirementAnchor()
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            ageRequirementController: coordinator,
+            redirectURIScheme: "testapp"
+        )
+
+        // The launch check is waiting on the system when the person starts signing in.
+        let check = Task { await coordinator.checkIfNeeded(anchor: anchor.viewController) }
+        await service.waitForRequest()
+        var didFinishSignIn = false
+        let signIn = Task {
+            let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+            didFinishSignIn = true
+            return accountID
+        }
+
+        // Sign-in goes ahead without waiting for the age check, then stops before saving.
+        await fulfillment(of: [accountDetailsRequested], timeout: 5)
+        try await Task.sleep(for: .milliseconds(300))
+        XCTAssertFalse(didFinishSignIn)
+
+        service.respond(with: .sharing(lowerBound: 5))
+        await check.value
+
+        let accountID = await signIn.value
+        XCTAssertNil(accountID)
+        XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
+        await fulfillment(of: [sitesRequested], timeout: 0.2)
+    }
+
+    /// Waiting for the age check times out, then the result arrives while the account's sites are being fetched.
+    @MainActor
+    func testRestrictionAfterWaitTimesOutUndoesSignIn() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        let sitesRequested = expectation(description: "sites requested")
+        let restrictionHandled = DispatchSemaphore(value: 0)
+        stub(condition: isPath("/rest/v1.2/me/sites")) { _ in
+            sitesRequested.fulfill()
+            // Hold the response (on the stub's background thread) until the age result has been handled.
+            _ = restrictionHandled.wait(timeout: .now() + 5)
+            return HTTPStubsResponse(
+                data: #"{"sites":[]}"#.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        let service = GatedAgeRangeService()
+        let mainContext = self.mainContext
+        let enforcer = AgeRequirementEnforcerRecorder {
+            AgeRequirementUserState(
+                wpComSignedIn: (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)) != nil,
+                selfHostedSiteCount: 0
+            )
+        }
+        let coordinator = AgeRequirementCoordinator(
+            service: service,
+            enforcer: enforcer,
+            analyticsTracker: AgeRequirementAnalyticsTrackerNoop(),
+            isSupported: true,
+            signInWaitTimeout: .milliseconds(50)
+        )
+        let anchor = AgeRequirementAnchor()
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            ageRequirementController: coordinator,
+            redirectURIScheme: "testapp"
+        )
+        let completion = expectation(
+            forNotification: .init(WordPressAuthenticationManager.WPSigninDidFinishNotification),
+            object: nil
+        )
+        completion.isInverted = true
+
+        // The launch check is waiting on the system when the person starts signing in.
+        let check = Task { await coordinator.checkIfNeeded(anchor: anchor.viewController) }
+        await service.waitForRequest()
+        let signIn = Task { await authenticator.signIn(from: UIViewController(), context: .default) }
+
+        // The under-13 result arrives while the sites request is in flight.
+        await fulfillment(of: [sitesRequested], timeout: 5)
+        service.respond(with: .sharing(lowerBound: 5))
+        await check.value
+        restrictionHandled.signal()
+
+        let accountID = await signIn.value
+        XCTAssertNil(accountID)
+        await fulfillment(of: [completion], timeout: 0.5)
+        // Enforced once for the launch check, then again once the account was saved.
+        XCTAssertEqual(enforcer.enforcedStates.count, 2)
+        XCTAssertEqual(enforcer.enforcedStates.last?.wpComSignedIn, true)
+    }
 }
 
 private extension WordPressDotComAuthenticatorTests {

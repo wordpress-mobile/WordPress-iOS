@@ -30,8 +30,18 @@ protocol AgeRequirementEnforcing: AnyObject {
 
 @MainActor
 protocol AgeRequirementAccessControlling: AnyObject {
+    /// Waits for the age check to finish. A sign-in calls this right before it saves anything, so the check runs
+    /// alongside the sign-in instead of holding it up. Starts the check, anchored on `viewController`, if it hasn't
+    /// started yet. Gives up after a timeout, and doesn't wait again once a wait has timed out.
+    func waitForCheck(from viewController: UIViewController) async
+
     /// Returns `true` and presents the restriction alert from `viewController` when the process is age restricted.
     @discardableResult func refuseSignInIfRestricted(from viewController: UIViewController) -> Bool
+
+    /// Call after a sign-in has saved its account or site. When the process became age restricted while the sign-in
+    /// was saving (possible only after `waitForCheck(from:)` timed out), signs out, removes local sites, presents the
+    /// restriction alert and returns `true`.
+    func undoSignInIfRestricted(from viewController: UIViewController) async -> Bool
 }
 
 @MainActor
@@ -42,9 +52,12 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
     private let enforcer: AgeRequirementEnforcing
     private let analyticsTracker: AgeRequirementAnalyticsTracking
     private let isSupported: Bool
+    private let signInWaitTimeout: Duration
 
-    private var didCheck = false
+    private var check: Task<Void, Never>?
+    private var didTimeOutWaiting = false
     private(set) var isRestricted = false
+    private var enforcement: Task<UIViewController?, Never>?
 
     convenience init() {
         self.init(
@@ -59,20 +72,43 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
         service: AgeRangeServiceProtocol,
         enforcer: AgeRequirementEnforcing,
         analyticsTracker: AgeRequirementAnalyticsTracking,
-        isSupported: Bool
+        isSupported: Bool,
+        signInWaitTimeout: Duration = .seconds(10)
     ) {
         self.service = service
         self.enforcer = enforcer
         self.analyticsTracker = analyticsTracker
         self.isSupported = isSupported
+        self.signInWaitTimeout = signInWaitTimeout
     }
 
+    /// Runs the check once per process. Later calls wait for the first one.
     func checkIfNeeded(anchor: UIViewController?) async {
-        guard !didCheck else {
+        await startCheckIfNeeded(anchor: anchor).value
+    }
+
+    func waitForCheck(from viewController: UIViewController) async {
+        let check = startCheckIfNeeded(anchor: viewController)
+        guard !didTimeOutWaiting else {
             return
         }
-        didCheck = true
 
+        let finished = await CheckWaiter().wait(for: check, timeout: signInWaitTimeout)
+        if !finished {
+            didTimeOutWaiting = true
+        }
+    }
+
+    private func startCheckIfNeeded(anchor: UIViewController?) -> Task<Void, Never> {
+        if let check {
+            return check
+        }
+        let check = Task { await runCheck(anchor: anchor) }
+        self.check = check
+        return check
+    }
+
+    private func runCheck(anchor: UIViewController?) async {
         let userState = enforcer.userState
 
         guard isSupported else {
@@ -94,8 +130,10 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
                 track(.allowed, userState: userState)
             case .sharing:
                 isRestricted = true
-                let presenter = await enforcer.enforceRestriction(userState: userState)
-                let hadAccountOrSites = userState.wpComSignedIn || userState.selfHostedSiteCount > 0
+                // Read the state again: a sign-in may have finished while the result was pending.
+                let currentState = enforcer.userState
+                let presenter = await enforce()
+                let hadAccountOrSites = currentState.wpComSignedIn || currentState.selfHostedSiteCount > 0
                 presentRestrictionAlert(
                     from: presenter,
                     message: hadAccountOrSites ? Strings.signedOutMessage : Strings.signedOutUserMessage
@@ -118,6 +156,26 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
         }
         presentRestrictionAlert(from: viewController, message: Strings.signedOutUserMessage)
         return true
+    }
+
+    func undoSignInIfRestricted(from viewController: UIViewController) async -> Bool {
+        guard isRestricted else {
+            return false
+        }
+        let presenter = await enforce()
+        presentRestrictionAlert(from: presenter ?? viewController, message: Strings.signedOutUserMessage)
+        return true
+    }
+
+    /// Runs one enforcement at a time, each against the sign-in state at the moment it starts.
+    private func enforce() async -> UIViewController? {
+        let previous = enforcement
+        let task = Task { [enforcer] in
+            _ = await previous?.value
+            return await enforcer.enforceRestriction(userState: enforcer.userState)
+        }
+        enforcement = task
+        return await task.value
     }
 
     private func track(_ outcome: AgeRequirementCheckOutcome, userState: AgeRequirementUserState) {
@@ -163,4 +221,30 @@ private enum Strings {
             "This app requires users to be 13 or older. Your Apple Account reports an age under 13, so you can't sign in.",
         comment: "Message shown when an age-restricted person tries to sign in"
     )
+}
+
+/// Waits for a task to finish, or for a timeout, whichever comes first, without cancelling the task.
+@MainActor
+private final class CheckWaiter {
+    private var continuation: CheckedContinuation<Bool, Never>?
+
+    /// Returns `true` if `task` finished before the timeout.
+    func wait(for task: Task<Void, Never>, timeout: Duration) async -> Bool {
+        await withCheckedContinuation { continuation in
+            self.continuation = continuation
+            Task {
+                await task.value
+                self.resume(returning: true)
+            }
+            Task {
+                try? await Task.sleep(for: timeout)
+                self.resume(returning: false)
+            }
+        }
+    }
+
+    private func resume(returning finished: Bool) {
+        continuation?.resume(returning: finished)
+        continuation = nil
+    }
 }

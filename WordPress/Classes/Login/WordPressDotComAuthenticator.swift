@@ -193,7 +193,8 @@ struct WordPressDotComAuthenticator {
             throw .alreadySignedIn(signedInAccountEmail: defaultAccountEmail)
         }
 
-        // Re-check right before persisting: the restriction can arrive while the sign-in flow is in progress.
+        // The age check runs alongside the sign-in. Wait for its result before saving anything.
+        await ageRequirement.waitForCheck(from: viewController)
         guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
             throw .ageRestricted
         }
@@ -213,6 +214,11 @@ struct WordPressDotComAuthenticator {
         } catch {
             DDLogError("Failed to syncing WP.com account: \(error)")
             throw .loadingSites(error)
+        }
+
+        // If waiting for the age check timed out, the restriction can also arrive while the account is being saved.
+        if await ageRequirement.undoSignInIfRestricted(from: viewController) {
+            throw .ageRestricted
         }
 
         // Post a notification if the current signed-in account is set as the default account.
