@@ -68,6 +68,27 @@ ask Iris for an approved test fixture instead of finding production credentials.
 The [simulator sign-in guide](../../docs/simulator-sign-in.md) explains the launch
 arguments for an approved fixture. Keep account data out of logs and screenshots.
 
+## Draft PRs and CI
+
+When a task has a change that passes its checks, the pilot opens a draft PR for
+us to review. This happens after its VM has been removed, so the coding agent
+does not need GitHub credentials. These PRs use `iris/task-<task_id>` branches.
+Automatic Buildkite builds, Danger
+event retries, and `@claude` reviews stay off for them, even after marking a draft
+ready for review.
+
+Once a maintainer has reviewed the diff, they can start normal CI for that exact
+commit in the `wordpress-ios` Buildkite pipeline. Keep the original branch and
+include the PR number, base `trunk`, and repository URL. When using the
+[Buildkite API](https://buildkite.com/docs/apis/rest-api/builds), set
+`ignore_pipeline_branch_filters: true`. This deliberately gives the reviewed
+code normal CI access, so check the head SHA again before starting the build.
+Keeping the branch name also preserves the draft PR and publication record.
+
+Publication stays disabled until the Buildkite branch filter and GitHub workflow
+guards are deployed. The publisher pins an approved guard baseline and rejects
+changes to `.github/`, `.buildkite/`, and `.gitmodules`.
+
 ## What the worker collects
 
 Logs and screenshots go under `$AGENT_OUTPUT_DIR/evidence`. Preparation uses
