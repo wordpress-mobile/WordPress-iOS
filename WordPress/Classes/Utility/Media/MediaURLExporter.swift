@@ -65,10 +65,16 @@ class MediaURLExporter: MediaExporter {
     /// - Note: Expects a file conforming to a video, image or GIF uniform type.
     ///
     class func expectedExport(with fileURL: URL) throws -> URLExportExpectation {
+        try expectedExport(with: fileURL, type: fileURL.typeIdentifier.flatMap(UTType.init))
+    }
+
+    /// Classifies a file from an already-resolved type, e.g. one derived from
+    /// a reported MIME type when the extension says nothing.
+    class func expectedExport(with fileURL: URL, type: UTType?) throws -> URLExportExpectation {
         guard fileURL.isFileURL else {
             throw URLExportError.invalidFileURL
         }
-        guard let fileType = fileURL.typeIdentifier.flatMap(UTType.init) else {
+        guard let fileType = type else {
             throw URLExportError.unknownFileUTI
         }
         if fileType == .gif {

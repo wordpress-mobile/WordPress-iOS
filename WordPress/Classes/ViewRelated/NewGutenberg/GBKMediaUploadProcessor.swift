@@ -57,7 +57,7 @@ struct GBKMediaUploadProcessor: MediaProcessor {
 
     func processFile(at url: URL, mimeType: String, filename: String) async throws -> ProcessedProxyFile {
         let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType)
-        let expected = try Self.expectedExport(of: url, type: sourceType)
+        let expected = try MediaURLExporter.expectedExport(with: url, type: sourceType)
         let settings = makeMediaSettings()
 
         switch expected {
@@ -127,7 +127,7 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     private func cloneSource(at url: URL, type: UTType?) throws -> URL {
         try FileManager.default.createDirectory(at: sourceDirectory, withIntermediateDirectories: true)
         var clone = sourceDirectory.appendingPathComponent(UUID().uuidString, isDirectory: false)
-        if let fileExtension = type?.preferredFilenameExtension ?? url.pathExtension.nonEmpty {
+        if let fileExtension = type?.preferredFilenameExtension ?? url.pathExtension.nonEmptyString() {
             clone.appendPathExtension(fileExtension)
         }
         try FileManager.default.copyItem(at: url, to: clone)
@@ -208,7 +208,7 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         guard !base.isEmpty else {
             return exportURL.lastPathComponent
         }
-        guard let exportExtension = exportURL.pathExtension.nonEmpty else {
+        guard let exportExtension = exportURL.pathExtension.nonEmptyString() else {
             return base
         }
         return "\(base).\(exportExtension)"
@@ -256,27 +256,6 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         return UTType(mimeType: normalized)
     }
 
-    /// Classifies a file the way `MediaURLExporter.expectedExport(with:)` does,
-    /// but from an already-resolved type.
-    private static func expectedExport(of url: URL, type: UTType?) throws -> MediaURLExporter.URLExportExpectation {
-        guard url.isFileURL else {
-            throw MediaURLExporter.URLExportError.invalidFileURL
-        }
-        guard let type else {
-            throw MediaURLExporter.URLExportError.unknownFileUTI
-        }
-        if type == .gif {
-            return .gif
-        } else if type.conforms(to: .video) || type.conforms(to: .movie) {
-            return .video
-        } else if type.conforms(to: .image) {
-            return .image
-        } else if type.conforms(to: .content) || type.conforms(to: .zip) {
-            return .other
-        }
-        throw MediaURLExporter.URLExportError.unsupportedFileType
-    }
-
     /// The type `MediaImageExporter` should write, or `nil` to keep the
     /// source type.
     private static func exportImageType(
@@ -296,8 +275,4 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         }
         return mimeType
     }
-}
-
-private extension String {
-    var nonEmpty: String? { isEmpty ? nil : self }
 }
