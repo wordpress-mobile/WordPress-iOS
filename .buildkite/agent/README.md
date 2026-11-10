@@ -1,25 +1,20 @@
-# Iris coding task adapter
+# WPiOS setup for remote coding tasks
 
-These entry points belong to WPiOS and run inside an ephemeral macOS VM as a
-non-admin coding user. They are independent of the normal CI scripts, signing,
-Buildkite credentials, and app secrets. The host and worker enforce the task
-deadline and destroy the VM after success, failure, or cancellation.
+These scripts give a coding agent a way to build WPiOS and see its changes in
+a simulator. They run in a disposable Mac VM as a non-admin user, with the
+worker taking care of the task deadline and the host cleaning up afterward.
 
-The image must supply Xcode compatible with this checkout, Python 3, and an
-installed iOS 18 or later runtime with a compatible iPhone device type. Fresh
-checkouts build with plain `xcodebuild`; package downloads need network access.
-This adapter does not install tools, runtimes, certificates, or credentials.
-It refuses environments with `a8c-secrets` or a local
-`WordPress/Credentials/Secrets.swift`, which the app's normal build phases would
-otherwise use automatically. Debug builds fall back to example credentials.
+The image needs a compatible Xcode, Python 3, and an installed iOS 18 or later
+runtime with an iPhone device type. Package downloads need network access.
+Builds use example credentials for signed-out UI; the scripts refuse environments
+with `a8c-secrets` or `WordPress/Credentials/Secrets.swift` so the normal build
+phases won't pick up production secrets.
 
-The worker snapshots this adapter directory from the pinned commit and calls its
-scripts with `/bin/bash` from the task checkout. The working directory selects
-the repository, so edits in the checkout do not change the scripts the worker runs. It sets
-two absolute paths outside the checkout:
+## Build and run
 
-- `AGENT_OUTPUT_DIR`: exported results; logs and screenshots go in `evidence/`.
-- `AGENT_STATE_DIR`: temporary task files and DerivedData; not exported as evidence.
+The worker sets two absolute paths outside the checkout: `AGENT_OUTPUT_DIR`
+for results and `AGENT_STATE_DIR` for temporary files and DerivedData. To try
+the scripts in a clean VM:
 
 ```bash
 export AGENT_OUTPUT_DIR=/tmp/iris-task/output
@@ -28,31 +23,32 @@ export AGENT_STATE_DIR=/tmp/iris-task/state
 /bin/bash .buildkite/agent/verify.sh
 ```
 
-Preparation prefers a booted iPhone, otherwise an available iPhone on the newest
-installed iOS runtime. If the user has no compatible device, it creates one from
-the newest installed compatible runtime and its supported iPhone types.
-Pass `--simulator-udid UUID` to select a specific existing device; a missing UUID
-fails without creating a replacement.
-It waits for boot and writes `$AGENT_STATE_DIR/simulator-udid`. It does not erase
-or shut down other simulators. Use a disposable VM for task execution.
+Preparation reuses a booted iPhone where possible, otherwise choosing one on
+the newest installed runtime. If there isn't a compatible device, it creates
+one. You can select an existing device with `--simulator-udid UUID`; an invalid
+or missing UUID fails rather than silently choosing something else. Once the
+device has booted, its UUID is saved in `$AGENT_STATE_DIR/simulator-udid`.
+Other simulators are left alone.
 
-Verification defaults to an unsigned Debug build of the WordPress scheme using
-the pinned Swift package resolutions, followed by install, launch, and a
-screenshot. Use `--build-only` to omit UI verification. This is a smoke check,
-not a passing test suite. Run each relevant suite explicitly and include its result
-in the task's validation report:
+Verification builds the WordPress scheme as an unsigned Debug app using the
+pinned Swift package resolutions, then installs it, launches it and takes a
+screenshot. Use `--build-only` if you only need a build. This default check
+shows that the app builds and opens; run the relevant tests separately:
 
 ```bash
 /bin/bash .buildkite/agent/verify.sh \
   --test WordPressTest/RemoteFeatureFlagTests
 ```
 
-Repeat `--test Target/Suite` to select more suites, or use
-`--test Target/Suite/Method`. Tests use `WordPressUnitTests`; unrestricted test
-runs and arbitrary `xcodebuild` arguments are not adapter options. See
-[AGENTS.md](../../AGENTS.md) for app and testing conventions.
+Tests use the `WordPressUnitTests` plan. Repeat `--test Target/Suite` for more
+suites, or use `--test Target/Suite/Method` for one test. The adapter requires
+explicit selectors and doesn't accept arbitrary `xcodebuild` arguments. Follow
+[AGENTS.md](../../AGENTS.md) for the app's testing conventions and include the
+checks you ran in the task report.
 
-For UI work, build, install, and launch without signing in:
+## Looking at UI changes
+
+For example, to launch the app and capture it in dark mode:
 
 ```bash
 /bin/bash .buildkite/agent/verify.sh --launch
@@ -61,32 +57,33 @@ xcrun simctl ui "$SIMULATOR_UDID" appearance dark
 /bin/bash .buildkite/agent/verify.sh --screenshot
 ```
 
-`--launch` waits three seconds before capturing the first screen;
-`--screenshot` captures the current screen
-without rebuilding. Use `simctl` for launch, device settings, and screenshots.
-If the image provides AXe, consult `axe --help` for accessibility inspection and
-UI interaction; AXe availability and its permissions are separate image setup.
-Capture screenshots after the screen has settled when documenting UI changes.
+`--launch` waits three seconds before its first screenshot. `--screenshot`
+captures the current screen without rebuilding, so you can wait for a screen
+to settle or navigate to the part you changed. Use `simctl` for device settings
+and screenshots, and `axe --help` for UI interaction if AXe and its permissions
+are set up in the image.
 
-No account is needed for builds and signed-out UI. Tasks that need authentication
-must stop and ask Iris for context or an approved isolated test fixture. Do not
-obtain production accounts, tokens, or app secrets. The general
-[simulator sign-in guide](../../docs/simulator-sign-in.md) documents launch
-arguments for approved fixtures; it does not authorize credentials for a task.
-Keep account data out of logs and screenshots.
+Signed-out UI doesn't need an account. If a task needs authentication, stop and
+ask Iris for an approved test fixture instead of finding production credentials.
+The [simulator sign-in guide](../../docs/simulator-sign-in.md) explains the launch
+arguments for an approved fixture. Keep account data out of logs and screenshots.
 
-Exit status is authoritative: preparation, build, test, install, launch, or
-screenshot failures return nonzero. Logs persist under `evidence/` for the worker
-to collect, subject to its file size limits. Preparation uses `prepare-*.log`
-files separately from the worker's `prepare.log`. DerivedData stays in task state;
-only source changes belong in the returned patch.
+## What the worker collects
 
-Run adapter behavior tests without Xcode or simulator access:
+Logs and screenshots go under `$AGENT_OUTPUT_DIR/evidence`. Preparation uses
+`prepare-*.log` so it doesn't overwrite the worker's own log. DerivedData stays
+in task state, outside the source patch. Any failed prepare, build, test,
+install, launch or screenshot command returns a nonzero exit status.
+
+The worker copies this adapter from the requested commit before editing starts
+and runs the copy through `/bin/bash`, with the checkout as its working
+directory. Editing the checkout's scripts won't change that final check.
+
+To check the adapter itself without Xcode or a simulator:
 
 ```bash
 python3 -m unittest discover -s .buildkite/agent/tests -v
 ```
 
-The tests use temporary Git checkouts, isolated home directories, and fake
-`xcodebuild`/`simctl` commands. They cover preparation, log separation, build/test
-arguments, failure propagation, and credential-source rejection.
+These tests use temporary checkouts and substitute `xcodebuild` and `simctl`
+commands to cover setup, command arguments, logs and failures.
