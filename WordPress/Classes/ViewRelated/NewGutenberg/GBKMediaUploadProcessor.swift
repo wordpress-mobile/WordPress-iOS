@@ -57,7 +57,14 @@ struct GBKMediaUploadProcessor: MediaProcessor {
 
     func processFile(at url: URL, mimeType: String, filename: String) async throws -> ProcessedProxyFile {
         let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType)
-        let expected = try MediaURLExporter.expectedExport(with: url, type: sourceType)
+        let expected: MediaURLExporter.URLExportExpectation
+        do {
+            expected = try MediaURLExporter.expectedExport(with: url, type: sourceType)
+        } catch MediaURLExporter.URLExportError.unknownFileUTI, MediaURLExporter.URLExportError.unsupportedFileType {
+            // Only images and videos have settings to apply. The server decides
+            // whether to accept anything else (e.g. archives and fonts).
+            return .original
+        }
         let settings = makeMediaSettings()
 
         switch expected {

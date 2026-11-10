@@ -220,13 +220,34 @@ struct GBKMediaUploadProcessorTests {
     /// `application/octet-stream` is what the editor sends when the browser
     /// doesn't know a file's type, so it can't stand in for a missing extension.
     @Test(arguments: ["application/octet-stream", "", "not-a-mime-type"])
-    func extensionlessFileWithUnusableMIMETypeThrows(mimeType: String) async throws {
-        let processor = makeProcessor(settings: makeSettings())
+    func extensionlessFileWithUnusableMIMETypePassesThroughUntouched(mimeType: String) async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        let processor = makeProcessor(settings: settings)
         let url = try stageFixture("test-image-device-photo-gps.jpg", as: "upload")
 
-        await #expect(throws: MediaURLExporter.URLExportError.self) {
-            try await processor.processFile(at: url, mimeType: mimeType, filename: "upload")
-        }
+        let result = try await processor.processFile(at: url, mimeType: mimeType, filename: "upload")
+
+        try expectOriginal(result)
+    }
+
+    /// WordPress accepts types that are neither media nor `UTType.content`
+    /// (e.g. tar, 7z), or that no UTI declares (e.g. rar, woff2).
+    @Test(arguments: [
+        ("backup.tar", "application/x-tar"),
+        ("backup.tar.gz", "application/gzip"),
+        ("archive.7z", "application/x-7z-compressed"),
+        ("archive.rar", "application/vnd.rar"),
+        ("font.ttf", "font/ttf"),
+        ("font.woff2", "font/woff2")
+    ])
+    func unclassifiedFilePassesThroughUntouched(filename: String, mimeType: String) async throws {
+        let processor = makeProcessor(settings: makeSettings())
+        let url = try stage("not processed", as: filename)
+
+        let result = try await processor.processFile(at: url, mimeType: mimeType, filename: filename)
+
+        try expectOriginal(result)
     }
 
     // MARK: - Videos
