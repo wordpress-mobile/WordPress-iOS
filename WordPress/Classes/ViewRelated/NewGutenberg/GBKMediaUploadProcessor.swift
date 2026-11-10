@@ -114,9 +114,17 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         )
         let export = try await Self.run(exporter)
 
+        let exportMIMEType: String
+        do {
+            exportMIMEType = try Self.mimeType(of: export.url, exportImageType: exportImageType)
+        } catch {
+            // GutenbergKit only deletes exports it receives.
+            try? FileManager.default.removeItem(at: export.url)
+            throw error
+        }
         return .processed(
             export.url,
-            mimeType: try Self.mimeType(of: export.url, exportImageType: exportImageType),
+            mimeType: exportMIMEType,
             filename: Self.uploadFilename(original: filename, exportURL: export.url)
         )
     }
