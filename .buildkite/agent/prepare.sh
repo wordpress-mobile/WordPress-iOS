@@ -1,0 +1,64 @@
+#!/bin/bash
+set -euo pipefail
+
+usage() {
+    echo "Usage: /bin/bash .buildkite/agent/prepare.sh [--simulator-udid UUID]"
+}
+
+requested_udid=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --simulator-udid)
+            [[ $# -ge 2 ]] || { usage >&2; exit 2; }
+            requested_udid="$2"
+            shift 2
+            ;;
+        --help) usage; exit 0 ;;
+        *) usage >&2; exit 2 ;;
+    esac
+done
+
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+agent_setup
+exec > >(tee "$AGENT_OUTPUT_DIR/evidence/prepare.log") 2>&1
+
+rm -f "$AGENT_STATE_DIR/simulator-udid"
+xcodebuild -version
+xcrun simctl list devices available --json > "$AGENT_STATE_DIR/simulators.json"
+selection="$(python3 - "$AGENT_STATE_DIR/simulators.json" "$requested_udid" <<'PY'
+import json
+import re
+import sys
+
+with open(sys.argv[1]) as stream:
+    runtimes = json.load(stream)["devices"]
+devices = []
+for runtime, entries in runtimes.items():
+    version = re.search(r"\.iOS-(\d+(?:-\d+)*)$", runtime)
+    if not version:
+        continue
+    version = tuple(map(int, version[1].split("-")))
+    if version[0] < 18:
+        continue
+    for device in entries:
+        if device.get("isAvailable") and device.get("deviceTypeIdentifier", "").startswith("com.apple.CoreSimulator.SimDeviceType.iPhone-"):
+            devices.append((device, version))
+requested = sys.argv[2]
+if requested:
+    devices = [entry for entry in devices if entry[0]["udid"].lower() == requested.lower()]
+if not devices:
+    raise SystemExit("No matching available iPhone simulator with iOS 18 or later. Provision an iOS runtime and device first.")
+device, _ = max(devices, key=lambda entry: (entry[0]["state"] == "Booted", entry[1], entry[0]["name"]))
+if not re.fullmatch(r"[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}", device["udid"]):
+    raise SystemExit("simctl returned an invalid simulator UUID")
+print(device["udid"], device["state"])
+PY
+)"
+read -r simulator_udid simulator_state <<< "$selection"
+if [[ "$simulator_state" != "Booted" ]]; then
+    xcrun simctl boot "$simulator_udid"
+fi
+xcrun simctl bootstatus "$simulator_udid" -b
+printf '%s\n' "$simulator_udid" > "$AGENT_STATE_DIR/simulator-udid.tmp"
+mv "$AGENT_STATE_DIR/simulator-udid.tmp" "$AGENT_STATE_DIR/simulator-udid"
+echo "Simulator ready: $simulator_udid"
