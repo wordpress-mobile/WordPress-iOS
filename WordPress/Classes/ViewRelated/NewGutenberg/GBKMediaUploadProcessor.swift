@@ -179,25 +179,39 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         }
     }
 
-    /// Runs an export, cancelling it if the task is cancelled.
+    /// Starts exports one at a time, as `MediaImportService` does.
+    /// `MediaImageExporter` works synchronously, so this keeps image work off
+    /// the Swift concurrency pool and limits peak memory to one decode.
+    private static let exportQueue = DispatchQueue(
+        label: "org.wordpress.gbk-media-upload-processor",
+        autoreleaseFrequency: .workItem
+    )
+
+    /// Runs an export on `exportQueue`, cancelling it if the task is cancelled.
     ///
     /// GutenbergKit cancels the task when the editor goes away or the page
-    /// abandons the upload. `MediaExporter.export()` doesn't observe that, so
-    /// a video transcode would otherwise run to completion for nobody.
+    /// abandons the upload, and `MediaExporter.export()` doesn't observe that.
     private static func run(_ exporter: any MediaExporter) async throws -> MediaExport {
         let progress = OSAllocatedUnfairLock<Progress?>(initialState: nil)
         let isCancelled = OSAllocatedUnfairLock(initialState: false)
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
-                let started = exporter.export(
-                    onCompletion: { continuation.resume(returning: $0) },
-                    onError: { continuation.resume(throwing: $0) }
-                )
-                progress.withLock { $0 = started }
-                // Cancelled before the export started, so `onCancel` had
-                // nothing to cancel.
-                if isCancelled.withLock({ $0 }) {
-                    started.cancel()
+                exportQueue.async {
+                    // Cancelled while queued behind other exports.
+                    guard !isCancelled.withLock({ $0 }) else {
+                        continuation.resume(throwing: CancellationError())
+                        return
+                    }
+                    let started = exporter.export(
+                        onCompletion: { continuation.resume(returning: $0) },
+                        onError: { continuation.resume(throwing: $0) }
+                    )
+                    progress.withLock { $0 = started }
+                    // Cancelled while the export was starting, so `onCancel`
+                    // had nothing to cancel.
+                    if isCancelled.withLock({ $0 }) {
+                        started.cancel()
+                    }
                 }
             }
         } onCancel: {
