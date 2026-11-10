@@ -86,8 +86,9 @@ code normal CI access, so check the head SHA again before starting the build.
 Keeping the branch name also preserves the draft PR and publication record.
 
 Publication stays disabled until the Buildkite branch filter and GitHub workflow
-guards are deployed. The publisher pins an approved guard baseline and rejects
-changes to `.github/`, `.buildkite/`, and `.gitmodules`.
+guards are deployed. Tasks must start from a commit on trunk. The publisher pins
+an approved guard baseline and rejects changes to `.github/`, `.buildkite/`,
+and `.gitmodules`.
 
 ## What the worker collects
 
