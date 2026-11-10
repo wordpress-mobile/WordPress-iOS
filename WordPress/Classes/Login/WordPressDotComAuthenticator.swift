@@ -112,6 +112,7 @@ struct WordPressDotComAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async -> TaggedManagedObjectID<WPAccount>? {
+        await ageRequirement.waitForCheck(from: viewController)
         guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
             return nil
         }
@@ -215,7 +216,7 @@ struct WordPressDotComAuthenticator {
             throw .loadingSites(error)
         }
 
-        // The restriction can also arrive while the account and sites are being saved.
+        // If waiting for the age check timed out, the restriction can also arrive while the account is being saved.
         if await ageRequirement.undoSignInIfRestricted(from: viewController) {
             throw .ageRestricted
         }

@@ -8,12 +8,17 @@ import UIKit
 final class AgeRequirementAccessControllerFake: AgeRequirementAccessControlling {
     private var refusalResponses: [Bool]
     private var undoResponses: [Bool]
+    private(set) var waitCount = 0
     private(set) var refusalCount = 0
     private(set) var undoCount = 0
 
     init(refusalResponses: [Bool], undoResponses: [Bool] = []) {
         self.refusalResponses = refusalResponses
         self.undoResponses = undoResponses
+    }
+
+    func waitForCheck(from viewController: UIViewController) async {
+        waitCount += 1
     }
 
     func refuseSignInIfRestricted(from viewController: UIViewController) -> Bool {

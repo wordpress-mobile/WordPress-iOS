@@ -244,9 +244,48 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         await fulfillment(of: [completion], timeout: 0.1)
     }
 
-    /// The age result arrives while the account's sites are being fetched, after the pre-save re-check.
+    /// Sign-in waits for a pending age check, and is refused before any request when the result is under 13.
     @MainActor
-    func testRestrictionWhileSavingUndoesSignIn() async throws {
+    func testSignInWaitsForPendingAgeCheck() async throws {
+        let anyRequest = expectation(description: "a network request")
+        anyRequest.isInverted = true
+        stub(condition: { _ in true }) { _ in
+            anyRequest.fulfill()
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let service = GatedAgeRangeService()
+        let coordinator = AgeRequirementCoordinator(
+            service: service,
+            enforcer: AgeRequirementEnforcerRecorder { .init(wpComSignedIn: false, selfHostedSiteCount: 0) },
+            analyticsTracker: AgeRequirementAnalyticsTrackerNoop(),
+            isSupported: true,
+            signInWaitTimeout: .seconds(60)
+        )
+        let anchor = AgeRequirementAnchor()
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            ageRequirementController: coordinator,
+            redirectURIScheme: "testapp"
+        )
+
+        let check = Task { await coordinator.checkIfNeeded(anchor: anchor.viewController) }
+        await service.waitForRequest()
+        let signIn = Task { await authenticator.signIn(from: UIViewController(), context: .default) }
+        for _ in 0..<20 { await Task.yield() }
+
+        service.respond(with: .sharing(lowerBound: 5))
+        await check.value
+
+        let accountID = await signIn.value
+        XCTAssertNil(accountID)
+        await fulfillment(of: [anyRequest], timeout: 0.2)
+    }
+
+    /// Waiting for the age check times out, then the result arrives while the account's sites are being fetched.
+    @MainActor
+    func testRestrictionAfterWaitTimesOutUndoesSignIn() async throws {
         stubTokenExchange()
         stubGetAccountDetails()
         let sitesRequested = expectation(description: "sites requested")
@@ -274,7 +313,8 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
             service: service,
             enforcer: enforcer,
             analyticsTracker: AgeRequirementAnalyticsTrackerNoop(),
-            isSupported: true
+            isSupported: true,
+            signInWaitTimeout: .milliseconds(50)
         )
         let anchor = AgeRequirementAnchor()
         let authenticator = WordPressDotComAuthenticator(

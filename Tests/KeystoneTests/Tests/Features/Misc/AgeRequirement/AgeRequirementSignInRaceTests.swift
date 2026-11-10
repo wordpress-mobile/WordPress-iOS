@@ -59,15 +59,83 @@ struct AgeRequirementSignInRaceTests {
         )
     }
 
+    @Test("Waiting before sign-in returns once a pending check finishes")
+    func waitReturnsWhenCheckFinishes() async {
+        let service = GatedAgeRangeService()
+        let coordinator = makeCoordinator(
+            service: service,
+            enforcer: AgeRequirementEnforcerRecorder { .init(wpComSignedIn: false, selfHostedSiteCount: 0) },
+            signInWaitTimeout: .seconds(60)
+        )
+        let anchor = AgeRequirementAnchor()
+
+        let check = Task { await coordinator.checkIfNeeded(anchor: anchor.viewController) }
+        await service.waitForRequest()
+
+        var didFinishWaiting = false
+        let wait = Task {
+            await coordinator.waitForCheck(from: anchor.viewController)
+            didFinishWaiting = true
+        }
+        for _ in 0..<20 { await Task.yield() }
+        #expect(!didFinishWaiting)
+
+        service.respond(with: .sharing(lowerBound: 5))
+        await wait.value
+        await check.value
+        #expect(didFinishWaiting)
+        #expect(coordinator.isRestricted)
+    }
+
+    @Test("Waiting before sign-in starts the check when it hasn't started")
+    func waitStartsCheck() async {
+        let service = GatedAgeRangeService()
+        let coordinator = makeCoordinator(
+            service: service,
+            enforcer: AgeRequirementEnforcerRecorder { .init(wpComSignedIn: false, selfHostedSiteCount: 0) },
+            signInWaitTimeout: .seconds(60)
+        )
+        let anchor = AgeRequirementAnchor()
+
+        let wait = Task { await coordinator.waitForCheck(from: anchor.viewController) }
+        await service.waitForRequest()
+        service.respond(with: .sharing(lowerBound: 18))
+        await wait.value
+
+        #expect(!coordinator.isRestricted)
+    }
+
+    @Test("Waiting before sign-in gives up after the timeout, and only waits once")
+    func waitTimesOut() async {
+        let service = GatedAgeRangeService()
+        let coordinator = makeCoordinator(
+            service: service,
+            enforcer: AgeRequirementEnforcerRecorder { .init(wpComSignedIn: false, selfHostedSiteCount: 0) },
+            signInWaitTimeout: .milliseconds(100)
+        )
+        let anchor = AgeRequirementAnchor()
+
+        let clock = ContinuousClock()
+        let first = await clock.measure { await coordinator.waitForCheck(from: anchor.viewController) }
+        let second = await clock.measure { await coordinator.waitForCheck(from: anchor.viewController) }
+
+        #expect(service.isWaiting) // The check itself keeps running.
+        #expect(first >= .milliseconds(100))
+        #expect(second < .milliseconds(100))
+        service.respond(with: .declined)
+    }
+
     private func makeCoordinator(
         service: GatedAgeRangeService,
-        enforcer: AgeRequirementEnforcerRecorder
+        enforcer: AgeRequirementEnforcerRecorder,
+        signInWaitTimeout: Duration = .seconds(10)
     ) -> AgeRequirementCoordinator {
         AgeRequirementCoordinator(
             service: service,
             enforcer: enforcer,
             analyticsTracker: AgeRequirementAnalyticsTrackerNoop(),
-            isSupported: true
+            isSupported: true,
+            signInWaitTimeout: signInWaitTimeout
         )
     }
 }
