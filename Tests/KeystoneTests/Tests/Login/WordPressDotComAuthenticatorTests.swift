@@ -244,13 +244,22 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         await fulfillment(of: [completion], timeout: 0.1)
     }
 
-    /// Sign-in waits for a pending age check, and is refused before any request when the result is under 13.
+    /// Sign-in starts while the age check is pending, then waits for the result before saving anything.
     @MainActor
-    func testSignInWaitsForPendingAgeCheck() async throws {
-        let anyRequest = expectation(description: "a network request")
-        anyRequest.isInverted = true
-        stub(condition: { _ in true }) { _ in
-            anyRequest.fulfill()
+    func testSignInWaitsForPendingAgeCheckBeforeSaving() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        let accountDetailsRequested = expectation(description: "account details requested")
+        HTTPStubs.onStubActivation { request, _, _ in
+            if request.url?.path == "/rest/v1.1/me" {
+                accountDetailsRequested.fulfill()
+            }
+        }
+        defer { HTTPStubs.onStubActivation(nil) }
+        let sitesRequested = expectation(description: "sites requested")
+        sitesRequested.isInverted = true
+        stub(condition: isPath("/rest/v1.2/me/sites")) { _ in
+            sitesRequested.fulfill()
             return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
         }
 
@@ -270,17 +279,28 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
             redirectURIScheme: "testapp"
         )
 
+        // The launch check is waiting on the system when the person starts signing in.
         let check = Task { await coordinator.checkIfNeeded(anchor: anchor.viewController) }
         await service.waitForRequest()
-        let signIn = Task { await authenticator.signIn(from: UIViewController(), context: .default) }
-        for _ in 0..<20 { await Task.yield() }
+        var didFinishSignIn = false
+        let signIn = Task {
+            let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+            didFinishSignIn = true
+            return accountID
+        }
+
+        // Sign-in goes ahead without waiting for the age check, then stops before saving.
+        await fulfillment(of: [accountDetailsRequested], timeout: 5)
+        try await Task.sleep(for: .milliseconds(300))
+        XCTAssertFalse(didFinishSignIn)
 
         service.respond(with: .sharing(lowerBound: 5))
         await check.value
 
         let accountID = await signIn.value
         XCTAssertNil(accountID)
-        await fulfillment(of: [anyRequest], timeout: 0.2)
+        XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
+        await fulfillment(of: [sitesRequested], timeout: 0.2)
     }
 
     /// Waiting for the age check times out, then the result arrives while the account's sites are being fetched.

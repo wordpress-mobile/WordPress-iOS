@@ -1,4 +1,3 @@
-import SVProgressHUD
 import UIKit
 import WordPressShared
 import WordPressUI
@@ -31,7 +30,8 @@ protocol AgeRequirementEnforcing: AnyObject {
 
 @MainActor
 protocol AgeRequirementAccessControlling: AnyObject {
-    /// Waits for the age check before a sign-in starts. Starts the check, anchored on `viewController`, if it hasn't
+    /// Waits for the age check to finish. A sign-in calls this right before it saves anything, so the check runs
+    /// alongside the sign-in instead of holding it up. Starts the check, anchored on `viewController`, if it hasn't
     /// started yet. Gives up after a timeout, and doesn't wait again once a wait has timed out.
     func waitForCheck(from viewController: UIViewController) async
 
@@ -93,18 +93,7 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
             return
         }
 
-        let waiter = CheckWaiter()
-        let showsProgress = Task {
-            try await Task.sleep(for: .milliseconds(300))
-            Self.showProgress()
-        }
-        let finished = await waiter.wait(
-            for: check,
-            timeout: signInWaitTimeout
-        )
-        showsProgress.cancel()
-        Self.dismissProgress()
-
+        let finished = await CheckWaiter().wait(for: check, timeout: signInWaitTimeout)
         if !finished {
             didTimeOutWaiting = true
         }
@@ -204,15 +193,6 @@ final class AgeRequirementCoordinator: AgeRequirementAccessControlling {
         let alert = UIAlertController(title: Strings.title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default))
         presenter.present(alert, animated: true)
-    }
-
-    // Synchronous wrappers: from async code, `SVProgressHUD.dismiss()` binds to an async overload that can hang.
-    private static func showProgress() {
-        SVProgressHUD.show()
-    }
-
-    private static func dismissProgress() {
-        SVProgressHUD.dismiss()
     }
 
     private static var isSupportedOS: Bool {

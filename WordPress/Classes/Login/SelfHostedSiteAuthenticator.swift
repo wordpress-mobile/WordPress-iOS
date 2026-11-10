@@ -168,7 +168,7 @@ struct SelfHostedSiteAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
-        try await waitForAgeCheckAndRefuseIfRestricted(from: viewController)
+        try refuseIfAgeRestricted(from: viewController)
         let details: AutoDiscoveryAttemptSuccess
         do {
             details = try await internalClient.details(ofSite: site)
@@ -192,7 +192,7 @@ struct SelfHostedSiteAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
-        try await waitForAgeCheckAndRefuseIfRestricted(from: viewController)
+        try refuseIfAgeRestricted(from: viewController)
         do {
             let credentials: WpApiApplicationPasswordDetails
             if let parsed = parseCredentialsFromLaunchArguments(),
@@ -203,8 +203,8 @@ struct SelfHostedSiteAuthenticator {
                 credentials = try await authenticate(details: details, from: viewController)
             }
 
-            // Re-check after authentication: the restriction can arrive while the sign-in flow is in progress.
-            try refuseIfAgeRestricted(from: viewController)
+            // The age check runs alongside the sign-in. Wait for its result before saving anything.
+            try await waitForAgeCheckAndRefuseIfRestricted(from: viewController)
 
             let apiRootURL = details.apiRootUrl.asURL()
             let result = try await handle(
