@@ -59,7 +59,7 @@ struct AgeRequirementSignInRaceTests {
         )
     }
 
-    @Test("Waiting before sign-in returns once a pending check finishes")
+    @Test("Waiting for the check returns once a pending check finishes")
     func waitReturnsWhenCheckFinishes() async {
         let service = GatedAgeRangeService()
         let coordinator = makeCoordinator(
@@ -87,7 +87,7 @@ struct AgeRequirementSignInRaceTests {
         #expect(coordinator.isRestricted)
     }
 
-    @Test("Waiting before sign-in starts the check when it hasn't started")
+    @Test("Waiting for the check starts it when it hasn't started")
     func waitStartsCheck() async {
         let service = GatedAgeRangeService()
         let coordinator = makeCoordinator(
@@ -105,7 +105,7 @@ struct AgeRequirementSignInRaceTests {
         #expect(!coordinator.isRestricted)
     }
 
-    @Test("Waiting before sign-in gives up after the timeout, and only waits once")
+    @Test("Waiting for the check gives up after the timeout, and only waits once")
     func waitTimesOut() async {
         let service = GatedAgeRangeService()
         let coordinator = makeCoordinator(
