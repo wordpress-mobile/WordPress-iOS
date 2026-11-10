@@ -6,9 +6,9 @@ Buildkite credentials, and app secrets. The host and worker enforce the task
 deadline and destroy the VM after success, failure, or cancellation.
 
 The image must supply Xcode compatible with this checkout, Python 3, and an
-available iPhone simulator running iOS 18 or later. Fresh checkouts build with
-plain `xcodebuild`; package downloads need network access. This adapter does not
-install tools, runtimes, certificates, or credentials.
+installed iOS 18 or later runtime with a compatible iPhone device type. Fresh
+checkouts build with plain `xcodebuild`; package downloads need network access.
+This adapter does not install tools, runtimes, certificates, or credentials.
 It refuses environments with `a8c-secrets` or a local
 `WordPress/Credentials/Secrets.swift`, which the app's normal build phases would
 otherwise use automatically. Debug builds fall back to example credentials.
@@ -29,7 +29,10 @@ export AGENT_STATE_DIR=/tmp/iris-task/state
 ```
 
 Preparation prefers a booted iPhone, otherwise an available iPhone on the newest
-installed iOS runtime. Pass `--simulator-udid UUID` to select a specific device.
+installed iOS runtime. If the user has no compatible device, it creates one from
+the newest installed compatible runtime and its supported iPhone types.
+Pass `--simulator-udid UUID` to select a specific existing device; a missing UUID
+fails without creating a replacement.
 It waits for boot and writes `$AGENT_STATE_DIR/simulator-udid`. It does not erase
 or shut down other simulators. Use a disposable VM for task execution.
 
@@ -74,5 +77,16 @@ Keep account data out of logs and screenshots.
 
 Exit status is authoritative: preparation, build, test, install, launch, or
 screenshot failures return nonzero. Logs persist under `evidence/` for the worker
-to collect, subject to its file size limits. DerivedData stays in task state;
+to collect, subject to its file size limits. Preparation uses `prepare-*.log`
+files separately from the worker's `prepare.log`. DerivedData stays in task state;
 only source changes belong in the returned patch.
+
+Run adapter behavior tests without Xcode or simulator access:
+
+```bash
+python3 -m unittest discover -s .buildkite/agent/tests -v
+```
+
+The tests use temporary Git checkouts, isolated home directories, and fake
+`xcodebuild`/`simctl` commands. They cover preparation, log separation, build/test
+arguments, failure propagation, and credential-source rejection.

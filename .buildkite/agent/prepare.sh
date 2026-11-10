@@ -10,6 +10,7 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --simulator-udid)
             [[ $# -ge 2 ]] || { usage >&2; exit 2; }
+            [[ "$2" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]] || { usage >&2; exit 2; }
             requested_udid="$2"
             shift 2
             ;;
@@ -20,20 +21,22 @@ done
 
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 agent_setup
-exec > >(tee "$AGENT_OUTPUT_DIR/evidence/prepare.log") 2>&1
+run_id="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+exec > >(tee "$AGENT_OUTPUT_DIR/evidence/prepare-$run_id.log") 2>&1
 
 rm -f "$AGENT_STATE_DIR/simulator-udid"
 xcodebuild -version
-xcrun simctl list devices available --json > "$AGENT_STATE_DIR/simulators.json"
+xcrun simctl list --json > "$AGENT_STATE_DIR/simulators.json"
 selection="$(python3 - "$AGENT_STATE_DIR/simulators.json" "$requested_udid" <<'PY'
 import json
 import re
+import subprocess
 import sys
 
 with open(sys.argv[1]) as stream:
-    runtimes = json.load(stream)["devices"]
+    simulators = json.load(stream)
 devices = []
-for runtime, entries in runtimes.items():
+for runtime, entries in simulators["devices"].items():
     version = re.search(r"\.iOS-(\d+(?:-\d+)*)$", runtime)
     if not version:
         continue
@@ -46,9 +49,27 @@ for runtime, entries in runtimes.items():
 requested = sys.argv[2]
 if requested:
     devices = [entry for entry in devices if entry[0]["udid"].lower() == requested.lower()]
-if not devices:
-    raise SystemExit("No matching available iPhone simulator with iOS 18 or later. Provision an iOS runtime and device first.")
-device, _ = max(devices, key=lambda entry: (entry[0]["state"] == "Booted", entry[1], entry[0]["name"]))
+    if not devices:
+        raise SystemExit("The requested UUID is not an available iPhone simulator with iOS 18 or later.")
+if devices:
+    device, _ = max(devices, key=lambda entry: (entry[0]["state"] == "Booted", entry[1], entry[0]["name"]))
+else:
+    compatible = []
+    for runtime in simulators["runtimes"]:
+        if not runtime.get("isAvailable") or runtime.get("platform") != "iOS":
+            continue
+        version = tuple(map(int, runtime["version"].split(".")))
+        types = [item for item in runtime["supportedDeviceTypes"] if item.get("productFamily") == "iPhone"]
+        if version >= (18,) and types:
+            compatible.append((version, runtime, types))
+    if not compatible:
+        raise SystemExit("No installed iOS 18 or later runtime with a compatible iPhone device type. Provision an iOS runtime first.")
+    _, runtime, types = max(compatible, key=lambda entry: entry[0])
+    device_type = min(types, key=lambda item: item["identifier"])
+    udid = subprocess.check_output([
+        "xcrun", "simctl", "create", "Iris task", device_type["identifier"], runtime["identifier"],
+    ], text=True).strip()
+    device = {"udid": udid, "state": "Shutdown"}
 if not re.fullmatch(r"[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}", device["udid"]):
     raise SystemExit("simctl returned an invalid simulator UUID")
 print(device["udid"], device["state"])
