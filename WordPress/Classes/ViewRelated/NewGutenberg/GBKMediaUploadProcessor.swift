@@ -13,9 +13,10 @@ import WordPressShared
 /// GutenbergKit calls `processFile` off the main actor for every upload, after
 /// staging the file to disk, and holds the processor for the editor's lifetime.
 /// It must not hold the editor back, so it carries only `Sendable` values.
+///
+/// It doesn't apply `Blog.videoDurationLimit`. The free WordPress.com sites
+/// that limit targets can't upload videos through `wp/v2/media` at all.
 struct GBKMediaUploadProcessor: MediaProcessor {
-    private let videoDurationLimit: TimeInterval?
-
     /// Read on every upload, so changes made while an editor is open apply to
     /// the next upload.
     private let makeMediaSettings: @Sendable () -> MediaSettings
@@ -35,19 +36,12 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     /// is read.
     private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg]
 
-    @MainActor
-    init(blog: Blog) {
-        self.init(videoDurationLimit: blog.videoDurationLimit)
-    }
-
     init(
-        videoDurationLimit: TimeInterval?,
         makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() },
         exportDirectoryID: UUID = GBKMediaUploadProcessor.defaultExportDirectoryID,
         sourceDirectory: URL = FileManager.default.temporaryDirectory
             .appendingPathComponent("GBKMediaUploadProcessor-sources", isDirectory: true)
     ) {
-        self.videoDurationLimit = videoDurationLimit
         self.makeMediaSettings = makeMediaSettings
         self.exportDirectoryID = exportDirectoryID
         self.sourceDirectory = sourceDirectory
@@ -168,7 +162,6 @@ struct GBKMediaUploadProcessor: MediaProcessor {
             var options = MediaVideoExporter.Options()
             options.stripsGeoLocationIfNeeded = settings.removeLocationSetting
             options.exportPreset = settings.maxVideoSizeSetting.videoPreset
-            options.durationLimit = videoDurationLimit
             exporter.options = options
             return exporter
         case .image, .gif, .other:

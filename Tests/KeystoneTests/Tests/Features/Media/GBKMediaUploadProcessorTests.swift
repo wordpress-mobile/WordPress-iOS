@@ -119,7 +119,6 @@ struct GBKMediaUploadProcessorTests {
         settings.imageOptimizationEnabled = true
         let exportDirectoryID = UUID()
         let processor = GBKMediaUploadProcessor(
-            videoDurationLimit: nil,
             makeMediaSettings: makeSettingsFactory(settings),
             exportDirectoryID: exportDirectoryID,
             sourceDirectory: sourceDirectory
@@ -300,19 +299,6 @@ struct GBKMediaUploadProcessorTests {
         try expectOriginal(result)
     }
 
-    @Test func videoExceedingDurationLimitThrows() async throws {
-        let processor: any MediaProcessor = GBKMediaUploadProcessor(
-            videoDurationLimit: 1,
-            makeMediaSettings: makeSettingsFactory(makeSettings()),
-            sourceDirectory: sourceDirectory
-        )
-        let url = try stageFixture("test-video-device-gps.m4v")
-
-        await #expect(throws: MediaVideoExporter.VideoExportError.videoLimitExceeded) {
-            try await processor.processFile(at: url, mimeType: "video/mp4", filename: url.lastPathComponent)
-        }
-    }
-
     // MARK: - Cancellation
 
     /// GutenbergKit cancels the task when the editor goes away or the page
@@ -343,7 +329,6 @@ struct GBKMediaUploadProcessorTests {
     /// failing to build, and calling through the protocol catches that.
     private func makeProcessor(settings: MediaSettings) -> any MediaProcessor {
         GBKMediaUploadProcessor(
-            videoDurationLimit: nil,
             makeMediaSettings: makeSettingsFactory(settings),
             sourceDirectory: sourceDirectory
         )

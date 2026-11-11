@@ -63,7 +63,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
             configuration: editorConfiguration,
             dependencies: cachedDependencies,
             mediaPicker: MediaPickerController(blog: blog),
-            mediaProcessor: GBKMediaUploadProcessor(blog: blog)
+            mediaProcessor: GBKMediaUploadProcessor()
         )
 
         super.init(nibName: nil, bundle: nil)
