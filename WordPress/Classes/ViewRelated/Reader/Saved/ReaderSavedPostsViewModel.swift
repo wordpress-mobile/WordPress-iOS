@@ -23,6 +23,8 @@ struct ReaderSavedPostRow: Identifiable, Equatable {
     let siteName: String?
     /// The site's icon, or an RSS feed's image.
     let siteIconURL: URL?
+    /// The WordPress.com site, which a few sites without an icon URL have a built-in icon for.
+    let siteID: UInt64?
     let authorName: String?
     let featuredImageURL: URL?
     /// The names of the post's first few tags.
@@ -42,6 +44,7 @@ struct ReaderSavedPostRow: Identifiable, Equatable {
         dateSaved = item.dateSaved
         siteName = (post?.siteName).flatMap(Self.plainText)
         siteIconURL = (post?.siteIconUrl).flatMap { URL(string: $0) }
+        siteID = (post?.identity.siteId).flatMap { $0 > 0 ? $0 : nil }
         authorName = (post?.authorName).flatMap(Self.plainText)
         excerpt = (post?.excerpt).flatMap(Self.plainText)
         featuredImageURL = (post?.featuredImage).flatMap { URL(string: $0) }
