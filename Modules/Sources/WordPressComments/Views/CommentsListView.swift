@@ -12,24 +12,13 @@ struct CommentsListView: View {
     var body: some View {
         List {
             ForEach(viewModel.items) { item in
-                Button {
+                CommentRowButton(
+                    item: item,
+                    titleState: titleResolver.titleState(for: item.postID),
+                    showsPendingStatus: viewModel.filter == .all
+                ) {
                     selectedComment = item
-                } label: {
-                    HStack {
-                        CommentRowView(
-                            item: item,
-                            titleState: titleResolver.titleState(for: item.postID),
-                            showsPendingStatus: viewModel.filter == .all
-                        )
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        Image(systemName: "chevron.forward")
-                            .font(.footnote.weight(.semibold))
-                            .foregroundStyle(.tertiary)
-                            .accessibilityHidden(true)
-                    }
-                    .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
             }
             if viewModel.canLoadMore {
                 ProgressView()
