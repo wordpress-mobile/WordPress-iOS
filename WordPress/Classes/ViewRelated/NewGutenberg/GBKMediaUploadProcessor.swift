@@ -226,14 +226,15 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     /// The name WordPress turns into the attachment's slug and title: the
     /// editor's, with the export's extension because a conversion changes it.
     private static func uploadFilename(original: String, exportURL: URL) -> String {
-        let base = ((original as NSString).lastPathComponent as NSString).deletingPathExtension
-        guard !base.isEmpty else {
-            return exportURL.lastPathComponent
-        }
+        let originalBase = ((original as NSString).lastPathComponent as NSString).deletingPathExtension
+        let base = originalBase.nonEmptyString() ?? exportURL.deletingPathExtension().lastPathComponent
         guard let exportExtension = exportURL.pathExtension.nonEmptyString() else {
             return base
         }
-        return "\(base).\(exportExtension)"
+        // `.jpg`, as `MediaService` uploads, because some image plugins expect
+        // it (WordPress-iOS#4663).
+        let fileExtension = exportExtension.lowercased() == "jpeg" ? "jpg" : exportExtension
+        return "\(base).\(fileExtension)"
     }
 
     // MARK: - Type resolution
