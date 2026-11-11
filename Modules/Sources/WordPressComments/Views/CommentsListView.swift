@@ -21,6 +21,7 @@ struct CommentsListView: View {
                             titleState: titleResolver.titleState(for: item.postID),
                             showsPendingStatus: viewModel.filter == .all
                         )
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: "chevron.forward")
                             .font(.footnote.weight(.semibold))
                             .foregroundStyle(.tertiary)
