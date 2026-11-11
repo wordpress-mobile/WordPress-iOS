@@ -65,4 +65,4 @@ test-without-building: ## Run the WordPress unit tests from prebuilt products
 		| xcbeautify
 
 junit-report: ## Convert the unit tests' result bundle to JUnit
-	./Scripts/xcresult-to-junit.rb $(RESULTS_DIR)/WordPress.xcresult $(RESULTS_DIR)/report.junit
+	swift Scripts/xcresult-to-junit.swift $(RESULTS_DIR)/WordPress.xcresult $(RESULTS_DIR)/report.junit
