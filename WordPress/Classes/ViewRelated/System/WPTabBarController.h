@@ -7,6 +7,7 @@ extern NSString * const WPTabBarCurrentlySelectedScreenReader;
 extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 extern NSNotificationName const WPTabBarHeightChangedNotification;
 
+@class MeSplitViewController;
 @class MeViewController;
 @class MySitesCoordinator;
 @class NotificationsViewController;
@@ -19,6 +20,8 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @property (nonatomic, strong, readonly, nullable) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly, nonnull) MeViewController *meViewController;
 @property (nonatomic, strong, readonly, nonnull) UINavigationController *meNavigationController;
+/// The Me tab. It shows the Me list beside the selected screen at regular width.
+@property (nonatomic, strong, readonly, nonnull) MeSplitViewController *meSplitViewController;
 @property (nonatomic, strong, readonly, nonnull) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly, nullable) ReaderPresenter *readerPresenter;
 /// Whether the Reader tab shows the Moved-to-Jetpack poster instead of the live Reader.

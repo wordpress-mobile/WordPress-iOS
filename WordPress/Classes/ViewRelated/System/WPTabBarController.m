@@ -22,7 +22,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 
 @property (nonatomic, strong) MeViewController *meViewController;
-@property (nonatomic, strong) UINavigationController *meNavigationController;
+@property (nonatomic, strong) MeSplitViewController *meSplitViewController;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
@@ -163,17 +163,22 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     [self updateNotificationBadgeVisibility];
 }
 
-- (UINavigationController *)meNavigationController
+- (MeSplitViewController *)meSplitViewController
 {
-    if (!_meNavigationController) {
-        _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    if (!_meSplitViewController) {
+        _meSplitViewController = [[MeSplitViewController alloc] initWithMeViewController:self.meViewController];
         [self observeAccountAvatar];
-        _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-        _meNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
-        _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+        _meSplitViewController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+        _meSplitViewController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
+        _meSplitViewController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     }
 
-    return _meNavigationController;
+    return _meSplitViewController;
+}
+
+- (UINavigationController *)meNavigationController
+{
+    return self.meSplitViewController.primaryNavigationController;
 }
 
 - (MeViewController *)meViewController {
@@ -189,7 +194,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _readerPresenter = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
-    _meNavigationController = nil;
+    _meSplitViewController = nil;
 
     [self setViewControllers:[self tabViewControllers]];
     
@@ -224,7 +229,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         self.mySitesCoordinator.rootViewController,
         self.readerNavigationController,
         self.notificationsNavigationController,
-        self.meNavigationController
+        self.meSplitViewController
     ];
 }
 
@@ -301,6 +306,9 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
             [navController scrollContentToTopAnimated:YES];
+        } else if ([viewController isKindOfClass:[MeSplitViewController class]]) {
+            MeSplitViewController *splitViewController = (MeSplitViewController *)viewController;
+            [splitViewController.primaryNavigationController scrollContentToTopAnimated:YES];
         }
     }
 

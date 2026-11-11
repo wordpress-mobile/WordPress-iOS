@@ -11,6 +11,9 @@ public class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
     var isSidebarModeEnabled = false
 
+    /// The title of the row whose screen is in the detail column of the Me tab's split view.
+    private var detailRowTitle: String?
+
     private lazy var headerView = MeHeaderView()
 
     // MARK: - Table View Controller
@@ -72,7 +75,11 @@ public class MeViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         refreshAccountDetailsAndSettings()
-        animateDeselectionInteractively()
+        if isShowingDetailColumn {
+            restoreDetailSelection()
+        } else {
+            animateDeselectionInteractively()
+        }
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -83,6 +90,11 @@ public class MeViewController: UITableViewController {
 
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
+
+        // The detail column may show a screen for the previous account.
+        if isShowingDetailColumn {
+            meSplitViewController?.showDefaultDetail()
+        }
     }
 
     @objc fileprivate func reloadViewModel() {
@@ -102,6 +114,9 @@ public class MeViewController: UITableViewController {
 
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(with: account)
+
+        // The reload drops the row selection that marks the screen in the detail column.
+        restoreDetailSelection()
     }
 
     private var appSettingsRow: NavigationItemRow {
@@ -268,6 +283,7 @@ public class MeViewController: UITableViewController {
             on: self,
             scope: scope
         )
+        restoreDetailSelection()
     }
 
     fileprivate func pushAccountSettings() -> ImmuTableAction {
@@ -288,7 +304,7 @@ public class MeViewController: UITableViewController {
                 return
             }
 
-            self.tableView.deselectSelectedRowWithAnimation(true)
+            self.deselectSelectedRow()
             QRLoginCoordinator.present(from: self, origin: .menu)
         }
     }
@@ -318,7 +334,7 @@ public class MeViewController: UITableViewController {
                                                               configuration: configuration,
                                                               fonts: AppAboutScreenConfiguration.fonts)
             self.present(controller, animated: true) {
-                self.tableView.deselectSelectedRowWithAnimation(true)
+                self.deselectSelectedRow()
             }
         }
     }
@@ -326,7 +342,7 @@ public class MeViewController: UITableViewController {
     func displayShareFlow() -> ImmuTableAction {
         return { [unowned self] _ in
             defer {
-                self.tableView.deselectSelectedRowWithAnimation(true)
+                self.deselectSelectedRow()
             }
 
             guard let selectedIndexPath = self.tableView.indexPathForSelectedRow,
@@ -340,14 +356,14 @@ public class MeViewController: UITableViewController {
 
     fileprivate func presentLogin() -> ImmuTableAction {
         return { [unowned self] _ in
-            self.tableView.deselectSelectedRowWithAnimation(true)
+            self.deselectSelectedRow()
             self.promptForLoginOrSignup()
         }
     }
 
     fileprivate func logoutRowWasPressed() -> ImmuTableAction {
         return { [unowned self] _ in
-            self.tableView.deselectSelectedRowWithAnimation(true)
+            self.deselectSelectedRow()
             self.displayLogOutAlert()
         }
     }
@@ -424,13 +440,85 @@ public class MeViewController: UITableViewController {
     }
 
     private func showOrPushController(_ controller: UIViewController, completion: (() -> Void)? = nil) {
-        if let navigationController {
+        if let meSplitViewController {
+            // Selected again if the split view expands with this screen in the detail column.
+            detailRowTitle = tableView.indexPathForSelectedRow.flatMap(titleForRow(at:))
+            meSplitViewController.showDetail(controller)
+            if let transitionCoordinator = navigationController?.transitionCoordinator {
+                transitionCoordinator.animate(alongsideTransition: nil) { _ in completion?() }
+            } else {
+                completion?()
+            }
+        } else if let navigationController {
             navigationController.pushViewController(controller, animated: true, rightBarButton: self.isSidebarModeEnabled ? nil : self.navigationItem.rightBarButtonItem)
             navigationController.transitionCoordinator?.animate(alongsideTransition: nil, completion: { _ in
                 completion?()
             })
         } else {
             completion?()
+        }
+    }
+
+    // MARK: - Detail Column
+
+    private var meSplitViewController: MeSplitViewController? {
+        splitViewController as? MeSplitViewController
+    }
+
+    /// Whether the Me tab shows the selected screen next to this list.
+    private var isShowingDetailColumn: Bool {
+        guard let meSplitViewController else {
+            return false
+        }
+        return !meSplitViewController.isCollapsed
+    }
+
+    /// Makes the screen for an otherwise empty detail column, the way Settings on iPad picks the
+    /// first item, and marks its row for selection.
+    func makeDefaultDetail() -> UIViewController {
+        if let account = defaultAccount(), let accountSettings = AccountSettingsViewController(account: account) {
+            detailRowTitle = RowTitles.accountSettings
+            return accountSettings
+        }
+        detailRowTitle = RowTitles.appSettings
+        return AppSettingsViewController()
+    }
+
+    /// Selects the row whose screen is in the detail column.
+    func restoreDetailSelection() {
+        guard isShowingDetailColumn, isViewLoaded else {
+            return
+        }
+        let indexPath = detailRowTitle.flatMap(indexPathForRowTitle)
+        if indexPath != tableView.indexPathForSelectedRow {
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        }
+    }
+
+    /// Forgets the detail column's row, for when the split view collapses to this list.
+    func clearDetailSelection() {
+        detailRowTitle = nil
+        if isViewLoaded, let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
+    }
+
+    /// Deselects a row that presents a screen instead of showing one in the detail column.
+    private func deselectSelectedRow() {
+        tableView.deselectSelectedRowWithAnimation(true)
+        restoreDetailSelection()
+    }
+
+    private func titleForRow(at indexPath: IndexPath) -> String? {
+        guard let sections = handler?.viewModel.sections,
+              sections.indices.contains(indexPath.section),
+              sections[indexPath.section].rows.indices.contains(indexPath.row) else {
+            return nil
+        }
+        switch sections[indexPath.section].rows[indexPath.row] {
+        case let row as NavigationItemRow: return row.title
+        case let row as IndicatorNavigationItemRow: return row.title
+        default: return nil
         }
     }
 
