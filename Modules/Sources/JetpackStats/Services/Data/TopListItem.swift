@@ -55,8 +55,10 @@ extension TopListItem {
         /// The glyph that tells a post apart from a page.
         ///
         /// Only a post gets the post glyph; a page, the homepage and anything the stats
-        /// API doesn't name get the page one. That's the grouping old Stats used, so a
-        /// site's list reads the way it always has.
+        /// API doesn't name get the page one. Old Stats split the same four types three
+        /// ways instead: the homepage had a house glyph of its own, and a type stats
+        /// couldn't name drew the post glyph. So a homepage row reads as a page here
+        /// where it used to read as a home.
         var typeSystemImage: String {
             type?.lowercased() == "post" ? "text.page" : "doc"
         }

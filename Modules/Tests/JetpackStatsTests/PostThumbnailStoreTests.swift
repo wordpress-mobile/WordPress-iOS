@@ -61,8 +61,8 @@ struct PostThumbnailStoreTests {
         #expect(store.thumbnails[2] == nil)
     }
 
-    @Test("Looks a post up again after a failed request")
-    func retriesAfterAFailedRequest() async throws {
+    @Test("Accepts a post again after a failed request")
+    func acceptsAPostAgainAfterAFailedRequest() async throws {
         let service = PostThumbnailServiceMock()
         await service.setFailing(true)
         let store = PostThumbnailStore(service: service, batchSize: 25, batchDelay: .milliseconds(10))
@@ -72,8 +72,10 @@ struct PostThumbnailStoreTests {
 
         await service.setFailing(false)
 
-        // The service records the batch before the store hears that it failed, so keep
-        // offering the ID until the store has forgotten it and takes it again.
+        // The store never re-drives a failed batch itself, so the caller has to ask
+        // again — as a row does when it is realized afresh. The service also records
+        // the batch before the store hears that it failed, so keep offering the ID
+        // until the store has forgotten it and takes it again.
         try await waitUntil {
             store.requestThumbnail(forPostID: 1)
             return store.thumbnails[1] != nil

@@ -70,8 +70,10 @@ final class PostThumbnailStore: ObservableObject {
                 let urls = try await service.getFeaturedImageURLs(forPostIDs: batch)
                 self?.thumbnails.merge(urls) { _, new in new }
             } catch {
-                // The rows stay on their type glyph. Forget the batch so they can try
-                // again if they come back on screen.
+                // The rows stay on their type glyph. Forget the batch so a row asks
+                // again the next time it is realized. Nothing re-drives the request on
+                // its own, so a list short enough to need no scrolling keeps its glyphs
+                // until the screen is opened afresh.
                 self?.requestedIDs.subtract(batch)
             }
         }
