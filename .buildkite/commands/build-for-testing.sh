@@ -14,12 +14,16 @@ fi
 
 "$(dirname "${BASH_SOURCE[0]}")/install-swift-package-list.sh"
 
-"$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh" --artifacts DerivedData/SourcePackages
+echo "--- :swift: Restoring Swift Packages cache"
+restore_swiftpm_cache --package-resolved Modules/Package.resolved --artifacts DerivedData/SourcePackages
+
+echo "--- :xcode: Fetch XCFrameworks"
+"$(dirname "${BASH_SOURCE[0]}")/../../Scripts/download-gutenberg-xcframeworks.sh"
 
 source "$(dirname "${BASH_SOURCE[0]}")/install-a8c-secrets.sh"
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane "build_${APP}_for_testing"
+make "build-${APP}-for-testing"
 
 echo "--- :swift: Saving Swift Packages cache"
 save_swiftpm_cache --package-resolved Modules/Package.resolved --artifacts DerivedData/SourcePackages
