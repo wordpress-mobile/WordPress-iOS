@@ -282,7 +282,7 @@ GEM
     net-protocol (0.4.0)
       timeout
     nkf (0.3.0)
-    nokogiri (1.19.4)
+    nokogiri (1.19.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     observer (0.1.2)
