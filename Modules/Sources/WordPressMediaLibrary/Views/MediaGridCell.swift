@@ -25,6 +25,8 @@ struct MediaGridCell: View {
         }
         .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: isAspectRatioMode ? 4 : 0))
+        // Clipping hides overflow but does not constrain the thumbnail's hit area.
+        .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(item.accessibilityLabel)
     }
