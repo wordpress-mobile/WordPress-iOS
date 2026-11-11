@@ -30,7 +30,7 @@ struct GBKMediaUploadProcessorTests {
         defer { cleanUp(output.url) }
         #expect(max(try imageSize(at: output.url).width, try imageSize(at: output.url).height) == 200)
         #expect(output.mimeType == "image/jpeg")
-        #expect(output.filename == "test-image-device-photo-gps.jpeg")
+        #expect(output.filename == "test-image-device-photo-gps.jpg")
     }
 
     @Test func imageIsUntouchedWhenProcessingWouldBeNoOp() async throws {
@@ -74,7 +74,7 @@ struct GBKMediaUploadProcessorTests {
         let output = try processedFile(result)
         defer { cleanUp(output.url) }
         #expect(output.mimeType == "image/jpeg")
-        #expect(output.filename == "IMG_1234.jpeg")
+        #expect(output.filename == "IMG_1234.jpg")
     }
 
     /// GutenbergKit stages each upload under the editor's filename, in a
@@ -201,7 +201,7 @@ struct GBKMediaUploadProcessorTests {
         let output = try processedFile(result)
         defer { cleanUp(output.url) }
         #expect(output.mimeType == "image/jpeg")
-        #expect(output.filename == "photo.jpeg")
+        #expect(output.filename == "photo.jpg")
         #expect(max(try imageSize(at: output.url).width, try imageSize(at: output.url).height) == 200)
     }
 
