@@ -155,7 +155,7 @@ final class ReaderSavedPostsStore {
     // MARK: - Status
 
     /// Whether the post is saved in the account, or `nil` when the store isn't active or doesn't know.
-    func isSaved(_ post: ReaderPost) -> Bool? {
+    func isSaved(_ post: WordPressData.ReaderPost) -> Bool? {
         guard let service else { return nil }
         switch service.status(post: ReaderSavedPostsSync.identity(for: post)) {
         case .saved: return true
@@ -166,7 +166,7 @@ final class ReaderSavedPostsStore {
 
     /// Whether to show the post as saved: the account's answer when there is one, and otherwise what
     /// this device has.
-    func isSavedForDisplay(_ post: ReaderPost) -> Bool {
+    func isSavedForDisplay(_ post: WordPressData.ReaderPost) -> Bool {
         isSaved(post) ?? post.isSavedForLater
     }
 
@@ -177,7 +177,7 @@ final class ReaderSavedPostsStore {
     ///
     /// - Returns: Whether the post is now saved.
     @discardableResult
-    func toggleSaved(_ post: ReaderPost) async throws -> Bool {
+    func toggleSaved(_ post: WordPressData.ReaderPost) async throws -> Bool {
         guard let service else {
             throw StoreError.notActive
         }
@@ -336,7 +336,7 @@ final class ReaderSavedPostsStore {
     }
 }
 
-extension ReaderPost {
+extension WordPressData.ReaderPost {
     /// Whether to show the post as saved, such as its bookmark icon. With saved posts kept in the
     /// account it's the account's answer, falling back to this device's when that's unknown.
     var isSavedForDisplay: Bool {
@@ -397,7 +397,7 @@ enum ReaderSavedPostsSync {
 
     /// The fields of a post that decide which key it's saved under. They mirror the raw REST fields
     /// (`ID`, `site_ID`, `feed_ID`, `feed_item_ID`, `is_external`, `URL`) that `RemoteReaderPost` reads.
-    static func identity(for post: ReaderPost) -> ReaderPostSaveIdentity {
+    static func identity(for post: WordPressData.ReaderPost) -> ReaderPostSaveIdentity {
         identity(
             postID: post.postID,
             siteID: post.siteID,
@@ -436,7 +436,7 @@ enum ReaderSavedPostsSync {
 
     /// What the account needs to know about a post saved on this device. The details besides the
     /// identity are shown if the server refuses the save, which keeps it on this device.
-    static func localSave(for post: ReaderPost) -> ReaderLocalSave {
+    static func localSave(for post: WordPressData.ReaderPost) -> ReaderLocalSave {
         ReaderLocalSave(
             identity: identity(for: post),
             dateSaved: nil,
@@ -556,7 +556,9 @@ enum ReaderSavedPostsSync {
     /// `sortRank`, newest first. The account keeps that order, so the list looks the same after the
     /// import.
     static func fetchLocalSaves(in context: NSManagedObjectContext) throws -> [ReaderLocalSave] {
-        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
+        let request = NSFetchRequest<WordPressData.ReaderPost>(
+            entityName: WordPressData.ReaderPost.classNameWithoutNamespaces()
+        )
         request.predicate = NSPredicate(format: "isSavedForLater == YES")
         request.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: false)]
         return try context.fetch(request).map(localSave(for:))

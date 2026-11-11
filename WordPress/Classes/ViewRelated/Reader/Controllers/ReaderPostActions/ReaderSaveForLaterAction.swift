@@ -43,7 +43,7 @@ final class ReaderSaveForLaterAction {
     }
 
     func execute(
-        with post: ReaderPost,
+        with post: WordPressData.ReaderPost,
         context: NSManagedObjectContext = ContextManager.shared.mainContext,
         origin: ReaderSaveForLaterOrigin,
         viewController: UIViewController?,
@@ -79,7 +79,7 @@ final class ReaderSaveForLaterAction {
     /// if the request fails.
     @MainActor
     private func toggleSavedForLater(
-        _ post: ReaderPost,
+        _ post: WordPressData.ReaderPost,
         context: NSManagedObjectContext,
         origin: ReaderSaveForLaterOrigin,
         completion: (() -> Void)?
@@ -107,7 +107,7 @@ final class ReaderSaveForLaterAction {
 
     @MainActor
     private func presentSuccessNotice(
-        for post: ReaderPost,
+        for post: WordPressData.ReaderPost,
         isSaved: Bool,
         context: NSManagedObjectContext,
         origin: ReaderSaveForLaterOrigin,
@@ -126,7 +126,7 @@ final class ReaderSaveForLaterAction {
 
     @MainActor
     private func presentPostRemovedNotice(
-        for post: ReaderPost,
+        for post: WordPressData.ReaderPost,
         context: NSManagedObjectContext,
         origin: ReaderSaveForLaterOrigin,
         completion: (() -> Void)?

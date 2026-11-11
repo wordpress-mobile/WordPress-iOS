@@ -80,6 +80,27 @@ struct ReaderSavedPostsExporterTests {
         #expect(post.siteID == nil)
     }
 
+    @Test("A post is exported with all its tags")
+    func exportTags() {
+        let identity = ReaderPostSaveIdentity(
+            id: 1,
+            siteId: 100,
+            feedId: nil,
+            feedItemId: nil,
+            isExternal: false,
+            url: "https://example.com/1"
+        )
+        let tags = ["One", "Two", "Three", "Four"].map { ReaderPostTag(slug: $0.lowercased(), name: $0) }
+        let item = ReaderSavedListItem(
+            key: .post(blogId: 100, postId: 1),
+            post: ReaderPostRecord(key: .post(blogId: 100, postId: 1), identity: identity, tags: tags),
+            isRecent: false,
+            isLocalOnly: false
+        )
+
+        #expect(ReaderSavedPostsExporter.exportedPost(for: item).tags == ["One", "Two", "Three", "Four"])
+    }
+
     @Test("A save the list hasn't sent yet is exported from its key")
     func exportRecentSave() {
         let item = ReaderSavedListItem(key: .post(blogId: 100, postId: 5), isRecent: true, isLocalOnly: false)

@@ -128,7 +128,7 @@ struct ReaderSavedPostsExporter {
             siteURL: post?.siteUrl ?? post?.feedUrl ?? "",
             date: post?.date.map { ISO8601DateFormatter().string(from: $0) },
             summary: plainText(post?.excerpt) ?? "",
-            tags: nil,
+            tags: post?.tags.map { $0.compactMap { plainText($0.displayName ?? $0.name) } },
             featuredImageURL: post?.featuredImage?.nonEmptyString(),
             siteID: siteID,
             postID: postID,
