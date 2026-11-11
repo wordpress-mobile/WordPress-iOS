@@ -40,6 +40,26 @@ extension TopListItem {
         var displayName: String {
             title
         }
+
+        /// The ID the site's own REST API knows this post by.
+        ///
+        /// `nil` for the homepage, which stats reports with an ID of 0 and which has no
+        /// featured image of its own to look up.
+        var numericPostID: Int? {
+            guard let postID, let value = Int(postID), value > 0 else {
+                return nil
+            }
+            return value
+        }
+
+        /// The glyph that tells a post apart from a page.
+        ///
+        /// Only a post gets the post glyph; a page, the homepage and anything the stats
+        /// API doesn't name get the page one. That's the grouping old Stats used, so a
+        /// site's list reads the way it always has.
+        var typeSystemImage: String {
+            type?.lowercased() == "post" ? "text.page" : "doc"
+        }
     }
 
     struct Referrer: Codable, TopListItemProtocol {
@@ -120,6 +140,8 @@ extension TopListItem {
     struct ExternalLink: Codable, TopListItemProtocol {
         let url: String
         let title: String?
+        /// The favicon of the site the link points to, when the stats API names one.
+        var iconURL: URL?
         let children: [ExternalLink]
         var metrics: SiteMetricsSet
 

@@ -6,21 +6,7 @@ struct TopListReferrerRowView: View {
 
     var body: some View {
         HStack(spacing: Constants.step0_5) {
-            // Icon or placeholder
-            if let iconURL = item.iconURL {
-                CachedAsyncImage(url: iconURL) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } placeholder: {
-                    placeholderIcon
-                }
-                .frame(width: 24, height: 24)
-                .clipShape(RoundedRectangle(cornerRadius: 4))
-            } else {
-                placeholderIcon
-                    .frame(width: 24, height: 24)
-            }
+            StatsFaviconView(iconURL: item.iconURL)
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(item.name)
@@ -43,9 +29,5 @@ struct TopListReferrerRowView: View {
                 .lineLimit(1)
             }
         }
-    }
-
-    private var placeholderIcon: some View {
-        Image(systemName: "link")
     }
 }

@@ -115,6 +115,10 @@ private actor CachingStatsService: StatsServiceProtocol {
         fatalError("Unused")
     }
 
+    func getFeaturedImageURLs(forPostIDs postIDs: [Int]) async throws -> [Int: URL] {
+        fatalError("Unused")
+    }
+
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         fatalError("Unused")
     }

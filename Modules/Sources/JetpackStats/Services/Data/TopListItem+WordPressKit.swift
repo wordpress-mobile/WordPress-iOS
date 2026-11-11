@@ -106,6 +106,7 @@ extension TopListItem.ExternalLink {
         self.init(
             url: click.clickedURL?.absoluteString ?? "",
             title: click.title,
+            iconURL: click.iconURL,
             children: click.children.map { TopListItem.ExternalLink($0) },
             metrics: SiteMetricsSet(views: click.clicksCount)
         )
