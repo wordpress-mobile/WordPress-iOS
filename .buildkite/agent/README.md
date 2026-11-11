@@ -77,13 +77,19 @@ Automatic Buildkite builds, Danger
 event retries, and `@claude` reviews stay off for them, even after marking a draft
 ready for review.
 
-Once a maintainer has reviewed the diff, they can start normal CI for that exact
-commit in the `wordpress-ios` Buildkite pipeline. Keep the original branch and
-include the PR number, base `trunk`, and repository URL. When using the
-[Buildkite API](https://buildkite.com/docs/apis/rest-api/builds), set
-`ignore_pipeline_branch_filters: true`. This deliberately gives the reviewed
-code normal CI access, so check the head SHA again before starting the build.
-Keeping the branch name also preserves the draft PR and publication record.
+Once a maintainer has reviewed the diff, they can run this from buildkite-ci:
+
+```sh
+python3 src/scripts/run-iris-pr-ci.py \
+  https://github.com/wordpress-mobile/WordPress-iOS/pull/123 \
+  --commit <full-reviewed-sha>
+```
+
+The command uses the maintainer's GitHub CLI login and `BUILDKITE_API_TOKEN`.
+It checks that the PR still points to the reviewed commit and starts normal
+WPiOS CI with the PR metadata. Add `--dry-run` to inspect the request first.
+This gives the reviewed code normal CI access, so review comes before running
+the command. Keep the original branch name so the PR stays open.
 
 Publication stays disabled until the Buildkite branch filter and GitHub workflow
 guards are deployed. Tasks must start from a commit on trunk. The publisher pins
