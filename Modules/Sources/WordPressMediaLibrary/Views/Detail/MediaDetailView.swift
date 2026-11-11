@@ -96,8 +96,11 @@ struct MediaDetailView: View {
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(.tertiary)
                 }
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(field.localizedTitle)
+            .accessibilityValue(viewModel.displayValue(for: field))
         } else {
             LabeledContent(field.localizedTitle, value: viewModel.displayValue(for: field))
                 .foregroundStyle(.secondary)
