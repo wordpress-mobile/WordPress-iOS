@@ -70,6 +70,7 @@ struct ReaderSavedPostsViewModelTests {
         let row = ReaderSavedPostRow(item)
 
         #expect(row.siteIconURL == URL(string: "https://example.com/icon.png"))
+        #expect(row.siteID == 100)
         #expect(row.tags == ["Swift", "iOS", "News & Updates"])
         #expect(row.commentCount == 12)
     }
@@ -101,6 +102,7 @@ struct ReaderSavedPostsViewModelTests {
         )
 
         #expect(ReaderSavedPostRow(item).destination == .feedItem(feedItemID: 55, feedID: 7))
+        #expect(ReaderSavedPostRow(item).siteID == nil)
     }
 
     @Test("A page saved by URL shows its host and opens in a web view")

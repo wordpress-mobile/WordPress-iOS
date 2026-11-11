@@ -198,8 +198,8 @@ private struct ReaderSavedPostRowView: View {
         VStack(alignment: .leading, spacing: 4) {
             if let siteName = row.siteName {
                 HStack(spacing: 6) {
-                    if let iconURL = row.siteIconURL {
-                        siteIcon(iconURL)
+                    if row.siteIconURL != nil || row.siteID != nil {
+                        ReaderSavedSiteIconView(iconURL: row.siteIconURL, siteID: row.siteID)
                     }
                     Text(siteName)
                         .font(.footnote)
@@ -256,19 +256,6 @@ private struct ReaderSavedPostRowView: View {
         return date.formatted(date: .abbreviated, time: .omitted)
     }
 
-    private func siteIcon(_ url: URL) -> some View {
-        CachedAsyncImage(url: url) { phase in
-            if let image = phase.image {
-                image.resizable().aspectRatio(contentMode: .fill)
-            } else {
-                Color(uiColor: .secondarySystemBackground)
-            }
-        }
-        .frame(width: 16, height: 16)
-        .clipShape(RoundedRectangle(cornerRadius: 3))
-        .accessibilityHidden(true)
-    }
-
     private func thumbnail(_ url: URL) -> some View {
         CachedAsyncImage(url: url) { phase in
             if let image = phase.image {
@@ -288,6 +275,62 @@ private struct ReaderSavedPostRowView: View {
         } label: {
             Label(Strings.unsave, systemImage: "bookmark.slash")
         }
+    }
+}
+
+/// A post's site icon, loaded like the avatar on Reader post cards: the same URL at the same size.
+/// Both are part of the image cache's key, so an icon a stream has loaded shows here straight away.
+private struct ReaderSavedSiteIconView: View {
+    let iconURL: URL?
+    let siteID: UInt64?
+
+    @Environment(\.displayScale) private var displayScale
+    @State private var loadedImage: UIImage?
+
+    private static let loadSize = CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize)
+
+    var body: some View {
+        if let request {
+            content(for: request)
+                .frame(width: 16, height: 16)
+                .clipShape(RoundedRectangle(cornerRadius: 3))
+                .accessibilityHidden(true)
+                .task(id: request.url) { await load(request) }
+        }
+    }
+
+    @ViewBuilder
+    private func content(for request: IconRequest) -> some View {
+        // The memory cache is read while drawing, so a cached icon shows in the row's first frame.
+        if let image = loadedImage ?? ImageDownloader.shared.cachedImage(for: request.url, size: request.size) {
+            Image(uiImage: image).resizable().aspectRatio(contentMode: .fill)
+        } else {
+            Color(uiColor: .secondarySystemBackground)
+        }
+    }
+
+    private struct IconRequest {
+        let url: URL
+        let size: ImageSize
+    }
+
+    private var request: IconRequest? {
+        let url = SiteIconViewModel.makeReaderSiteIconURL(
+            iconURL: iconURL?.absoluteString,
+            siteID: siteID.map { Int(clamping: $0) },
+            size: Self.loadSize,
+            traitCollection: UITraitCollection(displayScale: displayScale)
+        )
+        return url.map { IconRequest(url: $0, size: ImageSize(scaling: Self.loadSize, scale: displayScale)) }
+    }
+
+    private func load(_ request: IconRequest) async {
+        if ImageDownloader.shared.cachedImage(for: request.url, size: request.size) != nil {
+            return
+        }
+        loadedImage = nil
+        let imageRequest = ImageRequest(url: request.url, options: ImageRequestOptions(size: request.size))
+        loadedImage = try? await ImageDownloader.shared.image(for: imageRequest)
     }
 }
 
