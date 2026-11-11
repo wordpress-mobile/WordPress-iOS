@@ -1,4 +1,4 @@
-.PHONY: help dependencies credentials lint lintfix build-wordpress-for-testing build-jetpack-for-testing test-without-building
+.PHONY: help dependencies credentials lint lintfix build-wordpress-for-testing build-jetpack-for-testing test-without-building junit-report
 
 SHELL := /bin/bash
 
@@ -62,4 +62,7 @@ test-without-building: ## Run the WordPress unit tests from prebuilt products
 		-xctestrun "$$xctestrun" \
 		-collect-test-diagnostics never \
 		test-without-building \
-		| xcbeautify --report junit --report-path $(RESULTS_DIR) --junit-report-filename report.junit
+		| xcbeautify
+
+junit-report: ## Convert the unit tests' result bundle to JUnit
+	./Scripts/xcresult-to-junit.rb $(RESULTS_DIR)/WordPress.xcresult $(RESULTS_DIR)/report.junit

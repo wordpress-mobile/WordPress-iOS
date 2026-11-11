@@ -20,6 +20,9 @@ if [[ $TESTS_EXIT_STATUS -ne 0 ]]; then
   echo "Unit Tests failed!"
 fi
 
+echo "--- 📄 Generating JUnit report"
+make junit-report
+
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult && cd -
 
