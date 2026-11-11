@@ -135,18 +135,28 @@ public struct CachedAsyncImage<Content>: View where Content: View {
         self.request = request
         self.imageDownloader = imageDownloader
         self.content = content
+        self._phase = State(initialValue: Self.initialPhase(for: request, imageDownloader: imageDownloader))
+    }
+
+    /// The phase the view starts in. An image already in the memory cache shows in the view's first
+    /// frame, rather than after a frame of the placeholder while the view's task starts.
+    static func initialPhase(for request: ImageRequest?, imageDownloader: ImageDownloader) -> AsyncImagePhase {
+        guard let request, let image = imageDownloader.cachedImage(for: request) else {
+            return .empty
+        }
+        return .success(Image(uiImage: image))
     }
 
     // MARK: - Helpers
 
     private func fetchImage() async {
         do {
-            guard let request, let url = request.source.url else {
+            guard let request, request.source.url != nil else {
                 phase = .empty
                 return
             }
 
-            if let image = imageDownloader.cachedImage(for: url) {
+            if let image = imageDownloader.cachedImage(for: request) {
                 phase = .success(Image(uiImage: image))
             } else {
                 phase = .empty
