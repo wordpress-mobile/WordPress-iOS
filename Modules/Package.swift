@@ -66,9 +66,10 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.20.0-alpha.2"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            // TODO: Pin to a release once https://github.com/Automattic/wordpress-rs/pull/1720 and
-            // https://github.com/Automattic/wordpress-rs/pull/1729 ship.
-            revision: "db310bfc0aa4f82c3149a999291e3605e830799e"
+            // TODO: Pin to a release once https://github.com/Automattic/wordpress-rs/pull/1720,
+            // https://github.com/Automattic/wordpress-rs/pull/1729 and
+            // https://github.com/Automattic/wordpress-rs/pull/1734 ship.
+            revision: "139a47f9e66a7b2b6734c974f048a1aae8790b81"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",

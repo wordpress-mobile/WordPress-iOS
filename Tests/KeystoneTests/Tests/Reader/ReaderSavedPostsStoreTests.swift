@@ -112,7 +112,7 @@ struct ReaderSavedPostsSyncTests {
     @Test("A local save carries the post's identity and what the list shows of it")
     func localSaveForReaderPost() {
         let context = ContextManager.forTesting().mainContext
-        let post = context.insertNewObject(ofType: ReaderPost.self)
+        let post = context.insertNewObject(ofType: WordPressData.ReaderPost.self)
         post.postID = 7
         post.siteID = 8
         post.feedID = 9
@@ -551,8 +551,8 @@ final class ReaderSavedPostsStoreTests {
         siteID: Int,
         sortRank: Double = 0,
         sortDate: Date = Date()
-    ) throws -> ReaderPost {
-        let post = contextManager.mainContext.insertNewObject(ofType: ReaderPost.self)
+    ) throws -> WordPressData.ReaderPost {
+        let post = contextManager.mainContext.insertNewObject(ofType: WordPressData.ReaderPost.self)
         post.postID = NSNumber(value: postID)
         post.siteID = NSNumber(value: siteID)
         post.postTitle = "Post \(postID)"
@@ -568,7 +568,7 @@ final class ReaderSavedPostsStoreTests {
         siteID: Int,
         sortRank: Double = 0,
         sortDate: Date = Date()
-    ) throws -> ReaderPost {
+    ) throws -> WordPressData.ReaderPost {
         let post = try makePost(postID: postID, siteID: siteID, sortRank: sortRank, sortDate: sortDate)
         post.isSavedForLater = true
         try contextManager.mainContext.save()

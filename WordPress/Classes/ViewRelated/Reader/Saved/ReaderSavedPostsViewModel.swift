@@ -21,8 +21,14 @@ struct ReaderSavedPostRow: Identifiable, Equatable {
     let title: String
     let excerpt: String?
     let siteName: String?
+    /// The site's icon, or an RSS feed's image.
+    let siteIconURL: URL?
     let authorName: String?
     let featuredImageURL: URL?
+    /// The names of the post's first few tags.
+    let tags: [String]
+    /// `0` also for a post that can't have comments, such as an RSS post.
+    let commentCount: UInt64
     let dateSaved: Date?
     let destination: Destination?
 
@@ -35,9 +41,12 @@ struct ReaderSavedPostRow: Identifiable, Equatable {
         identity = post?.identity
         dateSaved = item.dateSaved
         siteName = (post?.siteName).flatMap(Self.plainText)
+        siteIconURL = (post?.siteIconUrl).flatMap { URL(string: $0) }
         authorName = (post?.authorName).flatMap(Self.plainText)
         excerpt = (post?.excerpt).flatMap(Self.plainText)
         featuredImageURL = (post?.featuredImage).flatMap { URL(string: $0) }
+        tags = Self.tagNames(post?.tags)
+        commentCount = post?.commentCount ?? 0
         destination = Self.destination(for: item.key, post: post, url: url)
 
         // A page saved by URL may have nothing but its address.
@@ -69,6 +78,10 @@ struct ReaderSavedPostRow: Identifiable, Equatable {
 
     private static func url(of key: ReaderSavedKey) -> String? {
         if case let .url(url) = key { url } else { nil }
+    }
+
+    static func tagNames(_ tags: [ReaderPostTag]?, limit: Int = 3) -> [String] {
+        Array((tags ?? []).compactMap { plainText($0.displayName ?? $0.name) }.prefix(limit))
     }
 
     private static func plainText(_ html: String) -> String? {

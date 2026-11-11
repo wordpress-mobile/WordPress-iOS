@@ -197,10 +197,15 @@ private struct ReaderSavedPostRowView: View {
     private var details: some View {
         VStack(alignment: .leading, spacing: 4) {
             if let siteName = row.siteName {
-                Text(siteName)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                HStack(spacing: 6) {
+                    if let iconURL = row.siteIconURL {
+                        siteIcon(iconURL)
+                    }
+                    Text(siteName)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
             }
             Text(row.title)
                 .font(.headline)
@@ -211,22 +216,57 @@ private struct ReaderSavedPostRowView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
             }
-            if let footnote {
-                Text(footnote)
+            if !row.tags.isEmpty {
+                Text(row.tags.map { "#\($0)" }.joined(separator: " "))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
+            if let footnote {
+                Text(footnote)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
         }
     }
 
-    /// The author and when the post was saved.
+    /// The author, the number of comments and when the post was saved.
     private var footnote: String? {
         let saved = row.dateSaved.map {
-            String.localizedStringWithFormat(Strings.savedDate, $0.formatted(date: .abbreviated, time: .omitted))
+            String.localizedStringWithFormat(Strings.savedDate, Self.formattedSavedDate($0))
         }
-        let parts = [row.authorName, saved].compactMap { $0 }
+        // The server sends 0 for posts that can't have comments, so 0 isn't shown.
+        let comments =
+            row.commentCount > 0
+            ? String.localizedStringWithFormat(
+                row.commentCount == 1 ? Strings.commentCountSingular : Strings.commentCountPlural,
+                Int(clamping: row.commentCount)
+            )
+            : nil
+        let parts = [row.authorName, comments, saved].compactMap { $0 }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+
+    /// Leaves out the year for dates in this year, so the footnote fits on one line more often.
+    private static func formattedSavedDate(_ date: Date) -> String {
+        if Calendar.current.isDate(date, equalTo: .now, toGranularity: .year) {
+            return date.formatted(.dateTime.month(.abbreviated).day())
+        }
+        return date.formatted(date: .abbreviated, time: .omitted)
+    }
+
+    private func siteIcon(_ url: URL) -> some View {
+        CachedAsyncImage(url: url) { phase in
+            if let image = phase.image {
+                image.resizable().aspectRatio(contentMode: .fill)
+            } else {
+                Color(uiColor: .secondarySystemBackground)
+            }
+        }
+        .frame(width: 16, height: 16)
+        .clipShape(RoundedRectangle(cornerRadius: 3))
+        .accessibilityHidden(true)
     }
 
     private func thumbnail(_ url: URL) -> some View {
@@ -275,7 +315,17 @@ private enum Strings {
     static let savedDate = NSLocalizedString(
         "reader.savedPosts.row.savedDate",
         value: "Saved %1$@",
-        comment: "When a post was saved, in Reader's Saved screen. %1$@ is a date, such as 'Nov 9, 2026'."
+        comment: "When a post was saved, in Reader's Saved screen. %1$@ is a date, such as 'Nov 9' or 'Nov 9, 2025'."
+    )
+    static let commentCountSingular = NSLocalizedString(
+        "reader.savedPosts.row.commentCount.singular",
+        value: "%1$d comment",
+        comment: "Number of comments on a post in Reader's Saved screen (singular). %1$d is the count."
+    )
+    static let commentCountPlural = NSLocalizedString(
+        "reader.savedPosts.row.commentCount.plural",
+        value: "%1$d comments",
+        comment: "Number of comments on a post in Reader's Saved screen (plural). %1$d is the count."
     )
     static let settingsAccessibilityLabel = NSLocalizedString(
         "reader.savedPosts.settings.button.accessibilityLabel",

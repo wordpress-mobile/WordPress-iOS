@@ -39,6 +39,50 @@ struct ReaderSavedPostsViewModelTests {
         #expect(row.destination == .post(postID: 1, siteID: 100))
     }
 
+    @Test("A post shows its site icon, first three tags and comment count")
+    func rowShowsSiteIconTagsAndComments() {
+        let identity = ReaderPostSaveIdentity(
+            id: 1,
+            siteId: 100,
+            feedId: nil,
+            feedItemId: nil,
+            isExternal: false,
+            url: "https://example.com/1"
+        )
+        let item = ReaderSavedListItem(
+            key: .post(blogId: 100, postId: 1),
+            post: ReaderPostRecord(
+                key: .post(blogId: 100, postId: 1),
+                identity: identity,
+                siteIconUrl: "https://example.com/icon.png",
+                tags: [
+                    ReaderPostTag(slug: "swift", name: "swift", displayName: "Swift"),
+                    ReaderPostTag(slug: "ios", name: "iOS"),
+                    ReaderPostTag(slug: "news", name: "News &amp; Updates"),
+                    ReaderPostTag(slug: "extra", name: "Extra")
+                ],
+                commentCount: 12
+            ),
+            isRecent: false,
+            isLocalOnly: false
+        )
+
+        let row = ReaderSavedPostRow(item)
+
+        #expect(row.siteIconURL == URL(string: "https://example.com/icon.png"))
+        #expect(row.tags == ["Swift", "iOS", "News & Updates"])
+        #expect(row.commentCount == 12)
+    }
+
+    @Test("A post the list sent without tags or comments shows neither")
+    func rowWithoutTagsOrComments() {
+        let row = ReaderSavedPostRow(Self.postItem(postID: 1, siteID: 100))
+
+        #expect(row.siteIconURL == nil)
+        #expect(row.tags.isEmpty)
+        #expect(row.commentCount == 0)
+    }
+
     @Test("A feed item opens as a feed post when its feed is known")
     func rowForFeedItem() {
         let identity = ReaderPostSaveIdentity(
