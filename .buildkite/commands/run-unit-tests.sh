@@ -8,13 +8,9 @@ echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products-wordpress.tar
 tar -xf build-products-wordpress.tar
 
-# Only the gems are needed here, given we run the tests on a pre-built binary
-echo "--- :rubygems: Setting up Gems"
-install_gems
-
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:WordPressUnitTests
+make test-without-building
 TESTS_EXIT_STATUS=$?
 set -e
 
