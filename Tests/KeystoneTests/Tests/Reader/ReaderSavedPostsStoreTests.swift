@@ -386,6 +386,39 @@ final class ReaderSavedPostsStoreTests {
         #expect(!post.isSavedForLater)
     }
 
+    @Test("Saving a post sends its details, so the Saved list can show it before a refresh")
+    func toggleSendsDetails() async throws {
+        let post = try makePost(postID: 5, siteID: 100)
+        post.blogName = "A site"
+        post.siteIconURL = "https://example.com/icon.png"
+        post.featuredImage = "https://example.com/image.jpg"
+        post.authorDisplayName = "An author"
+        post.summary = "A summary"
+        post.tags = "news, swift"
+        post.commentCount = 3
+
+        try await makeStore().toggleSaved(post)
+
+        let details = try #require(service.savedDetails.first)
+        #expect(details.identity.id == 5)
+        #expect(details.title == "Post 5")
+        #expect(details.excerpt == "A summary")
+        #expect(details.author?.name == "An author")
+        #expect(details.siteName == "A site")
+        #expect(details.siteIconUrl == "https://example.com/icon.png")
+        #expect(details.featuredImage == "https://example.com/image.jpg")
+        #expect(details.tags.map(\.slug) == ["news", "swift"])
+        #expect(details.commentCount == 3)
+    }
+
+    @Test("A post without tags sends none, which wordpress-rs reads as not known")
+    func detailsWithoutTags() throws {
+        let post = try makePost(postID: 5, siteID: 100)
+
+        #expect(ReaderSavedPostsSync.details(for: post).tags.isEmpty)
+        #expect(ReaderSavedPostsSync.details(for: post).author == nil)
+    }
+
     @Test("Toggling a post the account has saved unsaves it")
     func toggleUnsaves() async throws {
         let post = try makePost(postID: 5, siteID: 100)
@@ -700,6 +733,13 @@ final class FakeReaderSavedService: ReaderSavedServiceProtocol, @unchecked Senda
         guard let key = post.savedKey else { throw ReaderSavedError.PostCannotBeSaved }
         savedKeys.insert(key)
         return key
+    }
+
+    private(set) var savedDetails: [WordPressAPIInternal.ReaderPost] = []
+
+    func saveWithDetails(post: WordPressAPIInternal.ReaderPost) async throws -> ReaderSavedKey {
+        savedDetails.append(post)
+        return try await save(post: post.identity)
     }
 
     func saveUrl(url: String, pageDetails: ReaderSavedPageDetails?) async throws -> ReaderSavedKey {

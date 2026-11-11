@@ -184,7 +184,8 @@ final class ReaderSavedPostsStore {
         let identity = ReaderSavedPostsSync.identity(for: post)
         let willSave = !isSavedForDisplay(post)
         if willSave {
-            _ = try await service.save(post: identity)
+            // With the post's details, so the Saved list shows it in full before the next refresh.
+            _ = try await service.saveWithDetails(post: ReaderSavedPostsSync.details(for: post))
         } else {
             try await service.unsave(post: identity)
         }
@@ -432,6 +433,40 @@ enum ReaderSavedPostsSync {
         // `int64Value`, so -1 isn't read as `UInt64.max`.
         guard let value = number?.int64Value, value >= 0 else { return nil }
         return UInt64(value)
+    }
+
+    /// The post as the app has it, stored with a save so the Saved list can show it straight away.
+    /// Fields the app doesn't have are left out; the saved list fills them in on the next refresh.
+    static func details(for post: WordPressData.ReaderPost) -> WordPressAPIInternal.ReaderPost {
+        let authorName = (post.authorDisplayName?.nonEmptyString() ?? post.author?.nonEmptyString())
+        let author: ReaderPostAuthor? =
+            authorName != nil || post.authorAvatarURL?.nonEmptyString() != nil
+            ? ReaderPostAuthor(name: authorName, avatarUrl: post.authorAvatarURL?.nonEmptyString())
+            : nil
+        return WordPressAPIInternal.ReaderPost(
+            identity: identity(for: post),
+            title: post.postTitle?.nonEmptyString(),
+            excerpt: post.summary?.nonEmptyString(),
+            date: post.date_created_gmt,
+            author: author,
+            siteName: post.blogName?.nonEmptyString(),
+            siteUrl: post.blogURL?.nonEmptyString(),
+            siteIconUrl: post.siteIconURL?.nonEmptyString(),
+            featuredImage: post.featuredImage?.nonEmptyString(),
+            tags: tags(from: post.tags),
+            likeCount: post.likeCount?.uint64Value,
+            commentCount: post.commentCount?.uint64Value
+        )
+    }
+
+    /// `RemoteReaderPost` keeps a post's tags as their slugs, joined with ", ". The slug stands in
+    /// for the name until the saved list sends the post.
+    static func tags(from string: String?) -> [ReaderPostTag] {
+        (string ?? "")
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+            .map { ReaderPostTag(slug: $0, name: $0) }
     }
 
     /// What the account needs to know about a post saved on this device. The details besides the
