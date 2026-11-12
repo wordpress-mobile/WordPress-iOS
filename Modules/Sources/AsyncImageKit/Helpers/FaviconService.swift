@@ -6,13 +6,19 @@ public actor FaviconService {
 
     private nonisolated let cache = FaviconCache()
 
-    private let session = URLSession(configuration: {
-        let configuration = URLSessionConfiguration.default
-        configuration.urlCache = nil
-        return configuration
-    }())
+    private let session: URLSession
 
     private var tasks: [URL: FaviconTask] = [:]
+
+    public init() {
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = nil
+        self.init(session: URLSession(configuration: configuration))
+    }
+
+    init(session: URLSession) {
+        self.session = session
+    }
 
     nonisolated public func cachedFavicon(forURL siteURL: URL) -> URL? {
         cache.cachedFavicon(forURL: siteURL)
@@ -29,27 +35,40 @@ public actor FaviconService {
     }
 
     private func _favicon(forURL siteURL: URL) async throws -> URL {
-        let task = tasks[siteURL] ?? FaviconTask { [session] in
-            let (data, response) = try await session.data(from: siteURL)
-            try validate(response: response)
-            return FaviconService.makeFavicon(from: data, siteURL: siteURL)
-        }
+        let task =
+            tasks[siteURL]
+            ?? FaviconTask { [session] in
+                let (data, response) = try await session.data(from: siteURL)
+                try validate(response: response)
+                return FaviconService.makeFavicon(from: data, siteURL: siteURL)
+            }
         let subscriptionID = UUID()
         task.subscriptions.insert(subscriptionID)
         tasks[siteURL] = task
-        return try await withTaskCancellationHandler {
-            try await task.task.value
-        } onCancel: {
-            Task {
-                await self.unsubscribe(subscriptionID, key: siteURL)
+        do {
+            return try await withTaskCancellationHandler {
+                try await task.task.value
+            } onCancel: {
+                Task {
+                    await self.unsubscribe(subscriptionID, key: siteURL)
+                }
             }
+        } catch {
+            // Forget a failed lookup so that the next call tries again. A
+            // successful one stays in `tasks`, so it isn't repeated. Check that
+            // `tasks` still holds this task, so that a newer one is left alone.
+            if tasks[siteURL] === task {
+                tasks[siteURL] = nil
+            }
+            throw error
         }
     }
 
     private func unsubscribe(_ subscriptionID: UUID, key: URL) {
         guard let task = tasks[key],
-              task.subscriptions.remove(subscriptionID) != nil,
-              task.subscriptions.isEmpty else {
+            task.subscriptions.remove(subscriptionID) != nil,
+            task.subscriptions.isEmpty
+        else {
             return
         }
         task.task.cancel()
@@ -61,8 +80,9 @@ public actor FaviconService {
         let html = String(data: data, encoding: .utf8) ?? ""
         let range = NSRange(location: 0, length: html.utf16.count)
         if let match = regex?.firstMatch(in: html, options: [], range: range),
-           let matchRange = Range(match.range(at: 1), in: html),
-            let faviconURL = URL(string: String(html[matchRange]), relativeTo: siteURL) {
+            let matchRange = Range(match.range(at: 1), in: html),
+            let faviconURL = URL(string: String(html[matchRange]), relativeTo: siteURL)
+        {
             return faviconURL
         }
         // Fallback to standard favicon path. It has low quality, but
