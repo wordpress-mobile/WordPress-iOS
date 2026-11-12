@@ -60,7 +60,8 @@ struct ReaderPostMenu {
     private var viewPostInBrowser: UIAction? {
         guard let postURL = post.permaLink.flatMap(URL.init) else { return nil }
         let action = UIAction(Strings.viewInBrowser, systemImage: "safari") {
-            let webViewController = WebViewControllerFactory.readerPostController(
+            let webViewController = WebViewControllerFactory.readerPostBrowserController(
+                post: post,
                 url: postURL,
                 source: "reader_post_menu"
             )

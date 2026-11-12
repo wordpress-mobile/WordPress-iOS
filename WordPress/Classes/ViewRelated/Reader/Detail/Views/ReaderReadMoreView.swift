@@ -8,9 +8,11 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
 { // swiftlint:disable:this opening_brace
     private let textView = UITextView.makeLabel()
     private let infoIconView = UIImageView(image: UIImage(systemName: "info.circle.fill"))
+    private let post: ReaderPost
     private var postURL: URL?
 
     init(post: ReaderPost) {
+        self.post = post
         super.init(frame: .zero)
 
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
@@ -59,7 +61,11 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
         guard let postURL else {
             return
         }
-        let webViewController = WebViewControllerFactory.readerPostController(url: postURL, source: "reader_read_more")
+        let webViewController = WebViewControllerFactory.readerPostBrowserController(
+            post: post,
+            url: postURL,
+            source: "reader_read_more"
+        )
         window?.topmostPresentedViewController?.present(webViewController, animated: true)
     }
 

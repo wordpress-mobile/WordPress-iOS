@@ -1,3 +1,4 @@
+import SafariServices
 import UIKit
 import WebKit
 import WordPressData
@@ -49,10 +50,28 @@ enum WebViewControllerFactory {
         return controller(configuration: configuration, source: source)
     }
 
-    /// Opens a Reader post in the in-app web view, signed in with the default WordPress.com account, so posts on
-    /// private sites such as P2s load instead of showing a login page.
+    /// Opens a Reader post's page for "View in Browser" and "View full post".
     ///
-    /// Don't use `SFSafariViewController` for these: it doesn't share Safari's cookies, and has no API to set any.
+    /// Posts on WordPress.com and posts on private sites open in the signed-in web view (see
+    /// `readerPostController(url:source:)`), so private WordPress.com sites such as P2s load instead of showing a
+    /// login page. Everything else opens in `SFSafariViewController`: those pages don't need our login, and it keeps
+    /// Safari's content blockers, Reader mode and AutoFill.
+    ///
+    /// - Returns: a view controller, ready to present.
+    static func readerPostBrowserController(post: ReaderPost, url: URL, source: String) -> UIViewController {
+        guard post.isWPCom || post.isBlogPrivate else {
+            return SFSafariViewController(url: url)
+        }
+        return readerPostController(url: url, source: source)
+    }
+
+    /// Opens a Reader post in the in-app web view, signed in with the default WordPress.com account, so posts on
+    /// private WordPress.com sites such as P2s load instead of showing a login page.
+    ///
+    /// `SFSafariViewController` can't do this: it doesn't share Safari's cookies, and the app can't give it any.
+    ///
+    /// Private sites hosted on Atomic still show their private-site page: they need a separate per-site cookie that
+    /// this doesn't request.
     ///
     /// - Returns: a navigation controller, ready to present.
     static func readerPostController(url: URL, source: String) -> UIViewController {
