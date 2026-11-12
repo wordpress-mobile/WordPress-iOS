@@ -1,3 +1,4 @@
+import SafariServices
 import UIKit
 import WebKit
 import WordPressData
@@ -32,7 +33,9 @@ enum WebViewControllerFactory {
         configuration.analyticsSource = source
         configuration.authenticate(blog: blog)
         configuration.onClose = onClose
-        return withDeviceModes ? PreviewWebKitViewController(configuration: configuration) : controller(configuration: configuration, source: source)
+        return withDeviceModes
+            ? PreviewWebKitViewController(configuration: configuration)
+            : controller(configuration: configuration, source: source)
     }
 
     static func controller(url: URL, account: WPAccount, source: String) -> UIViewController {
@@ -45,6 +48,40 @@ enum WebViewControllerFactory {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         return controller(configuration: configuration, source: source)
+    }
+
+    /// Opens a Reader post's page for "View in Browser" and "View full post".
+    ///
+    /// Posts on private sites open in the signed-in web view (see `readerPostController(url:source:)`), so private
+    /// WordPress.com sites such as P2s load instead of showing a login page. Everything else opens in
+    /// `SFSafariViewController`: those pages don't need our login, and it keeps Safari's content blockers, Reader mode
+    /// and AutoFill.
+    ///
+    /// This checks `isBlogPrivate` only. `isWPCom` can't tell a WordPress.com post from a Jetpack one here: the
+    /// single-post Reader endpoint leaves out `is_jetpack`, so Jetpack posts opened on their own read as WordPress.com.
+    ///
+    /// - Returns: a view controller, ready to present.
+    static func readerPostBrowserController(post: ReaderPost, url: URL, source: String) -> UIViewController {
+        guard post.isBlogPrivate else {
+            return SFSafariViewController(url: url)
+        }
+        return readerPostController(url: url, source: source)
+    }
+
+    /// Opens a Reader post in the in-app web view, signed in with the default WordPress.com account, so posts on
+    /// private WordPress.com sites such as P2s load instead of showing a login page.
+    ///
+    /// `SFSafariViewController` can't do this: it doesn't share Safari's cookies, and the app can't give it any.
+    ///
+    /// Private sites hosted on Atomic still show their private-site page: they need a separate per-site cookie that
+    /// this doesn't request.
+    ///
+    /// - Returns: a navigation controller, ready to present.
+    static func readerPostController(url: URL, source: String) -> UIViewController {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        return UINavigationController(rootViewController: controller(configuration: configuration, source: source))
     }
 
     static func controllerWithDefaultAccountAndSecureInteraction(
