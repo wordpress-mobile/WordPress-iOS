@@ -126,12 +126,16 @@ public final class AsyncImageView: UIView {
         size: ImageSize? = nil
     ) {
         currentImageURL = imageURL
+        saliencyTask?.cancel()
+        saliencyTask = nil
         let request = ImageRequest(url: imageURL, host: host, options: ImageRequestOptions(size: size))
         controller.setImage(with: request)
     }
 
     public func setImage(with request: ImageRequest, completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil) {
         currentImageURL = request.source.url
+        saliencyTask?.cancel()
+        saliencyTask = nil
         controller.setImage(with: request, completion: completion)
     }
 

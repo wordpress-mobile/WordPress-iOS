@@ -159,7 +159,9 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         authorAvatarURL = nil
-        authorAvatarImageView.wp.prepareForReuse()
+        // Cancels the previous row's load, and shows the placeholder for a row with no avatar URL,
+        // as `downloadAuthorAvatar(with: nil)` returns early.
+        authorAvatarImageView.wp.image = .gravatarPlaceholderImage
     }
 
     override func refreshSeparators() {

@@ -7,11 +7,13 @@ import Vision
 public actor ImageSaliencyService {
     public nonisolated static let shared = ImageSaliencyService()
 
-    private nonisolated let cache = SaliencyCache()
+    private nonisolated let cache: SaliencyCache
     private nonisolated let detector = SaliencyDetector()
     private var inflightTasks: [URL: Task<CGRect?, Never>] = [:]
 
-    init() {
+    /// - parameter diskURL: Where results are saved between launches.
+    init(diskURL: URL = SaliencyCache.defaultDiskURL) {
+        cache = SaliencyCache(diskURL: diskURL)
         Task { [cache] in
             cache.loadFromDisk()
         }
@@ -122,19 +124,22 @@ private actor SaliencyDetector {
     }
 }
 
-private final class SaliencyCache: @unchecked Sendable {
+final class SaliencyCache: @unchecked Sendable {
     private var store: OrderedDictionary<String, CGRect?> = [:]
     private let lock = NSLock()
     private var isDirty = false
     private var observer: AnyObject?
 
     private static let maxCount = 1000
-    private static let diskURL: URL = {
+    private let diskURL: URL
+
+    static let defaultDiskURL: URL = {
         let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         return caches.appendingPathComponent("saliency_cache.json")
     }()
 
-    init() {
+    init(diskURL: URL) {
+        self.diskURL = diskURL
         observer = NotificationCenter.default.addObserver(
             forName: UIApplication.didEnterBackgroundNotification,
             object: nil,
@@ -178,16 +183,25 @@ private final class SaliencyCache: @unchecked Sendable {
     }
 
     func loadFromDisk() {
-        guard let data = try? Data(contentsOf: Self.diskURL),
+        guard let data = try? Data(contentsOf: diskURL),
             let decoded = try? JSONDecoder().decode([String: CGRect?].self, from: data)
         else {
             return
         }
         lock.withLock {
-            // Keep results stored before the load finished; they are at least as new.
+            // Results stored before the load finished are newer, so they replace the disk
+            // entries and go last, to be evicted last.
+            var merged = OrderedDictionary<String, CGRect?>()
             for (key, rect) in decoded where store[key] == nil {
-                store.updateValue(rect, forKey: key)
+                merged.updateValue(rect, forKey: key)
             }
+            for (key, rect) in store {
+                merged.updateValue(rect, forKey: key)
+            }
+            if merged.count > Self.maxCount {
+                merged.removeFirst(merged.count - Self.maxCount)
+            }
+            store = merged
         }
     }
 
@@ -200,6 +214,6 @@ private final class SaliencyCache: @unchecked Sendable {
         guard let snapshot else { return }
         let dict = snapshot.reduce(into: [String: CGRect?]()) { $0[$1.key] = $1.value }
         guard let data = try? JSONEncoder().encode(dict) else { return }
-        try? data.write(to: Self.diskURL, options: .atomic)
+        try? data.write(to: diskURL, options: .atomic)
     }
 }
