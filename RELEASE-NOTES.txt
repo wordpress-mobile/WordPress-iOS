@@ -21,6 +21,7 @@
 * [**] iPad and large iPhones: Screens now adapt to the app window's size in split view, Stage Manager and landscape, not the device type [#26201]
 * [*] Experimental editor: Recover from editor crashes, and ask before saving while media is still uploading [#26267]
 * [*] Experimental editor: Fix block assets not loading on self-hosted sites that use plain permalinks [#25859]
+* [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
 
 
 27.4
