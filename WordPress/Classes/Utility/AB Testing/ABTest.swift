@@ -64,6 +64,9 @@ extension ABTest {
     /// Completions waiting for the fetch in flight, or `nil` when none is running. Main queue only.
     private static var pendingCompletions: [() -> Void]?
 
+    /// How many times `reset()` has run. Main queue only.
+    private static var resetCount = 0
+
     /// Registers the current app's experiments and fetches their assignments for the signed-in
     /// WordPress.com account.
     ///
@@ -80,6 +83,7 @@ extension ABTest {
         isDotComAvailable: Bool = AccountHelper.isDotcomAvailable(),
         hasOptedOutOfAnalytics: Bool = WPAppAnalytics.userHasOptedOut(),
         exPlat: ExperimentAssigning? = ExPlat.shared,
+        userDefaults: UserDefaults = .standard,
         completion: (() -> Void)? = nil
     ) {
         wpAssert(Thread.isMainThread)
@@ -95,9 +99,18 @@ extension ABTest {
             return
         }
         pendingCompletions = completion.map { [$0] } ?? []
+        let resetCountAtStart = resetCount
         exPlat.register(experiments: experimentNames)
         exPlat.refresh {
+            // `ExPlat.refresh` drops the answer if its `ExPlat` has been released by then, and Tracks
+            // replaces `ExPlat.shared` whenever analytics metadata refreshes, which happens during the
+            // account and site sync after launch. Keep this one alive until it has stored the answer.
+            withExtendedLifetime(exPlat) {}
             DispatchQueue.main.async {
+                // The answer belongs to an account that has signed out or opted out since.
+                if resetCount != resetCountAtStart {
+                    removeStoredAssignments(from: userDefaults)
+                }
                 let completions = pendingCompletions ?? []
                 pendingCompletions = nil
                 completions.forEach { $0() }
@@ -106,9 +119,16 @@ extension ABTest {
     }
 
     /// Forgets the registered experiments and every stored assignment, so the next account doesn't
-    /// inherit them and ExPlat makes no more requests. Call it at sign-out and on analytics opt-out.
+    /// inherit them and ExPlat makes no more requests. A request started by `start()` that answers
+    /// later is cleared too. Call it at sign-out and on analytics opt-out.
     static func reset(exPlat: ExperimentAssigning? = ExPlat.shared, userDefaults: UserDefaults = .standard) {
+        wpAssert(Thread.isMainThread)
+        resetCount += 1
         exPlat?.register(experiments: [])
+        removeStoredAssignments(from: userDefaults)
+    }
+
+    private static func removeStoredAssignments(from userDefaults: UserDefaults) {
         for key in exPlatStorageKeys {
             userDefaults.removeObject(forKey: key)
         }
