@@ -305,6 +305,9 @@ import WordPressShared
     case siteListShareTapped
     case siteListCopyLinktapped
 
+    // Custom Post Types
+    case customPostTypesFetched
+
     // Post List
     case cptPostListOpened
     case cptPostListLoadFinished
@@ -1246,6 +1249,10 @@ import WordPressShared
             return "site_list_share_tapped"
         case .siteListCopyLinktapped:
             return "site_list_copy_link_tapped"
+
+        // Custom Post Types
+        case .customPostTypesFetched:
+            return "custom_post_types_fetched"
 
         // Post List
         case .cptPostListOpened:
