@@ -44,6 +44,58 @@ import Testing
         #expect(fetcher.started == [request.url, request.url], "The restarted prefetch never ran")
     }
 
+    @Test func stopAllKeepsConcurrencyLimit() async {
+        let prefetcher = makePrefetcher(maxConcurrentTasks: 1)
+
+        // GIVEN a prefetch was running when everything was stopped
+        let first = makeRequest()
+        prefetcher.startPrefetching(for: [first])
+        await settle()
+        prefetcher.stopAll()
+        await settle()
+        #expect(fetcher.cancelled == [first.url])
+        fetcher.finish(first.url)
+        await settle()
+
+        // WHEN three more are queued
+        let next = (0..<3).map { _ in makeRequest() }
+        prefetcher.startPrefetching(for: next)
+        await settle()
+
+        // THEN only one downloads at a time, in order
+        #expect(
+            fetcher.running == [next[0].url],
+            "\(fetcher.running.count) prefetches downloading at once, with a limit of 1"
+        )
+        fetcher.finish(next[0].url)
+        await settle()
+        #expect(fetcher.running == [next[1].url])
+        fetcher.finish(next[1].url)
+        await settle()
+        #expect(fetcher.running == [next[2].url])
+    }
+
+    @Test func prefetchQueuedAfterStopAllStartsWhenTheStoppedOneFinishes() async {
+        let prefetcher = makePrefetcher(maxConcurrentTasks: 1)
+
+        // GIVEN a prefetch was stopped but its download hasn't finished yet
+        let first = makeRequest()
+        prefetcher.startPrefetching(for: [first])
+        await settle()
+        prefetcher.stopAll()
+
+        // WHEN another is queued
+        let second = makeRequest()
+        prefetcher.startPrefetching(for: [second])
+        await settle()
+        fetcher.finish(first.url)
+        await settle()
+
+        // THEN it starts once the stopped one finishes
+        #expect(fetcher.started == [first.url, second.url])
+        #expect(fetcher.running == [second.url])
+    }
+
     // MARK: - Helpers
 
     private func makePrefetcher(maxConcurrentTasks: Int) -> ImagePrefetcher {

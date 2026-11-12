@@ -102,8 +102,9 @@ public final class ImagePrefetcher {
             for (_, value) in queue {
                 value.task?.cancel()
             }
+            // Don't reset `numberOfActiveTasks`: each cancelled prefetch counts
+            // itself out when its download stops.
             queue.removeAll()
-            numberOfActiveTasks = 0
         }
     }
 
