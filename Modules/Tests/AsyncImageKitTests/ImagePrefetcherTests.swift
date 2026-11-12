@@ -96,6 +96,26 @@ import Testing
         #expect(fetcher.running == [second.url])
     }
 
+    @Test func releasingThePrefetcherStopsItsPrefetches() async {
+        var prefetcher: ImagePrefetcher? = makePrefetcher(maxConcurrentTasks: 1)
+        let requests = (0..<2).map { _ in makeRequest() }
+
+        // GIVEN one prefetch is running and another is queued
+        prefetcher?.startPrefetching(for: requests)
+        await settle()
+        #expect(fetcher.running == [requests[0].url])
+
+        // WHEN the screen that owns the prefetcher goes away
+        prefetcher = nil
+        await settle()
+
+        // THEN the running prefetch is cancelled, and the queued one never starts
+        #expect(fetcher.cancelled == [requests[0].url], "The running prefetch wasn't cancelled")
+        fetcher.finish(requests[0].url)
+        await settle()
+        #expect(fetcher.started == [requests[0].url], "The queued prefetch started after the prefetcher was released")
+    }
+
     // MARK: - Helpers
 
     private func makePrefetcher(maxConcurrentTasks: Int) -> ImagePrefetcher {

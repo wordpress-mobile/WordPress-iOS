@@ -62,16 +62,16 @@ public final class ImagePrefetcher {
             return nil
         }
         while numberOfActiveTasks < maxConcurrentTasks, let (key, prefetch) = nextPendingTask() {
-            prefetch.task = Task {
-                await self.actuallyPrefetchImage(prefetch, for: key)
+            // Don't hold on to `self` while downloading, so `deinit` can cancel the prefetches
+            prefetch.task = Task { [weak self, fetch] in
+                await fetch(key.request)
+                self?.didFinish(prefetch, for: key)
             }
             numberOfActiveTasks += 1
         }
     }
 
-    private func actuallyPrefetchImage(_ prefetch: PrefetchTask, for key: PrefetchKey) async {
-        await fetch(key.request)
-
+    private func didFinish(_ prefetch: PrefetchTask, for key: PrefetchKey) {
         numberOfActiveTasks -= 1
         // If this prefetch was stopped and the image was queued again while it ran,
         // the queue holds a new prefetch for the same key. Leave that one alone.
