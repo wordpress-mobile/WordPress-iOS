@@ -22,7 +22,6 @@ public enum CommentsHostingController {
             )
         )
         host.navigationItem.largeTitleDisplayMode = .never
-        host.hidesBottomBarWhenPushed = true
         return host
     }
 }

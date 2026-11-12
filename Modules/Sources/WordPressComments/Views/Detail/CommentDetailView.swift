@@ -5,7 +5,8 @@ import UIKit
 /// and author header, an optional "In reply to" strip, the internally
 /// scrolling content region, and a pinned bottom moderation toolbar hosted via
 /// `.safeAreaInset(edge: .bottom)` (never `.toolbar(placement: .bottomBar)`,
-/// which does not render in a UIKit-hosted `UIHostingController`).
+/// which does not render in a UIKit-hosted `UIHostingController`). In compact
+/// height, accessibility text sizes use the navigation menu for moderation.
 struct CommentDetailView: View {
     @StateObject private var viewModel: CommentDetailViewModel
     @ObservedObject private var titleResolver: PostTitleResolver
@@ -14,6 +15,8 @@ struct CommentDetailView: View {
     @StateObject private var contentRenderer: ContentRenderer
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     init(commentID: Int64, seed: CommentListItem?, router: CommentsDetailRouter) {
         self.router = router
@@ -56,7 +59,7 @@ struct CommentDetailView: View {
     @ViewBuilder
     private var bottomToolbar: some View {
         let model = viewModel.toolbarModel
-        if model != .hidden {
+        if model != .hidden && !usesModerationMenu {
             CommentModerationToolbar(
                 model: model,
                 isEnabled: viewModel.isToolbarEnabled,
@@ -66,6 +69,10 @@ struct CommentDetailView: View {
                 viewModel.perform(action)
             }
         }
+    }
+
+    private var usesModerationMenu: Bool {
+        verticalSizeClass == .compact && dynamicTypeSize.isAccessibilitySize
     }
 
     @ToolbarContentBuilder
@@ -81,8 +88,15 @@ struct CommentDetailView: View {
         ToolbarItem(placement: .topBarTrailing) {
             let shareLink = viewModel.shareLink
             let menuAction = viewModel.toolbarModel.menuAction
-            if viewModel.showsEdit || shareLink != nil || menuAction != nil {
-                Menu {
+            let moderationModel = usesModerationMenu ? viewModel.toolbarModel : .hidden
+            if viewModel.showsEdit || shareLink != nil || menuAction != nil || moderationModel != .hidden {
+                CommentModerationMenu(
+                    model: moderationModel,
+                    isEnabled: viewModel.isToolbarEnabled,
+                    isPerformingAction: usesModerationMenu && viewModel.pendingAction != nil,
+                    trashConfirmation: viewModel.trashConfirmation,
+                    perform: { viewModel.perform($0) }
+                ) {
                     if viewModel.showsEdit {
                         Button(Strings.detailEdit, systemImage: "pencil") { viewModel.editTapped() }
                             .disabled(!viewModel.canEdit)
@@ -101,10 +115,7 @@ struct CommentDetailView: View {
                             .disabled(!viewModel.isToolbarEnabled)
                         }
                     }
-                } label: {
-                    Image(systemName: "ellipsis")
                 }
-                .accessibilityLabel(Strings.detailMoreActions)
             }
         }
     }

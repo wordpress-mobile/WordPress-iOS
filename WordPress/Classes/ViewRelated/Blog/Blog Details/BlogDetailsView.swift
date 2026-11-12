@@ -48,7 +48,6 @@ struct BlogDetailsView: View {
             NavigationLink(isActive: $isShowingComments) {
                 destination
                     .id(viewModel.blog.objectID)
-                    .hidesAppTabBar()
             } label: {
                 EmptyView()
             }

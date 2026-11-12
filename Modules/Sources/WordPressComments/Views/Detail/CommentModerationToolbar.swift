@@ -71,6 +71,9 @@ extension CommentModerationAction {
 /// Each dialog is attached to its own button so it anchors there when
 /// presented as a popover.
 struct CommentModerationToolbar: View {
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     let model: CommentModerationToolbarModel
     let isEnabled: Bool
     /// The action whose request is in flight; its button shows a spinner in
@@ -88,6 +91,8 @@ struct CommentModerationToolbar: View {
             .disabled(!isEnabled)
             .padding(.horizontal)
             .padding(.vertical, 10)
+            // Leave room for the floating app tab bar.
+            .padding(.bottom, usesHorizontalLayout ? 16 : 0)
             .frame(maxWidth: .infinity)
     }
 
@@ -95,20 +100,30 @@ struct CommentModerationToolbar: View {
     private var buttons: some View {
         switch model {
         case .pending:
-            VStack(spacing: 10) {
+            actionLayout {
                 approveButton
                 spamTrashRow
             }
         case .approved:
             spamTrashRow
         case .inBin:
-            VStack(spacing: 10) {
+            actionLayout {
                 restoreButton
                 deleteButton
             }
         case .hidden:
             EmptyView()
         }
+    }
+
+    private var actionLayout: AnyLayout {
+        usesHorizontalLayout
+            ? AnyLayout(HStackLayout(spacing: 10))
+            : AnyLayout(VStackLayout(spacing: 10))
+    }
+
+    private var usesHorizontalLayout: Bool {
+        verticalSizeClass == .compact && !dynamicTypeSize.isAccessibilitySize
     }
 
     private var approveButton: some View {
