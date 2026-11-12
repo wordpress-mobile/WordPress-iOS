@@ -18,10 +18,12 @@ class ReaderWindowManager: WindowManager {
     }
 
     override func showSignInUI(completion: Completion? = nil) {
-        let welcomeVC = UIHostingController(rootView: ReaderWelcomeView { [weak self] in
-            self?.continueWithDotComTapped()
-        })
-        show(welcomeVC)
+        let welcomeVC = UIHostingController(
+            rootView: ReaderWelcomeView { [weak self] in
+                self?.continueWithDotComTapped()
+            }
+        )
+        show(welcomeVC, completion: completion)
     }
 
     private func continueWithDotComTapped() {
@@ -29,7 +31,8 @@ class ReaderWindowManager: WindowManager {
             return wpAssertionFailure("missing top view controller")
         }
         Task { @MainActor [weak self] in
-            let accountID = await WordPressDotComAuthenticator().signIn(from: presentingViewController, context: .default)
+            let accountID = await WordPressDotComAuthenticator()
+                .signIn(from: presentingViewController, context: .default)
             if accountID != nil {
                 self?.showAppUI()
             }
