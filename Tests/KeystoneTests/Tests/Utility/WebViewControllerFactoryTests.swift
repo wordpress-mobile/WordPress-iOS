@@ -50,22 +50,22 @@ final class WebViewControllerFactoryTests: CoreDataTestCase {
 
     // MARK: - readerPostBrowserController
 
-    func testWordPressComPostOpensInTheSignedInWebView() throws {
+    func testPrivatePostOpensInTheSignedInWebView() throws {
         makeDefaultAccount()
-        let post = makePost(isWPCom: true, isBlogPrivate: false)
+        let post = makePost(isWPCom: true, isBlogPrivate: true)
 
         let controller = WebViewControllerFactory.readerPostBrowserController(post: post, url: url, source: "test")
 
         XCTAssertNotNil(try webViewController(in: controller).authenticator)
     }
 
-    func testPrivatePostOpensInTheSignedInWebView() throws {
+    func testPublicWordPressComPostOpensInSafari() {
         makeDefaultAccount()
-        let post = makePost(isWPCom: false, isBlogPrivate: true)
+        let post = makePost(isWPCom: true, isBlogPrivate: false)
 
         let controller = WebViewControllerFactory.readerPostBrowserController(post: post, url: url, source: "test")
 
-        XCTAssertNotNil(try webViewController(in: controller).authenticator)
+        XCTAssertTrue(controller is SFSafariViewController)
     }
 
     func testPublicPostOnAnotherHostOpensInSafari() {

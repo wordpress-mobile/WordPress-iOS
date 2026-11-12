@@ -52,14 +52,17 @@ enum WebViewControllerFactory {
 
     /// Opens a Reader post's page for "View in Browser" and "View full post".
     ///
-    /// Posts on WordPress.com and posts on private sites open in the signed-in web view (see
-    /// `readerPostController(url:source:)`), so private WordPress.com sites such as P2s load instead of showing a
-    /// login page. Everything else opens in `SFSafariViewController`: those pages don't need our login, and it keeps
-    /// Safari's content blockers, Reader mode and AutoFill.
+    /// Posts on private sites open in the signed-in web view (see `readerPostController(url:source:)`), so private
+    /// WordPress.com sites such as P2s load instead of showing a login page. Everything else opens in
+    /// `SFSafariViewController`: those pages don't need our login, and it keeps Safari's content blockers, Reader mode
+    /// and AutoFill.
+    ///
+    /// This checks `isBlogPrivate` only. `isWPCom` can't tell a WordPress.com post from a Jetpack one here: the
+    /// single-post Reader endpoint leaves out `is_jetpack`, so Jetpack posts opened on their own read as WordPress.com.
     ///
     /// - Returns: a view controller, ready to present.
     static func readerPostBrowserController(post: ReaderPost, url: URL, source: String) -> UIViewController {
-        guard post.isWPCom || post.isBlogPrivate else {
+        guard post.isBlogPrivate else {
             return SFSafariViewController(url: url)
         }
         return readerPostController(url: url, source: source)
