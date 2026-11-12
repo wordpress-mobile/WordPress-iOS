@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdict", "summary", "findings", "thread_replies"],
+  "properties": {
+    "verdict": {
+      "enum": ["pass", "fail"],
+      "description": "fail only if a proven bug caused by this PR is still in the code. Otherwise pass."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short Markdown summary: what you checked, what you found, and what you could not check."
+    },
+    "findings": {
+      "type": "array",
+      "description": "New issues only. Issues already raised in an earlier thread go in thread_replies.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "line", "title", "body", "proven"],
+        "properties": {
+          "path": { "type": "string", "description": "Repo-relative path of a file changed by the PR." },
+          "line": { "type": "integer", "minimum": 1, "description": "A line in the PR diff, in the new version of the file." },
+          "title": { "type": "string", "maxLength": 100 },
+          "body": { "type": "string", "description": "Markdown: what happens, who is affected, the proof, and a suggested fix." },
+          "proven": { "type": "boolean", "description": "true only if a test or screenshot in the evidence directory shows it." }
+        }
+      }
+    },
+    "thread_replies": {
+      "type": "array",
+      "description": "One reply for each unresolved earlier thread of yours.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["thread_id", "body", "resolved"],
+        "properties": {
+          "thread_id": { "type": "string", "description": "The thread id from review-threads.json." },
+          "body": { "type": "string" },
+          "resolved": { "type": "boolean", "description": "true if the current code fixes the issue." }
+        }
+      }
+    }
+  }
+}

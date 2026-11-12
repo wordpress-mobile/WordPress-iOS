@@ -190,6 +190,38 @@ steps:
               context: "Localization Tooling Unit Tests"
 
   #################
+  # Claude PR Review (experimental): fails only when Claude proves a bug caused by the PR
+  #################
+  - label: ":claude: Claude PR Review"
+    key: claude_pr_review
+    # `--validate-setup` also checks, end to end, that the setup can test real PRs
+    # (.buildkite/claude/validate-setup.sh). Use it after Xcode or VM image updates.
+    command: .buildkite/commands/claude-pr-review.sh
+    if: build.pull_request.id != null
+    env:
+      # Evidence comes from the reviewer user; never follow a link out of it.
+      BUILDKITE_ARTIFACT_UPLOAD_SKIP_SYMLINKS: "true"
+    timeout_in_minutes: 120
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    artifact_paths:
+      - "build/claude-review/**/*"
+      # Everything the reviewer user did, in one archive (.buildkite/claude/audit.sh).
+      # The raw logs are also uploaded in parts during the run, to build/claude-audit-live/.
+      - "build/audit-log.tar.gz"
+    retry:
+      automatic:
+        # Exit 2 means the review didn't complete (e.g. an API error), not that it found a bug.
+        - exit_status: 2
+          limit: 1
+      # Requesting a review from wpmobilebot retries this step, even after it passed
+      # (.github/workflows/rerun-claude-review.yml).
+      manual:
+        permit_on_passed: true
+    notify:
+      - github_commit_status:
+          context: "Claude PR Review"
+
+  #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
