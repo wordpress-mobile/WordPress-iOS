@@ -75,6 +75,30 @@ struct ReaderSavedPostsViewModelTests {
         #expect(row.commentCount == 12)
     }
 
+    @Test("A post without a featured image shows the image its Reader card shows")
+    func rowShowsDisplayImage() {
+        let identity = ReaderPostSaveIdentity(
+            id: 1,
+            siteId: 100,
+            feedId: nil,
+            feedItemId: nil,
+            isExternal: false,
+            url: "https://example.com/1"
+        )
+        let item = ReaderSavedListItem(
+            key: .post(blogId: 100, postId: 1),
+            post: ReaderPostRecord(
+                key: .post(blogId: 100, postId: 1),
+                identity: identity,
+                displayImageUrl: "https://example.com/content-image.jpg"
+            ),
+            isRecent: false,
+            isLocalOnly: false
+        )
+
+        #expect(ReaderSavedPostRow(item).featuredImageURL == URL(string: "https://example.com/content-image.jpg"))
+    }
+
     @Test("A post the list sent without tags or comments shows neither")
     func rowWithoutTagsOrComments() {
         let row = ReaderSavedPostRow(Self.postItem(postID: 1, siteID: 100))

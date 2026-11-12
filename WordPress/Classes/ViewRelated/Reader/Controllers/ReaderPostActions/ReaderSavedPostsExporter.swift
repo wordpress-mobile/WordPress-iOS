@@ -129,7 +129,7 @@ struct ReaderSavedPostsExporter {
             date: post?.date.map { ISO8601DateFormatter().string(from: $0) },
             summary: plainText(post?.excerpt) ?? "",
             tags: post?.tags.map { $0.compactMap { plainText($0.displayName ?? $0.name) } },
-            featuredImageURL: post?.featuredImage?.nonEmptyString(),
+            featuredImageURL: (post?.displayImageUrl ?? post?.featuredImage)?.nonEmptyString(),
             siteID: siteID,
             postID: postID,
             feedID: positive(identity?.feedId),

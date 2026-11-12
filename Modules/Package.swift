@@ -69,7 +69,7 @@ let package = Package(
             // TODO: Pin to a release once https://github.com/Automattic/wordpress-rs/pull/1720,
             // https://github.com/Automattic/wordpress-rs/pull/1729 and
             // https://github.com/Automattic/wordpress-rs/pull/1734 ship.
-            revision: "c759c02d27d0e014e832b374809b6acaac1f3147"
+            revision: "22d9bf7f7d8cc84169994f4222e47180d65ba9a7"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",

@@ -47,7 +47,9 @@ struct ReaderSavedPostRow: Identifiable, Equatable {
         siteID = (post?.identity.siteId).flatMap { $0 > 0 ? $0 : nil }
         authorName = (post?.authorName).flatMap(Self.plainText)
         excerpt = (post?.excerpt).flatMap(Self.plainText)
-        featuredImageURL = (post?.featuredImage).flatMap { URL(string: $0) }
+        // The image the post's Reader card shows, which falls back to an image from the post when
+        // the author set no featured image.
+        featuredImageURL = (post?.displayImageUrl ?? post?.featuredImage).flatMap { URL(string: $0) }
         tags = Self.tagNames(post?.tags)
         commentCount = post?.commentCount ?? 0
         destination = Self.destination(for: item.key, post: post, url: url)

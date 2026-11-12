@@ -453,6 +453,13 @@ enum ReaderSavedPostsSync {
             siteUrl: post.blogURL?.nonEmptyString(),
             siteIconUrl: post.siteIconURL?.nonEmptyString(),
             featuredImage: post.featuredImage?.nonEmptyString(),
+            // The image Reader cards fall back to when a post has no featured image.
+            featuredMedia: post.pathForDisplayImage?.nonEmptyString()
+                .map {
+                    ReaderFeaturedMedia(uri: $0, mediaType: "image")
+                },
+            // The image the post's Reader card shows, so Saved shows the same one.
+            displayImageUrl: post.featuredImage?.nonEmptyString() ?? post.pathForDisplayImage?.nonEmptyString(),
             tags: tags(from: post.tags),
             likeCount: post.likeCount?.uint64Value,
             commentCount: post.commentCount?.uint64Value

@@ -411,6 +411,19 @@ final class ReaderSavedPostsStoreTests {
         #expect(details.commentCount == 3)
     }
 
+    @Test("A post without a featured image sends the image its card falls back to")
+    func detailsSendDisplayImage() throws {
+        let post = try makePost(postID: 5, siteID: 100)
+        post.pathForDisplayImage = "https://example.com/content-image.jpg"
+
+        let details = ReaderSavedPostsSync.details(for: post)
+
+        #expect(details.featuredImage == nil)
+        #expect(details.featuredMedia?.uri == "https://example.com/content-image.jpg")
+        #expect(details.featuredMedia?.mediaType == "image")
+        #expect(details.displayImageUrl == "https://example.com/content-image.jpg")
+    }
+
     @Test("A post without tags sends none, which wordpress-rs reads as not known")
     func detailsWithoutTags() throws {
         let post = try makePost(postID: 5, siteID: 100)
