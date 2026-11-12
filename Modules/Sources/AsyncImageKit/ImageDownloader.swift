@@ -62,7 +62,7 @@ public final class ImageDownloader {
             generator.appliesPreferredTrackTransform = true
 
             // The saved frame is full size, so it can serve any size later
-            if let size = options.size, !isSavedToDisk(options) {
+            if let size = options.size, !shouldBeSavedToDisk(options) {
                 generator.maximumSize = CGSize(size)
             }
 
@@ -70,7 +70,7 @@ public final class ImageDownloader {
             let frame = UIImage(cgImage: result.image)
 
             // There is no downloaded file to save, so save the frame
-            if isSavedToDisk(options) {
+            if shouldBeSavedToDisk(options) {
                 saveToDisk(frame.jpegData(compressionQuality: 0.9), for: url)
             }
             let image = Self.videoThumbnail(from: frame, size: options.size)
@@ -82,7 +82,7 @@ public final class ImageDownloader {
         let data = try await data(for: request)
         let image = try await ImageDecoder.makeImage(from: data, size: options.size.map(CGSize.init))
 
-        if isSavedToDisk(options), let url = request.source.url {
+        if shouldBeSavedToDisk(options), let url = request.source.url {
             saveToDisk(data, for: url)
         }
         storeInMemory(image, for: key, options: options)
@@ -264,7 +264,7 @@ public final class ImageDownloader {
 
     /// Immutable images are saved to disk "forever". There is one file per URL: the downloaded
     /// file, or the full-size frame of a video. It is resized to the requested size when read.
-    private nonisolated func isSavedToDisk(_ options: ImageRequestOptions) -> Bool {
+    private nonisolated func shouldBeSavedToDisk(_ options: ImageRequestOptions) -> Bool {
         options.isDiskCacheEnabled && options.mutability == .immutable
     }
 
@@ -275,7 +275,7 @@ public final class ImageDownloader {
             return image
         }
 
-        guard isSavedToDisk(options), let url = request.source.url else {
+        guard shouldBeSavedToDisk(options), let url = request.source.url else {
             return nil
         }
 
