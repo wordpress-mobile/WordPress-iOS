@@ -32,6 +32,35 @@ import Testing
         #expect(gifView.image === staticImage)
     }
 
+    // MARK: - Saliency
+
+    @Test func portraitImageWithNoSalientRegionIsShownImmediately() async throws {
+        let url = try #require(URL(string: "https://example.files.wordpress.com/tests/\(UUID().uuidString).png"))
+        let portraitImage = UIGraphicsImageRenderer(size: CGSize(width: 8, height: 16))
+            .image { context in
+                UIColor.gray.setFill()
+                context.fill(CGRect(x: 0, y: 0, width: 8, height: 16))
+            }
+
+        // GIVEN detection already ran for this image and found no salient region
+        let rect = await ImageSaliencyService.shared.saliencyRect(for: portraitImage, url: url)
+        try #require(rect == nil)
+
+        // GIVEN the image is in the memory cache
+        ImageDownloader.shared.setCachedImage(portraitImage, for: url)
+        defer { ImageDownloader.shared.setCachedImage(nil, for: url) }
+
+        // WHEN
+        let view = AsyncImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        view.isSaliencyDetectionEnabled = true
+        view.setImage(with: url)
+
+        // THEN the image is shown straight away, without waiting for detection again
+        let imageView = try #require(view.subviews.first { $0 is GIFImageView })
+        #expect(view.image === portraitImage)
+        #expect(!imageView.isHidden)
+    }
+
     // MARK: - Helpers
 
     /// Returns a GIF view in a window that is playing an animated GIF and has shown at least one frame.

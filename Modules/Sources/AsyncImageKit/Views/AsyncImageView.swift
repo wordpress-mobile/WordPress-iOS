@@ -154,11 +154,16 @@ public final class AsyncImageView: UIView {
                 isSaliencyDetectionEnabled
                 && !(isSaliencyPortraitOnly && image.size.width >= image.size.height)
             if needsDetection, let url = currentImageURL {
-                if let cached = ImageSaliencyService.shared.cachedSaliencyRect(for: url) {
-                    saliencyRect = cached
+                switch ImageSaliencyService.shared.cachedResult(for: url) {
+                case .region(let rect):
+                    saliencyRect = rect
                     imageView.isHidden = false
                     backgroundColor = .clear
-                } else {
+                case .noRegion:
+                    saliencyRect = nil
+                    imageView.isHidden = false
+                    backgroundColor = .clear
+                case nil:
                     triggerSaliencyDetection(image: image, url: url)
                 }
             } else {

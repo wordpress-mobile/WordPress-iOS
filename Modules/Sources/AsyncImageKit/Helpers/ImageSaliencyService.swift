@@ -17,9 +17,18 @@ public actor ImageSaliencyService {
         }
     }
 
-    /// Returns a cached rect synchronously without starting a task, or `nil` if not yet cached.
-    public nonisolated func cachedSaliencyRect(for url: URL) -> CGRect? {
-        cache.cachedRect(for: url)
+    /// The result of a saliency detection that already ran for an image.
+    public enum CachedResult: Equatable, Sendable {
+        /// Detection found a salient region.
+        case region(CGRect)
+        /// Detection found no salient region, or failed.
+        case noRegion
+    }
+
+    /// Returns the cached detection result synchronously without starting a task,
+    /// or `nil` if detection hasn't run for the image yet.
+    public nonisolated func cachedResult(for url: URL) -> CachedResult? {
+        cache.cachedResult(for: url)
     }
 
     /// Returns the bounding rect of the most salient region in UIKit normalized coordinates
@@ -53,7 +62,8 @@ public actor ImageSaliencyService {
         topInset: CGFloat = 16
     ) -> CGRect? {
         guard imageSize.width > 0, imageSize.height > 0,
-              containerSize.width > 0, containerSize.height > 0 else { return nil }
+            containerSize.width > 0, containerSize.height > 0
+        else { return nil }
 
         let imageAspect = imageSize.width / imageSize.height
         let containerAspect = containerSize.width / containerSize.height
@@ -69,7 +79,7 @@ public actor ImageSaliencyService {
         let desiredY = topInset - salientTopInScaled
 
         // Clamp so the image always covers the full container without empty gaps.
-        let minY = containerSize.height - scaledHeight  // negative
+        let minY = containerSize.height - scaledHeight // negative
         let clampedY = min(0, max(minY, desiredY))
 
         return CGRect(x: 0, y: clampedY, width: containerSize.width, height: scaledHeight)
@@ -88,8 +98,9 @@ private actor SaliencyDetector {
             return nil
         }
         guard let observation = request.results?.first,
-              let salientObjects = observation.salientObjects,
-              !salientObjects.isEmpty else {
+            let salientObjects = observation.salientObjects,
+            !salientObjects.isEmpty
+        else {
             return nil
         }
         // Union all salient object bounding boxes.
@@ -140,6 +151,15 @@ private final class SaliencyCache: @unchecked Sendable {
         lock.withLock { store[url.absoluteString, default: nil] }
     }
 
+    func cachedResult(for url: URL) -> ImageSaliencyService.CachedResult? {
+        let entry: CGRect?? = lock.withLock { store[url.absoluteString] }
+        switch entry {
+        case .none: return nil
+        case .some(.none): return .noRegion
+        case .some(.some(let rect)): return .region(rect)
+        }
+    }
+
     func store(_ rect: CGRect?, for url: URL) {
         lock.withLock {
             let key = url.absoluteString
@@ -153,11 +173,15 @@ private final class SaliencyCache: @unchecked Sendable {
 
     func loadFromDisk() {
         guard let data = try? Data(contentsOf: Self.diskURL),
-              let decoded = try? JSONDecoder().decode([String: CGRect?].self, from: data) else {
+            let decoded = try? JSONDecoder().decode([String: CGRect?].self, from: data)
+        else {
             return
         }
         lock.withLock {
-            store = OrderedDictionary(uniqueKeysWithValues: decoded.map { ($0.key, $0.value) })
+            // Keep results stored before the load finished; they are at least as new.
+            for (key, rect) in decoded where store[key] == nil {
+                store.updateValue(rect, forKey: key)
+            }
         }
     }
 
