@@ -389,6 +389,25 @@ import OHHTTPStubsSwift
         #expect(thumbnail.size == CGSize(width: 128, height: 64))
     }
 
+    @Test func diskCacheWriteFailureStillReturnsImage() async throws {
+        // GIVEN the disk cache can't save files, as when the device is out of space
+        let fileManager = FileManager.default
+        try fileManager.createDirectory(at: diskCacheDirectory, withIntermediateDirectories: true)
+        try fileManager.setAttributes([.posixPermissions: 0o555], ofItemAtPath: diskCacheDirectory.path())
+        defer { try? fileManager.setAttributes([.posixPermissions: 0o755], ofItemAtPath: diskCacheDirectory.path()) }
+        try mockResponse(withResource: "test-image", fileExtension: "jpg")
+
+        // WHEN
+        let imageURL = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString).jpg"))
+        let request = ImageRequest(url: imageURL, options: ImageRequestOptions(mutability: .immutable))
+        let image = try await sut.image(for: request)
+
+        // THEN the image is shown, and kept in memory, but not saved
+        #expect(image.size == CGSize(width: 1024, height: 680))
+        #expect(sut.cachedImage(for: request) != nil)
+        #expect(!fileManager.fileExists(atPath: sut.diskCacheFileURL(for: imageURL).path()))
+    }
+
     @Test func clearingDiskCacheRemovesSavedImages() async throws {
         // GIVEN
         let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg")))

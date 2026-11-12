@@ -80,7 +80,8 @@ let package = Package(
             name: "AsyncImageKit",
             dependencies: [
                 .product(name: "Collections", package: "swift-collections"),
-                .product(name: "Gifu", package: "Gifu")
+                .product(name: "Gifu", package: "Gifu"),
+                .product(name: "Logging", package: "swift-log")
             ]
         ),
         .target(
