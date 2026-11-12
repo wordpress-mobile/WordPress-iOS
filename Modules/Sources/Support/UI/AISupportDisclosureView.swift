@@ -37,7 +37,10 @@ public struct AISupportDisclosureView: View {
 private enum Strings {
 
     /// The organization the AI acts for, as the disclosure standard asks. WordPress.com provides the support behind
-    /// both apps, so this reads the same in WordPress and in Jetpack, and it isn't translated.
+    /// every brand the app ships as — `AppBrand` has three, `.wordpress`, `.jetpack` and `.reader` — so this reads
+    /// the same in all of them and it isn't translated. Note that the bot can still introduce itself by its own
+    /// name: the legacy chat, which only Jetpack reaches, opens with "I'm the Jetpack AI Assistant". That is the
+    /// assistant's persona, not the organization behind it, which is what this names.
     static let organizationName = "WordPress.com"
 
     static var disclosure: String {
