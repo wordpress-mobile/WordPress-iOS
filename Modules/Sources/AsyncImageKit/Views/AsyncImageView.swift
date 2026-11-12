@@ -150,7 +150,8 @@ public final class AsyncImageView: UIView {
             }
         case .success(let image):
             self.image = image
-            let needsDetection = isSaliencyDetectionEnabled
+            let needsDetection =
+                isSaliencyDetectionEnabled
                 && !(isSaliencyPortraitOnly && image.size.width >= image.size.height)
             if needsDetection, let url = currentImageURL {
                 if let cached = ImageSaliencyService.shared.cachedSaliencyRect(for: url) {
@@ -228,20 +229,27 @@ public final class AsyncImageView: UIView {
 
 extension GIFImageView {
     /// If the image is an instance of `AnimatedImage` type, plays it as an
-    /// animated image.
+    /// animated image. Otherwise, stops a GIF that is playing and shows the image.
     public func configure(image: UIImage) {
         if let gif = image as? AnimatedImage, let data = gif.gifData {
             self.animate(withGIFData: data)
         } else {
+            stopGIF()
             self.image = image
         }
     }
 
+    /// Stops a GIF that is playing and removes the displayed image.
     public func reset() {
-        if isAnimatingGIF {
+        stopGIF()
+        image = nil
+    }
+
+    /// Stops the GIF and discards its frames. Without this, the GIF's next
+    /// frame replaces any image set on the view.
+    private func stopGIF() {
+        if frameCount > 0 {
             prepareForReuse()
-        } else {
-            image = nil
         }
     }
 }

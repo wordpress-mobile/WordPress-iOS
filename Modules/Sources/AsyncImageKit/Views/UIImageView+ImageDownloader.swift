@@ -13,7 +13,7 @@ public struct ImageViewExtensions {
     public func prepareForReuse() {
         controller.prepareForReuse()
 
-        if let gifView = imageView as? GIFImageView, gifView.isAnimatingGIF {
+        if let gifView = imageView as? GIFImageView {
             gifView.reset()
         } else {
             imageView.image = nil
@@ -29,7 +29,15 @@ public struct ImageViewExtensions {
         get { imageView.image }
         nonmutating set {
             controller.prepareForReuse()
-            imageView.image = newValue
+            if let gifView = imageView as? GIFImageView {
+                if let newValue {
+                    gifView.configure(image: newValue)
+                } else {
+                    gifView.reset()
+                }
+            } else {
+                imageView.image = newValue
+            }
         }
     }
 
