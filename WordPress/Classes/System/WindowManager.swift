@@ -21,6 +21,9 @@ class WindowManager: NSObject {
     ///
     private(set) var isShowingFullscreenSignIn = false
 
+    /// Whether a sign-in is waiting for `prepareAppUIAfterSignIn` before showing the app UI.
+    private var isPreparingAppUIAfterSignIn = false
+
     /// The root view controller for the window.
     ///
     var rootViewController: UIViewController? {
@@ -55,17 +58,89 @@ class WindowManager: NSObject {
     }
 
     func dismissFullscreenSignIn(blogToShow: Blog? = nil, completion: Completion? = nil) {
-        guard isShowingFullscreenSignIn == true && AccountHelper.isLoggedIn == true else {
+        guard isShowingFullscreenSignIn == true,
+            AccountHelper.isLoggedIn == true,
+            !isPreparingAppUIAfterSignIn
+        else {
             return
         }
 
-        showAppUI(for: blogToShow, completion: completion)
+        isPreparingAppUIAfterSignIn = true
+        prepareAppUIAfterSignIn { [weak self] in
+            guard let self else { return }
+            self.isPreparingAppUIAfterSignIn = false
+            self.hideSignInProgress()
+            // The account can be removed during the wait.
+            guard AccountHelper.isLoggedIn else { return }
+            self.showAppUI(for: blogToShow, completion: completion)
+        }
+        // The sign-in flow has already dismissed its progress indicator. Without this, the sign-in
+        // screen would sit idle and accept taps, such as a second sign-in, during the wait.
+        if isPreparingAppUIAfterSignIn {
+            showSignInProgress()
+        }
+    }
+
+    /// Waits for anything the app UI needs from the server after sign-in. Tests may override it.
+    func prepareAppUIAfterSignIn(completion: @escaping Completion) {
+        RootViewCoordinator.shared.prepareAppUIAfterSignIn(completion: completion)
+    }
+
+    /// The view that blocks input while a sign-in waits for `prepareAppUIAfterSignIn`.
+    private(set) var signInProgressView: UIView?
+
+    private func showSignInProgress() {
+        let progressView = UIView(frame: window.bounds)
+        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        progressView.accessibilityViewIsModal = true
+
+        let background = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        background.layer.cornerRadius = 16
+        background.clipsToBounds = true
+        background.translatesAutoresizingMaskIntoConstraints = false
+        progressView.addSubview(background)
+
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        background.contentView.addSubview(spinner)
+
+        NSLayoutConstraint.activate([
+            background.centerXAnchor.constraint(equalTo: progressView.centerXAnchor),
+            background.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
+            background.widthAnchor.constraint(equalToConstant: 88),
+            background.heightAnchor.constraint(equalToConstant: 88),
+            spinner.centerXAnchor.constraint(equalTo: background.contentView.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: background.contentView.centerYAnchor)
+        ])
+
+        // Added to the window itself so it also covers any sheet the sign-in flow left open.
+        window.addSubview(progressView)
+        signInProgressView = progressView
+        UIAccessibility.post(notification: .screenChanged, argument: spinner)
+    }
+
+    private func hideSignInProgress() {
+        signInProgressView?.removeFromSuperview()
+        signInProgressView = nil
     }
 
     /// Shows the UI for authenticated users.
     ///
     func showAppUI(for blog: Blog? = nil, animated: Bool = true, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
+        presentAppUI(for: blog, animated: animated, completion: completion)
+    }
+
+    /// Shows the initial UI for unauthenticated users.
+    ///
+    func showSignInUI(completion: Completion? = nil) {
+        isShowingFullscreenSignIn = true
+        presentSignInUI(completion: completion)
+    }
+
+    /// Puts the app UI on screen for `showAppUI`. Tests may override it.
+    func presentAppUI(for blog: Blog?, animated: Bool, completion: Completion?) {
         RootViewCoordinator.shared.showAppUI(animated: animated, completion: completion)
 
         guard let blog else {
@@ -75,11 +150,8 @@ class WindowManager: NSObject {
         RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
     }
 
-    /// Shows the initial UI for unauthenticated users.
-    ///
-    func showSignInUI(completion: Completion? = nil) {
-        isShowingFullscreenSignIn = true
-
+    /// Puts the sign-in UI on screen for `showSignInUI`. Tests may override it.
+    func presentSignInUI(completion: Completion?) {
         RootViewCoordinator.shared.showSignInUI(completion: completion)
     }
 

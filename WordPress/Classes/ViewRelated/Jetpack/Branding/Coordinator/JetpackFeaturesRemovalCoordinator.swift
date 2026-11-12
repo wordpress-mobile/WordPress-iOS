@@ -68,13 +68,29 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
 
     static var currentAppUIType: RootViewCoordinator.AppUIType?
 
-    /// `RemoteFeatureFlag.readerInWordPressApp`, read once per launch: a fetch that changes the
-    /// flag applies on the next launch.
+    /// Whether Reader is live in the WordPress app, read once per launch: a fetch that changes the
+    /// flag or the experiment assignment applies on the next launch. The exceptions are a sign-in
+    /// from the signed-out state, which reads it again before building the app UI, and sign-out
+    /// (see `RootViewCoordinator`).
     ///
-    /// The flag decides both the app UI type and the scope of the Notifications lists. Reading it
+    /// The value decides both the app UI type and the scope of the Notifications lists. Reading it
     /// live could make them disagree: a list created after a fetch would get the new scope while
     /// the root UI kept the old type. Tests may set it.
-    static var isReaderInWordPressAppEnabled = RemoteFeatureFlag.readerInWordPressApp.enabled()
+    static var isReaderInWordPressAppEnabled = readerInWordPressAppEnabled()
+
+    /// Reader is live when `RemoteFeatureFlag.readerInWordPressApp` is on for this device or
+    /// account, or when ExPlat assigns the user to the treatment group of
+    /// `ABTest.readerInWordPressApp`. A debug-menu override of the flag wins over both.
+    static func readerInWordPressAppEnabled(
+        flagOverride: Bool? = FeatureFlagOverrideStore().overriddenValue(for: RemoteFeatureFlag.readerInWordPressApp),
+        isFlagEnabled: Bool = RemoteFeatureFlag.readerInWordPressApp.enabled(),
+        isInExperimentTreatment: Bool = ABTest.readerInWordPressApp.isTreatmentVariation
+    ) -> Bool {
+        if let flagOverride {
+            return flagOverride
+        }
+        return isFlagEnabled || isInExperimentTreatment
+    }
 
     /// The WordPress app shows static screens to WordPress.com users and the simplified UI to everyone else.
     /// Other apps show every feature.
