@@ -20,6 +20,19 @@ public struct ImageViewExtensions {
         }
     }
 
+    /// The image the view displays.
+    ///
+    /// Setting it cancels a load started with `setImage(with:)`, so that the
+    /// load can't replace the new image when it finishes. Use it instead of
+    /// `UIImageView.image` on views that also load images with `setImage(with:)`.
+    public var image: UIImage? {
+        get { imageView.image }
+        nonmutating set {
+            controller.prepareForReuse()
+            imageView.image = newValue
+        }
+    }
+
     public func setImage(with imageURL: URL, host: MediaHostProtocol? = nil, size: ImageSize? = nil) {
         setImage(with: ImageRequest(url: imageURL, host: host, options: ImageRequestOptions(size: size)))
     }

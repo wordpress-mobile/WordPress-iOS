@@ -84,7 +84,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         authorAvatarURL = url
 
         guard let url else {
-            authorAvatarImageView.image = .gravatarPlaceholderImage
+            authorAvatarImageView.wp.image = .gravatarPlaceholderImage
             return
         }
         if let gravatar = AvatarURL(url: url) {
@@ -159,8 +159,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         authorAvatarURL = nil
-        authorAvatarImageView.cancelImageDownload()
-        authorAvatarImageView.image = nil
+        authorAvatarImageView.wp.prepareForReuse()
     }
 
     override func refreshSeparators() {
