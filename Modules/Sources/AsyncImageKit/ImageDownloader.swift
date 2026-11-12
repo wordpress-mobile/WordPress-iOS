@@ -138,28 +138,25 @@ public final class ImageDownloader {
 
     private func _data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
         let requestKey = request.url?.absoluteString ?? ""
-        let task =
-            tasks[requestKey]
-            ?? ImageDataTask(
-                key: requestKey,
-                Task {
-                    try await self.download(request, options: options)
-                }
-            )
+        let task = tasks[requestKey] ?? makeTask(for: request, options: options, key: requestKey)
         task.downloader = self
 
         let subscriptionID = UUID()
         task.subscriptions.insert(subscriptionID)
         tasks[requestKey] = task
 
-        defer {
-            // Remove only this download. Once cancelled, it can finish after a newer download for
-            // the same URL has started, and that one must stay shared.
-            if tasks[requestKey] === task {
-                tasks[requestKey] = nil
-            }
-        }
         return try await task.getData(subscriptionID: subscriptionID)
+    }
+
+    private func makeTask(for request: URLRequest, options: ImageRequestOptions, key: String) -> ImageDataTask {
+        let id = UUID()
+        return ImageDataTask(
+            id: id,
+            key: key,
+            Task {
+                try await self.download(request, options: options, key: key, id: id)
+            }
+        )
     }
 
     fileprivate nonisolated func unsubscribe(_ subscriptionID: UUID, key: String) {
@@ -179,7 +176,19 @@ public final class ImageDownloader {
         tasks[key] = nil
     }
 
-    private func download(_ request: URLRequest, options: ImageRequestOptions) async throws -> Data {
+    private func download(
+        _ request: URLRequest,
+        options: ImageRequestOptions,
+        key: String,
+        id: UUID
+    ) async throws -> Data {
+        defer {
+            // Remove only this download. Once cancelled, it can finish after a newer download for
+            // the same URL has replaced it, and that one must stay shared.
+            if tasks[key]?.id == id {
+                tasks[key] = nil
+            }
+        }
         let session = options.isDiskCacheEnabled ? urlSessionWithCache : urlSession
         let (data, response) = try await session.data(for: request)
         try validate(response: response)
@@ -251,12 +260,14 @@ public final class ImageDownloader {
 
 @ImageDownloaderActor
 private final class ImageDataTask {
+    let id: UUID
     let key: String
     var subscriptions = Set<UUID>()
     let task: Task<Data, Error>
     weak var downloader: ImageDownloader?
 
-    init(key: String, _ task: Task<Data, Error>) {
+    init(id: UUID, key: String, _ task: Task<Data, Error>) {
+        self.id = id
         self.key = key
         self.task = task
     }
