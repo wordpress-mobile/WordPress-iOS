@@ -6,6 +6,9 @@ struct CommentsListView: View {
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
     let context: CommentDetailContext
+    /// Read here, below the container's `.searchable`, to hide Review while
+    /// the search results cover this list.
+    @Environment(\.isSearching) private var isSearching
     /// Starts a review session over the loaded pending comments.
     let review: ([CommentListItem]) -> Void
 
@@ -34,10 +37,10 @@ struct CommentsListView: View {
             }
         }
         .listStyle(.plain)
-        .background(detailLink)
+        .background(CommentDetailLink(selection: $selectedComment, context: context))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if viewModel.canReview {
+                if !isSearching && viewModel.canReview {
                     Button(Strings.Review.review) { review(viewModel.reviewBatch) }
                         .accessibilityLabel(Strings.Review.reviewAccessibility)
                 }
@@ -72,25 +75,5 @@ struct CommentsListView: View {
         .task(id: viewModel.filter) {
             await viewModel.onAppear()
         }
-    }
-
-    // Moderation can remove the selected row while its detail is still open.
-    private var detailLink: some View {
-        NavigationLink(
-            isActive: Binding(
-                get: { selectedComment != nil },
-                set: { isActive in
-                    if !isActive { selectedComment = nil }
-                }
-            )
-        ) {
-            if let selectedComment {
-                CommentDetailView(commentID: selectedComment.id, seed: selectedComment, context: context)
-                    .id(selectedComment.id)
-            }
-        } label: {
-            EmptyView()
-        }
-        .hidden()
     }
 }
