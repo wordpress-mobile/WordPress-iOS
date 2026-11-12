@@ -47,7 +47,7 @@ struct CommentListItem: Identifiable, Equatable, Sendable {
     init(comment: CommentWithViewContext) {
         id = comment.id
         authorName = comment.authorName.nonEmptyString() ?? Strings.anonymousAuthor
-        avatarURL = comment.authorAvatarUrls.avatarURL
+        avatarURL = comment.authorAvatarUrls?.avatarURL
         postID = comment.post
         snippet = Self.snippet(fromHTML: comment.content.rendered)
         date = comment.dateGmt

@@ -66,7 +66,12 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.20.0-alpha.2"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.9.1"
+            // TODO: Pin to a release once https://github.com/Automattic/wordpress-rs/pull/1720,
+            // https://github.com/Automattic/wordpress-rs/pull/1729 and
+            // https://github.com/Automattic/wordpress-rs/pull/1734 ship. This is the build of
+            // https://github.com/Automattic/wordpress-rs/pull/1743, which is #1734 published at a path
+            // of its own, so a stale CDN copy of an earlier #1734 build can't be downloaded instead.
+            revision: "f1b48393219f052f127e089443837650ee375d5d"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",

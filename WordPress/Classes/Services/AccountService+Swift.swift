@@ -53,6 +53,14 @@ extension AccountService {
 
         WordPressApiCache.shared.removeCachedData(for: account.blogs ?? [])
 
+        // Deletes the account's saved Reader posts and the rest of its Reader data in the cache.
+        // Done whether or not the feature is on, in case it was on before.
+        if let userID = account.userID?.int64Value {
+            MainActor.assumeIsolated {
+                ReaderSavedPostsStore.shared.removeAccount(userID: userID)
+            }
+        }
+
         account.blogs?
             .forEach {
                 WordPressClientFactory.shared.evictInstance(for: TaggedManagedObjectID($0))

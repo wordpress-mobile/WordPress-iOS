@@ -22,6 +22,7 @@
 * [*] Experimental editor: Recover from editor crashes, and ask before saving while media is still uploading [#26267]
 * [*] Experimental editor: Fix block assets not loading on self-hosted sites that use plain permalinks [#25859]
 * [*] Fix a rare crash when several network requests start at the same time [#26116]
+* [**] Reader: Saved posts are now kept in your WordPress.com account and sync across your devices. Posts saved on this device move to your account [#26372]
 
 
 27.4

@@ -378,27 +378,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }
 }
 
-- (void)toggleSavedForLaterForPost:(ReaderPost *)post
-                           success:(void (^)(void))success
-                           failure:(void (^)(NSError *error))failure
-{
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        // Get a the post in our own context
-        NSError *error;
-        ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
-        if (error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure(error);
-                }
-            });
-            return;
-        }
-
-        readerPost.isSavedForLater = !readerPost.isSavedForLater;
-    } completion:success onQueue:dispatch_get_main_queue()];
-}
-
 - (void)toggleSeenForPost:(ReaderPost *)post
                   success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure

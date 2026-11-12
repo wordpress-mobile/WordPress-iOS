@@ -27,7 +27,7 @@ struct CommentDetail: Equatable, Sendable {
         self.init(
             id: comment.id,
             authorName: comment.authorName,
-            avatarURL: comment.authorAvatarUrls.avatarURL,
+            avatarURL: comment.authorAvatarUrls?.avatarURL,
             authorURL: comment.authorUrl,
             authorEmail: nil,
             authorIP: nil,
@@ -46,7 +46,7 @@ struct CommentDetail: Equatable, Sendable {
         self.init(
             id: comment.id,
             authorName: comment.authorName,
-            avatarURL: comment.authorAvatarUrls.avatarURL,
+            avatarURL: comment.authorAvatarUrls?.avatarURL,
             authorURL: comment.authorUrl,
             authorEmail: comment.authorEmail,
             authorIP: comment.authorIp,

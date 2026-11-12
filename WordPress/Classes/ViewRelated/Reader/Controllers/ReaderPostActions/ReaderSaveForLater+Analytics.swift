@@ -20,7 +20,7 @@ enum ReaderSaveForLaterOrigin {
         }
     }
 
-    fileprivate var openPostValue: String {
+    var openPostValue: String {
         switch self {
         case .savedStream:
             return "saved_post_list"
@@ -52,7 +52,7 @@ private let readerSaveForLaterSourceKey = "source"
 
 extension ReaderSaveForLaterAction {
     func trackSaveAction(for post: ReaderPost, origin: ReaderSaveForLaterOrigin) {
-        let willSave = (post.isSavedForLater == false)
+        let willSave = !post.isSavedForDisplay
 
         let properties = [ readerSaveForLaterSourceKey: origin.saveActionValue ]
 

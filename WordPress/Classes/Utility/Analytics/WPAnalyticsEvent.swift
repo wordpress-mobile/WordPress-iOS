@@ -124,6 +124,7 @@ import WordPressShared
     case readerSavedPostsSettingsShown
     case readerSavedPostsExported
     case readerSavedPostsImported
+    case readerSavedPostsAccountImport
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -926,6 +927,8 @@ import WordPressShared
             return "reader_saved_posts_exported"
         case .readerSavedPostsImported:
             return "reader_saved_posts_imported"
+        case .readerSavedPostsAccountImport:
+            return "reader_saved_posts_account_import"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
