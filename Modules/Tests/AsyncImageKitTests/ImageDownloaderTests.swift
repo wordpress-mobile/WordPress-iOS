@@ -1,3 +1,4 @@
+import AVFoundation
 import UIKit
 import CryptoKit
 import Synchronization
@@ -272,6 +273,34 @@ import OHHTTPStubsSwift
         #expect(starts.count(for: imageURL) == 2)
     }
 
+    @Test func videoThumbnailIsRotatedLikeTheVideo() async throws {
+        // GIVEN a video shot in portrait: landscape frames with a 90° rotation, as the iPhone camera writes them
+        let videoURL = try await Fixtures.makeVideo(
+            width: 128,
+            height: 64,
+            transform: CGAffineTransform(rotationAngle: .pi / 2)
+        )
+        defer { try? FileManager.default.removeItem(at: videoURL) }
+
+        // WHEN
+        let options = ImageRequestOptions(isMemoryCacheEnabled: false, isDiskCacheEnabled: false)
+        let thumbnail = try await sut.image(for: ImageRequest(videoUrl: videoURL, options: options))
+
+        // THEN the thumbnail is portrait, like the video when it plays
+        #expect(thumbnail.size == CGSize(width: 64, height: 128))
+
+        // WHEN a smaller thumbnail is requested
+        let smallOptions = ImageRequestOptions(
+            size: ImageSize(width: 32, height: 32),
+            isMemoryCacheEnabled: false,
+            isDiskCacheEnabled: false
+        )
+        let small = try await sut.image(for: ImageRequest(videoUrl: videoURL, options: smallOptions))
+
+        // THEN it fits the requested size, and is still portrait
+        #expect(small.size == CGSize(width: 16, height: 32))
+    }
+
     // MARK: - Helpers
 
     func mockResponse(
@@ -336,5 +365,48 @@ private final class MockMemoryCache: MemoryCacheProtocol, @unchecked Sendable {
 
     func removeAllObjects() {
         cache = [:]
+    }
+}
+
+private enum Fixtures {
+    /// A short video whose frames are `width`×`height` pixels, with the given track transform.
+    static func makeVideo(width: Int, height: Int, transform: CGAffineTransform) async throws -> URL {
+        let url = FileManager.default.temporaryDirectory.appending(path: "\(UUID().uuidString).mov")
+        let writer = try AVAssetWriter(outputURL: url, fileType: .mov)
+        let input = AVAssetWriterInput(
+            mediaType: .video,
+            outputSettings: [
+                AVVideoCodecKey: AVVideoCodecType.h264.rawValue,
+                AVVideoWidthKey: width,
+                AVVideoHeightKey: height
+            ]
+        )
+        input.transform = transform
+        input.expectsMediaDataInRealTime = false
+        let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: nil)
+        writer.add(input)
+        try #require(writer.startWriting(), "\(String(describing: writer.error))")
+        writer.startSession(atSourceTime: .zero)
+
+        for frame in 0..<3 {
+            while !input.isReadyForMoreMediaData {
+                try await Task.sleep(for: .milliseconds(10))
+            }
+            var buffer: CVPixelBuffer?
+            CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_32BGRA, nil, &buffer)
+            let pixelBuffer = try #require(buffer)
+            CVPixelBufferLockBaseAddress(pixelBuffer, [])
+            let base = try #require(CVPixelBufferGetBaseAddress(pixelBuffer))
+            memset(base, Int32(64 + frame * 32), CVPixelBufferGetDataSize(pixelBuffer))
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, [])
+            try #require(
+                adaptor.append(pixelBuffer, withPresentationTime: CMTime(value: CMTimeValue(frame), timescale: 30))
+            )
+        }
+
+        input.markAsFinished()
+        await writer.finishWriting()
+        try #require(writer.status == .completed, "\(String(describing: writer.error))")
+        return url
     }
 }

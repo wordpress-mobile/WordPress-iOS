@@ -49,6 +49,8 @@ public final class ImageDownloader {
         if case .video(let url, let mediaHost) = request.source {
             let asset: AVAsset = try await mediaHost?.authenticatedAsset(for: url) ?? AVURLAsset(url: url)
             let generator = AVAssetImageGenerator(asset: asset)
+            // Show the frame the way the video plays, e.g. upright for a video shot in portrait
+            generator.appliesPreferredTrackTransform = true
 
             if let size = options.size {
                 generator.maximumSize = CGSize(width: size.width, height: size.height)
