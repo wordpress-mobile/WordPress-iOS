@@ -34,7 +34,8 @@ public final class ImagePrefetcher {
     }
 
     public nonisolated func startPrefetching(for requests: [ImageRequest]) {
-        Task { @ImageDownloaderActor in
+        Task { @ImageDownloaderActor [weak self] in
+            guard let self else { return }
             for request in requests {
                 startPrefetching(for: request)
             }
@@ -72,7 +73,7 @@ public final class ImagePrefetcher {
     }
 
     private func didFinish(_ prefetch: PrefetchTask, for key: PrefetchKey) {
-        numberOfActiveTasks -= 1
+        countOut(prefetch)
         // If this prefetch was stopped and the image was queued again while it ran,
         // the queue holds a new prefetch for the same key. Leave that one alone.
         if queue[key] === prefetch {
@@ -82,7 +83,8 @@ public final class ImagePrefetcher {
     }
 
     public nonisolated func stopPrefetching(for requests: [ImageRequest]) {
-        Task { @ImageDownloaderActor in
+        Task { @ImageDownloaderActor [weak self] in
+            guard let self else { return }
             for request in requests {
                 stopPrefetching(for: request)
             }
@@ -92,20 +94,35 @@ public final class ImagePrefetcher {
 
     private func stopPrefetching(for request: ImageRequest) {
         let key = PrefetchKey(request: request)
-        if let task = queue.removeValue(forKey: key) {
-            task.task?.cancel()
+        if let prefetch = queue.removeValue(forKey: key) {
+            cancel(prefetch)
         }
     }
 
     public nonisolated func stopAll() {
-        Task { @ImageDownloaderActor in
-            for (_, value) in queue {
-                value.task?.cancel()
+        Task { @ImageDownloaderActor [weak self] in
+            guard let self else { return }
+            for prefetch in queue.values {
+                cancel(prefetch)
             }
-            // Don't reset `numberOfActiveTasks`: each cancelled prefetch counts
-            // itself out when its download stops.
             queue.removeAll()
         }
+    }
+
+    /// Cancels a prefetch and frees its slot straight away. Its download can carry on
+    /// for a while, for example when an image on screen shares it.
+    private func cancel(_ prefetch: PrefetchTask) {
+        prefetch.task?.cancel()
+        countOut(prefetch)
+    }
+
+    /// Frees the slot of a prefetch that is running, once.
+    private func countOut(_ prefetch: PrefetchTask) {
+        guard prefetch.task != nil, !prefetch.isCountedOut else {
+            return
+        }
+        prefetch.isCountedOut = true
+        numberOfActiveTasks -= 1
     }
 
     private struct PrefetchKey: Hashable, Sendable {
@@ -123,5 +140,7 @@ public final class ImagePrefetcher {
 
     private final class PrefetchTask: @unchecked Sendable {
         var task: Task<Void, Error>?
+        /// Whether the prefetch no longer takes up one of the `maxConcurrentTasks` slots.
+        var isCountedOut = false
     }
 }

@@ -75,25 +75,34 @@ import Testing
         #expect(fetcher.running == [next[2].url])
     }
 
-    @Test func prefetchQueuedAfterStopAllStartsWhenTheStoppedOneFinishes() async {
+    @Test(arguments: [StopMethod.stopAll, .stopPrefetching])
+    func stoppedPrefetchFreesItsSlotRightAway(stopMethod: StopMethod) async {
         let prefetcher = makePrefetcher(maxConcurrentTasks: 1)
 
-        // GIVEN a prefetch was stopped but its download hasn't finished yet
+        // GIVEN a prefetch was stopped, but its download carries on, for example
+        // because an image on screen shares it
         let first = makeRequest()
         prefetcher.startPrefetching(for: [first])
         await settle()
-        prefetcher.stopAll()
+        switch stopMethod {
+        case .stopAll: prefetcher.stopAll()
+        case .stopPrefetching: prefetcher.stopPrefetching(for: [first])
+        }
 
         // WHEN another is queued
         let second = makeRequest()
         prefetcher.startPrefetching(for: [second])
         await settle()
+
+        // THEN it starts without waiting for that download
+        #expect(fetcher.started == [first.url, second.url])
+
+        // ... and the stopped one finishing doesn't free a second slot
+        let third = makeRequest()
+        prefetcher.startPrefetching(for: [third])
         fetcher.finish(first.url)
         await settle()
-
-        // THEN it starts once the stopped one finishes
-        #expect(fetcher.started == [first.url, second.url])
-        #expect(fetcher.running == [second.url])
+        #expect(fetcher.running == [second.url], "Two prefetches downloading at once, with a limit of 1")
     }
 
     @Test func releasingThePrefetcherStopsItsPrefetches() async {
@@ -114,6 +123,24 @@ import Testing
         fetcher.finish(requests[0].url)
         await settle()
         #expect(fetcher.started == [requests[0].url], "The queued prefetch started after the prefetcher was released")
+    }
+
+    @Test func releasingThePrefetcherRightAfterStartingStartsNothing() async {
+        var prefetcher: ImagePrefetcher? = makePrefetcher(maxConcurrentTasks: 1)
+        let request = makeRequest()
+
+        // GIVEN the screen asks for a prefetch, then goes away before it starts
+        prefetcher?.startPrefetching(for: [request])
+        prefetcher = nil
+        await settle()
+
+        // THEN no download starts
+        #expect(fetcher.started.isEmpty, "A prefetch started after the prefetcher was released")
+    }
+
+    enum StopMethod {
+        case stopAll
+        case stopPrefetching
     }
 
     // MARK: - Helpers
