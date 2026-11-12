@@ -1,27 +1,5 @@
 import SwiftUI
 
-struct SettingsPicker<T: Hashable>: View {
-    let title: String
-    @Binding var selection: T
-    let values: [SettingsPickerValue<T>]
-
-    init(title: String, selection: Binding<T>, values: [SettingsPickerValue<T>]) {
-        self.title = title
-        self._selection = selection
-        self.values = values
-    }
-
-    var body: some View {
-        NavigationLink(destination: {
-            SettingsPickerListView(selection: $selection, values: values)
-                .navigationTitle(title)
-        }, label: {
-            let value = values.first { $0.id == selection }
-            SettingsCell(title: title, value: value?.title)
-        })
-    }
-}
-
 struct SettingsPickerValue<T: Hashable>: Identifiable {
     let title: String
     var details: String?
@@ -35,13 +13,16 @@ struct SettingsPickerListView<T: Hashable>: View {
 
     var body: some View {
         List {
-            Section(content: {
-                ForEach(values, content: makeRow)
-            }, footer: {
-                if let hint = values.first(where: { $0.id == selection })?.hint {
-                    Text(hint)
+            Section(
+                content: {
+                    ForEach(values, content: makeRow)
+                },
+                footer: {
+                    if let hint = values.first(where: { $0.id == selection })?.hint {
+                        Text(hint)
+                    }
                 }
-            })
+            )
         }
         .listStyle(.insetGrouped)
     }

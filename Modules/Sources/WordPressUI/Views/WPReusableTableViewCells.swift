@@ -74,16 +74,6 @@ open class WPTableViewCellValue1: WPReusableTableViewCell {
     }
 }
 
-open class WPTableViewCellValue2: WPReusableTableViewCell {
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .value2, reuseIdentifier: reuseIdentifier)
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-}
-
 open class WPTableViewCellBadge: WPTableViewCellDefault {
     @objc public var badgeCount: Int = 0 {
         didSet {
@@ -109,7 +99,7 @@ open class WPTableViewCellBadge: WPTableViewCellDefault {
 
     fileprivate static let badgeSize = CGSize(width: 50, height: 30)
     fileprivate static var badgeCornerRadius: CGFloat {
-        return badgeSize.height / 2
+        badgeSize.height / 2
     }
 }
 
