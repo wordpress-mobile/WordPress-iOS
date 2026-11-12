@@ -21,6 +21,9 @@ class WindowManager: NSObject {
     ///
     private(set) var isShowingFullscreenSignIn = false
 
+    /// Whether a sign-in is waiting for `prepareAppUIAfterSignIn` before showing the app UI.
+    private var isPreparingAppUIAfterSignIn = false
+
     /// The root view controller for the window.
     ///
     var rootViewController: UIViewController? {
@@ -55,11 +58,26 @@ class WindowManager: NSObject {
     }
 
     func dismissFullscreenSignIn(blogToShow: Blog? = nil, completion: Completion? = nil) {
-        guard isShowingFullscreenSignIn == true && AccountHelper.isLoggedIn == true else {
+        guard isShowingFullscreenSignIn == true,
+            AccountHelper.isLoggedIn == true,
+            !isPreparingAppUIAfterSignIn
+        else {
             return
         }
 
-        showAppUI(for: blogToShow, completion: completion)
+        isPreparingAppUIAfterSignIn = true
+        prepareAppUIAfterSignIn { [weak self] in
+            guard let self else { return }
+            self.isPreparingAppUIAfterSignIn = false
+            // The account can be removed during the wait.
+            guard AccountHelper.isLoggedIn else { return }
+            self.showAppUI(for: blogToShow, completion: completion)
+        }
+    }
+
+    /// Waits for anything the app UI needs from the server after sign-in. Tests may override it.
+    func prepareAppUIAfterSignIn(completion: @escaping Completion) {
+        RootViewCoordinator.shared.prepareAppUIAfterSignIn(completion: completion)
     }
 
     /// Shows the UI for authenticated users.

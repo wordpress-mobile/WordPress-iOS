@@ -51,6 +51,23 @@ struct JetpackFeaturesRemovalCoordinatorTests {
         #expect(appUIType == expected)
     }
 
+    @Test(
+        "Reader is live when the flag or the experiment turns it on",
+        arguments: [
+            (false, false, false),
+            (true, false, true),
+            (false, true, true),
+            (true, true, true)
+        ]
+    )
+    func readerInWordPressAppEnabled(isFlagEnabled: Bool, isInExperimentTreatment: Bool, expected: Bool) {
+        let isEnabled = JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled(
+            isFlagEnabled: isFlagEnabled,
+            isInExperimentTreatment: isInExperimentTreatment
+        )
+        #expect(isEnabled == expected)
+    }
+
     // MARK: Site Creation Phase
 
     @Test("WordPress app with a site shows the site creation overlay")

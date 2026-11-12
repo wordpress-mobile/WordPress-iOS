@@ -65,7 +65,7 @@ class RootViewCoordinator {
     }
     private var windowManager: WindowManager?
     private let app: AppBrand
-    private let isReaderInWordPressAppEnabled: Bool
+    private var isReaderInWordPressAppEnabled: Bool
     private var accountChangeObserver: NSObjectProtocol?
     /// The type the current root view presenter was built for. It differs from
     /// `currentAppUIType` after an account change until `reloadUIIfNeeded` rebuilds the UI.
@@ -87,20 +87,27 @@ class RootViewCoordinator {
         updateJetpackFeaturesRemovalCoordinatorState()
 
         if isReaderInWordPressAppEnabled {
-            // The UI type depends on the WordPress.com account, which can change while the app UI
-            // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
-            // call is the only other refresh. The default-account change is the one event every
-            // sign-in and sign-out path posts; a sign-in whose site sync fails skips
-            // `WPSigninDidFinishNotification`.
-            accountChangeObserver = NotificationCenter.default.addObserver(
-                forName: .wpAccountDefaultWordPressComAccountChanged,
-                object: nil,
-                queue: nil
-            ) { [weak self] _ in
-                guard let self else { return }
-                self.currentAppUIType = self.resolveAppUIType()
-                self.rootViewPresenter?.appUITypeDidChange()
-            }
+            observeAccountChanges()
+        }
+    }
+
+    private func observeAccountChanges() {
+        guard accountChangeObserver == nil else {
+            return
+        }
+        // The UI type depends on the WordPress.com account, which can change while the app UI
+        // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
+        // call is the only other refresh. The default-account change is the one event every
+        // sign-in and sign-out path posts; a sign-in whose site sync fails skips
+        // `WPSigninDidFinishNotification`.
+        accountChangeObserver = NotificationCenter.default.addObserver(
+            forName: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.currentAppUIType = self.resolveAppUIType()
+            self.rootViewPresenter?.appUITypeDidChange()
         }
     }
 
@@ -181,6 +188,80 @@ class RootViewCoordinator {
 
     private func updateJetpackFeaturesRemovalCoordinatorState() {
         JetpackFeaturesRemovalCoordinator.currentAppUIType = currentAppUIType
+    }
+
+    // MARK: Sign-In
+
+    /// How long a sign-in waits for ExPlat and the remote feature flags before showing the app UI.
+    static let signInFetchTimeout: TimeInterval = 2
+
+    /// Prepares the app UI for an account that just signed in from the signed-out state, then
+    /// calls `completion` on the main queue.
+    ///
+    /// In the WordPress app, `ABTest.readerInWordPressApp` and `RemoteFeatureFlag.readerInWordPressApp`
+    /// decide whether Reader is live. The value read at launch is stale for someone who signs in for
+    /// the first time, so without this they would see the Moved-to-Jetpack poster until the next
+    /// launch whatever their group. This waits up to `timeout` for ExPlat's assignments and the
+    /// account's feature flags, and then reads the value again. No app UI exists yet, so the
+    /// Notifications lists can't disagree with the new value. On a timeout, whatever was stored
+    /// before sign-in decides.
+    ///
+    /// Other apps, and sign-ins without a WordPress.com account, call `completion` right away.
+    func prepareAppUIAfterSignIn(
+        timeout: TimeInterval = RootViewCoordinator.signInFetchTimeout,
+        hasDotComAccount: Bool = AccountHelper.isDotcomAvailable(),
+        fetch: (@escaping () -> Void) -> Void = RootViewCoordinator.fetchAssignmentsAndFeatureFlags,
+        readerInWordPressAppEnabled: @escaping () -> Bool = {
+            JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled()
+        },
+        completion: @escaping () -> Void
+    ) {
+        guard app == .wordpress, hasDotComAccount else {
+            completion()
+            return
+        }
+
+        final class Once {
+            var hasRun = false
+        }
+        let once = Once()
+        let finish = { [weak self] in
+            guard !once.hasRun else {
+                return
+            }
+            once.hasRun = true
+            self?.updateReaderInWordPressApp(isEnabled: readerInWordPressAppEnabled())
+            completion()
+        }
+        fetch {
+            DispatchQueue.main.async(execute: finish)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: finish)
+    }
+
+    /// Fetches ExPlat's assignments and the account's feature flags, and calls `completion` on the
+    /// main queue once both have answered or failed.
+    static func fetchAssignmentsAndFeatureFlags(completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        group.enter()
+        ABTest.start { group.leave() }
+        if let appDelegate = WordPressAppDelegate.shared {
+            group.enter()
+            appDelegate.updateFeatureFlags { group.leave() }
+        }
+        group.notify(queue: .main, execute: completion)
+    }
+
+    private func updateReaderInWordPressApp(isEnabled: Bool) {
+        guard isEnabled != isReaderInWordPressAppEnabled else {
+            return
+        }
+        isReaderInWordPressAppEnabled = isEnabled
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = isEnabled
+        if isEnabled {
+            observeAccountChanges()
+        }
+        currentAppUIType = resolveAppUIType()
     }
 
     // MARK: UI Reload
