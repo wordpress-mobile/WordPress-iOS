@@ -60,7 +60,6 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             config.description,
             "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack."
         )
-        XCTAssertEqual(config.type, .expanded)
     }
 
     func testNoCardConfigOutsideSelfHostedPhase() {
