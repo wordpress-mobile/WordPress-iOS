@@ -118,7 +118,7 @@ import Synchronization
         #expect(faviconURL.absoluteString == "https://example.com/apple-icon-precomposed-152.png")
     }
 
-    @Test func fallbackToFaviconIcon() throws {
+    @Test func fallbackToFaviconIco() throws {
         // GIVEN
         let siteURL = try #require(URL(string: "https://example.com"))
         let html = """
@@ -134,7 +134,7 @@ import Synchronization
         let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
 
         // THEN
-        #expect(faviconURL.absoluteString == "https://example.com/favicon.icon")
+        #expect(faviconURL.absoluteString == "https://example.com/favicon.ico")
     }
 
     @Test func fallbackWhenNoFaviconFound() throws {
@@ -147,7 +147,7 @@ import Synchronization
         let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
 
         // THEN
-        #expect(faviconURL.absoluteString == "https://example.com/favicon.icon")
+        #expect(faviconURL.absoluteString == "https://example.com/favicon.ico")
     }
 
     @Test func appleTouchIconCaseInsensitive() throws {
@@ -199,7 +199,7 @@ import Synchronization
         let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
 
         // THEN - Falls back to standard favicon path
-        #expect(faviconURL.absoluteString == "https://example.com/favicon.icon")
+        #expect(faviconURL.absoluteString == "https://example.com/favicon.ico")
     }
 
     @Test func siteURLWithPath() throws {
@@ -231,7 +231,84 @@ import Synchronization
         let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
 
         // THEN
-        #expect(faviconURL.absoluteString == "https://example.com/blog/favicon.icon")
+        #expect(faviconURL.absoluteString == "https://example.com/blog/favicon.ico")
+    }
+
+    @Test func appleTouchIconWithHrefBeforeRel() throws {
+        // GIVEN
+        let siteURL = try #require(URL(string: "https://example.com"))
+        let html = """
+            <html>
+            <head>
+                <link href="/apple-icon.png" rel="apple-touch-icon">
+            </head>
+            </html>
+            """
+        let data = Data(html.utf8)
+
+        // WHEN
+        let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
+
+        // THEN
+        #expect(faviconURL.absoluteString == "https://example.com/apple-icon.png")
+    }
+
+    @Test func appleTouchIconWithSingleQuotes() throws {
+        // GIVEN
+        let siteURL = try #require(URL(string: "https://example.com"))
+        let html = """
+            <html>
+            <head>
+                <link rel='apple-touch-icon' href='/apple-icon.png'>
+            </head>
+            </html>
+            """
+        let data = Data(html.utf8)
+
+        // WHEN
+        let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
+
+        // THEN
+        #expect(faviconURL.absoluteString == "https://example.com/apple-icon.png")
+    }
+
+    @Test func appleTouchIconWithUnquotedAttributesAndOtherRelTokens() throws {
+        // GIVEN
+        let siteURL = try #require(URL(string: "https://example.com"))
+        let html = """
+            <html>
+            <head>
+                <link rel="stylesheet" href="/style.css">
+                <LINK HREF=/apple-icon.png REL="icon apple-touch-icon" />
+            </head>
+            </html>
+            """
+        let data = Data(html.utf8)
+
+        // WHEN
+        let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
+
+        // THEN
+        #expect(faviconURL.absoluteString == "https://example.com/apple-icon.png")
+    }
+
+    @Test func appleTouchIconWithAngleBracketInOtherAttribute() throws {
+        // GIVEN
+        let siteURL = try #require(URL(string: "https://example.com"))
+        let html = """
+            <html>
+            <head>
+                <link title="a > b" rel="apple-touch-icon" href="/apple-icon.png">
+            </head>
+            </html>
+            """
+        let data = Data(html.utf8)
+
+        // WHEN
+        let faviconURL = FaviconService.makeFavicon(from: data, siteURL: siteURL)
+
+        // THEN
+        #expect(faviconURL.absoluteString == "https://example.com/apple-icon.png")
     }
 
     // MARK: - Fetching
