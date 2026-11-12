@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import CocoaLumberjackSwift
 import WordPressShared
 
 @objc(Post)
@@ -48,7 +47,7 @@ public class Post: AbstractPost {
 
         assert(blog.postFormats is [String: String])
         guard let postFormats = blog.postFormats as? [String: String] else {
-            DDLogError("Expected blog.postFormats to be \(String(describing: [String: String].self)).")
+            Loggers.data.error("Expected blog.postFormats to be \(String(describing: [String: String].self)).")
             return
         }
 
