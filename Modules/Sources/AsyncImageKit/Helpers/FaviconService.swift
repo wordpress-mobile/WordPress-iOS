@@ -75,19 +75,19 @@ public actor FaviconService {
         tasks[key] = nil
     }
 
-    /// Parses HTML data to extract the apple-touch-icon URL or falls back to /favicon.icon
+    /// Parses HTML data to extract the apple-touch-icon URL or falls back to /favicon.ico
     public static func makeFavicon(from data: Data, siteURL: URL) -> URL {
         let html = String(data: data, encoding: .utf8) ?? ""
-        let range = NSRange(location: 0, length: html.utf16.count)
-        if let match = regex?.firstMatch(in: html, options: [], range: range),
-            let matchRange = Range(match.range(at: 1), in: html),
-            let faviconURL = URL(string: String(html[matchRange]), relativeTo: siteURL)
-        {
-            return faviconURL
+        for attributes in linkTagAttributes(in: html) where isAppleTouchIcon(attributes) {
+            if let href = attributes["href"], !href.isEmpty,
+                let faviconURL = URL(string: href, relativeTo: siteURL)
+            {
+                return faviconURL
+            }
         }
         // Fallback to standard favicon path. It has low quality, but
         // it's better than nothing.
-        return siteURL.appendingPathComponent("favicon.icon")
+        return siteURL.appendingPathComponent("favicon.ico")
     }
 }
 
@@ -107,10 +107,113 @@ private final class FaviconCache: @unchecked Sendable {
     }
 }
 
-private let regex: NSRegularExpression? = {
-    let pattern = "<link[^>]*rel=\"apple-touch-icon(?:-precomposed)?\"[^>]*href=\"([^\"]+)\"[^>]*>"
-    return try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-}()
+// MARK: - HTML Parsing
+
+/// Returns whether a `<link>` tag's `rel` names an apple-touch-icon.
+private func isAppleTouchIcon(_ attributes: [String: String]) -> Bool {
+    let relValues = (attributes["rel"] ?? "").lowercased().split(whereSeparator: \.isWhitespace)
+    return relValues.contains("apple-touch-icon") || relValues.contains("apple-touch-icon-precomposed")
+}
+
+/// Returns the attributes of every `<link>` tag in `html`, in document order.
+///
+/// Attribute names are lowercased. Values can be in double quotes, single
+/// quotes, or unquoted, and attributes can come in any order.
+private func linkTagAttributes(in html: String) -> [[String: String]] {
+    var result: [[String: String]] = []
+    var remaining = html[...]
+    while let tagStart = remaining.range(of: "<link", options: .caseInsensitive) {
+        var scanner = TagScanner(text: remaining[tagStart.upperBound...])
+        // Skip tags that only start with "link", such as `<linkfoo>`.
+        if scanner.isAtAttributeBoundary {
+            result.append(scanner.scanAttributes())
+        }
+        remaining = scanner.remaining
+    }
+    return result
+}
+
+/// Reads the attributes of an HTML tag, up to and including its closing `>`.
+private struct TagScanner {
+    private let text: Substring
+    private var index: Substring.Index
+
+    init(text: Substring) {
+        self.text = text
+        self.index = text.startIndex
+    }
+
+    /// The text after the scanned part.
+    var remaining: Substring {
+        text[index...]
+    }
+
+    var isAtAttributeBoundary: Bool {
+        guard let character = current else { return true }
+        return character.isWhitespace || character == "/" || character == ">"
+    }
+
+    private var current: Character? {
+        index < text.endIndex ? text[index] : nil
+    }
+
+    mutating func scanAttributes() -> [String: String] {
+        var attributes: [String: String] = [:]
+        while true {
+            skipWhitespace()
+            guard let character = current else { break }
+            if character == ">" {
+                advance()
+                break
+            }
+            if character == "/" {
+                advance()
+                continue
+            }
+            let name = scan { !$0.isWhitespace && $0 != "=" && $0 != ">" && $0 != "/" }.lowercased()
+            skipWhitespace()
+            var value = ""
+            if current == "=" {
+                advance()
+                skipWhitespace()
+                value = scanValue()
+            }
+            // As in browsers, the first of two attributes with the same name wins.
+            if !name.isEmpty, attributes[name] == nil {
+                attributes[name] = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
+        return attributes
+    }
+
+    private mutating func scanValue() -> String {
+        guard let quote = current, quote == "\"" || quote == "'" else {
+            return String(scan { !$0.isWhitespace && $0 != ">" })
+        }
+        advance()
+        let value = scan { $0 != quote }
+        advance() // the closing quote
+        return String(value)
+    }
+
+    private mutating func scan(while predicate: (Character) -> Bool) -> Substring {
+        let start = index
+        while let character = current, predicate(character) {
+            advance()
+        }
+        return text[start..<index]
+    }
+
+    private mutating func skipWhitespace() {
+        _ = scan { $0.isWhitespace }
+    }
+
+    private mutating func advance() {
+        if index < text.endIndex {
+            index = text.index(after: index)
+        }
+    }
+}
 
 private func validate(response: URLResponse) throws {
     guard let response = response as? HTTPURLResponse else {
