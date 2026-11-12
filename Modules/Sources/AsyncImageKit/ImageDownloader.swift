@@ -16,7 +16,7 @@ public final class ImageDownloader {
     private let urlSessionWithCache = URLSession {
         $0.urlCache = URLCache(
             memoryCapacity: 32 * 1024 * 1024, // 32 MB
-            diskCapacity: 256 * 1024 * 1024,  // 256 MB
+            diskCapacity: 256 * 1024 * 1024, // 256 MB
             diskPath: "org.automattic.ImageDownloader"
         )
     }
@@ -138,15 +138,27 @@ public final class ImageDownloader {
 
     private func _data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
         let requestKey = request.url?.absoluteString ?? ""
-        let task = tasks[requestKey] ?? ImageDataTask(key: requestKey, Task {
-            try await self._data(for: request, options: options, key: requestKey)
-        })
+        let task =
+            tasks[requestKey]
+            ?? ImageDataTask(
+                key: requestKey,
+                Task {
+                    try await self.download(request, options: options)
+                }
+            )
         task.downloader = self
 
         let subscriptionID = UUID()
         task.subscriptions.insert(subscriptionID)
         tasks[requestKey] = task
 
+        defer {
+            // Remove only this download. Once cancelled, it can finish after a newer download for
+            // the same URL has started, and that one must stay shared.
+            if tasks[requestKey] === task {
+                tasks[requestKey] = nil
+            }
+        }
         return try await task.getData(subscriptionID: subscriptionID)
     }
 
@@ -158,16 +170,16 @@ public final class ImageDownloader {
 
     private func _unsubscribe(_ subscriptionID: UUID, key: String) {
         guard let task = tasks[key],
-              task.subscriptions.remove(subscriptionID) != nil,
-              task.subscriptions.isEmpty else {
+            task.subscriptions.remove(subscriptionID) != nil,
+            task.subscriptions.isEmpty
+        else {
             return
         }
         task.task.cancel()
         tasks[key] = nil
     }
 
-    private func _data(for request: URLRequest, options: ImageRequestOptions, key: String) async throws -> Data {
-        defer { tasks[key] = nil }
+    private func download(_ request: URLRequest, options: ImageRequestOptions) async throws -> Data {
         let session = options.isDiskCacheEnabled ? urlSessionWithCache : urlSession
         let (data, response) = try await session.data(for: request)
         try validate(response: response)
@@ -201,7 +213,13 @@ public final class ImageDownloader {
         }
 
         let pngData = try Data(contentsOf: path)
-        return UIImage(data: pngData)
+        guard let image = UIImage(data: pngData) else {
+            return nil
+        }
+        if options.isMemoryCacheEnabled {
+            cache[key] = image
+        }
+        return image
     }
 
     private func store(_ image: UIImage, for key: String, options: ImageRequestOptions) throws {
@@ -256,7 +274,7 @@ private final class ImageDataTask {
 
 @globalActor
 public struct ImageDownloaderActor {
-    public actor ImageDownloaderActor { }
+    public actor ImageDownloaderActor {}
     public static let shared = ImageDownloaderActor()
 }
 
