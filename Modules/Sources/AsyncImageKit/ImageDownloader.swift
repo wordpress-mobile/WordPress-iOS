@@ -2,6 +2,7 @@ import UIKit
 import CryptoKit
 import AVFoundation
 import Synchronization
+import Logging
 
 /// The system that downloads and caches images, and prepares them for display.
 @ImageDownloaderActor
@@ -68,7 +69,7 @@ public final class ImageDownloader {
             let image = UIImage(cgImage: result.image)
 
             // There is no downloaded file to save, so save the frame
-            try store(image, data: { image.jpegData(compressionQuality: 0.9) }, for: key, options: options)
+            store(image, data: { image.jpegData(compressionQuality: 0.9) }, for: key, options: options)
 
             return image
         }
@@ -76,7 +77,7 @@ public final class ImageDownloader {
         let data = try await data(for: request)
         let image = try await ImageDecoder.makeImage(from: data, size: options.size.map(CGSize.init))
 
-        try store(image, data: { data }, for: key, options: options)
+        store(image, data: { data }, for: key, options: options)
 
         return image
     }
@@ -281,7 +282,7 @@ public final class ImageDownloader {
         data: () -> Data?,
         for key: String,
         options: ImageRequestOptions
-    ) throws {
+    ) {
 
         if options.isMemoryCacheEnabled {
             cache[key] = image
@@ -296,10 +297,14 @@ public final class ImageDownloader {
             return
         }
 
+        // Saving is best-effort: the image is shown either way, and downloaded again next time
         let path = self.path(for: key)
-
-        try FileManager.default.createDirectory(at: path.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try data.write(to: path, options: .atomic)
+        do {
+            try FileManager.default.createDirectory(at: diskCacheDirectory, withIntermediateDirectories: true)
+            try data.write(to: path, options: .atomic)
+        } catch {
+            logger.error("Failed to save an image to the disk cache: \(error)")
+        }
     }
 
     /// The file an immutable image is saved to.
@@ -342,6 +347,8 @@ private final class ImageDataTask {
 }
 
 // MARK: - Helpers
+
+private let logger = Logger(label: "org.wordpress.async-image-kit")
 
 private final class FailureFlag: Sendable {
     private let value = Mutex(false)
