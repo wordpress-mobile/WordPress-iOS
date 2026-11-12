@@ -354,25 +354,20 @@ import OHHTTPStubsSwift
         #expect(fromDisk.size == CGSize(width: 30, height: 60))
     }
 
-    @Test func diskCacheReadsFilesSavedAsPNG() async throws {
-        // GIVEN an image saved by an earlier version of the app, which re-encoded images as PNG
-        let url = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString).jpg"))
-        let png = try #require(UIImage(cgImage: Fixtures.makeCGImage(width: 60, height: 30)).pngData())
-        let fileURL = sut.diskCacheFileURL(for: url)
-        try FileManager.default.createDirectory(
-            at: fileURL.deletingLastPathComponent(),
-            withIntermediateDirectories: true
-        )
-        try png.write(to: fileURL)
-        stub(condition: { _ in true }, response: { _ in HTTPStubsResponse(error: URLError(.notConnectedToInternet)) })
+    @Test func legacyDiskCacheIsRemoved() throws {
+        // GIVEN images saved by an earlier version of the app, as PNGs with sideways videos
+        let legacyDirectory = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+        try FileManager.default.createDirectory(at: legacyDirectory, withIntermediateDirectories: true)
+        try Data([1, 2, 3]).write(to: legacyDirectory.appending(path: "saved-image"))
 
         // WHEN
-        let image = try await sut.image(
-            for: ImageRequest(url: url, options: ImageRequestOptions(mutability: .immutable))
-        )
+        ImageDownloader.removeLegacyDiskCache(at: legacyDirectory)
 
-        // THEN
-        #expect(image.size == CGSize(width: 60, height: 30))
+        // THEN they are deleted, and the app saves new images somewhere else
+        #expect(!FileManager.default.fileExists(atPath: legacyDirectory.path()))
+        let url = try #require(URL(string: "https://example.files.wordpress.com/image.jpg"))
+        let fileURL = ImageDownloader(cache: MockMemoryCache()).diskCacheFileURL(for: url)
+        #expect(!fileURL.path().hasPrefix(ImageDownloader.legacyDiskCacheDirectory.path() + "/"))
     }
 
     @Test func diskCacheKeepsVideoThumbnail() async throws {
@@ -462,6 +457,58 @@ import OHHTTPStubsSwift
         // THEN
         let isStillSaved = FileManager.default.fileExists(atPath: path)
         #expect(isStillSaved == false)
+    }
+
+    @Test func clearingDiskCacheDuringDownloadDoesNotSaveIt() async throws {
+        // GIVEN an immutable image whose download is in flight
+        let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg")))
+        let url = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString).jpg"))
+        let starts = RequestCounter()
+        stub(
+            condition: { _ in true },
+            response: { request in
+                starts.increment(request.url)
+                return HTTPStubsResponse(data: data, statusCode: 200, headers: nil).requestTime(1, responseTime: 0)
+            }
+        )
+        let request = ImageRequest(
+            url: url,
+            options: ImageRequestOptions(isMemoryCacheEnabled: false, mutability: .immutable)
+        )
+        let load = Task { [sut] in try await sut.image(for: request) }
+        try await starts.wait(for: 1, url: url)
+
+        // WHEN the cache is cleared, then the download finishes
+        await sut.clearDiskCache()
+        _ = try await load.value
+
+        // THEN the image isn't saved
+        #expect(!FileManager.default.fileExists(atPath: sut.diskCacheFileURL(for: url).path()))
+    }
+
+    @Test func videoSizeWithZeroSideIsNoLimitOnThatSide() async throws {
+        // GIVEN
+        let videoURL = try await Fixtures.makeVideo(width: 128, height: 64, transform: .identity)
+        defer { try? FileManager.default.removeItem(at: videoURL) }
+        let size = ImageSize(width: 0, height: 32)
+
+        // WHEN
+        let mutable = try await sut.image(
+            for: ImageRequest(
+                videoUrl: videoURL,
+                options: ImageRequestOptions(size: size, isMemoryCacheEnabled: false, isDiskCacheEnabled: false)
+            )
+        )
+        let immutable = try await sut.image(
+            for: ImageRequest(
+                videoUrl: videoURL,
+                options: ImageRequestOptions(size: size, isMemoryCacheEnabled: false, mutability: .immutable)
+            )
+        )
+
+        // THEN both are scaled to the height, as `AVAssetImageGenerator.maximumSize` does
+        #expect(mutable.size == CGSize(width: 64, height: 32))
+        #expect(immutable.size == CGSize(width: 64, height: 32))
     }
 
     // MARK: - Helpers
