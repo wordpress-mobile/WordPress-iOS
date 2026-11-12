@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import SafariServices
 import SwiftUI
 import WordPressData
 import WordPressShared
@@ -61,8 +60,11 @@ struct ReaderPostMenu {
     private var viewPostInBrowser: UIAction? {
         guard let postURL = post.permaLink.flatMap(URL.init) else { return nil }
         let action = UIAction(Strings.viewInBrowser, systemImage: "safari") {
-            let safariVC = SFSafariViewController(url: postURL)
-            viewController?.present(safariVC, animated: true)
+            let webViewController = WebViewControllerFactory.readerPostController(
+                url: postURL,
+                source: "reader_post_menu"
+            )
+            viewController?.present(webViewController, animated: true)
             track(.viewPostInBrowser)
         }
         action.accessibilityIdentifier = "reader-view-post-in-safari"

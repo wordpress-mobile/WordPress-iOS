@@ -1,5 +1,4 @@
 import UIKit
-import SafariServices
 import WordPressData
 import WordPressUI
 
@@ -60,8 +59,8 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
         guard let postURL else {
             return
         }
-        let safariVC = SFSafariViewController(url: postURL)
-        window?.topmostPresentedViewController?.present(safariVC, animated: true)
+        let webViewController = WebViewControllerFactory.readerPostController(url: postURL, source: "reader_read_more")
+        window?.topmostPresentedViewController?.present(webViewController, animated: true)
     }
 
     @objc private func showInfoTapped() {

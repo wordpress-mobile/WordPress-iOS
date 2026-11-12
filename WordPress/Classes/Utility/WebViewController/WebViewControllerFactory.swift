@@ -49,6 +49,19 @@ enum WebViewControllerFactory {
         return controller(configuration: configuration, source: source)
     }
 
+    /// Opens a Reader post in the in-app web view, signed in with the default WordPress.com account, so posts on
+    /// private sites such as P2s load instead of showing a login page.
+    ///
+    /// Don't use `SFSafariViewController` for these: it doesn't share Safari's cookies, and has no API to set any.
+    ///
+    /// - Returns: a navigation controller, ready to present.
+    static func readerPostController(url: URL, source: String) -> UIViewController {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        return UINavigationController(rootViewController: controller(configuration: configuration, source: source))
+    }
+
     static func controllerWithDefaultAccountAndSecureInteraction(
         url: URL,
         source: String,
