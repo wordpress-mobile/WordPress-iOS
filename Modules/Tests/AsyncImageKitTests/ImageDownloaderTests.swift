@@ -1,6 +1,5 @@
 import AVFoundation
 import UIKit
-import CryptoKit
 import Synchronization
 import Testing
 import ImageIO
@@ -145,10 +144,6 @@ import OHHTTPStubsSwift
         let request = ImageRequest(url: imageURL, options: ImageRequestOptions(mutability: .immutable))
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
         _ = try await sut.image(for: request)
-        defer {
-            let hash = SHA256.hash(data: Data(imageURL.absoluteString.utf8)).map { String(format: "%02x", $0) }
-            try? FileManager.default.removeItem(at: URL.cachesDirectory.appending(path: "image-cache/\(hash.joined())"))
-        }
 
         let downloader = makeDownloader()
         HTTPStubs.removeAllStubs()
