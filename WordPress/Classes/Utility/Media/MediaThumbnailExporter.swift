@@ -277,11 +277,12 @@ extension MediaThumbnailExporter {
     func exportThumbnail(forFileURL fileURL: URL) async throws -> (ThumbnailIdentifier, MediaExport) {
         let token = MediaExportCancelationToken()
         return try await withTaskCancellationHandler {
-            try await withUnsafeThrowingContinuation { continuation in
+            try await withCheckedThrowingContinuation { continuation in
+                let once = ResumeOnce(continuation)
                 token.progress = exportThumbnail(forFile: fileURL, onCompletion: {
-                    continuation.resume(returning: ($0, $1))
+                    once.resume(returning: ($0, $1))
                 }, onError: {
-                    continuation.resume(throwing: $0)
+                    once.resume(throwing: $0)
                 })
             }
         } onCancel: {
@@ -292,11 +293,12 @@ extension MediaThumbnailExporter {
     func exportThumbnail(forVideoURL url: URL) async throws -> (ThumbnailIdentifier, MediaExport) {
         let token = MediaExportCancelationToken()
         return try await withTaskCancellationHandler {
-            try await withUnsafeThrowingContinuation { continuation in
+            try await withCheckedThrowingContinuation { continuation in
+                let once = ResumeOnce(continuation)
                 token.progress = exportThumbnail(forVideoURL: url, onCompletion: {
-                    continuation.resume(returning: ($0, $1))
+                    once.resume(returning: ($0, $1))
                 }, onError: {
-                    continuation.resume(throwing: $0)
+                    once.resume(throwing: $0)
                 })
             }
         } onCancel: {
