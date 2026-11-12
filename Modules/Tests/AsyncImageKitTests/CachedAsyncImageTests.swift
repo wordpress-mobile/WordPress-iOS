@@ -59,7 +59,8 @@ struct CachedAsyncImageTests {
         try await harness.settle()
         #expect(recorder.renders.last?.hasImage == true)
 
-        harness.update(RecordingView(url: otherURL, downloader: downloader, recorder: recorder))
+        // The host never answers, so the other URL can't load whatever stubs other suites install
+        harness.update(RecordingView(url: otherURL, host: HangingHost(), downloader: downloader, recorder: recorder))
         try await harness.settle()
 
         let renders = recorder.renders.filter { $0.url == otherURL }

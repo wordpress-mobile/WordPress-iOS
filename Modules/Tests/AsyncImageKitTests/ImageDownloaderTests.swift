@@ -1,4 +1,5 @@
 import UIKit
+import CryptoKit
 import Synchronization
 import Testing
 import AsyncImageKit
@@ -138,6 +139,10 @@ import OHHTTPStubsSwift
         let request = ImageRequest(url: imageURL, options: ImageRequestOptions(mutability: .immutable))
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
         _ = try await sut.image(for: request)
+        defer {
+            let hash = SHA256.hash(data: Data(imageURL.absoluteString.utf8)).map { String(format: "%02x", $0) }
+            try? FileManager.default.removeItem(at: URL.cachesDirectory.appending(path: "image-cache/\(hash.joined())"))
+        }
 
         let downloader = ImageDownloader(cache: MockMemoryCache())
         HTTPStubs.removeAllStubs()
@@ -226,6 +231,45 @@ import OHHTTPStubsSwift
         await #expect(throws: (any Error).self) { try await first.value }
         let image = try await second.value
         #expect(image.size == CGSize(width: 1024, height: 680))
+    }
+
+    @Test func failedLowPriorityDownloadIsNotSharedWithHigherPriorityRequest() async throws {
+        // GIVEN the first response is an error, and later ones succeed
+        let imageURL = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString).jpg"))
+        let imageData = try Data(
+            contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg"))
+        )
+        let starts = RequestCounter()
+        stub(
+            condition: { _ in true },
+            response: { request in
+                starts.increment(request.url)
+                let isFirst = starts.count(for: imageURL) == 1
+                return HTTPStubsResponse(
+                    data: isFirst ? Data() : imageData,
+                    statusCode: isFirst ? 500 : 200,
+                    headers: nil
+                )
+                .requestTime(0.2, responseTime: 0)
+            }
+        )
+        let request = ImageRequest(url: imageURL, options: ImageRequestOptions(isDiskCacheEnabled: false))
+        let downloader = ImageDownloader(cache: MockMemoryCache())
+
+        // WHEN a low-priority request (like a prefetch) fails while the downloader is busy,
+        // and a view's request at a higher priority comes in during that time
+        let first = Task(priority: .low) { try await downloader.image(for: request) }
+        try await starts.wait(for: 1, url: imageURL)
+        let busy = Task(priority: .userInitiated) { @ImageDownloaderActor in usleep(800_000) }
+        try await Task.sleep(for: .milliseconds(500)) // The error arrives while the downloader is busy
+        let second = Task(priority: .userInitiated) { try await downloader.image(for: request) }
+        await busy.value
+
+        // THEN the second request downloads the image again, rather than getting the first one's error
+        _ = try? await first.value
+        let image = try await second.value
+        #expect(image.size == CGSize(width: 1024, height: 680))
+        #expect(starts.count(for: imageURL) == 2)
     }
 
     // MARK: - Helpers
