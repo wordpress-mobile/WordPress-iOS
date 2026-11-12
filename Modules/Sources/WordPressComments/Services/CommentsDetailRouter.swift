@@ -1,21 +1,15 @@
-import SwiftUI
 import UIKit
 
-/// Owns the shared detail dependencies and pushes comment detail screens onto
-/// the navigation stack of `host`, the comments list controller.
+/// Shares dependencies across comment detail and parent destinations.
 @MainActor
 final class CommentsDetailRouter {
-    /// The list's hosting controller; detail screens push onto its navigation
-    /// controller. Weak: the controller retains this router through the tab view.
-    weak var host: UIViewController?
-
     private let service: any CommentsServiceProtocol
     /// Shared by every detail view model, so the capability resolves once
     /// while the list loads and later screens read it synchronously.
     private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
     private let draftStore: any CommentDraftStoring
-    private let titleResolver: PostTitleResolver
+    let titleResolver: PostTitleResolver
     private let tracker: (any CommentsTracker)?
     private let noticePresenter: any NoticePresenting
     private let makeContentRenderer: @MainActor () -> any CommentContentRendering
@@ -41,42 +35,9 @@ final class CommentsDetailRouter {
         self.capabilities.prefetch()
     }
 
-    /// Builds the detail view model and screen for `id` (seeded from the list
-    /// row when available) and pushes it onto the shared navigation stack.
-    func open(id: Int64, seed: CommentListItem?) {
+    func makeViewModel(id: Int64, seed: CommentListItem?) -> CommentDetailViewModel {
         capabilities.prefetch()
-        let detail = CommentDetailView(
-            viewModel: makeDetailViewModel(id: id, seed: seed),
-            titleResolver: titleResolver,
-            renderer: makeLinkOpeningRenderer(),
-            openComment: { [weak self] id, seed in self?.open(id: id, seed: seed) }
-        )
-        let controller = UIHostingController(rootView: detail)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        host?.navigationController?.pushViewController(controller, animated: true)
-    }
-
-    func makeReviewSession(batch: [CommentListItem]) -> CommentReviewViewModel? {
-        guard !batch.isEmpty else { return nil }
-        // The session holds the router strongly; the router never holds a session.
-        return CommentReviewViewModel(
-            batch: batch,
-            coordinator: coordinator,
-            noticePresenter: noticePresenter,
-            makeDetail: { self.makeDetailViewModel(id: $0.id, seed: $0) }
-        )
-    }
-
-    func makeReviewView(session: CommentReviewViewModel) -> CommentReviewView {
-        CommentReviewView(
-            viewModel: session,
-            titleResolver: titleResolver,
-            makeContentRenderer: makeLinkOpeningRenderer
-        )
-    }
-
-    private func makeDetailViewModel(id: Int64, seed: CommentListItem?) -> CommentDetailViewModel {
-        CommentDetailViewModel(
+        return CommentDetailViewModel(
             commentID: id,
             seed: seed,
             service: service,
@@ -89,9 +50,30 @@ final class CommentsDetailRouter {
         )
     }
 
-    private func makeLinkOpeningRenderer() -> any CommentContentRendering {
+    func makeReviewSession(batch: [CommentListItem]) -> CommentReviewViewModel? {
+        guard !batch.isEmpty else { return nil }
+        // The session holds the router strongly; the router never holds a session.
+        return CommentReviewViewModel(
+            batch: batch,
+            coordinator: coordinator,
+            noticePresenter: noticePresenter,
+            makeDetail: { self.makeViewModel(id: $0.id, seed: $0) }
+        )
+    }
+
+    func makeReviewView(session: CommentReviewViewModel) -> CommentReviewView {
+        CommentReviewView(
+            viewModel: session,
+            titleResolver: titleResolver,
+            makeContentRenderer: makeRenderer
+        )
+    }
+
+    func makeRenderer() -> any CommentContentRendering {
         let renderer = makeContentRenderer()
-        renderer.onLinkTapped = { UIApplication.shared.open($0) }
+        renderer.onLinkTapped = { url in
+            UIApplication.shared.open(url)
+        }
         return renderer
     }
 }

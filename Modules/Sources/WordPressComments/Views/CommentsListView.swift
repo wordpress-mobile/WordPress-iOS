@@ -1,31 +1,24 @@
 import SwiftUI
 
 struct CommentsListView: View {
+    @State private var selectedComment: CommentListItem?
+
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
-    /// Pushes the detail screen for a tapped row.
-    let openComment: (Int64, CommentListItem?) -> Void
+    let router: CommentsDetailRouter
     /// Starts a review session over the loaded pending comments.
     let review: ([CommentListItem]) -> Void
 
     var body: some View {
         List {
             ForEach(viewModel.items) { item in
-                // A Button (plain style) so assistive tech announces and
-                // activates the row as a control; the plain style keeps the
-                // visual layout unchanged and the rectangle content shape keeps
-                // the whole row tappable.
-                Button {
-                    openComment(item.id, item)
-                } label: {
-                    CommentRowView(
-                        item: item,
-                        titleState: titleResolver.titleState(for: item.postID),
-                        showsPendingStatus: viewModel.filter == .all
-                    )
-                    .contentShape(Rectangle())
+                CommentRowButton(
+                    item: item,
+                    titleState: titleResolver.titleState(for: item.postID),
+                    showsPendingStatus: viewModel.filter == .all
+                ) {
+                    selectedComment = item
                 }
-                .buttonStyle(.plain)
             }
             if viewModel.canLoadMore {
                 ProgressView()
@@ -41,6 +34,7 @@ struct CommentsListView: View {
             }
         }
         .listStyle(.plain)
+        .background(detailLink)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 if viewModel.canReview {
@@ -78,5 +72,25 @@ struct CommentsListView: View {
         .task(id: viewModel.filter) {
             await viewModel.onAppear()
         }
+    }
+
+    // Moderation can remove the selected row while its detail is still open.
+    private var detailLink: some View {
+        NavigationLink(
+            isActive: Binding(
+                get: { selectedComment != nil },
+                set: { isActive in
+                    if !isActive { selectedComment = nil }
+                }
+            )
+        ) {
+            if let selectedComment {
+                CommentDetailView(commentID: selectedComment.id, seed: selectedComment, router: router)
+                    .id(selectedComment.id)
+            }
+        } label: {
+            EmptyView()
+        }
+        .hidden()
     }
 }

@@ -1,20 +1,11 @@
 import SwiftUI
 
-/// Parent context with optional navigation to the parent comment.
+/// Parent context, optionally used as a navigation-link label.
 struct CommentParentStrip: View {
     let parent: CommentListItem
-    var onTap: (() -> Void)?
+    var showsDisclosureIndicator = false
 
     var body: some View {
-        if let onTap {
-            Button(action: onTap) { content }
-                .buttonStyle(.plain)
-        } else {
-            content
-        }
-    }
-
-    private var content: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(String.localizedStringWithFormat(Strings.inReplyToFormat, parent.authorName))
@@ -25,7 +16,7 @@ struct CommentParentStrip: View {
                     .lineLimit(3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            if onTap != nil {
+            if showsDisclosureIndicator {
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.secondary)
