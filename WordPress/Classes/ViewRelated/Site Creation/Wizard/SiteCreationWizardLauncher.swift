@@ -3,28 +3,32 @@ import WordPressData
 
 /// Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {
-    private lazy var creator: SiteCreator = {
-        return SiteCreator()
-    }()
+    private lazy var creator = SiteCreator(flow: flow)
 
-    let steps: [SiteCreationStep] = {
-        if RemoteFeatureFlag.plansInSiteCreation.enabled() && AppConfiguration.isJetpack {
-            return [
-                .intent,
-                .design,
-                .address,
-                .plan,
-                .siteAssembly
-            ]
-        } else {
-            return [
-                .intent,
-                .design,
-                .address,
-                .siteAssembly
-            ]
+    let flow: SiteCreationFlow
+
+    let steps: [SiteCreationStep]
+
+    /// The WordPress app always runs the current flow and never shows the plan step.
+    init(
+        isJetpack: Bool = AppConfiguration.isJetpack,
+        isShortFlowEnabled: Bool = FeatureFlag.siteCreationShortFlow.enabled,
+        isPlansInSiteCreationEnabled: Bool = RemoteFeatureFlag.plansInSiteCreation.enabled()
+    ) {
+        let flow: SiteCreationFlow = isJetpack && isShortFlowEnabled ? .short : .current
+        self.flow = flow
+        self.steps = Self.steps(for: flow, includesPlan: isJetpack && isPlansInSiteCreationEnabled)
+    }
+
+    private static func steps(for flow: SiteCreationFlow, includesPlan: Bool) -> [SiteCreationStep] {
+        let plan: [SiteCreationStep] = includesPlan ? [.plan] : []
+        switch flow {
+        case .current:
+            return [.intent, .design, .address] + plan + [.siteAssembly]
+        case .short:
+            return [.address] + plan + [.siteAssembly]
         }
-    }()
+    }
 
     private lazy var wizard: SiteCreationWizard = {
         return SiteCreationWizard(steps: steps.map { initStep($0) })

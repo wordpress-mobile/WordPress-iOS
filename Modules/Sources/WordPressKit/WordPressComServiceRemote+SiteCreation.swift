@@ -19,6 +19,9 @@ public struct SiteCreationRequest: Encodable {
     public let timezoneIdentifier: String?
     public let siteCreationFlow: String?
     public let findAvailableURL: Bool
+    /// Asks WordPress.com to use its default starter content when the theme has no annotation of its own,
+    /// matching the web onboarding flow.
+    public let defaultAnnotationAsPrimaryFallback: Bool
 
     public init(segmentIdentifier: Int64?,
                 siteDesign: String?,
@@ -33,7 +36,8 @@ public struct SiteCreationRequest: Encodable {
                 clientSecret: String,
                 timezoneIdentifier: String?,
                 siteCreationFlow: String?,
-                findAvailableURL: Bool) {
+                findAvailableURL: Bool,
+                defaultAnnotationAsPrimaryFallback: Bool = false) {
 
         self.segmentIdentifier = segmentIdentifier
         self.siteDesign = siteDesign
@@ -49,6 +53,7 @@ public struct SiteCreationRequest: Encodable {
         self.timezoneIdentifier = timezoneIdentifier
         self.siteCreationFlow = siteCreationFlow
         self.findAvailableURL = findAvailableURL
+        self.defaultAnnotationAsPrimaryFallback = defaultAnnotationAsPrimaryFallback
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -76,7 +81,8 @@ public struct SiteCreationRequest: Encodable {
                                           siteInformation: siteInfo,
                                           siteDesign: siteDesign,
                                           timezoneIdentifier: timezoneIdentifier,
-                                          siteCreationFlow: siteCreationFlow)
+                                          siteCreationFlow: siteCreationFlow,
+                                          defaultAnnotationAsPrimaryFallback: defaultAnnotationAsPrimaryFallback ? true : nil)
 
         try container.encode(options, forKey: .options)
     }
@@ -101,6 +107,7 @@ private struct SiteCreationOptions: Encodable {
     let siteDesign: String?
     let timezoneIdentifier: String?
     let siteCreationFlow: String?
+    let defaultAnnotationAsPrimaryFallback: Bool?
 
     enum CodingKeys: String, CodingKey {
         case segmentIdentifier = "site_segment"
@@ -109,6 +116,7 @@ private struct SiteCreationOptions: Encodable {
         case siteDesign = "template"
         case timezoneIdentifier = "timezone_string"
         case siteCreationFlow = "site_creation_flow"
+        case defaultAnnotationAsPrimaryFallback = "default_annotation_as_primary_fallback"
     }
 }
 
