@@ -24,10 +24,18 @@ public final class ImageDownloader {
 
     private var tasks: [String: ImageDataTask] = [:]
 
-    public nonisolated init(
+    /// Where immutable images are saved. Nothing evicts them automatically.
+    private nonisolated let diskCacheDirectory: URL
+
+    public nonisolated convenience init(
         cache: MemoryCacheProtocol = MemoryCache.shared
     ) {
+        self.init(cache: cache, diskCacheDirectory: URL.cachesDirectory.appending(path: "image-cache"))
+    }
+
+    nonisolated init(cache: MemoryCacheProtocol, diskCacheDirectory: URL) {
         self.cache = cache
+        self.diskCacheDirectory = diskCacheDirectory
     }
 
     public func image(
@@ -42,7 +50,7 @@ public final class ImageDownloader {
         let options = request.options
         let key = makeKey(for: request.source.url, size: options.size)
 
-        if let cachedImage = try self.fetch(key, options: request.options) {
+        if let cachedImage = await self.fetch(key, options: request.options) {
             return cachedImage
         }
 
@@ -59,7 +67,8 @@ public final class ImageDownloader {
             let result = try await generator.image(at: .zero)
             let image = UIImage(cgImage: result.image)
 
-            try store(image, for: key, options: options)
+            // There is no downloaded file to save, so save the frame
+            try store(image, data: { image.jpegData(compressionQuality: 0.9) }, for: key, options: options)
 
             return image
         }
@@ -67,7 +76,7 @@ public final class ImageDownloader {
         let data = try await data(for: request)
         let image = try await ImageDecoder.makeImage(from: data, size: options.size.map(CGSize.init))
 
-        try store(image, for: key, options: options)
+        try store(image, data: { data }, for: key, options: options)
 
         return image
     }
@@ -123,14 +132,29 @@ public final class ImageDownloader {
         return imageURL.absoluteString + (size.map { "?w=\($0.width),h=\($0.height)" } ?? "")
     }
 
-    /// The current disk usage of the URL cache, in bytes.
+    /// The current disk usage of the URL cache and the saved immutable images, in bytes.
     public var diskCacheSize: Int {
-        urlSessionWithCache.configuration.urlCache?.currentDiskUsage ?? 0
+        let urlCacheSize = urlSessionWithCache.configuration.urlCache?.currentDiskUsage ?? 0
+        let files = try? FileManager.default.contentsOfDirectory(
+            at: diskCacheDirectory,
+            includingPropertiesForKeys: [.totalFileAllocatedSizeKey]
+        )
+        let savedImagesSize = (files ?? [])
+            .reduce(0) { size, file in
+                size + ((try? file.resourceValues(forKeys: [.totalFileAllocatedSizeKey]).totalFileAllocatedSize) ?? 0)
+            }
+        return urlCacheSize + savedImagesSize
     }
 
     public func clearURLSessionCache() {
         urlSessionWithCache.configuration.urlCache?.removeAllCachedResponses()
         urlSession.configuration.urlCache?.removeAllCachedResponses()
+    }
+
+    /// Removes the URL cache and the saved immutable images.
+    public func clearDiskCache() {
+        clearURLSessionCache()
+        try? FileManager.default.removeItem(at: diskCacheDirectory)
     }
 
     public func clearMemoryCache() {
@@ -228,24 +252,21 @@ public final class ImageDownloader {
     }
 
     // MARK: Manual caching
-    private func fetch(_ key: String, options: ImageRequestOptions) throws -> UIImage? {
+    private func fetch(_ key: String, options: ImageRequestOptions) async -> UIImage? {
 
         if options.isMemoryCacheEnabled, let image = cache[key] {
             return image
         }
 
-        guard options.isDiskCacheEnabled else {
+        guard options.isDiskCacheEnabled, options.mutability == .immutable else {
             return nil
         }
 
-        let path = path(for: key)
-
-        guard FileManager.default.fileExists(atPath: path.path()) else {
-            return nil
-        }
-
-        let pngData = try Data(contentsOf: path)
-        guard let image = UIImage(data: pngData) else {
+        // The file is the downloaded image, or a PNG saved by an earlier version of the app.
+        // A missing or unreadable file is a cache miss, and the image is downloaded again.
+        guard let data = try? Data(contentsOf: path(for: key)),
+            let image = try? await ImageDecoder.makeImage(from: data, size: options.size.map(CGSize.init))
+        else {
             return nil
         }
         if options.isMemoryCacheEnabled {
@@ -254,7 +275,13 @@ public final class ImageDownloader {
         return image
     }
 
-    private func store(_ image: UIImage, for key: String, options: ImageRequestOptions) throws {
+    /// - parameter data: The file to save if the image is immutable.
+    private func store(
+        _ image: UIImage,
+        data: () -> Data?,
+        for key: String,
+        options: ImageRequestOptions
+    ) throws {
 
         if options.isMemoryCacheEnabled {
             cache[key] = image
@@ -265,19 +292,24 @@ public final class ImageDownloader {
             return
         }
 
-        guard let data = image.pngData() else {
+        guard let data = data() else {
             return
         }
 
         let path = self.path(for: key)
 
         try FileManager.default.createDirectory(at: path.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try data.write(to: path)
+        try data.write(to: path, options: .atomic)
     }
 
-    private func path(for key: String) -> URL {
+    /// The file an immutable image is saved to.
+    nonisolated func diskCacheFileURL(for imageURL: URL, size: ImageSize? = nil) -> URL {
+        path(for: makeKey(for: imageURL, size: size))
+    }
+
+    private nonisolated func path(for key: String) -> URL {
         let hash = SHA256.hash(data: Data(key.utf8)).map { String(format: "%02x", $0) }.joined()
-        return URL.cachesDirectory.appending(path: "image-cache").appending(path: hash)
+        return diskCacheDirectory.appending(path: hash)
     }
 }
 

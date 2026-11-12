@@ -3,7 +3,9 @@ import UIKit
 import CryptoKit
 import Synchronization
 import Testing
-import AsyncImageKit
+import ImageIO
+import UniformTypeIdentifiers
+@testable import AsyncImageKit
 import WordPressTesting
 import OHHTTPStubs
 import OHHTTPStubsSwift
@@ -12,13 +14,16 @@ import OHHTTPStubsSwift
 @Suite(.serialized) final class ImageDownloaderTests {
     private let sut: ImageDownloader
     private let cache = MockMemoryCache()
+    private let diskCacheDirectory = FileManager.default.temporaryDirectory
+        .appending(path: "ImageDownloaderTests-\(UUID().uuidString)")
 
     init() async throws {
-        sut = ImageDownloader(cache: cache)
+        sut = ImageDownloader(cache: cache, diskCacheDirectory: diskCacheDirectory)
     }
 
     deinit {
         HTTPStubs.removeAllStubs()
+        try? FileManager.default.removeItem(at: diskCacheDirectory)
     }
 
     @Test func loadResizedThumbnail() async throws {
@@ -145,7 +150,7 @@ import OHHTTPStubsSwift
             try? FileManager.default.removeItem(at: URL.cachesDirectory.appending(path: "image-cache/\(hash.joined())"))
         }
 
-        let downloader = ImageDownloader(cache: MockMemoryCache())
+        let downloader = makeDownloader()
         HTTPStubs.removeAllStubs()
         stub(
             condition: { _ in true },
@@ -301,7 +306,133 @@ import OHHTTPStubsSwift
         #expect(small.size == CGSize(width: 16, height: 32))
     }
 
+    // MARK: - Disk cache (immutable images)
+
+    @Test func diskCacheKeepsDownloadedFile() async throws {
+        // GIVEN a 1024×680 px JPEG
+        let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg")))
+
+        // WHEN
+        let (_, fromDisk, url) = try await downloadThenReadFromDisk(data)
+
+        // THEN the saved file is the downloaded file, not a bigger re-encoded copy
+        let saved = try Data(contentsOf: sut.diskCacheFileURL(for: url))
+        #expect(saved.count == data.count, "Downloaded \(data.count) bytes, saved \(saved.count) bytes")
+        #expect(saved == data)
+        #expect(fromDisk.size == CGSize(width: 1024, height: 680))
+    }
+
+    @Test func diskCacheResizesImageReadBack() async throws {
+        // GIVEN a 1024×680 px JPEG, requested as a thumbnail
+        let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg")))
+        let options = ImageRequestOptions(size: ImageSize(width: 256, height: 256), mutability: .immutable)
+
+        // WHEN
+        let (downloaded, fromDisk, _) = try await downloadThenReadFromDisk(data, options: options)
+
+        // THEN
+        #expect(downloaded.size == CGSize(width: 386, height: 256))
+        #expect(fromDisk.size == CGSize(width: 386, height: 256))
+    }
+
+    @Test func diskCacheKeepsGIFAnimated() async throws {
+        let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "anim-reader", withExtension: "gif")))
+
+        let (downloaded, fromDisk, _) = try await downloadThenReadFromDisk(data)
+
+        #expect((downloaded as? AnimatedImage)?.gifData == data)
+        #expect((fromDisk as? AnimatedImage)?.gifData == data, "Read back as \(type(of: fromDisk))")
+    }
+
+    @Test func diskCacheKeepsEXIFOrientation() async throws {
+        // GIVEN 60×30 pixels tagged "rotate 90°", as iPhone photos often are, so it displays as 30×60
+        let data = try Fixtures.makeJPEG(width: 60, height: 30, orientation: .right)
+
+        let (downloaded, fromDisk, _) = try await downloadThenReadFromDisk(data)
+
+        #expect(downloaded.size == CGSize(width: 30, height: 60))
+        #expect(fromDisk.size == CGSize(width: 30, height: 60))
+    }
+
+    @Test func diskCacheReadsFilesSavedAsPNG() async throws {
+        // GIVEN an image saved by an earlier version of the app, which re-encoded images as PNG
+        let url = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString).jpg"))
+        let png = try #require(UIImage(cgImage: Fixtures.makeCGImage(width: 60, height: 30)).pngData())
+        let fileURL = sut.diskCacheFileURL(for: url)
+        try FileManager.default.createDirectory(
+            at: fileURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try png.write(to: fileURL)
+        stub(condition: { _ in true }, response: { _ in HTTPStubsResponse(error: URLError(.notConnectedToInternet)) })
+
+        // WHEN
+        let image = try await sut.image(
+            for: ImageRequest(url: url, options: ImageRequestOptions(mutability: .immutable))
+        )
+
+        // THEN
+        #expect(image.size == CGSize(width: 60, height: 30))
+    }
+
+    @Test func diskCacheKeepsVideoThumbnail() async throws {
+        // GIVEN
+        let videoURL = try await Fixtures.makeVideo(width: 128, height: 64, transform: .identity)
+        let request = ImageRequest(videoUrl: videoURL, options: ImageRequestOptions(mutability: .immutable))
+        _ = try await sut.image(for: request)
+
+        // WHEN the thumbnail is requested again after the video is gone
+        try FileManager.default.removeItem(at: videoURL)
+        let thumbnail = try await makeDownloader().image(for: request)
+
+        // THEN
+        #expect(thumbnail.size == CGSize(width: 128, height: 64))
+    }
+
+    @Test func clearingDiskCacheRemovesSavedImages() async throws {
+        // GIVEN
+        let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg")))
+        await sut.clearDiskCache()
+        let (_, _, url) = try await downloadThenReadFromDisk(data)
+        let path = sut.diskCacheFileURL(for: url).path()
+        try #require(FileManager.default.fileExists(atPath: path))
+
+        // THEN the saved image counts towards the size the Debug menu shows
+        let size = await sut.diskCacheSize
+        #expect(size >= data.count, "The disk cache size is \(size) bytes")
+
+        // WHEN the cache is cleared, as the Debug menu's "Image cache" button does
+        await sut.clearDiskCache()
+
+        // THEN
+        let isStillSaved = FileManager.default.fileExists(atPath: path)
+        #expect(isStillSaved == false)
+    }
+
     // MARK: - Helpers
+
+    private func makeDownloader() -> ImageDownloader {
+        ImageDownloader(cache: MockMemoryCache(), diskCacheDirectory: diskCacheDirectory)
+    }
+
+    /// Downloads `data` as an immutable image, then reads it back the way the next app launch
+    /// does: with a new downloader and an empty memory cache, offline.
+    private func downloadThenReadFromDisk(
+        _ data: Data,
+        options: ImageRequestOptions = ImageRequestOptions(mutability: .immutable)
+    ) async throws -> (downloaded: UIImage, fromDisk: UIImage, url: URL) {
+        let url = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString)"))
+        let request = ImageRequest(url: url, options: options)
+
+        stub(condition: { _ in true }, response: { _ in HTTPStubsResponse(data: data, statusCode: 200, headers: nil) })
+        let downloaded = try await sut.image(for: request)
+
+        HTTPStubs.removeAllStubs()
+        stub(condition: { _ in true }, response: { _ in HTTPStubsResponse(error: URLError(.notConnectedToInternet)) })
+        let fromDisk = try await makeDownloader().image(for: request)
+
+        return (downloaded, fromDisk, url)
+    }
 
     func mockResponse(
         withResource name: String,
@@ -369,6 +500,31 @@ private final class MockMemoryCache: MemoryCacheProtocol, @unchecked Sendable {
 }
 
 private enum Fixtures {
+    /// A JPEG whose pixels are `width`×`height`, tagged with an EXIF orientation.
+    static func makeJPEG(width: Int, height: Int, orientation: CGImagePropertyOrientation) throws -> Data {
+        let data = NSMutableData()
+        let destination = try #require(
+            CGImageDestinationCreateWithData(data, UTType.jpeg.identifier as CFString, 1, nil)
+        )
+        let properties = [kCGImagePropertyOrientation: orientation.rawValue] as CFDictionary
+        CGImageDestinationAddImage(destination, try makeCGImage(width: width, height: height), properties)
+        try #require(CGImageDestinationFinalize(destination))
+        return data as Data
+    }
+
+    static func makeCGImage(width: Int, height: Int) throws -> CGImage {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: CGSize(width: width, height: height), format: format)
+            .image { context in
+                UIColor.red.setFill()
+                context.fill(CGRect(x: 0, y: 0, width: width / 2, height: height))
+                UIColor.blue.setFill()
+                context.fill(CGRect(x: width / 2, y: 0, width: width - width / 2, height: height))
+            }
+        return try #require(image.cgImage)
+    }
+
     /// A short video whose frames are `width`×`height` pixels, with the given track transform.
     static func makeVideo(width: Int, height: Int, transform: CGAffineTransform) async throws -> URL {
         let url = FileManager.default.temporaryDirectory.appending(path: "\(UUID().uuidString).mov")
