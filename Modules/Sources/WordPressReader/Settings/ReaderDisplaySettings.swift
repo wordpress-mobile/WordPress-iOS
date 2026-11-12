@@ -58,7 +58,13 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
 
         switch font {
         case .serif:
-            return WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight ?? .regular).withSize(pointSize)
+            // Noto Serif, to match the post content (see `Font.cssString`).
+            switch weight ?? .regular {
+            case .semibold, .bold, .heavy, .black:
+                return WPStyleGuide.notoBoldFontForTextStyle(textStyle).withSize(pointSize)
+            default:
+                return WPStyleGuide.notoFontForTextStyle(textStyle).withSize(pointSize)
+            }
         case .mono:
             let descriptorWithDesign = descriptor.withDesign(.monospaced) ?? descriptor
             return UIFont(descriptor: descriptorWithDesign, size: descriptorWithDesign.pointSize * size.scale)
@@ -244,7 +250,7 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
             case .sans:
                 return "-apple-system, sans-serif"
             case .serif:
-                return "'Noto Serif', serif"
+                return "'Noto Serif', ui-serif, serif"
             case .mono:
                 return "'SF Mono', SFMono-Regular, ui-monospace, monospace"
             }

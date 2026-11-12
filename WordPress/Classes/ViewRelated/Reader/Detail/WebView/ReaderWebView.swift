@@ -68,6 +68,7 @@ class ReaderWebView: WKWebView {
         <link rel="stylesheet" type="text/css" href="\(ReaderCSS().address)">
         <style>
         \(cssColors())
+        \(ReaderDisplaySettings.webFontStylesheet)
         \(cssStyles())
         \(p2Styles())
         \(overrideStyles())
