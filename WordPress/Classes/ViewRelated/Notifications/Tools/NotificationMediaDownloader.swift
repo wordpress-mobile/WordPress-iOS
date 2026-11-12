@@ -94,9 +94,11 @@ class NotificationMediaDownloader: NSObject {
 
         for (url, originalImage) in originalImagesMap {
             let targetSize = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
-            let resizedImage = resizedImagesMap[url]
-
-            if resizedImage == nil || resizedImage?.size == targetSize || resizedImage as? AnimatedImage != nil {
+            guard let resizedImage = resizedImagesMap[url] else {
+                continue
+            }
+            let shownSize = (resizedImage as? AnimatedImage)?.targetSize ?? resizedImage.size
+            if shownSize == targetSize {
                 continue
             }
 
@@ -177,7 +179,7 @@ class NotificationMediaDownloader: NSObject {
     /// - Returns: A dictionary with URL as Key, and Image as Value.
     ///
     private func shouldDownloadImage(url: URL) -> Bool {
-        return originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
+        originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
     }
 
     /// Resizes -in background- a given image, if needed, to fit a maximum width
@@ -188,32 +190,28 @@ class NotificationMediaDownloader: NSObject {
     ///     - callback: A closure to be called, on the main thread, on completion
     ///
     private func resizeImageIfNeeded(_ image: UIImage, maximumWidth: CGFloat, callback: @escaping (UIImage) -> Void) {
-        // Animated images aren't actually resized, so return the image itself if we've already recorded the target size
-        if let animatedImage = image as? AnimatedImage, animatedImage.targetSize != nil {
-            callback(animatedImage)
+        let targetSize = cappedImageSize(image.size, maximumWidth: maximumWidth)
+
+        // Resizing an animated image would lose its frames. Instead, record the size to show it at, so the
+        // view can set its bounds. Record it on a copy: the downloaded image is shared through the image cache.
+        if let animatedImage = image as? AnimatedImage, let gifData = animatedImage.gifData,
+            let sizedImage = AnimatedImage(gifData: gifData)
+        {
+            sizedImage.targetSize = targetSize
+            callback(sizedImage)
             return
         }
 
-        let targetSize = cappedImageSize(image.size, maximumWidth: maximumWidth)
         if image.size == targetSize {
             callback(image)
             return
         }
 
         resizeQueue.async {
-            let resizedImage: UIImage?
-
-            // If we try to resize the animate image it will lose all of its frames
-            // Instead record the target size so we can properly set the bounds of the view later
-            if let animatedImage = image as? AnimatedImage, animatedImage.gifData != nil {
-                animatedImage.targetSize = targetSize
-                resizedImage = animatedImage
-            } else {
-                resizedImage = image.resized(to: targetSize)
-            }
+            let resizedImage = image.resized(to: targetSize)
 
             DispatchQueue.main.async {
-                callback(resizedImage!)
+                callback(resizedImage)
             }
         }
     }

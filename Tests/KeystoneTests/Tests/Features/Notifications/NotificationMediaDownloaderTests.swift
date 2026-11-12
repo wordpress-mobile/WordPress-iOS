@@ -54,6 +54,25 @@ final class NotificationMediaDownloaderTests {
         #expect(downloader.imagesForUrls(urls).count == urls.count)
     }
 
+    @Test func animatedImageIsResizedForNewWidth() async throws {
+        // GIVEN a 80×40 GIF shown 40 points wide
+        let downloader = NotificationMediaDownloader()
+        let url = Self.makeURL("gif")
+        await withCheckedContinuation { continuation in
+            downloader.downloadMedia(urls: [url], maximumWidth: 40) { continuation.resume() }
+        }
+        let first = try #require(downloader.imagesForUrls([url])[url] as? AnimatedImage)
+        #expect(first.targetSize == CGSize(width: 40, height: 20))
+
+        // WHEN the screen rotates, and there are only 20 points
+        downloader.resizeMediaWithIncorrectSize(20) {}
+        try await Task.sleep(for: .milliseconds(300))
+
+        // THEN
+        let resized = try #require(downloader.imagesForUrls([url])[url] as? AnimatedImage)
+        #expect(resized.targetSize == CGSize(width: 20, height: 10))
+    }
+
     // MARK: - Helpers
 
     private static func makeURL(_ pathExtension: String) -> URL {
