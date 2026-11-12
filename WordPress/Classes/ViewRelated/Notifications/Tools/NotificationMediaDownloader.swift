@@ -14,9 +14,10 @@ class NotificationMediaDownloader: NSObject {
     ///
     private let imageDownloader = ImageDownloader.shared
 
-    /// Resize OP's will never hit the main thread
+    /// Resize OP's will never hit the main thread. The queue is serial, so that when the width changes
+    /// twice in a row, the last resize finishes last and its size is the one shown.
     ///
-    private let resizeQueue = DispatchQueue(label: "notifications.media.resize", attributes: .concurrent)
+    private let resizeQueue = DispatchQueue(label: "notifications.media.resize")
 
     /// Original Images Cache
     ///
@@ -60,7 +61,7 @@ class NotificationMediaDownloader: NSObject {
                 // On success: Cache the original image, and resize (if needed)
                 self.originalImagesMap[url] = image
 
-                self.resizeImageIfNeeded(image, maximumWidth: maximumWidth) {
+                self.resizeImageIfNeeded(image, for: url, maximumWidth: maximumWidth) {
                     self.resizedImagesMap[url] = $0
                     group.leave()
                 }
@@ -105,7 +106,7 @@ class NotificationMediaDownloader: NSObject {
             group.enter()
             shouldHitCompletion = true
 
-            resizeImageIfNeeded(originalImage, maximumWidth: maximumWidth) {
+            resizeImageIfNeeded(originalImage, for: url, maximumWidth: maximumWidth) {
                 self.resizedImagesMap[url] = $0
                 group.leave()
             }
@@ -186,16 +187,23 @@ class NotificationMediaDownloader: NSObject {
     ///
     /// - Parameters:
     ///     - image: The image to resize
+    ///     - url: The image's URL
     ///     - maximumWidth: The maximum width in which the image should fit
     ///     - callback: A closure to be called, on the main thread, on completion
     ///
-    private func resizeImageIfNeeded(_ image: UIImage, maximumWidth: CGFloat, callback: @escaping (UIImage) -> Void) {
+    private func resizeImageIfNeeded(
+        _ image: UIImage,
+        for url: URL,
+        maximumWidth: CGFloat,
+        callback: @escaping (UIImage) -> Void
+    ) {
         let targetSize = cappedImageSize(image.size, maximumWidth: maximumWidth)
 
         // Resizing an animated image would lose its frames. Instead, record the size to show it at, so the
         // view can set its bounds. Record it on a copy: the downloaded image is shared through the image cache.
-        if let animatedImage = image as? AnimatedImage, let gifData = animatedImage.gifData,
-            let sizedImage = AnimatedImage(gifData: gifData)
+        // Making a copy of a large GIF takes a while, so make it once and reuse it.
+        if let animatedImage = image as? AnimatedImage,
+            let sizedImage = sizedCopy(of: animatedImage, for: url)
         {
             sizedImage.targetSize = targetSize
             callback(sizedImage)
@@ -214,6 +222,14 @@ class NotificationMediaDownloader: NSObject {
                 callback(resizedImage)
             }
         }
+    }
+
+    /// Returns this downloader's own copy of a downloaded animated image, which it can size.
+    private func sizedCopy(of image: AnimatedImage, for url: URL) -> AnimatedImage? {
+        if let copy = resizedImagesMap[url] as? AnimatedImage, copy !== image {
+            return copy
+        }
+        return image.gifData.flatMap { AnimatedImage(gifData: $0) }
     }
 
     /// Returns the scaled size, scaled down proportionally (if needed) to fit a maximumWidth
