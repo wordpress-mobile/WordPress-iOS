@@ -25,7 +25,6 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     let getDownloadsDataFilename = "stats-file-downloads.json"
     let getPostsDetailsFilename = "stats-post-details.json"
     let toggleSpamStateResponseFilename = "stats-referrer-mark-as-spam.json"
-    let getStatsSummaryFilename = "stats-summary.json"
     let getArchivesDataFilename = "stats-archives-data.json"
     let getEmailOpensFilename = "stats-email-opens.json"
     let getWordAdsMonthMockFilename = "stats-wordads-month.json"
@@ -50,7 +49,6 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var sitePublishedPostsEndpoint: String { return "sites/\(siteID)/posts/" }
     var siteDownloadsDataEndpoint: String { return "sites/\(siteID)/stats/file-downloads/" }
     var sitePostDetailsEndpoint: String { return "sites/\(siteID)/stats/post/9001" }
-    var siteStatsSummaryEndpoint: String { return "sites/\(siteID)/stats/summary/" }
     var siteArchivesDataEndpoint: String { return "sites/\(siteID)/stats/archives" }
     var siteEmailOpensEndpoint: String { return "sites/\(siteID)/stats/opens/emails/231/rate" }
     var siteWordAdsEndpoint: String { return "sites/\(siteID)/wordads/stats" }
@@ -764,29 +762,6 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         }, failure: { error in
             XCTFail("Unmarking referrer as spam failed, reason: \(error.localizedDescription)")
         })
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func testSummary() {
-        let expect = expectation(description: "It should return stats summary for a week")
-
-        stubRemoteResponse(siteStatsSummaryEndpoint, filename: getStatsSummaryFilename, contentType: .ApplicationJSON)
-
-        let day = DateComponents(year: 2024, month: 1, day: 31)
-        let date = Calendar.autoupdatingCurrent.date(from: day)!
-
-        remote.getData(for: .year, endingOn: date) { (summary: StatsTotalsSummaryData?, error: Error?) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(summary)
-
-            XCTAssertEqual(summary?.viewsCount, 43607)
-            XCTAssertEqual(summary?.visitorsCount, 3497)
-            XCTAssertEqual(summary?.likesCount, 2378)
-            XCTAssertEqual(summary?.commentsCount, 154)
-
-            expect.fulfill()
-        }
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
