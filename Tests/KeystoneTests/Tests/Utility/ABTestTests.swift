@@ -116,19 +116,92 @@ struct ABTestTests {
     @Test("The ExPlat that started a fetch stays alive until it has stored the answer")
     func startKeepsExPlatAlive() async {
         // Given an ExPlat that, like the real one, drops the answer if it has been released
-        var exPlat: WeakSelfAssigner? = WeakSelfAssigner()
+        let network = FakeNetwork()
+        var exPlat: WeakSelfAssigner? = WeakSelfAssigner(network: network)
         weak var weakExPlat = exPlat
         ABTest.start(app: .wordpress, isDotComAvailable: true, hasOptedOutOfAnalytics: false, exPlat: exPlat)
 
         // When Tracks replaces it while the request is in flight
         exPlat = nil
         #expect(weakExPlat != nil)
-        WeakSelfAssigner.answerPendingRefresh()
+        network.answer()
         await drainMainQueue()
 
         // Then the answer is still stored, and the ExPlat is released afterwards
-        #expect(WeakSelfAssigner.storedAnswers == 1)
+        #expect(network.storedAnswers == 1)
         #expect(weakExPlat == nil)
+    }
+
+    @Test("A reset releases the ExPlat of the request in flight, so its answer isn't stored")
+    func resetReleasesTheExPlatInFlight() async {
+        // Given a request in flight on an ExPlat that Tracks has already replaced
+        let network = FakeNetwork()
+        var exPlat: WeakSelfAssigner? = WeakSelfAssigner(network: network)
+        weak var weakExPlat = exPlat
+        var didComplete = false
+        ABTest.start(app: .wordpress, isDotComAvailable: true, hasOptedOutOfAnalytics: false, exPlat: exPlat) {
+            didComplete = true
+        }
+        exPlat = nil
+
+        // When the account signs out
+        let userDefaults = UserDefaults(suiteName: #function)!
+        defer { userDefaults.removePersistentDomain(forName: #function) }
+        ABTest.reset(exPlat: ExperimentAssignerSpy(), userDefaults: userDefaults)
+
+        // Then the ExPlat is gone, the waiting completion has run, and the late answer is dropped
+        #expect(weakExPlat == nil)
+        #expect(didComplete)
+        network.answer()
+        await drainMainQueue()
+        #expect(network.storedAnswers == 0)
+    }
+
+    @Test("A start after a reset makes its own request instead of joining the old one")
+    func startAfterResetDoesNotJoinTheOldRequest() async {
+        let userDefaults = UserDefaults(suiteName: #function)!
+        defer { userDefaults.removePersistentDomain(forName: #function) }
+        let oldExPlat = ExperimentAssignerSpy(storingAnswersIn: userDefaults)
+        let newExPlat = ExperimentAssignerSpy(storingAnswersIn: userDefaults)
+
+        // Given a request in flight when the account signs out
+        ABTest.start(
+            app: .wordpress,
+            isDotComAvailable: true,
+            hasOptedOutOfAnalytics: false,
+            exPlat: oldExPlat,
+            userDefaults: userDefaults
+        )
+        ABTest.reset(exPlat: oldExPlat, userDefaults: userDefaults)
+
+        // When the next account signs in
+        var didComplete = false
+        ABTest.start(
+            app: .wordpress,
+            isDotComAvailable: true,
+            hasOptedOutOfAnalytics: false,
+            exPlat: newExPlat,
+            userDefaults: userDefaults
+        ) {
+            didComplete = true
+        }
+
+        // Then it registers its experiments and makes its own request
+        #expect(newExPlat.registeredNames == [[ABTest.readerInWordPressApp.rawValue]])
+        #expect(newExPlat.pendingRefreshes.count == 1)
+        #expect(oldExPlat.registeredNames.last == [])
+
+        // When the old answer arrives first, it is cleared
+        oldExPlat.finishRefreshes()
+        await drainMainQueue()
+        #expect(userDefaults.object(forKey: "ab-testing-assignments") == nil)
+        #expect(!didComplete)
+
+        // And the new answer is kept
+        newExPlat.finishRefreshes()
+        await drainMainQueue()
+        #expect(didComplete)
+        #expect(userDefaults.object(forKey: "ab-testing-assignments") != nil)
     }
 
     @Test("A reset during a fetch clears the answer that arrives afterwards")
@@ -280,24 +353,39 @@ private final class ExperimentAssignerSpy: ExperimentAssigning {
     }
 }
 
+/// Stands in for the network request of a `WeakSelfAssigner`, and counts the answers that were stored.
+private final class FakeNetwork {
+    private(set) var storedAnswers = 0
+    fileprivate var pendingCallback: (() -> Void)?
+
+    fileprivate func store() {
+        storedAnswers += 1
+    }
+
+    /// Delivers the answer on a background queue, as `URLSession` does.
+    func answer() {
+        let callback = pendingCallback
+        pendingCallback = nil
+        DispatchQueue.global().sync { callback?() }
+    }
+}
+
 /// Mimics `ExPlat.refresh`: the network callback holds the `ExPlat` weakly and skips storing the
 /// answer if it has been released.
 private final class WeakSelfAssigner: ExperimentAssigning {
-    private(set) static var storedAnswers = 0
-    private static var pendingRefresh: (() -> Void)?
+    private let network: FakeNetwork
 
-    static func answerPendingRefresh() {
-        let refresh = pendingRefresh
-        pendingRefresh = nil
-        DispatchQueue.global().sync { refresh?() }
+    init(network: FakeNetwork) {
+        self.network = network
     }
 
     func register(experiments experimentNames: [String]) {}
 
     func refresh(completion: (() -> Void)?) {
-        WeakSelfAssigner.pendingRefresh = { [weak self] in
+        let network = self.network
+        network.pendingCallback = { [weak self] in
             if self != nil {
-                WeakSelfAssigner.storedAnswers += 1
+                network.store()
             }
             completion?()
         }

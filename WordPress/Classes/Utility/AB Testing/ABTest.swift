@@ -61,11 +61,31 @@ extension ABTest {
     /// Automattic-Tracks-iOS). ExPlat has no API to clear them.
     static let exPlatStorageKeys = ["ab-testing-assignments", "ab-testing-ttl-date", "ab-testing-enrolled-experiments"]
 
-    /// Completions waiting for the fetch in flight, or `nil` when none is running. Main queue only.
-    private static var pendingCompletions: [() -> Void]?
+    /// A request made by `start()` that hasn't answered yet.
+    private final class Fetch {
+        /// Keeps the `ExPlat` alive until the request answers. `ExPlat.refresh` drops the answer if
+        /// its `ExPlat` has been released by then, and Tracks replaces `ExPlat.shared` whenever
+        /// analytics metadata refreshes, which happens during the account and site sync after launch.
+        let exPlat: ExperimentAssigning
+        let generation: Int
+        var completions: [() -> Void]
 
-    /// How many times `reset()` has run. Main queue only.
-    private static var resetCount = 0
+        init(exPlat: ExperimentAssigning, generation: Int, completions: [() -> Void]) {
+            self.exPlat = exPlat
+            self.generation = generation
+            self.completions = completions
+        }
+    }
+
+    /// The request in flight, or `nil` when none is running. Main queue only.
+    private static var fetch: Fetch?
+
+    /// Increases with every `reset()`, so a request can tell whether it belongs to an account that
+    /// has signed out or opted out since. Main queue only.
+    private static var generation = 0
+
+    /// The generation whose answer is stored, if any. Main queue only.
+    private static var storedGeneration: Int?
 
     /// Registers the current app's experiments and fetches their assignments for the signed-in
     /// WordPress.com account.
@@ -74,10 +94,11 @@ extension ABTest {
     /// prefers a stored anonymous assignment over the account's, so a signed-out request would let
     /// a returning user switch groups at their next sign-in.
     ///
-    /// A call while a fetch is in flight joins it instead of starting another.
+    /// A call while a request is in flight joins it instead of starting another, unless `reset()`
+    /// has run since that request started.
     ///
     /// - Parameter completion: Called on the main queue once the assignments are stored, or when
-    ///   the request fails or isn't made.
+    ///   the request fails, isn't made, or is abandoned by `reset()`.
     static func start(
         app: AppBrand = BuildSettings.current.brand,
         isDotComAvailable: Bool = AccountHelper.isDotcomAvailable(),
@@ -92,40 +113,54 @@ extension ABTest {
             completion?()
             return
         }
-        if pendingCompletions != nil {
+        if let fetch {
             if let completion {
-                pendingCompletions?.append(completion)
+                fetch.completions.append(completion)
             }
             return
         }
-        pendingCompletions = completion.map { [$0] } ?? []
-        let resetCountAtStart = resetCount
+        let generationAtStart = generation
+        fetch = Fetch(exPlat: exPlat, generation: generationAtStart, completions: completion.map { [$0] } ?? [])
         exPlat.register(experiments: experimentNames)
+        // The closure must not hold the `ExPlat`: `reset()` releases it by dropping `fetch`, so a
+        // request from a signed-out account can't store its answer.
         exPlat.refresh {
-            // `ExPlat.refresh` drops the answer if its `ExPlat` has been released by then, and Tracks
-            // replaces `ExPlat.shared` whenever analytics metadata refreshes, which happens during the
-            // account and site sync after launch. Keep this one alive until it has stored the answer.
-            withExtendedLifetime(exPlat) {}
             DispatchQueue.main.async {
-                // The answer belongs to an account that has signed out or opted out since.
-                if resetCount != resetCountAtStart {
-                    removeStoredAssignments(from: userDefaults)
-                }
-                let completions = pendingCompletions ?? []
-                pendingCompletions = nil
-                completions.forEach { $0() }
+                didAnswer(generation: generationAtStart, userDefaults: userDefaults)
             }
         }
     }
 
+    private static func didAnswer(generation answerGeneration: Int, userDefaults: UserDefaults) {
+        guard answerGeneration == generation else {
+            // An answer to a request that `reset()` abandoned. Its `ExPlat` stores it only if it
+            // is still alive, which happens when it is still `ExPlat.shared` (for example after an
+            // opt-out). Clear it unless a newer request has already stored its own answer.
+            if storedGeneration != generation {
+                removeStoredAssignments(from: userDefaults)
+            }
+            return
+        }
+        storedGeneration = answerGeneration
+        let completions = fetch?.completions ?? []
+        fetch = nil
+        completions.forEach { $0() }
+    }
+
     /// Forgets the registered experiments and every stored assignment, so the next account doesn't
-    /// inherit them and ExPlat makes no more requests. A request started by `start()` that answers
-    /// later is cleared too. Call it at sign-out and on analytics opt-out.
+    /// inherit them and ExPlat makes no more requests. A request in flight is abandoned: its
+    /// `ExPlat` is released unless it is still `ExPlat.shared`, its waiting completions run now,
+    /// and an answer that still arrives is cleared. Call it at sign-out and on analytics opt-out.
     static func reset(exPlat: ExperimentAssigning? = ExPlat.shared, userDefaults: UserDefaults = .standard) {
         wpAssert(Thread.isMainThread)
-        resetCount += 1
+        generation += 1
+        storedGeneration = nil
+        let abandoned = fetch
+        fetch = nil
         exPlat?.register(experiments: [])
+        abandoned?.exPlat.register(experiments: [])
         removeStoredAssignments(from: userDefaults)
+        abandoned?.completions.forEach { $0() }
     }
 
     private static func removeStoredAssignments(from userDefaults: UserDefaults) {
