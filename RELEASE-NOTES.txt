@@ -25,7 +25,7 @@
 * [*] Fix avatars and other images sometimes showing the previous row's image, and free their memory after leaving the screen [#26394]
 * [*] Notifications: Fix a rare crash when opening a notification with images, and GIFs keeping their old size after rotating [#26396]
 * [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
-* [*] Support: Show video attachment thumbnails the right way up, and keep saved attachments smaller [#26392]
+* [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
 
 
 27.4
