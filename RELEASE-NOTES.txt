@@ -1,6 +1,6 @@
 27.5
 -----
-* [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26387]
+* [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26388]
 * [*] Reader: Fix the comments list jumping to the top and hiding your new comment after posting it [#26357]
 * [*] Self-hosted sites: Fix new posts having comments closed instead of following the site's discussion settings [#26356]
 * [*] Reader: Tapping a mention in a post now shows that person's profile [#25793]
