@@ -389,6 +389,42 @@ import OHHTTPStubsSwift
         #expect(thumbnail.size == CGSize(width: 128, height: 64))
     }
 
+    @Test func diskCacheSavesOneFilePerImage() async throws {
+        // GIVEN a 1024×680 px JPEG, downloaded as a thumbnail first
+        let data = try Data(contentsOf: try #require(Bundle.test.url(forResource: "test-image", withExtension: "jpg")))
+        let thumbnailOptions = ImageRequestOptions(size: ImageSize(width: 256, height: 256), mutability: .immutable)
+        let (_, _, url) = try await downloadThenReadFromDisk(data, options: thumbnailOptions)
+
+        // WHEN the full size is requested, offline
+        let fullSize = try await makeDownloader()
+            .image(
+                for: ImageRequest(url: url, options: ImageRequestOptions(mutability: .immutable))
+            )
+
+        // THEN it comes from the one saved file
+        #expect(fullSize.size == CGSize(width: 1024, height: 680))
+        let files = try FileManager.default.contentsOfDirectory(atPath: diskCacheDirectory.path())
+        #expect(files.count == 1, "Saved \(files.count) files")
+    }
+
+    @Test func diskCacheKeepsFullSizeVideoFrame() async throws {
+        // GIVEN a 128×64 video whose thumbnail is first requested small
+        let videoURL = try await Fixtures.makeVideo(width: 128, height: 64, transform: .identity)
+        let smallOptions = ImageRequestOptions(size: ImageSize(width: 32, height: 32), mutability: .immutable)
+        let small = try await sut.image(for: ImageRequest(videoUrl: videoURL, options: smallOptions))
+        #expect(small.size == CGSize(width: 32, height: 16))
+
+        // WHEN both sizes are requested again after the video is gone
+        try FileManager.default.removeItem(at: videoURL)
+        let fullOptions = ImageRequestOptions(mutability: .immutable)
+        let fullSize = try await makeDownloader().image(for: ImageRequest(videoUrl: videoURL, options: fullOptions))
+        let smallAgain = try await makeDownloader().image(for: ImageRequest(videoUrl: videoURL, options: smallOptions))
+
+        // THEN both come from the saved full-size frame, resized the same way as a fresh thumbnail
+        #expect(fullSize.size == CGSize(width: 128, height: 64))
+        #expect(smallAgain.size == CGSize(width: 32, height: 16))
+    }
+
     @Test func diskCacheWriteFailureStillReturnsImage() async throws {
         // GIVEN the disk cache can't save files, as when the device is out of space
         let fileManager = FileManager.default
