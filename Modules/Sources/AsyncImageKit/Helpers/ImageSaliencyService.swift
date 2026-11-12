@@ -31,6 +31,12 @@ public actor ImageSaliencyService {
         cache.cachedResult(for: url)
     }
 
+    /// Records a detection result without running detection. Detection uses Vision, whose results
+    /// depend on the device and OS, so tests set up the result they need with this.
+    nonisolated func storeResult(_ rect: CGRect?, for url: URL) {
+        cache.store(rect, for: url)
+    }
+
     /// Returns the bounding rect of the most salient region in UIKit normalized coordinates
     /// (origin top-left, values 0–1), or `nil` if detection fails or no salient objects are found.
     ///

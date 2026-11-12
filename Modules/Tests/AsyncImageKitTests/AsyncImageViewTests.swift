@@ -43,8 +43,7 @@ import Testing
             }
 
         // GIVEN detection already ran for this image and found no salient region
-        let rect = await ImageSaliencyService.shared.saliencyRect(for: portraitImage, url: url)
-        try #require(rect == nil)
+        ImageSaliencyService.shared.storeResult(nil, for: url)
 
         // GIVEN the image is in the memory cache
         ImageDownloader.shared.setCachedImage(portraitImage, for: url)
