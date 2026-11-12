@@ -38,6 +38,8 @@
 * [*] iPad: Fix notices being cut off or covering the tab bar after resizing the app window [#26204]
 * [*] Stats: Fix the back button missing on iPhone Duo and on Plus and Pro Max iPhones in landscape [#26207]
 * [**] iPad and large iPhones: Screens now adapt to the app window's size in split view, Stage Manager and landscape, not the device type [#26201]
+* [*] Fix a rare crash when several network requests start at the same time [#26116]
+* [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
 
 27.3
 -----
