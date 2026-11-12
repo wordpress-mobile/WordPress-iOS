@@ -1,3 +1,4 @@
+import Foundation
 import WordPressCoreProtocols
 
 /// Represents a double-returning promise – initially for a cached result that may be empty, and eventually for an expensive fetched result (usually from a server).
