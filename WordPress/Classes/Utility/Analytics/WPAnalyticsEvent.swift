@@ -591,6 +591,12 @@ import WordPressShared
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
 
+    // Design Card
+    case designCardShown
+    case designCardTapped
+    case designCardHidden
+    case designCardDesignApplied
+
     // Voice to Content (aka "Post from Audio")
     case voiceToContentSheetShown
     case voiceToContentButtonStartRecordingTapped
@@ -1726,6 +1732,16 @@ import WordPressShared
             return "free_to_paid_plan_dashboard_card_tapped"
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
+
+        // Design Card
+        case .designCardShown:
+            return "design_card_shown"
+        case .designCardTapped:
+            return "design_card_tapped"
+        case .designCardHidden:
+            return "design_card_hidden"
+        case .designCardDesignApplied:
+            return "design_card_design_applied"
 
         // Voice to Content (aka "Post from Audio")
         case .voiceToContentSheetShown:

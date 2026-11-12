@@ -3,6 +3,8 @@ import UIKit
 enum SiteDesignCategoryThumbnailSize {
     case category
     case recommended
+    /// The category width at the 4:3 aspect ratio of desktop screenshots.
+    case landscape
 
     /// The size the design previews are requested at. It's the largest thumbnail size, so the previews are never
     /// scaled up when the window's size class changes after they load. Smaller thumbnails crop them to fill.
@@ -19,6 +21,9 @@ enum SiteDesignCategoryThumbnailSize {
             return .init(width: 327, height: 450)
         case .recommended:
             return .init(width: 350, height: 450)
+        case .landscape:
+            let width = SiteDesignCategoryThumbnailSize.category.value(for: windowSizeClass).width
+            return .init(width: width, height: (width * 3 / 4).rounded())
         }
     }
 }
