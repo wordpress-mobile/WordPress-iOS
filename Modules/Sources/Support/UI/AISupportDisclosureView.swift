@@ -22,7 +22,9 @@ public struct AISupportDisclosureView: View {
                 // No line limit: at the largest text sizes the line wraps rather than being cut off.
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+                // The inset the composer at the other end of the conversation takes, so the two bars the
+                // screen wears are the same depth.
+                .padding(.vertical, 8)
 
             Divider()
         }
