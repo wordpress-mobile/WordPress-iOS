@@ -13,6 +13,14 @@ protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
 }
 
+protocol SearchManaging {
+    func indexItem(_ item: SearchableItemConvertable)
+    func deleteSearchableItem(_ item: SearchableItemConvertable)
+    func deleteSearchableItems(withIdentifiers identifiers: [String])
+}
+
+extension SearchManager: SearchManaging {}
+
 class PostCoordinator: NSObject {
 
     enum SavingError: Error, LocalizedError, CustomNSError {
@@ -56,6 +64,7 @@ class PostCoordinator: NSObject {
 
     private let mediaCoordinator: MediaCoordinator
     private let actionDispatcherFacade: ActionDispatcherFacade
+    private let searchManager: SearchManaging
 
     /// The initial sync retry delay. By default, 15 seconds.
     var syncRetryDelay: TimeInterval = 15
@@ -65,11 +74,13 @@ class PostCoordinator: NSObject {
     init(
         mediaCoordinator: MediaCoordinator? = nil,
         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-        coreDataStack: CoreDataStack = ContextManager.shared
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        searchManager: SearchManaging = SearchManager.shared
     ) {
         self.coreDataStack = coreDataStack
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.actionDispatcherFacade = actionDispatcherFacade
+        self.searchManager = searchManager
 
         super.init()
 
@@ -104,7 +115,7 @@ class PostCoordinator: NSObject {
         } else if post.status == .publish {
             notifyNewPostPublished()
         }
-        SearchManager.shared.indexItem(post)
+        searchManager.indexItem(post)
         AppRatingUtility.shared.incrementSignificantEvent()
     }
 
@@ -133,13 +144,17 @@ class PostCoordinator: NSObject {
             let repository = PostRepository(coreDataStack: coreDataStack)
             try await repository.save(post, changes: changes)
 
+            // Keep Spotlight current for every save, not only for the
+            // transition to scheduled or published, so edits to the title
+            // or content of an existing post reach the index.
+            updateSearchIndex(for: post)
+
             if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
                 if post.status == .scheduled {
                     notifyNewPostScheduled()
                 } else if post.status == .publish {
                     notifyNewPostPublished()
                 }
-                SearchManager.shared.indexItem(post)
                 AppRatingUtility.shared.incrementSignificantEvent()
             }
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
@@ -160,6 +175,7 @@ class PostCoordinator: NSObject {
         let post = post.getOriginal()
         do {
             try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
+            updateSearchIndex(for: post)
         } catch {
             trackError(error, operation: "post-patch", post: post)
             handleError(error, for: post)
@@ -227,14 +243,33 @@ class PostCoordinator: NSObject {
     }
 
     func didResolveConflict(for post: AbstractPost) {
+        // The conflict screen saves through `PostRepository` directly, so
+        // the sync started below finds nothing to upload and won't reindex.
+        updateSearchIndex(for: post)
         postConflictResolvedNotification(for: post)
         startSync(for: post) // Clears the error associated with the post
     }
 
+    /// Indexes the post, or removes its existing item when the post is no
+    /// longer searchable (for example, when it was trashed on the server).
+    /// Indexing an unsearchable post writes nothing, so the old item would
+    /// otherwise stay in Spotlight.
+    private func updateSearchIndex(for post: AbstractPost) {
+        if post.isSearchable {
+            searchManager.indexItem(post)
+        } else {
+            searchManager.deleteSearchableItem(post)
+        }
+    }
+
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
+        let searchableIdentifier = post.uniqueIdentifier
         let context = coreDataStack.mainContext
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
+        if let searchableIdentifier {
+            searchManager.deleteSearchableItems(withIdentifiers: [searchableIdentifier])
+        }
     }
 
     private func show(_ notice: Notice) {
@@ -547,6 +582,7 @@ class PostCoordinator: NSObject {
         case .success:
             worker.retryDelay = syncRetryDelay
             worker.error = nil
+            updateSearchIndex(for: operation.post)
             postDidUpdateNotification(for: operation.post) // TODO: Use syncEvents
 
             if let revision = operation.post.getLatestRevisionNeedingSync() {
@@ -992,7 +1028,7 @@ class PostCoordinator: NSObject {
             try await PostRepository(coreDataStack: coreDataStack).trash(post)
 
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
-            SearchManager.shared.deleteSearchableItem(post)
+            searchManager.deleteSearchableItem(post)
         } catch {
             trackError(error, operation: "post-trash", post: post)
             handleError(error, for: post)
@@ -1006,8 +1042,14 @@ class PostCoordinator: NSObject {
         setUpdating(true, for: post)
         defer { setUpdating(false, for: post) }
 
+        // Capture the identifier first: the managed object is gone once the
+        // deletion succeeds.
+        let searchableIdentifier = post.uniqueIdentifier
         do {
             try await PostRepository(coreDataStack: coreDataStack).delete(post)
+            if let searchableIdentifier {
+                searchManager.deleteSearchableItems(withIdentifiers: [searchableIdentifier])
+            }
         } catch {
             trackError(error, operation: "post-delete", post: post)
             handleError(error, for: post)
