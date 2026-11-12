@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
@@ -13,6 +14,10 @@ struct MediaLibrarySearchView: View {
     let tracker: any MediaTracker
     @Binding var searchText: String
     let isAspectRatioMode: Bool
+    let urlOpener: (any MediaDetailURLOpener)?
+    let shareService: (any MediaDetailShareService)?
+    let navigator: (any MediaDetailNavigator)?
+    let capabilities: MediaLibraryCapabilities?
 
     /// The debounced, committed query. Empty until the first debounce fires.
     @State private var query = ""
@@ -27,7 +32,11 @@ struct MediaLibrarySearchView: View {
                     service: service,
                     client: client,
                     tracker: tracker,
-                    isAspectRatioMode: isAspectRatioMode
+                    isAspectRatioMode: isAspectRatioMode,
+                    urlOpener: urlOpener,
+                    shareService: shareService,
+                    navigator: navigator,
+                    capabilities: capabilities
                 )
                 .id(query)
             }
@@ -61,7 +70,11 @@ private struct MediaSearchResultsView: View {
         service: WpService,
         client: WordPressClient,
         tracker: any MediaTracker,
-        isAspectRatioMode: Bool
+        isAspectRatioMode: Bool,
+        urlOpener: (any MediaDetailURLOpener)?,
+        shareService: (any MediaDetailShareService)?,
+        navigator: (any MediaDetailNavigator)?,
+        capabilities: MediaLibraryCapabilities?
     ) {
         self.query = query
         self.tracker = tracker
@@ -71,20 +84,40 @@ private struct MediaSearchResultsView: View {
                 service: service,
                 client: client,
                 tracker: tracker,
-                search: query
+                search: query,
+                urlOpener: urlOpener,
+                shareService: shareService,
+                navigator: navigator,
+                capabilities: capabilities
             )
         )
     }
 
     var body: some View {
-        MediaGridView(items: viewModel.displayItems, isAspectRatioMode: isAspectRatioMode)
-            .refreshable { await viewModel.refresh() }
-            .task {
-                tracker.track(.mediaLibrarySearched(queryLength: query.count))
-                await viewModel.load()
-            }
-            .task { await viewModel.observe() }
-            .overlay { overlay }
+        MediaGridView(
+            items: viewModel.displayItems,
+            isAspectRatioMode: isAspectRatioMode,
+            canSelect: { viewModel.canOpenDetail(for: $0) },
+            onSelect: { pushDetail(for: $0) }
+        )
+        .refreshable { await viewModel.refresh() }
+        .task {
+            tracker.track(.mediaLibrarySearched(queryLength: query.count))
+            await viewModel.load()
+        }
+        .task { await viewModel.observe() }
+        .overlay { overlay }
+    }
+
+    /// Same UIKit-bridge push as `MediaLibraryView.pushDetail`. The pushed
+    /// detail screen owns its view model and lives on the outer UIKit nav
+    /// stack, so a query change tearing down this view's `@StateObject`
+    /// cannot strand it.
+    private func pushDetail(for item: MediaGridItem) {
+        guard let detailVM = viewModel.makeDetailVM(for: item) else { return }
+        let host = UIHostingController(rootView: MediaDetailView(viewModel: detailVM))
+        host.navigationItem.largeTitleDisplayMode = .never
+        viewModel.detailNavigator?.push(host)
     }
 
     @ViewBuilder private var overlay: some View {
