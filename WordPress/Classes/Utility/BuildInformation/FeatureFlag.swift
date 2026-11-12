@@ -85,7 +85,8 @@ public enum FeatureFlag: Int, CaseIterable {
         case .commentsV2:
             return BuildConfiguration.current == .debug
         case .siteCreationShortFlow:
-            return BuildConfiguration.current.isInternal
+            // `ABTest.siteCreationShortFlow` decides who gets the short flow.
+            return true
         }
     }
 
