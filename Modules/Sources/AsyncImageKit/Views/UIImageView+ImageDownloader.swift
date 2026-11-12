@@ -29,19 +29,28 @@ public struct ImageViewExtensions {
     }
 
     public var controller: ImageLoadingController {
-        if let controller = objc_getAssociatedObject(imageView, ImageViewExtensions.controllerKey) as? ImageLoadingController {
+        if let controller = objc_getAssociatedObject(imageView, ImageViewExtensions.controllerKey)
+            as? ImageLoadingController
+        {
             return controller
         }
         let controller = ImageLoadingController()
+        // Capture only a weak image view. Capturing `self` would retain the image view
+        // strongly, and the image view retains the controller: a retain cycle.
         controller.onStateChanged = { [weak imageView] in
             guard let imageView else { return }
-            setState($0, for: imageView)
+            ImageViewExtensions.setState($0, for: imageView)
         }
-        objc_setAssociatedObject(imageView, ImageViewExtensions.controllerKey, controller, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(
+            imageView,
+            ImageViewExtensions.controllerKey,
+            controller,
+            .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+        )
         return controller
     }
 
-    private func setState(_ state: ImageLoadingController.State, for imageView: UIImageView) {
+    private static func setState(_ state: ImageLoadingController.State, for imageView: UIImageView) {
         switch state {
         case .loading:
             break
