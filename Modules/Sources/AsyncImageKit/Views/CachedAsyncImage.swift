@@ -2,6 +2,11 @@ import SwiftUI
 
 /// Asynchronous Image View that replicates the public API of `SwiftUI.AsyncImage`.
 /// It uses `ImageDownloader` to fetch and cache the images.
+///
+/// - note: An animated GIF shows its first frame, because content closures receive a SwiftUI `Image`.
+///   Use ``AsyncImageView`` where a GIF needs to animate.
+/// - note: The view loads again only when the URL changes. Images are cached by URL, so a different
+///   `host` for the same URL gets the same image.
 public struct CachedAsyncImage<Content>: View where Content: View {
     /// The last phase the view's task produced, and the URL it belongs to.
     @State private var loaded: LoadedPhase?
@@ -15,14 +20,17 @@ public struct CachedAsyncImage<Content>: View where Content: View {
             .task(id: request?.source.url) { await fetchImage() }
     }
 
-    /// Until the task has run for the current URL, the view shows what the memory cache has for it.
-    /// So an image that is already in memory shows in the view's first frame, and a URL change
-    /// never shows the previous URL's image.
+    /// Until the task has loaded an image for the current URL, the view shows what the memory cache has
+    /// for it. So an image that is already in memory shows in the view's first frame, a URL change never
+    /// shows the previous URL's image, and an unfinished or failed load doesn't hide an image that has
+    /// reached memory since.
     private var phase: AsyncImagePhase {
-        if let loaded, loaded.url == request?.source.url {
-            return loaded.phase
+        let loadedPhase = loaded?.url == request?.source.url ? loaded?.phase : nil
+        if let loadedPhase, loadedPhase.image != nil {
+            return loadedPhase
         }
-        return Self.initialPhase(for: request, imageDownloader: imageDownloader)
+        let cachedPhase = Self.initialPhase(for: request, imageDownloader: imageDownloader)
+        return cachedPhase.image != nil ? cachedPhase : (loadedPhase ?? .empty)
     }
 
     // MARK: - Initializers

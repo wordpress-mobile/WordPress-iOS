@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 import Testing
 
@@ -66,6 +67,27 @@ struct CachedAsyncImageTests {
         #expect(renders.allSatisfy { !$0.hasImage })
     }
 
+    @Test("An image that reaches memory while the view's own load is unfinished is shown")
+    func showsImageCachedWhileLoadIsUnfinished() async throws {
+        // GIVEN a view whose load never finishes, as when it was cancelled while off screen
+        let downloader = ImageDownloader(cache: cache)
+        let recorder = Recorder()
+        let harness = Harness(
+            RecordingView(url: imageURL, host: HangingHost(), downloader: downloader, recorder: recorder)
+        )
+        try await harness.settle()
+        #expect(recorder.renders.last?.hasImage == false)
+
+        // WHEN the image reaches the memory cache another way (for example, another view loaded it)
+        downloader.setCachedImage(Self.image, for: imageURL)
+        harness.update(
+            RecordingView(tick: 1, url: imageURL, host: HangingHost(), downloader: downloader, recorder: recorder)
+        )
+
+        // THEN the next render shows it
+        #expect(recorder.renders.last?.hasImage == true)
+    }
+
     @Test("Re-rendering the parent doesn't look up the memory cache again")
     func parentRendersDoNotReadCache() async throws {
         let cache = CountingCache()
@@ -105,13 +127,14 @@ private final class Recorder {
 private struct RecordingView: View {
     var tick = 0
     let url: URL
+    var host: MediaHostProtocol?
     let downloader: ImageDownloader
     let recorder: Recorder
 
     var body: some View {
         ZStack {
             Text(tick, format: .number)
-            CachedAsyncImage(url: url, imageDownloader: downloader) { phase in
+            CachedAsyncImage(url: url, host: host, imageDownloader: downloader) { phase in
                 let _ = recorder.renders.append(.init(url: url, hasImage: phase.image != nil))
                 Color.clear
             }
@@ -140,6 +163,19 @@ private final class Harness<Root: View> {
     func settle() async throws {
         try await Task.sleep(for: .milliseconds(300))
         host.view.layoutIfNeeded()
+    }
+}
+
+/// A host whose requests never finish.
+private struct HangingHost: MediaHostProtocol {
+    func authenticatedRequest(for url: URL) async throws -> URLRequest {
+        try await Task.sleep(for: .seconds(60))
+        throw CancellationError()
+    }
+
+    func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
+        try await Task.sleep(for: .seconds(60))
+        throw CancellationError()
     }
 }
 
