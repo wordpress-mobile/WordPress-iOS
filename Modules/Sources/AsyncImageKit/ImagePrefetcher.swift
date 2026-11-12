@@ -3,7 +3,7 @@ import Collections
 
 @ImageDownloaderActor
 public final class ImagePrefetcher {
-    private let downloader: ImageDownloader
+    private let fetch: @ImageDownloaderActor @Sendable (ImageRequest) async -> Void
     private let maxConcurrentTasks: Int
     private var queue = OrderedDictionary<PrefetchKey, PrefetchTask>()
     private var numberOfActiveTasks = 0
@@ -15,11 +15,21 @@ public final class ImagePrefetcher {
         }
     }
 
-    public nonisolated init(
+    public nonisolated convenience init(
         downloader: ImageDownloader = .shared,
         maxConcurrentTasks: Int = 2
     ) {
-        self.downloader = downloader
+        self.init(maxConcurrentTasks: maxConcurrentTasks) { request in
+            _ = try? await downloader.image(for: request)
+        }
+    }
+
+    /// - parameter fetch: Prefetches the image for the request. Tests pass their own to control when each prefetch finishes.
+    nonisolated init(
+        maxConcurrentTasks: Int,
+        fetch: @escaping @ImageDownloaderActor @Sendable (ImageRequest) async -> Void
+    ) {
+        self.fetch = fetch
         self.maxConcurrentTasks = maxConcurrentTasks
     }
 
@@ -51,19 +61,23 @@ public final class ImagePrefetcher {
             }
             return nil
         }
-        while numberOfActiveTasks < maxConcurrentTasks, let (key, task) = nextPendingTask() {
-            task.task = Task {
-                await self.actuallyPrefetchImage(for: key.request)
+        while numberOfActiveTasks < maxConcurrentTasks, let (key, prefetch) = nextPendingTask() {
+            prefetch.task = Task {
+                await self.actuallyPrefetchImage(prefetch, for: key)
             }
             numberOfActiveTasks += 1
         }
     }
 
-    private func actuallyPrefetchImage(for request: ImageRequest) async {
-        _ = try? await downloader.image(for: request)
+    private func actuallyPrefetchImage(_ prefetch: PrefetchTask, for key: PrefetchKey) async {
+        await fetch(key.request)
 
         numberOfActiveTasks -= 1
-        queue[PrefetchKey(request: request)] = nil
+        // If this prefetch was stopped and the image was queued again while it ran,
+        // the queue holds a new prefetch for the same key. Leave that one alone.
+        if queue[key] === prefetch {
+            queue[key] = nil
+        }
         performPendingTasks()
     }
 
