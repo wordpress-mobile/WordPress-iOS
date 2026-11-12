@@ -62,10 +62,26 @@ struct JetpackFeaturesRemovalCoordinatorTests {
     )
     func readerInWordPressAppEnabled(isFlagEnabled: Bool, isInExperimentTreatment: Bool, expected: Bool) {
         let isEnabled = JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled(
+            flagOverride: nil,
             isFlagEnabled: isFlagEnabled,
             isInExperimentTreatment: isInExperimentTreatment
         )
         #expect(isEnabled == expected)
+    }
+
+    @Test(
+        "A debug-menu override of the flag wins over the flag and the experiment",
+        arguments: [false, true],
+        [(false, false), (true, false), (false, true), (true, true)]
+    )
+    func readerInWordPressAppOverride(flagOverride: Bool, values: (Bool, Bool)) {
+        let (isFlagEnabled, isInExperimentTreatment) = values
+        let isEnabled = JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled(
+            flagOverride: flagOverride,
+            isFlagEnabled: isFlagEnabled,
+            isInExperimentTreatment: isInExperimentTreatment
+        )
+        #expect(isEnabled == flagOverride)
     }
 
     // MARK: Site Creation Phase

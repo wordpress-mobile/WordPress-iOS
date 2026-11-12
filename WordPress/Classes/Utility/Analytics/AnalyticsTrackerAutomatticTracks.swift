@@ -21,15 +21,13 @@ import BuildSettingsKit
         )
     }
 
-    /// - Parameter makeTracksService: Tests may pass their own `TracksService` subclass.
     init(
         eventNamePrefix: String,
         platform: String,
-        appURLScheme: String,
-        makeTracksService: (TracksContextManager) -> TracksService = { TracksService(contextManager: $0) }
+        appURLScheme: String
     ) {
         contextManager = TracksContextManager()
-        tracksService = makeTracksService(contextManager)
+        tracksService = TracksService(contextManager: contextManager)
         tracksService.eventNamePrefix = eventNamePrefix
         tracksService.platform = platform
         self.appURLScheme = appURLScheme
@@ -67,8 +65,7 @@ import BuildSettingsKit
             if event == WPAnalyticsEvent.screenShown.value, let screen = properties["screen"] {
                 message.append(" >> \(screen)")
             }
-            let description =
-                properties
+            let description = properties
                 .map { (key: "\($0)", value: $1) }
                 .sorted {
                     $0.key.localizedCaseInsensitiveCompare($1.key) == .orderedAscending
@@ -87,7 +84,6 @@ import BuildSettingsKit
             tracksService.switchToAuthenticatedUser(
                 withUsername: currentUserID,
                 userID: nil,
-                anonymousID: experimentsAnonymousUserID,
                 wpComToken: try? WPAccount.token(forUsername: currentUserID),
                 skipAliasEventCreation: true
             )
@@ -123,20 +119,17 @@ import BuildSettingsKit
             // User is not authenticated, switch to an anonymous mode
             tracksService.switchToAnonymousUser(withAnonymousID: anonymousUserID)
             currentUserID = nil
-            experimentsAnonymousUserID = nil
             return
         }
 
         if (currentUserID ?? "").isEmpty {
             // No previous username logged
             currentUserID = username
-            experimentsAnonymousUserID = anonymousUserID
             removeAnonymousID()
 
             tracksService.switchToAuthenticatedUser(
                 withUsername: username,
                 userID: "",
-                anonymousID: experimentsAnonymousUserID,
                 wpComToken: try? WPAccount.token(forUsername: username),
                 skipAliasEventCreation: false
             )
@@ -145,18 +138,15 @@ import BuildSettingsKit
             tracksService.switchToAuthenticatedUser(
                 withUsername: username,
                 userID: "",
-                anonymousID: experimentsAnonymousUserID,
                 wpComToken: try? WPAccount.token(forUsername: username),
                 skipAliasEventCreation: true
             )
         } else {
             // Username changed for some reason - switch back to anonymous first
             tracksService.switchToAnonymousUser(withAnonymousID: anonymousUserID)
-            experimentsAnonymousUserID = anonymousUserID
             tracksService.switchToAuthenticatedUser(
                 withUsername: username,
                 userID: "",
-                anonymousID: experimentsAnonymousUserID,
                 wpComToken: try? WPAccount.token(forUsername: username),
                 skipAliasEventCreation: false
             )
@@ -189,7 +179,7 @@ import BuildSettingsKit
     }
 
     private func makeUserProperties(with info: SessionInfo) -> [String: Any] {
-        [
+        return [
             "app_scheme": WPAnalyticsTesting.appURLScheme ?? appURLScheme,
             "platform": "iOS",
             "dotcom_user": info.isDotcomUser,
@@ -197,7 +187,7 @@ import BuildSettingsKit
             "number_of_blogs": info.blogCount,
             "accessibility_voice_over_enabled": UIAccessibility.isVoiceOverRunning,
             "is_rtl_language": UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft,
-            "gutenberg_enabled": info.isGutenbergEnabled
+            "gutenberg_enabled": info.isGutenbergEnabled,
         ]
     }
 
@@ -223,27 +213,6 @@ import BuildSettingsKit
         cachedAnonymousUserID = nil
         UserPersistentStoreFactory.instance()
             .removeObject(forKey: Constants.tracksUserDefaultsAnonymousUserIDKey)
-    }
-
-    /// The anonymous ID this device used before the current account signed in, or `nil` if the
-    /// account was already signed in before this ID was kept (or the device never went through
-    /// the signed-out state).
-    ///
-    /// Tracks drops the anonymous ID at sign-in, but ExPlat keeps an experiment group from before
-    /// sign-in only if its assignment requests carry both that ID and the account's token. It is
-    /// sent only to ExPlat, and it is removed at sign-out.
-    private var experimentsAnonymousUserID: String? {
-        get {
-            UserPersistentStoreFactory.instance().string(forKey: Constants.experimentsAnonymousUserIDKey)
-        }
-        set {
-            let userDefaults = UserPersistentStoreFactory.instance()
-            if let newValue {
-                userDefaults.set(newValue, forKey: Constants.experimentsAnonymousUserIDKey)
-            } else {
-                userDefaults.removeObject(forKey: Constants.experimentsAnonymousUserIDKey)
-            }
-        }
     }
 
     private var currentUserID: String? {
@@ -275,5 +244,4 @@ import BuildSettingsKit
 private enum Constants {
     static let tracksUserDefaultsAnonymousUserIDKey = "TracksAnonymousUserID"
     static let tracksUserDefaultsLoggedInUserIDKey = "TracksLoggedInUserID"
-    static let experimentsAnonymousUserIDKey = "TracksExperimentsAnonymousUserID"
 }

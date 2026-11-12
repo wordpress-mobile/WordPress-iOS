@@ -1,5 +1,7 @@
 import AutomatticTracks
 import BuildSettingsKit
+import Foundation
+import WordPressShared
 
 /// ExPlat experiments.
 ///
@@ -41,26 +43,81 @@ enum ABTest: String, CaseIterable {
     }
 }
 
+/// The part of `ExPlat` that fetches assignments. Tests may use their own.
+protocol ExperimentAssigning: AnyObject {
+    func register(experiments experimentNames: [String])
+    func refresh(completion: (() -> Void)?)
+}
+
+extension ExPlat: ExperimentAssigning {}
+
 extension ABTest {
     /// The experiments that run in `app`.
     static func experiments(in app: AppBrand) -> [ABTest] {
         allCases.filter { $0.apps.contains(app) }
     }
 
-    /// Registers the current app's experiments and fetches their assignments.
+    /// The `UserDefaults` keys where `ExPlat` stores assignments (`ExPlat.swift` in
+    /// Automattic-Tracks-iOS). ExPlat has no API to clear them.
+    static let exPlatStorageKeys = ["ab-testing-assignments", "ab-testing-ttl-date", "ab-testing-enrolled-experiments"]
+
+    /// Completions waiting for the fetch in flight, or `nil` when none is running. Main queue only.
+    private static var pendingCompletions: [() -> Void]?
+
+    /// Registers the current app's experiments and fetches their assignments for the signed-in
+    /// WordPress.com account.
     ///
-    /// Signed-out users are assigned by their anonymous Tracks ID. After sign-in, Tracks sends that
-    /// ID along with the account's token, so ExPlat keeps the group it assigned before sign-in.
+    /// Nothing is requested while signed out or after the user opts out of analytics. ExPlat
+    /// prefers a stored anonymous assignment over the account's, so a signed-out request would let
+    /// a returning user switch groups at their next sign-in.
     ///
-    /// - Parameter completion: Called once the assignments are stored, or when the request fails
-    ///   or isn't made. It may be called on a background queue.
-    static func start(completion: (() -> Void)? = nil) {
-        let experimentNames = experiments(in: BuildSettings.current.brand).map(\.rawValue)
-        guard !experimentNames.isEmpty, let exPlat = ExPlat.shared else {
+    /// A call while a fetch is in flight joins it instead of starting another.
+    ///
+    /// - Parameter completion: Called on the main queue once the assignments are stored, or when
+    ///   the request fails or isn't made.
+    static func start(
+        app: AppBrand = BuildSettings.current.brand,
+        isDotComAvailable: Bool = AccountHelper.isDotcomAvailable(),
+        hasOptedOutOfAnalytics: Bool = WPAppAnalytics.userHasOptedOut(),
+        exPlat: ExperimentAssigning? = ExPlat.shared,
+        completion: (() -> Void)? = nil
+    ) {
+        wpAssert(Thread.isMainThread)
+        let experimentNames = experiments(in: app).map(\.rawValue)
+        guard !experimentNames.isEmpty, isDotComAvailable, !hasOptedOutOfAnalytics, let exPlat else {
             completion?()
             return
         }
+        if pendingCompletions != nil {
+            if let completion {
+                pendingCompletions?.append(completion)
+            }
+            return
+        }
+        pendingCompletions = completion.map { [$0] } ?? []
         exPlat.register(experiments: experimentNames)
-        exPlat.refresh(completion: completion)
+        exPlat.refresh {
+            DispatchQueue.main.async {
+                let completions = pendingCompletions ?? []
+                pendingCompletions = nil
+                completions.forEach { $0() }
+            }
+        }
+    }
+
+    /// Forgets the registered experiments and every stored assignment, so the next account doesn't
+    /// inherit them and ExPlat makes no more requests. Call it at sign-out and on analytics opt-out.
+    static func reset(exPlat: ExperimentAssigning? = ExPlat.shared, userDefaults: UserDefaults = .standard) {
+        exPlat?.register(experiments: [])
+        for key in exPlatStorageKeys {
+            userDefaults.removeObject(forKey: key)
+        }
+    }
+}
+
+/// Lets Objective-C code reset the experiments.
+@objc final class ABTestObjCBridge: NSObject {
+    @objc static func resetExperiments() {
+        ABTest.reset()
     }
 }

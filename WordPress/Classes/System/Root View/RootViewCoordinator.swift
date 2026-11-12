@@ -91,6 +91,13 @@ class RootViewCoordinator {
         }
     }
 
+    private func stopObservingAccountChanges() {
+        if let accountChangeObserver {
+            NotificationCenter.default.removeObserver(accountChangeObserver)
+        }
+        accountChangeObserver = nil
+    }
+
     private func observeAccountChanges() {
         guard accountChangeObserver == nil else {
             return
@@ -203,14 +210,14 @@ class RootViewCoordinator {
     /// the first time, so without this they would see the Moved-to-Jetpack poster until the next
     /// launch whatever their group. This waits up to `timeout` for ExPlat's assignments and the
     /// account's feature flags, and then reads the value again. No app UI exists yet, so the
-    /// Notifications lists can't disagree with the new value. On a timeout, whatever was stored
-    /// before sign-in decides.
+    /// Notifications lists can't disagree with the new value. On a timeout, whatever is stored
+    /// decides: sign-out clears the assignments, so that is usually control.
     ///
     /// Other apps, and sign-ins without a WordPress.com account, call `completion` right away.
     func prepareAppUIAfterSignIn(
         timeout: TimeInterval = RootViewCoordinator.signInFetchTimeout,
         hasDotComAccount: Bool = AccountHelper.isDotcomAvailable(),
-        fetch: (@escaping () -> Void) -> Void = RootViewCoordinator.fetchAssignmentsAndFeatureFlags,
+        fetch: (@escaping () -> Void) -> Void = { RootViewCoordinator.fetchAssignmentsAndFeatureFlags(completion: $0) },
         readerInWordPressAppEnabled: @escaping () -> Bool = {
             JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled()
         },
@@ -239,17 +246,37 @@ class RootViewCoordinator {
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: finish)
     }
 
-    /// Fetches ExPlat's assignments and the account's feature flags, and calls `completion` on the
-    /// main queue once both have answered or failed.
-    static func fetchAssignmentsAndFeatureFlags(completion: @escaping () -> Void) {
+    /// Waits for ExPlat's assignments and the account's feature flags, and calls `completion` on
+    /// the main queue once both have answered or failed.
+    ///
+    /// Both fetches are usually already running: the sign-in flow starts the ExPlat request
+    /// (`WordPressAuthenticationManager`) and the account change starts the flag fetch
+    /// (`WordPressAppDelegate`). This joins them rather than starting new ones.
+    static func fetchAssignmentsAndFeatureFlags(
+        startExperiments: (@escaping () -> Void) -> Void = { ABTest.start(completion: $0) },
+        waitForFeatureFlags: (@escaping () -> Void) -> Void = { completion in
+            guard let appDelegate = WordPressAppDelegate.shared else {
+                return completion()
+            }
+            appDelegate.waitForSignInFeatureFlags(completion: completion)
+        },
+        completion: @escaping () -> Void
+    ) {
         let group = DispatchGroup()
         group.enter()
-        ABTest.start { group.leave() }
-        if let appDelegate = WordPressAppDelegate.shared {
-            group.enter()
-            appDelegate.updateFeatureFlags { group.leave() }
-        }
+        startExperiments { group.leave() }
+        group.enter()
+        waitForFeatureFlags { group.leave() }
         group.notify(queue: .main, execute: completion)
+    }
+
+    /// Reads whether Reader is live again after sign-out, once `ABTest.reset()` has cleared the
+    /// previous account's assignments, so the next account doesn't inherit them. The sign-in UI
+    /// replaces the app UI, so no Notifications list is left with the old scope.
+    func readerInWordPressAppDidSignOut(
+        isEnabled: Bool = JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled()
+    ) {
+        updateReaderInWordPressApp(isEnabled: isEnabled)
     }
 
     private func updateReaderInWordPressApp(isEnabled: Bool) {
@@ -260,6 +287,8 @@ class RootViewCoordinator {
         JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = isEnabled
         if isEnabled {
             observeAccountChanges()
+        } else {
+            stopObservingAccountChanges()
         }
         currentAppUIType = resolveAppUIType()
     }

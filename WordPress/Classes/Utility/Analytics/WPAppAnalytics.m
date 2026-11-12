@@ -156,6 +156,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     if (optedOut) {
         [self endSession];
         [self clearTrackers];
+        // ExPlat outlives the trackers; stop its requests and forget the assignments.
+        [ABTestObjCBridge resetExperiments];
     } else {
         [self registerTrackers];
         [self beginSession];
