@@ -1,7 +1,9 @@
 @preconcurrency import WebKit
+import SwiftUI
 import WordPressFlux
 import SVProgressHUD
 import WordPressShared
+import Support
 
 protocol SupportChatBotCreatedTicketDelegate: AnyObject {
     func onTicketCreated()
@@ -41,7 +43,35 @@ final class SupportChatBotViewController: UIViewController {
     }
 
     override func loadView() {
-        self.view = webView
+        // The AI disclosure goes above the web view rather than inside the chat, so the user reads it before the
+        // bot's first reply and it doesn't scroll away with the conversation. The chat is the AI's all the way
+        // through: handing the conversation over opens a Zendesk ticket on another screen.
+        let disclosureViewController = UIHostingController(rootView: AISupportDisclosureView())
+        let disclosureView: UIView = disclosureViewController.view
+        disclosureView.backgroundColor = .clear
+        disclosureView.translatesAutoresizingMaskIntoConstraints = false
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        addChild(disclosureViewController)
+
+        let containerView = UIView()
+        containerView.backgroundColor = .systemBackground
+        containerView.addSubview(disclosureView)
+        containerView.addSubview(webView)
+        NSLayoutConstraint.activate([
+            // The disclosure follows the safe area, which keeps it out from under the navigation bar, and takes
+            // the height its text needs. The web view keeps the rest of the screen, as it had before.
+            disclosureView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
+            disclosureView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            disclosureView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+
+            webView.topAnchor.constraint(equalTo: disclosureView.bottomAnchor),
+            webView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            webView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        self.view = containerView
+        disclosureViewController.didMove(toParent: self)
     }
 
     override func viewDidLoad() {
