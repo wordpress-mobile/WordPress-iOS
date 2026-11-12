@@ -91,7 +91,13 @@ extension QRLoginVerifyCoordinator {
         view.showAuthenticating()
         state = .authenticating
 
-        service.authenticate(token: token) { _ in
+        service.authenticate(token: token) { authenticated in
+            guard authenticated else {
+                self.state = .error
+                self.view.showAuthenticationFailedError()
+                self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "authentication_failed"])
+                return
+            }
             self.parentCoordinator.track(.qrLoginAuthenticated)
             self.state = .done
             self.view.renderCompletion()
