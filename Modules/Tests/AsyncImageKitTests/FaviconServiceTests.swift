@@ -311,21 +311,57 @@ import Synchronization
         #expect(faviconURL.absoluteString == "https://example.com/apple-icon.png")
     }
 
+    @Test func appleTouchIconAfterUnclosedQuote() throws {
+        // GIVEN a tag before the icon whose quote is never closed
+        let siteURL = try #require(URL(string: "https://example.com"))
+        let html = """
+            <html>
+            <head>
+                <link rel="preload" href="/font.woff2>
+                <link rel="apple-touch-icon" href="/icon.png">
+            </head>
+            </html>
+            """
+
+        // WHEN
+        let faviconURL = FaviconService.makeFavicon(from: Data(html.utf8), siteURL: siteURL)
+
+        // THEN the icon tag is still read
+        #expect(faviconURL.absoluteString == "https://example.com/icon.png")
+    }
+
+    @Test func appleTouchIconAfterUnclosedTag() throws {
+        // GIVEN a tag before the icon with no closing `>`
+        let siteURL = try #require(URL(string: "https://example.com"))
+        let html = """
+            <link rel="preload" href="/font.woff2"
+            <link rel="apple-touch-icon" href="/icon.png">
+            """
+
+        // WHEN
+        let faviconURL = FaviconService.makeFavicon(from: Data(html.utf8), siteURL: siteURL)
+
+        // THEN the icon tag is still read
+        #expect(faviconURL.absoluteString == "https://example.com/icon.png")
+    }
+
     // MARK: - Fetching
 
     @Test func retriesAfterFailure() async throws {
         // GIVEN the first lookup fails, for example because the device is offline
         let host = "\(UUID().uuidString.lowercased()).example.com"
         let siteURL = try #require(URL(string: "https://\(host)"))
-        let service = FaviconService(session: StubURLProtocol.makeSession())
+        let clock = TestClock()
+        let service = FaviconService(session: StubURLProtocol.makeSession(), retryDelay: 60, now: clock.now)
         StubURLProtocol.setResponse(.failure(URLError(.notConnectedToInternet)), forHost: host)
         await #expect(throws: URLError.self) {
             _ = try await service.favicon(forURL: siteURL)
         }
 
-        // WHEN the device is back online
+        // WHEN the device is back online after the retry delay
         let html = #"<html><head><link rel="apple-touch-icon" href="/icon.png"></head></html>"#
         StubURLProtocol.setResponse(.success(Data(html.utf8)), forHost: host)
+        clock.advance(by: 61)
 
         // THEN the next lookup finds the icon
         let faviconURL = try await service.favicon(forURL: siteURL)
@@ -333,21 +369,109 @@ import Synchronization
         #expect(StubURLProtocol.requestCount(forHost: host) == 2)
     }
 
-    @Test func successfulLookupIsNotRepeated() async throws {
-        // GIVEN
+    @Test func failingSiteIsNotLookedUpAgainBeforeRetryDelay() async throws {
+        // GIVEN a site that always fails, for example because its domain is gone
+        let host = "\(UUID().uuidString.lowercased()).example.com"
+        let siteURL = try #require(URL(string: "https://\(host)"))
+        let clock = TestClock()
+        let service = FaviconService(session: StubURLProtocol.makeSession(), retryDelay: 60, now: clock.now)
+        StubURLProtocol.setResponse(.failure(URLError(.cannotFindHost)), forHost: host)
+
+        // WHEN its posts are shown 10 times within the retry delay
+        for _ in 0..<10 {
+            await #expect(throws: URLError.self) {
+                _ = try await service.favicon(forURL: siteURL)
+            }
+            clock.advance(by: 5)
+        }
+
+        // THEN its homepage is downloaded once
+        #expect(StubURLProtocol.requestCount(forHost: host) == 1)
+    }
+
+    @Test func concurrentLookupsShareOneRequest() async throws {
+        // GIVEN a slow site
         let host = "\(UUID().uuidString.lowercased()).example.com"
         let siteURL = try #require(URL(string: "https://\(host)"))
         let service = FaviconService(session: StubURLProtocol.makeSession())
         let html = #"<html><head><link rel="apple-touch-icon" href="/icon.png"></head></html>"#
-        StubURLProtocol.setResponse(.success(Data(html.utf8)), forHost: host)
+        StubURLProtocol.setResponse(.success(Data(html.utf8)), forHost: host, delay: 0.2)
 
-        // WHEN
-        let first = try await service.favicon(forURL: siteURL)
-        let second = try await service.favicon(forURL: siteURL)
+        // WHEN several of its posts are shown at once
+        let faviconURLs = try await withThrowingTaskGroup(of: URL.self) { group in
+            for _ in 0..<5 {
+                group.addTask { try await service.favicon(forURL: siteURL) }
+            }
+            return try await group.reduce(into: []) { $0.append($1) }
+        }
 
-        // THEN
-        #expect(first == second)
+        // THEN its homepage is downloaded once
+        #expect(faviconURLs.allSatisfy { $0.absoluteString == "https://\(host)/icon.png" })
         #expect(StubURLProtocol.requestCount(forHost: host) == 1)
+    }
+
+    @Test func cancelledLookupIsNotRememberedAsFailure() async throws {
+        // GIVEN a lookup that is cancelled before the slow site answers
+        let host = "\(UUID().uuidString.lowercased()).example.com"
+        let siteURL = try #require(URL(string: "https://\(host)"))
+        let service = FaviconService(session: StubURLProtocol.makeSession())
+        let html = #"<html><head><link rel="apple-touch-icon" href="/icon.png"></head></html>"#
+        StubURLProtocol.setResponse(.success(Data(html.utf8)), forHost: host, delay: 0.5)
+        let task = Task { try await service.favicon(forURL: siteURL) }
+        try await Task.sleep(for: .milliseconds(100))
+        task.cancel()
+        _ = try? await task.value
+
+        // WHEN the site is asked for again
+        StubURLProtocol.setResponse(.success(Data(html.utf8)), forHost: host)
+        let faviconURL = try await service.favicon(forURL: siteURL)
+
+        // THEN it is looked up again instead of failing
+        #expect(faviconURL.absoluteString == "https://\(host)/icon.png")
+    }
+
+    @Test func concurrentFailuresAndCancellationsRecover() async throws {
+        let html = #"<html><head><link rel="apple-touch-icon" href="/icon.png"></head></html>"#
+        for _ in 0..<20 {
+            // GIVEN many overlapping lookups of a failing site, some cancelled
+            let host = "\(UUID().uuidString.lowercased()).example.com"
+            let siteURL = try #require(URL(string: "https://\(host)"))
+            let service = FaviconService(session: StubURLProtocol.makeSession(), retryDelay: 0)
+            StubURLProtocol.setResponse(.failure(URLError(.timedOut)), forHost: host, delay: 0.01)
+            await withTaskGroup(of: Void.self) { group in
+                for index in 0..<12 {
+                    group.addTask {
+                        try? await Task.sleep(for: .milliseconds(Int.random(in: 0...12)))
+                        let task = Task { _ = try? await service.favicon(forURL: siteURL) }
+                        if index % 3 == 0 {
+                            try? await Task.sleep(for: .milliseconds(Int.random(in: 0...12)))
+                            task.cancel()
+                        }
+                        await task.value
+                    }
+                }
+            }
+
+            // WHEN the site starts working
+            StubURLProtocol.setResponse(.success(Data(html.utf8)), forHost: host)
+
+            // THEN the next lookup finds the icon
+            let faviconURL = try await service.favicon(forURL: siteURL)
+            #expect(faviconURL.absoluteString == "https://\(host)/icon.png")
+        }
+    }
+}
+
+/// A clock that tests move forward by hand.
+private final class TestClock: Sendable {
+    private let date = Mutex(Date(timeIntervalSince1970: 0))
+
+    var now: @Sendable () -> Date {
+        { self.date.withLock { $0 } }
+    }
+
+    func advance(by interval: TimeInterval) {
+        date.withLock { $0 += interval }
     }
 }
 
@@ -359,6 +483,7 @@ private final class StubURLProtocol: URLProtocol {
     private struct Host {
         var response: Result<Data, URLError>
         var requestCount = 0
+        var delay: TimeInterval = 0
     }
 
     private static let hosts = Mutex<[String: Host]>([:])
@@ -369,8 +494,11 @@ private final class StubURLProtocol: URLProtocol {
         return URLSession(configuration: configuration)
     }
 
-    static func setResponse(_ response: Result<Data, URLError>, forHost host: String) {
-        hosts.withLock { $0[host, default: Host(response: response)].response = response }
+    static func setResponse(_ response: Result<Data, URLError>, forHost host: String, delay: TimeInterval = 0) {
+        hosts.withLock {
+            $0[host, default: Host(response: response)].response = response
+            $0[host]?.delay = delay
+        }
     }
 
     static func requestCount(forHost host: String) -> Int {
@@ -390,9 +518,12 @@ private final class StubURLProtocol: URLProtocol {
             client?.urlProtocol(self, didFailWithError: URLError(.badURL))
             return
         }
-        let response = Self.hosts.withLock { hosts -> Result<Data, URLError> in
+        let (response, delay) = Self.hosts.withLock { hosts -> (Result<Data, URLError>, TimeInterval) in
             hosts[host, default: Host(response: .failure(URLError(.cannotFindHost)))].requestCount += 1
-            return hosts[host]?.response ?? .failure(URLError(.cannotFindHost))
+            return (hosts[host]?.response ?? .failure(URLError(.cannotFindHost)), hosts[host]?.delay ?? 0)
+        }
+        if delay > 0 {
+            Thread.sleep(forTimeInterval: delay)
         }
         switch response {
         case .success(let data):

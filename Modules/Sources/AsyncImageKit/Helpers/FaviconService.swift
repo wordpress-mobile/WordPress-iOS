@@ -7,8 +7,16 @@ public actor FaviconService {
     private nonisolated let cache = FaviconCache()
 
     private let session: URLSession
+    private let retryDelay: TimeInterval
+    private let now: @Sendable () -> Date
 
+    /// Lookups that are in flight, shared by everyone who asks for the same site.
     private var tasks: [URL: FaviconTask] = [:]
+
+    /// Recent failed lookups. A site is looked up again only after
+    /// `retryDelay`, so a site that keeps failing isn't downloaded every time
+    /// one of its posts is shown.
+    private var failures: [URL: Failure] = [:]
 
     public init() {
         let configuration = URLSessionConfiguration.default
@@ -16,8 +24,14 @@ public actor FaviconService {
         self.init(session: URLSession(configuration: configuration))
     }
 
-    init(session: URLSession) {
+    init(
+        session: URLSession,
+        retryDelay: TimeInterval = 60,
+        now: @escaping @Sendable () -> Date = { Date() }
+    ) {
         self.session = session
+        self.retryDelay = retryDelay
+        self.now = now
     }
 
     nonisolated public func cachedFavicon(forURL siteURL: URL) -> URL? {
@@ -29,39 +43,57 @@ public actor FaviconService {
         if let faviconURL = cache.cachedFavicon(forURL: siteURL) {
             return faviconURL
         }
-        let faviconURL = try await _favicon(forURL: siteURL)
-        cache.storeCachedFaviconURL(faviconURL, forURL: siteURL)
-        return faviconURL
-    }
-
-    private func _favicon(forURL siteURL: URL) async throws -> URL {
-        let task =
-            tasks[siteURL]
-            ?? FaviconTask { [session] in
-                let (data, response) = try await session.data(from: siteURL)
-                try validate(response: response)
-                return FaviconService.makeFavicon(from: data, siteURL: siteURL)
-            }
+        if let failure = failures[siteURL], now().timeIntervalSince(failure.date) < retryDelay {
+            throw failure.error
+        }
+        let task = tasks[siteURL] ?? makeTask(for: siteURL)
         let subscriptionID = UUID()
         task.subscriptions.insert(subscriptionID)
-        tasks[siteURL] = task
-        do {
-            return try await withTaskCancellationHandler {
-                try await task.task.value
-            } onCancel: {
-                Task {
-                    await self.unsubscribe(subscriptionID, key: siteURL)
-                }
+        return try await withTaskCancellationHandler {
+            try await task.task.value
+        } onCancel: {
+            Task {
+                await self.unsubscribe(subscriptionID, key: siteURL)
             }
-        } catch {
-            // Forget a failed lookup so that the next call tries again. A
-            // successful one stays in `tasks`, so it isn't repeated. Check that
-            // `tasks` still holds this task, so that a newer one is left alone.
-            if tasks[siteURL] === task {
+        }
+    }
+
+    private func makeTask(for siteURL: URL) -> FaviconTask {
+        let id = UUID()
+        let task = FaviconTask(id: id, task: Task { try await self.lookUpFavicon(forURL: siteURL, id: id) })
+        tasks[siteURL] = task
+        return task
+    }
+
+    /// Downloads the site's homepage and records the result.
+    ///
+    /// The result is recorded in the same step that removes the finished task,
+    /// so a later call finds either the task, the cached favicon or the failure.
+    private func lookUpFavicon(forURL siteURL: URL, id: UUID) async throws -> URL {
+        defer {
+            // Check that `tasks` still holds this task, so that a newer one
+            // is left alone.
+            if tasks[siteURL]?.id == id {
                 tasks[siteURL] = nil
+            }
+        }
+        do {
+            let faviconURL = try await Self.downloadFavicon(forURL: siteURL, session: session)
+            cache.storeCachedFaviconURL(faviconURL, forURL: siteURL)
+            failures[siteURL] = nil
+            return faviconURL
+        } catch {
+            if !Task.isCancelled {
+                failures[siteURL] = Failure(date: now(), error: error)
             }
             throw error
         }
+    }
+
+    private nonisolated static func downloadFavicon(forURL siteURL: URL, session: URLSession) async throws -> URL {
+        let (data, response) = try await session.data(from: siteURL)
+        try validate(response: response)
+        return makeFavicon(from: data, siteURL: siteURL)
     }
 
     private func unsubscribe(_ subscriptionID: UUID, key: URL) {
@@ -161,7 +193,8 @@ private struct TagScanner {
         var attributes: [String: String] = [:]
         while true {
             skipWhitespace()
-            guard let character = current else { break }
+            // A `<` starts the next tag, so this one was never closed.
+            guard let character = current, character != "<" else { break }
             if character == ">" {
                 advance()
                 break
@@ -191,8 +224,18 @@ private struct TagScanner {
             return String(scan { !$0.isWhitespace && $0 != ">" })
         }
         advance()
-        let value = scan { $0 != quote }
-        advance() // the closing quote
+        let value = scan { $0 != quote && $0 != "<" }
+        if current == quote {
+            advance()
+            return String(value)
+        }
+        // The quote isn't closed before the next tag. Browsers would read on
+        // to the next quote and lose the tags in between. End the value and
+        // the tag at the first `>` instead, so the next tag is still read.
+        if let end = value.firstIndex(of: ">") {
+            index = end
+            return String(value[..<end])
+        }
         return String(value)
     }
 
@@ -225,11 +268,17 @@ private func validate(response: URLResponse) throws {
 }
 
 private final class FaviconTask {
+    let id: UUID
+    let task: Task<URL, Error>
     var subscriptions = Set<UUID>()
-    var isCancelled = false
-    var task: Task<URL, Error>
 
-    init(_ closure: @escaping @Sendable () async throws -> URL) {
-        self.task = Task { try await closure() }
+    init(id: UUID, task: Task<URL, Error>) {
+        self.id = id
+        self.task = task
     }
+}
+
+private struct Failure {
+    let date: Date
+    let error: Error
 }
