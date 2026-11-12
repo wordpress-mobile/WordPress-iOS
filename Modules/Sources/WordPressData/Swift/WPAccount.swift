@@ -128,7 +128,7 @@ public class WPAccount: NSManagedObject {
     ///
     /// The cache belongs to this managed object instance. A token written through an instance in another
     /// context does not invalidate it, so only the keychain tells which token is current.
-    var authTokenInKeychain: String? {
+    public var authTokenInKeychain: String? {
         try? Self.token(
             forUsername: username,
             serviceName: keychainServiceName,

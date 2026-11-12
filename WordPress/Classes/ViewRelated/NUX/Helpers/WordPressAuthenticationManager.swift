@@ -13,18 +13,25 @@ class WordPressAuthenticationManager: NSObject {
     // Keep this name stable so external observers registered against the string don't break.
     static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
-    static var isPresentingSignIn = false
     private let windowManager: WindowManager
     private let recentSiteService: RecentSitesService
 
+    /// Blocks the app while the default WordPress.com account has no token.
+    let signInGate: SignInGateCoordinator
+
     private var cancellables = Set<AnyCancellable>()
 
+    @MainActor
     init(
         windowManager: WindowManager,
         recentSiteService: RecentSitesService = RecentSitesService()
     ) {
+        let signInGate = SignInGateCoordinator(host: windowManager)
         self.windowManager = windowManager
         self.recentSiteService = recentSiteService
+        self.signInGate = signInGate
+        super.init()
+        windowManager.signInGate = signInGate
     }
 }
 
@@ -32,16 +39,11 @@ class WordPressAuthenticationManager: NSObject {
 //
 extension WordPressAuthenticationManager {
     /// Wires up the observers backing the re-authentication flows: the WordPress.com
-    /// auth-token-fixing notification and the invalid-application-password notification.
+    /// sign-in gate and the invalid-application-password notification.
     ///
+    @MainActor
     func startObservingSignInNotifications(notificationCenter: NotificationCenter = .default) {
-        notificationCenter
-            .addObserver(
-                self,
-                selector: #selector(accontRequiresShowingWPComSigninReceived),
-                name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
-                object: nil
-            )
+        signInGate.startObserving(notificationCenter: notificationCenter)
 
         notificationCenter.publisher(for: WordPressClient.requestedWithInvalidAuthenticationNotification)
             .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
@@ -62,78 +64,6 @@ extension WordPressAuthenticationManager {
 // MARK: - Static Methods
 //
 extension WordPressAuthenticationManager {
-
-    /// Presents the web-based WordPress.com sign-in flow from the rootViewController,
-    /// so the user can re-authenticate and fix the invalid auth token of the default
-    /// WordPress.com account.
-    ///
-    static func showSigninForWPComFixingAuthToken(showNotice: Bool = true) {
-        guard let presenter = UIApplication.shared.mainWindow?.rootViewController else {
-            assertionFailure()
-            return
-        }
-
-        guard !isPresentingSignIn else {
-            return
-        }
-
-        isPresentingSignIn = true
-
-        let signedInAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        Task { @MainActor in
-            let title = NSLocalizedString(
-                "wpcom.token.fix.signin",
-                value: "Sign in to WordPress.com",
-                comment:
-                    "Message title to be displayed when the user needs to re-authenticate their WordPress.com account."
-            )
-            let message = NSLocalizedString(
-                "wpcom.token.fix.signin.message",
-                value: "You need to sign in to WordPress.com to access your account.",
-                comment:
-                    "Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account."
-            )
-
-            if showNotice {
-                Notice(title: title, message: message).post()
-            }
-
-            let account = await WordPressDotComAuthenticator()
-                .signIn(
-                    from: presenter,
-                    context: signedInAccount
-                        .map { .reauthentication(userID: $0.userID, emailHint: $0.email) }
-                        ?? .default
-                )
-
-            if account == nil {
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addActionWithTitle(
-                    NSLocalizedString(
-                        "wpcom.token.alert.button.logout",
-                        value: "Log out",
-                        comment: "Button title to log out the current WordPress.com account"
-                    ),
-                    style: .destructive
-                ) { _ in
-                    AccountHelper.logOutDefaultWordPressComAccount()
-                }
-                alert.addActionWithTitle(
-                    NSLocalizedString(
-                        "wpcom.token.alert.button.signin",
-                        value: "Sign In",
-                        comment: "Button title to Sign In to WordPress.com"
-                    ),
-                    style: .default
-                ) { _ in
-                    WordPressAuthenticationManager.showSigninForWPComFixingAuthToken(showNotice: false)
-                }
-                presenter.present(alert, animated: true)
-            }
-
-            isPresentingSignIn = false
-        }
-    }
 
     static func showSigninForSelfHostedSiteFixingApplicationPassword(
         blogId: TaggedManagedObjectID<Blog>,
@@ -160,16 +90,6 @@ extension WordPressAuthenticationManager {
         viewController.isModalInPresentation = true
         viewController.isApplicationReauthentication = true
         presenter.present(viewController, animated: true)
-    }
-}
-
-// MARK: - Notification Handlers
-//
-extension WordPressAuthenticationManager {
-    @objc func accontRequiresShowingWPComSigninReceived(_ notification: Foundation.Notification) {
-        DispatchQueue.main.async {
-            WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
-        }
     }
 }
 
