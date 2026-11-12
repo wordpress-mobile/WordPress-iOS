@@ -25,9 +25,10 @@ extension WPAccount {
         return account
     }
 
+    /// Pass the same `keychain` to instances in different contexts to make them share it, like the real keychain.
     @discardableResult
-    func mockKeychain() -> WPAccount {
-        keychain = TestKeychain()
+    func mockKeychain(_ keychain: TestKeychain = TestKeychain()) -> WPAccount {
+        self.keychain = keychain
         keychainServiceName = "test-service"
         keychainMigration = MockAuthKeyMigration()
         return self

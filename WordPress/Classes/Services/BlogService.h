@@ -6,6 +6,12 @@ extern NSString *const WordPressMinimumVersion;
 extern NSString *const WPBlogUpdatedNotification;
 extern NSString *const WPBlogSettingsUpdatedNotification;
 
+extern NSErrorDomain const BlogServiceErrorDomain;
+typedef NS_ERROR_ENUM(BlogServiceErrorDomain, BlogServiceError) {
+    /// The blog has no remote, for example because its WordPress.com account has no token.
+    BlogServiceErrorNoRemoteForBlog = 1,
+};
+
 @class Blog;
 @class WPAccount;
 @class SiteInfo;

@@ -180,7 +180,7 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
 
     func testReAuthenticationWithUnexpectedAccount() async throws {
         // Given the app is already signed in with a WP.com account.
-        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account").with(authToken: "token").build()
+        let account = AccountBuilder(mainContext).with(id: 1).with(email: "test@example.com").with(username: "default_account").with(authToken: "token").build()
         try mainContext.save()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
 
@@ -188,13 +188,54 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         stubTokenExchange()
         stubGetAccountDetails()
 
-        // Then `mismatchedEmail` error should be returned
+        // Then `mismatchedAccount` error should be returned
         let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
         do {
-            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .reauthentication(accountEmail: account.email))
+            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .reauthentication(userID: account.userID, emailHint: account.email))
             XCTFail("Unexpected successful result")
-        } catch let .mismatchedEmail(expectedEmail) {
+        } catch let .mismatchedAccount(expectedEmail) {
             XCTAssertEqual(expectedEmail, "test@example.com")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    @MainActor
+    func testReAuthenticationAfterEmailChangeSucceeds() async throws {
+        // Given the default account's stored email is outdated.
+        let account = AccountBuilder(mainContext).with(id: 55511).with(email: "old@example.com").with(username: "jimthetester").with(authToken: "old-token").build()
+        try mainContext.save()
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
+
+        stubTokenExchange()
+        stubGetAccountDetails()
+        stubGetSites()
+
+        // When the same user signs in again.
+        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        let accountID = try await authenticator.attemptSignIn(from: UIViewController(), context: .reauthentication(userID: account.userID, emailHint: account.email))
+
+        // Then the stored account is updated.
+        XCTAssertEqual(accountID.objectID, account.objectID)
+        XCTAssertEqual(account.email, "jim@wptestaccounts.com")
+        XCTAssertEqual(try WPAccount.token(forUsername: "jimthetester"), "token")
+    }
+
+    func testSignInWithAnotherUserIDIsRejectedEvenWithTheSameEmail() async throws {
+        // Given the app is already signed in with a WP.com account that has the same email as the stubbed user.
+        let account = AccountBuilder(mainContext).with(id: 1).with(email: "jim@wptestaccounts.com").with(username: "default_account").with(authToken: "token").build()
+        try mainContext.save()
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
+
+        stubTokenExchange()
+        stubGetAccountDetails()
+
+        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        do {
+            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .jetpackSite(accountEmail: nil))
+            XCTFail("Unexpected successful result")
+        } catch .alreadySignedIn {
+            // Do nothing
         } catch {
             XCTFail("Unexpected error: \(error)")
         }

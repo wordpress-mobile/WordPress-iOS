@@ -106,6 +106,7 @@ class PingHubManager: NSObject {
 
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountRequiresSignIn), name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
@@ -185,6 +186,24 @@ fileprivate extension PingHubManager {
         let authToken = defaultAccountToken()
         DispatchQueue.main.async { [weak self] in
             self?.resetAuthToken(authToken)
+        }
+    }
+
+    /// Drops a rejected token. A rejection keeps the account, so `accountChanged` is not called for it.
+    @objc
+    func accountRequiresSignIn() {
+        // Posted from any thread, and the token is read from the main context. Not `queue: .main`, which blocks a
+        // poster inside a `performAndWait` that the main thread waits on.
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                return
+            }
+            // Also posted for other accounts without a token, which must not make the client reconnect.
+            let authToken = defaultAccountToken()
+            guard authToken != state.authToken else {
+                return
+            }
+            resetAuthToken(authToken)
         }
     }
 
