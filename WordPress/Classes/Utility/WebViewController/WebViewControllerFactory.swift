@@ -32,7 +32,9 @@ enum WebViewControllerFactory {
         configuration.analyticsSource = source
         configuration.authenticate(blog: blog)
         configuration.onClose = onClose
-        return withDeviceModes ? PreviewWebKitViewController(configuration: configuration) : controller(configuration: configuration, source: source)
+        return withDeviceModes
+            ? PreviewWebKitViewController(configuration: configuration)
+            : controller(configuration: configuration, source: source)
     }
 
     static func controller(url: URL, account: WPAccount, source: String) -> UIViewController {

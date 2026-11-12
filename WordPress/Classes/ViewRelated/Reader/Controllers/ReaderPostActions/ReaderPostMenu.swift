@@ -14,22 +14,27 @@ struct ReaderPostMenu {
     var context = ContextManager.shared.mainContext
 
     func makeMenu() -> [UIMenuElement] {
-        return [
+        [
             makePrimaryActionsSection(),
             makeBlogSection(),
             shouldShowReportOrBlockMenu ? makeBlockOrReportActions() : nil
-        ].compactMap { $0 }
+        ]
+        .compactMap { $0 }
     }
 
     private func makePrimaryActionsSection() -> UIMenu {
-        UIMenu(options: [.displayInline], children: [
-            share,
-            copyPostLink,
-            viewPostInBrowser,
-            post.isSeenSupported ? toggleSeen : nil,
-            summarize,
-            translate
-        ].compactMap { $0 })
+        UIMenu(
+            options: [.displayInline],
+            children: [
+                share,
+                copyPostLink,
+                viewPostInBrowser,
+                post.isSeenSupported ? toggleSeen : nil,
+                summarize,
+                translate
+            ]
+            .compactMap { $0 }
+        )
     }
 
     private func makeBlogSection() -> UIMenu {
@@ -39,7 +44,7 @@ struct ReaderPostMenu {
         } else {
             actions.append(ubsubscribe)
         }
-//        return UIMenu(title: post.blogNameForDisplay() ?? "", options: [.displayInline], children: actions)
+        //        return UIMenu(title: post.blogNameForDisplay() ?? "", options: [.displayInline], children: actions)
         return UIMenu(options: [.displayInline], children: actions)
     }
 
@@ -74,7 +79,11 @@ struct ReaderPostMenu {
     }
 
     private var viewBlog: UIAction {
-        UIAction(title: Strings.viewBlog, subtitle: post.blogNameForDisplay() ?? "", image: UIImage(systemName: "person")) {_ in
+        UIAction(
+            title: Strings.viewBlog,
+            subtitle: post.blogNameForDisplay() ?? "",
+            image: UIImage(systemName: "person")
+        ) { _ in
             guard let viewController else { return }
             ReaderHeaderAction().execute(post: post, origin: viewController)
             track(.viewBlog)
@@ -97,8 +106,9 @@ struct ReaderPostMenu {
 
     private var summarize: UIAction? {
         guard FeatureFlag.intelligence.enabled,
-              #available(iOS 26, *),
-              IntelligenceService.isSupported else {
+            #available(iOS 26, *),
+            IntelligenceService.isSupported
+        else {
             return nil
         }
         return UIAction(Strings.summarize, systemImage: "text.line.3.summary") {
@@ -116,8 +126,9 @@ struct ReaderPostMenu {
 
     private var translate: UIAction? {
         guard #available(iOS 26, *),
-              let detailVC = viewController as? ReaderDetailViewController,
-              case .available = detailVC.translationAvailability else {
+            let detailVC = viewController as? ReaderDetailViewController,
+            case .available = detailVC.translationAvailability
+        else {
             return nil
         }
 
@@ -130,31 +141,54 @@ struct ReaderPostMenu {
     private func manageNotifications(for siteID: Int) -> UIAction {
         UIAction(Strings.manageNotifications, systemImage: "bell") {
             guard let viewController else { return }
-            NotificationSiteSubscriptionViewController.show(forSiteID: siteID, sourceItem: anchor ?? viewController.view, from: viewController)
+            NotificationSiteSubscriptionViewController.show(
+                forSiteID: siteID,
+                sourceItem: anchor ?? viewController.view,
+                from: viewController
+            )
             track(.manageNotifications)
         }
     }
 
     private var toggleSeen: UIAction {
-        UIAction(post.isSeen ? Strings.markUnread : Strings.markRead, systemImage: post.isSeen ? "circle" : "checkmark.circle") {
+        UIAction(
+            post.isSeen ? Strings.markUnread : Strings.markRead,
+            systemImage: post.isSeen ? "circle" : "checkmark.circle"
+        ) {
             track(post.isSeen ? .markUnread : .markRead)
-            ReaderSeenAction().execute(with: post, context: context, completion: {
-                NotificationCenter.default.post(name: .ReaderPostSeenToggled, object: nil, userInfo: [ReaderNotificationKeys.post: post])
-            }, failure: { _ in
-                UINotificationFeedbackGenerator().notificationOccurred(.error)
-            })
+            ReaderSeenAction()
+                .execute(
+                    with: post,
+                    context: context,
+                    completion: {
+                        NotificationCenter.default.post(
+                            name: .ReaderPostSeenToggled,
+                            object: nil,
+                            userInfo: [ReaderNotificationKeys.post: post]
+                        )
+                    },
+                    failure: { _ in
+                        UINotificationFeedbackGenerator().notificationOccurred(.error)
+                    }
+                )
         }
     }
 
     // MARK: Block and Report
 
     private func makeBlockOrReportActions() -> UIMenu {
-        UIMenu(title: Strings.blockOrReport, image: UIImage(systemName: "hand.raised"), options: [.destructive], children: [
-            blockSite,
-            post.isWPCom ? blockUser : nil,
-            reportPost,
-            reportUser,
-        ].compactMap { $0 })
+        UIMenu(
+            title: Strings.blockOrReport,
+            image: UIImage(systemName: "hand.raised"),
+            options: [.destructive],
+            children: [
+                blockSite,
+                post.isWPCom ? blockUser : nil,
+                reportPost,
+                reportUser
+            ]
+            .compactMap { $0 }
+        )
     }
 
     private var blockSite: UIAction {
@@ -191,24 +225,35 @@ struct ReaderPostMenu {
         guard let topic else {
             return false
         }
-        return ReaderHelpers.isTopicTag(topic) ||
-            ReaderHelpers.topicIsDiscover(topic) ||
-            ReaderHelpers.topicIsFreshlyPressed(topic) ||
-            ReaderHelpers.topicIsFollowing(topic)
+        return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsDiscover(topic)
+            || ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsFollowing(topic)
     }
 
     // MARK: Helpers
 
     private func track(_ button: ReaderPostMenuAnalyticsButton) {
-        WPAnalytics.track(.readerPostContextMenuButtonTapped, properties: [
-            "button": button.rawValue
-        ])
+        WPAnalytics.track(
+            .readerPostContextMenuButtonTapped,
+            properties: [
+                "button": button.rawValue
+            ]
+        )
     }
 }
 
 private extension UIAction {
-    convenience init(_ title: String, systemImage: String, attributes: UIMenuElement.Attributes = [], _ action: @escaping () -> Void) {
-        self.init(title: title, image: UIImage(systemName: systemImage), attributes: attributes, handler: { _ in action() })
+    convenience init(
+        _ title: String,
+        systemImage: String,
+        attributes: UIMenuElement.Attributes = [],
+        _ action: @escaping () -> Void
+    ) {
+        self.init(
+            title: title,
+            image: UIImage(systemName: systemImage),
+            attributes: attributes,
+            handler: { _ in action() }
+        )
     }
 }
 
@@ -231,16 +276,64 @@ private enum ReaderPostMenuAnalyticsButton: String {
 }
 
 private enum Strings {
-    static let viewInBrowser = NSLocalizedString("reader.postContextMenu.viewInBrowser", value: "View in Browser", comment: "Context menu action")
-    static let blockOrReport = NSLocalizedString("reader.postContextMenu.blockOrReportMenu", value: "Block or Report", comment: "Context menu action")
-    static let viewBlog = NSLocalizedString("reader.postContextMenu.viewSite", value: "View Site", comment: "Context menu action")
-    static let manageNotifications = NSLocalizedString("reader.postContextMenu.manageNotifications", value: "Manage Notifications", comment: "Context menu action")
-    static let blockSite = NSLocalizedString("reader.postContextMenu.blockSite", value: "Block Site", comment: "Context menu action")
-    static let blockUser = NSLocalizedString("reader.postContextMenu.blockUser", value: "Block User", comment: "Context menu action")
-    static let reportPost = NSLocalizedString("reader.postContextMenu.reportPost", value: "Report Post", comment: "Context menu action")
-    static let reportUser = NSLocalizedString("reader.postContextMenu.reportUser", value: "Report User", comment: "Context menu action")
-    static let markRead = NSLocalizedString("reader.postContextMenu.markRead", value: "Mark as Read", comment: "Context menu action")
-    static let markUnread = NSLocalizedString("reader.postContextMenu.markUnread", value: "Mark as Unread", comment: "Context menu action")
-    static let summarize = NSLocalizedString("reader.postContextMenu.summarize", value: "Summarize", comment: "Context menu action")
-    static let translate = NSLocalizedString("reader.postContextMenu.translate", value: "Translate", comment: "Context menu action to translate post content")
+    static let viewInBrowser = NSLocalizedString(
+        "reader.postContextMenu.viewInBrowser",
+        value: "View in Browser",
+        comment: "Context menu action"
+    )
+    static let blockOrReport = NSLocalizedString(
+        "reader.postContextMenu.blockOrReportMenu",
+        value: "Block or Report",
+        comment: "Context menu action"
+    )
+    static let viewBlog = NSLocalizedString(
+        "reader.postContextMenu.viewSite",
+        value: "View Site",
+        comment: "Context menu action"
+    )
+    static let manageNotifications = NSLocalizedString(
+        "reader.postContextMenu.manageNotifications",
+        value: "Manage Notifications",
+        comment: "Context menu action"
+    )
+    static let blockSite = NSLocalizedString(
+        "reader.postContextMenu.blockSite",
+        value: "Block Site",
+        comment: "Context menu action"
+    )
+    static let blockUser = NSLocalizedString(
+        "reader.postContextMenu.blockUser",
+        value: "Block User",
+        comment: "Context menu action"
+    )
+    static let reportPost = NSLocalizedString(
+        "reader.postContextMenu.reportPost",
+        value: "Report Post",
+        comment: "Context menu action"
+    )
+    static let reportUser = NSLocalizedString(
+        "reader.postContextMenu.reportUser",
+        value: "Report User",
+        comment: "Context menu action"
+    )
+    static let markRead = NSLocalizedString(
+        "reader.postContextMenu.markRead",
+        value: "Mark as Read",
+        comment: "Context menu action"
+    )
+    static let markUnread = NSLocalizedString(
+        "reader.postContextMenu.markUnread",
+        value: "Mark as Unread",
+        comment: "Context menu action"
+    )
+    static let summarize = NSLocalizedString(
+        "reader.postContextMenu.summarize",
+        value: "Summarize",
+        comment: "Context menu action"
+    )
+    static let translate = NSLocalizedString(
+        "reader.postContextMenu.translate",
+        value: "Translate",
+        comment: "Context menu action to translate post content"
+    )
 }
