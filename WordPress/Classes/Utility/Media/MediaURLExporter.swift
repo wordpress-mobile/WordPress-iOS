@@ -29,7 +29,11 @@ class MediaURLExporter: MediaExporter {
         var description: String {
             switch self {
             default:
-                return NSLocalizedString("The media could not be added to the Media Library.", comment: "Message shown when an image or video failed to load while trying to add it to the Media library.")
+                return NSLocalizedString(
+                    "The media could not be added to the Media Library.",
+                    comment:
+                        "Message shown when an image or video failed to load while trying to add it to the Media library."
+                )
             }
         }
     }
@@ -49,8 +53,11 @@ class MediaURLExporter: MediaExporter {
         self.url = url
     }
 
-    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
-        return exportURL(fileURL: url, onCompletion: onCompletion, onError: onError)
+    @discardableResult public func export(
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping (MediaExportError) -> Void
+    ) -> Progress {
+        exportURL(fileURL: url, onCompletion: onCompletion, onError: onError)
     }
 
     /// Query what the URLExporter expects to export a URL as. Throws an error if unknown or invalid.
@@ -58,10 +65,16 @@ class MediaURLExporter: MediaExporter {
     /// - Note: Expects a file conforming to a video, image or GIF uniform type.
     ///
     class func expectedExport(with fileURL: URL) throws -> URLExportExpectation {
+        try expectedExport(with: fileURL, type: fileURL.typeIdentifier.flatMap(UTType.init))
+    }
+
+    /// Classifies a file from an already-resolved type, e.g. one derived from
+    /// a reported MIME type when the extension says nothing.
+    class func expectedExport(with fileURL: URL, type: UTType?) throws -> URLExportExpectation {
         guard fileURL.isFileURL else {
             throw URLExportError.invalidFileURL
         }
-        guard let fileType = fileURL.typeIdentifier.flatMap(UTType.init) else {
+        guard let fileType = type else {
             throw URLExportError.unknownFileUTI
         }
         if fileType == .gif {
@@ -85,7 +98,10 @@ class MediaURLExporter: MediaExporter {
         if let urlExportOptions = urlOptions, let fileExtension = fileURL.typeIdentifierFileExtension {
             // Check the default file types. We want to limit to supported types but mobile is not restricted to only allowed ones.
             // `allowableFileExtensions` can be empty for self-hosted sites
-            if !MediaImportService.defaultAllowableFileExtensions.contains(fileExtension) && !urlExportOptions.allowableFileExtensions.isEmpty && !urlExportOptions.allowableFileExtensions.contains(fileExtension) {
+            if !MediaImportService.defaultAllowableFileExtensions.contains(fileExtension)
+                && !urlExportOptions.allowableFileExtensions.isEmpty
+                && !urlExportOptions.allowableFileExtensions.contains(fileExtension)
+            {
                 onError(exporterErrorWith(error: URLExportError.unsupportedFileType))
                 return Progress.discreteCompletedProgress()
             }
@@ -111,7 +127,11 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the known image file at the URL, via MediaImageExporter.
     ///
-    fileprivate func exportImage(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    fileprivate func exportImage(
+        atURL url: URL,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         // Pass the export off to the image exporter
         let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = mediaDirectoryType
@@ -121,38 +141,55 @@ class MediaURLExporter: MediaExporter {
         return exporter.export(
             onCompletion: { imageExport in
                 onCompletion(imageExport)
-        },
-            onError: onError)
+            },
+            onError: onError
+        )
     }
 
     /// Exports the known video file at the URL, via MediaVideoExporter.
     ///
-    fileprivate func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    fileprivate func exportVideo(
+        atURL url: URL,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         // Pass the export off to the video exporter.
         let videoExporter = MediaVideoExporter(url: url)
         videoExporter.mediaDirectoryType = mediaDirectoryType
         if let options = videoOptions {
             videoExporter.options = options
         }
-        return videoExporter.export(onCompletion: { videoExport in
-                                    onCompletion(videoExport)
-        },
-                                  onError: onError)
+        return videoExporter.export(
+            onCompletion: { videoExport in
+                onCompletion(videoExport)
+            },
+            onError: onError
+        )
     }
 
     /// Exports the GIF file at the URL to a new Media URL, by simply copying the file.
     ///
-    fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    fileprivate func exportGIF(
+        atURL url: URL,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         do {
             let fileManager = FileManager.default
-            let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                                    fileExtension: "gif")
+            let mediaURL = try mediaFileManager.makeLocalMediaURL(
+                withFilename: url.lastPathComponent,
+                fileExtension: "gif"
+            )
             try fileManager.copyItem(at: url, to: mediaURL)
-            onCompletion(MediaExport(url: mediaURL,
-                                    fileSize: mediaURL.fileSize,
-                                    width: mediaURL.pixelSize.width,
-                                    height: mediaURL.pixelSize.height,
-                                    duration: nil))
+            onCompletion(
+                MediaExport(
+                    url: mediaURL,
+                    fileSize: mediaURL.fileSize,
+                    width: mediaURL.pixelSize.width,
+                    height: mediaURL.pixelSize.height,
+                    duration: nil
+                )
+            )
         } catch {
             onError(exporterErrorWith(error: error))
         }
@@ -161,21 +198,31 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the file at the URL to a new Media URL, by simply copying the file.
     ///
-    fileprivate func exportFile(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+    fileprivate func exportFile(
+        atURL url: URL,
+        onCompletion: @escaping OnMediaExport,
+        onError: @escaping OnExportError
+    ) -> Progress {
         // Unwrap Optionals; these are pre-verified via MediaURLExporter.expectedExport(with:)
         guard let fileExtension = url.typeIdentifierFileExtension else {
             return Progress.discreteCompletedProgress()
         }
         do {
             let fileManager = FileManager.default
-            let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                                  fileExtension: fileExtension)
+            let mediaURL = try mediaFileManager.makeLocalMediaURL(
+                withFilename: url.lastPathComponent,
+                fileExtension: fileExtension
+            )
             try fileManager.copyItem(at: url, to: mediaURL)
-            onCompletion(MediaExport(url: mediaURL,
-                                     fileSize: mediaURL.fileSize,
-                                     width: nil,
-                                     height: nil,
-                                     duration: nil))
+            onCompletion(
+                MediaExport(
+                    url: mediaURL,
+                    fileSize: mediaURL.fileSize,
+                    width: nil,
+                    height: nil,
+                    duration: nil
+                )
+            )
         } catch {
             onError(exporterErrorWith(error: error))
         }

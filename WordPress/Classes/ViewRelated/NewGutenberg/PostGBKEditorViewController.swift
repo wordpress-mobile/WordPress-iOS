@@ -62,7 +62,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         self.editorViewController = GutenbergKit.EditorViewController(
             configuration: editorConfiguration,
             dependencies: cachedDependencies,
-            mediaPicker: MediaPickerController(blog: blog)
+            mediaPicker: MediaPickerController(blog: blog),
+            mediaProcessor: GBKMediaUploadProcessor()
         )
 
         super.init(nibName: nil, bundle: nil)

@@ -22,6 +22,7 @@
 * [*] Experimental editor: Recover from editor crashes, and ask before saving while media is still uploading [#26267]
 * [*] Experimental editor: Fix block assets not loading on self-hosted sites that use plain permalinks [#25859]
 * [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
+* [**] Experimental editor: Apply your Media settings to uploaded photos and videos, including image size, quality, video resolution, and location removal [#26367]
 
 
 27.4
