@@ -15,6 +15,8 @@ struct StatsPostThumbnailView: View {
 
     @ObservedObject var store: PostThumbnailStore
 
+    @Environment(\.displayScale) private var displayScale
+
     @ScaledMetric(relativeTo: .body) private var size: CGFloat = 32
 
     private var cornerRadius: CGFloat {
@@ -22,7 +24,9 @@ struct StatsPostThumbnailView: View {
     }
 
     var body: some View {
-        let thumbnailURL = item.numericPostID.flatMap { store.thumbnails[$0] }
+        let thumbnailURL = item.numericPostID
+            .flatMap { store.thumbnails[$0] }
+            .map { $0.thumbnail(fillingSquareOf: size, displayScale: displayScale) }
 
         Group {
             if let thumbnailURL {
