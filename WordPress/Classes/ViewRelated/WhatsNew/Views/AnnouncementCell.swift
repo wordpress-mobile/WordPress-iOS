@@ -5,11 +5,11 @@ class AnnouncementCell: AnnouncementTableViewCell {
 
     // MARK: - View elements
     private lazy var headingLabel: UILabel = {
-        return makeLabel(font: Appearance.headingFont)
+        makeLabel(font: Appearance.headingFont)
     }()
 
     private lazy var subHeadingLabel: UILabel = {
-        return makeLabel(font: Appearance.subHeadingFont, color: .secondaryLabel)
+        makeLabel(font: Appearance.subHeadingFont, color: .secondaryLabel)
     }()
 
     private lazy var descriptionStackView: UIStackView = {
@@ -20,7 +20,7 @@ class AnnouncementCell: AnnouncementTableViewCell {
     }()
 
     private lazy var announcementImageView: UIImageView = {
-        return UIImageView()
+        UIImageView()
     }()
 
     private lazy var mainStackView: UIStackView = {
@@ -56,8 +56,9 @@ class AnnouncementCell: AnnouncementTableViewCell {
             !iconBase64Components.isEmpty,
             let base64Image = iconBase64Components.components(separatedBy: ";base64,")[safe: 1],
             let imageData = Data(base64Encoded: base64Image, options: .ignoreUnknownCharacters),
-            let icon = UIImage(data: imageData) {
-                announcementImageView.image = icon
+            let icon = UIImage(data: imageData)
+        {
+            announcementImageView.wp.image = icon
         }
 
         else if let url = URL(string: feature.iconUrl) {
@@ -76,7 +77,7 @@ class AnnouncementCell: AnnouncementTableViewCell {
         headingLabel.text = title
         subHeadingLabel.text = description
 
-        announcementImageView.image = image
+        announcementImageView.wp.image = image
         announcementImageView.isHidden = image == nil
     }
 }
@@ -100,10 +101,16 @@ private extension AnnouncementCell {
 private extension AnnouncementCell {
     enum Appearance {
         // heading
-        static let headingFont = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .headline), size: 17)
+        static let headingFont = UIFont(
+            descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .headline),
+            size: 17
+        )
 
         // sub-heading
-        static let subHeadingFont = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline), size: 15)
+        static let subHeadingFont = UIFont(
+            descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline),
+            size: 15
+        )
 
         // announcement image
         static let announcementImageSize: CGFloat = 48

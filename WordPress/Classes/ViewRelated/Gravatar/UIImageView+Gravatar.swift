@@ -19,7 +19,7 @@ extension UIImageView {
 
     public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool) {
         guard let gravatar else {
-            self.image = placeholder
+            wp.image = placeholder
             return
         }
 
@@ -30,7 +30,10 @@ extension UIImageView {
         layoutIfNeeded()
 
         let size = Int(ceil(max(28, frame.width) * traitCollection.displayScale))
-        guard let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url else { return }
+        guard let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url else {
+            wp.image = placeholder
+            return
+        }
         downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate)
     }
 
@@ -75,6 +78,7 @@ extension AvatarURL {
                 rating: gravatarRating,
                 defaultAvatarOption: defaultAvatarOption
             )
-        )?.url
+        )?
+        .url
     }
 }

@@ -7,19 +7,36 @@ import Vision
 public actor ImageSaliencyService {
     public nonisolated static let shared = ImageSaliencyService()
 
-    private nonisolated let cache = SaliencyCache()
+    private nonisolated let cache: SaliencyCache
     private nonisolated let detector = SaliencyDetector()
     private var inflightTasks: [URL: Task<CGRect?, Never>] = [:]
 
-    init() {
+    /// - parameter diskURL: Where results are saved between launches.
+    init(diskURL: URL = SaliencyCache.defaultDiskURL) {
+        cache = SaliencyCache(diskURL: diskURL)
         Task { [cache] in
             cache.loadFromDisk()
         }
     }
 
-    /// Returns a cached rect synchronously without starting a task, or `nil` if not yet cached.
-    public nonisolated func cachedSaliencyRect(for url: URL) -> CGRect? {
-        cache.cachedRect(for: url)
+    /// The result of a saliency detection that already ran for an image.
+    public enum CachedResult: Equatable, Sendable {
+        /// Detection found a salient region.
+        case region(CGRect)
+        /// Detection found no salient region, or failed.
+        case noRegion
+    }
+
+    /// Returns the cached detection result synchronously without starting a task,
+    /// or `nil` if detection hasn't run for the image yet.
+    public nonisolated func cachedResult(for url: URL) -> CachedResult? {
+        cache.cachedResult(for: url)
+    }
+
+    /// Records a detection result without running detection. Detection uses Vision, whose results
+    /// depend on the device and OS, so tests set up the result they need with this.
+    nonisolated func storeResult(_ rect: CGRect?, for url: URL) {
+        cache.store(rect, for: url)
     }
 
     /// Returns the bounding rect of the most salient region in UIKit normalized coordinates
@@ -53,7 +70,8 @@ public actor ImageSaliencyService {
         topInset: CGFloat = 16
     ) -> CGRect? {
         guard imageSize.width > 0, imageSize.height > 0,
-              containerSize.width > 0, containerSize.height > 0 else { return nil }
+            containerSize.width > 0, containerSize.height > 0
+        else { return nil }
 
         let imageAspect = imageSize.width / imageSize.height
         let containerAspect = containerSize.width / containerSize.height
@@ -69,7 +87,7 @@ public actor ImageSaliencyService {
         let desiredY = topInset - salientTopInScaled
 
         // Clamp so the image always covers the full container without empty gaps.
-        let minY = containerSize.height - scaledHeight  // negative
+        let minY = containerSize.height - scaledHeight // negative
         let clampedY = min(0, max(minY, desiredY))
 
         return CGRect(x: 0, y: clampedY, width: containerSize.width, height: scaledHeight)
@@ -88,8 +106,9 @@ private actor SaliencyDetector {
             return nil
         }
         guard let observation = request.results?.first,
-              let salientObjects = observation.salientObjects,
-              !salientObjects.isEmpty else {
+            let salientObjects = observation.salientObjects,
+            !salientObjects.isEmpty
+        else {
             return nil
         }
         // Union all salient object bounding boxes.
@@ -105,19 +124,22 @@ private actor SaliencyDetector {
     }
 }
 
-private final class SaliencyCache: @unchecked Sendable {
+final class SaliencyCache: @unchecked Sendable {
     private var store: OrderedDictionary<String, CGRect?> = [:]
     private let lock = NSLock()
     private var isDirty = false
     private var observer: AnyObject?
 
     private static let maxCount = 1000
-    private static let diskURL: URL = {
+    private let diskURL: URL
+
+    static let defaultDiskURL: URL = {
         let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         return caches.appendingPathComponent("saliency_cache.json")
     }()
 
-    init() {
+    init(diskURL: URL) {
+        self.diskURL = diskURL
         observer = NotificationCenter.default.addObserver(
             forName: UIApplication.didEnterBackgroundNotification,
             object: nil,
@@ -140,6 +162,15 @@ private final class SaliencyCache: @unchecked Sendable {
         lock.withLock { store[url.absoluteString, default: nil] }
     }
 
+    func cachedResult(for url: URL) -> ImageSaliencyService.CachedResult? {
+        let entry: CGRect?? = lock.withLock { store[url.absoluteString] }
+        switch entry {
+        case .none: return nil
+        case .some(.none): return .noRegion
+        case .some(.some(let rect)): return .region(rect)
+        }
+    }
+
     func store(_ rect: CGRect?, for url: URL) {
         lock.withLock {
             let key = url.absoluteString
@@ -152,12 +183,25 @@ private final class SaliencyCache: @unchecked Sendable {
     }
 
     func loadFromDisk() {
-        guard let data = try? Data(contentsOf: Self.diskURL),
-              let decoded = try? JSONDecoder().decode([String: CGRect?].self, from: data) else {
+        guard let data = try? Data(contentsOf: diskURL),
+            let decoded = try? JSONDecoder().decode([String: CGRect?].self, from: data)
+        else {
             return
         }
         lock.withLock {
-            store = OrderedDictionary(uniqueKeysWithValues: decoded.map { ($0.key, $0.value) })
+            // Results stored before the load finished are newer, so they replace the disk
+            // entries and go last, to be evicted last.
+            var merged = OrderedDictionary<String, CGRect?>()
+            for (key, rect) in decoded where store[key] == nil {
+                merged.updateValue(rect, forKey: key)
+            }
+            for (key, rect) in store {
+                merged.updateValue(rect, forKey: key)
+            }
+            if merged.count > Self.maxCount {
+                merged.removeFirst(merged.count - Self.maxCount)
+            }
+            store = merged
         }
     }
 
@@ -170,6 +214,6 @@ private final class SaliencyCache: @unchecked Sendable {
         guard let snapshot else { return }
         let dict = snapshot.reduce(into: [String: CGRect?]()) { $0[$1.key] = $1.value }
         guard let data = try? JSONEncoder().encode(dict) else { return }
-        try? data.write(to: Self.diskURL, options: .atomic)
+        try? data.write(to: diskURL, options: .atomic)
     }
 }

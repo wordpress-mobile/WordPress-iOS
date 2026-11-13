@@ -1,6 +1,9 @@
+import AVFoundation
+import AsyncImageKit
 import Testing
 import UIKit
 import WordPressData
+import WordPressUI
 @testable import WordPress
 
 /// Checks the wiring and size-class layout the Notifications cells used to get from their xibs.
@@ -148,5 +151,111 @@ private extension UIView {
         subviews.flatMap { subview in
             [subview as? T].compactMap { $0 } + subview.subviews(ofType: type)
         }
+    }
+}
+
+/// Checks that a reused cell doesn't show the previous row's avatar.
+@MainActor
+struct NotificationCellAvatarTests {
+    @Test func userCellReuseCancelsAvatarLoadAndShowsPlaceholder() async throws {
+        // GIVEN a row whose avatar is still loading
+        let cell = NoteBlockUserTableViewCell(style: .default, reuseIdentifier: nil)
+        let imageView = try #require(cell.contentView.firstSubview(ofType: CircularImageView.self))
+        let load = try startGatedLoad(in: imageView)
+
+        // WHEN the cell is reused for a user with no avatar, then the load finishes
+        cell.prepareForReuse()
+        cell.downloadGravatarWithURL(nil)
+        let placeholder = try #require(imageView.image)
+        await load.finish()
+
+        // THEN the placeholder is still shown
+        #expect(imageView.image === placeholder)
+    }
+
+    @Test func headerCellReuseCancelsAvatarLoadAndShowsPlaceholder() async throws {
+        // GIVEN a header whose avatar is still loading
+        let cell = NoteBlockHeaderTableViewCell(style: .default, reuseIdentifier: nil)
+        let imageView = try #require(cell.contentView.firstSubview(ofType: CircularImageView.self))
+        let load = try startGatedLoad(in: imageView)
+
+        // WHEN the cell is reused for a notification with no avatar, then the load finishes
+        cell.prepareForReuse()
+        cell.downloadAuthorAvatar(with: nil)
+        let placeholder = try #require(imageView.image)
+        await load.finish()
+
+        // THEN the placeholder is still shown
+        #expect(imageView.image === placeholder)
+    }
+
+    @Test func gravatarPlaceholderIsNotReplacedByEarlierLoad() async throws {
+        // GIVEN an avatar that is still loading
+        let imageView = UIImageView()
+        let load = try startGatedLoad(in: imageView)
+
+        // WHEN the view switches to a user with no avatar, then the load finishes
+        let placeholder = makeImage(color: .gray)
+        imageView.downloadGravatar(nil, placeholder: placeholder, animate: false)
+        await load.finish()
+
+        // THEN the placeholder is still shown
+        #expect(imageView.image === placeholder)
+    }
+
+    private struct GatedLoad {
+        let host: GatedHost
+        let task: Task<Void, Never>
+
+        @MainActor func finish() async {
+            host.open()
+            await task.value
+        }
+    }
+
+    /// Starts loading an image into `imageView` that finishes only when `finish()` is called.
+    private func startGatedLoad(in imageView: UIImageView) throws -> GatedLoad {
+        let host = try GatedHost(image: makeImage(color: .red))
+        let url = try #require(URL(string: "https://example.files.wordpress.com/\(UUID().uuidString).png"))
+        imageView.wp.setImage(with: ImageRequest(url: url, host: host))
+        return GatedLoad(host: host, task: try #require(imageView.wp.controller.task))
+    }
+
+    private func makeImage(color: UIColor) -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 4, height: 4))
+            .image { context in
+                color.setFill()
+                context.fill(CGRect(x: 0, y: 0, width: 4, height: 4))
+            }
+    }
+}
+
+/// A host whose requests wait until `open()` is called, then load a PNG from disk.
+@MainActor
+private final class GatedHost: MediaHostProtocol, @unchecked Sendable {
+    private let fileURL: URL
+    private var isOpen = false
+    private var waiters: [CheckedContinuation<Void, Never>] = []
+
+    init(image: UIImage) throws {
+        fileURL = URL.temporaryDirectory.appending(path: "\(UUID().uuidString).png")
+        try #require(image.pngData()).write(to: fileURL)
+    }
+
+    func open() {
+        isOpen = true
+        waiters.forEach { $0.resume() }
+        waiters = []
+    }
+
+    func authenticatedRequest(for url: URL) async throws -> URLRequest {
+        if !isOpen {
+            await withCheckedContinuation { waiters.append($0) }
+        }
+        return URLRequest(url: fileURL)
+    }
+
+    func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
+        AVURLAsset(url: url)
     }
 }

@@ -66,8 +66,9 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         gravatarURL = nil
-        gravatarImageView.cancelImageDownload()
-        gravatarImageView.image = nil
+        // Cancels the previous row's load, and shows the placeholder for a row with no avatar URL,
+        // as `downloadGravatarWithURL(nil)` returns early.
+        gravatarImageView.wp.image = .gravatarPlaceholderImage
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
