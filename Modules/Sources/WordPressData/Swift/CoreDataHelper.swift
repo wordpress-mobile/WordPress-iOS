@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import CoreData
 import WordPressShared
 
@@ -60,7 +59,7 @@ public extension NSManagedObjectContext {
         do {
             result = try count(for: request)
         } catch {
-            DDLogError("Error counting objects [\(String(describing: T.entityName))]: \(error)")
+            Loggers.data.error("Error counting objects [\(String(describing: T.entityName))]: \(error)")
             assertionFailure()
         }
 
@@ -113,7 +112,7 @@ public extension NSManagedObjectContext {
         do {
             result = try existingObject(with: objectID) as? T
         } catch {
-            DDLogError("Error loading Object [\(String(describing: T.entityName))]")
+            Loggers.data.error("Error loading Object [\(String(describing: T.entityName))]")
         }
 
         return result
@@ -140,7 +139,7 @@ public extension NSManagedObjectContext {
         do {
             objects = try fetch(request) as? [T]
         } catch {
-            DDLogError("Error loading Objects [\(String(describing: T.entityName))")
+            Loggers.data.error("Error loading Objects [\(String(describing: T.entityName))")
             wpAssertionFailure("CoreData.loadObjects failed", userInfo: ["error": "\(error)"])
         }
 
@@ -350,7 +349,7 @@ public extension CoreDataStack {
             return true
         } catch {
             // Attempt to restore backup files. Some might not exist depending on where the process failed
-            DDLogError("Error when replacing database: \(error)")
+            Loggers.data.error("Error when replacing database: \(error)")
             restoreDatabaseBackup(at: destination)
             return false
         }

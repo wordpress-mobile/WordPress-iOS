@@ -2,6 +2,8 @@ import BuildSettingsKit
 import UIKit
 import WordPress
 
+WordPressAppDelegate.bootstrapLogging()
+
 // The secrets _must_ be configured before the app launches.
 //
 // This is because `BuildSettings` are not propagated through the app via chain injection but accessed via a `static` `current` property for convenience.

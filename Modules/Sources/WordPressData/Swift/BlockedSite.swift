@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import CocoaLumberjackSwift
 
 @objc(BlockedSite)
 public final class BlockedSite: NSManagedObject {
@@ -25,7 +24,7 @@ public extension BlockedSite {
             let result = try context.fetch(request)
             return result
         } catch {
-            DDLogError("Couldn't fetch blocked site with error: \(error.localizedDescription)")
+            Loggers.data.error("Couldn't fetch blocked site with error: \(error.localizedDescription)")
             return []
         }
     }

@@ -6,10 +6,12 @@ struct FilterCompactDatePicker: View {
     private let range: ClosedRange<Date>
     private let components: DatePickerComponents
 
-    init(_ title: String,
-         selection: Binding<Date?>,
-         in range: ClosedRange<Date> = Date.distantPast...Date.distantFuture,
-         components: DatePickerComponents = [.date, .hourAndMinute]) {
+    init(
+        _ title: String,
+        selection: Binding<Date?>,
+        in range: ClosedRange<Date> = Date.distantPast...Date.distantFuture,
+        components: DatePickerComponents = [.date, .hourAndMinute]
+    ) {
         self.title = title
         self._selection = selection
         self.range = range
@@ -40,23 +42,6 @@ struct FilterCompactDatePicker: View {
             formatter.timeStyle = .short
         }
         return formatter.string(from: date)
-    }
-}
-
-private struct FilterCompactDatePickerCompatibilityView<Content: View>: View {
-    @ViewBuilder let content: () -> Content
-
-    @SwiftUI.Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        content()
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(NSLocalizedString("Done", comment: "A done button")) {
-                        dismiss()
-                    }
-                }
-            }
     }
 }
 

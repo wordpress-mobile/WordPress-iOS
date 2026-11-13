@@ -111,9 +111,14 @@ struct ChartDataListView: View {
                         Text(trendViewModel.sign)
                             .font(.body.weight(.medium))
 
-                        Text(formatter.format(value: abs(trendViewModel.currentValue - trendViewModel.previousValue), context: .compact))
-                            .font(.title3.weight(.medium))
-                            .padding(.trailing, 8)
+                        Text(
+                            formatter.format(
+                                value: abs(trendViewModel.currentValue - trendViewModel.previousValue),
+                                context: .compact
+                            )
+                        )
+                        .font(.title3.weight(.medium))
+                        .padding(.trailing, 8)
 
                         Image(systemName: trendViewModel.systemImage)
                             .font(.footnote.weight(.medium))
@@ -185,7 +190,11 @@ struct ChartDataListView: View {
             VStack(spacing: Constants.step1 / 2) {
                 ForEach(chartData.currentData.reversed()) { point in
                     DataItemRow(
-                        date: context.formatters.date.formatDate(point.date, granularity: chartData.granularity, context: .regular),
+                        date: context.formatters.date.formatDate(
+                            point.date,
+                            granularity: chartData.granularity,
+                            context: .regular
+                        ),
                         value: point.value,
                         maxValue: chartData.maxValue,
                         formatter: formatter,
@@ -225,16 +234,6 @@ private struct DataItemRow: View {
         .background(
             TopListItemBarBackground(value: value, maxValue: maxValue, barColor: metric.primaryColor)
         )
-    }
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
     }
 }
 

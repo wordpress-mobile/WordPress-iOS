@@ -249,21 +249,6 @@ struct LinkRow: ImmuTableRow {
     }
 }
 
-struct LinkWithValueRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
-
-    let title: String
-    let value: String
-    let action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text = title
-        cell.detailTextLabel?.text = value
-
-        WPStyleGuide.configureTableViewActionCell(cell)
-    }
-}
-
 /// Create a row that navigates to a new ViewController.
 /// Uses the WordPress branded blue and is left aligned.
 ///
@@ -422,46 +407,6 @@ struct SwitchRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.imageView?.image = icon
         cell.isUserInteractionEnabled = isUserInteractionEnabled
-        cell.selectionStyle = .none
-        cell.on = value
-        cell.onChange = onChange
-        cell.flipSwitch.accessibilityIdentifier = accessibilityIdentifier
-    }
-}
-
-struct SwitchWithSubtitleRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(SwitchWithSubtitleTableViewCell.self)
-
-    let title: String
-    let value: Bool
-    let subtitle: String?
-    let icon: UIImage?
-    let action: ImmuTableAction? = nil
-    let onChange: (Bool) -> Void
-    let accessibilityIdentifier: String?
-
-    init(
-        title: String,
-        value: Bool,
-        subtitle: String? = nil,
-        icon: UIImage? = nil,
-        onChange: @escaping (Bool) -> Void,
-        accessibilityIdentifier: String? = nil
-    ) {
-        self.title = title
-        self.subtitle = subtitle
-        self.value = value
-        self.icon = icon
-        self.onChange = onChange
-        self.accessibilityIdentifier = accessibilityIdentifier
-    }
-
-    func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! SwitchWithSubtitleTableViewCell
-
-        cell.textLabel?.text = title
-        cell.detailTextLabel?.text = subtitle
-        cell.imageView?.image = icon
         cell.selectionStyle = .none
         cell.on = value
         cell.onChange = onChange
