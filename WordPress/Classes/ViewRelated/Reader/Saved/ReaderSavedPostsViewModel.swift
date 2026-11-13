@@ -177,22 +177,21 @@ final class ReaderSavedPostsViewModel: ObservableObject {
 
         do {
             _ = try await collection.loadNextPage()
-        } catch ReaderSavedError.StaleLoadMore {
-            // A refresh started while the page loaded, and replaced it.
         } catch {
             Loggers.app.error("Reader saved posts: loading the next page failed: \(String(describing: error))")
         }
         await reloadFromCache()
     }
 
-    /// Unsaves the post. It leaves the list straight away, and comes back if the request fails.
+    /// Unsaves the post. It leaves the list straight away, and comes back if the server refuses it.
+    /// Offline, it's sent with a later sync.
     func unsave(_ row: ReaderSavedPostRow) async {
         rows.removeAll { $0.id == row.id }
         do {
             if let identity = row.identity {
-                try await service.unsave(post: identity)
+                _ = try await service.unsave(post: identity)
             } else {
-                try await service.unsaveKey(key: row.key)
+                _ = try await service.unsaveKey(key: row.key)
             }
         } catch {
             Loggers.app.error("Reader saved posts: unsave failed: \(String(describing: error))")
