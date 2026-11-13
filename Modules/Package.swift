@@ -66,7 +66,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.20.0-alpha.2"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            revision: "b1b20dd147fe3059865664bbac46f200b8524104"
+            revision: "8e619ff1dfed123d9d321ac73285048fa9f627a4"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
