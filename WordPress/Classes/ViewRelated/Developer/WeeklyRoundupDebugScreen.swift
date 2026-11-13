@@ -196,6 +196,6 @@ struct WeeklyRoundupDebugScreen: View {
 
 struct WeeklyRoundupDebugScreen_Preview: PreviewProvider {
     static var previews: some View {
-        StoreSandboxSecretScreen(cookieJar: HTTPCookieStorage.shared)
+        WeeklyRoundupDebugScreen()
     }
 }
