@@ -27,7 +27,7 @@ public final class SharedKeychain: KeychainAccessible {
         self.keychainUtils = keychainUtils
     }
 
-    public func getPassword(for username: String, serviceName: String) throws -> String {
+    public func getPassword(for username: String, serviceName: String) throws(KeychainError) -> String {
         do {
             return try keychainUtils.getPasswordForUsername(
                 username,
@@ -36,11 +36,11 @@ public final class SharedKeychain: KeychainAccessible {
             )
         } catch {
             reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: group)
-            throw error
+            throw keychainError(from: error)
         }
     }
 
-    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws(KeychainError) {
         if let newValue {
             do {
                 try keychainUtils.storeUsername(
@@ -52,7 +52,7 @@ public final class SharedKeychain: KeychainAccessible {
                 )
             } catch {
                 reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: group)
-                throw error
+                throw keychainError(from: error)
             }
         } else {
             do {
@@ -66,7 +66,8 @@ public final class SharedKeychain: KeychainAccessible {
                 // Deleting an already-absent item is success: the migration
                 // cleanup path removes a token that may legitimately be gone.
                 // Real failures must surface, same as AppKeychain.
-                guard !isRealKeychainFailure(error) else { throw error }
+                let mapped = keychainError(from: error)
+                guard mapped == .notFound else { throw mapped }
             }
         }
     }

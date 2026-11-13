@@ -34,15 +34,27 @@ public class KeychainUtils: NSObject {
 
 @available(*, deprecated)
 extension KeychainUtils: KeychainAccessible {
-    public func getPassword(for username: String, serviceName: String) throws -> String {
-        try self.keychainUtils.getPasswordForUsername(username, andServiceName: serviceName)
+    // @nonobjc: the typed-throws contract is not representable in Objective-C.
+    @nonobjc
+    public func getPassword(for username: String, serviceName: String) throws(KeychainError) -> String {
+        do {
+            return try self.keychainUtils.getPasswordForUsername(username, andServiceName: serviceName)
+        } catch {
+            throw keychainError(from: error)
+        }
     }
 
-    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
-        if let newValue {
-            try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
-        } else {
-            try keychainUtils.deleteItem(forUsername: username, andServiceName: serviceName)
+    // @nonobjc: the typed-throws contract is not representable in Objective-C.
+    @nonobjc
+    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws(KeychainError) {
+        do {
+            if let newValue {
+                try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
+            } else {
+                try keychainUtils.deleteItem(forUsername: username, andServiceName: serviceName)
+            }
+        } catch {
+            throw keychainError(from: error)
         }
     }
 }
