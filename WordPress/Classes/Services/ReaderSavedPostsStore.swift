@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressApiCache
@@ -22,8 +23,12 @@ extension Foundation.Notification.Name {
 /// The Core Data `isSavedForLater` flags stay after the import, as a way back if this has to be
 /// rolled back. Nothing writes them any more, and signing out still clears them.
 ///
-/// There's one service per account, shared by every screen, because each instance only knows its
-/// own writes: a second one could let a stale refresh undo a change made through the first.
+/// A save or unsave is kept in the cache straight away and sent to the server in the order it was
+/// made. One that can't be sent yet, such as offline, goes with the next sync: at launch, when the
+/// app comes to the foreground, and when the device comes back online.
+///
+/// There's one service per account, shared by every screen, because it sends one request at a time
+/// and a second instance would send alongside it.
 @MainActor
 final class ReaderSavedPostsStore {
     static let shared = ReaderSavedPostsStore()
@@ -61,12 +66,14 @@ final class ReaderSavedPostsStore {
     private let observer = ChangeObserver()
 
     private var session: Session?
-    private var startTask: Task<Void, Never>?
+    /// The launch import and the syncs after it, in order. Visible so tests can wait for them.
+    private(set) var startTask: Task<Void, Never>?
     /// Set from signing out until the account change notification. The Core Data account is deleted
     /// just after `removeAccount(userID:)`, and a session made for it in between, such as by a
     /// bookmark on screen asking whether its post is saved, would put back what was just deleted.
     private var isRemovingAccount = false
     private var accountObserver: NSObjectProtocol?
+    private var syncObservers: [NSObjectProtocol] = []
 
     init(
         coreDataStack: CoreDataStack = ContextManager.shared,
@@ -92,12 +99,35 @@ final class ReaderSavedPostsStore {
                     self?.accountChanged()
                 }
             }
+            syncObservers = [
+                NotificationCenter.default.addObserver(
+                    forName: UIApplication.willEnterForegroundNotification,
+                    object: nil,
+                    queue: .main
+                ) { [weak self] _ in
+                    MainActor.assumeIsolated {
+                        self?.sync()
+                    }
+                },
+                NotificationCenter.default.addObserver(
+                    forName: .reachabilityUpdated,
+                    object: nil,
+                    queue: .main
+                ) { [weak self] notification in
+                    guard notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true else {
+                        return
+                    }
+                    MainActor.assumeIsolated {
+                        self?.sync()
+                    }
+                }
+            ]
         }
     }
 
     deinit {
-        if let accountObserver {
-            NotificationCenter.default.removeObserver(accountObserver)
+        for observer in [accountObserver].compactMap({ $0 }) + syncObservers {
+            NotificationCenter.default.removeObserver(observer)
         }
     }
 
@@ -140,14 +170,28 @@ final class ReaderSavedPostsStore {
             let didSend = await Self.importLocalSaves(from: coreDataStack, to: session.service, track: track)
             do {
                 if didSend {
-                    // An import's posts only reach the saved list through a refresh of the list
-                    // itself: refreshing the service reloads the saved keys, not the list.
+                    // Fetches the imported posts' details for the saved list. It syncs first.
                     _ = try await session.savedPosts.refresh()
                 } else {
-                    try await session.service.refresh()
+                    try await session.service.sync()
                 }
             } catch {
                 Loggers.app.error("Reader saved posts: refresh failed: \(String(describing: error))")
+            }
+        }
+    }
+
+    /// Sends the saves and unsaves the server doesn't have yet, then reloads which posts are saved.
+    /// Waits for the launch import if it's still running.
+    func sync() {
+        guard let session, !isRemovingAccount else { return }
+        let previous = startTask
+        startTask = Task { @MainActor in
+            await previous?.value
+            do {
+                try await session.service.sync()
+            } catch {
+                Loggers.app.warning("Reader saved posts: sync failed: \(String(describing: error))")
             }
         }
     }
@@ -157,10 +201,15 @@ final class ReaderSavedPostsStore {
     /// Whether the post is saved in the account, or `nil` when the store isn't active or doesn't know.
     func isSaved(_ post: WordPressData.ReaderPost) -> Bool? {
         guard let service else { return nil }
-        switch service.status(post: ReaderSavedPostsSync.identity(for: post)) {
-        case .saved: return true
-        case .notSaved: return false
-        case .unknown: return nil
+        do {
+            switch try service.status(post: ReaderSavedPostsSync.identity(for: post)) {
+            case .saved: return true
+            case .notSaved: return false
+            case .unknown: return nil
+            }
+        } catch {
+            Loggers.app.error("Reader saved posts: reading a post's status failed: \(String(describing: error))")
+            return nil
         }
     }
 
@@ -173,7 +222,7 @@ final class ReaderSavedPostsStore {
     // MARK: - Saving
 
     /// Saves or unsaves the post in the account. The service shows the change straight away, and
-    /// takes it back if the request fails.
+    /// takes it back if the server refuses it. Offline, it's sent with a later sync.
     ///
     /// - Returns: Whether the post is now saved.
     @discardableResult
@@ -187,7 +236,7 @@ final class ReaderSavedPostsStore {
             // With the post's details, so the Saved list shows it in full before the next refresh.
             _ = try await service.saveWithDetails(post: ReaderSavedPostsSync.details(for: post))
         } else {
-            try await service.unsave(post: identity)
+            _ = try await service.unsave(post: identity)
         }
         return willSave
     }
@@ -195,39 +244,41 @@ final class ReaderSavedPostsStore {
     /// Saves the given posts in the account, such as the ones in an imported file. Unlike the
     /// one-time import of this device's saves, this runs every time it's called. Posts the account
     /// already has aren't sent again.
+    ///
+    /// Each post is saved as a tap would save it, oldest first so the newest ends up at the top. A
+    /// save that can't be sent yet still counts as saved: it shows in the list, and a later sync
+    /// sends it.
     func save(_ identities: [ReaderPostSaveIdentity]) async throws -> ReaderSavedPostsSync.SaveResult {
         guard let service, let savedPosts = session?.savedPosts else {
             throw StoreError.notActive
         }
-        let newIdentities = identities.filter { service.status(post: $0) != .saved }
+        let newIdentities = identities.filter { (try? service.status(post: $0)) != .saved }
         let plan = ReaderSavedPostsSync.importPlan(for: newIdentities)
         var result = ReaderSavedPostsSync.SaveResult(
             alreadySaved: identities.count - newIdentities.count,
             unsaveable: plan.unsaveableCount
         )
-        if !plan.bulkKeys.isEmpty {
-            let results = try await service.import(keys: plan.bulkKeys)
-            let rejected = ReaderSavedPostsSync.rejectedKeys(plan.bulkKeys, results: results)
-            for (key, error) in rejected {
-                Loggers.app.warning(
-                    "Reader saved posts: save rejected \(String(describing: key)): \(error ?? "unknown")"
-                )
-            }
-            result.saved += plan.bulkKeys.count - rejected.count
-            result.failed += rejected.count
-        }
-        for url in plan.urls {
+        for save in plan.saves.reversed() {
             do {
-                _ = try await service.saveUrl(url: url, pageDetails: nil)
+                let outcome: ReaderSavedOutcome
+                switch save {
+                case let .post(identity):
+                    outcome = try await service.save(post: identity)
+                case let .url(url):
+                    outcome = try await service.saveUrl(url: url, pageDetails: nil)
+                }
+                if case let .pending(reason) = outcome {
+                    Loggers.app.info("Reader saved posts: a save will be sent later: \(reason)")
+                }
                 result.saved += 1
             } catch {
-                Loggers.app.warning("Reader saved posts: saving a URL failed: \(String(describing: error))")
+                Loggers.app.warning("Reader saved posts: a save failed: \(String(describing: error))")
                 result.failed += 1
             }
         }
 
         if result.saved > 0 {
-            // Saved posts only reach the saved list through a refresh of the list itself.
+            // The saves are in the list already, but only with their keys. This fetches the posts.
             do {
                 _ = try await savedPosts.refresh()
             } catch {
@@ -257,13 +308,13 @@ final class ReaderSavedPostsStore {
             let report = try await service.importLocalSaves(saves: saves)
             guard !report.alreadyImported else { return false }
             Loggers.app.info(
-                "Reader saved posts: imported \(report.imported), refused \(report.rejected.count), unsaveable \(report.unsaveable)"
+                "Reader saved posts: imported \(report.imported), refused \(report.rejected.count), pending \(report.pending), unsaveable \(report.unsaveable)"
             )
             track(
                 .readerSavedPostsAccountImport,
                 ReaderSavedPostsSync.importProperties(for: report, saveCount: saveCount)
             )
-            return report.imported > 0 || !report.rejected.isEmpty
+            return report.imported > 0 || report.pending > 0 || !report.rejected.isEmpty
         } catch {
             // The service tries again next time.
             Loggers.app.error("Reader saved posts: import failed: \(String(describing: error))")
@@ -386,12 +437,17 @@ enum ReaderSavedPostsSync {
         var unsaveable = 0
     }
 
+    /// One post to save, by the call that saves it.
+    enum PlannedSave: Equatable {
+        case post(ReaderPostSaveIdentity)
+        /// A page saved by URL.
+        case url(String)
+    }
+
     /// What to send to the server to save a list of posts.
     struct ImportPlan: Equatable {
-        /// Keys for the bulk import, newest first.
-        var bulkKeys: [ReaderSavedBulkKey] = []
-        /// Pages saved by URL, which the bulk import can't take, newest first.
-        var urls: [String] = []
+        /// The saves, newest first, with each key once.
+        var saves: [PlannedSave] = []
         /// Posts missing the IDs the API needs.
         var unsaveableCount = 0
     }
@@ -490,8 +546,8 @@ enum ReaderSavedPostsSync {
         )
     }
 
-    /// Splits the keys of the given posts, which must be newest first, into the ones the bulk import
-    /// takes and the URLs it doesn't.
+    /// The saves for the given posts, which must be newest first, without duplicates or posts that
+    /// can't be saved.
     static func importPlan(for identities: [ReaderPostSaveIdentity]) -> ImportPlan {
         var plan = ImportPlan()
         var seen = Set<ReaderSavedKey>()
@@ -503,27 +559,13 @@ enum ReaderSavedPostsSync {
             guard seen.insert(key.normalized).inserted else { continue }
 
             switch key {
-            case let .post(blogId, postId):
-                plan.bulkKeys.append(.post(blogId: blogId, postId: postId))
-            case let .feedItem(feedItemId):
-                plan.bulkKeys.append(.feedItem(feedItemId: feedItemId))
+            case .post, .feedItem:
+                plan.saves.append(.post(identity))
             case let .url(url):
-                plan.urls.append(url)
+                plan.saves.append(.url(url))
             }
         }
         return plan
-    }
-
-    /// The keys the server didn't save, with its reason. Results are in the same order as the keys.
-    static func rejectedKeys(
-        _ keys: [ReaderSavedBulkKey],
-        results: [ReaderSavedBulkResult]
-    ) -> [(key: ReaderSavedKey, error: String?)] {
-        zip(keys, results)
-            .compactMap { key, result in
-                guard !result.saved else { return nil }
-                return (savedKey(for: key), result.error)
-            }
     }
 
     /// A stable string for a key, such as to identify a row.
@@ -538,13 +580,6 @@ enum ReaderSavedPostsSync {
         }
     }
 
-    private static func savedKey(for key: ReaderSavedBulkKey) -> ReaderSavedKey {
-        switch key {
-        case let .post(blogId, postId): .post(blogId: blogId, postId: postId)
-        case let .feedItem(feedItemId): .feedItem(feedItemId: feedItemId)
-        }
-    }
-
     // MARK: Analytics
 
     /// The properties of the event for an import that finished. Counts only: no URLs or titles.
@@ -554,6 +589,7 @@ enum ReaderSavedPostsSync {
             "local_saves": saveCount,
             "imported": Int(report.imported),
             "refused": report.rejected.count,
+            "pending": Int(report.pending),
             "unsaveable": Int(report.unsaveable)
         ]
     }
@@ -579,7 +615,6 @@ enum ReaderSavedPostsSync {
             case .PostCannotBeSaved: "post_cannot_be_saved"
             case .UnexpectedImportResults: "unexpected_import_results"
             case .Database: "database"
-            case .StaleLoadMore: "stale_load_more"
             }
         case is URLError: "network"
         case is CocoaError: "core_data"

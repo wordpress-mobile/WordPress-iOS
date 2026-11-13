@@ -68,7 +68,7 @@ struct ReaderSavedPostsExporterTests {
         let item = ReaderSavedListItem(
             key: .feedItem(feedItemId: 55),
             post: ReaderPostRecord(key: .feedItem(feedItemId: 55), identity: identity, title: "Feed post"),
-            isRecent: false,
+            isPending: false,
             isLocalOnly: false
         )
 
@@ -94,7 +94,7 @@ struct ReaderSavedPostsExporterTests {
         let item = ReaderSavedListItem(
             key: .post(blogId: 100, postId: 1),
             post: ReaderPostRecord(key: .post(blogId: 100, postId: 1), identity: identity, tags: tags),
-            isRecent: false,
+            isPending: false,
             isLocalOnly: false
         )
 
@@ -103,7 +103,7 @@ struct ReaderSavedPostsExporterTests {
 
     @Test("A save the list hasn't sent yet is exported from its key")
     func exportRecentSave() {
-        let item = ReaderSavedListItem(key: .post(blogId: 100, postId: 5), isRecent: true, isLocalOnly: false)
+        let item = ReaderSavedListItem(key: .post(blogId: 100, postId: 5), isPending: true, isLocalOnly: false)
 
         let post = ReaderSavedPostsExporter.exportedPost(for: item)
 
@@ -173,7 +173,11 @@ struct ReaderSavedPostsExporterTests {
         #expect(result.imported == 2)
         #expect(result.skipped == 1)
         #expect(result.failed == 0)
-        #expect(service.bulkImports == [[.post(blogId: 100, postId: 1), .feedItem(feedItemId: 55)]])
+        #expect(
+            Set(service.savedIdentities.compactMap(\.savedKey)) == [
+                .post(blogId: 100, postId: 1), .feedItem(feedItemId: 55)
+            ]
+        )
     }
 
     @Test("Import fails every post without an account")

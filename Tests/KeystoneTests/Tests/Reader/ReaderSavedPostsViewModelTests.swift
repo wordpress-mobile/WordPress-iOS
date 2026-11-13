@@ -63,7 +63,7 @@ struct ReaderSavedPostsViewModelTests {
                 ],
                 commentCount: 12
             ),
-            isRecent: false,
+            isPending: false,
             isLocalOnly: false
         )
 
@@ -92,7 +92,7 @@ struct ReaderSavedPostsViewModelTests {
                 identity: identity,
                 displayImageUrl: "https://example.com/content-image.jpg"
             ),
-            isRecent: false,
+            isPending: false,
             isLocalOnly: false
         )
 
@@ -121,7 +121,7 @@ struct ReaderSavedPostsViewModelTests {
         let item = ReaderSavedListItem(
             key: .feedItem(feedItemId: 55),
             post: ReaderPostRecord(key: .feedItem(feedItemId: 55), identity: identity, title: "Feed post"),
-            isRecent: false,
+            isPending: false,
             isLocalOnly: false
         )
 
@@ -133,7 +133,7 @@ struct ReaderSavedPostsViewModelTests {
     func rowForURL() {
         let item = ReaderSavedListItem(
             key: .url(url: "https://example.com/some/page"),
-            isRecent: true,
+            isPending: true,
             isLocalOnly: false
         )
 
@@ -237,7 +237,7 @@ struct ReaderSavedPostsViewModelTests {
     @Test("A save the list hasn't sent yet is unsaved by its key")
     func unsaveByKey() async {
         collection.items = [
-            ReaderSavedListItem(key: .url(url: "https://example.com/a"), isRecent: true, isLocalOnly: false)
+            ReaderSavedListItem(key: .url(url: "https://example.com/a"), isPending: true, isLocalOnly: false)
         ]
         let viewModel = makeViewModel()
         await viewModel.reloadFromCache()
@@ -283,7 +283,7 @@ struct ReaderSavedPostsViewModelTests {
                 featuredImage: "https://example.com/image.jpg",
                 siteName: "Site"
             ),
-            isRecent: false,
+            isPending: false,
             isLocalOnly: false
         )
     }
