@@ -6,7 +6,7 @@ on:
 
 jobs:
   dangermattic:
-    if: ${{ (github.event.pull_request.draft == false) }}
+    if: ${{ github.event.pull_request.draft == false && !startsWith(github.event.pull_request.head.ref, 'iris/task-') }}
     uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@v1.1.2
     with:
       org-slug: automattic
