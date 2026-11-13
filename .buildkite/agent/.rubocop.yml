@@ -1,0 +1,9 @@
+inherit_from: ../../.rubocop.yml
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Naming/FileName:
+  Exclude:
+    - Gemfile
