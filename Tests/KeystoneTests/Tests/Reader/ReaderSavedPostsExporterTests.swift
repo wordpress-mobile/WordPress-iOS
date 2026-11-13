@@ -148,6 +148,13 @@ struct ReaderSavedPostsExporterTests {
         #expect(ReaderSavedPostsExporter.identity(for: post).savedKey == .feedItem(feedItemId: 55))
     }
 
+    @Test("An exported page saved by URL is saved by its URL")
+    func importURLPage() {
+        let post = Self.exportedPost(siteID: nil, postID: nil, url: "https://example.com/page")
+
+        #expect(ReaderSavedPostsExporter.identity(for: post).savedKey == .url(url: "https://example.com/page"))
+    }
+
     @Test("Import sends the file's posts straight to the account")
     func importSavesToTheAccount() async throws {
         let service = FakeReaderSavedService()
