@@ -262,6 +262,10 @@ private actor ControllableStatsService: StatsServiceProtocol {
         throw TestError.unused
     }
 
+    func getFeaturedImageURLs(forPostIDs postIDs: [Int]) async throws -> [Int: URL] {
+        throw TestError.unused
+    }
+
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         throw TestError.unused
     }

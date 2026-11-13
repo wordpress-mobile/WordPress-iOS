@@ -5,6 +5,7 @@ import WordPressUI
 
 struct TopListScreenView: View {
     @StateObject private var viewModel: TopListViewModel
+    @StateObject private var postThumbnailStore: PostThumbnailStore
     @State private var isShowingAllItems = false
 
     @Environment(\.router) var router
@@ -36,6 +37,7 @@ struct TopListScreenView: View {
             filter: filter,
             initialData: initialData
         ))
+        self._postThumbnailStore = StateObject(wrappedValue: PostThumbnailStore(service: service))
     }
 
     var body: some View {
@@ -59,6 +61,10 @@ struct TopListScreenView: View {
                             makeEmptyStateView(message: Strings.Chart.empty)
                         } else {
                             listContent(data: data)
+                                // Only the real list resolves thumbnails: the placeholder
+                                // and empty states are built from mock posts, whose IDs
+                                // would otherwise be looked up against the real site.
+                                .environment(\.postThumbnailStore, thumbnailStore)
                         }
                     } else {
                         makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
@@ -115,6 +121,12 @@ struct TopListScreenView: View {
                 LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
             }
         }
+    }
+
+    /// Thumbnails are a Posts & Pages affordance, so every other list leaves the store
+    /// unset and its rows draw no leading content.
+    private var thumbnailStore: PostThumbnailStore? {
+        viewModel.selection.item == .postsAndPages ? postThumbnailStore : nil
     }
 
     @ViewBuilder

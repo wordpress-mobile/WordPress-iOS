@@ -110,26 +110,28 @@ extension TopListData {
     }
 
     private static func mockPosts(metric: SiteMetric) -> [TopListItem.Post] {
+        // The real API always reports a type, and the rows draw a different glyph for a
+        // post than for a page, so the mock names one too.
         let posts = [
-            ("Getting Started with SwiftUI", "John Doe", 3500),
-            ("Understanding Async/Await in Swift", "Jane Smith", 2800),
-            ("Building Better iOS Apps", "Mike Johnson", 2200),
-            ("SwiftUI vs UIKit: A Comparison", "Sarah Wilson", 1900),
-            ("Advanced Swift Techniques", "Tom Brown", 1600),
-            ("iOS App Architecture Patterns", "Emma Davis", 1300),
-            ("Swift Performance Tips", "Chris Miller", 1000),
-            ("Debugging in Xcode", "Lisa Anderson", 850)
+            ("Getting Started with SwiftUI", "John Doe", "post", 3500),
+            ("Understanding Async/Await in Swift", "Jane Smith", "post", 2800),
+            ("About", "Mike Johnson", "page", 2200),
+            ("SwiftUI vs UIKit: A Comparison", "Sarah Wilson", "post", 1900),
+            ("Advanced Swift Techniques", "Tom Brown", "post", 1600),
+            ("Contact", "Emma Davis", "page", 1300),
+            ("Swift Performance Tips", "Chris Miller", "post", 1000),
+            ("Debugging in Xcode", "Lisa Anderson", "post", 850)
         ]
 
         return posts.enumerated().map { index, data in
-            let baseValue = data.2
+            let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.Post(
                 title: data.0,
                 postID: "\(index + 1)",
                 postURL: nil,
                 date: nil,
-                type: nil,
+                type: data.2,
                 author: data.1,
                 metrics: metrics
             )

@@ -1,6 +1,7 @@
 [
   {
     "url": "https://apple.com",
+    "iconURL": "https://www.apple.com/favicon.ico",
     "title": "Apple",
     "children": [
       {
@@ -38,6 +39,7 @@
   },
   {
     "url": "https://tesla.com",
+    "iconURL": "https://www.tesla.com/favicon.ico",
     "title": "Tesla",
     "children": [
       {
@@ -85,6 +87,7 @@
   },
   {
     "url": "https://github.com",
+    "iconURL": "https://github.com/favicon.ico",
     "title": "GitHub",
     "children": [
       {
@@ -113,6 +116,7 @@
   },
   {
     "url": "https://microsoft.com",
+    "iconURL": "https://www.microsoft.com/favicon.ico",
     "title": "Microsoft",
     "children": [
       {
@@ -141,6 +145,7 @@
   },
   {
     "url": "https://google.com",
+    "iconURL": "https://www.google.com/favicon.ico",
     "title": "Google",
     "children": [
       {
@@ -160,6 +165,7 @@
   },
   {
     "url": "https://samsung.com",
+    "iconURL": "https://www.samsung.com/favicon.ico",
     "title": "Samsung",
     "children": [
       {
