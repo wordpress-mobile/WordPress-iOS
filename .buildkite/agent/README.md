@@ -1,8 +1,12 @@
-# WPiOS setup for remote coding tasks
+# WPiOS setup for remote investigations
 
-These scripts give a coding agent a way to build WPiOS and see its changes in
-a simulator. They run in a disposable Mac VM as a non-admin user, with the
-worker taking care of the task deadline and the host cleaning up afterward.
+These scripts let a remote agent build WPiOS, run focused tests and inspect the
+app in a simulator while investigating an issue. They run in a disposable Mac
+VM as a non-admin user; the worker manages the deadline and the host cleans up.
+
+Choose the checks that answer the question. A failing reproduction test can be
+the useful result, so investigations do not require a final green build. Local
+edits are kept as a private patch for review; nothing is pushed or published.
 
 The image needs a compatible Xcode, Ruby 3.4, and an installed iOS 18 or later
 runtime with an iPhone device type. Package downloads need network access.
@@ -43,7 +47,7 @@ shows that the app builds and opens; run the relevant tests separately:
 Tests use the `WordPressUnitTests` plan. Repeat `--test Target/Suite` for more
 suites, or use `--test Target/Suite/Method` for one test. The adapter requires
 explicit selectors and doesn't accept arbitrary `xcodebuild` arguments. Follow
-[AGENTS.md](../../AGENTS.md) for the app's testing conventions and include the
+[AGENTS.md](../../../AGENTS.md) for the app's testing conventions and include the
 checks you ran in the task report.
 
 ## Looking at UI changes
@@ -65,36 +69,8 @@ are set up in the image.
 
 Signed-out UI doesn't need an account. If a task needs authentication, stop and
 ask Iris for an approved test fixture instead of finding production credentials.
-The [simulator sign-in guide](../../docs/simulator-sign-in.md) explains the launch
+The [simulator sign-in guide](../../../docs/simulator-sign-in.md) explains the launch
 arguments for an approved fixture. Keep account data out of logs and screenshots.
-
-## Draft PRs and CI
-
-When a task has a change that passes its checks, the pilot opens a draft PR for
-us to review. This happens after its VM has been removed, so the coding agent
-does not need GitHub credentials. These PRs use `iris/task-<task_id>` branches.
-Automatic Buildkite builds, Danger
-event retries, and `@claude` reviews stay off for them, even after marking a draft
-ready for review.
-
-Once a maintainer has reviewed the diff, they can run this from buildkite-ci:
-
-```sh
-ruby src/scripts/run-iris-pr-ci.rb \
-  https://github.com/wordpress-mobile/WordPress-iOS/pull/123 \
-  --commit <full-reviewed-sha>
-```
-
-The command uses the maintainer's GitHub CLI login and `BUILDKITE_API_TOKEN`.
-It checks that the PR still points to the reviewed commit and starts normal
-WPiOS CI with the PR metadata. Add `--dry-run` to inspect the request first.
-This gives the reviewed code normal CI access, so review comes before running
-the command. Keep the original branch name so the PR stays open.
-
-Publication stays disabled until the Buildkite branch filter and GitHub workflow
-guards are deployed. Tasks must start from a commit on trunk. The publisher pins
-an approved guard baseline and rejects changes to `.github/`, `.buildkite/`,
-and `.gitmodules`.
 
 ## What the worker collects
 
@@ -102,10 +78,6 @@ Logs and screenshots go under `$AGENT_OUTPUT_DIR/evidence`. Preparation uses
 `prepare-*.log` so it doesn't overwrite the worker's own log. DerivedData stays
 in task state, outside the source patch. Any failed prepare, build, test,
 install, launch or screenshot command returns a nonzero exit status.
-
-The worker copies this adapter from the requested commit before editing starts
-and runs the copy through `/bin/bash`, with the checkout as its working
-directory. Editing the checkout's scripts won't change that final check.
 
 To check the adapter itself without Xcode or a simulator:
 
