@@ -18,11 +18,11 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      is_internal: ${{ steps.pr-origin.outputs.is_internal }}
+      allowed: ${{ steps.pr-origin.outputs.allowed }}
     steps:
       # issue_comment payloads identify PR comments, but do not include the PR
-      # head repo. Query the PR before allowing Claude to run on fork PRs.
-      - name: Check PR origin
+      # head repo or branch. Query both before exposing review credentials.
+      - name: Check PR eligibility
         id: pr-origin
         env:
           GH_TOKEN: ${{ github.token }}
@@ -30,23 +30,24 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
-          if ! head_repo="$(gh api "repos/${REPOSITORY}/pulls/${ISSUE_NUMBER}" --jq '.head.repo.full_name')"; then
-            echo "Unable to determine PR head repository for #${ISSUE_NUMBER}; skipping Claude."
-            echo "is_internal=false" >> "$GITHUB_OUTPUT"
+          if ! head="$(gh api "repos/${REPOSITORY}/pulls/${ISSUE_NUMBER}" --jq '.head | [.repo.full_name, .ref] | @tsv')"; then
+            echo "Unable to determine PR head for #${ISSUE_NUMBER}; skipping Claude."
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          IFS=$'\t' read -r head_repo head_ref <<< "$head"
 
-          if [ "$head_repo" = "$REPOSITORY" ]; then
-            echo "is_internal=true" >> "$GITHUB_OUTPUT"
+          if [[ "$head_repo" == "$REPOSITORY" && -n "$head_ref" && "$head_ref" != iris/task-* ]]; then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "is_internal=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping Claude for external PR from ${head_repo:-unknown}."
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Claude for ${head_repo:-unknown}:${head_ref:-unknown}."
           fi
 
 
   review-with-tracking:
     needs: check-pr-origin
-    if: needs.check-pr-origin.outputs.is_internal == 'true'
+    if: needs.check-pr-origin.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
