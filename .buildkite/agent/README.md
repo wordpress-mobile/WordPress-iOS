@@ -4,7 +4,7 @@ These scripts give a coding agent a way to build WPiOS and see its changes in
 a simulator. They run in a disposable Mac VM as a non-admin user, with the
 worker taking care of the task deadline and the host cleaning up afterward.
 
-The image needs a compatible Xcode, Python 3, and an installed iOS 18 or later
+The image needs a compatible Xcode, Ruby 3.4, and an installed iOS 18 or later
 runtime with an iPhone device type. Package downloads need network access.
 Builds use example credentials for signed-out UI; the scripts refuse environments
 with `a8c-secrets` or `WordPress/Credentials/Secrets.swift` so the normal build
@@ -80,7 +80,7 @@ ready for review.
 Once a maintainer has reviewed the diff, they can run this from buildkite-ci:
 
 ```sh
-python3 src/scripts/run-iris-pr-ci.py \
+ruby src/scripts/run-iris-pr-ci.rb \
   https://github.com/wordpress-mobile/WordPress-iOS/pull/123 \
   --commit <full-reviewed-sha>
 ```
@@ -110,7 +110,8 @@ directory. Editing the checkout's scripts won't change that final check.
 To check the adapter itself without Xcode or a simulator:
 
 ```bash
-python3 -m unittest discover -s .buildkite/agent/tests -v
+BUNDLE_GEMFILE=.buildkite/agent/Gemfile bundle install
+BUNDLE_GEMFILE=.buildkite/agent/Gemfile bundle exec rspec .buildkite/agent/spec
 ```
 
 These tests use temporary checkouts and substitute `xcodebuild` and `simctl`

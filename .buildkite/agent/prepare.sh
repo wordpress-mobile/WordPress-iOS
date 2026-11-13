@@ -27,53 +27,52 @@ exec > >(tee "$AGENT_OUTPUT_DIR/evidence/prepare-$run_id.log") 2>&1
 rm -f "$AGENT_STATE_DIR/simulator-udid"
 xcodebuild -version
 xcrun simctl list --json > "$AGENT_STATE_DIR/simulators.json"
-selection="$(python3 - "$AGENT_STATE_DIR/simulators.json" "$requested_udid" <<'PY'
-import json
-import re
-import subprocess
-import sys
+selection="$(ruby --disable=rubyopt - "$AGENT_STATE_DIR/simulators.json" "$requested_udid" <<'RUBY_SELECT'
+require 'json'
+require 'open3'
 
-with open(sys.argv[1]) as stream:
-    simulators = json.load(stream)
-devices = []
-for runtime, entries in simulators["devices"].items():
-    version = re.search(r"\.iOS-(\d+(?:-\d+)*)$", runtime)
-    if not version:
-        continue
-    version = tuple(map(int, version[1].split("-")))
-    if version[0] < 18:
-        continue
-    for device in entries:
-        if device.get("isAvailable") and device.get("deviceTypeIdentifier", "").startswith("com.apple.CoreSimulator.SimDeviceType.iPhone-"):
-            devices.append((device, version))
-requested = sys.argv[2]
-if requested:
-    devices = [entry for entry in devices if entry[0]["udid"].lower() == requested.lower()]
-    if not devices:
-        raise SystemExit("The requested UUID is not an available iPhone simulator with iOS 18 or later.")
-if devices:
-    device, _ = max(devices, key=lambda entry: (entry[0]["state"] == "Booted", entry[1], entry[0]["name"]))
-else:
-    compatible = []
-    for runtime in simulators["runtimes"]:
-        if not runtime.get("isAvailable") or runtime.get("platform") != "iOS":
-            continue
-        version = tuple(map(int, runtime["version"].split(".")))
-        types = [item for item in runtime["supportedDeviceTypes"] if item.get("productFamily") == "iPhone"]
-        if version >= (18,) and types:
-            compatible.append((version, runtime, types))
-    if not compatible:
-        raise SystemExit("No installed iOS 18 or later runtime with a compatible iPhone device type. Provision an iOS runtime first.")
-    _, runtime, types = max(compatible, key=lambda entry: entry[0])
-    device_type = min(types, key=lambda item: item["identifier"])
-    udid = subprocess.check_output([
-        "xcrun", "simctl", "create", "Iris task", device_type["identifier"], runtime["identifier"],
-    ], text=True).strip()
-    device = {"udid": udid, "state": "Shutdown"}
-if not re.fullmatch(r"[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}", device["udid"]):
-    raise SystemExit("simctl returned an invalid simulator UUID")
-print(device["udid"], device["state"])
-PY
+simulators = JSON.parse(File.read(ARGV.fetch(0)))
+devices = simulators.fetch('devices').flat_map do |runtime, entries|
+  match = /\.iOS-(\d+(?:-\d+)*)\z/.match(runtime)
+  next [] unless match
+
+  version = match[1].split('-').map(&:to_i)
+  next [] if version.first < 18
+
+  entries.filter_map do |device|
+    next unless device['isAvailable'] && device.fetch('deviceTypeIdentifier', '').start_with?('com.apple.CoreSimulator.SimDeviceType.iPhone-')
+
+    [device, version]
+  end
+end
+requested = ARGV.fetch(1)
+unless requested.empty?
+  devices.select! { |device, _version| device.fetch('udid').casecmp?(requested) }
+  abort 'The requested UUID is not an available iPhone simulator with iOS 18 or later.' if devices.empty?
+end
+if devices.empty?
+  compatible = simulators.fetch('runtimes').filter_map do |runtime|
+    next unless runtime['isAvailable'] && runtime['platform'] == 'iOS'
+
+    version = runtime.fetch('version').split('.').map(&:to_i)
+    types = runtime.fetch('supportedDeviceTypes').select { |type| type['productFamily'] == 'iPhone' }
+    [version, runtime, types] if version.first >= 18 && !types.empty?
+  end
+  abort 'No installed iOS 18 or later runtime with a compatible iPhone device type. Provision an iOS runtime first.' if compatible.empty?
+
+  _version, runtime, types = compatible.max_by(&:first)
+  device_type = types.min_by { |type| type.fetch('identifier') }
+  udid, status = Open3.capture2('xcrun', 'simctl', 'create', 'Iris task', device_type.fetch('identifier'), runtime.fetch('identifier'))
+  abort 'Could not create an iPhone simulator.' unless status.success?
+
+  device = { 'udid' => udid.strip, 'state' => 'Shutdown' }
+else
+  device, = devices.max_by { |entry, version| [entry['state'] == 'Booted' ? 1 : 0, version, entry.fetch('name')] }
+end
+abort 'simctl returned an invalid simulator UUID' unless /\A[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}\z/.match?(device.fetch('udid'))
+
+puts "#{device.fetch('udid')} #{device.fetch('state')}"
+RUBY_SELECT
 )"
 read -r simulator_udid simulator_state <<< "$selection"
 if [[ "$simulator_state" != "Booted" ]]; then

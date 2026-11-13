@@ -5,18 +5,25 @@ agent_setup() {
     export REPO_ROOT
     : "${AGENT_OUTPUT_DIR:?Set AGENT_OUTPUT_DIR to an absolute output directory}"
     : "${AGENT_STATE_DIR:?Set AGENT_STATE_DIR to an absolute task state directory}"
-    python3 - <<'PY'
-import os
-from pathlib import Path
+    ruby --disable=rubyopt - <<'RUBY_CHECK'
+require 'pathname'
 
-root = Path(os.environ["REPO_ROOT"])
-for name in ("AGENT_OUTPUT_DIR", "AGENT_STATE_DIR"):
-    path = Path(os.environ[name])
-    resolved = path.resolve()
-    inside = any(parent.exists() and parent.samefile(root) for parent in (resolved, *resolved.parents))
-    if not path.is_absolute() or inside:
-        raise SystemExit(f"{name} must be an absolute directory outside the checkout")
-PY
+root = Pathname.new(ENV.fetch('REPO_ROOT')).realpath
+%w[AGENT_OUTPUT_DIR AGENT_STATE_DIR].each do |name|
+  path = Pathname.new(ENV.fetch(name))
+  abort "#{name} must be an absolute directory outside the checkout" unless path.absolute?
+
+  # Resolve one component at a time so symlinks before '..' keep their meaning.
+  resolved = path.each_filename.reduce(Pathname.new('/')) do |parent, component|
+    candidate = parent.join(component).cleanpath
+    candidate.symlink? ? candidate.realpath : candidate
+  end
+  if resolved.ascend.any? { |entry| entry.exist? && File.identical?(entry, root) }
+    abort "#{name} must be an absolute directory outside the checkout"
+  end
+end
+RUBY_CHECK
+
     umask 077
     mkdir -p "$AGENT_OUTPUT_DIR/evidence" "$AGENT_STATE_DIR"
     cd "$REPO_ROOT" || return
