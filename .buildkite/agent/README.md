@@ -72,12 +72,44 @@ ask Iris for an approved test fixture instead of finding production credentials.
 The [simulator sign-in guide](../../../docs/simulator-sign-in.md) explains the launch
 arguments for an approved fixture. Keep account data out of logs and screenshots.
 
+## Draft PRs and CI
+
+An explicitly requested change can become a draft PR after its final checks
+pass. Investigation tasks keep their temporary edits private. This happens after its VM has been removed, so the coding agent
+does not need GitHub credentials. These PRs use `iris/task-<task_id>` branches.
+Automatic Buildkite builds, Danger
+event retries, and `@claude` reviews stay off for them, even after marking a draft
+ready for review.
+
+Once a maintainer has reviewed the diff, they can run this from buildkite-ci:
+
+```sh
+ruby src/scripts/run-iris-pr-ci.rb \
+  https://github.com/wordpress-mobile/WordPress-iOS/pull/123 \
+  --commit <full-reviewed-sha>
+```
+
+The command uses the maintainer's GitHub CLI login and `BUILDKITE_API_TOKEN`.
+It checks that the PR still points to the reviewed commit and starts normal
+WPiOS CI with the PR metadata. Add `--dry-run` to inspect the request first.
+This gives the reviewed code normal CI access, so review comes before running
+the command. Keep the original branch name so the PR stays open.
+
+Publication stays disabled until the Buildkite branch filter and GitHub workflow
+guards are deployed. Tasks must start from a commit on trunk. The publisher pins
+an approved guard baseline and rejects changes to `.github/`, `.buildkite/`,
+and `.gitmodules`.
+
 ## What the worker collects
 
 Logs and screenshots go under `$AGENT_OUTPUT_DIR/evidence`. Preparation uses
 `prepare-*.log` so it doesn't overwrite the worker's own log. DerivedData stays
 in task state, outside the source patch. Any failed prepare, build, test,
 install, launch or screenshot command returns a nonzero exit status.
+
+For change tasks, the worker runs a copy of the base adapter's `verify.sh` after
+the agent finishes. Editing the checkout's scripts cannot change that final
+check. Investigations choose their own checks and may return failing evidence.
 
 To check the adapter itself without Xcode or a simulator:
 
