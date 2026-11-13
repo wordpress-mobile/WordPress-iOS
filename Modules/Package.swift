@@ -518,7 +518,8 @@ enum XcodeSupport {
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
-            .product(name: "WordPressEditor", package: "AztecEditor-iOS")
+            .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
+            .product(name: "Logging", package: "swift-log")
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -653,7 +654,8 @@ enum XcodeSupport {
                     //  "_OBJC_CLASS_$_DDLog", referenced from:
                     //       in AppExtensionsService.o
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                    .product(name: "Logging", package: "swift-log")
                 ]
             )
         ]

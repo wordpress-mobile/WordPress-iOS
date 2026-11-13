@@ -228,7 +228,7 @@ extension PublishingEditor {
         // Cancel upload of only newly inserted media items
         if let previous = post.original {
             for media in post.media.subtracting(previous.media) {
-                DDLogInfo("post-editor: cancel upload for \(media.filename ?? media.description)")
+                Loggers.app.info("post-editor: cancel upload for \(media.filename ?? media.description)")
                 MediaCoordinator.shared.cancelUpload(of: media)
             }
         } else {
@@ -330,12 +330,12 @@ extension PublishingEditor {
         wpAssert(post.latest() == post, "Must be opened with the latest version of the post")
 
         if !post.isUnsavedRevision && post.status != .trash {
-            DDLogDebug("Creating new revision")
+            Loggers.app.debug("Creating new revision")
             post = post.createRevision()
         }
 
         if loadAutosaveRevision {
-            DDLogDebug("Loading autosave")
+            Loggers.app.debug("Loading autosave")
             post.postTitle = post.autosaveTitle
             post.mt_excerpt = post.autosaveExcerpt
             post.content = post.autosaveContent

@@ -101,10 +101,10 @@ private extension JetpackRemoteInstallViewController {
                 let title = error.title ?? "no error message"
                 let type = error.type.rawValue
                 let code = error.code
-                DDLogError("Jetpack Remote Install error for site \(blogURLString) – \(title) (\(code): \(type))")
+                Loggers.app.error("Jetpack Remote Install error for site \(blogURLString) – \(title) (\(code): \(type))")
 
                 if error.isBlockingError {
-                    DDLogInfo("Jetpack Remote Install error - Blocking error")
+                    Loggers.app.info("Jetpack Remote Install error - Blocking error")
                     self.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
             }

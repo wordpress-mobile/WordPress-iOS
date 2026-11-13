@@ -66,7 +66,7 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
             case .success:
                 self?.state = .success
             case .failure(let error):
-                DDLogError("Error: Jetpack plugin installation via proxy failed. \(error.localizedDescription)")
+                Loggers.app.error("Error: Jetpack plugin installation via proxy failed. \(error.localizedDescription)")
                 let installError = JetpackInstallError(title: error.localizedDescription, type: .unknown)
                 self?.state = .failure(installError)
             }

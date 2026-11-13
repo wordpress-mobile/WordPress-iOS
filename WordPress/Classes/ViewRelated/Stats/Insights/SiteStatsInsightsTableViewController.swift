@@ -392,7 +392,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
             let blog = Blog.lookup(withID: blogId, in: mainContext)
         else {
-            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            Loggers.app.info("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
 
@@ -404,14 +404,14 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                 let apost = try coreDataStack.mainContext.existingObject(with: postObjectID)
 
                 guard let post = apost as? Post else {
-                    DDLogInfo("Failed to get post with id \(postID)")
+                    Loggers.app.info("Failed to get post with id \(postID)")
                     return
                 }
 
                 let shareController = PostSharingController()
                 shareController.sharePost(post, fromView: fromView, inViewController: self)
             } catch {
-                DDLogInfo("Error getting post with id \(postID): \(error.localizedDescription)")
+                Loggers.app.info("Error getting post with id \(postID): \(error.localizedDescription)")
             }
         }
     }
@@ -510,7 +510,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
             let blog = Blog.lookup(withID: blogId, in: mainContext)
         else {
-            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            Loggers.app.info("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
 
@@ -530,7 +530,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
             let blog = Blog.lookup(withID: blogId, in: mainContext)
         else {
-            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            Loggers.app.info("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
 
@@ -631,7 +631,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
 
         guard let insightType = insight.insightType else {
-            DDLogDebug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
+            Loggers.app.debug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
             return
         }
 

@@ -471,7 +471,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 }
             },
             failure: { error in
-                DDLogError("Error updating active theme: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error updating active theme: \(String(describing: error?.localizedDescription))")
             }
         )
     }
@@ -521,7 +521,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 self?.totalThemeCount = themeCount
             },
             failure: { error in
-                DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error
                 {
@@ -542,7 +542,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 self?.totalCustomThemeCount = themeCount
             },
             failure: { error in
-                DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error
                 {
@@ -955,7 +955,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 try customThemesController.performFetch()
             }
         } catch {
-            DDLogError("Error fetching themes: \(error)")
+            Loggers.app.error("Error fetching themes: \(error)")
         }
     }
 
@@ -1012,7 +1012,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 alertController.presentFromRootViewController()
             },
             failure: { [weak self] error in
-                DDLogError(
+                Loggers.app.error(
                     "Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))"
                 )
 

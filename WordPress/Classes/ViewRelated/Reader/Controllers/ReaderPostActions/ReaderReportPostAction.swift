@@ -43,7 +43,7 @@ final class ReaderReportPostAction {
 
         if target == .author {
             guard let authorID = post.authorID?.stringValue else {
-                DDLogWarn("Author ID is required to report a post's author")
+                Loggers.app.warning("Author ID is required to report a post's author")
                 return nil
             }
             queryItems.append(.init(name: Constants.userKey, value: authorID))

@@ -19,7 +19,7 @@ extension BlogService {
             // it's only used when removing blogs or accounts, and there's
             // no extra action we can take if it fails anyway.
         } catch {
-            DDLogError("Could not instantiate the reminders scheduler: \(error.localizedDescription)")
+            Loggers.app.error("Could not instantiate the reminders scheduler: \(error.localizedDescription)")
         }
     }
 
@@ -195,7 +195,7 @@ extension BlogService {
                             failure(WordPressOrgXMLRPCApiError.responseSerializationFailed)
                         }
                     case .failure(let error):
-                        DDLogError("Failed syncing XML-RPC options for blog: \(error)")
+                        Loggers.app.error("Failed syncing XML-RPC options for blog: \(error)")
                         failure(error)
                     }
                 },

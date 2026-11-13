@@ -501,7 +501,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     func updatePluginStatus(_ plugin: InstalledPlugin, activated: Bool) async {
         if let operation, !operation.isCompleted {
-            DDLogWarn("Can't update plugin status at the moment, because there is another operation in progress: \(operation)")
+            Loggers.app.warning("Can't update plugin status at the moment, because there is another operation in progress: \(operation)")
             return
         }
 
@@ -518,7 +518,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     func uninstall(_ plugin: InstalledPlugin) async -> Bool {
         if let operation, !operation.isCompleted {
-            DDLogWarn("Can't uninsatll plugin at the moment, because there is another operation in progress: \(operation)")
+            Loggers.app.warning("Can't uninsatll plugin at the moment, because there is another operation in progress: \(operation)")
             return false
         }
 
@@ -535,7 +535,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     func install(_ slug: PluginWpOrgDirectorySlug) async {
         if let operation, !operation.isCompleted {
-            DDLogWarn("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
+            Loggers.app.warning("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
             return
         }
 

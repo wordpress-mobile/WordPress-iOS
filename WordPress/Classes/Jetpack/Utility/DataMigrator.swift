@@ -252,7 +252,7 @@ private extension DataMigrator {
 
     private func log(error: DataMigrationError, userInfo: [String: Any] = [:]) {
         let userInfo = userInfo.merging(self.userInfo(for: error)) { $1 }
-        DDLogError("\(error)")
+        Loggers.app.error("\(error)")
         crashLogger?.logError(error, userInfo: userInfo, level: .error)
     }
 

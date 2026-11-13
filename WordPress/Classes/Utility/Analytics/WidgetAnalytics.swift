@@ -20,7 +20,7 @@ struct WidgetAnalytics {
 
         let widgetAnalyticNames: [String] = installedWidgets.map { widgetInfo in
             guard let eventKind = WidgetStatsConfiguration.Kind(rawValue: widgetInfo.kind) else {
-                DDLogWarn("⚠️ Make sure the widget: \(widgetInfo.kind), has the correct kind.")
+                Loggers.app.warning("⚠️ Make sure the widget: \(widgetInfo.kind), has the correct kind.")
                 return "\(widgetInfo.kind)_\(widgetInfo.family)"
             }
             return "\(Events.eventPrefix(for: eventKind).rawValue)_\(widgetInfo.family.description.lowercased())"

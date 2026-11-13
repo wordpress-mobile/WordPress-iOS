@@ -113,7 +113,7 @@ final class SupportChatBotViewController: UIViewController {
             let encodedQuestions = try JSONEncoder().encode(Strings.questions)
             return String(data: encodedQuestions, encoding: .utf8) ?? ""
         } catch {
-            DDLogError("Couldn't encode default questions for support chat bot: \(error)")
+            Loggers.app.error("Couldn't encode default questions for support chat bot: \(error)")
             return ""
         }
     }
@@ -138,7 +138,7 @@ extension SupportChatBotViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { _, error in
             if let error {
-                DDLogError("Failed to initialize docs bot code: \(error)")
+                Loggers.app.error("Failed to initialize docs bot code: \(error)")
             }
         })
     }

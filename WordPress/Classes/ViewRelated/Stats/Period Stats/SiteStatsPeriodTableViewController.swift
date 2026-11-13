@@ -259,7 +259,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     func displayMediaWithID(_ mediaID: NSNumber) {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID, let blog = Blog.lookup(withID: siteID, in: mainContext) else {
-            DDLogInfo("Unable to get blog when trying to show media from Stats.")
+            Loggers.app.info("Unable to get blog when trying to show media from Stats.")
             return
         }
 
@@ -272,7 +272,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
                 let mediaID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)
                 media = try mainContext.existingObject(with: mediaID)
             } catch {
-                DDLogInfo("Unable to get media when trying to show from Stats: \(error.localizedDescription)")
+                Loggers.app.info("Unable to get media when trying to show from Stats: \(error.localizedDescription)")
                 return
             }
 

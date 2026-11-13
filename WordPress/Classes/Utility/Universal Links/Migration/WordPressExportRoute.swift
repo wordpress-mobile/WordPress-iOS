@@ -29,7 +29,7 @@ extension WordPressExportRoute: NavigationAction {
 
             guard let url = jetpackUrl,
                   UIApplication.shared.canOpenURL(url) else {
-                DDLogError("WordPressExportRoute: Cannot redirect back to the Jetpack app.")
+                Loggers.app.error("WordPressExportRoute: Cannot redirect back to the Jetpack app.")
                 return
             }
 

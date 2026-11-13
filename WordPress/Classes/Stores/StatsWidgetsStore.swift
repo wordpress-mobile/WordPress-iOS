@@ -58,19 +58,19 @@ class StatsWidgetsStore {
         var isReloadRequired = false
 
         if !hasCachedItems(for: HomeWidgetTodayData.self) {
-            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
+            Loggers.app.info("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             setCachedItems(initializeHomeWidgetData(type: HomeWidgetTodayData.self))
             isReloadRequired = true
         }
 
         if !hasCachedItems(for: HomeWidgetThisWeekData.self) {
-            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
+            Loggers.app.info("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
             setCachedItems(initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
             isReloadRequired = true
         }
 
         if !hasCachedItems(for: HomeWidgetAllTimeData.self) {
-            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
+            Loggers.app.info("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
             setCachedItems(initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
             isReloadRequired = true
         }
@@ -91,12 +91,12 @@ class StatsWidgetsStore {
 
         var homeWidgetCache = getCachedItems(for: T.self) ?? initializeHomeWidgetData(type: widgetType)
         guard let oldData = homeWidgetCache[siteID.intValue] else {
-            DDLogError("StatsWidgets: Failed to find a matching site")
+            Loggers.app.error("StatsWidgets: Failed to find a matching site")
             return
         }
 
         guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-            DDLogError("StatsWidgets: the site does not exist anymore")
+            Loggers.app.error("StatsWidgets: the site does not exist anymore")
             // if for any reason that site does not exist anymore, remove it from the cache.
             homeWidgetCache.removeValue(forKey: siteID.intValue)
             setCachedItems(homeWidgetCache)
@@ -153,7 +153,7 @@ class StatsWidgetsStore {
         do {
             return try makeCache(for: type).read()
         } catch {
-            DDLogError("HomeWidgetCache: failed to read items: \(error)")
+            Loggers.app.error("HomeWidgetCache: failed to read items: \(error)")
             return nil
         }
     }
@@ -169,7 +169,7 @@ class StatsWidgetsStore {
         do {
             try makeCache(for: T.self).delete()
         } catch {
-            DDLogError("HomeWidgetCache: failed to delete items: \(error)")
+            Loggers.app.error("HomeWidgetCache: failed to delete items: \(error)")
         }
     }
 
@@ -177,7 +177,7 @@ class StatsWidgetsStore {
         do {
             try makeCache(for: T.self).write(items: items)
         } catch {
-            DDLogError("HomeWidgetCache: failed to write items: \(error)")
+            Loggers.app.error("HomeWidgetCache: failed to write items: \(error)")
         }
     }
 
@@ -459,7 +459,7 @@ private extension StatsWidgetsStore {
                     serviceName: WidgetStatsConfiguration.keychainServiceName
                 )
         } catch {
-            DDLogDebug("Error while saving Widgets OAuth token: \(error)")
+            Loggers.app.debug("Error while saving Widgets OAuth token: \(error)")
         }
     }
 }

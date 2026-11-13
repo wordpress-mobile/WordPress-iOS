@@ -110,7 +110,7 @@ import WordPressKit
     // Delete all LikeUsers that were last fetched at least 7 days ago.
     class func purgeStaleLikes(fromContext context: NSManagedObjectContext) {
         guard let staleDate = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
-            DDLogError("Error creating date to purge stale Likes.")
+            Loggers.app.error("Error creating date to purge stale Likes.")
             return
         }
 
@@ -121,7 +121,7 @@ import WordPressKit
             let users = try context.fetch(request)
             users.forEach { context.delete($0) }
         } catch {
-            DDLogError("Error fetching Like Users: \(error)")
+            Loggers.app.error("Error fetching Like Users: \(error)")
         }
     }
 }
@@ -194,7 +194,7 @@ extension LikeUserHelper {
             let users = try context.fetch(request)
             users.forEach { context.delete($0) }
         } catch {
-            DDLogError("Error fetching post Like Users to delete: \(error)")
+            Loggers.app.error("Error fetching post Like Users to delete: \(error)")
         }
     }
 }

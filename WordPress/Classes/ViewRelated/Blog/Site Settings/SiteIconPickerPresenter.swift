@@ -135,7 +135,7 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
                 Self.dismissLoadingMessage()
                 self?.showImageCropViewController(image, presentingViewController: picker)
             } else {
-                DDLogError("Failed to load image: \(String(describing: error))")
+                Loggers.app.error("Failed to load image: \(String(describing: error))")
                 Self.showErrorLoadingImageMessage()
             }
         }
@@ -190,7 +190,7 @@ extension SiteIconPickerPresenter: ImagePlaygroundPickerDelegate {
         if let data = try? Data(contentsOf: imageURL), let image = UIImage(data: data) {
             showImageCropViewController(image, presentingViewController: picker)
         } else {
-            DDLogError("Failed to load image created by ImagePlayground")
+            Loggers.app.error("Failed to load image created by ImagePlayground")
             Self.showErrorLoadingImageMessage()
         }
     }

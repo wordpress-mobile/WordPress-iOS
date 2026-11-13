@@ -357,7 +357,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
                     self?.gutenberg.updateCapabilities()
                 },
                 failure: { error in
-                    DDLogError("Error syncing JETPACK: \(String(describing: error))")
+                    Loggers.app.error("Error syncing JETPACK: \(String(describing: error))")
                 }
             )
 
@@ -944,15 +944,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:
-            DDLogDebug("\(message)")
+            Loggers.app.debug("\(message)")
         case .info:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         case .warn:
-            DDLogWarn("\(message)")
+            Loggers.app.warning("\(message)")
         case .error, .fatal:
-            DDLogError("\(message)")
+            Loggers.app.error("\(message)")
         @unknown default:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         }
     }
 
@@ -967,7 +967,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             let controller = try GutenbergWebNavigationController(with: post, block: block)
             showGutenbergWeb(controller)
         } catch {
-            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
+            Loggers.app.error("Error loading Gutenberg Web with unsupported block: \(error)")
             return showUnsupportedBlockUnexpectedErrorAlert()
         }
     }
@@ -1399,7 +1399,7 @@ extension GutenbergViewController {
                         self.gutenberg.updateEditorSettings(response.blockEditorSettings)
                     }
                 case .failure(let err):
-                    DDLogError("Error fetching settings: \(err)")
+                    Loggers.app.error("Error fetching settings: \(err)")
                 }
             })
     }
