@@ -62,6 +62,8 @@ struct UnifiedSupportConversationView: View {
                 FullScreenProgressView(UnifiedSupportLocalization.loadingConversation)
             }
         }
+        // Outside the progress view, so the disclosure is already there while the conversation loads.
+        .safeAreaInset(edge: .top) { disclosure }
         .unifiedSupportNotice($viewModel.notice)
         // A ticket's subject scrolls away with the conversation, so the bar picks it up once it's gone.
         // Showing it in both places at once would just say the same thing twice.
@@ -97,6 +99,16 @@ struct UnifiedSupportConversationView: View {
             UnifiedSupportChatContentView(viewModel: viewModel)
         } else {
             UnifiedSupportTicketContentView(viewModel: viewModel, isTitleVisible: $isTitleVisible)
+        }
+    }
+
+    /// Taken out of the conversation and given to the screen, so the disclosure is read before the first reply and
+    /// stays in place as the messages scroll under it. A ticket is answered by a Happiness Engineer rather than by
+    /// the AI, so it doesn't carry the line.
+    @ViewBuilder
+    private var disclosure: some View {
+        if viewModel.isBot {
+            AISupportDisclosureView()
         }
     }
 
