@@ -78,7 +78,18 @@ struct ReaderSavedPostsExporter {
     /// The identity of a post from an export file. It's read like a Core Data post: an RSS item's
     /// post ID is its feed item ID.
     static func identity(for post: ExportedPost) -> ReaderPostSaveIdentity {
-        ReaderSavedPostsSync.identity(
+        // A page saved by URL has no IDs. The API takes it as external, with a `0` site and feed.
+        if post.siteID == nil, post.postID == nil, post.feedItemID == nil, !post.url.isEmpty {
+            return ReaderSavedPostsSync.identity(
+                postID: nil,
+                siteID: 0,
+                feedID: 0,
+                feedItemID: nil,
+                isExternal: true,
+                permaLink: post.url
+            )
+        }
+        return ReaderSavedPostsSync.identity(
             postID: post.postID.map { NSNumber(value: $0) },
             siteID: post.siteID.map { NSNumber(value: $0) },
             feedID: post.feedID.map { NSNumber(value: $0) },
