@@ -22,7 +22,6 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView {
 
         scrollView.addSubview(channelsStackView)
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.clipsToBounds = false
         scrollView.decelerationRate = .fast
 
         channelsStackView.pinEdges()
@@ -37,7 +36,9 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView {
             scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         titleView.pinEdges(.horizontal)
-        scrollView.pinEdges(.horizontal)
+        // Clipped to the safe area so the channels don't scroll under the
+        // iPhone Duo's side bar or the sensor housing in landscape.
+        scrollView.pinEdges(.horizontal, to: safeAreaLayoutGuide)
 
         titleView.titleLabel.text = SharedStrings.Reader.discover
         titleView.detailsTextView.isHidden = true
@@ -57,8 +58,8 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView {
     }
 
     private func updateScrollViewInsets() {
-        scrollView.contentInset.left = contentView.frame.minX - (isCompact ? 0 : 10)
-        scrollView.contentInset.right = frame.maxX - contentView.frame.maxX + 10
+        scrollView.contentInset.left = contentView.frame.minX - scrollView.frame.minX - (isCompact ? 0 : 10)
+        scrollView.contentInset.right = scrollView.frame.maxX - contentView.frame.maxX + 10
         scrollView.contentOffset = CGPoint(x: -scrollView.contentInset.left, y: 0)
     }
 

@@ -119,11 +119,7 @@ open class FlingableViewHandler: NSObject {
         pushBehavior.pushDirection = pushDirection
 
         // Scale down the magnitude for smaller display sizes
-        let horizontallyCompactTraits = UITraitCollection(horizontalSizeClass: .compact)
-        let verticallyCompactTraits = UITraitCollection(verticalSizeClass: .compact)
-
-        if view.traitCollection.containsTraits(in: horizontallyCompactTraits) ||
-            view.traitCollection.containsTraits(in: verticallyCompactTraits) {
+        if view.traitCollection.horizontalSizeClass == .compact || view.traitCollection.verticalSizeClass == .compact {
             pushBehavior.magnitude = magnitude / flingVelocityScaleFactorForCompactTraits
         } else {
             pushBehavior.magnitude = magnitude

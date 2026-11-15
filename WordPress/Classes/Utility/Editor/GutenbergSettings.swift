@@ -54,7 +54,7 @@ class GutenbergSettings {
 
     // MARK: - Internal variables
     private let database: KeyValueDatabase
-    private var coreDataStack: CoreDataStackSwift {
+    private var coreDataStack: CoreDataStack {
         AppEnvironment.current.contextManager
     }
 
@@ -176,7 +176,7 @@ class GutenbergSettings {
     func postSettingsToRemote(for blog: Blog) {
         let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
         editorSettingsService.postEditorSetting(for: blog, success: {}) { error in
-            DDLogError("Failed to post new post selection with Error: \(error)")
+            Loggers.app.error("Failed to post new post selection with Error: \(error)")
         }
     }
 

@@ -68,10 +68,7 @@ public class MySitesCoordinator: NSObject {
     // MARK: - Blog Details
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any]) {
-        showRootViewController()
-
-        mySiteViewController.blog = blog
-        RecentSitesService().touch(blog: blog)
+        switchToBlog(blog)
 
         if mySiteViewController.presentedViewController != nil {
             mySiteViewController.dismiss(animated: true, completion: nil)
@@ -80,6 +77,17 @@ public class MySitesCoordinator: NSObject {
         if let subsection, let mySiteViewController = navigationController.topViewController as? MySiteViewController {
             mySiteViewController.showBlogDetailsSubsection(subsection, userInfo: userInfo)
         }
+    }
+
+    /// Shows `blog` at the root of My Site, leaving anything presented over the app on screen.
+    ///
+    /// `showBlogDetails(for:)` also closes what's presented, which is right when the user asked to go to the site,
+    /// but not when the app only keeps two layouts on the same site.
+    func switchToBlog(_ blog: Blog) {
+        showRootViewController()
+
+        mySiteViewController.blog = blog
+        RecentSitesService().touch(blog: blog)
     }
 
     // MARK: - My Sites

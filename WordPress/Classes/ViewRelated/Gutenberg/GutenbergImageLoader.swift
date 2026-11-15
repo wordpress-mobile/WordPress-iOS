@@ -7,12 +7,17 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
 
     public var post: AbstractPost
 
+    /// The trait collection of the view that displays the loaded images. The owner
+    /// must update it when the display scale changes.
+    public var traitCollection: UITraitCollection
+
     private lazy var mediaUtility: EditorMediaUtility = {
         return EditorMediaUtility()
     }()
 
-    public init(post: AbstractPost) {
+    public init(post: AbstractPost, traitCollection: UITraitCollection) {
         self.post = post
+        self.traitCollection = traitCollection
     }
 
     func canLoadImageURL(_ requestURL: URL) -> Bool {
@@ -26,15 +31,23 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
 
         if let size = sizeWidthFromURLQueryItem(from: imageURL) {
             finalScale = 1
-            let screenScale = UIScreen.main.scale // The provided scale does not always correspond to the UIScreen scale.
+            let screenScale = traitCollection.displayScale // The provided scale does not always correspond to the display scale.
             finalSize = CGSize(width: size.width / screenScale, height: size.height / screenScale)
         }
 
-        let task = mediaUtility.downloadImage(from: imageURL, size: finalSize, scale: finalScale, post: post, success: { image in
-            completionHandler(nil, image)
-        }, onFailure: { error in
-            completionHandler(error, nil)
-        })
+        let task = mediaUtility.downloadImage(
+            from: imageURL,
+            size: finalSize,
+            scale: finalScale,
+            post: post,
+            traitCollection: traitCollection,
+            success: { image in
+                completionHandler(nil, image)
+            },
+            onFailure: { error in
+                completionHandler(error, nil)
+            }
+        )
 
         return { task.cancel() }
     }

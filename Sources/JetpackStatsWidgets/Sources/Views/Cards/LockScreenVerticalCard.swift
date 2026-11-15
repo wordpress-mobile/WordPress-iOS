@@ -6,8 +6,12 @@ struct LockScreenVerticalCard: View {
     let value: Int
 
     private var accessibilityLabel: Text {
+        // `StatsValueView` redacts negative values as a loading placeholder; don't read the sentinel
+        guard value >= 0 else {
+            return Text(title)
+        }
         // The colon makes VoiceOver pause between elements
-        Text(title) + Text(": ") + Text(value.abbreviatedString())
+        return Text(title) + Text(": ") + Text(value.abbreviatedAccessibilityLabel())
     }
 
     var body: some View {

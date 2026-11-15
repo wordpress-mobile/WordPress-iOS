@@ -109,7 +109,10 @@ final class ReaderCommentsNotificationSheetViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.unfollowButtonTitle, for: .normal)
         button.setTitleColor(Style.textColor, for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: .clear, border: Style.buttonBorderColor), for: .normal)
+        button.setBackgroundImage(
+            .renderBackgroundImage(fill: .clear, border: Style.buttonBorderColor, traitCollection: traitCollection),
+            for: .normal
+        )
 
         button.titleLabel?.font = Style.buttonTitleLabelFont
         button.titleLabel?.textAlignment = .center
@@ -143,6 +146,19 @@ final class ReaderCommentsNotificationSheetViewController: UIViewController {
         title = Strings.title
         view.backgroundColor = .systemBackground
         configureViews()
+
+        // The button's border image is one pixel wide, so re-render it when the display scale changes.
+        registerForTraitChanges([UITraitDisplayScale.self]) {
+            (self: ReaderCommentsNotificationSheetViewController, _) in
+            self.unfollowButton.setBackgroundImage(
+                .renderBackgroundImage(
+                    fill: .clear,
+                    border: Style.buttonBorderColor,
+                    traitCollection: self.unfollowButton.traitCollection
+                ),
+                for: .normal
+            )
+        }
     }
 
     override func viewDidLayoutSubviews() {

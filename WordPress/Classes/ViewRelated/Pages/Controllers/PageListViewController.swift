@@ -90,6 +90,10 @@ final class PageListViewController: AbstractPostListViewController {
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            self.createButtonCoordinator.showCreateButton(for: self.blog)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -105,12 +109,6 @@ final class PageListViewController: AbstractPostListViewController {
             fetchAllPagesTask?.cancel()
             fetchAllPagesTask = nil
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     // MARK: - Configuration
@@ -194,7 +192,7 @@ final class PageListViewController: AbstractPostListViewController {
                     self?.tableView.reloadData()
                 }
             case .failure(let error):
-                DDLogError("Error fetching editor settings: \(error)")
+                Loggers.app.error("Error fetching editor settings: \(error)")
             }
         }
 
@@ -240,7 +238,7 @@ final class PageListViewController: AbstractPostListViewController {
                         return page
                     }
             } catch {
-                DDLogError("Failed to reload published pages: \(error)")
+                Loggers.app.error("Failed to reload published pages: \(error)")
             }
         } else {
             self.pages = pages

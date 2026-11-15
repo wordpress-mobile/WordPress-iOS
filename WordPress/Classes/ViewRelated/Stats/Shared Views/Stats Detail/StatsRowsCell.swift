@@ -38,14 +38,14 @@ class StatsRowsCell: StatsBaseCell {
 
     private func addDefaultTotalRows(toStackView rowsStackView: UIStackView) {
         for _ in 0..<StatsDataHelper.maxRowsToDisplay {
-            let row = StatsTotalRow.loadFromNib()
+            let row = StatsTotalRow()
             rowsStackView.addArrangedSubview(row)
         }
 
-        let emptyRow = StatsNoDataRow.loadFromNib()
+        let emptyRow = StatsNoDataRow()
         rowsStackView.addArrangedSubview(emptyRow)
 
-        let viewMoreRow = ViewMoreRow.loadFromNib()
+        let viewMoreRow = ViewMoreRow()
         rowsStackView.addArrangedSubview(viewMoreRow)
     }
 

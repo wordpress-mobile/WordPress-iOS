@@ -12,8 +12,8 @@ final class ReaderLoggedOutViewController: UIViewController {
             Label(Strings.title, systemImage: "person.crop.circle.badge.plus")
         } description: {
             Text(Strings.details)
-        } actions: {
-            Button(Strings.signIn) { [weak self] in
+        } actions: { [weak self] in
+            Button(Strings.signIn) {
                 self?.buttonSignInTapped()
             }.buttonStyle(.primary)
         })

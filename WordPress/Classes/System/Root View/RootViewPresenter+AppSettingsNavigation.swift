@@ -88,7 +88,7 @@ private class ViewControllerNavigationAction {
                 }
             }
         } catch {
-            DDLogError("Failed to perform navigation action with error: \(error.localizedDescription)")
+            Loggers.app.error("Failed to perform navigation action with error: \(error.localizedDescription)")
             self.free()
         }
     }

@@ -13,7 +13,7 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
     var backgroundImage: UIImage? {
         didSet {
-            backgroundImageView?.image = backgroundImage
+            backgroundImageView.image = backgroundImage
         }
     }
 
@@ -30,7 +30,10 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
         imageURL = url
 
-        blockImageView.downloadImage(from: url, success: nil, failure: { [weak self] _ in
+        blockImageView.downloadImage(
+            from: url,
+            success: nil,
+            failure: { [weak self] _ in
                 // Only reset if we're still pointing at the failed URL — the cell may have been reused for another notification in the meantime.
                 guard let self, self.imageURL == url else {
                     return
@@ -42,9 +45,34 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
     // MARK: - View Methods
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
         selectionStyle = .none
+        contentView.backgroundColor = .clear
+
+        let stackView = UIStackView(arrangedSubviews: [blockImageView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isOpaque = false
+        stackView.axis = .vertical
+        stackView.alignment = .center
+
+        contentView.addSubview(backgroundImageView)
+        contentView.addSubview(stackView)
+        contentView.pinSubviewToAllEdgeMargins(stackView)
+
+        let imageHeightConstraint = blockImageView.heightAnchor.constraint(equalToConstant: Metrics.imageSize)
+        imageHeightConstraint.priority = UILayoutPriority(999)
+        NSLayoutConstraint.activate([
+            backgroundImageView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            backgroundImageView.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+            blockImageView.widthAnchor.constraint(equalToConstant: Metrics.imageSize),
+            imageHeightConstraint
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func prepareForReuse() {
@@ -59,7 +87,24 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     // MARK: - Helpers
     fileprivate typealias Styles = WPStyleGuide.Notifications
 
-    // MARK: - IBOutlets
-    @IBOutlet weak var blockImageView: UIImageView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
+    private enum Metrics {
+        static let imageSize: CGFloat = 180
+    }
+
+    // MARK: - Subviews
+    let blockImageView = NoteBlockImageTableViewCell.makeImageView()
+    let backgroundImageView: UIImageView = {
+        let imageView = NoteBlockImageTableViewCell.makeImageView()
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
+    private static func makeImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
+        imageView.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
+        return imageView
+    }
 }

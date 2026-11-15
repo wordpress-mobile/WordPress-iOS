@@ -18,7 +18,7 @@ final class ReaderLikeAction {
             completion?()
         }, failure: { (error: Error?) in
             if let anError = error {
-                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
+                Loggers.app.error("Error (un)liking post: \(anError.localizedDescription)")
             }
             completion?()
         })

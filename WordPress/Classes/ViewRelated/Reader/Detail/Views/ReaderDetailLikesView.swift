@@ -35,6 +35,10 @@ final class ReaderDetailLikesView: UIView, NibLoadable {
 
         applyStyles()
         addTapGesture()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+            self.applyStyles()
+        }
     }
 
     func configure(with viewModel: ReaderDetailLikesViewModel) {
@@ -48,11 +52,6 @@ final class ReaderDetailLikesView: UIView, NibLoadable {
         if let avatarURL = viewModel.selfLikeAvatarURL {
             downloadGravatar(for: selfAvatarImageView, withURL: avatarURL)
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        applyStyles()
     }
 }
 

@@ -35,7 +35,7 @@ struct FeaturedMediaImage: View {
             let response = try await client.api.media.retrieveWithViewContext(mediaId: mediaId)
             imageURL = URL(string: response.data.sourceUrl)
         } catch {
-            DDLogError("Failed to resolve featured media \(mediaId): \(error)")
+            Loggers.app.error("Failed to resolve featured media \(mediaId): \(error)")
         }
     }
 }

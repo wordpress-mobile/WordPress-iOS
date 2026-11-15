@@ -37,6 +37,11 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         // Setup view
         setupTableView()
 
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.containerViewController?.helper.resetCachedContentHeights() // important
+            self.tableView.reloadData()
+        }
+
         // Setup fetch
         do {
             try fetchResultsController.performFetch()
@@ -72,25 +77,6 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
         tableView.dataSource = self
         tableView.delegate = self
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        guard let previous = previousTraitCollection else {
-            return
-        }
-        let current = traitCollection
-
-        guard
-            previous.horizontalSizeClass != current.horizontalSizeClass
-                || previous.preferredContentSizeCategory != current.preferredContentSizeCategory
-        else {
-            return
-        }
-
-        containerViewController?.helper.resetCachedContentHeights() // important
-        tableView.reloadData()
     }
 
     // MARK: - Actions

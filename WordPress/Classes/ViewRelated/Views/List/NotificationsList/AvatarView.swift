@@ -4,7 +4,7 @@ import AsyncImageKit
 import DesignSystem
 import WordPressUI
 
-struct AvatarView<S: Shape>: View {
+struct AvatarView: View {
     enum Style {
         case single(URL?)
         case double(URL?, URL?)
@@ -33,7 +33,7 @@ struct AvatarView<S: Shape>: View {
         }
     }
 
-    private let avatarShape: S
+    private let avatarShape = Circle()
     private let doubleAvatarHorizontalOffset: CGFloat = 18
     private let style: Style
     private let borderColor: Color
@@ -45,13 +45,11 @@ struct AvatarView<S: Shape>: View {
     private var screenScale: CGFloat
 
     init(
-        avatarShape: S = Circle(),
         style: Style,
         diameter: CGFloat? = nil,
         borderColor: Color = Color.primary,
         placeholderImage: Image? = nil
     ) {
-        self.avatarShape = avatarShape
         self.style = style
         self.diameter = diameter ?? style.diameter
         self.borderColor = borderColor

@@ -65,8 +65,10 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
         }
         self.appRatingUtility.likedCurrentVersion()
 
-        // Show the app store ratings alert
-        SKStoreReviewController.requestReview(in: windowScene)
+        // Show the app store ratings alert. UIKit calls `UIAlertAction` handlers on the main thread.
+        MainActor.assumeIsolated {
+            AppStore.requestReview(in: windowScene)
+        }
 
         // Note: Optimistically assuming our prompting succeeds since we try to stay
         // in line and not prompt more than two times a year

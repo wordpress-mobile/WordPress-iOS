@@ -24,6 +24,29 @@ enum CommentModerationAction: Hashable, Sendable {
         case .restore, .delete: nil
         }
     }
+
+    /// Whether a confirmed status proves this action's goal holds. Any active
+    /// status confirms a restore, because untrash/unspam reapply the saved
+    /// pre-bin status (approved or pending). Delete leaves no status behind.
+    func isConfirmed(by status: CommentListItem.Status) -> Bool {
+        switch self {
+        case .approve: status == .approved
+        case .unapprove: status == .pending
+        case .spam: status == .spam
+        case .trash: status == .trash
+        case .restore: status == .approved || status == .pending
+        case .delete: false
+        }
+    }
+}
+
+/// The outcome of a successful `reply(to:content:)` call.
+struct ReplyOutcome: Equatable, Sendable {
+    let replyStatus: CommentListItem.Status
+    /// True when create returned comment_duplicate: the content already
+    /// existed server-side (an earlier send landed), so the composer words
+    /// its notice differently.
+    let alreadyPosted: Bool
 }
 
 /// Owns every comment mutation for the feature. All state changes flow through
@@ -35,9 +58,10 @@ enum CommentModerationAction: Hashable, Sendable {
 /// machinery is needed.
 ///
 /// A genuine failure leaves the UI on the true pre-action state. The only
-/// exceptions are three bounded failure mappings, where the desired outcome
-/// holds anyway and the change is emitted: the same-status probe, already-
-/// trashed, and 404.
+/// exceptions are three bounded failure mappings, where the failure itself
+/// proves a state change and that change is emitted: the same-status probe and
+/// already-trashed (the desired outcome holds), and a 404 from a moderation
+/// action or an edit (the comment is gone).
 ///
 /// Deliberately UI-free so it stays testable off the main-thread UI stack.
 @MainActor
@@ -51,7 +75,7 @@ final class CommentsModerationCoordinator {
 
     /// The in-flight mutation task per comment ID. Presence means "mutating";
     /// `waitForPendingMutation` awaits the stored task's value.
-    private var inFlight: [Int64: Task<Void, Never>] = [:]
+    private var inFlightMutations: [Int64: Task<Void, Never>] = [:]
 
     init(service: any CommentsServiceProtocol, tracker: (any CommentsTracker)? = nil) {
         self.service = service
@@ -59,30 +83,125 @@ final class CommentsModerationCoordinator {
     }
 
     func isMutating(id: Int64) -> Bool {
-        inFlight[id] != nil
+        inFlightMutations[id] != nil
     }
 
     /// Awaits any in-flight mutation for the comment (re-entry race guard).
     func waitForPendingMutation(id: Int64) async {
-        await inFlight[id]?.value
+        await inFlightMutations[id]?.value
     }
 
-    /// Broadcasts a status change the detail screen observed on load (its seed
-    /// status disagreed with the fetched truth) without running a mutation, so
-    /// loaded list tabs reconcile the corrected status in place.
+    /// Creates a reply to `parent` and, for a pending parent, approves it
+    /// afterwards, all inside one owning task holding the parent's in-flight
+    /// slot. Pessimistic: nothing is emitted until the create outcome is
+    /// known; a failure throws back to the composer.
+    func reply(to parent: CommentDetail, content: String) async throws -> ReplyOutcome {
+        try await holdingSlot(for: parent.id, waitingForSlot: true) { [weak self] in
+            guard let self else { throw CancellationError() }
+            let created: CommentDetail?
+            do {
+                created = try await self.service.createReply(
+                    postID: parent.postID,
+                    parentID: parent.id,
+                    content: content
+                )
+            } catch {
+                // comment_duplicate proves this author already has this exact
+                // content on this post (core never accepts it twice), so an
+                // earlier send landed (timeout-after-commit). Continue the
+                // chain rather than failing, or the promised parent approval
+                // would be silently dropped on the retry path.
+                guard (error as? WpApiError)?.wpErrorCode == .CommentDuplicate else { throw error }
+                created = nil
+            }
+            self.tracker?.track(.repliedTo(commentID: parent.id, postID: parent.postID))
+            // The composer is only reachable by moderators, so a pending
+            // parent always means "approve on send" (no separate consent
+            // step). The approve runs pessimistically: its statusChanged
+            // event is emitted only after the request succeeds, so there is no
+            // optimistic emit to undo. It's possible the reply lands but the
+            // parent approval fails; the parent then remains Pending in list
+            // and detail, which is the true server state. We consider that an
+            // edge case and accept the risk; the user can approve manually.
+            if parent.status == .pending {
+                _ = try? await self.runModeration(.approve, on: parent)
+            }
+            // Reply is moderator-gated, so core auto-approves our replies; a
+            // duplicate (unknown landed status) assumes approved on the same
+            // basis. A duplicate also carries no comment to insert, so no
+            // event is sent: the loaded tabs pick the reply up on their next
+            // refresh.
+            //
+            // Emitted after the approve so its statusChanged lands first and
+            // loaded list tabs correct the parent row before inserting the
+            // reply row.
+            if let created {
+                self.events.send(.replyCreated(parentID: parent.id, reply: CommentListItem(detail: created)))
+            }
+            let replyStatus = created?.status ?? .approved
+            return ReplyOutcome(replyStatus: replyStatus, alreadyPosted: created == nil)
+        }
+    }
+
+    /// Replaces the comment's content. Pessimistic and reconcile-free: a
+    /// thrown edit may still have landed (timeout-after-commit), but a retry
+    /// re-sends this user's content and comment edits are last-writer-wins,
+    /// matching wp-admin (which locks posts but not comments). Accepted
+    /// limitation; see the design doc. The response also carries the
+    /// authoritative server status; a status correction is emitted alongside
+    /// the content change when it disagrees with `comment.status`.
+    ///
+    /// A 404 means the comment was deleted elsewhere while the editor was
+    /// open. It still throws, but `.deleted` is emitted first, as
+    /// `mapFailure` does for moderation, so the detail screen closes and list
+    /// rows drop the comment instead of offering a retry that can never land.
+    func editContent(on comment: CommentDetail, newContent: String) async throws -> CommentDetail {
+        try await holdingSlot(for: comment.id, waitingForSlot: true) { [weak self] in
+            guard let self else { throw CancellationError() }
+            let updated: CommentDetail
+            do {
+                updated = try await self.service.updateContent(id: comment.id, content: newContent)
+            } catch {
+                if (error as? WpApiError)?.httpStatusCode == 404 {
+                    self.events.send(.deleted(id: comment.id))
+                }
+                throw error
+            }
+            self.events.send(
+                .contentChanged(id: comment.id, contentHTML: updated.contentHTML, contentRaw: updated.contentRaw)
+            )
+            // Editing content never changes status server-side, so this only
+            // fires when a concurrent moderator or plugin changed it while the
+            // editor was open; the correction keeps Reply gating and list-tab
+            // membership from going stale.
+            if updated.status != comment.status {
+                self.events.send(.statusChanged(id: comment.id, to: updated.status))
+            }
+            self.tracker?.track(.edited(commentID: comment.id, postID: comment.postID))
+            return updated
+        }
+    }
+
+    /// Broadcasts a confirmed status without crediting a moderation action,
+    /// so detail screens and loaded list tabs reconcile the server state.
     func noteExternalStatus(id: Int64, to: CommentListItem.Status) {
         events.send(.statusChanged(id: id, to: to))
     }
 
-    /// Runs `action` pessimistically: the request is issued first and the change
-    /// event is emitted only after it succeeds (or maps to a success). Throws
-    /// the mutation error when the action genuinely failed, leaving the UI on
-    /// the true pre-action state; the caller shows the error.
-    func perform(_ action: CommentModerationAction, on comment: CommentDetail) async throws {
-        guard !isMutating(id: comment.id) else { return } // one mutation per comment; UI already gates
-        try await holdingSlot(for: comment.id) { [weak self] in
+    /// Runs `action` pessimistically, emitting changes only after server
+    /// confirmation. Returns this submission's confirmed event, or nil if the
+    /// comment's slot was busy and no request ran. Throws the original error
+    /// if the action failed, after broadcasting any status confirmed by a
+    /// reconciliation probe.
+    @discardableResult
+    func perform(
+        _ action: CommentModerationAction,
+        on comment: CommentDetail
+    ) async throws -> CommentChangeEvent? {
+        guard !isMutating(id: comment.id) else { return nil } // no submitted operation
+        return try await holdingSlot(for: comment.id) { [weak self] in
             guard let self else { throw CancellationError() }
-            try await self.runModeration(action, on: comment)
+            return try await self.runModeration(action, on: comment)
         }
     }
 
@@ -90,16 +209,26 @@ final class CommentsModerationCoordinator {
     /// slot, so the mutation outlives a popped screen while the caller can
     /// still await its outcome. The slot claim happens synchronously before any
     /// suspension, so no second claimant can interleave.
+    ///
+    /// With `waitingForSlot`, a busy slot is awaited instead of being the
+    /// caller's problem. The check repeats after every wait rather than
+    /// awaiting once: two callers can both be suspended on the same in-flight
+    /// task and both resume once it completes. Looping lets only the first
+    /// claimant proceed; the second waits on that new claim instead.
     private func holdingSlot<T: Sendable>(
         for id: Int64,
+        waitingForSlot: Bool = false,
         _ body: @escaping @MainActor () async throws -> T
     ) async throws -> T {
+        while waitingForSlot, isMutating(id: id) {
+            await waitForPendingMutation(id: id)
+        }
         let chain = Task { try await body() }
         let slot = Task { [weak self] in
             _ = try? await chain.value
-            self?.inFlight[id] = nil
+            self?.inFlightMutations[id] = nil
         }
-        inFlight[id] = slot
+        inFlightMutations[id] = slot
         // Await the slot first so `isMutating` is false by the time the caller
         // resumes; the chain has already settled when the slot clears.
         await slot.value
@@ -109,12 +238,16 @@ final class CommentsModerationCoordinator {
     /// Runs one moderation request. The change event is emitted only after the
     /// server confirms, so every event describes committed state and list
     /// fetches never race an unconfirmed change.
-    private func runModeration(_ action: CommentModerationAction, on comment: CommentDetail) async throws {
+    private func runModeration(
+        _ action: CommentModerationAction,
+        on comment: CommentDetail
+    ) async throws -> CommentChangeEvent {
         do {
             let event = try await execute(action, id: comment.id)
             succeed(action, on: comment, event: event)
+            return event
         } catch {
-            try await mapFailure(error, action: action, on: comment)
+            return try await mapFailure(error, action: action, on: comment)
         }
     }
 
@@ -184,9 +317,8 @@ final class CommentsModerationCoordinator {
         }
     }
 
-    /// Maps the failures whose desired outcome nevertheless holds; rethrows
-    /// everything else as a genuine failure (the UI kept the pre-action state,
-    /// so no correction is needed).
+    /// Maps failures whose desired outcome nevertheless holds. Other failures
+    /// broadcast any status learned by the existing probe before throwing.
     ///
     /// It's possible that a request fails after the server already committed the
     /// change (client timeout, a proxy 502/504 while PHP finishes, a corrupted
@@ -198,46 +330,40 @@ final class CommentsModerationCoordinator {
         _ error: Error,
         action: CommentModerationAction,
         on comment: CommentDetail
-    ) async throws {
+    ) async throws -> CommentChangeEvent {
         let apiError = error as? WpApiError
         // Core returns 500 rest_comment_failed_edit when the requested status
         // equals the current one, i.e. the comment is already where the user
         // wants it (an earlier timed-out attempt landed, or another moderator
         // made the same change). One sparse status probe confirms; on match
         // this is a success, not a failure.
-        if apiError?.wpErrorCode == .CommentFailedEdit,
-            let actual = try? await service.fetchStatus(id: comment.id),
-            probeConfirmsSuccess(action, actual: actual)
-        {
-            succeed(action, on: comment, event: .statusChanged(id: comment.id, to: actual))
-            return
+        let probedStatus: CommentListItem.Status? =
+            if apiError?.wpErrorCode == .CommentFailedEdit {
+                try? await service.fetchStatus(id: comment.id)
+            } else {
+                nil
+            }
+        if let actual = probedStatus, action.isConfirmed(by: actual) {
+            let event = CommentChangeEvent.statusChanged(id: comment.id, to: actual)
+            succeed(action, on: comment, event: event)
+            return event
         }
         // Trash of an already-trashed comment: the goal state holds.
         if action == .trash, apiError?.wpErrorCode == .AlreadyTrashed {
-            succeed(action, on: comment, event: .statusChanged(id: comment.id, to: .trash))
-            return
+            let event = CommentChangeEvent.statusChanged(id: comment.id, to: .trash)
+            succeed(action, on: comment, event: event)
+            return event
         }
         // The comment is gone regardless of which action ran; remove it
         // everywhere. For delete that IS the goal; for anything else the action
         // still failed.
         if apiError?.httpStatusCode == 404 {
             events.send(.deleted(id: comment.id))
-            if action == .delete { return }
+            if action == .delete { return .deleted(id: comment.id) }
+        }
+        if let probedStatus {
+            noteExternalStatus(id: comment.id, to: probedStatus)
         }
         throw error
-    }
-
-    /// Whether the probed status proves the action's goal holds. Any active
-    /// status confirms a restore, because untrash/unspam reapply the saved
-    /// pre-bin status (approved or pending).
-    private func probeConfirmsSuccess(_ action: CommentModerationAction, actual: CommentListItem.Status) -> Bool {
-        switch action {
-        case .approve: actual == .approved
-        case .unapprove: actual == .pending
-        case .spam: actual == .spam
-        case .trash: actual == .trash
-        case .restore: actual == .approved || actual == .pending
-        case .delete: false
-        }
     }
 }

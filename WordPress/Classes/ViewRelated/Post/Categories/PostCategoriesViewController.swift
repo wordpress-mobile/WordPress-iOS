@@ -105,7 +105,7 @@ import WordPressUI
             }
             reloadCategories()
         }
-        present(UIHostingController(rootView: NavigationView { view }), animated: true)
+        present(UIHostingController(rootView: NavigationStack { view }), animated: true)
     }
 
     private func syncCategories() {

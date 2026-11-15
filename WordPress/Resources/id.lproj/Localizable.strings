@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-26 09:56:15+0000 */
+/* Translation-Revision-Date: 2026-10-23 11:39:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: id */
@@ -23,6 +23,9 @@
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ adalah titik yang dipilih untuk membuat cadangan yang dapat diunduh.";
+
+/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
+"%1$@ of %2$@ used" = "%1$@ dari %2$@ telah digunakan";
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ pada %2$@";
@@ -993,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1497,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Buat Halaman";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Buat Situs";
 
@@ -2515,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Saya sangat terinspirasi oleh karya fotografer Cameron Karsten. Saya akan mencoba teknik ini selanjutnya";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Saya butuh bantuan untuk";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Alamat IP";
 
@@ -2894,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Beri tahu saya jika sudah selesai!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Uraikan masalah sedetail mungkin dan sertakan alamat situs (URL) Anda. Kami akan segera menindaklanjutinya.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Mari atasi masalahnya";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Gaya hidup";
 
@@ -3086,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Kelola Wawasan";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Kelola situs";
 
 /* No comment provided by engineer. */
 "Manual" = "Manual";
@@ -3298,9 +3287,6 @@ translators: %s: Block name e.g. \"Image block\" */
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Situs Saya";
-
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Situs Saya di WordPress";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Sepuluh Kafe Favorit Saya";
@@ -4769,12 +4755,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Menampilkan pos";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Berhasil mengosongkan Saran Pintasan Siri";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Kosongkan Saran Pintasan Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Situs";
 
@@ -5180,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Teknologi";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Beri tahu kami situs macam apa yang ingin Anda buat";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Syarat dan Ketentuan";
 
@@ -5257,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Gambar tidak bisa ditambahkan ke Pustaka Media.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Berbagai macam situs yang dapat dibuat";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Bahasa utama penulisan situs ini.";
@@ -5425,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "File ini terlalu besar untuk diunggah ke situs Anda atau file tidak didukung format media ini.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Hal ini membantu kami membuat rekomendasi. Tetapi Anda tidak akan ketinggalan -- karena pembaruan akan diterapkan ke semua situs!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Informasi ini membantu kami menyempurnakan produk, membuat pemasaran kepada Anda jadi lebih relevan, menyesuaikan pengalaman WordPress.com Anda, dan lainnya seperti yang dijelaskan dalam kebijakan privasi kami.";
@@ -6216,38 +6187,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Pengaturan Aplikasi WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "Aplikasi WordPress - Aplikasi untuk semua layar";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Bantuan WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Pustaka Media WordPress";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Pengaturan Pemberitahuan WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Pemberitahuan WordPress";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "Plugin WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Profil WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Pembaca WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Detail Situs WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "Tema WordPress";
@@ -6514,9 +6464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Kredensial situs web Anda tidak akan disimpan dan hanya akan digunakan untuk tujuan penginstalan Jetpack.";
 
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Ringkasan mingguan Anda sudah tersedia, ketuk di sini untuk melihat rinciannya!";
-
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Anda mengikuti percakapan ini. Anda akan menerima email dan notifikasi setiap kali ada komentar baru.";
 
@@ -6737,8 +6684,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Tidak dapat menemukan url situs saat ini";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Situs ini tidak mendukung Kata Sandi Aplikasi.";
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "Situs WordPress.com dikelola melalui akun WordPress.com, sehingga kata sandi aplikasi tidak tersedia.";
 
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Anda perlu login dengan pengguna \"%@\"";
@@ -7002,12 +6949,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Simpan Konsep";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Tambah Tangkapan Layar Lain";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Tambah Tangkapan Layar";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Log Aplikasi";
 
@@ -7016,12 +6957,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Log Aplikasi";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Lampiran %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Batas Lampiran: %1$@ \/ %2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Halo %1$@!";
@@ -7056,23 +6991,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Selesai";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Anda yakin ingin membatalkan pesan ini? Anda akan kehilangan data yang telah dimasukkan";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Konfirmasi Pembatalan";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Anda yakin ingin menghapus semua log?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Informasi Kontak";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Lanjutkan Menulis";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Akhir dari percakapan. Tidak ada balasan lebih lanjut yang dapat diberikan.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Percakapan";
@@ -7086,17 +7006,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnostik";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Buang Perubahan";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Kami akan mengirimkan e-mail kepada Anda di alamat ini.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Error saat memuat log";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Error saat memuat percakapan dukungan";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Ekspor sebagai file";
@@ -7116,20 +7027,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Log Ekstensif";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Mengerti";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Saya butuh bantuan untuk";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Sertakan log aplikasi";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Detail Isu";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Pembaruan terakhir %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Memuat Pesan";
@@ -7137,14 +7036,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Memuat Percakapan Bot";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Memuat Percakapan";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Memuat Penggunaan Disk";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Memuat Gambar";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Memuat konten terakhir";
@@ -7154,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Memuat log ...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Memuat Pesan";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Memuat Video";
@@ -7169,15 +7059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Log hingga tujuh hari disimpan.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Pesan";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Pesan Terkirim";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d Pesan";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Obrolan Bot Baru";
@@ -7194,35 +7075,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Log Tidak Ditemukan";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Buka Tiket Dukungan";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(Opsional)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Balas";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Simpan sebagai file untuk dibagikan atau disimpan";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Tangkapan layar";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Menambahkan tangkapan layar dapat membantu kami memahami dan menyelesaikan masalah Anda lebih cepat.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Kirim";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Kirim log langsung ke tim dukungan";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Mengirim";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Mengirim Pesan";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Bagikan";
@@ -7233,44 +7090,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Berbagi dengan dukungan!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Alamat Situs";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Mulai percakapan baru dengan tombol di atas";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Subjek";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Ringkasan singkat permasalahan Anda";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Daftarkan Permohonan Dukungan";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Percakapan Dukungan";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Permintaan Terkirim!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Permintaan dukungan Anda berhasil dikirim. Kami akan mengirimkan email balasan secepatnya.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Berpikir ...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Hubungi Dukungan";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Coba Lagi";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Tidak dapat menghapus log";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Tidak dapat menampilkan percakapan";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Tidak dapat menampilkan video";
@@ -7284,11 +7114,167 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Tidak Dapat Memuat Pesan";
 
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Tidak dapat mengirim Pesan";
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Tambahkan info selengkapnya";
 
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Lihat";
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Memuat lampiran...";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%1$d%% cocok";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Buka tautan: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "Terkait:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Percakapan ini ditutup. Anda tidak dapat membalas lagi.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Terakhir diperbarui %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Memuat percakapan...";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Ketik pesan…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Kirim";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "Dialihkan ke tim dukungan";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "Asisten AI sedang mengetik";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Mulai percakapan dengan tim dukungan kami untuk mendapatkan jawaban atas pertanyaan Anda.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Belum ada percakapan";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Memuat percakapan...";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Dapatkan bantuan";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Terjadi kesalahan. Silakan coba lagi nanti.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Terjadi kesalahan";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "Baru saja";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "Log aplikasi tidak tersedia saat ini.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Percakapan baru";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Login ke WordPress.com untuk mendapatkan bantuan dari tim dukungan kami.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Periksa koneksi internet Anda dan coba lagi.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Tidak ada jaringan";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Balas";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Lampiran";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Tambahkan tangkapan layar, video, atau dokumen yang menunjukkan masalahnya.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Tidak dapat melampirkan berkas";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Telusuri Berkas";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Pustaka Foto";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Sudah mencapai ukuran maks. Hanya %1$d dari %2$d berkas yang akan dikirim";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "Hapus %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Berkas ini terlalu besar untuk dikirim.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Berkas-berkas ini terlalu besar untuk dikirim.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Batal";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Lanjutkan Menulis";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Buang";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Pesan Anda beserta lampirannya akan hilang.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Buang balasan ini?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Balasan Anda tidak terkirim";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Coba Lagi";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Pesan";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "Oke";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Opsional";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Kirim";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Mengirim…";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "Balasan Anda telah dikirim. Periksa email Anda untuk pembaruan.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Mulai Percakapan";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "Asisten AI";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "Ditutup";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "Berlangsung";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Teratasi";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Tidak diketahui";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Coba lagi";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Bekerja";
@@ -7311,6 +7297,48 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Balasan untuk %1$@";
 
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Mengirim balasan";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Batal";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Hapus Konsep";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Lanjutkan Mengedit";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Simpan Konsep";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Kirim";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "Mengirimkan balasan juga berarti menyetujui komentar.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "Komentar untuk pos ini telah ditutup.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Gagal mengirim balasan.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Balasan ini telah diposkan.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Balasan dikirimkan untuk moderasi.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Balasan terkirim.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Tinggalkan balasan…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Balas";
+
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Hapus Konsep";
 
@@ -7319,6 +7347,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Simpan Konsep";
+
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Komentar sedang menunggu peninjauan";
 
 /* Error title */
 "commentCreate.failedToSentComment" = "Gagal mengirim komentar";
@@ -7337,6 +7368,81 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Kirim";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Setujui";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Hapus Secara Permanen";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Lainnya";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Pindahkan ke Tertunda";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Balas";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Pulihkan";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Spam";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Tempat Sampah";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Tindakan ini tidak dapat dibatalkan.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Hapus komentar ini secara permanen?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Pindahkan ke Tempat Sampah";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Pindahkan komentar ini ke tempat sampah";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Komentar ini memiliki balasan. Buang saja?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Gagal memuat komentar ini";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "di %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Tanggal";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "Email";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "Alamat IP";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Situs web";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Tindakan tersebut tidak dapat diselesaikan. Coba lagi.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "Balasan untuk %@";
+
+/* Status label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Disetujui";
+
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
+"commentDetail.status.pending" = "Tertunda";
+
+/* Status label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Spam";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Dibuang";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Buang Perubahan";
@@ -7361,6 +7467,51 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Error menolak komentar";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Belum ada komentar";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Tidak ada komentar yang disetujui";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Tidak ada komentar tertunda";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Tidak ada komentar spam";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Tidak ada komentar yang dibuang";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Coba lagi";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Gagal memuat komentar";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonim";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ di %2$@";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Komentar";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Semua";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Disetujui";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "Tertunda";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Spam";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Tempat Sampah";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Nama pengguna atau kata sandi yang disimpan di dalam aplikasi ini mungkin sudah usang. Masukkan kembali kata sandi Anda dalam pengaturan dan coba lagi.";
@@ -7476,6 +7627,9 @@ Example: Reply to Pamela Nguyen */
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "Melekat";
 
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Dibuang";
+
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Tindakan ini tidak dapat dibatalkan.";
 
@@ -7527,17 +7681,8 @@ Example: Reply to Pamela Nguyen */
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Buang";
 
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Tidak Ada Tipe Pos Kustom";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Sematkan";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Lainnya";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Lepas Sematan";
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling penting bagi Anda.";
@@ -7686,6 +7831,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Prompt minat pembaca direset";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Nilai Sekarang";
 
@@ -7704,6 +7852,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Konfigurasi Jarak Jauh";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Reset Prompt Minat Pembaca";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Reset Data";
@@ -7725,6 +7876,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Tampilkan Semua Tip";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Tampilkan Layar Minat Pembaca";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Pengembang";
@@ -8707,6 +8861,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for chart container */
 "jetpackStats.accessibility.chartContainer" = "Diagram statistik";
 
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
 /* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
 "jetpackStats.accessibility.chartValue" = "%1$@: %2$@ pada %3$@";
 
@@ -8936,6 +9093,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "Mungkin menampilkan data yang tidak lengkap";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Periode perbandingan";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Periode yang dipilih";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Garis";
 
@@ -8959,6 +9128,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for chart data screen */
 "jetpackStats.chartData.title" = "Data Diagram";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "Total";
 
 /* Column header for value */
 "jetpackStats.chartData.value" = "NILAI";
@@ -9008,6 +9180,9 @@ Example: Reply to Pamela Nguyen */
 /* CSV header for date column */
 "jetpackStats.csv.date" = "Tanggal";
 
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "Domain";
+
 /* CSV header for file name column */
 "jetpackStats.csv.fileName" = "Nama File";
 
@@ -9031,6 +9206,9 @@ Example: Reply to Pamela Nguyen */
 
 /* CSV header for type column */
 "jetpackStats.csv.type" = "Ketik";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "URL";
 
 /* CSV header for video URL column */
 "jetpackStats.csv.videoURL" = "URL Video";
@@ -9191,11 +9369,17 @@ Example: Reply to Pamela Nguyen */
 /* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
 "jetpackStats.referrerDetails.confirmAsSpam.message" = "Menandai \"%1$@\" sebagai spam akan menyembunyikannya dari statistik Anda selanjutnya. Anda dapat mengurungkannya kapan saja menggunakan antarmuka web.";
 
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "Error";
+
 /* Button to mark a referrer as spam */
 "jetpackStats.referrerDetails.markAsSpam" = "Tandai sebagai Spam";
 
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Gagal menandai sebagai spam";
+
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Menandai pengarah ini sebagai spam berarti menghapusnya dari statistik pengarah Anda. Statistik yang lain tidak terpengaruh.";
 
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Ditandai sebagai Spam";
@@ -9443,6 +9627,12 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Tidak dapat menyinkronkan media";
 
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Item ini tidak bisa ditambahkan ke pustaka Media. Mungkin ukurannya terlalu besar untuk diimpor. Coba lagi atau ubah ukuran media.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Item ini tidak dapat ditambahkan ke pustaka Media saat Mode Penguncian aktif.";
+
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Item tidak bisa ditambahkan ke Pustaka Media.";
 
@@ -9451,6 +9641,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "Diperlukan paket berbayar untuk mengunggah video berdurasi lebih dari 5 menit.";
+
+/* Accessibility label for an audio cell. %1$@ is the creation date. */
+"mediaLibrary.accessibility.audio" = "Audio, %1$@";
 
 /* Accessibility label for a document cell. %1$@ is the filename, or the creation date if filename can't be derived. */
 "mediaLibrary.accessibility.document" = "Dokumen, %1$@";
@@ -9463,6 +9656,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a cell that is still loading its data */
 "mediaLibrary.accessibility.loading" = "Memuat media";
+
+/* Accessibility label for a video cell. %1$@ is the creation date. */
+"mediaLibrary.accessibility.video" = "Video, %1$@";
 
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Tambah media baru";
@@ -9533,6 +9729,9 @@ Example: Reply to Pamela Nguyen */
 /* Fallback filename stem for external media when the picker provides no usable name */
 "mediaLibrary.externalMedia.defaultStem" = "Media Eksternal";
 
+/* Title of the audio filter option in the Media Library filter menu */
+"mediaLibrary.filter.audio" = "Audio";
+
 /* Title of the documents filter option in the Media Library filter menu */
 "mediaLibrary.filter.documents" = "Dokumen";
 
@@ -9578,6 +9777,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder shown for media items with no title */
 "mediaLibrary.row.untitled" = "(tanpa judul)";
 
+/* Title for the Media Library V2 screen */
+"mediaLibrary.screen.title" = "Media";
+
 /* Prompt for the Media Library search field */
 "mediaLibrary.search.prompt" = "Cari media";
 
@@ -9595,6 +9797,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Beli add-on ruang penyimpanan";
+
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "Audio";
 
 /* Label for document media type in storage breakdown */
 "mediaLibrary.storageDetails.mediaType.document" = "Dokumen";
@@ -9674,8 +9879,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Berkas yang dipilih tidak ditemukan.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Gagal mengonversi foto untuk diunggah.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Tidak dapat mengonversi foto untuk diunggah.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Berkas yang dipilih bukan gambar yang valid.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Tidak dapat menghapus lokasi dari foto untuk diunggah.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Gagal mengakses berkas yang dipilih.";
@@ -10277,7 +10488,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Peringatan";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\"%1$@\" tidak tersedia di situs ini.";
 
 /* Title for the plan selection view */
@@ -10745,6 +10956,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the last edited field in Post Settings */
 "postSettings.lastEdited.label" = "Terakhir Diedit";
 
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "Info";
+
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Pilihan Lainnya";
 
@@ -10790,6 +11004,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "Menunggu Peninjauan";
 
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "Permalink";
+
 /* Message when trying to save a deleted post */
 "postSettings.postDeleted.message" = "Pos telah dihapus dan tidak dapat disimpan lagi.";
 
@@ -10798,6 +11015,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the post format field. Should be the same as WP core. */
 "postSettings.postFormat.label" = "Format Pos";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID";
 
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Tanggal";
@@ -10817,6 +11037,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "Slug adalah judul pos versi ramah URL.";
 
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "Slug";
+
 /* Button text to learn more about permalinks */
 "postSettings.slug.learnMore" = "Baca selengkapnya";
 
@@ -10825,6 +11048,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Notice shown when the post doesn't have a remote and permalink template is missing */
 "postSettings.slug.permalinkDraftNotice" = "Permalink yang disarankan akan muncul ketika konsep disimpan di server";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Permalink:";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Permalink:";
 
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Masukkan slug";
@@ -11384,7 +11613,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.header.subscribed" = "Berlangganan";
 
 /* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}lihat selengkapnya";
+"reader.post.header.viewMore" = "... lihat selengkapnya";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Tindakan lainnya";
@@ -11542,6 +11771,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for the button that opens saved Reader posts import and export settings */
 "reader.savedPosts.settings.button.accessibilityLabel" = "Pengaturan pos tersimpan";
 
+/* Title of error alert in saved posts settings */
+"reader.savedPosts.settings.errorTitle" = "Error";
+
 /* Button to export saved Reader posts as a JSON file */
 "reader.savedPosts.settings.export" = "Mengekspor Pos Tersimpan";
 
@@ -11608,6 +11840,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Tidak ada tag baru untuk diikuti";
+
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Lompati";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Pilih tag Anda";
@@ -11825,6 +12060,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Revisi";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Batalkan berbagi";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Terjadi kesalahan saat membaca apa yang Anda bagikan. Silakan coba lagi.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Tidak dapat memuat konten yang dibagikan";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Tutup";
 
@@ -11833,6 +12077,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Opsi Media";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "Oke";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Satu atau beberapa item yang dibagikan tidak dapat dimuat dan dilewati.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "Beberapa konten dilewati";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Coba lagi";
@@ -12350,6 +12603,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Pengunjung Anda dalam 7 hari terakhir sama seperti 7 hari sebelumnya.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Membuka pos";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentar";
 
@@ -12395,8 +12651,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Kelola Kartu Statistik";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Waktu Paling Populer";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Waktu yang Paling Populer";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ penayangan";
@@ -12407,11 +12663,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Pengikut";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Pos terbaru Anda %1$@ disukai %2$@ kali.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Pos terbaru %1$@ disukai %2$@ kali.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Pos terbaru Anda %1$@ disukai %2$@ kali.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Pos terbaru %1$@ disukai %2$@ kali.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total Pengikut WordPress.com: %@";
@@ -12758,6 +13014,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transkrip Bot Seluler Jetpack";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Ajukan pertanyaan dan dapatkan bantuan dari kelompok relawan kami.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Forum Komunitas";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Dapatkan jawaban dari tim dukungan kami, kapan saja";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Dapatkan bantuan";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ajukan pertanyaan di forum komunitas dan dapatkan bantuan dari komunitas relawan kami.";
 
@@ -12846,6 +13114,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Tag";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Mengaktifkan";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";
 
@@ -12930,6 +13201,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Eror";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Terjadi error saat memperbarui kata sandi.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Error";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Info Biografi";

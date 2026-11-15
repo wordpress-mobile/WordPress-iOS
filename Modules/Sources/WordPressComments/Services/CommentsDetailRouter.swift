@@ -14,6 +14,7 @@ final class CommentsDetailRouter {
     /// while the list loads and later screens read it synchronously.
     private let capabilities: CommentsCapabilityResolver
     private let coordinator: CommentsModerationCoordinator
+    private let draftStore: any CommentDraftStoring
     private let titleResolver: PostTitleResolver
     private let tracker: (any CommentsTracker)?
     private let noticePresenter: any NoticePresenting
@@ -23,6 +24,7 @@ final class CommentsDetailRouter {
         service: any CommentsServiceProtocol,
         capabilities: any CommentsCapabilitiesProtocol,
         coordinator: CommentsModerationCoordinator,
+        draftStore: any CommentDraftStoring,
         titleResolver: PostTitleResolver,
         tracker: (any CommentsTracker)?,
         noticePresenter: any NoticePresenting,
@@ -31,6 +33,7 @@ final class CommentsDetailRouter {
         self.service = service
         self.capabilities = CommentsCapabilityResolver(capabilities: capabilities)
         self.coordinator = coordinator
+        self.draftStore = draftStore
         self.titleResolver = titleResolver
         self.tracker = tracker
         self.noticePresenter = noticePresenter
@@ -42,28 +45,53 @@ final class CommentsDetailRouter {
     /// row when available) and pushes it onto the shared navigation stack.
     func open(id: Int64, seed: CommentListItem?) {
         capabilities.prefetch()
-        let viewModel = CommentDetailViewModel(
-            commentID: id,
-            seed: seed,
-            service: service,
-            capabilities: capabilities,
-            coordinator: coordinator,
-            titleResolver: titleResolver,
-            tracker: tracker,
-            noticePresenter: noticePresenter
-        )
-        let renderer = makeContentRenderer()
-        renderer.onLinkTapped = { url in
-            UIApplication.shared.open(url)
-        }
         let detail = CommentDetailView(
-            viewModel: viewModel,
+            viewModel: makeDetailViewModel(id: id, seed: seed),
             titleResolver: titleResolver,
-            renderer: renderer,
+            renderer: makeLinkOpeningRenderer(),
             openComment: { [weak self] id, seed in self?.open(id: id, seed: seed) }
         )
         let controller = UIHostingController(rootView: detail)
         controller.navigationItem.largeTitleDisplayMode = .never
         host?.navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func makeReviewSession(batch: [CommentListItem]) -> CommentReviewViewModel? {
+        guard !batch.isEmpty else { return nil }
+        // The session holds the router strongly; the router never holds a session.
+        return CommentReviewViewModel(
+            batch: batch,
+            coordinator: coordinator,
+            noticePresenter: noticePresenter,
+            makeDetail: { self.makeDetailViewModel(id: $0.id, seed: $0) }
+        )
+    }
+
+    func makeReviewView(session: CommentReviewViewModel) -> CommentReviewView {
+        CommentReviewView(
+            viewModel: session,
+            titleResolver: titleResolver,
+            makeContentRenderer: makeLinkOpeningRenderer
+        )
+    }
+
+    private func makeDetailViewModel(id: Int64, seed: CommentListItem?) -> CommentDetailViewModel {
+        CommentDetailViewModel(
+            commentID: id,
+            seed: seed,
+            service: service,
+            capabilities: capabilities,
+            coordinator: coordinator,
+            draftStore: draftStore,
+            titleResolver: titleResolver,
+            tracker: tracker,
+            noticePresenter: noticePresenter
+        )
+    }
+
+    private func makeLinkOpeningRenderer() -> any CommentContentRendering {
+        let renderer = makeContentRenderer()
+        renderer.onLinkTapped = { UIApplication.shared.open($0) }
+        return renderer
     }
 }

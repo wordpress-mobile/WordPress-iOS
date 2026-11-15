@@ -62,7 +62,7 @@ final class CommentLargeButton: UIView {
 }
 
 final class LeaveCommentView: UIView {
-    private let iconView = MyProfileIconView(hidesWhenEmpty: true)
+    private let iconView = MyProfileIconView()
     private let containerView = CommentLargeButtonContainerView()
     private let placeholderLabel = UILabel()
 

@@ -14,12 +14,13 @@ fi
 
 "$(dirname "${BASH_SOURCE[0]}")/install-swift-package-list.sh"
 
-"$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
-
-"$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
+"$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh" --artifacts DerivedData/SourcePackages
 
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane "build_${APP}_for_testing"
+
+echo "--- :swift: Saving Swift Packages cache"
+save_swiftpm_cache --package-resolved Modules/Package.resolved --artifacts DerivedData/SourcePackages
 
 echo "--- :arrow_up: Upload Build Products"
 tar -cf "build-products-${APP}.tar" DerivedData/Build/Products/

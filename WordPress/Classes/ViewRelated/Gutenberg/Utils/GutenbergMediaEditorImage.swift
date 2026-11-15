@@ -14,6 +14,9 @@ class GutenbergMediaEditorImage: AsyncImage {
 
     private let post: AbstractPost
 
+    /// The trait collection of the view controller that presents the media editor.
+    private let traitCollection: UITraitCollection
+
     private var fullQualityURL: URL? {
         guard var urlComponents = URLComponents(url: originalURL, resolvingAgainstBaseURL: false) else {
             return nil
@@ -30,9 +33,10 @@ class GutenbergMediaEditorImage: AsyncImage {
 
     var thumb: UIImage?
 
-    init(url: URL, post: AbstractPost) {
+    init(url: URL, post: AbstractPost, traitCollection: UITraitCollection) {
         originalURL = url
         self.post = post
+        self.traitCollection = traitCollection
         thumb = ImageDownloader.shared.cachedImage(for: originalURL)
     }
 
@@ -56,11 +60,19 @@ class GutenbergMediaEditorImage: AsyncImage {
     */
     func full(finishedRetrievingFullImage: @escaping (UIImage?) -> ()) {
         // By passing .zero as the size the full quality image will be downloaded
-        let task = mediaUtility.downloadImage(from: fullQualityURL!, size: .zero, scale: .greatestFiniteMagnitude, post: post, success: { image in
-            finishedRetrievingFullImage(image)
-        }, onFailure: { _ in
-            finishedRetrievingFullImage(nil)
-        })
+        let task = mediaUtility.downloadImage(
+            from: fullQualityURL!,
+            size: .zero,
+            scale: .greatestFiniteMagnitude,
+            post: post,
+            traitCollection: traitCollection,
+            success: { image in
+                finishedRetrievingFullImage(image)
+            },
+            onFailure: { _ in
+                finishedRetrievingFullImage(nil)
+            }
+        )
 
         self.tasks.append(task)
     }

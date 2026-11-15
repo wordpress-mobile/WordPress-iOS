@@ -1,5 +1,4 @@
 import CoreData
-import CocoaLumberjackSwift
 import Foundation
 import WordPressShared
 
@@ -9,7 +8,7 @@ import WordPressShared
 let ContextManagerModelNameCurrent = "$CURRENT"
 
 @objc
-public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
+public class ContextManager: NSObject, CoreDataStack {
     static var inMemoryStoreURL: URL {
         URL(fileURLWithPath: "/dev/null")
     }
@@ -97,47 +96,6 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         )
     }
 
-    public func performAndSave<T>(
-        _ block: @escaping (NSManagedObjectContext) throws -> T,
-        completion: ((Result<T, Error>) -> Void)?,
-        on queue: DispatchQueue
-    ) {
-        let context = newDerivedContext()
-        self.writerQueue.addOperation(
-            AsyncBlockOperation { done in
-                context.perform {
-                    let result = Result(catching: { try block(context) })
-                    if case .success = result {
-                        self.save(context, .alreadyInContextQueue)
-                    }
-                    queue.async { completion?(result) }
-                    done()
-                }
-            }
-        )
-    }
-
-    public func performAndSave<T>(
-        _ block: @escaping (NSManagedObjectContext) -> T,
-        completion: ((T) -> Void)?,
-        on queue: DispatchQueue
-    ) {
-        performAndSave(
-            block,
-            completion: { (result: Result<T, Error>) in
-                // It's safe to force-unwrap here, since the `block` does not throw an error.
-                completion?(try! result.get())
-            },
-            on: queue
-        )
-    }
-
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
-        try await withCheckedThrowingContinuation { continuation in
-            performAndSave(block, completion: { continuation.resume(with: $0) }, on: DispatchQueue.global())
-        }
-    }
-
     @objc
     public func saveContextAndWait(_ context: NSManagedObjectContext) {
         save(context, .synchronously)
@@ -159,7 +117,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
     static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
         guard FileManager.default.fileExists(atPath: storeURL.path) else {
-            DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
+            Loggers.data.info("No store exists at \(storeURL).  Skipping migration.")
             return
         }
 
@@ -173,7 +131,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
             return
         }
 
-        DDLogWarn("Migration required for persistent store.")
+        Loggers.data.warning("Migration required for persistent store.")
 
         guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd") else {
             fatalError("Can't find WordPress.momd")
@@ -299,7 +257,7 @@ private extension ContextManager {
         do {
             try migrateDataModelsIfNecessary(storeURL: storeURL, objectModel: objectModel)
         } catch {
-            DDLogError("Unable to migrate store: \(error)")
+            Loggers.data.error("Unable to migrate store: \(error)")
             // startupEvent.add(error: error as NSError)
         }
 
@@ -313,7 +271,7 @@ private extension ContextManager {
                 return
             }
 
-            DDLogError("Error opening the database. \(error)\nDeleting the file and trying again")
+            Loggers.data.error("Error opening the database. \(error)\nDeleting the file and trying again")
             // startupEvent.add(error: error)
 
             // make a backup of the old database

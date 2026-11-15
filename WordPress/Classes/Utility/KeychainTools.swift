@@ -32,7 +32,7 @@ final class KeychainTools: NSObject {
             return
         }
 
-        DDLogWarn("🔑 Attempting to remove keychain entry for \(item)")
+        Loggers.app.warning("🔑 Attempting to remove keychain entry for \(item)")
         if let service = serviceForItem(item) {
             removeKeychainItem(forService: service)
         } else {
@@ -59,11 +59,11 @@ final class KeychainTools: NSObject {
         let status = SecItemDelete(query as CFDictionary)
         switch status {
         case errSecSuccess:
-            DDLogWarn("🔑 Removed keychain entry for service \(service)")
+            Loggers.app.warning("🔑 Removed keychain entry for service \(service)")
         case errSecItemNotFound:
-            DDLogWarn("🔑 Keychain entry not found for service \(service)")
+            Loggers.app.warning("🔑 Keychain entry not found for service \(service)")
         default:
-            DDLogWarn("🔑 Error removing keychain entry for service \(service): \(status)")
+            Loggers.app.warning("🔑 Error removing keychain entry for service \(service): \(status)")
         }
     }
 
@@ -74,9 +74,9 @@ final class KeychainTools: NSObject {
         let status = SecItemDelete(query as CFDictionary)
         switch status {
         case errSecSuccess:
-            DDLogWarn("🔑 Removed all keychain entries")
+            Loggers.app.warning("🔑 Removed all keychain entries")
         default:
-            DDLogWarn("🔑 Error removing all keychain entries: \(status)")
+            Loggers.app.warning("🔑 Error removing all keychain entries: \(status)")
         }
     }
 }

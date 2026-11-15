@@ -74,7 +74,10 @@ public class AdaptiveTabBar: UIControl {
 
     private func setup() {
         addSubview(scrollView)
-        scrollView.pinEdges()
+        // Keep the tabs out of the horizontal safe area insets (landscape, the
+        // iPhone Duo's side bar).
+        scrollView.pinEdges(.horizontal, to: safeAreaLayoutGuide)
+        scrollView.pinEdges(.vertical)
 
         scrollView.addSubview(stackView)
         stackView.pinEdges()
@@ -88,12 +91,14 @@ public class AdaptiveTabBar: UIControl {
 
         let separator = SeparatorView.horizontal(height: separatorHeight)
         addSubview(separator)
-        separator.pinEdges([.horizontal, .bottom])
+        separator.pinEdges(.horizontal, to: safeAreaLayoutGuide)
+        separator.pinEdges(.bottom)
 
-        addSubview(selectionIndicator)
+        // Inside the scroll view, so the indicator scrolls and clips with the tabs.
+        scrollView.addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
             selectionIndicator.heightAnchor.constraint(equalToConstant: 2),
-            selectionIndicator.bottomAnchor.constraint(equalTo: bottomAnchor)
+            selectionIndicator.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ])
 
         // Accessibility
@@ -108,8 +113,9 @@ public class AdaptiveTabBar: UIControl {
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        if previousWidth != bounds.width {
-            previousWidth = bounds.width
+        let availableWidth = safeAreaLayoutGuide.layoutFrame.width
+        if previousWidth != availableWidth {
+            previousWidth = availableWidth
             updateDistribution()
         }
     }
@@ -247,9 +253,9 @@ public class AdaptiveTabBar: UIControl {
         }
 
         let targetRect = CGRect(
-            x: max(0, tabFrame.midX - bounds.width / 2),
+            x: max(0, tabFrame.midX - scrollView.bounds.width / 2),
             y: 0,
-            width: bounds.width,
+            width: scrollView.bounds.width,
             height: bounds.height
         )
 

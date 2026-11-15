@@ -2,6 +2,14 @@ import UIKit
 import WordPressData
 import WordPressShared
 
+extension Foundation.Notification.Name {
+    /// Posted when PingHub reports a notification change or reconnects. The
+    /// change need not produce a full-sync update: a single-note sync never
+    /// posts one, and a reconnect with unchanged notes posts nothing. Observers
+    /// that track notification activity listen for this as well.
+    static let pingHubActivity = Foundation.Notification.Name("PingHubActivityNotification")
+}
+
 // This is added as a top level function to avoid cluttering PingHubManager.init
 private func defaultAccountToken() -> String? {
     guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
@@ -205,7 +213,7 @@ fileprivate extension PingHubManager {
             return
         }
         state.connected = true
-        DDLogInfo("PingHub connecting")
+        Loggers.app.info("PingHub connecting")
         client?.connect()
     }
 
@@ -218,7 +226,7 @@ fileprivate extension PingHubManager {
 
     func disconnect() {
         delayedRetry?.cancel()
-        DDLogInfo("PingHub disconnecting")
+        Loggers.app.info("PingHub disconnecting")
         client?.disconnect()
         state.connected = false
     }
@@ -226,18 +234,19 @@ fileprivate extension PingHubManager {
 
 extension PingHubManager: PinghubClientDelegate {
     func pingubDidConnect(_ client: PinghubClient) {
-        DDLogInfo("PingHub connected")
+        Loggers.app.info("PingHub connected")
         delay.reset()
         state.connected = true
         // Trigger a full sync, since we might have missed notes while PingHub was disconnected
         NotificationSyncMediator()?.sync()
+        NotificationCenter.default.post(name: .pingHubActivity, object: nil)
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
         if let error {
-            DDLogError("PingHub disconnected: \(error)")
+            Loggers.app.error("PingHub disconnected: \(error)")
         } else {
-            DDLogInfo("PingHub disconnected")
+            Loggers.app.info("PingHub disconnected")
         }
         state.connected = false
     }
@@ -248,16 +257,17 @@ extension PingHubManager: PinghubClientDelegate {
         }
         switch action {
         case .delete(let noteID):
-            DDLogInfo("PingHub delete, syncing note \(noteID)")
+            Loggers.app.info("PingHub delete, syncing note \(noteID)")
             mediator.deleteNote(noteID: String(noteID))
         case .push(let noteID, _, _, _):
-            DDLogInfo("PingHub push, syncing note \(noteID)")
+            Loggers.app.info("PingHub push, syncing note \(noteID)")
             mediator.syncNote(with: String(noteID))
         }
+        NotificationCenter.default.post(name: .pingHubActivity, object: nil)
     }
 
     func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {
-        DDLogError("\(message.description)")
+        Loggers.app.error("\(message.description)")
     }
 }
 
@@ -302,7 +312,7 @@ extension PingHubManager {
                 return
             }
             let diffMessage = diff(old, new)
-            DDLogInfo("PingHub state changed \(diffMessage), \(message)")
+            Loggers.app.info("PingHub state changed \(diffMessage), \(message)")
         }
     }
 }

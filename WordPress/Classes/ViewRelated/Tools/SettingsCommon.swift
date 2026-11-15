@@ -44,7 +44,7 @@ extension SettingsController {
             if change.isGravatarField {
                 sendGravatarSyncNotice()
             }
-            DDLogDebug("\(title) changed: \(value)")
+            Loggers.app.debug("\(title) changed: \(value)")
 
             trackChangeIfNeeded(row)
         }

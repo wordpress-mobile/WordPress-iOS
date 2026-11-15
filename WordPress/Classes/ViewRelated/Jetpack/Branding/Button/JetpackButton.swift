@@ -68,24 +68,33 @@ class JetpackButton: CircularImageButton {
         setTitle(title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
-        setTitleColor(buttonTitleColor, for: .normal)
-        titleLabel?.font = Appearance.titleFont
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.minimumScaleFactor = Appearance.minimumScaleFactor
         titleLabel?.adjustsFontSizeToFitWidth = true
-        setImage(.gridicon(.plans), for: .normal)
-        contentVerticalAlignment = .fill
         contentMode = .scaleAspectFit
-        imageEdgeInsets = Appearance.iconInsets
-        contentEdgeInsets = Appearance.contentInsets
+
+        let iconColor = buttonTintColor
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = .gridicon(.plans)
+        configuration.imagePadding = Appearance.iconPadding
+        configuration.contentInsets = Appearance.contentInsets
+        configuration.baseForegroundColor = buttonTitleColor
+        configuration.imageColorTransformer = UIConfigurationColorTransformer { _ in iconColor }
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = Appearance.titleFont
+            return attributes
+        }
+        self.configuration = configuration
+
         imageView?.contentMode = .scaleAspectFit
         setImageBackgroundColor(imageBackgroundColor)
     }
 
     private enum Appearance {
         static let minimumScaleFactor: CGFloat = 0.6
-        static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
-        static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
+        static let iconPadding: CGFloat = 10
+        static let contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 6, bottom: 6, trailing: 10)
         static let maximumFontPointSize: CGFloat = 22
         static var titleFont: UIFont {
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .callout)

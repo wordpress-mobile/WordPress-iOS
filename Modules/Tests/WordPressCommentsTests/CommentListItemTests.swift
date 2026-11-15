@@ -13,6 +13,11 @@ struct CommentListItemTests {
         #expect(item.avatarURL == URL(string: "https://example.com/avatar.png"))
     }
 
+    @Test func mapsLinkAndNormalizesEmptyToNil() {
+        #expect(CommentListItem(comment: makeComment(id: 7, post: 42)).link == URL(string: "https://example.com/?p=42#comment-7"))
+        #expect(CommentListItem(comment: makeComment(link: "")).link == nil)
+    }
+
     @Test func stripsHTMLIntoSingleLineSnippet() {
         let item = CommentListItem(
             comment: makeComment(content: "<p>Line one</p>\n<p>Line &amp; two</p>")

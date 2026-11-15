@@ -176,7 +176,9 @@ private extension RemoteMedia {
     }
 }
 
-private extension MediaCreateParams {
+// Not `private`: the file-path handling below is covered by
+// `MediaCreateParamsFilePathTests`.
+extension MediaCreateParams {
     init?(media: RemoteMedia) {
 
         guard let localURL = media.localURL else {
@@ -198,7 +200,9 @@ private extension MediaCreateParams {
             caption: media.caption,
             description: media.descriptionText,
             postId: media.postID?.int64Value,
-            filePath: localURL.path()
+            // `path()` percent-encodes by default, so a filename with a space (a screen
+            // recording, say) becomes a path that doesn't exist on disk.
+            filePath: localURL.path(percentEncoded: false)
         )
     }
 }

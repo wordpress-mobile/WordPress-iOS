@@ -67,10 +67,15 @@ class PeopleViewController: UITableViewController {
         return predicate
     }
 
-    /// Sort Descriptor
+    /// Sort Descriptors. `username` and `userID` break ties between people who share a
+    /// display name, so their order stays stable across reloads.
     ///
     private var sortDescriptors: [NSSortDescriptor] {
-        [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
+        [
+            NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))),
+            NSSortDescriptor(key: "username", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))),
+            NSSortDescriptor(key: "userID", ascending: true)
+        ]
     }
 
     private var viewContext: NSManagedObjectContext {
@@ -134,7 +139,7 @@ class PeopleViewController: UITableViewController {
         }
 
         guard let sections = resultsController.sections, sections[indexPath.section].numberOfObjects > indexPath.row else {
-            DDLogError("Error: PeopleViewController table tried to render a cell that didn't exist in Core Data")
+            Loggers.app.error("Error: PeopleViewController table tried to render a cell that didn't exist in Core Data")
             cell.isHidden = true
             return cell
         }
@@ -171,7 +176,7 @@ class PeopleViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let blog, let blogId = blog.dotComID?.intValue else { return }
+        guard let blog else { return }
 
         switch filter {
         case .users, .viewers:
@@ -324,7 +329,7 @@ private extension PeopleViewController {
             try resultsController.performFetch()
             tableView.reloadData()
         } catch {
-            DDLogError("Error fetching People: \(error)")
+            Loggers.app.error("Error fetching People: \(error)")
         }
     }
 

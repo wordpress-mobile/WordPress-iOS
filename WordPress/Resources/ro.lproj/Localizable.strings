@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-08-21 12:36:27+0000 */
+/* Translation-Revision-Date: 2026-10-21 08:04:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ro */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1500,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Creează o pagină";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Creează un site";
 
@@ -2518,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "M-au inspirat foarte mult lucrările fotografului Cameron Karsten. Voi încerca aceste tehnici pe viitor";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Am nevoie de ajutor cu";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adresă IP";
 
@@ -2897,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Anunță-mă când este gata!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Dă-ne adresa site-ului tău (URL) și spune-ne cât mai multe despre problemă și te vom contacta în curând.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Hai să rezolvăm asta";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Stil de viață";
 
@@ -3089,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Administrează Perspective";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Administrează site-ul";
 
 /* No comment provided by engineer. */
 "Manual" = "Manual";
@@ -3301,9 +3287,6 @@ translators: %s: Block name e.g. \"Image block\" */
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Site-ul meu";
-
-/* Siri Suggestion to open My Sites */
-"My Sites in WordPress" = "Site-urile mele în WordPress";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Primele zece cafenele, pe gustul meu";
@@ -4772,12 +4755,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Arată articolul";
 
-/* Notice displayed to the user after clearing the Siri activity donations. */
-"Siri Reset Confirmation" = "Sugestiile scurtăturilor de la Siri s-au șters cu succes.";
-
-/* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Șterge sugestiile scurtăturilor de la Siri";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
 
@@ -5183,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Tehnologie";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Spune-ne ce fel de site vrei să creezi";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Termeni și condiții";
 
@@ -5260,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Imaginea nu a putut fi adăugată în Biblioteca media.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Tipurile de site care pot fi create";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Limba principală în care este scris acest site.";
@@ -5428,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Acest fișier este prea mare pentru a fi încărcat pe site-ul tău sau nu suportă acest format în media.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Acest lucru ne ajută să facem recomandări. Dar nu trebuie să te limitezi la ele - toate site-urile evoluează!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Aceste informații ne ajută să ne îmbunătățim produsele, să facem un marketing mai relevant pentru tine, să-ți personalizăm experiența WordPress.com și altele, așa cum am detaliat în politica noastră de confidențialitate.";
@@ -6219,38 +6187,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
-/* Siri Suggestion to open App Settings */
-"WordPress App Settings" = "Setări aplicații WordPress";
-
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "Aplicații WordPress - aplicații pentru orice tip de ecran";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress ";
 
-/* Siri Suggestion to open Support */
-"WordPress Help" = "Ajutor WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Bibliotecă Media WordPress";
 
-/* Siri Suggestion to open Notification Settings */
-"WordPress Notification Settings" = "Setări notificări WordPress";
-
-/* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "Notificări WordPress";
-
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "Module WordPress";
-
-/* Siri Suggestion to open Me tab */
-"WordPress Profile" = "Profil WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Reader" = "Cititor WordPress";
-
-/* Siri Suggestion to open My Sites */
-"WordPress Site Details" = "Detalii site WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "Teme WordPress";
@@ -6517,9 +6464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Datele de conectare ale site-ului tău web nu vor fi stocate și sunt folosite numai cu scopul de a instala Jetpack.";
 
-/* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Rezumat tău săptămânal este pregătit, atinge aici pentru a-l vedea!";
-
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Urmărești această conversație. Vei primi un email și o notificare ori de câte ori apare un nou comentariu.";
 
@@ -6740,8 +6684,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Nu pot să găsesc URL-ul site-ului curent";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Acest site nu acceptă Parole pentru aplicații.";
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "Site-urile WordPress.com sunt administrate prin contul tău WordPress.com, deci parolele pentru aplicații nu sunt disponibile.";
 
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Trebuie să te autentifici ca utilizatorul „%@”";
@@ -7005,12 +6949,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Salvează ciorna";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Adaugă mai multe capturi ecran";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Adaugă capturi ecran";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Jurnale aplicație";
 
@@ -7019,12 +6957,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Jurnale aplicație";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Atașament %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Limită pentru atașamente: %1$@\/%2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Bună %1$@!";
@@ -7059,23 +6991,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Finalizată";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Sigur vrei să anulezi acest mesaj? Vei pierde toate datele pe care le-ai introdus";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Confirmă anularea";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Sigur vrei să ștergi toate jurnalele?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Informații de contact";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Continuă să scrii";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Sfârșitul conversației. Nu mai sunt posibile alte răspunsuri.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Conversații";
@@ -7089,20 +7006,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnosticare";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Renunță la modificări";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Îți vom trimite un email la această adresă.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Eroare la încărcarea jurnalelor";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Eroare la încărcarea conversațiilor cu suportul";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Eroare";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Exportă ca fișier";
@@ -7122,20 +7027,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Jurnale extinse";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Am înțeles";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Am nevoie de ajutor cu";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Include jurnalele aplicației";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Detalii problemă";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Ultima actualizare %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Încarc mesajele";
@@ -7143,14 +7036,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Încarc conversațiile cu botul";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Încarc conversațiile";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Încarc utilizarea discului";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Încarc imaginea";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Încarc ultimul conținut";
@@ -7160,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Încarc jurnalele...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Încarc mesajele";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Încarc videoul";
@@ -7175,15 +7059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Jurnalele sunt salvate pentru o perioadă de până la șapte zile.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Mesaj";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Am trimis mesajul";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d mesaje";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Chatbot nou";
@@ -7200,35 +7075,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Nu am găsit niciun jurnal";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Deschide un tichet pentru suport";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(opțional)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Răspunde";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Salvează ca un fișier pentru partajare sau stocare";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Capturi ecran";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Adăugarea unor capturi ecran ne poate ajuta să înțelegem și să rezolvăm mai repede problema.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Trimite";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Trimite jurnalele direct echipei pentru suport";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Trimit";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Trimit mesajul";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Partajează";
@@ -7239,47 +7090,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Partajează cu suportul!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Adresă site";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Începe o conversație nouă folosind butonul de mai sus";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Subiect";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Un scurt rezumat al problemei";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Trimite cererea pentru suport";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Conversații cu suportul";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Am trimis cererea!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Cererea ta pentru suport a fost trimisă cu succes. Îți vom răspunde prin email cât mai repede posibil.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Gândesc...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Contactează suportul";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Încearcă din nou";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Nu pot să șterg jurnalele";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Nu pot să afișez conversația";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Nu pot să afișez videoul";
@@ -7293,11 +7114,167 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Nu pot să încarc mesaje";
 
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Nu pot să trimit mesajul";
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Adaugă mai multe informații";
 
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Vezi";
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Încarc atașamentul...";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "Potrivire %1$d%%";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Deschide legătura: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "Similare:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Această conversație este închisă. Nu mai poți să dai un răspuns.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Ultima actualizare %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Încarc conversația...";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Scrie un mesaj...";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Trimite";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "Transferată la suportul asigurat de oameni";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "Asistentul AI scrie";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Începe o conversație cu echipa noastră pentru suport ca să primești ajutor la întrebările tale.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Nicio conversație până acum";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Încarc conversațiile...";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Primești ajutor";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Ceva nu a mers bine. Te rog să reîncerci mai târziu.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Ceva nu a mers bine";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "Chiar acum";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "Momentan jurnalele aplicației nu sunt disponibile.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Conversație nouă";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Autentifică-te în WordPress.com pentru a primi ajutor de la echipa noastră pentru suport.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Verifică conexiunea la internet și încearcă din nou.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Nu este disponibilă nicio rețea";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Răspunde";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Atașamente";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Adaugă capturi ecran, videouri sau documente care arată problema.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Nu pot să atașez fișierul";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Răsfoiește fișierele";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Bibliotecă fotografii";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Ai ajuns la dimensiunea maximă. Numai %1$d din %2$d fișiere vor fi trimise";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "Înlătură %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Acest fișier este prea mare pentru a fi trimis.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Aceste fișiere sunt prea mari pentru a fi trimise.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Anulează";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Continuă să scrii";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Renunță";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Mesajul și atașamentele lui se vor pierde.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Renunți la acest răspuns?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Răspunsul tău nu a fost trimis";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Încearcă din nou";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Mesaj";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "OK";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Opțional";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Trimite";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Trimit...";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "Răspunsul a fost trimis. Verifică-ți emailul pentru actualizări.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Începe conversația";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "Asistent AI";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "Închisă";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "În desfășurare";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Rezolvată";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Necunoscută";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Încearcă din nou";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Lucrez";
@@ -7320,6 +7297,48 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Răspunde-i lui %1$@";
 
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Trimit răspunsul";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Anulează";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Șterge ciorna";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Continuă editarea";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Salvează ciorna";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Trimite";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "De asemenea, trimiterea va aproba acest comentariu.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "Comentariile la acest articol sunt închise.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Trimiterea răspunsului a eșuat.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Acest răspuns a fost deja publicat.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Răspunsul este trimis pentru moderare.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Am trimis răspunsul.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Lasă un răspuns...";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Răspuns";
+
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Șterge ciorna";
 
@@ -7328,6 +7347,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Button in an alert confirming saving a new draft */
 "commentCreate.closeConfirmationAlert.saveDraft" = "Salvează ciorna";
+
+/* Toast title shown after successfully submitting a comment */
+"commentCreate.commentHeldForModeration" = "Comentariul așteaptă o verificare";
 
 /* Error title */
 "commentCreate.failedToSentComment" = "Trimiterea comentariului a eșuat";
@@ -7346,6 +7368,81 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar button title */
 "commentCreate.send" = "Trimite";
+
+/* Moderation toolbar button that approves a pending comment */
+"commentDetail.action.approve" = "Aprobă";
+
+/* Moderation toolbar button that permanently deletes a comment */
+"commentDetail.action.deletePermanently" = "Șterge definitiv";
+
+/* Accessibility label for the overflow menu button on the comment detail screen */
+"commentDetail.action.moreActions" = "Mai multe";
+
+/* Moderation menu item that returns an approved comment to the pending state */
+"commentDetail.action.moveToPending" = "Mută la în așteptare";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Răspunde";
+
+/* Moderation toolbar button that restores a comment from spam or trash */
+"commentDetail.action.restore" = "Restaurează";
+
+/* Moderation toolbar button that marks a comment as spam */
+"commentDetail.action.spam" = "Spam";
+
+/* Moderation toolbar button that moves a comment to the trash */
+"commentDetail.action.trash" = "Aruncă la gunoi";
+
+/* Confirmation message shown before permanently deleting a comment */
+"commentDetail.confirm.deleteMessage" = "Acest lucru nu poate fi anulat.";
+
+/* Confirmation title shown before permanently deleting a comment */
+"commentDetail.confirm.deleteTitle" = "Ștergi definitiv acest comentariu?";
+
+/* Confirmation button that trashes a comment */
+"commentDetail.confirm.trashButton" = "Aruncă la gunoi";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Arunci acest comentariu la gunoi?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Acest comentariu are răspunsuri. Îl arunci la gunoi oricum?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "Nu am putut să încarc acest comentariu";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "pe %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Dată";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "Email";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "Adresă IP";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Site web";
+
+/* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
+"commentDetail.moderation.failed" = "Acea acțiune nu a putut fi finalizată. Te rog să încerci din nou.";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "Ca răspuns la %@";
+
+/* Status label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Aprobat";
+
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
+"commentDetail.status.pending" = "În așteptare";
+
+/* Status label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Spam";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Aruncat la gunoi";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Renunță la modificări";
@@ -7370,6 +7467,51 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the error notice shown when unapproving a comment fails. */
 "comments.unapprove.error.title" = "Eroare la refuzarea comentariului";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Niciun comentariu până acum";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "Niciun comentariu aprobat";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "Niciun comentariu în așteptare";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "Niciun comentariu spam";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "Niciun comentariu la gunoi";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Încearcă din nou";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "Nu am putut să încarc comentariile";
+
+/* Author name shown when a comment has no author name */
+"commentsList.row.anonymousAuthor" = "Anonim";
+
+/* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
+"commentsList.row.authorOnPost" = "%1$@ pe %2$@";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Comentarii";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Toate";
+
+/* Tab title showing approved comments */
+"commentsList.tab.approved" = "Aprobate";
+
+/* Tab title showing comments awaiting moderation */
+"commentsList.tab.pending" = "În așteptare";
+
+/* Tab title showing comments marked as spam */
+"commentsList.tab.spam" = "Spam";
+
+/* Tab title showing trashed comments */
+"commentsList.tab.trash" = "Aruncate la gunoi";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Numele de utilizator sau parola stocate în aplicație pot fi învechite. Te rog reintrodu parola ta în setări și încearcă din nou.";
@@ -7485,6 +7627,9 @@ Example: Reply to Pamela Nguyen */
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "Reprezentative";
 
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Aruncat la gunoi";
+
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Această acțiune nu poate fi anulată.";
 
@@ -7538,18 +7683,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "BETA";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Niciun tip de articol personalizat";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Fixează";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Mai multe";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Anulează fixarea";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te pe datele care te interesează cel mai mult.";
@@ -7698,6 +7831,9 @@ Example: Reply to Pamela Nguyen */
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Debug menu confirmation shown after clearing the flag that suppresses the Reader select interests prompt */
+"debugMenu.readerInterestsPromptReset" = "Resetare mesaj Domenii de interes în Cititor";
+
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.currentValue" = "Valoare curentă";
 
@@ -7716,6 +7852,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurare la distanță";
+
+/* Debug menu action that clears the flag so the Reader select interests prompt can appear again */
+"debugMenu.resetReaderInterestsPrompt" = "Resetează mesajul Domenii de interes în Cititor";
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Resetează datele";
@@ -7737,6 +7876,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Arată toate sfaturile";
+
+/* Debug menu action that presents the Reader select interests screen */
+"debugMenu.showReaderInterests" = "Afișează ecranul Domenii de interes în Cititor";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Dezvoltator";
@@ -8951,6 +9093,18 @@ Example: Reply to Pamela Nguyen */
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "S-ar putea să arate date incomplete";
 
+/* Accessibility label for a chart legend item. %1$@ is the period type and %2$@ is the date range. */
+"jetpackStats.chart.legend.accessibilityLabel" = "%1$@: %2$@";
+
+/* Chart legend label for a comparison period. %1$@ is the comparison type and %2$@ is its date range. */
+"jetpackStats.chart.legend.comparisonLabel" = "%1$@ · %2$@";
+
+/* Accessibility label for the comparison chart period */
+"jetpackStats.chart.legend.comparisonPeriod" = "Perioadă pentru comparație";
+
+/* Accessibility label for the selected chart period */
+"jetpackStats.chart.legend.selectedPeriod" = "Perioada selectată";
+
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Linii";
 
@@ -9180,7 +9334,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.postDetails.noLikesYet" = "Nicio apreciere până acum";
 
 /* Must be short! Label for email open rate metric */
-"jetpackStats.postDetails.openRate" = "Rată de deschidere";
+"jetpackStats.postDetails.openRate" = "Rată de deschideri";
 
 /* Shows when the post was published. %1$@ is the formatted date. */
 "jetpackStats.postDetails.published" = "Publicat %1$@";
@@ -9223,6 +9377,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message when marking a referrer as spam fails */
 "jetpackStats.referrerDetails.markAsSpamError" = "Marcarea ca spam a eșuat";
+
+/* Explanation shown below the button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpamExplanation" = "Marcarea acestui referent ca fiind spam îl înlătură din statisticile pentru referenți. Celelalte statistici nu sunt afectate.";
 
 /* Label shown when a referrer is already marked as spam */
 "jetpackStats.referrerDetails.markedAsSpam" = "Marcat ca spam";
@@ -9469,6 +9626,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Nu pot să sincronizez elementele media";
+
+/* Error shown when a selected photo or video can't be loaded from the device for upload. */
+"mediaExporter.error.cannotLoadItem" = "Acest element nu a putut fi adăugat în biblioteca Media. Probabil este prea mare pentru a fi importat. Te rugăm să încerci din nou sau să redimensionezi elementul Media.";
+
+/* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
+"mediaExporter.error.lockdownMode" = "Acest element nu poate fi adăugat în biblioteca Media cât timp este activat Mod blocare.";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Elementul nu a putut fi adăugat în biblioteca Media";
@@ -9719,8 +9882,14 @@ Example: Reply to Pamela Nguyen */
 /* Error shown when a picked file no longer exists on disk. */
 "mediaLibrary.upload.error.fileNotFound" = "Fișierul selectat nu a putut fi găsit.";
 
-/* Error shown when HEIC-to-JPEG conversion fails before upload. */
-"mediaLibrary.upload.error.heicConversion" = "Nu am putut să convertesc fotografia pentru încărcare.";
+/* Error shown when re-encoding an image (e.g. HEIC to JPEG) fails before upload. */
+"mediaLibrary.upload.error.imageEncode" = "Nu am putut să convertesc fotografia pentru încărcare.";
+
+/* Error shown when picked or downloaded bytes do not decode as an image. */
+"mediaLibrary.upload.error.invalidImage" = "Fișierul selectat nu este o imagine validă.";
+
+/* Error shown when stripping GPS/location metadata from an image fails and the Remove Location setting is on. */
+"mediaLibrary.upload.error.locationStrip" = "Nu am putut să înlătur locația din fotografia pentru încărcare.";
 
 /* Error shown when iOS denies access to a file picked via Files. */
 "mediaLibrary.upload.error.securityScopedAccess" = "Nu am putut să accesez fișierul selectat.";
@@ -10322,7 +10491,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Avertizare";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "„%1$@” nu este disponibil pe acest site.";
 
 /* Title for the plan selection view */
@@ -11305,7 +11474,7 @@ but tapping on this button will remove their like from the post. */
 "reader.discover.channel.forYou" = "Pentru tine";
 
 /* Header view channel (filter) */
-"reader.discover.channel.freshlyPresed" = "Proaspăt publicate";
+"reader.discover.channel.freshlyPresed" = "Freshly Pressed";
 
 /* Header view channel (filter) */
 "reader.discover.channel.latest" = "Ultimele";
@@ -11447,7 +11616,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.header.subscribed" = "Abonat";
 
 /* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}vezi mai multe";
+"reader.post.header.viewMore" = "... vezi mai multe";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Mai multe acțiuni";
@@ -11675,6 +11844,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Nu sunt etichete noi de urmărit";
 
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Omite";
+
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Alege etichetele";
 
@@ -11891,6 +12063,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Revizii";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Anulează partajarea";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Ceva nu a mers bine la citirea conținutului partajat. Te rugăm să încerci din nou.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Nu pot să încarc conținutul partajat";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Închide";
 
@@ -11899,6 +12080,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Opțiuni media";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "OK";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Unul sau mai multe elemente partajate nu au putut fi încărcate și au fost omise.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "O parte din conținut a fost omisă";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Încearcă din nou";
@@ -12416,6 +12606,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Vizitatorii din ultimele 7 zile sunt identici ca număr cu vizitatorii din 7 zile anterioare.\n";
 
+/* VoiceOver accessibility hint for the Latest Post Summary stats card, informing the user that tapping opens the post. */
+"stats.insights.latestPostSummary.card.accessibilityHint" = "Deschide articolul";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Comentarii";
 
@@ -12461,8 +12654,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Administrează cardurile cu statistici";
 
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Cea mai populară oră";
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Cea mai populară oră";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ din vizualizări";
@@ -12473,11 +12666,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Abonați";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
-"stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
+"stats.insights.totalLikes.guideText.latestPost.plural" = "Ultimul articol %1$@ a avut %2$@ aprecieri.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ apreciere.";
+/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
+"stats.insights.totalLikes.guideText.latestPost.singular" = "Ultimul articol %1$@ a avut %2$@ apreciere.";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total abonați WordPress.com: %@";
@@ -12824,6 +13017,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transcriere bot Jetpack Mobile";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Pune o întrebare și primește ajutor de la grupul nostru de voluntari.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Forumuri pentru comunitate";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Primești răspunsuri de la echipa noastră pentru suport, oricând";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Primești ajutor";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Pune o întrebare pe forumul comunității și obține ajutor de la grupul nostru de voluntari.";
 
@@ -12912,6 +13117,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Etichete";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Activez";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";
 
@@ -12996,6 +13204,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Eroare";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "A fost o eroare la actualizarea parolei.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Eroare";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Informații biografice";

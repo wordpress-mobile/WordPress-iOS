@@ -106,6 +106,31 @@ struct CommentsListViewModelConcurrencyTests {
         #expect(viewModel.items.map(\.id) == [1])
     }
 
+    @Test func inFlightRefreshDoesNotDropInsertedReply() async {
+        let service = BlockingCommentsService()
+        let viewModel = CommentsListViewModel(filter: .all, service: service)
+
+        async let firstLoad: Void = viewModel.onAppear()
+        await waitUntil { service.callCount >= 1 }
+        service.resolve(callIndex: 0, with: makePage(items: [makeItem(id: 1)], hasNext: false))
+        await firstLoad
+        #expect(viewModel.items.map(\.id) == [1])
+
+        // Start a refresh (call 1); it suspends before replacing the list.
+        async let refreshing: Void = viewModel.refresh()
+        await waitUntil { service.callCount >= 2 }
+
+        // A reply lands while the refresh is in flight and is inserted at the top.
+        viewModel.apply(.replyCreated(parentID: 1, reply: makeItem(id: 99)))
+        #expect(viewModel.items.map(\.id) == [99, 1])
+
+        // The in-flight page predates the reply. It must be discarded rather
+        // than replacing the list without the inserted row.
+        service.resolve(callIndex: 1, with: makePage(items: [makeItem(id: 1)], hasNext: false))
+        await refreshing
+        #expect(viewModel.items.map(\.id) == [99, 1])
+    }
+
     @Test func inFlightPageOneDoesNotOverwriteInPlaceStatusUpdate() async {
         let service = BlockingCommentsService()
         let viewModel = CommentsListViewModel(filter: .all, service: service)

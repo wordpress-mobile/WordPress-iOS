@@ -5,9 +5,9 @@ import WordPressKit
 class SiteDesignSectionLoaderTests: XCTestCase {
     private var remoteDesigns: RemoteSiteDesigns {
         let remoteSiteDesignsPayload =
-        """
-        {"designs":[{"slug":"about","title":"Site Title","segment_id":4,"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable", "test-vertical"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"},{"slug":"blog-new","title":"Site Title","segment_id":2,"categories":[{"slug":"blog","title":"Blog","description":"Blog","emoji":"📰","order":2}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"}],"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0},{"slug":"links","title":"Links","description":"Links","emoji":"🔗","order":1},{"slug":"blog","title":"Blog","description":"Blog","emoji":"📰","order":2}]}
-        """
+            """
+            {"designs":[{"slug":"about","title":"Site Title","segment_id":4,"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable", "test-vertical"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"},{"slug":"blog-new","title":"Site Title","segment_id":2,"categories":[{"slug":"blog","title":"Blog","description":"Blog","emoji":"📰","order":2}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"}],"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0},{"slug":"links","title":"Links","description":"Links","emoji":"🔗","order":1},{"slug":"blog","title":"Blog","description":"Blog","emoji":"📰","order":2}]}
+            """
         return try! JSONDecoder().decode(RemoteSiteDesigns.self, from: remoteSiteDesignsPayload.data(using: .utf8)!)
     }
 
@@ -73,15 +73,15 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let recommendedSection = sections[0]
         XCTAssertEqual(recommendedSection.title, "Best for Testing")
         XCTAssertEqual(recommendedSection.categorySlug, "recommended_test-vertical")
-        XCTAssertEqual(recommendedSection.thumbnailSize, SiteDesignCategoryThumbnailSize.recommended.value)
+        XCTAssertEqual(recommendedSection.sectionType, .recommended)
 
         let sectionOne = sections[1]
         XCTAssertEqual(sectionOne.categorySlug, "about")
-        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionOne.sectionType, .standard)
 
         let sectionTwo = sections[2]
         XCTAssertEqual(sectionTwo.categorySlug, "blog")
-        XCTAssertEqual(sectionTwo.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionTwo.sectionType, .standard)
     }
 
     /// Tests entire assembly of sections when there are no matches for a vertical and we fall back to the "Blog" category
@@ -102,25 +102,28 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let recommendedSection = sections[0]
         XCTAssertEqual(recommendedSection.title, "Best for Blogging")
         XCTAssertEqual(recommendedSection.categorySlug, "blog")
-        XCTAssertEqual(recommendedSection.thumbnailSize, SiteDesignCategoryThumbnailSize.recommended.value)
+        XCTAssertEqual(recommendedSection.sectionType, .recommended)
 
         let sectionOne = sections[1]
         XCTAssertEqual(sectionOne.categorySlug, "about")
-        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionOne.sectionType, .standard)
     }
 
     /// Tests that no recommended section is part of the final assembly when there is no fallback
     func testAssembleSectionsFallbackFailure() throws {
         // Given
         let remoteSiteDesignsWithoutBlogCategoryPayload =
-        """
-        {"designs":[{"slug":"about","title":"Site Title","segment_id":4,"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable", "test-vertical"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"},{"slug":"blog-new","title":"Site Title","segment_id":2,"categories":[{"slug":"blog","title":"Blog","description":"Blog","emoji":"📰","order":2}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"}],"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0},{"slug":"links","title":"Links","description":"Links","emoji":"🔗","order":1}]}
-        """
-        let remoteSiteDesignsWithoutBlogCategory = try! JSONDecoder().decode(
-            RemoteSiteDesigns.self,
-            from: remoteSiteDesignsWithoutBlogCategoryPayload.data(using: .utf8)!
+            """
+            {"designs":[{"slug":"about","title":"Site Title","segment_id":4,"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable", "test-vertical"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"},{"slug":"blog-new","title":"Site Title","segment_id":2,"categories":[{"slug":"blog","title":"Blog","description":"Blog","emoji":"📰","order":2}],"demo_url":"https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/?language=en","theme":"spearhead","group":["single-page","stable"],"preview":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1602&w=200&h=267","preview_tablet":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1068&w=200&h=267","preview_mobile":"https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=534&w=200&h=267"}],"categories":[{"slug":"about","title":"About","description":"About","emoji":"👋","order":0},{"slug":"links","title":"Links","description":"Links","emoji":"🔗","order":1}]}
+            """
+        let remoteSiteDesignsWithoutBlogCategory = try! JSONDecoder()
+            .decode(
+                RemoteSiteDesigns.self,
+                from: remoteSiteDesignsWithoutBlogCategoryPayload.data(using: .utf8)!
+            )
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(
+            remoteSiteDesignsWithoutBlogCategory
         )
-        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteSiteDesignsWithoutBlogCategory)
 
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
@@ -133,6 +136,6 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         XCTAssertEqual(sections.count, 1)
 
         let sectionOne = sections[0]
-        XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
+        XCTAssertEqual(sectionOne.sectionType, .standard)
     }
 }

@@ -53,8 +53,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        tableView.register(SiteStatsTableHeaderView.defaultNib,
-                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -98,9 +96,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return nil
         }
 
-        guard let cell = Bundle.keystone.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
-            return nil
-        }
+        let cell = SiteStatsTableHeaderView()
 
         // Allow the date bar to only go up to the most recent year available.
         var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
@@ -291,7 +287,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext) else {
-                DDLogInfo("Unable to get blog when trying to show media from Stats details.")
+                Loggers.app.info("Unable to get blog when trying to show media from Stats details.")
                 return
         }
 
@@ -304,7 +300,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
                 let mediaID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)
                 media = try mainContext.existingObject(with: mediaID)
             } catch {
-                DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
+                Loggers.app.info("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
                 return
             }
 

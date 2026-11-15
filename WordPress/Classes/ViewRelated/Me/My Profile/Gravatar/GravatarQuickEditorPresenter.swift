@@ -79,11 +79,7 @@ struct GravatarQuickEditorPresenter {
             // Purge the cache otherwise the old avatars remain around.
             await ImageDownloader.shared.clearURLSessionCache()
             await ImageDownloader.shared.clearMemoryCache()
-            NotificationCenter.default.post(
-                name: .GravatarQEAvatarUpdateNotification,
-                object: self,
-                userInfo: [GravatarQEAvatarUpdateNotificationKeys.email.rawValue: email]
-            )
+            AccountAvatar.shared.refresh(email: email)
         }
     }
 }

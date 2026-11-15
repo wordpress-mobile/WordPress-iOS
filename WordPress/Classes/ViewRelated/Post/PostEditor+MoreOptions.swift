@@ -93,18 +93,14 @@ extension PostEditor {
                 previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL, source: "edit_post_more_preview")
             } else {
                 if self.post.permaLink == nil {
-                    DDLogError("displayPreview: Post permalink is unexpectedly nil")
+                    Loggers.app.error("displayPreview: Post permalink is unexpectedly nil")
                     self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
                     return
                 }
                 previewController = PreviewWebKitViewController(post: self.post, source: "edit_post_more_preview")
             }
             previewController.trackOpenEvent()
-            let navWrapper = UINavigationController(rootViewController: previewController)
-            if self.navigationController?.traitCollection.userInterfaceIdiom == .pad {
-                navWrapper.modalPresentationStyle = .fullScreen
-            }
-            self.navigationController?.present(navWrapper, animated: true)
+            self.navigationController?.presentCoveringWindow(previewController)
         }
     }
 

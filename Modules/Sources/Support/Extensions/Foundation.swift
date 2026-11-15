@@ -29,29 +29,6 @@ extension String {
     }
 }
 
-extension AttributedString {
-    func toHtml() -> String {
-        NSAttributedString(self).toHtml()
-    }
-}
-
-extension NSAttributedString {
-    func toHtml() -> String {
-        let documentAttributes = [
-            NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html
-        ]
-
-        guard
-            let htmlData = try? self.data(from: NSMakeRange(0, self.length), documentAttributes: documentAttributes),
-            let htmlString = String(data: htmlData, encoding: .utf8)
-        else {
-            return self.string
-        }
-
-        return htmlString
-    }
-}
-
 func convertMarkdownHeadingsToBold(in markdown: String) -> String {
     let lines = markdown.components(separatedBy: .newlines)
     var convertedLines: [String] = []

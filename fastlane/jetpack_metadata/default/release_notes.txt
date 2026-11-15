@@ -1,8 +1,10 @@
-Some custom post types are now available. You can manage them under My Site if your site is built with WP.com, or on the home screen if your site is self-hosted. We know, we’re amazing. (But very humble about it.)
+Have you heard? We made the Notifications tab and bell more accurate, even when system notifications or icon badges are disabled. Now you’re always in the know.
 
-While we were making your day better, we also squashed several bugs and made some small, yet ever-so-important fixes.
+Custom post types now appear directly in the site menu after Comments, sorted by name for extra convenience—no more need for custom pins.
 
-- Canceling the media picker in the experimental block editor will no longer remove images from galleries. Phew.
-- We fixed the forever-loading indicator on the Stats screen for self-hosted sites that aren’t connected to Jetpack.
-- Subscriber email stats are now sorted by post date so your most recent posts will appear at the top of the list.
-- Backup logs will stay in their lane and won’t show up in Personal plan sites by mistake.
+Finally, we took care of several bugs, just to make your app experience a little easier.
+
+- In the Reader, inline images won’t disappear on devices running iOS 27.
+- Uploads will no longer fail if the file name contains spaces. (good-news-everyone.jpg)
+- We fixed a crash caused by sharing certain kinds of text files.
+- iPad users rejoice—the app won’t get stuck in the compact tab bar layout when you resize the screen or switch apps.

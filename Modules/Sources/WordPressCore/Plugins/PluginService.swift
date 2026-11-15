@@ -1,5 +1,8 @@
 import Foundation
+import Logging
 import WordPressAPI
+
+private let log = Logger(label: "org.wordpress.plugins")
 
 public actor PluginService: PluginServiceProtocol {
     private let client: WordPressClient
@@ -28,7 +31,11 @@ public actor PluginService: PluginServiceProtocol {
         // function takes a REST API response type, which is not exposed as a public API of `PluginService`.
         // We could refactor this API if we need to call `checkPluginUpdates` directly.
         Task.detached {
-            try await self.checkPluginUpdates(plugins: response.data)
+            do {
+                try await self.checkPluginUpdates(plugins: response.data)
+            } catch {
+                log.error("Failed to check plugin updates: \(error)")
+            }
         }
     }
 
@@ -51,15 +58,21 @@ public actor PluginService: PluginServiceProtocol {
         try await installedPluginDataStore.list(query: query)
     }
 
-    public func installedPluginsUpdates(query: PluginDataStoreQuery) async -> AsyncStream<Result<[InstalledPlugin], Error>> {
+    public func installedPluginsUpdates(
+        query: PluginDataStoreQuery
+    ) async -> AsyncStream<Result<[InstalledPlugin], Error>> {
         await installedPluginDataStore.listStream(query: query)
     }
 
-    public func pluginInformationUpdates(query: PluginDirectoryDataStoreQuery) async -> AsyncStream<Result<[PluginInformation], Error>> {
+    public func pluginInformationUpdates(
+        query: PluginDirectoryDataStoreQuery
+    ) async -> AsyncStream<Result<[PluginInformation], Error>> {
         await pluginDirectoryDataStore.listStream(query: query)
     }
 
-    public func newVersionUpdates(query: PluginUpdateChecksDataStoreQuery) async -> AsyncStream<Result<[UpdateCheckPluginInfo], Error>> {
+    public func newVersionUpdates(
+        query: PluginUpdateChecksDataStoreQuery
+    ) async -> AsyncStream<Result<[UpdateCheckPluginInfo], Error>> {
         await updateChecksDataStore.listStream(query: query)
     }
 
@@ -82,7 +95,8 @@ public actor PluginService: PluginServiceProtocol {
     }
 
     public func updatePluginStatus(plugin: InstalledPlugin, activated: Bool) async throws -> InstalledPlugin {
-        let newStatus: PluginStatus = plugin.status == .inactive ? (plugin.networkOnly ? .networkActive : .active) : .inactive
+        let newStatus: PluginStatus =
+            plugin.status == .inactive ? (plugin.networkOnly ? .networkActive : .active) : .inactive
         let newPlugin = try await client.api.plugins.update(pluginSlug: plugin.slug, params: .init(status: newStatus))
         let plugin = InstalledPlugin(plugin: newPlugin.data)
         try await installedPluginDataStore.store([plugin])
@@ -105,10 +119,14 @@ public actor PluginService: PluginServiceProtocol {
         // Hard-code the pagination parameters for now. We can suface these parameters when the app needs pagination.
         let plugins = try await wpOrgClient.browsePlugins(category: category, page: 1, pageSize: 10).plugins
         try await pluginDirectoryBrowserDataStore.delete(query: .category(category))
-        try await pluginDirectoryBrowserDataStore.store([CategorizedPluginInformation(category: category, plugins: plugins)])
+        try await pluginDirectoryBrowserDataStore.store([
+            CategorizedPluginInformation(category: category, plugins: plugins)
+        ])
     }
 
-    public func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>> {
+    public func pluginDirectoryUpdates(
+        query: CategorizedPluginInformationDataStoreQuery
+    ) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>> {
         await pluginDirectoryBrowserDataStore.listStream(query: query)
     }
 
@@ -161,16 +179,18 @@ private extension PluginService {
             .appending(path: "assets")
         let size = [256, 128]
         let supportedFormat = ["png", "jpg", "jpeg", "gif"]
-        let candidates = zip(size, supportedFormat).map { size, format in
-            url.appending(path: "icon-\(size)x\(size).\(format)")
-        }
+        let candidates = zip(size, supportedFormat)
+            .map { size, format in
+                url.appending(path: "icon-\(size)x\(size).\(format)")
+            }
 
         for url in candidates {
             var request = URLRequest(url: url)
             request.httpMethod = "HEAD"
 
             if let (_, response) = try? await urlSession.data(for: request),
-               (response  as? HTTPURLResponse)?.statusCode == 200 {
+                (response as? HTTPURLResponse)?.statusCode == 200
+            {
                 return url
             }
         }
@@ -187,7 +207,7 @@ private extension PluginService {
         )
         let updateAvailable = updateCheck.plugins
 
-//        let updateAvailable = ["jetpack/jetpack": UpdateCheckPluginInfo(id: "w.org/plugins/jetpack", slug: PluginWpOrgDirectorySlug(slug: "jetpack"), plugin: PluginSlug(slug: "jetpack/jetpack"), newVersion: "14.3", url: "https://wordpress.org/plugins/jetpack/", package: "https://downloads.wordpress.org/plugin/jetpack.14.3.zip", icons: nil, banners: Banners(low: "", high: ""), bannersRtl: Banners(low: "", high: ""), requires: "6.6", tested: "6.7.2", requiresPhp: "7.2")]
+        //        let updateAvailable = ["jetpack/jetpack": UpdateCheckPluginInfo(id: "w.org/plugins/jetpack", slug: PluginWpOrgDirectorySlug(slug: "jetpack"), plugin: PluginSlug(slug: "jetpack/jetpack"), newVersion: "14.3", url: "https://wordpress.org/plugins/jetpack/", package: "https://downloads.wordpress.org/plugin/jetpack.14.3.zip", icons: nil, banners: Banners(low: "", high: ""), bannersRtl: Banners(low: "", high: ""), requires: "6.6", tested: "6.7.2", requiresPhp: "7.2")]
 
         try await updateChecksDataStore.delete(query: .all)
         try await updateChecksDataStore.store(updateAvailable.values)
