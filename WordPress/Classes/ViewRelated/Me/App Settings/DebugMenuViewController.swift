@@ -160,7 +160,7 @@ struct DebugMenuView: View {
                 .foregroundStyle(.secondary)
             Button {
                 Task {
-                    await ImageDownloader.shared.clearURLSessionCache()
+                    await ImageDownloader.shared.clearDiskCache()
                     await ImageDownloader.shared.clearMemoryCache()
                     await refreshImageCacheSize()
                     showSuccessNotice()
