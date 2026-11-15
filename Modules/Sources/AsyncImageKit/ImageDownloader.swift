@@ -1,6 +1,7 @@
 import UIKit
 import CryptoKit
 import AVFoundation
+import Synchronization
 
 /// The system that downloads and caches images, and prepares them for display.
 @ImageDownloaderActor
@@ -16,7 +17,7 @@ public final class ImageDownloader {
     private let urlSessionWithCache = URLSession {
         $0.urlCache = URLCache(
             memoryCapacity: 32 * 1024 * 1024, // 32 MB
-            diskCapacity: 256 * 1024 * 1024,  // 256 MB
+            diskCapacity: 256 * 1024 * 1024, // 256 MB
             diskPath: "org.automattic.ImageDownloader"
         )
     }
@@ -138,9 +139,10 @@ public final class ImageDownloader {
 
     private func _data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
         let requestKey = request.url?.absoluteString ?? ""
-        let task = tasks[requestKey] ?? ImageDataTask(key: requestKey, Task {
-            try await self._data(for: request, options: options, key: requestKey)
-        })
+        // A failed download stays in `tasks` until it gets back on this actor, which can be after a
+        // request with a higher priority. Don't share its error with that request.
+        let existingTask = tasks[requestKey].flatMap { $0.hasFailed ? nil : $0 }
+        let task = existingTask ?? makeTask(for: request, options: options, key: requestKey)
         task.downloader = self
 
         let subscriptionID = UUID()
@@ -148,6 +150,19 @@ public final class ImageDownloader {
         tasks[requestKey] = task
 
         return try await task.getData(subscriptionID: subscriptionID)
+    }
+
+    private func makeTask(for request: URLRequest, options: ImageRequestOptions, key: String) -> ImageDataTask {
+        let id = UUID()
+        let failure = FailureFlag()
+        return ImageDataTask(
+            id: id,
+            key: key,
+            failure: failure,
+            Task {
+                try await self.download(request, options: options, key: key, id: id, failure: failure)
+            }
+        )
     }
 
     fileprivate nonisolated func unsubscribe(_ subscriptionID: UUID, key: String) {
@@ -158,23 +173,50 @@ public final class ImageDownloader {
 
     private func _unsubscribe(_ subscriptionID: UUID, key: String) {
         guard let task = tasks[key],
-              task.subscriptions.remove(subscriptionID) != nil,
-              task.subscriptions.isEmpty else {
+            task.subscriptions.remove(subscriptionID) != nil,
+            task.subscriptions.isEmpty
+        else {
             return
         }
         task.task.cancel()
         tasks[key] = nil
     }
 
-    private func _data(for request: URLRequest, options: ImageRequestOptions, key: String) async throws -> Data {
-        defer { tasks[key] = nil }
+    private func download(
+        _ request: URLRequest,
+        options: ImageRequestOptions,
+        key: String,
+        id: UUID,
+        failure: FailureFlag
+    ) async throws -> Data {
+        defer {
+            // Remove only this download. Once cancelled, it can finish after a newer download for
+            // the same URL has replaced it, and that one must stay shared.
+            if tasks[key]?.id == id {
+                tasks[key] = nil
+            }
+        }
         let session = options.isDiskCacheEnabled ? urlSessionWithCache : urlSession
-        let (data, response) = try await session.data(for: request)
-        try validate(response: response)
-        return data
+        return try await Self.data(for: request, session: session, failure: failure)
     }
 
-    private func validate(response: URLResponse) throws {
+    /// Downloads the data off the actor, so that a failure is recorded as soon as it happens.
+    private nonisolated static func data(
+        for request: URLRequest,
+        session: URLSession,
+        failure: FailureFlag
+    ) async throws -> Data {
+        do {
+            let (data, response) = try await session.data(for: request)
+            try validate(response: response)
+            return data
+        } catch {
+            failure.set()
+            throw error
+        }
+    }
+
+    private nonisolated static func validate(response: URLResponse) throws {
         guard let response = response as? HTTPURLResponse else {
             return // The request was made not over HTTP, e.g. a `file://` request
         }
@@ -201,7 +243,13 @@ public final class ImageDownloader {
         }
 
         let pngData = try Data(contentsOf: path)
-        return UIImage(data: pngData)
+        guard let image = UIImage(data: pngData) else {
+            return nil
+        }
+        if options.isMemoryCacheEnabled {
+            cache[key] = image
+        }
+        return image
     }
 
     private func store(_ image: UIImage, for key: String, options: ImageRequestOptions) throws {
@@ -233,13 +281,20 @@ public final class ImageDownloader {
 
 @ImageDownloaderActor
 private final class ImageDataTask {
+    let id: UUID
     let key: String
     var subscriptions = Set<UUID>()
     let task: Task<Data, Error>
     weak var downloader: ImageDownloader?
+    private let failure: FailureFlag
 
-    init(key: String, _ task: Task<Data, Error>) {
+    /// Whether the download failed. It is set before the download gets back on the actor.
+    var hasFailed: Bool { failure.isSet }
+
+    init(id: UUID, key: String, failure: FailureFlag, _ task: Task<Data, Error>) {
+        self.id = id
         self.key = key
+        self.failure = failure
         self.task = task
     }
 
@@ -254,9 +309,19 @@ private final class ImageDataTask {
 
 // MARK: - Helpers
 
+private final class FailureFlag: Sendable {
+    private let value = Mutex(false)
+
+    var isSet: Bool { value.withLock { $0 } }
+
+    func set() {
+        value.withLock { $0 = true }
+    }
+}
+
 @globalActor
 public struct ImageDownloaderActor {
-    public actor ImageDownloaderActor { }
+    public actor ImageDownloaderActor {}
     public static let shared = ImageDownloaderActor()
 }
 
