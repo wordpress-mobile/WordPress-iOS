@@ -3,11 +3,11 @@ import WordPressData
 
 @MainActor
 final class AgeRequirementEnforcer: AgeRequirementEnforcing {
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let windowManager: () -> WindowManager?
 
     init(
-        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        coreDataStack: CoreDataStack = ContextManager.shared,
         windowManager: @escaping () -> WindowManager? = { WordPressAppDelegate.shared?.windowManager }
     ) {
         self.coreDataStack = coreDataStack
