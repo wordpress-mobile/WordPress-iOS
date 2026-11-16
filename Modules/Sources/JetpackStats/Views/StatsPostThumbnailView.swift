@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressUI
+import AsyncImageKit
 
 /// The small square at the start of a Posts & Pages row: the post's featured image, or
 /// the glyph that tells a post apart from a page when it has none.
@@ -15,6 +16,7 @@ struct StatsPostThumbnailView: View {
 
     @ObservedObject var store: PostThumbnailStore
 
+    @Environment(\.context) private var context
     @Environment(\.displayScale) private var displayScale
 
     @ScaledMetric(relativeTo: .body) private var size: CGFloat = 32
@@ -26,11 +28,17 @@ struct StatsPostThumbnailView: View {
     var body: some View {
         let thumbnailURL = item.numericPostID
             .flatMap { store.thumbnails[$0] }
-            .map { $0.thumbnail(fillingSquareOf: size, displayScale: displayScale) }
+            .map {
+                $0.thumbnail(
+                    fillingSquareOf: size,
+                    displayScale: displayScale,
+                    isWordPressComHosted: context.isAutomatticP2
+                )
+            }
 
         Group {
             if let thumbnailURL {
-                CachedAsyncImage(url: thumbnailURL) { image in
+                CachedAsyncImage(url: thumbnailURL, host: context.mediaHost) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
