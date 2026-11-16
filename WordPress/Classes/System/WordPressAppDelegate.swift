@@ -708,7 +708,10 @@ extension WordPressAppDelegate {
         Loggers.app.info("UDID:      \(udid)")
         Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
 
-        AccountHelper.logBlogsAndAccounts(context: mainContext)
+        // Fetching every blog is slow for accounts with many sites, so log them off the main thread.
+        Task {
+            await ContextManager.shared.performQuery { AccountHelper.logBlogsAndAccounts(context: $0) }
+        }
         Loggers.app.info("===========================================================================")
     }
 
