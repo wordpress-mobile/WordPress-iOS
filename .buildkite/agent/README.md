@@ -111,8 +111,10 @@ in task state, outside the source patch. Any failed prepare, build, test,
 install, launch or screenshot command returns a nonzero exit status.
 
 For change tasks, the worker runs a copy of the base adapter's `verify.sh` after
-the agent finishes. Editing the checkout's scripts cannot change that final
-check. Investigations choose their own checks and may return failing evidence.
+the agent finishes. This catches ordinary mistakes, but the copy runs under the
+same user as the agent and isn't protected from it. Review the diff before
+starting normal CI. Investigations choose their own checks and may return
+failing evidence.
 
 To check the adapter itself without Xcode or a simulator:
 
