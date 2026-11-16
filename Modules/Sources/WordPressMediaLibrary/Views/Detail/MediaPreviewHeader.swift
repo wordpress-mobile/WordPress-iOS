@@ -17,6 +17,11 @@ struct MediaPreviewHeader: View {
                     }
                 }
             case .video:
+                // TODO: Play the video when the preview is tapped. Planned as a
+                // separate feature; until then this shows only a still frame.
+                // V1 reference: `MediaItemViewController` presents an
+                // `AVPlayerViewController`, using a tokenized VideoPress URL for
+                // private sites (`Media.videoAsset`).
                 if let url = URL(string: display.sourceUrl) {
                     CachedAsyncImage(videoUrl: url) { image in
                         image.resizable().scaledToFit()
