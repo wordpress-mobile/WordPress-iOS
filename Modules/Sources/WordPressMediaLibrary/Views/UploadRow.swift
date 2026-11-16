@@ -35,6 +35,9 @@ struct UploadRow: View {
                         .lineLimit(2)
                 }
             }
+            // The progress bar fills the width but an error message doesn't;
+            // without this the failed row's buttons sat right after the text.
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             switch item.mode {
             case .uploading:
