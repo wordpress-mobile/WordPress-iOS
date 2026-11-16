@@ -5,8 +5,9 @@ import UIKit
 /// and author header, an optional "In reply to" strip, the internally
 /// scrolling content region, and a pinned bottom moderation toolbar hosted via
 /// `.safeAreaInset(edge: .bottom)` (never `.toolbar(placement: .bottomBar)`,
-/// which does not render in a UIKit-hosted `UIHostingController`). In compact
-/// height, accessibility text sizes use the navigation menu for moderation.
+/// which does not render in a UIKit-hosted `UIHostingController`). Accessibility
+/// text sizes use the navigation menu in compact height; the two largest use it
+/// in every height class.
 struct CommentDetailView: View {
     @StateObject private var viewModel: CommentDetailViewModel
     @ObservedObject private var titleResolver: PostTitleResolver
@@ -72,7 +73,15 @@ struct CommentDetailView: View {
     }
 
     private var usesModerationMenu: Bool {
-        verticalSizeClass == .compact && dynamicTypeSize.isAccessibilitySize
+        Self.usesModerationMenu(verticalSizeClass: verticalSizeClass, dynamicTypeSize: dynamicTypeSize)
+    }
+
+    static func usesModerationMenu(
+        verticalSizeClass: UserInterfaceSizeClass?,
+        dynamicTypeSize: DynamicTypeSize
+    ) -> Bool {
+        dynamicTypeSize >= .accessibility4
+            || (verticalSizeClass == .compact && dynamicTypeSize.isAccessibilitySize)
     }
 
     @ToolbarContentBuilder
