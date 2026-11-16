@@ -2,8 +2,8 @@ import Combine
 import Foundation
 
 /// Results for the submitted query, alive for the screen's lifetime and reset
-/// when search is dismissed. Unlike the list tabs, moderation never refetches:
-/// events correct loaded rows in place and are replayed onto later pages.
+/// when search is dismissed. Events correct loaded rows and later pages;
+/// restoring a binned comment refetches the query to recover its membership.
 @MainActor
 final class CommentsSearchViewModel: ObservableObject {
     /// Where the results stand with page one. Load-more state is an
@@ -17,7 +17,7 @@ final class CommentsSearchViewModel: ObservableObject {
         case failed
         /// Page one landed; `items` reflect the last fetch plus event corrections.
         case loaded
-        /// Pull-to-refresh is refetching page one behind the current rows.
+        /// Page one is refreshing behind the current rows.
         case refreshing
         /// The refresh failed; the rows are kept with a retry footer.
         case refreshFailed
@@ -33,12 +33,14 @@ final class CommentsSearchViewModel: ObservableObject {
     private let service: any CommentsServiceProtocol
     private let onItemsAppended: @MainActor ([CommentListItem]) -> Void
     private var eventSubscription: AnyCancellable?
-    /// Bumped whenever the results are reset (submit, refresh, cancel). A fetch
-    /// started before carries the old value and discards its result.
+    /// Bumped on reset or restoration. A fetch started before the change
+    /// carries the old value and discards its result.
     private var generation = 0
     /// Events since the current baseline, replayed onto pages fetched later so
     /// a page captured before a moderation can't resurrect the old row.
     private var excludedIDs: Set<Int64> = []
+    private var deletedIDs: Set<Int64> = []
+    private var restorationReloadID: UUID?
     private var statuses: [Int64: CommentListItem.Status] = [:]
     private var snippets: [Int64: String] = [:]
 
@@ -87,6 +89,7 @@ final class CommentsSearchViewModel: ObservableObject {
     }
 
     func cancel() {
+        restorationReloadID = nil
         generation &+= 1
         submittedQuery = nil
         items = []
@@ -118,6 +121,7 @@ final class CommentsSearchViewModel: ObservableObject {
 
     private func loadFirstPage(keepingItems: Bool) async {
         guard let query = submittedQuery else { return }
+        restorationReloadID = nil
         generation &+= 1
         resetEvents()
         nextPage = nil
@@ -161,6 +165,7 @@ final class CommentsSearchViewModel: ObservableObject {
 
     private func resetEvents() {
         excludedIDs = []
+        deletedIDs = []
         statuses = [:]
         snippets = [:]
     }
@@ -182,16 +187,22 @@ final class CommentsSearchViewModel: ObservableObject {
         guard submittedQuery != nil else { return }
         switch event {
         case .statusChanged(let id, let status):
+            guard !deletedIDs.contains(id) else { return }
+            let wasBinned = statuses[id] == .spam || statuses[id] == .trash
+            statuses[id] = status
             if CommentsListFilter.all.matches(status) {
-                statuses[id] = status
                 if let index = items.firstIndex(where: { $0.id == id }) {
                     items[index].status = status
                 }
+                if wasBinned {
+                    excludedIDs.remove(id)
+                    scheduleRestorationReload()
+                }
             } else {
-                // Kept until a new server baseline, even after restoration.
                 exclude(id)
             }
         case .deleted(let id):
+            deletedIDs.insert(id)
             exclude(id)
         case .contentChanged(let id, let html, _):
             let snippet = CommentListItem.snippet(fromHTML: html)
@@ -201,6 +212,47 @@ final class CommentsSearchViewModel: ObservableObject {
             }
         case .replyCreated:
             return
+        }
+    }
+
+    private func scheduleRestorationReload() {
+        guard let query = submittedQuery else { return }
+        // Invalidate now, before a queued page can return without the restored row.
+        generation &+= 1
+        nextPage = nil
+        isLoadingMore = false
+        loadMoreFailed = false
+        state = .refreshing
+        guard restorationReloadID == nil else { return }
+        let id = UUID()
+        restorationReloadID = id
+        Task { [weak self] in
+            await self?.reloadRestoredResults(id: id, query: query)
+        }
+    }
+
+    private func reloadRestoredResults(id: UUID, query: String) async {
+        // Submit, refresh and Cancel can hand ownership to another request.
+        defer {
+            if restorationReloadID == id { restorationReloadID = nil }
+        }
+        while restorationReloadID == id {
+            let outcome = await fetchPage(query: query, nextPage: nil)
+            guard restorationReloadID == id else { return }
+            switch outcome {
+            case .invalidated:
+                // A later restoration needs a page captured after that change.
+                continue
+            case .loaded(let page):
+                items = reconciled(page.items, excluding: [])
+                nextPage = page.nextPage
+                state = .loaded
+                onItemsAppended(items)
+                return
+            case .failed:
+                state = .refreshFailed
+                return
+            }
         }
     }
 
