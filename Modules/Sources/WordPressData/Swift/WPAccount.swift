@@ -31,15 +31,21 @@ public class WPAccount: NSManagedObject {
 
     private var cachedToken: String?
 
-    /// The `tokenWrites` count when this instance last read its token, or `nil` before the first read.
-    private var cachedTokenWriteCount: UInt64?
+    /// The token version that this instance's cached token and REST API belong to, or `nil` before it first
+    /// reads or writes its token.
+    private var cachedTokenVersion: TokenVersion?
 
-    /// Counts token writes through every instance, in every context.
+    /// Counts the token writes for each username, through every instance, in every context.
     ///
     /// An instance only caches its token and REST API, so a token written through an instance in another context
     /// would otherwise stay cached here. The lock also makes `clearAuthToken(ifCurrent:)` atomic with respect to
     /// token writes.
-    private static let tokenWrites = OSAllocatedUnfairLock<UInt64>(initialState: 0)
+    private static let tokenWrites = OSAllocatedUnfairLock<[String: UInt64]>(initialState: [:])
+
+    private struct TokenVersion: Equatable {
+        let username: String
+        let writeCount: UInt64
+    }
 
     lazy var keychain: any KeychainAccessible = AppKeychain()
     lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
@@ -147,13 +153,16 @@ public class WPAccount: NSManagedObject {
         _private_wordPressComRestApi = nil
     }
 
-    /// Drops the cached token and REST API if a token was written through any instance since they were cached.
+    /// Drops the cached token and REST API if another instance wrote this account's token since they were cached.
     func discardCachedTokenIfWrittenElsewhere() {
-        let writeCount = Self.tokenWrites.withLock { $0 }
-        if cachedTokenWriteCount != writeCount {
+        let username = self.username
+        let version = TokenVersion(username: username, writeCount: Self.tokenWrites.withLock { $0[username] ?? 0 })
+        // Without a recorded version, nothing was cached through the token getters. A REST API assigned directly,
+        // as tests do, is kept.
+        if let cachedTokenVersion, cachedTokenVersion != version {
             discardCachedToken()
-            cachedTokenWriteCount = writeCount
         }
+        cachedTokenVersion = version
     }
 
     /// Clears the token if the keychain still holds `token`. Returns whether it cleared the token.
@@ -166,14 +175,18 @@ public class WPAccount: NSManagedObject {
         }
         // Read outside the lock: firing a fault must not wait for another thread's token write.
         let username = self.username
-        return Self.tokenWrites.withLock { writeCount in
+        let writeCount: UInt64? = Self.tokenWrites.withLock { writeCounts in
             guard readToken(forUsername: username) == token else {
-                return false
+                return nil
             }
             writeToken(nil, forUsername: username)
-            writeCount += 1
-            return true
+            return Self.countWrite(forUsername: username, in: &writeCounts)
         }
+        guard let writeCount else {
+            return false
+        }
+        cachedTokenVersion = TokenVersion(username: username, writeCount: writeCount)
+        return true
     }
 
     private func _setAuthToken(_ authToken: String?) {
@@ -181,10 +194,17 @@ public class WPAccount: NSManagedObject {
         discardCachedToken()
 
         let username = self.username
-        Self.tokenWrites.withLock { writeCount in
+        let writeCount = Self.tokenWrites.withLock { writeCounts in
             writeToken(authToken, forUsername: username)
-            writeCount += 1
+            return Self.countWrite(forUsername: username, in: &writeCounts)
         }
+        cachedTokenVersion = TokenVersion(username: username, writeCount: writeCount)
+    }
+
+    private static func countWrite(forUsername username: String, in writeCounts: inout [String: UInt64]) -> UInt64 {
+        let writeCount = (writeCounts[username] ?? 0) + 1
+        writeCounts[username] = writeCount
+        return writeCount
     }
 
     private func readToken(forUsername username: String) -> String? {

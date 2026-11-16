@@ -113,6 +113,33 @@ struct WPAccountTests {
         account.authToken = "token"
     }
 
+    // MARK: - REST API Cache
+
+    // The usernames are unique: the token write counts are shared by all tests in the process.
+
+    /// Tests assign a mock REST API after setting up the account, as `MenusServiceTests` does.
+    @Test func assignedRestApiSurvivesTheGetterAfterATokenWrite() {
+        let username = "user-\(UUID().uuidString)"
+        let account = makeAccount(username: username)
+        account.authToken = "token"
+        let api = WordPressComRestApi(oAuthToken: "test")
+        account._private_wordPressComRestApi = api
+
+        #expect(account.wordPressComRestApi === api)
+    }
+
+    @Test func tokenWriteForAnotherAccountKeepsTheRestApi() throws {
+        let keychain = MockKeychainService()
+        let username = "user-\(UUID().uuidString)"
+        keychain.storage[username] = "token"
+        let account = makeAccount(username: username, keychain: keychain)
+        let api = try #require(account.wordPressComRestApi)
+
+        makeAccount(username: "other-\(UUID().uuidString)", keychain: keychain).authToken = "other-token"
+
+        #expect(account.wordPressComRestApi === api)
+    }
+
     // MARK: - Username Setter (Token Migration)
 
     @Test func settingUsernameMigratesToken() {
