@@ -445,6 +445,11 @@ final class MediaLibraryViewModel: ObservableObject {
         defer { pendingDeleteIDs.remove(id) }
         do {
             _ = try await service.media().deleteMediaPermanently(mediaId: MediaId(id))
+            // The delete has already removed the item from the cache. Read it
+            // now, before the marker clears, so the tile leaves the grid
+            // while still dimmed; otherwise it showed undimmed until the
+            // database observer's batched reload removed it.
+            await reload()
             return true
         } catch {
             Loggers.mediaLibrary.error("Bulk delete failed for id \(id): \(error)")
