@@ -31,6 +31,13 @@ enum Strings {
         comment: "Prompt for the Media Library search field"
     )
 
+    static let filterMenuTitle = NSLocalizedString(
+        "mediaLibrary.filter.title",
+        value: "Filter",
+        comment:
+            "Title of the toolbar menu that filters the Media Library by media type. Shown when the toolbar moves into its overflow menu and read by VoiceOver."
+    )
+
     static let filterAll = NSLocalizedString(
         "mediaLibrary.filter.all",
         value: "All",
