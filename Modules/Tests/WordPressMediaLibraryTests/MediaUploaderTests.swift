@@ -314,10 +314,12 @@ final class MediaUploaderTests {
         #expect(snapshot.pending.count == 1)
         #expect(snapshot.failed.isEmpty)
 
+        await mock.waitForStart()
         // Cancel to drain the in-flight Task before the test exits.
         if let id = snapshot.pending.first?.id {
             await uploader.cancel(id)
         }
+        await mock.complete(with: .failure(CancellationError()))
     }
 
     @Test("stage progress feeds the row's overall progress (5% local weight)")
@@ -350,6 +352,7 @@ final class MediaUploaderTests {
         if let id = snapshot.pending.first?.id {
             await uploader.cancel(id)
         }
+        await mock.complete(with: .failure(CancellationError()))
     }
 
     @Test("cancel during materialization removes the row silently")

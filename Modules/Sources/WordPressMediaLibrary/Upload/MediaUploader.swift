@@ -485,7 +485,7 @@ private struct InternalFailed {
     let errorMessage: String
 
     var materialized: MaterializedUpload? {
-        if case .staged(let materialized) = retryPayload { materialized } else { nil }
+        if case .staged(let materialized)? = retryPayload { materialized } else { nil }
     }
 
     var viewModelValue: FailedUpload {

@@ -46,7 +46,7 @@ final class MediaUploaderLifetimeTests {
         case "removeAll": await uploader.removeAllFailed()
         default: await uploader.tearDown()
         }
-        #expect(try await waitForState(of: uploader) { $0.isEmpty }.isEmpty)
+        try await waitForUploadCondition { await uploader.snapshot().isEmpty }
         try await waitUntil { !box.isAlive }
         await uploader.tearDown()
     }
