@@ -295,7 +295,7 @@ final class UploadSourceMaterializerTests {
             return nil
         }
         let materializer = makeMaterializer(policy())
-        let source = UploadSource.photoLibrary(itemProvider: provider, suggestedName: "IMG_0001.gif", hint: .gif)
+        let source = UploadSource.photoLibrary(itemProvider: provider, suggestedName: "IMG_0001", hint: .gif)
         await #expect(throws: (any Error).self) {
             try await materializer.materialize(source: source, into: stage())
         }
