@@ -50,7 +50,7 @@ public struct CommentsView: View {
     }
 
     public var body: some View {
-        CommentsTabView(viewModels: context.listViewModels, router: context.detailRouter)
+        CommentsTabView(viewModels: context.listViewModels, context: context.detailContext)
     }
 }
 
@@ -58,7 +58,7 @@ public struct CommentsView: View {
 @MainActor
 private final class CommentsContext: ObservableObject {
     let listViewModels: [CommentsListFilter: CommentsListViewModel]
-    let detailRouter: CommentsDetailRouter
+    let detailContext: CommentDetailContext
 
     init(
         client: WordPressClient,
@@ -71,7 +71,7 @@ private final class CommentsContext: ObservableObject {
         let titleResolver = PostTitleResolver(fetcher: PostTitleResolver.liveFetcher(client: client))
         let coordinator = CommentsModerationCoordinator(service: service, tracker: tracker)
 
-        detailRouter = CommentsDetailRouter(
+        detailContext = CommentDetailContext(
             service: service,
             capabilities: CommentsCapabilities(client: client),
             coordinator: coordinator,

@@ -5,7 +5,7 @@ struct CommentsListView: View {
 
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
-    let router: CommentsDetailRouter
+    let context: CommentDetailContext
     /// Starts a review session over the loaded pending comments.
     let review: ([CommentListItem]) -> Void
 
@@ -85,7 +85,7 @@ struct CommentsListView: View {
             )
         ) {
             if let selectedComment {
-                CommentDetailView(commentID: selectedComment.id, seed: selectedComment, router: router)
+                CommentDetailView(commentID: selectedComment.id, seed: selectedComment, context: context)
                     .id(selectedComment.id)
             }
         } label: {
