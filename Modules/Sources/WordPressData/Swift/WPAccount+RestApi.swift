@@ -76,7 +76,8 @@ extension WPAccount {
     /// Clears the account's token after the server rejected it, and asks for the WordPress.com sign-in.
     ///
     /// This does not post `wpAccountDefaultWordPressComAccountChanged`: the account and its sites still exist, and
-    /// observers treat that notification without an object as a logout.
+    /// observers treat that notification without an object as a logout. It posts
+    /// `wpAccountDefaultWordPressComAccountTokenRejected` for the default account instead.
     static func handleInvalidToken(
         accountID: TaggedManagedObjectID<WPAccount>,
         rejectedToken: String,
@@ -97,6 +98,17 @@ extension WPAccount {
             name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
             object: account
         )
+
+        if account.isDefaultWordPressComAccount {
+            let announce = {
+                NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountTokenRejected, object: nil)
+            }
+            if Thread.isMainThread {
+                announce()
+            } else {
+                DispatchQueue.main.async(execute: announce)
+            }
+        }
     }
 }
 
@@ -107,6 +119,12 @@ public extension Foundation.Notification.Name {
     static let wpAccountRequiresShowingSigninForWPComFixingAuthToken = Foundation.Notification.Name("WPAccount.WPComAuthTokenNeedsFixing")
 
     static let wpAccountDefaultWordPressComAccountChanged = Foundation.Notification.Name("WPAccount.DefaultWordPressComAccountChangedNotification")
+
+    /// Posted on the main thread after the server rejected the default account's token and the token was cleared.
+    ///
+    /// The account stays the default, so this is not `wpAccountDefaultWordPressComAccountChanged`: observers that
+    /// hold their own copy of the token drop it, and nothing treats it as a logout. The object is `nil`.
+    static let wpAccountDefaultWordPressComAccountTokenRejected = Foundation.Notification.Name("WPAccount.DefaultWordPressComAccountTokenRejected")
 }
 
 // For Objective-C compatibility
