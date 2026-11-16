@@ -55,7 +55,9 @@ struct MediaGridCell: View {
     @ViewBuilder private var videoContent: some View {
         if let url = item.thumbnailURL {
             CachedAsyncImage(videoUrl: url) { image in
-                image.resizable().aspectRatio(contentMode: .fill)
+                // Letterboxed in aspect-ratio mode, like images (and V1's
+                // `SiteMediaCollectionCell`, which applies the ratio to videos).
+                image.resizable().aspectRatio(contentMode: isAspectRatioMode ? .fit : .fill)
             } placeholder: {
                 Image(systemName: "play.rectangle.fill")
                     .font(.title)
