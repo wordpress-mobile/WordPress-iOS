@@ -125,7 +125,8 @@ public actor MediaUploader {
     /// uploader and losing in-flight state. In-flight uploads keep the
     /// materializer their work task captured at enqueue time and finish under
     /// the policy that was active when they were enqueued. Retry re-uploads
-    /// the already-materialized bytes and never re-consults the policy.
+    /// staged bytes or repeats preparation with the original materializer,
+    /// so changing settings never changes the policy of a queued retry.
     ///
     /// Replaces the materializer while preserving the staging root, so do
     /// not call this on a seam-constructed uploader whose test materializer
@@ -359,20 +360,24 @@ public actor MediaUploader {
     private func markFailed(id: UUID, error: Error) {
         // Failure keeps the entry's slot, only flipping pending to failed.
         guard case .pending(let entry)? = entries[id] else { return }
-        var materialized = entry.materialized
-        if let staged = materialized, case .fileNotFound? = error as? MaterializerError {
-            // The staged file is gone (e.g. purged by the system), so another
-            // retry can never succeed. Drop the payload to degrade the row to
-            // remove-only and delete any staging directory leftovers.
-            Self.removeStagingDirectory(staged.stagingDirectory)
-            materialized = nil
+        let retryPayload: InternalPending.Payload?
+        switch entry.payload {
+        case .staged(let materialized):
+            if case .fileNotFound? = error as? MaterializerError {
+                Self.removeStagingDirectory(materialized.stagingDirectory)
+                retryPayload = nil
+            } else {
+                retryPayload = entry.payload
+            }
+        case .unmaterialized:
+            retryPayload = MaterializerError.isTransientPreparationFailure(error) ? entry.payload : nil
         }
         entries[entry.id] = .failed(
             InternalFailed(
                 id: entry.id,
                 displayName: entry.displayName,
                 kind: entry.kind,
-                materialized: materialized,
+                retryPayload: retryPayload,
                 errorMessage: error.localizedDescription
             )
         )
@@ -398,14 +403,14 @@ public actor MediaUploader {
     }
 
     private func makeRetryEntry(from failedEntry: InternalFailed) -> InternalEntry? {
-        guard let materialized = failedEntry.materialized else { return nil }
+        guard let retryPayload = failedEntry.retryPayload else { return nil }
         return .pending(
             InternalPending(
                 id: failedEntry.id,
                 displayName: failedEntry.displayName,
                 kind: failedEntry.kind,
                 overallProgress: Progress(totalUnitCount: 100),
-                payload: .staged(materialized)
+                payload: retryPayload
             )
         )
     }
@@ -476,8 +481,12 @@ private struct InternalFailed {
     let id: UUID
     let displayName: String
     let kind: MediaKind
-    let materialized: MaterializedUpload?
+    let retryPayload: InternalPending.Payload?
     let errorMessage: String
+
+    var materialized: MaterializedUpload? {
+        if case .staged(let materialized) = retryPayload { materialized } else { nil }
+    }
 
     var viewModelValue: FailedUpload {
         FailedUpload(
@@ -485,7 +494,7 @@ private struct InternalFailed {
             displayName: materialized?.displayName ?? displayName,
             kind: materialized?.kind ?? kind,
             errorMessage: errorMessage,
-            isRetryable: materialized != nil
+            isRetryable: retryPayload != nil
         )
     }
 }

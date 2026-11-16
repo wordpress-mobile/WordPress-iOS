@@ -8,9 +8,7 @@ struct FailedUpload: Identifiable, Sendable {
     /// `(error as NSError).localizedDescription` for HTTP failures and a
     /// localized materializer-error message for pre-upload failures.
     let errorMessage: String
-    /// True when the actor can rerun the upload from the stored params +
-    /// temp file. False for materialization failures, where the original
-    /// `MediaCreateParams` / temp file were never produced — the
-    /// Uploads-screen row should offer Dismiss only.
+    /// True when the actor can retry a staged upload or repeat preparation
+    /// after a recognized temporary failure. Other failures are remove-only.
     let isRetryable: Bool
 }

@@ -24,6 +24,33 @@ final class MediaUploaderLifetimeTests {
         await uploader.tearDown()
     }
 
+    @Test(
+        "retained preparation source is released after recovery or removal",
+        arguments: [
+            "retry", "remove", "removeAll", "tearDown"
+        ]
+    )
+    func releasesFailedPreparationSource(action: String) async throws {
+        let uploader = MediaUploader(
+            transport: FakeUploadTransport(),
+            materializer: RetryTestMaterializer(root: try fixtures.makeDirectory(), firstError: URLError(.timedOut))
+        )
+        let box = WeakImageBox()
+        await Self.enqueueCameraImage(on: uploader, box: box)
+        let state = try await waitForState(of: uploader) { $0.failed.count == 1 }
+        #expect(state.failed[0].isRetryable)
+        #expect(box.isAlive)
+        switch action {
+        case "retry": await uploader.retry(state.failed[0].id)
+        case "remove": await uploader.remove(state.failed[0].id)
+        case "removeAll": await uploader.removeAllFailed()
+        default: await uploader.tearDown()
+        }
+        #expect(try await waitForState(of: uploader) { $0.isEmpty }.isEmpty)
+        try await waitUntil { !box.isAlive }
+        await uploader.tearDown()
+    }
+
     @MainActor
     private static func enqueueCameraImage(on uploader: MediaUploader, box: WeakImageBox) async {
         let image = autoreleasepool {
