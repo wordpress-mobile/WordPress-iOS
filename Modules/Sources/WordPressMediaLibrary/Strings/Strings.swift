@@ -295,8 +295,8 @@ enum Strings {
         comment: "Bulk action: remove every failed upload from the queue."
     )
     static let uploadBulkCancelAll = NSLocalizedString(
-        "mediaLibrary.uploads.bulk.cancelAll",
-        value: "Cancel all uploading",
+        "mediaLibrary.uploads.bulk.cancelAllUploads",
+        value: "Cancel all uploads",
         comment: "Bulk action: cancel every in-flight upload."
     )
 
