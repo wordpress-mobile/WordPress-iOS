@@ -709,9 +709,8 @@ extension WordPressAppDelegate {
         Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
 
         // Fetching every blog is slow for accounts with many sites, so log them off the main thread.
-        let context = ContextManager.shared.newDerivedContext()
-        context.perform {
-            AccountHelper.logBlogsAndAccounts(context: context)
+        Task {
+            await ContextManager.shared.performQuery { AccountHelper.logBlogsAndAccounts(context: $0) }
         }
         Loggers.app.info("===========================================================================")
     }
