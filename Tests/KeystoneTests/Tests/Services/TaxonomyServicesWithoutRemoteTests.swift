@@ -54,6 +54,20 @@ struct TaxonomyServicesWithoutRemoteTests {
         #expect(isCategoryNoRemoteError(error))
     }
 
+    /// The category screen shows the error's description as the alert title.
+    @Test func createCategoryFailureDescribesTheProblem() {
+        let error = failureError { failure in
+            categoryService.createCategory(
+                withName: "Category",
+                parentCategoryObjectID: nil,
+                forBlogObjectID: blog.objectID,
+                success: { _ in Issue.record("Must not succeed without a remote") },
+                failure: failure
+            )
+        }
+        #expect(error?.localizedDescription == "Sign in to WordPress.com again to update this site.")
+    }
+
     // MARK: - Tags
 
     @Test func syncTagsFails() {
@@ -147,6 +161,21 @@ struct TaxonomyServicesWithoutRemoteTests {
             )
         }
         #expect(isTagNoRemoteError(error))
+    }
+
+    @Test func saveTagFailureDescribesTheProblem() {
+        let tag = PostTag(context: contextManager.mainContext)
+        tag.tagID = -1
+
+        let error = failureError { failure in
+            tagService.save(
+                tag,
+                for: blog,
+                success: { _ in Issue.record("Must not succeed without a remote") },
+                failure: failure
+            )
+        }
+        #expect(error?.localizedDescription == "Sign in to WordPress.com again to update this site.")
     }
 
     // MARK: - Helpers

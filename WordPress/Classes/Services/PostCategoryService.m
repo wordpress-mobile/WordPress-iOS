@@ -31,9 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSError *)serviceErrorNoRemote
 {
+    NSString *description = NSLocalizedStringWithDefaultValue(@"taxonomy.error.noRemote",
+                                                              nil,
+                                                              [NSBundle mainBundle],
+                                                              @"Sign in to WordPress.com again to update this site.",
+                                                              @"Error message when categories or tags of a site can't be updated because the WordPress.com sign-in is no longer valid.");
     return [NSError errorWithDomain:NSStringFromClass([self class])
                                code:PostCategoryServiceErrorsNoRemoteForBlog
-                           userInfo:nil];
+                           userInfo:@{NSLocalizedDescriptionKey: description}];
 }
 
 - (void)syncCategoriesForBlog:(Blog *)blog

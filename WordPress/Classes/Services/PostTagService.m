@@ -319,7 +319,14 @@ NSErrorDomain const PostTagServiceErrorDomain = @"PostTagServiceErrorDomain";
 
 - (NSError *)noRemoteError
 {
-    return [NSError errorWithDomain:PostTagServiceErrorDomain code:PostTagServiceErrorNoRemoteForBlog userInfo:nil];
+    NSString *description = NSLocalizedStringWithDefaultValue(@"taxonomy.error.noRemote",
+                                                              nil,
+                                                              [NSBundle mainBundle],
+                                                              @"Sign in to WordPress.com again to update this site.",
+                                                              @"Error message when categories or tags of a site can't be updated because the WordPress.com sign-in is no longer valid.");
+    return [NSError errorWithDomain:PostTagServiceErrorDomain
+                               code:PostTagServiceErrorNoRemoteForBlog
+                           userInfo:@{NSLocalizedDescriptionKey: description}];
 }
 
 - (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
