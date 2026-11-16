@@ -225,54 +225,60 @@ public actor MediaUploader {
     private func makeWorkTask(for id: UUID) -> Task<Void, Never> {
         Task { [weak self, materializer, transport] in
             do {
-                guard let entry = await self?.beginWork(for: id) else { return }
-                let overall = entry.overallProgress
-                let params: MediaCreateParams
-                let uploadWeight: Double
-                switch entry.payload {
-                case .unmaterialized(let source):
-                    let stageChild = Self.makeSubprogress(
-                        of: overall,
-                        weight: source.materializationProgressWeight
-                    )
-                    let materialized = try await materializer.materialize(
-                        source: source,
-                        into: stageChild
-                    )
-                    // No checkCancellation here: a cancel that lands now would
-                    // cause us to throw and silently discard `materialized`,
-                    // leaving its staging directory orphaned. Always hop to
-                    // markMaterialized; it owns the post-materialize race.
-                    guard let self else {
-                        // Actor was deallocated (e.g. registry torn down while
-                        // materialize was in flight). markMaterialized won't
-                        // run, so remove the staged directory directly.
-                        Self.removeStagingDirectory(materialized.stagingDirectory)
-                        return
+                // The preparation scope owns the source. Only disk parameters and
+                // progress cross into the potentially long-running upload.
+                let prepare = { [weak self] () async throws -> PreparedUpload? in
+                    guard let entry = await self?.beginWork(for: id) else { return nil }
+                    let overall = entry.overallProgress
+                    let params: MediaCreateParams
+                    let uploadWeight: Double
+                    switch entry.payload {
+                    case .unmaterialized(let source):
+                        let stageChild = Self.makeSubprogress(
+                            of: overall,
+                            weight: source.materializationProgressWeight
+                        )
+                        let materialized = try await materializer.materialize(
+                            source: source,
+                            into: stageChild
+                        )
+                        // No checkCancellation here: a cancel that lands now would
+                        // cause us to throw and silently discard `materialized`,
+                        // leaving its staging directory orphaned. Always hop to
+                        // markMaterialized; it owns the post-materialize race.
+                        guard let self else {
+                            // Actor was deallocated (e.g. registry torn down while
+                            // materialize was in flight). markMaterialized won't
+                            // run, so remove the staged directory directly.
+                            Self.removeStagingDirectory(materialized.stagingDirectory)
+                            return nil
+                        }
+                        guard await self.markMaterialized(id: id, materialized: materialized) else {
+                            // The row was cancelled while materializing;
+                            // markMaterialized removed the staged directory.
+                            return nil
+                        }
+                        try Task.checkCancellation()
+                        params = materialized.params
+                        uploadWeight = 1.0 - source.materializationProgressWeight
+                    case .staged(let materialized):
+                        // The staged file may be gone (e.g. iOS purged it while
+                        // the app was suspended). Surface a clear "file not
+                        // found" rather than the opaque transport-level error,
+                        // since this path reuses the stored path without
+                        // re-materializing.
+                        guard FileManager.default.fileExists(atPath: materialized.params.filePath)
+                        else {
+                            throw MaterializerError.fileNotFound
+                        }
+                        params = materialized.params
+                        uploadWeight = 1.0
                     }
-                    guard await self.markMaterialized(id: id, materialized: materialized) else {
-                        // The row was cancelled while materializing;
-                        // markMaterialized removed the staged directory.
-                        return
-                    }
-                    try Task.checkCancellation()
-                    params = materialized.params
-                    uploadWeight = 1.0 - source.materializationProgressWeight
-                case .staged(let materialized):
-                    // The staged file may be gone (e.g. iOS purged it while
-                    // the app was suspended). Surface a clear "file not
-                    // found" rather than the opaque transport-level error,
-                    // since this path reuses the stored path without
-                    // re-materializing.
-                    guard FileManager.default.fileExists(atPath: materialized.params.filePath)
-                    else {
-                        throw MaterializerError.fileNotFound
-                    }
-                    params = materialized.params
-                    uploadWeight = 1.0
+                    return PreparedUpload(overall: overall, params: params, uploadWeight: uploadWeight)
                 }
-                let uploadChild = Self.makeSubprogress(of: overall, weight: uploadWeight)
-                _ = try await transport.upload(params: params, fulfilling: uploadChild)
+                guard let prepared = try await prepare() else { return }
+                let uploadChild = Self.makeSubprogress(of: prepared.overall, weight: prepared.uploadWeight)
+                _ = try await transport.upload(params: prepared.params, fulfilling: uploadChild)
                 await self?.markSucceeded(id: id)
             } catch {
                 // A user cancel removed the entry synchronously before any
@@ -447,4 +453,10 @@ private struct InternalFailed {
             isRetryable: materialized != nil
         )
     }
+}
+
+private struct PreparedUpload {
+    let overall: Progress
+    let params: MediaCreateParams
+    let uploadWeight: Double
 }
