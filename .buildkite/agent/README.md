@@ -2,7 +2,9 @@
 
 These scripts let a remote agent build WPiOS, run focused tests and inspect the
 app in a simulator while investigating an issue. They run in a disposable Mac
-VM as a non-admin user; the worker manages the deadline and the host cleans up.
+VM as a non-admin user. The toolkit’s
+[`run_agent_task`](https://github.com/Automattic/a8c-ci-toolkit-buildkite-plugin/blob/trunk/docs/agent-tasks.md)
+command manages the deadline and the host cleans up.
 
 Choose the checks that answer the question. A failing reproduction test can be
 the useful result, so investigations do not require a final green build. Local
