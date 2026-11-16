@@ -2,7 +2,6 @@ import Foundation
 import WordPressKit
 import WordPressShared
 import WordPressData
-import CocoaLumberjack
 
 /// Tracks backup download status for a WordPress site.
 /// Automatically polls for updates while a backup is in progress or until a download becomes available.
@@ -19,13 +18,13 @@ final class DownloadableBackupTracker: ObservableObject {
 
     /// Starts tracking backup status. Refreshes immediately and polls as needed.
     func startTracking() {
-        DDLogInfo("[DownloadableBackup] Starting backup tracking for site")
+        Loggers.app.info("[DownloadableBackup] Starting backup tracking for site")
         refreshBackupStatus()
     }
 
     /// Stops tracking and cancels any pending refresh operations.
     func stopTracking() {
-        DDLogInfo("[DownloadableBackup] Stopping backup tracking")
+        Loggers.app.info("[DownloadableBackup] Stopping backup tracking")
         refreshTask?.cancel()
         refreshTask = nil
     }
@@ -85,13 +84,13 @@ final class DownloadableBackupTracker: ObservableObject {
 
             if let backup {
                 let statusInfo = "progress: \(backup.progress ?? 0)%, downloadID: \(backup.downloadID), url: \(String(describing: backup.url))"
-                DDLogInfo("[DownloadableBackup] Status updated: \(statusInfo)")
+                Loggers.app.info("[DownloadableBackup] Status updated: \(statusInfo)")
             } else {
-                DDLogInfo("[DownloadableBackup] No active downloadable backups found")
+                Loggers.app.info("[DownloadableBackup] No active downloadable backups found")
             }
         } catch {
             guard !Task.isCancelled else { return }
-            DDLogError("[DownloadableBackup] Failed to fetch backup status: \(error)")
+            Loggers.app.error("[DownloadableBackup] Failed to fetch backup status: \(error)")
         }
     }
 
@@ -105,7 +104,7 @@ final class DownloadableBackupTracker: ObservableObject {
 
         // Clear local state immediately for better UX
         self.backup = nil
-        DDLogInfo("[DownloadableBackup] Dismissing backup notice for download ID: \(downloadID)")
+        Loggers.app.info("[DownloadableBackup] Dismissing backup notice for download ID: \(downloadID)")
 
         // Dismiss on the server (fire and forget)
         Task {

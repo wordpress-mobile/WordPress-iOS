@@ -82,7 +82,12 @@ class RoundedButton: UIButton {
 
     fileprivate func updateAppearance() {
         var configuration = self.configuration ?? UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: verticalEdgeInset, leading: horizontalEdgeInset, bottom: verticalEdgeInset, trailing: horizontalEdgeInset)
+        configuration.contentInsets = NSDirectionalEdgeInsets(
+            top: verticalEdgeInset,
+            leading: horizontalEdgeInset,
+            bottom: verticalEdgeInset,
+            trailing: horizontalEdgeInset
+        )
         configuration.baseForegroundColor = tintColor
         configuration.background.backgroundColor = .clear
         self.configuration = configuration
@@ -105,7 +110,8 @@ class RoundedButton: UIButton {
                     configuration?.background.backgroundColor = button.tintColor
                 } else {
                     configuration?.baseForegroundColor = button.tintColor.withAlphaComponent(0.5)
-                    configuration?.background.backgroundColor = button.selectedBackgroundColor ?? button.backgroundColor ?? .clear
+                    configuration?.background.backgroundColor =
+                        button.selectedBackgroundColor ?? button.backgroundColor ?? .clear
                 }
             } else {
                 configuration?.baseForegroundColor = button.tintColor
@@ -128,6 +134,10 @@ class RoundedButton: UIButton {
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
             var attributes = attributes
             attributes.font = WPStyleGuide.fontForTextStyle(.subheadline)
+            // Center a title that wraps at large text sizes. `titleAlignment` doesn't apply to wrapped lines.
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            attributes.paragraphStyle = paragraphStyle
             return attributes
         }
         self.configuration = configuration

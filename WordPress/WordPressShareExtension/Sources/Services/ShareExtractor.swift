@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
@@ -313,7 +312,7 @@ private extension TypeBasedExtensionContentExtractor {
             provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { payload, error in
                 defer { syncGroup.leave() }
                 if let error {
-                    DDLogError("Failed to load shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                    Loggers.shareExtension.error("Failed to load shared item of type \(self.acceptedType): \(error.localizedDescription)")
                     lock.lock()
                     failures.append(error)
                     lock.unlock()
@@ -329,7 +328,7 @@ private extension TypeBasedExtensionContentExtractor {
                         lock.unlock()
                     }
                 } catch {
-                    DDLogError(
+                    Loggers.shareExtension.error(
                         "Failed to extract shared item of type \(self.acceptedType): \(error.localizedDescription)"
                     )
                     lock.lock()
@@ -355,7 +354,7 @@ private extension TypeBasedExtensionContentExtractor {
         do {
             try encodedMedia.write(to: fullPath, options: [.atomic])
         } catch {
-            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            Loggers.shareExtension.error("Error saving \(fullPath) to shared container: \(String(describing: error))")
             return nil
         }
         return fullPath
@@ -372,7 +371,7 @@ private extension TypeBasedExtensionContentExtractor {
         do {
             try wrapper.write(to: newPath, options: [], originalContentsURL: nil)
         } catch {
-            DDLogError("Error saving \(newPath) to shared container: \(String(describing: error))")
+            Loggers.shareExtension.error("Error saving \(newPath) to shared container: \(String(describing: error))")
             return nil
         }
 
@@ -387,7 +386,7 @@ private extension TypeBasedExtensionContentExtractor {
         do {
             try FileManager.default.copyItem(at: url, to: newPath)
         } catch {
-            DDLogError("Error saving \(newPath) to shared container: \(String(describing: error))")
+            Loggers.shareExtension.error("Error saving \(newPath) to shared container: \(String(describing: error))")
             return nil
         }
 
@@ -468,7 +467,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             }
             textBundleURL = unzippedBundleURL
         } catch {
-            DDLogError("TextPack opening failed: \(error.localizedDescription)")
+            Loggers.shareExtension.error("TextPack opening failed: \(error.localizedDescription)")
             return nil
         }
 

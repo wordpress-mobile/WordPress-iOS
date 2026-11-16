@@ -20,19 +20,39 @@ import WordPressData
 @MainActor
 enum CommentsRouting {
     static func makeViewController(for blog: Blog) -> UIViewController? {
+        guard let dependencies = makeDependencies(for: blog) else { return nil }
+        return CommentsHostingController.make(
+            client: dependencies.client,
+            makeContentRenderer: { CommentsWebContentRendererAdapter() },
+            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
+            noticePresenter: NoticePresenterAdapter(),
+            draftStore: dependencies.draftStore
+        )
+    }
+
+    static func makeView(for blog: Blog) -> CommentsView? {
+        guard let dependencies = makeDependencies(for: blog) else { return nil }
+        return CommentsView(
+            client: dependencies.client,
+            makeContentRenderer: { CommentsWebContentRendererAdapter() },
+            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
+            noticePresenter: NoticePresenterAdapter(),
+            draftStore: dependencies.draftStore
+        )
+    }
+
+    private static func makeDependencies(
+        for blog: Blog
+    ) -> (client: WordPressClient, draftStore: UserDefaultsCommentDraftStore)? {
         guard FeatureFlag.commentsV2.enabled,
             let site = try? WordPressSite(blog: blog),
             case .selfHosted(let credentials) = site.flavor
         else {
             return nil
         }
-        let client = WordPressClientFactory.shared.instance(for: site)
-        return CommentsHostingController.make(
-            client: client,
-            makeContentRenderer: { CommentsWebContentRendererAdapter() },
-            tracker: CommentsTrackerAdapter(blogProperties: blog.analyticsProperties),
-            noticePresenter: NoticePresenterAdapter(),
-            draftStore: UserDefaultsCommentDraftStore(siteURL: site.siteURL, username: credentials.username)
+        return (
+            WordPressClientFactory.shared.instance(for: site),
+            UserDefaultsCommentDraftStore(siteURL: site.siteURL, username: credentials.username)
         )
     }
 }

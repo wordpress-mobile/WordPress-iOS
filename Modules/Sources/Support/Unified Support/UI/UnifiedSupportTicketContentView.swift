@@ -5,6 +5,9 @@ struct UnifiedSupportTicketContentView: View {
 
     @ObservedObject var viewModel: UnifiedSupportConversationViewModel
 
+    /// Whether the subject is still on screen, which is what tells the navigation bar to leave it alone.
+    @Binding var isTitleVisible: Bool
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             header
@@ -13,8 +16,8 @@ struct UnifiedSupportTicketContentView: View {
                 Text(viewModel.title)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color.accentColor)
                     .accessibilityAddTraits(.isHeader)
+                    .onScrollVisibilityChange { isTitleVisible = $0 }
             }
 
             ForEach(viewModel.messages) { message in
@@ -126,10 +129,12 @@ struct UnifiedSupportClosedBanner: View {
                 .font(.subheadline)
             Spacer(minLength: 0)
         }
-        .foregroundStyle(Color(.systemRed))
+        // A closed ticket is where a conversation ends, not something that went wrong, so it's told in
+        // the same grey the rest of the screen explains itself in.
+        .foregroundStyle(.secondary)
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemRed).opacity(0.1))
+        .background(Color(.secondarySystemFill))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

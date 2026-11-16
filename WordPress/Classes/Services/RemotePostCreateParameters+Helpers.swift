@@ -39,10 +39,8 @@ extension RemotePostCreateParameters {
                         Self.mapDictionaryToMetadataItems(dictionary)
                     }
             )
-            discussion = RemotePostDiscussionSettings(
-                allowComments: post.allowComments,
-                allowPings: post.allowPings
-            )
+            commentStatus = post.commentsStatus.flatMap(RemotePostDiscussionState.init(rawValue:))
+            pingStatus = post.pingsStatus.flatMap(RemotePostDiscussionState.init(rawValue:))
         default:
             break
         }

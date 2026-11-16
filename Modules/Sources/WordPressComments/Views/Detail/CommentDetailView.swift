@@ -5,103 +5,62 @@ import UIKit
 /// and author header, an optional "In reply to" strip, the internally
 /// scrolling content region, and a pinned bottom moderation toolbar hosted via
 /// `.safeAreaInset(edge: .bottom)` (never `.toolbar(placement: .bottomBar)`,
-/// which does not render in a UIKit-hosted `UIHostingController`).
+/// which does not render in a UIKit-hosted `UIHostingController`). Accessibility
+/// text sizes use the navigation menu in compact height; the two largest use it
+/// in every height class.
 struct CommentDetailView: View {
     @StateObject private var viewModel: CommentDetailViewModel
     @ObservedObject private var titleResolver: PostTitleResolver
 
-    /// Recursive: tapping the parent strip pushes another detail screen for the
-    /// parent comment.
-    private let openComment: (Int64, CommentListItem?) -> Void
-    /// Built by the router once per screen; the content region keeps it for
-    /// the screen's lifetime.
-    private let renderer: any CommentContentRendering
+    private let context: CommentDetailContext
+    @StateObject private var contentRenderer: ContentRenderer
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    init(
-        viewModel: CommentDetailViewModel,
-        titleResolver: PostTitleResolver,
-        renderer: any CommentContentRendering,
-        openComment: @escaping (Int64, CommentListItem?) -> Void
-    ) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-        self.titleResolver = titleResolver
-        self.renderer = renderer
-        self.openComment = openComment
+    init(commentID: Int64, seed: CommentListItem?, context: CommentDetailContext) {
+        self.context = context
+        _viewModel = StateObject(wrappedValue: context.makeViewModel(id: commentID, seed: seed))
+        titleResolver = context.titleResolver
+        _contentRenderer = StateObject(wrappedValue: ContentRenderer(context: context))
+    }
+
+    @MainActor
+    private final class ContentRenderer: ObservableObject {
+        let renderer: any CommentContentRendering
+
+        init(context: CommentDetailContext) {
+            renderer = context.makeRenderer()
+        }
     }
 
     var body: some View {
-        fixedRegions
-            .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
-            .toolbar { trailingToolbarItems }
-            .navigationBarTitleDisplayMode(.inline)
-            .task { await viewModel.onAppear() }
-            // The comment no longer exists, so there is nothing left to show.
-            // `dismiss` pops this screen off the UIKit navigation stack.
-            .onChange(of: viewModel.isDeleted) { _, isDeleted in
-                if isDeleted { dismiss() }
-            }
-            .sheet(item: $viewModel.composer) { composer in
-                CommentComposerView(viewModel: composer) { viewModel.composerClosed($0) }
-                    .presentationDetents([.large])
-            }
-    }
-
-    private var fixedRegions: some View {
-        VStack(spacing: 0) {
-            if let header = viewModel.header {
-                VStack(alignment: .leading, spacing: 12) {
-                    CommentStatusPill(status: header.status)
-                    CommentAuthorHeader(
-                        header: header,
-                        titleState: titleResolver.titleState(for: header.postID),
-                        detail: viewModel.loadedDetail
-                    )
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 12)
-            }
-            if let parent = viewModel.parentPreview {
-                Divider()
-                CommentParentStrip(parent: parent) { openComment(parent.id, parent) }
-                    .padding(.horizontal)
-                    .padding(.vertical, 10)
-            }
-            Divider()
-            contentRegion
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        CommentDetailBody(
+            viewModel: viewModel,
+            titleResolver: titleResolver,
+            renderer: contentRenderer.renderer,
+            parentDestination: { CommentDetailView(commentID: $0.id, seed: $0, context: context) },
+            retry: { Task { await viewModel.retry() } }
+        )
+        .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
+        .toolbar { trailingToolbarItems }
+        .navigationBarTitleDisplayMode(.inline)
+        .task { await viewModel.onAppear() }
+        // The comment no longer exists, so there is nothing left to show.
+        .onChange(of: viewModel.isDeleted) { _, isDeleted in
+            if isDeleted { dismiss() }
         }
-    }
-
-    @ViewBuilder
-    private var contentRegion: some View {
-        switch viewModel.content {
-        case .loading:
-            ProgressView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        case .failed:
-            failureView
-        case .loaded(let detail):
-            CommentContentRegion(renderer: renderer, html: detail.contentHTML)
-        }
-    }
-
-    private var failureView: some View {
-        ContentUnavailableView {
-            Label(Strings.detailErrorTitle, systemImage: "exclamationmark.triangle")
-        } actions: {
-            Button(Strings.errorRetry) {
-                Task { await viewModel.retry() }
-            }
-            .buttonStyle(.borderedProminent)
+        .sheet(item: $viewModel.composer) { composer in
+            CommentComposerView(viewModel: composer) { viewModel.composerClosed($0) }
+                .presentationDetents([.large])
         }
     }
 
     @ViewBuilder
     private var bottomToolbar: some View {
         let model = viewModel.toolbarModel
-        if model != .hidden {
+        if model != .hidden && !usesModerationMenu {
             CommentModerationToolbar(
                 model: model,
                 isEnabled: viewModel.isToolbarEnabled,
@@ -111,6 +70,18 @@ struct CommentDetailView: View {
                 viewModel.perform(action)
             }
         }
+    }
+
+    private var usesModerationMenu: Bool {
+        Self.usesModerationMenu(verticalSizeClass: verticalSizeClass, dynamicTypeSize: dynamicTypeSize)
+    }
+
+    static func usesModerationMenu(
+        verticalSizeClass: UserInterfaceSizeClass?,
+        dynamicTypeSize: DynamicTypeSize
+    ) -> Bool {
+        dynamicTypeSize >= .accessibility4
+            || (verticalSizeClass == .compact && dynamicTypeSize.isAccessibilitySize)
     }
 
     @ToolbarContentBuilder
@@ -126,8 +97,15 @@ struct CommentDetailView: View {
         ToolbarItem(placement: .topBarTrailing) {
             let shareLink = viewModel.shareLink
             let menuAction = viewModel.toolbarModel.menuAction
-            if viewModel.showsEdit || shareLink != nil || menuAction != nil {
-                Menu {
+            let moderationModel = usesModerationMenu ? viewModel.toolbarModel : .hidden
+            if viewModel.showsEdit || shareLink != nil || menuAction != nil || moderationModel != .hidden {
+                CommentModerationMenu(
+                    model: moderationModel,
+                    isEnabled: viewModel.isToolbarEnabled,
+                    isPerformingAction: usesModerationMenu && viewModel.pendingAction != nil,
+                    trashConfirmation: viewModel.trashConfirmation,
+                    perform: { viewModel.perform($0) }
+                ) {
                     if viewModel.showsEdit {
                         Button(Strings.detailEdit, systemImage: "pencil") { viewModel.editTapped() }
                             .disabled(!viewModel.canEdit)
@@ -146,11 +124,79 @@ struct CommentDetailView: View {
                             .disabled(!viewModel.isToolbarEnabled)
                         }
                     }
-                } label: {
-                    Image(systemName: "ellipsis")
                 }
-                .accessibilityLabel(Strings.detailMoreActions)
             }
+        }
+    }
+}
+
+/// The fixed regions every detail presentation shares: the status pill and
+/// author header, the optional "In reply to" strip, and the content region.
+/// The ordinary screen and the review sheet add their own toolbars and
+/// lifecycle around it.
+struct CommentDetailBody: View {
+    @ObservedObject var viewModel: CommentDetailViewModel
+    @ObservedObject var titleResolver: PostTitleResolver
+    let renderer: any CommentContentRendering
+    /// Review sessions leave parent context unlinked.
+    var parentDestination: ((CommentListItem) -> CommentDetailView)?
+    let retry: () -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            if let header = viewModel.header {
+                VStack(alignment: .leading, spacing: 12) {
+                    CommentStatusPill(status: header.status)
+                    CommentAuthorHeader(
+                        header: header,
+                        titleState: titleResolver.titleState(for: header.postID),
+                        detail: viewModel.loadedDetail
+                    )
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 12)
+            }
+            if let parent = viewModel.parentPreview {
+                Divider()
+                parentStrip(parent)
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+            }
+            Divider()
+            contentRegion
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    private func parentStrip(_ parent: CommentListItem) -> some View {
+        if let parentDestination {
+            NavigationLink {
+                parentDestination(parent)
+            } label: {
+                CommentParentStrip(parent: parent, showsDisclosureIndicator: true)
+            }
+            .buttonStyle(.plain)
+        } else {
+            CommentParentStrip(parent: parent)
+        }
+    }
+
+    @ViewBuilder
+    private var contentRegion: some View {
+        switch viewModel.content {
+        case .loading:
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        case .failed:
+            ContentUnavailableView {
+                Label(Strings.detailErrorTitle, systemImage: "exclamationmark.triangle")
+            } actions: {
+                Button(Strings.errorRetry, action: retry)
+                    .buttonStyle(.borderedProminent)
+            }
+        case .loaded(let detail):
+            CommentContentRegion(renderer: renderer, html: detail.contentHTML)
         }
     }
 }
@@ -184,28 +230,28 @@ private final class StubContentRenderer: NSObject, CommentContentRendering {
     }
 }
 
+private struct PreviewNoticePresenter: NoticePresenting {
+    func present(title: String) {}
+}
+
 #Preview {
     let service = PreviewCommentsService(fetchedStatus: .pending, numberOfReplies: 2)
     let coordinator = CommentsModerationCoordinator(service: service)
     let titleResolver = PostTitleResolver(fetcher: { _ in
         PostTitleResolver.FetchResult(titles: [10: "Reviewing the 2027 Upgrade"])
     })
-    let viewModel = CommentDetailViewModel(
-        commentID: 1,
-        seed: nil,
+    let context = CommentDetailContext(
         service: service,
-        capabilities: CommentsCapabilityResolver(capabilities: PreviewCapabilities()),
+        capabilities: PreviewCapabilities(),
         coordinator: coordinator,
         draftStore: PreviewCommentDraftStore(),
-        titleResolver: titleResolver
+        titleResolver: titleResolver,
+        tracker: nil,
+        noticePresenter: PreviewNoticePresenter(),
+        makeContentRenderer: { StubContentRenderer() }
     )
     return NavigationStack {
-        CommentDetailView(
-            viewModel: viewModel,
-            titleResolver: titleResolver,
-            renderer: StubContentRenderer(),
-            openComment: { _, _ in }
-        )
+        CommentDetailView(commentID: 1, seed: nil, context: context)
     }
 }
 #endif

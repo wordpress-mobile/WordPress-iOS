@@ -28,7 +28,7 @@ final class CustomPostListViewModel: ObservableObject {
     private var canManageOptions = false
     private var isBatchSyncing = false
     private var hasReportedPostDetailLoadingFailure = false
-    private let analytics = CustomPostListAnalytics()
+    private let analytics: CustomPostListAnalytics
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
     // is less than a threshold, where the app can fetch all content relative quickly.
@@ -93,6 +93,7 @@ final class CustomPostListViewModel: ObservableObject {
         self.exclude = exclude
         self.showsHierarchyIfApplicable = showsHierarchyIfApplicable
         self.presentingViewController = presentingViewController
+        self.analytics = CustomPostListAnalytics(blog: blog)
 
         collection =
             service
@@ -135,6 +136,20 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private var analyticsProperties: [AnyHashable: Any] {
+        Self.analyticsProperties(
+            details: details,
+            filter: filter,
+            hierarchyEligible: shouldAttemptDisplayHierarchy,
+            hasCachedContent: (collection.listInfo()?.totalItems ?? 0) > 0
+        )
+    }
+
+    static func analyticsProperties(
+        details: PostTypeDetailsWithEditContext,
+        filter: CustomPostListFilter,
+        hierarchyEligible: Bool,
+        hasCachedContent: Bool
+    ) -> [AnyHashable: Any] {
         let tab: String
         if filter.search != nil {
             tab = "search"
@@ -149,12 +164,19 @@ final class CustomPostListViewModel: ObservableObject {
             default: tab = "other"
             }
         }
+        let postType: String
+        switch details.toPostEndpointType() {
+        case .posts: postType = "posts"
+        case .pages: postType = "pages"
+        default: postType = "custom"
+        }
         return [
-            "post_type": endpoint == .posts ? "posts" : (isPages ? "pages" : "custom"),
+            "post_type": postType,
+            "post_type_slug": details.slug,
             "tab": tab,
             "page_size": Constants.pageSize,
-            "hierarchy_eligible": shouldAttemptDisplayHierarchy,
-            "has_cached_content": (collection.listInfo()?.totalItems ?? 0) > 0
+            "hierarchy_eligible": hierarchyEligible,
+            "has_cached_content": hasCachedContent
         ]
     }
 
@@ -286,7 +308,7 @@ final class CustomPostListViewModel: ObservableObject {
             load.record(try await collection.refresh())
         } catch {
             load.error = error
-            DDLogError("Failed to refresh pages: \(error)")
+            Loggers.app.error("Failed to refresh pages: \(error)")
             self.show(error: error)
             return
         }

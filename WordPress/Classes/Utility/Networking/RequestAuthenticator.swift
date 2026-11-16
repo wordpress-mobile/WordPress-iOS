@@ -69,7 +69,7 @@ class RequestAuthenticator: NSObject, @unchecked Sendable {
             let loginURL = blog.loginURL {
             self.init(credentials: .siteLogin(loginURL: loginURL, username: username, password: password))
         } else {
-            DDLogError("Can't authenticate blog \(String(describing: blog.displayURL)) yet")
+            Loggers.app.error("Can't authenticate blog \(String(describing: blog.displayURL)) yet")
             return nil
         }
     }
@@ -242,7 +242,7 @@ class RequestAuthenticator: NSObject, @unchecked Sendable {
         let rlogin = "https://r-login.wordpress.com/remote-login.php?action=auth"
         guard var components = URLComponents(string: rlogin) else {
             // Safety net in case something unexpected changes in the future.
-            DDLogError("There was an unexpected problem initializing URLComponents via the rlogin string.")
+            Loggers.app.error("There was an unexpected problem initializing URLComponents via the rlogin string.")
             return URLRequest(url: url)
         }
         var queryItems = components.queryItems ?? []

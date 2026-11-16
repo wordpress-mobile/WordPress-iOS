@@ -163,7 +163,7 @@ private extension StatsCellHeader {
 
     @objc func manageInsightButtonPressed(_ sender: UIButton) {
         guard let statSection else {
-            DDLogDebug("manageInsightButtonPressed: unknown statSection.")
+            Loggers.app.debug("manageInsightButtonPressed: unknown statSection.")
             return
         }
 

@@ -340,10 +340,10 @@ open class JetpackSettingsViewController: UITableViewController {
                                                    return
                                                }
                                                self?.reloadViewModel()
-                                               DDLogInfo("Reloaded Jetpack Settings")
+                                               Loggers.app.info("Reloaded Jetpack Settings")
                                            },
                                            failure: { (error: Error?) in
-                                               DDLogError("Error while syncing blog Jetpack Settings: \(String(describing: error))")
+                                               Loggers.app.error("Error while syncing blog Jetpack Settings: \(String(describing: error))")
                                            })
     }
 
