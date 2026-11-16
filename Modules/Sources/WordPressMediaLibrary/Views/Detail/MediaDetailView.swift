@@ -101,8 +101,12 @@ struct MediaDetailView: View {
             Button {
                 viewModel.pushFieldEditor(for: field)
             } label: {
-                HStack {
+                HStack(spacing: 8) {
+                    // Full width so a value that wraps below the title (e.g. a
+                    // long alt text) doesn't pull the chevron in from the
+                    // trailing edge.
                     LabeledContent(field.localizedTitle, value: viewModel.displayValue(for: field))
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     Image(systemName: "chevron.forward")
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(.tertiary)
