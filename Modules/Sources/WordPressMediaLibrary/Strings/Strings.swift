@@ -484,8 +484,8 @@ enum Strings {
     )
     static let detailIdFooter = NSLocalizedString(
         "mediaLibrary.detail.idFooter",
-        value: "ID %1$lld",
-        comment: "Footer caption showing the entity ID; %1$lld is the media ID"
+        value: "ID %1$@",
+        comment: "Footer caption showing the entity ID; %1$@ is the media ID, e.g. 1305"
     )
     static let detailUnableToSaveTitle = NSLocalizedString(
         "mediaLibrary.detail.unableToSaveTitle",

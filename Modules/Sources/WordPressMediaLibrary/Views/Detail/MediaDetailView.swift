@@ -159,7 +159,9 @@ struct MediaDetailView: View {
             LabeledContent(Strings.detailMetadataUploaded, value: uploadedString)
             LabeledContent(Strings.detailMetadataMimeType, value: viewModel.display.mimeType.nonEmptyOr("—"))
         } footer: {
-            Text(String.localizedStringWithFormat(Strings.detailIdFooter, viewModel.display.id))
+            // The ID goes in as a string: a numeric placeholder is formatted
+            // with the locale's digit grouping ("ID 1,305").
+            Text(String.localizedStringWithFormat(Strings.detailIdFooter, String(viewModel.display.id)))
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 20)
         }
