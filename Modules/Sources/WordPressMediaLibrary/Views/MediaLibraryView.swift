@@ -159,16 +159,6 @@ struct MediaLibraryView: View {
             }
         }
         .navigationBarBackButtonHidden(viewModel.isSelectionModeActive)
-        .confirmationDialog(
-            deleteConfirmMessage,
-            isPresented: $isPresentingDeleteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button(Strings.detailDeleteAction, role: .destructive) {
-                Task { await viewModel.confirmBulkDelete() }
-            }
-            Button(Strings.commonCancel, role: .cancel) {}
-        }
         .alert(
             Strings.detailUnableToDeleteTitle,
             isPresented: bulkDeleteErrorBinding,
@@ -454,6 +444,20 @@ struct MediaLibraryView: View {
                 }
                 .accessibilityLabel(Strings.selectionDeleteAccessibilityLabel)
                 .disabled(viewModel.selectedIDs.isEmpty || viewModel.isPreparingBulkShare)
+                // Attached to the trash button, not the screen: on iOS 26+ the
+                // dialog is a popover anchored to the view that owns it, and on
+                // the screen it pointed at the top of the grid, covering the
+                // selection.
+                .confirmationDialog(
+                    deleteConfirmMessage,
+                    isPresented: $isPresentingDeleteConfirm,
+                    titleVisibility: .visible
+                ) {
+                    Button(Strings.detailDeleteAction, role: .destructive) {
+                        Task { await viewModel.confirmBulkDelete() }
+                    }
+                    Button(Strings.commonCancel, role: .cancel) {}
+                }
             } else {
                 Image(systemName: "trash")
                     .hidden()
