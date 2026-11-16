@@ -3,6 +3,7 @@ import Foundation
 import Testing
 import UIKit
 import UniformTypeIdentifiers
+import os
 @testable import WordPressMediaLibrary
 
 /// Fresh stage progress for materializer tests that don't care about
@@ -270,6 +271,38 @@ final class UploadSourceMaterializerTests {
 
         // Byte-for-byte equality: any ImageIO re-encode would alter the bytes.
         #expect(try Data(contentsOf: result.tempFileURL) == smallJPEG)
+    }
+
+    @Test("retrying a failed Photos load does not consume the original filename")
+    func failedPhotosLoadDoesNotReserveFilename() async throws {
+        let file = try createTempGIF()
+        let attempts = OSAllocatedUnfairLock(initialState: 0)
+        let provider = NSItemProvider()
+        provider.registerFileRepresentation(
+            forTypeIdentifier: UTType.gif.identifier,
+            fileOptions: [],
+            visibility: .all
+        ) { completion in
+            let isFirst = attempts.withLock { count in
+                count += 1
+                return count == 1
+            }
+            if isFirst {
+                completion(nil, false, URLError(.notConnectedToInternet))
+            } else {
+                completion(file, false, nil)
+            }
+            return nil
+        }
+        let materializer = makeMaterializer(policy())
+        let source = UploadSource.photoLibrary(itemProvider: provider, suggestedName: "IMG_0001.gif", hint: .gif)
+        await #expect(throws: (any Error).self) {
+            try await materializer.materialize(source: source, into: stage())
+        }
+        #expect(attempts.withLock { $0 } == 1)
+        let result = try await materializer.materialize(source: source, into: stage())
+        #expect(result.tempFileURL.lastPathComponent == "IMG_0001.gif")
+        #expect(attempts.withLock { $0 } == 2)
     }
 
     @Test(".imagePlayground applies the image policy without security scoping")

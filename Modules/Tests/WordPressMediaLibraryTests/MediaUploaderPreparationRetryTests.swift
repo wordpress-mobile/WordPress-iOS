@@ -36,7 +36,7 @@ final class MediaUploaderPreparationRetryTests {
     @Test("preparation retry waits behind active work")
     func preparationRetryUsesAdmissionLimit() async throws {
         let materializer = RetryTestMaterializer(root: try fixtures.makeDirectory(), firstError: URLError(.timedOut))
-        let transport = BlockingFakeUploadTransport()
+        let transport = BlockingFakeUploadTransport(completionDelay: .milliseconds(100))
         let uploader = MediaUploader(transport: transport, materializer: materializer, maxConcurrentUploads: 1)
         await uploader.enqueue(sources: [remoteSource])
         let failed = try await waitForState(of: uploader) { $0.failed.count == 1 }
@@ -51,6 +51,7 @@ final class MediaUploaderPreparationRetryTests {
         await transport.unblock()
         try await waitForState(of: uploader) { $0.isEmpty }
         #expect(await materializer.calls == 3)
+        #expect(await transport.peakActiveCount == 1)
         await uploader.tearDown()
     }
 
