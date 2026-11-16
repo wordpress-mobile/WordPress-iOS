@@ -56,7 +56,9 @@ extension MediaKind {
         case .image: "photo"
         case .video: "video"
         case .audio: "waveform"
-        case .document: "folder"
+        // "doc" matches the grid's document tile. "folder" has the built-in
+        // SF Symbols accessibility label "move".
+        case .document: "doc"
         }
     }
 }
