@@ -240,8 +240,8 @@ struct MediaLibraryView: View {
                     }
                 }
             } label: {
-                Image(systemName: "plus")
-                    .accessibilityLabel(Strings.addMenuTitle)
+                // `Label` so the overflow menu of a narrow toolbar shows a title.
+                Label(Strings.addMenuTitle, systemImage: "plus")
             }
         }
     }

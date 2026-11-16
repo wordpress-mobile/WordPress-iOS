@@ -305,7 +305,8 @@ enum Strings {
     static let addMenuTitle = NSLocalizedString(
         "mediaLibrary.addMenu.title",
         value: "Add",
-        comment: "Accessibility label for the toolbar + button that opens the Add menu."
+        comment:
+            "Title of the toolbar + button that opens the Add menu. Read by VoiceOver and shown when the toolbar moves into its overflow menu."
     )
     static let addMenuPhotoLibrary = NSLocalizedString(
         "mediaLibrary.addMenu.photoLibrary",
