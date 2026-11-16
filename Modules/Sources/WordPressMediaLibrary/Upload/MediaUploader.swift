@@ -18,6 +18,10 @@ public actor MediaUploader {
     private let transport: any MediaUploadTransport
     private var materializer: any MediaSourceMaterializing
     private let temporaryRoot: URL
+    private let maxConcurrentUploads: Int
+    // Cancelled jobs keep their slot until they unwind, so slow cancellation
+    // cannot let a later batch exceed the resource limit.
+    private var activeTasks: [UUID: Task<Void, Never>] = [:]
 
     /// Multicasts state to every observer and replays the latest snapshot
     /// to new subscribers, so a re-pushed Media Library screen sees the
@@ -26,7 +30,7 @@ public actor MediaUploader {
         UploaderState(entries: [])
     )
 
-    /// Every in-flight or failed upload, keyed by id and held in submission
+    /// Every queued, in-flight or failed upload, keyed by id and held in submission
     /// order. The `InternalEntry` case encodes pending-vs-failed, so an id is
     /// in exactly one state and can never be orphaned. In-flight to failed
     /// (and failed to pending via Retry) updates the value in place,
@@ -44,19 +48,24 @@ public actor MediaUploader {
 
     public init(
         client: WordPressClient,
-        policy: MediaUploadPolicy
+        policy: MediaUploadPolicy,
+        maxConcurrentUploads: Int = 3
     ) {
         self.init(
             transport: DefaultMediaUploadTransport(client: client),
-            policy: policy
+            policy: policy,
+            maxConcurrentUploads: maxConcurrentUploads
         )
     }
 
     init(
         transport: any MediaUploadTransport,
         policy: MediaUploadPolicy,
-        temporaryRoot: URL = UploadSourceMaterializer.defaultStagingDirectory
+        temporaryRoot: URL = UploadSourceMaterializer.defaultStagingDirectory,
+        maxConcurrentUploads: Int = 3
     ) {
+        precondition(maxConcurrentUploads > 0)
+        self.maxConcurrentUploads = maxConcurrentUploads
         self.transport = transport
         self.temporaryRoot = temporaryRoot
         self.materializer = UploadSourceMaterializer(policy: policy, temporaryRoot: temporaryRoot)
@@ -69,8 +78,11 @@ public actor MediaUploader {
     init(
         transport: any MediaUploadTransport,
         materializer: any MediaSourceMaterializing,
-        filePickerContentTypes: [UTType] = [.content]
+        filePickerContentTypes: [UTType] = [.content],
+        maxConcurrentUploads: Int = 3
     ) {
+        precondition(maxConcurrentUploads > 0)
+        self.maxConcurrentUploads = maxConcurrentUploads
         self.transport = transport
         self.materializer = materializer
         self.temporaryRoot = UploadSourceMaterializer.defaultStagingDirectory
@@ -84,8 +96,8 @@ public actor MediaUploader {
         // tearDown(): stop in-flight work and complete the subject so
         // `statePublisher.values` iterations terminate instead of suspending
         // forever. Staged files are reclaimed by the next-launch sweep.
-        for case .pending(let pending) in entries.values {
-            pending.task.cancel()
+        for task in activeTasks.values {
+            task.cancel()
         }
         stateSubject.send(completion: .finished)
     }
@@ -137,12 +149,12 @@ public actor MediaUploader {
                     displayName: sourceDisplayName(source),
                     kind: source.estimatedKind,
                     overallProgress: Progress(totalUnitCount: 100),
-                    payload: .unmaterialized(source),
-                    task: makeWorkTask(for: id)
+                    payload: .unmaterialized(source, materializer)
                 )
             )
         }
         entries = updated
+        startScheduledWork()
     }
 
     func cancel(_ uploadID: UUID) {
@@ -161,6 +173,7 @@ public actor MediaUploader {
         // Overwrite the entry in place so it keeps its slot across the
         // failed to pending retry transition.
         entries[failedEntry.id] = retryEntry
+        startScheduledWork()
     }
 
     func remove(_ uploadID: UUID) {
@@ -190,6 +203,7 @@ public actor MediaUploader {
             updated[id] = retryEntry
         }
         entries = updated
+        startScheduledWork()
     }
 
     func removeAllFailed() {
@@ -217,13 +231,32 @@ public actor MediaUploader {
 
     // MARK: - Internals
 
+    /// Three complete pipelines allow parallel uploads without materializing
+    /// a large batch ahead of the network. Admission follows submission order.
+    private func startScheduledWork() {
+        guard !isTornDown else { return }
+        for (id, entry) in entries {
+            guard activeTasks.count < maxConcurrentUploads else { break }
+            guard case .pending = entry, activeTasks[id] == nil else { continue }
+            activeTasks[id] = makeWorkTask(for: id)
+        }
+    }
+
+    private func finishWork(for id: UUID) {
+        activeTasks.removeValue(forKey: id)
+        startScheduledWork()
+    }
+
     private func beginWork(for id: UUID) -> InternalPending? {
         guard case .pending(let entry)? = entries[id] else { return nil }
         return entry
     }
 
     private func makeWorkTask(for id: UUID) -> Task<Void, Never> {
-        Task { [weak self, materializer, transport] in
+        Task { [weak self, transport] in
+            defer {
+                Task { [weak self] in await self?.finishWork(for: id) }
+            }
             do {
                 // The preparation scope owns the source. Only disk parameters and
                 // progress cross into the potentially long-running upload.
@@ -233,7 +266,7 @@ public actor MediaUploader {
                     let params: MediaCreateParams
                     let uploadWeight: Double
                     switch entry.payload {
-                    case .unmaterialized(let source):
+                    case .unmaterialized(let source, let materializer):
                         let stageChild = Self.makeSubprogress(
                             of: overall,
                             weight: source.materializationProgressWeight
@@ -351,11 +384,15 @@ public actor MediaUploader {
     /// surface a bogus file-not-found instead of a clean cancellation.
     private func cancelWork(of entry: InternalPending) {
         entry.overallProgress.cancel()
-        entry.task.cancel()
+        let task = activeTasks[entry.id]
+        task?.cancel()
         guard let stagingDirectory = entry.materialized?.stagingDirectory else { return }
-        let task = entry.task
-        Task {
-            await task.value
+        if let task {
+            Task {
+                await task.value
+                Self.removeStagingDirectory(stagingDirectory)
+            }
+        } else {
             Self.removeStagingDirectory(stagingDirectory)
         }
     }
@@ -368,8 +405,7 @@ public actor MediaUploader {
                 displayName: failedEntry.displayName,
                 kind: failedEntry.kind,
                 overallProgress: Progress(totalUnitCount: 100),
-                payload: .staged(materialized),
-                task: makeWorkTask(for: failedEntry.id)
+                payload: .staged(materialized)
             )
         )
     }
@@ -391,7 +427,7 @@ public actor MediaUploader {
     }
 }
 
-/// Actor-internal upload entry. Holds the rich state (Task handle, staged
+/// Actor-internal upload entry. Holds the rich state (source or staged
 /// payload) the view-facing `UploadEntry` omits. The case encodes the
 /// pending-vs-failed state directly, so a single `[UUID: InternalEntry]` map
 /// keeps that invariant without a second dictionary to synchronize.
@@ -412,7 +448,7 @@ private struct InternalPending {
     /// materialization completes releases large in-memory payloads (e.g.
     /// camera images) as soon as their bytes are staged on disk.
     enum Payload {
-        case unmaterialized(UploadSource)
+        case unmaterialized(UploadSource, any MediaSourceMaterializing)
         case staged(MaterializedUpload)
     }
 
@@ -421,7 +457,6 @@ private struct InternalPending {
     let kind: MediaKind
     let overallProgress: Progress
     var payload: Payload
-    let task: Task<Void, Never>
 
     var materialized: MaterializedUpload? {
         if case .staged(let materialized) = payload { materialized } else { nil }

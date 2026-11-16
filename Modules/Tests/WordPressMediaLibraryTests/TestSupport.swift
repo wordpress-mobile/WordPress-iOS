@@ -292,9 +292,15 @@ final class TempFixtureDirectory {
 
     func makeUploader(
         transport: any MediaUploadTransport,
-        policy: MediaUploadPolicy
+        policy: MediaUploadPolicy,
+        maxConcurrentUploads: Int = 3
     ) -> MediaUploader {
-        MediaUploader(transport: transport, policy: policy, temporaryRoot: root)
+        MediaUploader(
+            transport: transport,
+            policy: policy,
+            temporaryRoot: root,
+            maxConcurrentUploads: maxConcurrentUploads
+        )
     }
 
     func writePDF(name: String = "doc.pdf") throws -> URL {
