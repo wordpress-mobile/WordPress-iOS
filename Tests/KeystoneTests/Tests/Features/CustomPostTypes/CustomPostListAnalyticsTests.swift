@@ -15,18 +15,19 @@ struct CustomPostListAnalyticsTests {
     }
 
     @Test(arguments: [
-        ("post", "posts"),
-        ("page", "pages"),
-        ("job_listing", "job_listing")
+        ("post", "posts", "posts"),
+        ("page", "pages", "pages"),
+        ("job_listing", "job_listing", "custom")
     ])
-    func postTypeIsSlug(slug: String, restBase: String) {
+    func postTypeKeepsCategoryAndAddsSlug(slug: String, restBase: String, category: String) {
         let properties = CustomPostListViewModel.analyticsProperties(
             details: .fixture(slug: slug, restBase: restBase),
             filter: CustomPostListFilter(tab: .all),
             hierarchyEligible: false,
             hasCachedContent: false
         )
-        #expect(properties["post_type"] as? String == slug)
+        #expect(properties["post_type"] as? String == category)
+        #expect(properties["post_type_slug"] as? String == slug)
     }
 
     @Test(arguments: [

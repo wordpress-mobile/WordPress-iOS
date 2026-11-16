@@ -164,8 +164,15 @@ final class CustomPostListViewModel: ObservableObject {
             default: tab = "other"
             }
         }
+        let postType: String
+        switch details.toPostEndpointType() {
+        case .posts: postType = "posts"
+        case .pages: postType = "pages"
+        default: postType = "custom"
+        }
         return [
-            "post_type": details.slug,
+            "post_type": postType,
+            "post_type_slug": details.slug,
             "tab": tab,
             "page_size": Constants.pageSize,
             "hierarchy_eligible": hierarchyEligible,
