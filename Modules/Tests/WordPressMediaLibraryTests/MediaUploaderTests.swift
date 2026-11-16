@@ -240,7 +240,7 @@ final class MediaUploaderTests {
         await uploader.enqueue(sources: [.file(urlA)])
         try await waitForState(of: uploader) { $0.failed.count == 1 }
         await uploader.enqueue(sources: [.file(urlB)])
-        await fakeTransport.waitUntilBlocked()
+        try await fakeTransport.waitUntilBlocked()
 
         let state = await uploader.snapshot()
         #expect(state.entries.count == 2)
@@ -550,7 +550,7 @@ final class MediaUploaderTests {
         await uploader.updatePolicy(makeAllowEverythingPolicy())
         let source = try fixtures.writePDF(name: "rooted.pdf")
         await uploader.enqueue(sources: [.file(source)])
-        await transport.waitUntilBlocked()
+        try await transport.waitUntilBlocked()
         let directories = try FileManager.default.contentsOfDirectory(
             at: fixtures.root,
             includingPropertiesForKeys: nil

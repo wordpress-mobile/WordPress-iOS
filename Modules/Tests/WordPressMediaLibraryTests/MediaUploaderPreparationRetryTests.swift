@@ -41,7 +41,7 @@ final class MediaUploaderPreparationRetryTests {
         await uploader.enqueue(sources: [remoteSource])
         let failed = try await waitForState(of: uploader) { $0.failed.count == 1 }
         await uploader.enqueue(sources: [.file(try fixtures.writePDF())])
-        await transport.waitUntilBlocked()
+        try await transport.waitUntilBlocked()
         await uploader.retry(failed.failed[0].id)
         let queued = await uploader.snapshot()
         #expect(queued.pending.first?.id == failed.failed[0].id)
@@ -86,7 +86,7 @@ final class MediaUploaderPreparationRetryTests {
     )
     func recognizesWrappedNetworkFailure(code: URLError.Code) {
         let providerError = NSError(
-            domain: NSItemProviderErrorDomain,
+            domain: NSItemProvider.errorDomain,
             code: -1,
             userInfo: [NSUnderlyingErrorKey: URLError(code)]
         )

@@ -17,7 +17,7 @@ final class MediaUploaderLifetimeTests {
         )
         let box = WeakImageBox()
         await Self.enqueueCameraImage(on: uploader, box: box)
-        await transport.waitUntilBlocked()
+        try await transport.waitUntilBlocked()
         #expect(!box.isAlive, "The staged upload must not keep the decoded source image alive")
         await transport.unblock()
         try await waitForState(of: uploader) { $0.isEmpty }

@@ -37,6 +37,13 @@ actor BlockingFakeUploadTransport: MediaUploadTransport {
     private var firstCallError: Error?
     private var waiters: [UUID: CheckedContinuation<Void, Error>] = [:]
     private var isUnblocked = false
+    private let completionDelay: Duration
+    private var activeCount = 0
+    private(set) var peakActiveCount = 0
+
+    init(completionDelay: Duration = .zero) {
+        self.completionDelay = completionDelay
+    }
 
     var blockedCount: Int { waiters.count }
 
@@ -48,6 +55,9 @@ actor BlockingFakeUploadTransport: MediaUploadTransport {
         params: MediaCreateParams,
         fulfilling progress: Progress
     ) async throws -> MediaWithEditContext {
+        activeCount += 1
+        peakActiveCount = max(peakActiveCount, activeCount)
+        defer { activeCount -= 1 }
         callIndex += 1
         if callIndex == 1, let firstCallError {
             throw firstCallError
@@ -64,13 +74,19 @@ actor BlockingFakeUploadTransport: MediaUploadTransport {
         } onCancel: {
             Task { await self.cancelWaiter(id) }
         }
+        if completionDelay > .zero {
+            try await Task.sleep(for: completionDelay)
+        }
         return MediaWithEditContext.fixture()
     }
 
     /// Returns once the requested number of upload calls are suspended.
-    func waitUntilBlocked(count: Int = 1) async {
+    func waitUntilBlocked(count: Int = 1, timeout: Duration = .seconds(5)) async throws {
+        let clock = ContinuousClock()
+        let deadline = clock.now + timeout
         while waiters.count < count {
-            await Task.yield()
+            guard clock.now < deadline else { throw WaitTimedOut() }
+            try await Task.sleep(for: .milliseconds(10))
         }
     }
 

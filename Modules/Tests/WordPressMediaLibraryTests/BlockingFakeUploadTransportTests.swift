@@ -10,7 +10,7 @@ struct BlockingFakeUploadTransportTests {
             .map { _ in
                 Task { try await transport.upload(params: .init(filePath: "fixture"), fulfilling: Progress()) }
             }
-        await transport.waitUntilBlocked(count: 4)
+        try await transport.waitUntilBlocked(count: 4)
         await transport.unblock()
         for task in tasks { _ = try await task.value }
         #expect(await transport.blockedCount == 0)
@@ -24,7 +24,7 @@ struct BlockingFakeUploadTransportTests {
         let other = Task {
             try await transport.upload(params: .init(filePath: "second"), fulfilling: Progress())
         }
-        await transport.waitUntilBlocked(count: 2)
+        try await transport.waitUntilBlocked(count: 2)
         cancelled.cancel()
         await #expect(throws: CancellationError.self) { _ = try await cancelled.value }
         #expect(await transport.blockedCount == 1)
@@ -48,5 +48,12 @@ struct BlockingFakeUploadTransportTests {
         }
         await #expect(throws: CancellationError.self) { _ = try await task.value }
         #expect(await transport.blockedCount == 0)
+    }
+
+    @Test func missingUploadTimesOut() async {
+        let transport = BlockingFakeUploadTransport()
+        await #expect(throws: WaitTimedOut.self) {
+            try await transport.waitUntilBlocked(timeout: .milliseconds(20))
+        }
     }
 }

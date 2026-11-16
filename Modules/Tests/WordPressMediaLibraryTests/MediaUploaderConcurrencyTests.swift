@@ -24,12 +24,12 @@ final class MediaUploaderConcurrencyTests {
         )
         let sources = try (0..<40).map { try fixtures.writePDF(name: "item-\($0).pdf") }
         await uploader.enqueue(sources: sources.map(UploadSource.file))
-        await preparationGate.waitUntilBlocked(count: 3)
+        try await preparationGate.waitUntilBlocked(count: 3)
         let queued = await uploader.snapshot()
         #expect(queued.pending.map(\.displayName) == sources.map(\.lastPathComponent))
         #expect(await activity.started == 3)
         await preparationGate.unblock()
-        await uploadGate.waitUntilBlocked(count: 3)
+        try await uploadGate.waitUntilBlocked(count: 3)
         #expect(await activity.started == 3, "Upload waiters must keep their preparation slots")
         await uploadGate.unblock()
         try await waitForState(of: uploader) { $0.isEmpty }
@@ -41,29 +41,35 @@ final class MediaUploaderConcurrencyTests {
 
     @Test("cancelling a waiting row never materializes it")
     func cancelsWaitingJob() async throws {
+        let preparationGate = BlockingFakeUploadTransport()
+        await preparationGate.unblock()
         let gate = BlockingFakeUploadTransport()
-        let uploader = fixtures.makeUploader(
-            transport: gate,
-            policy: makeAllowEverythingPolicy(),
+        let activity = UploadActivity()
+        let uploader = MediaUploader(
+            transport: ActivityTransport(gate: gate, activity: activity),
+            materializer: GatedMaterializer(
+                root: try fixtures.makeDirectory(),
+                gate: preparationGate,
+                activity: activity
+            ),
             maxConcurrentUploads: 1
         )
         let first = try fixtures.writePDF(name: "first.pdf")
         let waiting = try fixtures.writePDF(name: "waiting.pdf")
         await uploader.enqueue(sources: [.file(first), .file(waiting)])
-        await gate.waitUntilBlocked()
+        try await gate.waitUntilBlocked()
         let state = await uploader.snapshot()
         await uploader.cancel(state.pending[1].id)
-        #expect(await uploader.snapshot().pending.map(\.displayName) == ["first.pdf"])
+        #expect(await uploader.snapshot().pending.map(\.id) == [state.pending[0].id])
         await gate.unblock()
         try await waitForState(of: uploader) { $0.isEmpty }
-        let staged = try FileManager.default.subpathsOfDirectory(atPath: fixtures.root.path)
-        #expect(staged.filter { $0.hasSuffix("waiting.pdf") }.count == 1, "Only the source fixture should exist")
+        #expect(await activity.started == 1, "The cancelled waiting row must never enter preparation")
         await uploader.tearDown()
     }
 
     @Test("retry waits for an occupied slot and keeps its row position")
     func retryUsesAdmissionLimit() async throws {
-        let gate = BlockingFakeUploadTransport()
+        let gate = BlockingFakeUploadTransport(completionDelay: .milliseconds(100))
         await gate.failFirstCall(with: URLError(.timedOut))
         let uploader = fixtures.makeUploader(
             transport: gate,
@@ -75,13 +81,14 @@ final class MediaUploaderConcurrencyTests {
         let failed = try await waitForState(of: uploader) { $0.failed.count == 1 }
         let second = try fixtures.writePDF(name: "active.pdf")
         await uploader.enqueue(sources: [.file(second)])
-        await gate.waitUntilBlocked()
+        try await gate.waitUntilBlocked()
         await uploader.retry(failed.failed[0].id)
         let state = await uploader.snapshot()
         #expect(state.pending.map(\.displayName) == ["failed.pdf", "active.pdf"])
         #expect(await gate.blockedCount == 1)
         await gate.unblock()
         try await waitForState(of: uploader) { $0.isEmpty }
+        #expect(await gate.peakActiveCount == 1)
         await uploader.tearDown()
     }
 
@@ -96,13 +103,63 @@ final class MediaUploaderConcurrencyTests {
         )
         let source = try fixtures.writePDF()
         await uploader.enqueue(sources: Array(repeating: .file(source), count: 10))
-        await gate.waitUntilBlocked()
+        try await gate.waitUntilBlocked()
         await uploader.tearDown()
         try await waitForUploadCondition { await activity.activeCount == 0 }
         #expect(await activity.started == 1)
         #expect(await uploader.snapshot().isEmpty)
         await uploader.enqueue(sources: [.file(source)])
         #expect(await activity.started == 1)
+    }
+
+    @Test("a cancelled active job keeps its slot until noncooperative work unwinds")
+    func cancelledActiveJobKeepsItsSlot() async throws {
+        let transport = SlowCancellationTransport()
+        let uploader = fixtures.makeUploader(
+            transport: transport,
+            policy: makeAllowEverythingPolicy(),
+            maxConcurrentUploads: 1
+        )
+        let first = try fixtures.writePDF(name: "cancelled.pdf")
+        let second = try fixtures.writePDF(name: "second.pdf")
+        await uploader.enqueue(sources: [.file(first), .file(second)])
+        try await waitForUploadCondition { await transport.calls == 1 }
+        let state = await uploader.snapshot()
+        await uploader.cancel(state.pending[0].id)
+        await uploader.enqueue(sources: [.file(try fixtures.writePDF(name: "third.pdf"))])
+        await transport.unblock()
+        try await waitForState(of: uploader) { $0.isEmpty }
+        #expect(await transport.calls == 3)
+        #expect(await transport.peak == 1)
+        await uploader.tearDown()
+    }
+}
+
+private actor SlowCancellationTransport: MediaUploadTransport {
+    private var waiters: [CheckedContinuation<Void, Never>] = []
+    private var isOpen = false
+    private var active = 0
+    private(set) var calls = 0
+    private(set) var peak = 0
+
+    func upload(params: MediaCreateParams, fulfilling progress: Progress) async throws -> MediaWithEditContext {
+        calls += 1
+        active += 1
+        peak = max(peak, active)
+        defer { active -= 1 }
+        if !isOpen { await withCheckedContinuation { waiters.append($0) } }
+        // Model a transport that still owns the file briefly after cancellation.
+        // This independent task deliberately does not inherit cancellation.
+        try await Task.detached { try await Task.sleep(for: .milliseconds(100)) }.value
+        try Task.checkCancellation()
+        return MediaWithEditContext.fixture()
+    }
+
+    func unblock() {
+        isOpen = true
+        let pending = waiters
+        waiters.removeAll()
+        for waiter in pending { waiter.resume() }
     }
 }
 
