@@ -177,6 +177,10 @@ extension AccountService {
                 if let authToken = defaultAccount.authToken {
                     shareExtensionService.storeToken(authToken)
                     notificationSupportService.storeToken(authToken)
+                } else {
+                    // The server rejected the token: the extensions must not keep using it.
+                    shareExtensionService.removeToken()
+                    notificationSupportService.deleteServiceExtensionToken()
                 }
 
                 shareExtensionService.storeUsername(defaultAccount.username)
