@@ -140,6 +140,8 @@ struct LoginWithUrlView: View {
                 .signIn(details: details, from: presenter, context: .default)
             dismiss()
             self.loginCompleted(blog)
+        } catch SelfHostedSiteAuthenticator.SignInError.ageRestricted {
+            return
         } catch {
             errorMessage = error.localizedDescription
         }
