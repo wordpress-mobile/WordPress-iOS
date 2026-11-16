@@ -55,10 +55,21 @@ struct MediaDetailView: View {
             }
             Button(Strings.commonCancel, role: .cancel) {}
         }
-        .sheet(item: $viewModel.sharePayload) { payload in
-            ShareSheetRepresentable(urls: payload.urls) { completed in
-                viewModel.reportShareDismissed(completed: completed)
-            }
+        .overlay(alignment: .topTrailing) {
+            // The Share button is a toolbar item that UIKit renders as a bar
+            // button item, so it has no SwiftUI view to anchor the iPad popover
+            // to. This anchor sits just below it, at the trailing end of the
+            // navigation bar.
+            ShareSheetPresenter(
+                payload: viewModel.sharePayload,
+                permittedArrowDirections: .up,
+                onDismiss: { _, completed in
+                    viewModel.reportShareDismissed(completed: completed)
+                }
+            )
+            .frame(width: 44, height: 1)
+            .padding(.trailing, 8)
+            .accessibilityHidden(true)
         }
         .onChange(of: viewModel.shouldPop) { _, shouldPop in
             if shouldPop { dismiss() }
