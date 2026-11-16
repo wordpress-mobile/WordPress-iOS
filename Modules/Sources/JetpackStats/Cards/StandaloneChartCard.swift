@@ -21,6 +21,7 @@ struct StandaloneChartCard: View {
     @Binding var chartType: ChartType
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
+    @State private var placeholderCache = PlaceholderChartDataCache()
 
     @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 140
 
@@ -140,14 +141,18 @@ struct StandaloneChartCard: View {
             dateRange: dateRange,
             metric: metric,
             calendar: context.calendar,
-            granularity: max(dateRange.dateInterval.preferredGranularity, configuration.minimumGranularity)
+            granularity: granularity
         )
         guard !Task.isCancelled else { return }
         self.chartData = chartData
     }
 
+    private var granularity: DateRangeGranularity {
+        max(dateRange.dateInterval.preferredGranularity, configuration.minimumGranularity)
+    }
+
     private var mockData: ChartData {
-        ChartData.mock(metric: .views, granularity: .day, range: dateRange)
+        placeholderCache.data(metric: metric, granularity: granularity, range: dateRange)
     }
 
     // MARK: - Controls

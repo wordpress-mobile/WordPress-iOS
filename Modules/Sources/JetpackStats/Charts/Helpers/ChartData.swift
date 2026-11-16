@@ -39,7 +39,16 @@ final class ChartData: Sendable {
         let previousMin: DataPoint?
     }
 
-    init(metric: SiteMetric, granularity: DateRangeGranularity, dateInterval: DateInterval, currentTotal: Int, currentData: [DataPoint], previousTotal: Int, previousData: [DataPoint], mappedPreviousData: [DataPoint]) {
+    init(
+        metric: SiteMetric,
+        granularity: DateRangeGranularity,
+        dateInterval: DateInterval,
+        currentTotal: Int,
+        currentData: [DataPoint],
+        previousTotal: Int,
+        previousData: [DataPoint],
+        mappedPreviousData: [DataPoint]
+    ) {
         self.metric = metric
         self.granularity = granularity
         self.dateInterval = dateInterval
@@ -92,13 +101,22 @@ final class ChartData: Sendable {
 // MARK: - Placeholder Data
 
 extension ChartData {
-    static func mock(metric: SiteMetric, granularity: DateRangeGranularity, range: StatsDateRange) -> ChartData {
-        let dataPoints = generateMockDataPoints(
+    /// Mock data with the same shape as a loaded chart: the current period has no points
+    /// after `now` (``StatsService`` filters out future dates), and the previous period
+    /// covers the whole range.
+    static func mock(
+        metric: SiteMetric,
+        granularity: DateRangeGranularity,
+        range: StatsDateRange,
+        now: Date = .now
+    ) -> ChartData {
+        let allDataPoints = generateMockDataPoints(
             granularity: granularity,
             range: range,
             metric: metric
         )
-        let previousData = dataPoints.map { dataPoint in
+        let dataPoints = allDataPoints.filter { $0.date <= now }
+        let previousData = allDataPoints.map { dataPoint in
             let variation = Double.random(in: 0.75...0.95)
             return DataPoint(
                 date: dataPoint.date,
@@ -133,7 +151,9 @@ extension ChartData {
             let value = Int.random(in: valueRange)
             dataPoints.append(DataPoint(date: currentDate, value: value))
 
-            guard let nextDate = calendar.date(byAdding: granularity.component, value: 1, to: currentDate) else { break }
+            guard let nextDate = calendar.date(byAdding: granularity.component, value: 1, to: currentDate) else {
+                break
+            }
             currentDate = nextDate
         }
 
@@ -156,7 +176,8 @@ extension ChartData {
     /// Clamps the given date to be within the range of current data points
     func clampDateToDataRange(_ date: Date) -> Date {
         guard let firstDate = currentData.first?.date,
-              let lastDate = currentData.last?.date else {
+            let lastDate = currentData.last?.date
+        else {
             return date
         }
 
@@ -166,5 +187,25 @@ extension ChartData {
             return lastDate
         }
         return date
+    }
+}
+
+/// Keeps one copy of placeholder chart data, so re-renders while loading don't redraw
+/// the placeholder with new random values.
+@MainActor
+final class PlaceholderChartDataCache {
+    private var cached: ChartData?
+
+    func data(metric: SiteMetric, granularity: DateRangeGranularity, range: StatsDateRange) -> ChartData {
+        if let cached,
+            cached.metric == metric,
+            cached.granularity == granularity,
+            cached.dateInterval == range.dateInterval
+        {
+            return cached
+        }
+        let data = ChartData.mock(metric: metric, granularity: granularity, range: range)
+        cached = data
+        return data
     }
 }

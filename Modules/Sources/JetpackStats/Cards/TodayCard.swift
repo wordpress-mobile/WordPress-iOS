@@ -82,7 +82,7 @@ struct TodayCard<MenuContent: View>: View {
         if let data = viewModel.data {
             makeMetricsView(with: data.metrics)
         } else if viewModel.isLoading {
-            makeMetricsView(with: Self.placeholderData.metrics)
+            makeMetricsView(with: viewModel.placeholderData.metrics)
                 .redacted(reason: .placeholder)
                 .opacity(0.66)
                 .pulsating()
@@ -112,7 +112,7 @@ struct TodayCard<MenuContent: View>: View {
         if let data = viewModel.data {
             makeSparklineView(data)
         } else {
-            let placeholder = makeSparklineView(Self.placeholderData)
+            let placeholder = makeSparklineView(viewModel.placeholderData)
                 .redacted(reason: .placeholder)
             if viewModel.isLoading {
                 placeholder.pulsating().opacity(0.33)
@@ -133,56 +133,6 @@ struct TodayCard<MenuContent: View>: View {
         .padding(.vertical, 2)
         .offset(y: -3)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
-    }
-
-    // MARK: - Placeholder Data
-
-    /// Generated once so re-renders keep the same random noise instead of redrawing the sparkline.
-    private static let placeholderData: TodayCardData = makePlaceholderData()
-
-    private static func makePlaceholderData() -> TodayCardData {
-        // Generate hourly data points with a realistic curve peaking mid-day
-        let hourlyViews = (0..<12).map { hour in
-            let normalizedHour = Double(hour)
-            // Create a bell curve centered around hour 14 (2 PM)
-            let peakHour = 14.0
-            let spread = 4.5  // Reduced spread for sharper peak
-            let amplitude = 300.0  // Increased amplitude for higher peak
-            let baseline = 20.0  // Lower baseline to increase contrast
-
-            let bellCurve = amplitude * exp(-pow(normalizedHour - peakHour, 2) / (2 * pow(spread, 2))) + baseline
-            let noise = Double.random(in: -30...30)
-            let value = Int(bellCurve + noise)
-
-            return (hour: hour, value: max(15, value))
-        }
-
-        let previousHourlyViews = (0..<24).map { hour in
-            let normalizedHour = Double(hour)
-            // Similar curve but slightly different for comparison
-            let peakHour = 12.0
-            let spread = 3.0  // Reduced spread for sharper peak
-            let amplitude = 280.0  // Increased amplitude for higher peak
-            let baseline = 18.0  // Lower baseline to increase contrast
-
-            let bellCurve = amplitude * exp(-pow(normalizedHour - peakHour, 2) / (2 * pow(spread, 2))) + baseline
-            let noise = Double.random(in: -30...30)
-            let value = Int(bellCurve + noise)
-
-            return (hour: hour, value: max(12, value))
-        }
-
-        var metricsSet = SiteMetricsSet()
-        metricsSet[.views] = 1234
-        metricsSet[.visitors] = 567
-        metricsSet[.likes] = 89
-        metricsSet[.comments] = 12
-
-        return TodayCardData(
-            hourlyViews: hourlyViews,
-            previousHourlyViews: previousHourlyViews,
-            metrics: metricsSet
-        )
     }
 
     // MARK: - More Menu
@@ -228,14 +178,11 @@ private struct SparklineChart: View {
     let metric: SiteMetric
 
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.isPlaceholder) private var isPlaceholder
 
     var body: some View {
         Chart {
             current
-            if !isPlaceholder {
-                previous
-            }
+            previous
         }
         .chartXAxis(.hidden)
         .chartYAxis(.hidden)
@@ -243,18 +190,22 @@ private struct SparklineChart: View {
 
     // Current day's data (colored area + line)
     private var current: some ChartContent {
-        let areaStyle = ChartHelper.areaStyle(
-            color: metric.primaryColor,
-            colorScheme: colorScheme,
-            isPlaceholder: isPlaceholder
-        )
-        return ForEach(dataPoints, id: \.hour) { hour, value in
+        ForEach(dataPoints, id: \.hour) { hour, value in
             AreaMark(
                 x: .value("Hour", hour),
                 y: .value("Current", value),
                 series: .value("Series", "Current")
             )
-            .foregroundStyle(areaStyle)
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [
+                        metric.primaryColor.opacity(colorScheme == .light ? 0.15 : 0.25),
+                        metric.primaryColor.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .interpolationMethod(.linear)
 
             LineMark(

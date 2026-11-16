@@ -12,8 +12,9 @@ extension EnvironmentValues {
 }
 
 extension EnvironmentValues {
-    /// Whether the view is redacted as a loading placeholder. Charts use it to skip
-    /// effects that are invisible at placeholder opacity.
+    /// Whether the view is redacted as a loading placeholder. Charts still draw every
+    /// mark so the placeholder matches the loaded chart; they only skip animations and
+    /// interaction.
     var isPlaceholder: Bool {
         redactionReasons.contains(.placeholder)
     }

@@ -24,14 +24,12 @@ struct LineChartView: View {
     var body: some View {
         Chart {
             currentPeriodMarks
-            if showComparison, !isPlaceholder {
+            if showComparison {
                 previousPeriodMarks
             }
-            if !isPlaceholder {
-                averageLine
-                significantPointAnnotations
-                selectionIndicatorMarks
-            }
+            averageLine
+            significantPointAnnotations
+            selectionIndicatorMarks
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
@@ -55,20 +53,23 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var currentPeriodMarks: some ChartContent {
-        let areaStyle = ChartHelper.areaStyle(
-            color: data.metric.primaryColor,
-            colorScheme: colorScheme,
-            isPlaceholder: isPlaceholder
-        )
-        // Solid line and area for complete data points. The placeholder draws every point
-        // solid; its dashed incomplete segment is invisible at placeholder opacity.
-        ForEach(isPlaceholder ? data.currentData : completeDataPoints) { point in
+        // Solid line and area for complete data points
+        ForEach(completeDataPoints) { point in
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 series: .value("Period", "Current")
             )
-            .foregroundStyle(areaStyle)
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [
+                        data.metric.primaryColor.opacity(colorScheme == .light ? 0.15 : 0.25),
+                        data.metric.primaryColor.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .interpolationMethod(.linear)
 
             LineMark(
@@ -86,22 +87,20 @@ struct LineChartView: View {
         }
 
         // Dashed line segment connecting the last complete point to today's incomplete point
-        if !isPlaceholder {
-            ForEach(incompleteSegmentPoints) { point in
-                LineMark(
-                    x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
-                    y: .value("Value", point.value),
-                    series: .value("Period", "Incomplete")
-                )
-                .foregroundStyle(data.metric.primaryColor.opacity(0.4))
-                .lineStyle(StrokeStyle(
-                    lineWidth: 3,
-                    lineCap: .round,
-                    lineJoin: .round,
-                    dash: [6, 5]
-                ))
-                .interpolationMethod(.linear)
-            }
+        ForEach(incompleteSegmentPoints) { point in
+            LineMark(
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
+                y: .value("Value", point.value),
+                series: .value("Period", "Incomplete")
+            )
+            .foregroundStyle(data.metric.primaryColor.opacity(0.4))
+            .lineStyle(StrokeStyle(
+                lineWidth: 3,
+                lineCap: .round,
+                lineJoin: .round,
+                dash: [6, 5]
+            ))
+            .interpolationMethod(.linear)
         }
     }
 
@@ -235,34 +234,20 @@ struct LineChartView: View {
         ChartHelper.makeXAxis(
             domain: xAxisDomain,
             granularity: data.granularity,
-            calendar: context.calendar,
-            isPlaceholder: isPlaceholder
+            calendar: context.calendar
         )
     }
 
-    private var yAxisGridLineColor: Color {
-        Color(.opaqueSeparator).opacity(0.5)
-    }
-
-    @AxisContentBuilder
     private var yAxis: some AxisContent {
-        if isPlaceholder {
-            ChartHelper.makePlaceholderYAxis(
-                domain: yAxisDomain,
-                formatter: valueFormatter,
-                gridLineColor: yAxisGridLineColor
-            )
-        } else {
-            AxisMarks { value in
-                if let value = value.as(Int.self) {
-                    AxisGridLine()
-                        .foregroundStyle(yAxisGridLineColor)
+        AxisMarks { value in
+            if let value = value.as(Int.self) {
+                AxisGridLine()
+                    .foregroundStyle(Color(.opaqueSeparator).opacity(0.5))
 
-                    AxisValueLabel {
-                        Text(valueFormatter.format(value: value, context: .compact))
-                            .font(.caption2.weight(.medium)).tracking(-0.1)
-                            .foregroundColor(.secondary)
-                    }
+                AxisValueLabel {
+                    Text(valueFormatter.format(value: value, context: .compact))
+                        .font(.caption2.weight(.medium)).tracking(-0.1)
+                        .foregroundColor(.secondary)
                 }
             }
         }

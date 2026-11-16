@@ -34,16 +34,14 @@ struct BarChartView: View {
 
     var body: some View {
         Chart {
-            if showComparison, !isPlaceholder {
+            if showComparison {
                 previousPeriodBars
             }
             currentPeriodBars
-            if !isPlaceholder {
-                averageLine
-                significantPointAnnotations
-                tappedBarAnnotation
-                selectionIndicatorMarks
-            }
+            averageLine
+            significantPointAnnotations
+            tappedBarAnnotation
+            selectionIndicatorMarks
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
@@ -69,23 +67,16 @@ struct BarChartView: View {
     @ChartContentBuilder
     private var currentPeriodBars: some ChartContent {
         ForEach(data.currentData) { point in
+            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic
             )
-            .foregroundStyle(barStyle(for: point))
+            .foregroundStyle(isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient))
             .cornerRadius(5)
             .opacity(getOpacityForPeriodBar(for: point))
         }
-    }
-
-    private func barStyle(for point: DataPoint) -> AnyShapeStyle {
-        if isPlaceholder {
-            return AnyShapeStyle(data.metric.primaryColor)
-        }
-        let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
-        return isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient)
     }
 
     private var barGradient: LinearGradient {
@@ -245,34 +236,20 @@ struct BarChartView: View {
         ChartHelper.makeXAxis(
             domain: xAxisDomain,
             granularity: data.granularity,
-            calendar: context.calendar,
-            isPlaceholder: isPlaceholder
+            calendar: context.calendar
         )
     }
 
-    private var yAxisGridLineColor: Color {
-        Color.secondary.opacity(0.33)
-    }
-
-    @AxisContentBuilder
     private var yAxis: some AxisContent {
-        if isPlaceholder {
-            ChartHelper.makePlaceholderYAxis(
-                domain: yAxisDomain,
-                formatter: valueFormatter,
-                gridLineColor: yAxisGridLineColor
-            )
-        } else {
-            AxisMarks(values: .automatic) { value in
-                if let value = value.as(Int.self) {
-                    AxisGridLine()
-                        .foregroundStyle(yAxisGridLineColor)
-                    AxisValueLabel {
-                        if value > 0 {
-                            Text(valueFormatter.format(value: value, context: .compact))
-                                .font(.caption2.weight(.medium))
-                                .foregroundColor(.secondary)
-                        }
+        AxisMarks(values: .automatic) { value in
+            if let value = value.as(Int.self) {
+                AxisGridLine()
+                    .foregroundStyle(Color.secondary.opacity(0.33))
+                AxisValueLabel {
+                    if value > 0 {
+                        Text(valueFormatter.format(value: value, context: .compact))
+                            .font(.caption2.weight(.medium))
+                            .foregroundColor(.secondary)
                     }
                 }
             }

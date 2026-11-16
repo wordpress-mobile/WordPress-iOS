@@ -77,7 +77,7 @@ struct ChartCard: View {
     }
 
     private func makeHeaderViewModel(for metric: SiteMetric) -> ChartCardHeaderView.ViewModel {
-        let data = viewModel.chartData[selectedMetric] ?? viewModel.placeholderChartData
+        let data = viewModel.chartData[selectedMetric] ?? viewModel.placeholderChartData(for: selectedMetric)
         return ChartCardHeaderView.ViewModel(
             trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
             metricTitle: metric.localizedTitle,
@@ -118,7 +118,7 @@ struct ChartCard: View {
     @ViewBuilder
     private var chartContentView: some View {
         if viewModel.isFirstLoad {
-            mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData)
+            mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData(for: selectedMetric))
                 .redacted(reason: .placeholder)
                 .opacity(0.2)
                 .pulsating()
@@ -155,7 +155,7 @@ struct ChartCard: View {
     }
 
     private func loadingErrorView(with message: String) -> some View {
-        mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData)
+        mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData(for: selectedMetric))
             .redacted(reason: .placeholder)
             .grayscale(1)
             .opacity(0.1)

@@ -72,22 +72,12 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
-    private var cachedPlaceholderChartData: ChartData?
+    private let placeholderCache = PlaceholderChartDataCache()
 
-    /// Mock chart data for the redacted placeholder. Generated once per date range and
-    /// granularity so re-renders keep the same random values instead of redrawing the chart.
-    var placeholderChartData: ChartData {
-        let range = effectiveDateRange
-        let granularity = effectiveGranularity
-        if let cached = cachedPlaceholderChartData,
-            cached.dateInterval == range.dateInterval,
-            cached.granularity == granularity
-        {
-            return cached
-        }
-        let data = ChartData.mock(metric: .views, granularity: granularity, range: range)
-        cachedPlaceholderChartData = data
-        return data
+    /// Mock chart data for the redacted placeholder, with the same metric, date range
+    /// and granularity as the chart it stands in for.
+    func placeholderChartData(for metric: SiteMetric) -> ChartData {
+        placeholderCache.data(metric: metric, granularity: effectiveGranularity, range: effectiveDateRange)
     }
 
     init(
