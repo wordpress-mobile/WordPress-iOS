@@ -17,6 +17,7 @@ public actor MediaUploader {
 
     private let transport: any MediaUploadTransport
     private var materializer: any MediaSourceMaterializing
+    private let temporaryRoot: URL
 
     /// Multicasts state to every observer and replays the latest snapshot
     /// to new subscribers, so a re-pushed Media Library screen sees the
@@ -53,10 +54,12 @@ public actor MediaUploader {
 
     init(
         transport: any MediaUploadTransport,
-        policy: MediaUploadPolicy
+        policy: MediaUploadPolicy,
+        temporaryRoot: URL = UploadSourceMaterializer.defaultStagingDirectory
     ) {
         self.transport = transport
-        self.materializer = UploadSourceMaterializer(policy: policy)
+        self.temporaryRoot = temporaryRoot
+        self.materializer = UploadSourceMaterializer(policy: policy, temporaryRoot: temporaryRoot)
         self._filePickerContentTypes = OSAllocatedUnfairLock(
             initialState: policy.filePickerContentTypes
         )
@@ -70,6 +73,7 @@ public actor MediaUploader {
     ) {
         self.transport = transport
         self.materializer = materializer
+        self.temporaryRoot = UploadSourceMaterializer.defaultStagingDirectory
         self._filePickerContentTypes = OSAllocatedUnfairLock(
             initialState: filePickerContentTypes
         )
@@ -111,14 +115,14 @@ public actor MediaUploader {
     /// the policy that was active when they were enqueued. Retry re-uploads
     /// the already-materialized bytes and never re-consults the policy.
     ///
-    /// Replaces the materializer with a default-rooted production one, so do
+    /// Replaces the materializer while preserving the staging root, so do
     /// not call this on a seam-constructed uploader whose test materializer
     /// or staging root must stay injected. Basename dedup in the new
     /// materializer restarts from scratch, which is harmless: a single
     /// enqueue batch always shares one materializer, and the server enforces
     /// final filename uniqueness.
     public func updatePolicy(_ policy: MediaUploadPolicy) {
-        materializer = UploadSourceMaterializer(policy: policy)
+        materializer = UploadSourceMaterializer(policy: policy, temporaryRoot: temporaryRoot)
         _filePickerContentTypes.withLock { $0 = policy.filePickerContentTypes }
     }
 

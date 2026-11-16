@@ -13,7 +13,7 @@ final class MediaUploaderTests {
     @Test("enqueue moves source through to pending state and fires upload")
     func enqueueProducesPending() async throws {
         let fakeTransport = FakeUploadTransport()
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "doc.pdf")
 
@@ -31,7 +31,7 @@ final class MediaUploaderTests {
     @Test("success path removes pending entry")
     func successRemovesPending() async throws {
         let fakeTransport = FakeUploadTransport()
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "success.pdf")
 
@@ -44,7 +44,7 @@ final class MediaUploaderTests {
     func failureSurfacesInFailed() async throws {
         let fakeTransport = FakeUploadTransport()
         await fakeTransport.setResponses([.failure(URLError(.timedOut))])
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "fail.pdf")
 
@@ -57,7 +57,7 @@ final class MediaUploaderTests {
     @Test("cancel removes pending silently without moving to failed")
     func cancelRemovesSilently() async throws {
         let blocking = BlockingFakeUploadTransport()
-        let uploader = MediaUploader(transport: blocking, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: blocking, policy: makeAllowEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "cancel.pdf")
 
@@ -83,7 +83,7 @@ final class MediaUploaderTests {
         let fakeTransport = FakeUploadTransport()
         // First call fails, second succeeds.
         await fakeTransport.setResponses([.failure(URLError(.timedOut))])
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "retry.pdf")
 
@@ -148,7 +148,7 @@ final class MediaUploaderTests {
     @Test("retry on materialization-failure entry is no-op")
     func retryOnNonRetryableIsNoOp() async throws {
         let fakeTransport = FakeUploadTransport()
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeRejectEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeRejectEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "rejected.pdf")
 
@@ -167,7 +167,7 @@ final class MediaUploaderTests {
     func removeDropsFailedEntry() async throws {
         let fakeTransport = FakeUploadTransport()
         await fakeTransport.setResponses([.failure(URLError(.timedOut))])
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let sourceURL = try fixtures.writePDF(name: "remove.pdf")
 
@@ -184,7 +184,7 @@ final class MediaUploaderTests {
     @Test("cancelAllPending only acts on pending items")
     func cancelAllPendingOnlyActsOnPending() async throws {
         let blocking = BlockingFakeUploadTransport()
-        let uploader = MediaUploader(transport: blocking, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: blocking, policy: makeAllowEverythingPolicy())
 
         let url1 = try fixtures.writePDF(name: "a.pdf")
         let url2 = try fixtures.writePDF(name: "b.pdf")
@@ -207,7 +207,7 @@ final class MediaUploaderTests {
     func tearDownDrainsBothLists() async throws {
         let fakeTransport = FakeUploadTransport()
         await fakeTransport.setResponses([.failure(URLError(.timedOut))])
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let failURL = try fixtures.writePDF(name: "fail-teardown.pdf")
 
@@ -232,7 +232,7 @@ final class MediaUploaderTests {
         // First upload fails; second blocks so it stays pending.
         let fakeTransport = BlockingFakeUploadTransport()
         await fakeTransport.failFirstCall(with: URLError(.timedOut))
-        let uploader = MediaUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: fakeTransport, policy: makeAllowEverythingPolicy())
 
         let urlA = try fixtures.writePDF(name: "first.pdf")
         let urlB = try fixtures.writePDF(name: "second.pdf")
@@ -443,7 +443,7 @@ final class MediaUploaderTests {
     func materializationFailureKeepsSlot() async throws {
         // Reject-all policy makes the first source's materialization fail.
         let transport = BlockingFakeUploadTransport()
-        let uploader = MediaUploader(transport: transport, policy: makeRejectEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: transport, policy: makeRejectEverythingPolicy())
 
         let urlA = try fixtures.writePDF(name: "first.pdf")
         let urlB = try fixtures.writePDF(name: "second.pdf")
@@ -479,7 +479,7 @@ final class MediaUploaderTests {
         // silently discard the upload.
         let transport = FakeUploadTransport()
         await transport.setResponses([.failure(URLError(.cancelled))])
-        let uploader = MediaUploader(transport: transport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: transport, policy: makeAllowEverythingPolicy())
 
         let pdfURL = try fixtures.writePDF()
 
@@ -493,7 +493,7 @@ final class MediaUploaderTests {
     @Test("enqueue after tearDown is a no-op")
     func enqueueAfterTearDownIsNoOp() async throws {
         let transport = FakeUploadTransport()
-        let uploader = MediaUploader(transport: transport, policy: makeAllowEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: transport, policy: makeAllowEverythingPolicy())
         await uploader.tearDown()
 
         let pdfURL = try fixtures.writePDF()
@@ -511,7 +511,7 @@ final class MediaUploaderTests {
     @Test("updatePolicy applies to enqueues made after the update")
     func updatePolicyAppliesToNewEnqueues() async throws {
         let transport = FakeUploadTransport()
-        let uploader = MediaUploader(transport: transport, policy: makeRejectEverythingPolicy())
+        let uploader = fixtures.makeUploader(transport: transport, policy: makeRejectEverythingPolicy())
 
         let pdfURL = try fixtures.writePDF()
 
@@ -530,7 +530,7 @@ final class MediaUploaderTests {
 
     @Test("updatePolicy refreshes filePickerContentTypes")
     func updatePolicyRefreshesPickerTypes() async {
-        let uploader = MediaUploader(
+        let uploader = fixtures.makeUploader(
             transport: FakeUploadTransport(),
             policy: makeAllowEverythingPolicy()
         )
@@ -538,5 +538,27 @@ final class MediaUploaderTests {
 
         await uploader.updatePolicy(makePolicy(filePickerContentTypes: [.pdf]))
         #expect(uploader.filePickerContentTypes == [.pdf])
+    }
+
+    @Test("policy refresh keeps staged files in the fixture root")
+    func policyRefreshPreservesStagingRoot() async throws {
+        let transport = BlockingFakeUploadTransport()
+        let uploader = fixtures.makeUploader(transport: transport, policy: makeRejectEverythingPolicy())
+        await uploader.updatePolicy(makeAllowEverythingPolicy())
+        let source = try fixtures.writePDF(name: "rooted.pdf")
+        await uploader.enqueue(sources: [.file(source)])
+        await transport.waitUntilBlocked()
+        let directories = try FileManager.default.contentsOfDirectory(
+            at: fixtures.root,
+            includingPropertiesForKeys: nil
+        )
+        let staged =
+            directories.flatMap { directory in
+                (try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)) ?? []
+            }
+            .filter { $0.lastPathComponent == "rooted.pdf" && $0 != source }
+        #expect(staged.count == 1)
+        await uploader.cancelAllPending()
+        try await waitUntil { staged.allSatisfy { !FileManager.default.fileExists(atPath: $0.path) } }
     }
 }

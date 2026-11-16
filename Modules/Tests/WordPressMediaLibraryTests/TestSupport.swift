@@ -290,6 +290,13 @@ final class TempFixtureDirectory {
         return url
     }
 
+    func makeUploader(
+        transport: any MediaUploadTransport,
+        policy: MediaUploadPolicy
+    ) -> MediaUploader {
+        MediaUploader(transport: transport, policy: policy, temporaryRoot: root)
+    }
+
     func writePDF(name: String = "doc.pdf") throws -> URL {
         try writeFile(name: name, content: Data("%PDF-1.4\n%EOF\n".utf8))
     }
