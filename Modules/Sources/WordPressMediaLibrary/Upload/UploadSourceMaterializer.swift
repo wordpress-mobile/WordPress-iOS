@@ -244,13 +244,13 @@ final class UploadSourceMaterializer: Sendable {
         }
 
         let stem = filenames.stem(preferred: suggestedName, fallbackPrefix: "Photo", date: Date())
-        let basename = filenames.basename(stem: stem, ext: ext)
-        let destURL = parentDir.appendingPathComponent(basename)
-
-        _ = try await loadFileRepresentation(
+        let destURL = try await loadFileRepresentation(
             from: itemProvider,
             typeIdentifier: type.identifier
-        ) { providerURL in
+        ) { [filenames] providerURL in
+            // A failed provider load must not reserve the retry's filename.
+            let basename = filenames.basename(stem: stem, ext: ext)
+            let destURL = parentDir.appendingPathComponent(basename)
             try FileManager.default.copyItem(at: providerURL, to: destURL)
             return destURL
         }
@@ -502,11 +502,6 @@ final class UploadSourceMaterializer: Sendable {
         remote: UploadSource.RemoteURL,
         stageProgress: Progress
     ) async throws -> MaterializedUpload {
-        // TODO: failed `.remoteURL` materialization is currently
-        // Dismiss-only (FailedUpload.isRetryable: materialized != nil).
-        // Retaining the original UploadSource on failed entries would
-        // let Retry re-run materialization for this case (and every
-        // other materialization-failing source).
         let localFile = try await remoteDownloader.download(
             from: remote.url,
             into: parentDir,
