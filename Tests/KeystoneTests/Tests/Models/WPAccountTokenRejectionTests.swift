@@ -10,7 +10,7 @@ import WordPressKit
 /// Rejections of a WordPress.com token, including ones that arrive through the REST API of another context.
 ///
 /// The accounts use the simulator keychain, as in the app: an instance that another context fetches reads the same
-/// keychain. Serialized: the tests stub every WordPress.com request and set the default account.
+/// keychain. Serialized: the tests set the default account.
 @Suite(.serialized)
 @MainActor
 struct WPAccountTokenRejectionTests {
@@ -19,12 +19,13 @@ struct WPAccountTokenRejectionTests {
     // MARK: - Contexts
 
     @Test func rejectionThroughAnotherContextClearsTheTokenCachedInThisContext() async throws {
-        let account = try makeAccount(token: "rejected-token")
+        let token = "rejected-\(UUID().uuidString)"
+        let account = try makeAccount(token: token)
         defer { account.authToken = nil }
         // Caches the token in the main-context instance.
-        #expect(account.authToken == "rejected-token")
-        defer { HTTPStubs.removeAllStubs() }
-        stubRejectingEveryRequest()
+        #expect(account.authToken == token)
+        let rejection = stubRejecting(token)
+        defer { HTTPStubs.removeStub(rejection) }
 
         let api = try #require(restApi(for: account, in: contextManager.newDerivedContext()))
         _ = await api.perform(.get, URLString: "rest/v1.1/me")
@@ -35,17 +36,11 @@ struct WPAccountTokenRejectionTests {
     }
 
     @Test func rejectionDoesNotBlockTheMainThreadWhileItsContextIsBusy() async throws {
-        let account = try makeAccount(token: "rejected-token")
+        let token = "rejected-\(UUID().uuidString)"
+        let account = try makeAccount(token: token)
         defer { account.authToken = nil }
-        defer { HTTPStubs.removeAllStubs() }
-        stub(condition: isHost("public-api.wordpress.com")) { _ in
-            HTTPStubsResponse(
-                jsonObject: ["error": "invalid_token", "message": "The OAuth2 token is invalid."],
-                statusCode: 400,
-                headers: nil
-            )
-            .requestTime(0.3, responseTime: 0)
-        }
+        let rejection = stubRejecting(token, after: 0.3)
+        defer { HTTPStubs.removeStub(rejection) }
         let context = contextManager.newDerivedContext()
         let api = try #require(restApi(for: account, in: context))
         Task.detached {
@@ -71,7 +66,11 @@ struct WPAccountTokenRejectionTests {
 
     // MARK: - Announcing the rejection
 
-    @Test func rejectionOfTheDefaultAccountTokenIsAnnounced() async throws {
+    // A rejection handled on the main thread posts its notifications before `handleInvalidToken` returns. These
+    // tests don't suspend: other `@MainActor` suites could run during a suspension and post account notifications
+    // to the default center, which these tests count.
+
+    @Test func rejectionOfTheDefaultAccountTokenIsAnnounced() throws {
         let account = try makeAccount(token: "rejected-token")
         defer { account.authToken = nil }
         UserSettings.defaultDotComUUID = account.uuid
@@ -83,13 +82,12 @@ struct WPAccountTokenRejectionTests {
             rejectedToken: "rejected-token",
             context: contextManager.mainContext
         )
-        await settle()
 
         #expect(announcements.postCount == 1)
         #expect(account.authToken == nil)
     }
 
-    @Test func rejectionOfAnotherAccountTokenIsNotAnnounced() async throws {
+    @Test func rejectionOfAnotherAccountTokenIsNotAnnounced() throws {
         let account = try makeAccount(token: "rejected-token")
         defer { account.authToken = nil }
         UserSettings.defaultDotComUUID = UUID().uuidString
@@ -101,13 +99,12 @@ struct WPAccountTokenRejectionTests {
             rejectedToken: "rejected-token",
             context: contextManager.mainContext
         )
-        await settle()
 
         #expect(announcements.postCount == 0)
         #expect(account.authToken == nil)
     }
 
-    @Test func rejectionOfATokenThatIsNoLongerCurrentIsNotAnnounced() async throws {
+    @Test func rejectionOfATokenThatIsNoLongerCurrentIsNotAnnounced() throws {
         let account = try makeAccount(token: "new-token")
         defer { account.authToken = nil }
         UserSettings.defaultDotComUUID = account.uuid
@@ -119,7 +116,6 @@ struct WPAccountTokenRejectionTests {
             rejectedToken: "old-token",
             context: contextManager.mainContext
         )
-        await settle()
 
         #expect(announcements.postCount == 0)
         #expect(account.authToken == "new-token")
@@ -130,7 +126,7 @@ struct WPAccountTokenRejectionTests {
     /// A rejection keeps the account, so it must not look like a logout: the account-changed notification without
     /// an account makes the app delegate show the full-screen sign-in and clear the Reader's data, and makes
     /// `WPTabBarController` rebuild the Reader tab.
-    @Test func rejectionKeepsTheReaderTab() async throws {
+    @Test func rejectionKeepsTheReaderTab() throws {
         let account = try makeAccount(token: "rejected-token")
         defer { account.authToken = nil }
         UserSettings.defaultDotComUUID = account.uuid
@@ -146,7 +142,6 @@ struct WPAccountTokenRejectionTests {
             rejectedToken: "rejected-token",
             context: contextManager.mainContext
         )
-        await settle()
 
         #expect(accountChanges.postCount == 0)
         #expect(tabBar.readerNavigationController === readerNavigationController)
@@ -175,19 +170,17 @@ struct WPAccountTokenRejectionTests {
         }
     }
 
-    private func stubRejectingEveryRequest() {
-        stub(condition: isHost("public-api.wordpress.com")) { _ in
+    /// Rejects only requests that carry `token`, so that suites running at the same time keep their responses.
+    private func stubRejecting(_ token: String, after delay: TimeInterval = 0) -> HTTPStubsDescriptor {
+        let carriesToken = hasHeaderNamed("Authorization", value: "Bearer \(token)")
+        return stub(condition: isHost("public-api.wordpress.com") && carriesToken) { _ in
             HTTPStubsResponse(
                 jsonObject: ["error": "invalid_token", "message": "The OAuth2 token is invalid."],
                 statusCode: 400,
                 headers: nil
             )
+            .requestTime(delay, responseTime: 0)
         }
-    }
-
-    /// Lets main-queue hops, such as the rejection handler and its notifications, run.
-    private func settle() async {
-        try? await Task.sleep(for: .milliseconds(300))
     }
 
     private func waitUntil(timeout: Duration = .seconds(3), _ condition: () -> Bool) async {
