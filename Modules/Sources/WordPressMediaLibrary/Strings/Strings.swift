@@ -248,6 +248,12 @@ enum Strings {
         value: "No Uploads",
         comment: "Empty-state label shown on the Uploads screen when the queue has no items."
     )
+    static let uploadsScreenAllUploaded = NSLocalizedString(
+        "mediaLibrary.uploads.allUploaded",
+        value: "All uploaded",
+        comment:
+            "Label shown on the Uploads screen when the last upload in the queue finished while the screen was open."
+    )
     static let uploadsScreenClose = NSLocalizedString(
         "mediaLibrary.uploads.close",
         value: "Close",
