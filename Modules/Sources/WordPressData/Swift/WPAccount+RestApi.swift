@@ -11,6 +11,7 @@ extension WPAccount {
     /// This used to be defined in the Objective-C layer, but we moved it here in a Swift extension in an attempt to decouple the model code from it.
     /// This was done in the context of https://github.com/wordpress-mobile/WordPress-iOS/pull/24165 .
     @objc public var wordPressComRestApi: WordPressComRestApi? {
+        discardCachedTokenIfWrittenElsewhere()
         if let api = _private_wordPressComRestApi {
             return api
         }
@@ -44,10 +45,9 @@ extension WPAccount {
             // The `WPAccount` instance can be bound to any context object. There is no guarantee that the thread
             // from which this closure is called is the same as the one in the context object.
             //
-            // `WordPressComRestApi` calls this handler on the main queue. Waiting for the context blocks the main
-            // queue, where sign-in stores replacement tokens, so a replacement cannot be written between the
-            // comparison and the clear.
-            context?.performAndWait {
+            // `WordPressComRestApi` calls this handler on the main queue, which must not wait for a busy
+            // background context. `clearAuthToken(ifCurrent:)` keeps a replacement from being erased without it.
+            context?.perform {
                 WPAccount.handleInvalidToken(accountID: accountID, rejectedToken: authToken, context: context)
             }
         }
@@ -87,15 +87,11 @@ extension WPAccount {
         }
 
         // Storing a new token does not cancel requests made with the previous one. A late rejection of the
-        // previous token must not erase its replacement. This instance may still cache the previous token, if the
-        // replacement was stored through another context, so make it read the replacement next time.
-        guard account.authTokenInKeychain == rejectedToken else {
+        // previous token must not erase its replacement.
+        guard account.clearAuthToken(ifCurrent: rejectedToken) else {
             WPLogInfo("Ignoring a rejection of a WordPress.com token that is no longer current")
-            account.discardCachedToken()
             return
         }
-
-        account.authToken = nil
 
         NotificationCenter.default.post(
             name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,

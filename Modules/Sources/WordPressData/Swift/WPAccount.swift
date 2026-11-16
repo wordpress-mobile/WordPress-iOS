@@ -2,6 +2,7 @@ import BuildSettingsKit
 import CoreData
 import WordPressKit
 import WordPressShared
+import os
 
 @objc(WPAccount)
 public class WPAccount: NSManagedObject {
@@ -29,6 +30,16 @@ public class WPAccount: NSManagedObject {
     @objc public var _private_wordPressComRestApi: WordPressComRestApi?
 
     private var cachedToken: String?
+
+    /// The `tokenWrites` count when this instance last read its token, or `nil` before the first read.
+    private var cachedTokenWriteCount: UInt64?
+
+    /// Counts token writes through every instance, in every context.
+    ///
+    /// An instance only caches its token and REST API, so a token written through an instance in another context
+    /// would otherwise stay cached here. The lock also makes `clearAuthToken(ifCurrent:)` atomic with respect to
+    /// token writes.
+    private static let tokenWrites = OSAllocatedUnfairLock<UInt64>(initialState: 0)
 
     lazy var keychain: any KeychainAccessible = AppKeychain()
     lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
@@ -116,6 +127,7 @@ public class WPAccount: NSManagedObject {
     }
 
     private func _getAuthToken() -> String? {
+        discardCachedTokenIfWrittenElsewhere()
         if let cachedToken {
             return cachedToken
         }
@@ -125,16 +137,8 @@ public class WPAccount: NSManagedObject {
     }
 
     /// The token stored in the keychain, bypassing `authToken`'s cache.
-    ///
-    /// The cache belongs to this managed object instance. A token written through an instance in another
-    /// context does not invalidate it, so only the keychain tells which token is current.
     var authTokenInKeychain: String? {
-        try? Self.token(
-            forUsername: username,
-            serviceName: keychainServiceName,
-            migration: keychainMigration,
-            keychain: keychain
-        )
+        readToken(forUsername: username)
     }
 
     /// Drops this instance's cached token and REST API, so the next access reads the token from the keychain.
@@ -143,10 +147,56 @@ public class WPAccount: NSManagedObject {
         _private_wordPressComRestApi = nil
     }
 
+    /// Drops the cached token and REST API if a token was written through any instance since they were cached.
+    func discardCachedTokenIfWrittenElsewhere() {
+        let writeCount = Self.tokenWrites.withLock { $0 }
+        if cachedTokenWriteCount != writeCount {
+            discardCachedToken()
+            cachedTokenWriteCount = writeCount
+        }
+    }
+
+    /// Clears the token if the keychain still holds `token`. Returns whether it cleared the token.
+    ///
+    /// The comparison and the clear are atomic with respect to token writes through any instance, so a
+    /// replacement stored in between can't be erased.
+    func clearAuthToken(ifCurrent token: String) -> Bool {
+        defer {
+            discardCachedToken()
+        }
+        // Read outside the lock: firing a fault must not wait for another thread's token write.
+        let username = self.username
+        return Self.tokenWrites.withLock { writeCount in
+            guard readToken(forUsername: username) == token else {
+                return false
+            }
+            writeToken(nil, forUsername: username)
+            writeCount += 1
+            return true
+        }
+    }
+
     private func _setAuthToken(_ authToken: String?) {
         // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
         discardCachedToken()
 
+        let username = self.username
+        Self.tokenWrites.withLock { writeCount in
+            writeToken(authToken, forUsername: username)
+            writeCount += 1
+        }
+    }
+
+    private func readToken(forUsername username: String) -> String? {
+        try? Self.token(
+            forUsername: username,
+            serviceName: keychainServiceName,
+            migration: keychainMigration,
+            keychain: keychain
+        )
+    }
+
+    private func writeToken(_ authToken: String?, forUsername username: String) {
         do {
             try keychain.setPassword(for: username, to: authToken, serviceName: keychainServiceName)
         } catch {
