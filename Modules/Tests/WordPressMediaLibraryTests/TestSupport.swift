@@ -35,7 +35,10 @@ actor FakeUploadTransport: MediaUploadTransport {
 actor BlockingFakeUploadTransport: MediaUploadTransport {
     private var callIndex = 0
     private var firstCallError: Error?
-    private var continuation: CheckedContinuation<Void, Never>?
+    private var waiters: [UUID: CheckedContinuation<Void, Error>] = [:]
+    private var isUnblocked = false
+
+    var blockedCount: Int { waiters.count }
 
     func failFirstCall(with error: Error) {
         firstCallError = error
@@ -49,23 +52,40 @@ actor BlockingFakeUploadTransport: MediaUploadTransport {
         if callIndex == 1, let firstCallError {
             throw firstCallError
         }
-        await withCheckedContinuation { cont in
-            self.continuation = cont
+        let id = UUID()
+        try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+            if !isUnblocked {
+                try await withCheckedThrowingContinuation { continuation in
+                    waiters[id] = continuation
+                }
+            }
+            try Task.checkCancellation()
+        } onCancel: {
+            Task { await self.cancelWaiter(id) }
         }
-        try Task.checkCancellation()
         return MediaWithEditContext.fixture()
     }
 
-    /// Returns once an upload call is suspended on the continuation.
-    func waitUntilBlocked() async {
-        while continuation == nil {
+    /// Returns once the requested number of upload calls are suspended.
+    func waitUntilBlocked(count: Int = 1) async {
+        while waiters.count < count {
             await Task.yield()
         }
     }
 
     func unblock() {
-        continuation?.resume()
-        continuation = nil
+        // Keep the gate open for uploads that arrive after this call.
+        isUnblocked = true
+        let pending = waiters.values
+        waiters.removeAll()
+        for continuation in pending {
+            continuation.resume()
+        }
+    }
+
+    private func cancelWaiter(_ id: UUID) {
+        waiters.removeValue(forKey: id)?.resume(throwing: CancellationError())
     }
 }
 
