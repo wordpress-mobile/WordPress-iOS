@@ -1,1 +1,7 @@
-Buenas noticias para la accesibilidad: cuando actualices los ajustes de la entrada, VoiceOver te dirá qué categorías están seleccionadas. Pondremos eso en la categoría de «victorias».
+Los tipos de entradas personalizados ahora aparecen directamente en el menú del sitio después de «Comentarios», ordenados por nombre para mayor comodidad; ya no hace falta fijarlos manualmente.
+
+También hemos solucionado varios errores, para que te resulte un poco más fácil usar la app.
+
+- Las subidas ya no fallarán si el nombre del archivo contiene espacios. (good-news-everyone.jpg)
+- Hemos solucionado un fallo que se producía al compartir ciertos tipos de archivos de texto.
+- Usuarios de iPad, ¡alegraos! La app ya no se quedará atascada en el diseño compacto de la barra de pestañas cuando cambies el tamaño de la pantalla o cambies de app.

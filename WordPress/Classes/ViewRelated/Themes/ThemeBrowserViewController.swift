@@ -395,12 +395,24 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
         }
     }
 
+    open override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        // The theme insets and card sizes depend on the safe area.
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         unregisterForKeyboardNotifications()
     }
 
+    // TODO: Replace these observers with `view.keyboardLayoutGuide`: constrain the
+    // collection view's bottom to `keyboardLayoutGuide.topAnchor` instead of
+    // converting the keyboard frame into a content inset. Not done here because
+    // the collection view is laid out from a storyboard and the swap needs its
+    // bottom constraint re-anchored there.
     fileprivate func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(
             self,
@@ -459,7 +471,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 }
             },
             failure: { error in
-                DDLogError("Error updating active theme: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error updating active theme: \(String(describing: error?.localizedDescription))")
             }
         )
     }
@@ -509,7 +521,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 self?.totalThemeCount = themeCount
             },
             failure: { error in
-                DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error
                 {
@@ -530,7 +542,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 self?.totalCustomThemeCount = themeCount
             },
             failure: { error in
-                DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error
                 {
@@ -724,7 +736,8 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let parentViewWidth = collectionView.frame.size.width
+        // The layout's sections start at the safe area, so size the cells to fit inside it.
+        let parentViewWidth = collectionView.bounds.inset(by: collectionView.safeAreaInsets).width
 
         return Styles.cellSizeForFrameWidth(parentViewWidth)
     }
@@ -751,12 +764,30 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
             if !blog.supports(BlogFeature.customThemes) {
                 return .zero
             }
-            return Styles.themeMargins
+            return themeInsets(in: collectionView)
         case .themes:
-            return Styles.themeMargins
+            return themeInsets(in: collectionView)
         case .info:
             return Styles.infoMargins
         }
+    }
+
+    /// Keeps the themes inside the safe area, clear of the iPhone Duo's side strip and the sensor
+    /// housing in landscape.
+    ///
+    /// The flow layout lays out right-to-left by mirroring its frames across the collection view's
+    /// full width, so the side insets are swapped in right-to-left layouts. This is also why the
+    /// layout's `sectionInsetReference` can't be `.fromSafeArea`: it would put the right-hand inset
+    /// on the left.
+    private func themeInsets(in collectionView: UICollectionView) -> UIEdgeInsets {
+        var safeArea = collectionView.safeAreaInsets
+        if collectionView.effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            swap(&safeArea.left, &safeArea.right)
+        }
+        var insets = Styles.themeMargins
+        insets.left += safeArea.left
+        insets.right += safeArea.right
+        return insets
     }
 
     // MARK: - Search support
@@ -924,7 +955,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 try customThemesController.performFetch()
             }
         } catch {
-            DDLogError("Error fetching themes: \(error)")
+            Loggers.app.error("Error fetching themes: \(error)")
         }
     }
 
@@ -981,7 +1012,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
                 alertController.presentFromRootViewController()
             },
             failure: { [weak self] error in
-                DDLogError(
+                Loggers.app.error(
                     "Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))"
                 )
 
@@ -1084,7 +1115,7 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
 
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
-        if #available(iOS 18, *), let indexPath = collectionView.indexPathsForSelectedItems?.first {
+        if let indexPath = collectionView.indexPathsForSelectedItems?.first {
             navigation.preferredTransition = .zoom(sourceViewProvider: { [weak self] _ in
                 self?.collectionView.cellForItem(at: indexPath)?.contentView
             })

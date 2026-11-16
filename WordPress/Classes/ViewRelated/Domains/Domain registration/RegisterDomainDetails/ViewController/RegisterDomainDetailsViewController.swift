@@ -95,11 +95,11 @@ class RegisterDomainDetailsViewController: UITableViewController {
             forHeaderFooterViewReuseIdentifier: EpilogueSectionHeaderFooter.identifier
         )
         tableView.register(
-            RegisterDomainDetailsErrorSectionFooter.defaultNib,
+            RegisterDomainDetailsErrorSectionFooter.self,
             forHeaderFooterViewReuseIdentifier: RegisterDomainDetailsErrorSectionFooter.defaultReuseID
         )
         tableView.register(
-            InlineEditableNameValueCell.defaultNib,
+            InlineEditableNameValueCell.self,
             forCellReuseIdentifier: InlineEditableNameValueCell.defaultReuseID
         )
         tableView.register(

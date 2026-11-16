@@ -76,7 +76,7 @@ public final class PushNotificationsManager: NSObject {
             sharedApplication.registerForRemoteNotifications()
         }
         sharedApplication.unregisterForRemoteNotifications()
-        sharedApplication.applicationIconBadgeNumber = 0
+        NotificationActivityService.clearAppIconBadge()
         didRegisterForRemoteNotifications = false
     }
 
@@ -111,9 +111,9 @@ public final class PushNotificationsManager: NSObject {
         ZendeskUtils.setNeedToRegisterDevice(newToken)
 
         if deviceToken != newToken {
-            DDLogInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
+            Loggers.app.info("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
         } else {
-            DDLogInfo("Device Token received in didRegisterForRemoteNotificationsWithDeviceToken: \(newToken)")
+            Loggers.app.info("Device Token received in didRegisterForRemoteNotificationsWithDeviceToken: \(newToken)")
         }
 
         deviceToken = newToken
@@ -124,11 +124,11 @@ public final class PushNotificationsManager: NSObject {
         noteService.registerDeviceForPushNotifications(
             newToken,
             success: { deviceId in
-                DDLogVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
+                Loggers.app.trace("Successfully registered Device ID \(deviceId) for Push Notifications")
                 self.deviceId = deviceId
             },
             failure: { error in
-                DDLogError("Unable to register Device for Push Notifications: \(error)")
+                Loggers.app.error("Unable to register Device for Push Notifications: \(error)")
             }
         )
     }
@@ -138,7 +138,7 @@ public final class PushNotificationsManager: NSObject {
     /// - Parameter error: Details the reason of failure
     ///
     @objc public func registrationDidFail(_ error: NSError) {
-        DDLogError("Failed to register for push notifications: \(error)")
+        Loggers.app.error("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
 
@@ -171,13 +171,13 @@ public final class PushNotificationsManager: NSObject {
         noteService.unregisterDeviceForPushNotifications(
             knownDeviceId,
             success: {
-                DDLogInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
+                Loggers.app.info("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
 
                 self.deviceToken = nil
                 self.deviceId = nil
             },
             failure: { error in
-                DDLogError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
+                Loggers.app.error("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
             }
         )
     }
@@ -196,18 +196,18 @@ public final class PushNotificationsManager: NSObject {
         userInteraction: Bool = false,
         completionHandler: ((UIBackgroundFetchResult) -> Void)?
     ) {
-        DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
-        DDLogVerbose("Current Application state: \(applicationState.rawValue)")
+        Loggers.app.trace("Received push notification:\nPayload: \(userInfo)\n")
+        Loggers.app.trace("Current Application state: \(applicationState.rawValue)")
 
-        // Badge: Update. Only WordPress pushes carry a badge (support pushes omit
-        // it), so it is also the signal that the bell may need a refresh.
+        // Badge: Update. WordPress push payloads carry an absolute count; the
+        // supported UserNotifications writer applies it (support pushes omit it).
         if let badgeCountNumber = userInfo.number(forKeyPath: Notification.badgePath)?.intValue {
-            sharedApplication.applicationIconBadgeNumber = badgeCountNumber
-            NotificationActivityService.pushDidArrive()
+            NotificationActivityService.pushDidUpdateBadge(count: badgeCountNumber)
         }
 
         // Badge: Reset
         guard let type = userInfo.string(forKey: Notification.typeKey), type != Notification.badgeResetValue else {
+            completionHandler?(.noData)
             return
         }
 
@@ -221,9 +221,10 @@ public final class PushNotificationsManager: NSObject {
 
         for handler in handlers {
             if handler(userInfo, userInteraction, completionHandler) {
-                break
+                return
             }
         }
+        completionHandler?(.noData)
     }
 
     /// Tracks a Notification Event
@@ -357,7 +358,7 @@ extension PushNotificationsManager {
         if applicationState != .background || userInteraction {
             authenticationManager.handleAuthenticationNotification(userInfo)
         } else {
-            DDLogInfo(
+            Loggers.app.info(
                 "Skipping handling authentication notification due to app being in background or user not interacting with it."
             )
         }
@@ -445,10 +446,10 @@ extension PushNotificationsManager {
             return true
         }
 
-        DDLogInfo("Running Notifications Background Fetch...")
+        Loggers.app.info("Running Notifications Background Fetch...")
 
         mediator.sync { _, newData in
-            DDLogInfo("Finished Notifications Background Fetch!")
+            Loggers.app.info("Finished Notifications Background Fetch!")
 
             let result = newData ? UIBackgroundFetchResult.newData : .noData
             completionHandler?(result)

@@ -53,21 +53,20 @@ struct UnifiedSupportAttachmentPicker: View {
         let validation = UnifiedSupportAttachmentValidator(maximumUploadSize: maximumUploadSize).validate(files)
 
         Section {
-            Text(UnifiedSupportLocalization.attachmentsDescription)
-                .font(.body)
-                .foregroundStyle(.secondary)
-
             if let loadingErrorMessage {
                 ErrorView(title: UnifiedSupportLocalization.attachmentsFailedTitle, message: loadingErrorMessage)
+                    .listRowSeparator(.hidden)
             }
 
             if !files.isEmpty {
                 gallery(validation)
+                    .listRowSeparator(.hidden)
             }
 
             // Nothing to say while everything fits: the user didn't ask to be kept posted on a budget.
             if !validation.skipped.isEmpty {
                 overflow(validation)
+                    .listRowSeparator(.hidden)
             }
 
             picker
@@ -78,40 +77,45 @@ struct UnifiedSupportAttachmentPicker: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+        } footer: {
+            Text(UnifiedSupportLocalization.attachmentsDescription)
         }
-        .listRowSeparator(.hidden)
     }
 
-    /// The two places a file can come from, offered side by side.
+    /// The two places a file can come from, offered as a row each.
     ///
     /// They're separate pickers because the photo library doesn't list documents, and the file browser is a poor
     /// way to find a screenshot. Each one says what it opens, so neither needs explaining.
+    @ViewBuilder
     private var picker: some View {
         // Read out here: the labels below are built in a nonisolated context, which can't reach the state.
         let isLoadingPhotos = !importing.isEmpty
         let isLoadingFiles = importingFileCount > 0
 
-        return HStack(spacing: 12) {
-            PhotosPicker(selection: $selection, matching: .any(of: [.images, .videos])) {
-                UnifiedSupportAttachmentSourceLabel(
-                    title: UnifiedSupportLocalization.attachFromPhotoLibrary,
-                    systemImage: "photo.on.rectangle",
-                    isLoading: isLoadingPhotos
-                )
-            }
-
-            Button {
-                isShowingFileBrowser = true
-            } label: {
-                UnifiedSupportAttachmentSourceLabel(
-                    title: UnifiedSupportLocalization.attachFromFiles,
-                    systemImage: "folder",
-                    isLoading: isLoadingFiles
-                )
-            }
-            // Left to the label, which is already drawn as a button.
-            .buttonStyle(.plain)
+        PhotosPicker(selection: $selection, matching: .any(of: [.images, .videos])) {
+            UnifiedSupportAttachmentSourceLabel(
+                title: UnifiedSupportLocalization.attachFromPhotoLibrary,
+                systemImage: "photo.on.rectangle",
+                isLoading: isLoadingPhotos
+            )
         }
+        .onChange(of: selection) { _, newSelection in
+            imports.start {
+                await load(newSelection)
+            }
+        }
+
+        Button {
+            isShowingFileBrowser = true
+        } label: {
+            UnifiedSupportAttachmentSourceLabel(
+                title: UnifiedSupportLocalization.attachFromFiles,
+                systemImage: "folder",
+                isLoading: isLoadingFiles
+            )
+        }
+        // Left to the label, which already tints what's tappable about the row.
+        .buttonStyle(.plain)
         // Anything the support team can be sent is worth offering, so the browser isn't narrowed to a list of
         // types: a crash report or an exported database is as useful as a screenshot. `data` is every type
         // that is a file, which leaves out the one thing there's no sending — a folder.
@@ -131,11 +135,6 @@ struct UnifiedSupportAttachmentPicker: View {
                     return
                 }
                 loadingErrorMessage = error.unifiedSupportMessage
-            }
-        }
-        .onChange(of: selection) { _, newSelection in
-            imports.start {
-                await load(newSelection)
             }
         }
     }
@@ -316,7 +315,7 @@ struct UnifiedSupportAttachmentPicker: View {
     }
 }
 
-/// One of the places an attachment can be picked from, drawn as a button.
+/// One of the places an attachment can be picked from, drawn as a row of the attachments section.
 private struct UnifiedSupportAttachmentSourceLabel: View {
 
     let title: String
@@ -325,24 +324,30 @@ private struct UnifiedSupportAttachmentSourceLabel: View {
     /// Whether this source is still bringing a file in, which replaces its icon with a spinner.
     let isLoading: Bool
 
+    /// Lines the two sources' titles up, and keeps the icon column growing with the text.
+    @ScaledMetric(relativeTo: .body)
+    private var iconWidth: CGFloat = 24
+
     var body: some View {
-        VStack(spacing: 6) {
-            if isLoading {
-                ProgressView()
-                    .tint(Color.accentColor)
-            } else {
-                Image(systemName: systemImage)
+        HStack(spacing: 12) {
+            Group {
+                if isLoading {
+                    ProgressView()
+                } else {
+                    Image(systemName: systemImage)
+                }
             }
+            .frame(width: iconWidth)
+            .foregroundStyle(Color.accentColor)
+            .tint(Color.accentColor)
 
             Text(title)
-                .font(.subheadline)
-                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.primary)
+
+            Spacer()
         }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.accentColor.opacity(0.1))
-        .foregroundStyle(Color.accentColor)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        // The whole row opens the picker, not just the words on it.
+        .contentShape(.rect)
     }
 }
 

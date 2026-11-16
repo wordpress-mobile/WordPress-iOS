@@ -45,7 +45,38 @@ final class CommentsDetailRouter {
     /// row when available) and pushes it onto the shared navigation stack.
     func open(id: Int64, seed: CommentListItem?) {
         capabilities.prefetch()
-        let viewModel = CommentDetailViewModel(
+        let detail = CommentDetailView(
+            viewModel: makeDetailViewModel(id: id, seed: seed),
+            titleResolver: titleResolver,
+            renderer: makeLinkOpeningRenderer(),
+            openComment: { [weak self] id, seed in self?.open(id: id, seed: seed) }
+        )
+        let controller = UIHostingController(rootView: detail)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        host?.navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func makeReviewSession(batch: [CommentListItem]) -> CommentReviewViewModel? {
+        guard !batch.isEmpty else { return nil }
+        // The session holds the router strongly; the router never holds a session.
+        return CommentReviewViewModel(
+            batch: batch,
+            coordinator: coordinator,
+            noticePresenter: noticePresenter,
+            makeDetail: { self.makeDetailViewModel(id: $0.id, seed: $0) }
+        )
+    }
+
+    func makeReviewView(session: CommentReviewViewModel) -> CommentReviewView {
+        CommentReviewView(
+            viewModel: session,
+            titleResolver: titleResolver,
+            makeContentRenderer: makeLinkOpeningRenderer
+        )
+    }
+
+    private func makeDetailViewModel(id: Int64, seed: CommentListItem?) -> CommentDetailViewModel {
+        CommentDetailViewModel(
             commentID: id,
             seed: seed,
             service: service,
@@ -56,18 +87,11 @@ final class CommentsDetailRouter {
             tracker: tracker,
             noticePresenter: noticePresenter
         )
+    }
+
+    private func makeLinkOpeningRenderer() -> any CommentContentRendering {
         let renderer = makeContentRenderer()
-        renderer.onLinkTapped = { url in
-            UIApplication.shared.open(url)
-        }
-        let detail = CommentDetailView(
-            viewModel: viewModel,
-            titleResolver: titleResolver,
-            renderer: renderer,
-            openComment: { [weak self] id, seed in self?.open(id: id, seed: seed) }
-        )
-        let controller = UIHostingController(rootView: detail)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        host?.navigationController?.pushViewController(controller, animated: true)
+        renderer.onLinkTapped = { UIApplication.shared.open($0) }
+        return renderer
     }
 }

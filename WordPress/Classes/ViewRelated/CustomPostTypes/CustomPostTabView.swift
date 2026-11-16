@@ -316,8 +316,13 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
 
     var orderby: WpApiParamPostsOrderBy {
         switch self {
-        case .all, .drafts: return .modified
-        case .published, .scheduled, .trash: return .date
+        case .drafts: return .modified
+        // Sort All by post date, like WP Admin's Posts list, so editing a
+        // published post doesn't move it to the top. Drafts without a fixed
+        // date still move, because WordPress resets their date on save.
+        // Pages use post date too: WP Admin sorts them by menu order, then
+        // title, but the REST API accepts only one orderby value.
+        case .all, .published, .scheduled, .trash: return .date
         }
     }
 

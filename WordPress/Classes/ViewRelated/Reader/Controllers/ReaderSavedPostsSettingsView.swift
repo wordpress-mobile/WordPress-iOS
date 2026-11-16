@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 struct ReaderSavedPostsSettingsView: View {
     @StateObject private var viewModel: ReaderSavedPostsSettingsViewModel
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(coreDataStack: CoreDataStack = ContextManager.shared) {
         _viewModel = StateObject(wrappedValue: ReaderSavedPostsSettingsViewModel(coreDataStack: coreDataStack))
     }
 
@@ -91,11 +91,11 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published private(set) var importResultMessage = ""
     @Published private(set) var errorMessage = ""
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let exporter = ReaderSavedPostsExporter()
     private var progressObservation: NSKeyValueObservation?
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
     }
 

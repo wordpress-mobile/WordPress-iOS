@@ -82,7 +82,7 @@ class JetpackInstallPluginHelper: NSObject {
                                                           installDelegate: delegate)
         }
         viewModel.coordinator = coordinator
-        let shouldUseFormSheet = WPDeviceIdentification.isiPad()
+        let shouldUseFormSheet = presentingViewController.view.window?.traitCollection.horizontalSizeClass == .regular
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
         presentingViewController.present(navigationViewController, animated: true) {
             helper.markOverlayAsShown()

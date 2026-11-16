@@ -9,10 +9,12 @@ import WordPressAPIInternal
 
 @MainActor
 @Suite("Site menu custom post types observation", .timeLimit(.minutes(1)))
-struct SiteMenuCustomPostTypesObservationTests {
+final class SiteMenuCustomPostTypesObservationTests {
     private let contextManager = ContextManager.forTesting()
     private let notificationCenter = NotificationCenter()
     private let sources = FakeSources()
+    // The model holds its controller weakly; retain it to verify rebuilt sections.
+    private var controllers: [BlogDetailsViewController] = []
 
     private let book = PostTypeDetailsWithEditContext.fixture(slug: "book", name: "Books")
     private let movie = PostTypeDetailsWithEditContext.fixture(slug: "movie", name: "Movies")
@@ -244,16 +246,22 @@ struct SiteMenuCustomPostTypesObservationTests {
     }
 
     private func makeViewModel(blog: Blog) -> BlogDetailsTableViewModel {
-        BlogDetailsTableViewModel(
+        let controller = BlogDetailsViewController(blog: blog)
+        controllers.append(controller)
+        return BlogDetailsTableViewModel(
             blog: blog,
-            viewController: BlogDetailsViewController(blog: blog),
+            viewController: controller,
             makeCustomPostTypeService: { [sources] in sources.make(for: $0) },
             notificationCenter: notificationCenter
         )
     }
 
     private func slugs(_ viewModel: BlogDetailsTableViewModel) -> [String] {
-        viewModel.customPostTypes.map(\.slug)
+        viewModel.sections.flatMap(\.rows)
+            .compactMap { row in
+                guard case let .customPostType(slug) = row.kind else { return nil }
+                return slug
+            }
     }
 }
 
@@ -325,14 +333,5 @@ private final class FakeSource: CustomPostTypeServiceProtocol {
         let reads = pendingReads
         pendingReads = []
         reads.forEach { $0.resume(returning: []) }
-    }
-}
-
-/// Waits without a deadline. Other tests share the main actor, so any fixed deadline fails on a
-/// busy machine. The suite's time limit catches hangs by cancelling the sleep.
-@MainActor
-private func waitUntil(_ condition: () -> Bool) async throws {
-    while !condition() {
-        try await Task.sleep(for: .milliseconds(5))
     }
 }

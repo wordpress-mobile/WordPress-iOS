@@ -5,6 +5,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
@@ -318,7 +319,7 @@ static CGFloat const SearchBarHeight = 44.0;
     }
     NSError *error;
     if (![self.resultsController performFetch:&error]) {
-        DDLogError(@"Error occurred preforming fetch for MenuItem source of type: %@ error: %@", [self sourceItemType], error);
+        WPLogError(@"Error occurred preforming fetch for MenuItem source of type: %@ error: %@", [self sourceItemType], error);
     }
     [self toggleNoResultsIndiciator];
 }

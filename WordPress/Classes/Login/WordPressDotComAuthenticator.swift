@@ -22,10 +22,13 @@ struct WordPressDotComAuthenticator {
         case reauthentication(accountEmail: String?)
         // Connect a site to Jetpack or sign in to an already connected site.
         case jetpackSite(accountEmail: String?)
+        // Sign in from the support screen, which needs a WordPress.com account.
+        // Unlike `default`, the app isn't reloaded, so the user stays on the support screen.
+        case support
 
         func accountEmail(in context: NSManagedObjectContext) -> String? {
             switch self {
-            case .default:
+            case .default, .support:
                 return nil
             case let .reauthentication(email), let .jetpackSite(email):
                 return email
@@ -70,7 +73,7 @@ struct WordPressDotComAuthenticator {
     }
 
     let redirectURIScheme: String
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
@@ -78,7 +81,7 @@ struct WordPressDotComAuthenticator {
     private let clientSecret: String
 
     init(
-        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        coreDataStack: CoreDataStack = ContextManager.shared,
         showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
@@ -193,7 +196,7 @@ struct WordPressDotComAuthenticator {
             let service = WordPressComSyncService(coreDataStack: coreDataStack)
             accountID = try await service.syncWPCom(remoteUser: user, authToken: token, isJetpackLogin: isJetpackLogin)
         } catch {
-            DDLogError("Failed to syncing WP.com account: \(error)")
+            Loggers.app.error("Failed to syncing WP.com account: \(error)")
             throw .loadingSites(error)
         }
 
@@ -327,7 +330,7 @@ struct WordPressDotComAuthenticator {
                 callbackURLViaWebAuthenticationSession.send(url)
                 callbackURLViaWebAuthenticationSession.send(completion: .finished)
             } else {
-                DDLogWarn("Error from authentication session: \(String(describing: error))")
+                Loggers.app.warning("Error from authentication session: \(String(describing: error))")
                 callbackURLViaWebAuthenticationSession.send(completion: .failure(.cancelled))
             }
         }
@@ -424,7 +427,7 @@ struct WordPressDotComAuthenticator {
         } catch let error as DecodingError {
             throw .parsing(error)
         } catch {
-            DDLogError("Failed to parse token request response: \(error)")
+            Loggers.app.error("Failed to parse token request response: \(error)")
             throw .unknown(error)
         }
     }

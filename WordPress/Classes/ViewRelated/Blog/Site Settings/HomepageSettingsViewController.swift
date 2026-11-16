@@ -306,7 +306,7 @@ import WordPressShared
     }
 
     // MARK: - Private Properties
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let blog: Blog
     private let postRepository: PostRepository
 

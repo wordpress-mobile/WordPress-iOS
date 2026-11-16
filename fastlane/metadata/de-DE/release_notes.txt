@@ -1,1 +1,7 @@
-Gute Nachrichten für die Barrierefreiheit: Bei der Aktualisierung der Beitragseinstellungen liest VoiceOver jetzt vor, welche Kategorien ausgewählt sind. Das packen wir direkt in die Kategorie „Erfolg“.
+Individuelle Inhaltstypen werden jetzt direkt im Website-Menü nach „Kommentare“ angezeigt, für zusätzlichen Komfort nach Namen sortiert – individuelle Pins sind nicht mehr nötig.
+
+Wir haben außerdem einige Fehler behoben, um dein App-Erlebnis noch angenehmer zu gestalten.
+
+- Uploads schlagen nicht mehr fehl, wenn der Dateiname Leerzeichen enthält. (good-news-everyone.jpg)
+- Wir haben einen Absturz behoben, der durch das Teilen bestimmter Arten von Textdateien verursacht wurde.
+- iPad-Nutzer können sich freuen – die App bleibt nicht mehr im kompakten Tableisten-Layout hängen, wenn du die Bildschirmgröße änderst oder zwischen Apps wechselst.

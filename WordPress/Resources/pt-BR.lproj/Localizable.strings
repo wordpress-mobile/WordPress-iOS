@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1500,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Criar página";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Criar site";
 
@@ -2518,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Me inspiro muito no trabalho do fotógrafo Cameron Karsten. Vou tentar uma dessas técnicas em meu próximo";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Preciso de ajuda com";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Endereço IP";
 
@@ -2897,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Me avise quando for concluído!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Informe o endereço do seu site (URL) e dê o máximo de detalhes sobre o problema. Entraremos em contato em breve.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Vamos resolver isso";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Estilo de vida";
 
@@ -3089,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Gerenciar resumo";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Gerenciar site";
 
 /* No comment provided by engineer. */
 "Manual" = "Manual";
@@ -5174,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Tecnologia";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Nos conte que tipo de site você deseja fazer";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Termos e condições";
 
@@ -5251,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Não foi possível adicionar a imagem à biblioteca de mídia.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Tipos de sites que podem ser criados";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Idioma principal do site.";
@@ -5419,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Este arquivo é muito grande para ser enviado para o seu site ou este formato de mídia não é suportado por ele.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Isso nos ajudará a sugerir um ótimo início mas seu site não ficará preso a isso e poderá evoluir com o tempo.";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Essa informação nos ajuda a melhorar nossos produtos, tornar anúncios mais relevantes, personalizar sua experiência no WordPress.com e outras opções descritas em nossa política de privacidade.";
@@ -6707,9 +6684,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Não foi possível encontrar o URL do site atual";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Este site não é compatível com senhas de aplicativo.";
-
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Você precisa acessar com o usuário \"%@\"";
 
@@ -6972,12 +6946,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Salvar rascunho";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Adicionar mais capturas de tela";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Adicionar capturas de tela";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Registros do aplicativos";
 
@@ -6986,12 +6954,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Registros do aplicativos";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Anexo %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Limite de anexos: %1$@\/%2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Olá, %1$@!";
@@ -7026,23 +6988,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Concluído";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Tem certeza de que deseja cancelar esta mensagem? Você perderá todos os dados inseridos";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Confirmar cancelamento";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Tem certeza de que deseja excluir todos os registros?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Informações de contato";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Continuar escrevendo";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Fim da conversa. Não é possível dar mais nenhuma resposta.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Conversas";
@@ -7056,20 +7003,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnóstico";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Descartar alterações";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Enviaremos um e-mail para este endereço.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Erro ao carregar os registros";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Erro ao carregar conversas de suporte";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Erro";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Exportar como arquivo";
@@ -7089,20 +7024,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Registros detalhados";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Entendi";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Preciso de ajuda com";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Incluir registros do aplicativo";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Detalhes do problema";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Última atualização: %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Carregando mensagens";
@@ -7110,14 +7033,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Carregando conversas do bot";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Carregando conversas";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Carregando uso do disco";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Carregando imagem";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Carregando conteúdo mais recente";
@@ -7127,9 +7044,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Carregando registros…";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Carregando mensagens";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Carregando vídeo";
@@ -7142,15 +7056,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Registros dos últimos sete dias são salvos.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Mensagem";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Mensagem enviada";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d mensagens";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Novo chat com o bot";
@@ -7167,35 +7072,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Nenhum registro encontrado";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Abrir um tíquete de suporte";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(Opcional)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Responder";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Salvar como um arquivo para compartilhar ou armazenar";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Capturas de tela";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Adicionar capturas de tela pode nos ajudar a entender e resolver seu problema mais rapidamente.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Enviar";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Envie registros diretamente para a equipe de suporte";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Enviando";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Enviar mensagem";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Compartilhar";
@@ -7206,47 +7087,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Compartilhando com o suporte!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Endereço do site";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/seusite.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Inicie uma conversa usando o botão acima";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Assunto";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Breve resumo do seu problema";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Enviar solicitação de suporte";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Conversas do suporte";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Solicitação enviada!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Sua solicitação de suporte foi enviada com sucesso. Responderemos por e-mail o mais rápido possível.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Pensando…";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Falar com o suporte";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Tentar novamente";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Não é possível excluir registros";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Não foi possível exibir a conversa";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Não foi possível exibir o vídeo";
@@ -7259,12 +7110,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Não foi possível carregar as mensagens";
-
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Não foi possível enviar a mensagem";
-
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Visualizar";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Trabalhando";
@@ -7505,18 +7350,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "BETA";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Nenhum tipo de post personalizado";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Fixar";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Mais";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Desafixar";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Crie seu painel personalizado e escolha quais relatórios visualizar. Tenha foco nos dados mais importantes para você.";
@@ -10271,7 +10104,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Aviso";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\"%1$@\" não está disponível neste site.";
 
 /* Title for the plan selection view */
@@ -11394,9 +11227,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "Assinado";
-
-/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}visualizar mais";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Mais ações";

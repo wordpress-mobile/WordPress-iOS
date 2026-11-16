@@ -11,12 +11,14 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
 
     let coordinator: JetpackDefaultOverlayCoordinator?
 
-    init(phase: JetpackFeaturesRemovalCoordinator.SiteCreationPhase,
-         source: String,
-         actionInfoText: NSAttributedString? = nil,
-         learnMoreButtonURL: String? = nil,
-         footnote: String? = nil,
-         coordinator: JetpackDefaultOverlayCoordinator) {
+    init(
+        phase: JetpackFeaturesRemovalCoordinator.SiteCreationPhase,
+        source: String,
+        actionInfoText: NSAttributedString? = nil,
+        learnMoreButtonURL: String? = nil,
+        footnote: String? = nil,
+        coordinator: JetpackDefaultOverlayCoordinator
+    ) {
         self.phase = phase
         self.source = source
         self.footnote = footnote
@@ -26,63 +28,48 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
     }
 
     var shouldShowOverlay: Bool {
-        switch phase {
-        case .normal:
-            return false
-        case .one:
-            fallthrough
-        case .two:
-            return true
-        }
+        phase == .two
     }
 
     var title: String {
-        return Strings.title
+        Strings.title
     }
 
     var subtitle: NSAttributedString {
         switch phase {
-        case .one:
-            return .init(string: Strings.phaseOneSubtitle)
         case .two:
             return .init(string: Strings.phaseTwoSubtitle)
-        default:
+        case .normal:
             return .init(string: "")
         }
     }
 
     var animationLtr: String {
-        return Constants.wpJetpackLogoAnimationLtr
+        Constants.wpJetpackLogoAnimationLtr
     }
 
     var animationRtl: String {
-        return Constants.wpJetpackLogoAnimationRtl
+        Constants.wpJetpackLogoAnimationRtl
     }
 
     var switchButtonText: String {
-        return Strings.switchButtonTitle
+        Strings.switchButtonTitle
     }
 
     var continueButtonText: String? {
-        switch phase {
-        // Show only in phase one
-        case .one:
-            return Strings.continueButtonTitle
-        default:
-            return nil
-        }
+        nil
     }
 
     var shouldShowCloseButton: Bool {
-        return true
+        true
     }
 
     var shouldDismissOnSecondaryButtonTap: Bool {
-        return true
+        true
     }
 
     var analyticsSource: String {
-        return Constants.analyticsSource
+        Constants.analyticsSource
     }
 
     var onWillDismiss: JetpackOverlayDismissCallback?
@@ -90,11 +77,11 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
     var onDidDismiss: JetpackOverlayDismissCallback?
 
     var secondaryView: UIView? {
-        return nil
+        nil
     }
 
     var isCompact: Bool {
-        return false
+        false
     }
 
     func didTapActionInfo() {
@@ -110,20 +97,23 @@ private extension JetpackFullscreenOverlaySiteCreationViewModel {
     }
 
     enum Strings {
-        static let title = NSLocalizedString("jetpack.fullscreen.overlay.siteCreation.title",
-                                             value: "Create a new WordPress site with the Jetpack app",
-                                             comment: "Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app.")
-        static let phaseOneSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle",
-                                             value: "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.",
-                                             comment: "Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app.")
-        static let phaseTwoSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle",
-                                             value: "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.\n\nThe WordPress app no longer supports creating a new site.",
-                                             comment: "Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app.")
-        static let switchButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.siteCreation.switch.title",
-                                                                    value: "Try the new Jetpack app",
-                                                                    comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
-        static let continueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.siteCreation.continue.title",
-                                                                    value: "Continue without Jetpack",
-                                                                    comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
+        static let title = NSLocalizedString(
+            "jetpack.fullscreen.overlay.siteCreation.title",
+            value: "Create a new WordPress site with the Jetpack app",
+            comment:
+                "Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app."
+        )
+        static let phaseTwoSubtitle = NSLocalizedString(
+            "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle",
+            value:
+                "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.\n\nThe WordPress app no longer supports creating a new site.",
+            comment:
+                "Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app."
+        )
+        static let switchButtonTitle = NSLocalizedString(
+            "jetpack.fullscreen.overlay.siteCreation.switch.title",
+            value: "Try the new Jetpack app",
+            comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store."
+        )
     }
 }

@@ -12,6 +12,8 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet private weak var superAdminRoleBadge: PeopleRoleBadgeLabel!
     @IBOutlet private weak var badgeStackView: UIStackView!
 
+    private static let separatorLeadingInset: CGFloat = 72
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -21,7 +23,12 @@ class PeopleCell: WPTableViewCell {
         usernameLabel.textColor = .secondaryLabel
         usernameLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
 
-        separatorInset = UIEdgeInsets(top: 0, left: 72, bottom: 0, right: 0)
+        separatorInset = separatorInsets(leading: Self.separatorLeadingInset)
+    }
+
+    override func safeAreaInsetsDidChange() {
+        super.safeAreaInsetsDidChange()
+        separatorInset = separatorInsets(leading: Self.separatorLeadingInset)
     }
 
     override func prepareForReuse() {

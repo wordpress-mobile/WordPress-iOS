@@ -17,13 +17,13 @@ class BlockEditorSettingsService {
 
     let blog: Blog
     let remote: BlockEditorSettingsServiceRemote
-    let coreDataStack: CoreDataStackSwift
+    let coreDataStack: CoreDataStack
 
     var cachedSettings: BlockEditorSettings? {
         return blog.blockEditorSettings
     }
 
-    convenience init?(blog: Blog, coreDataStack: CoreDataStackSwift) {
+    convenience init?(blog: Blog, coreDataStack: CoreDataStack) {
         guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
             // This is should only happen if there is a problem with the blog itsself.
             return nil
@@ -32,7 +32,7 @@ class BlockEditorSettingsService {
         self.init(blog: blog, remoteAPI: remoteAPI, coreDataStack: coreDataStack)
     }
 
-    init(blog: Blog, remoteAPI: WordPressOrgRestApi, coreDataStack: CoreDataStackSwift) {
+    init(blog: Blog, remoteAPI: WordPressOrgRestApi, coreDataStack: CoreDataStack) {
         assert(blog.objectID.persistentStore != nil, "The blog instance should be saved first")
         self.blog = blog
         self.coreDataStack = coreDataStack
@@ -70,7 +70,7 @@ private extension BlockEditorSettingsService {
                     self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
                 }
             case .failure(let err):
-                DDLogError("Error loading active theme: \(err)")
+                Loggers.app.error("Error loading active theme: \(err)")
                 completion(.failure(err))
             }
         }
@@ -132,7 +132,7 @@ private extension BlockEditorSettingsService {
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
                 }
             case .failure(let err):
-                DDLogError("Error fetching editor settings: \(err)")
+                Loggers.app.error("Error fetching editor settings: \(err)")
                 // The user may not have the gutenberg plugin installed so try /wp/v2/themes to maintain feature support.
                 // In WP 5.9 we may be able to skip this attempt.
                 self.fetchTheme(completion)

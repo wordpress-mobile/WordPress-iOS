@@ -7,39 +7,76 @@ import WordPressShared
 /// If a row is selected, StatsTotalRowDelegate is informed to display the associated detail.
 ///
 
-class DetailDataCell: UITableViewCell, NibLoadable {
+class DetailDataCell: UITableViewCell {
 
     // MARK: - Properties
 
-    @IBOutlet weak var dataView: UIView!
+    private let dataView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
 
     // Line shown at the bottom of the view, spanning the entire width.
     // It is shown on the last child row of an expanded row.
     // Used to indicate the bottom of the expanded rows section. Hidden by default.
-    @IBOutlet weak var bottomExpandedSeparatorLine: UIView!
+    private let bottomExpandedSeparatorLine: UIView = {
+        let view = UIView.makeStatsSeparator()
+        view.isHidden = true
+        return view
+    }()
 
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var row: StatsTotalRow?
 
+    // MARK: - Init
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+        contentView.addSubview(dataView)
+        contentView.addSubview(bottomExpandedSeparatorLine)
+        NSLayoutConstraint.activate([
+            dataView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            dataView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: dataView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: dataView.bottomAnchor),
+
+            bottomExpandedSeparatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: bottomExpandedSeparatorLine.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomExpandedSeparatorLine.bottomAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Configure
 
-    func configure(rowData: StatsTotalRowData,
-                   detailsDelegate: SiteStatsDetailsDelegate?,
-                   referrerDelegate: SiteStatsReferrerDelegate? = nil,
-                   hideIndentedSeparator: Bool = false,
-                   hideFullSeparator: Bool = true,
-                   expanded: Bool = false,
-                   isChildRow: Bool = false,
-                   showChildRowImage: Bool = true) {
+    func configure(
+        rowData: StatsTotalRowData,
+        detailsDelegate: SiteStatsDetailsDelegate?,
+        referrerDelegate: SiteStatsReferrerDelegate? = nil,
+        hideIndentedSeparator: Bool = false,
+        hideFullSeparator: Bool = true,
+        expanded: Bool = false,
+        isChildRow: Bool = false,
+        showChildRowImage: Bool = true
+    ) {
 
         Style.configureViewAsSeparator(bottomExpandedSeparatorLine)
 
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
 
-        let row = StatsTotalRow.loadFromNib()
+        let row = StatsTotalRow()
         row.configure(rowData: rowData, delegate: self, referrerDelegate: self, forDetails: true)
 
         bottomExpandedSeparatorLine.isHidden = hideFullSeparator
@@ -47,8 +84,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
         if expanded {
             // If the row is expanded, the row's separators are set accordingly.
             row.expanded = expanded
-        }
-        else {
+        } else {
             row.showSeparator = !hideIndentedSeparator
         }
 

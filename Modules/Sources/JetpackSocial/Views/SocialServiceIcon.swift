@@ -16,7 +16,6 @@ enum SocialServiceIcon {
 
     private static func alias(for serviceID: String) -> String? {
         switch serviceID {
-        case "google-plus-1": return "google-plus"
         case "press-this": return "wordpress"
         default: return nil
         }

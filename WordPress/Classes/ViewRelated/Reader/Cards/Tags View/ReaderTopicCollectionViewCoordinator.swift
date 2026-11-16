@@ -133,7 +133,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         }
 
         if metrics.borderWidth > 0 {
-            cell.layer.borderColor = displaySetting?.color.secondaryForeground.cgColor ?? metrics.borderColor.cgColor
+            cell.borderColor = displaySetting?.color.secondaryForeground ?? metrics.borderColor
             cell.layer.borderWidth = metrics.borderWidth
         }
 

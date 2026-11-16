@@ -1,0 +1,10 @@
+Heb je het al gehoord? We hebben het tabblad Meldingen en de bel nauwkeuriger gemaakt, zelfs wanneer systeemmeldingen of pictogrambadges zijn uitgeschakeld. Nu ben je altijd op de hoogte.
+
+Aangepaste berichttypen verschijnen nu direct in het sitemenu na Reacties, en ze zijn bovendien gesorteerd op naam - er zijn geen aangepaste pins meer nodig.
+
+Tot slot hebben we verschillende bugs opgelost om je app-ervaring nog eenvoudiger te maken.
+
+- Inline afbeeldingen in de Reader verdwijnen niet op apparaten met iOS 27.
+- Uploads mislukken niet meer als de bestandsnaam spaties bevat. (good-news-everyone.jpg)
+- We hebben een crash opgelost die werd veroorzaakt door het delen van bepaalde soorten tekstbestanden.
+- Goed nieuws voor iPad-gebruikers: de app blijft niet hangen in de lay-out van de compacte tabbalk wanneer je het scherm verkleint of van app wisselt.

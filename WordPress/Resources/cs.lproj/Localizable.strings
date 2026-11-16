@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-09-21 08:04:46+0000 */
+/* Translation-Revision-Date: 2026-10-20 11:39:49+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: cs_CZ */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1500,7 +1499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Vytvořit stránku";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Vytvořit web";
 
@@ -2518,9 +2516,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Práce fotografa Camerona Karstena mě tak inspirovala. Tyto techniky budu zkoušet při příštím";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Potřebuji pomoc s";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP adresa";
 
@@ -2897,12 +2892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Po dokončení mi dejte vědět!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Dejte nám vědět adresu svého webu (URL) a povězte nám co nejvíce o problému a brzy se ozveme.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Pojďme to vyřešit";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Životní styl";
 
@@ -3089,9 +3078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Spravovat přehled";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Spravovat web";
 
 /* No comment provided by engineer. */
 "Manual" = "Ruční";
@@ -5174,9 +5160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Technologie";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Řekněte nám, jakou stránku byste chtěli vytvořit";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Pravidla a podmínky";
 
@@ -5251,9 +5234,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Obrázek nelze přidat do knihovny médií.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Druhy webů, které lze vytvořit";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Jazyk ve kterém je tento web primárně napsaný.";
@@ -5419,9 +5399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Tento soubor je příliš velký na nahrání na váš web nebo nepodporuje tento formát média.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "To nám pomáhá dělat doporučení. Ale nikdy nejste uzamčeni - všechny stránky se vyvíjejí!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Tato informace nám pomáhá zlepšit naše produkty, učinit pro vás marketing relevantnější, přizpůsobit si váš dojem z WordPress.com, a více zmíněné v našich zásadách ochrany osobních údajů.";
@@ -6707,8 +6684,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Nelze najít URL aktuálního webu";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Tento web nepodporuje aplikační hesla.";
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "Webové stránky WordPress.com se spravují prostřednictvím vašeho účtu WordPress.com, takže hesla aplikací nejsou k dispozici.";
 
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Musíte se přihlásit jako uživatel \\\"%@\"";
@@ -6972,12 +6949,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Uložit koncept";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Přidat další snímky obrazovky";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Přidat snímky obrazovky";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Záznamy aplikace";
 
@@ -6986,12 +6957,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Záznamy aplikace";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Příloha %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Limit příloh: %1$@ \/ %2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Ahoj %1$@!";
@@ -7026,23 +6991,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "Dokončit";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Opravdu chcete zrušit tuto zprávu? Ztratíte veškerá data, která jste zadali";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Potvrdit zrušení";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Opravdu chcete smazat všechny záznamy?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Kontaktní informace";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Pokračovat v psaní";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Konec konverzace. Další odpovědi již nejsou možné.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Konverzace";
@@ -7056,20 +7006,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnostika";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Zahodit změny";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Zašleme vám e-mail na tuto adresu.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Chyba při načítání záznamů";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Chyba při načítání konverzací podpory";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Chyba";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Exportovat jako soubor";
@@ -7089,20 +7027,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Podrobné záznamy";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "Rozumím";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Potřebuji pomoc s";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Zahrnout záznamy aplikace";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Podrobnosti problému";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Naposledy aktualizováno %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Načítání zpráv";
@@ -7110,14 +7036,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Načítání konverzací s botem";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Načítání konverzací";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Načítání využití disku";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Načítání obrázku";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Načítání nejnovějšího obsahu";
@@ -7127,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Načítání záznamů...";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Načítání zpráv";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Načítání videa";
@@ -7142,15 +7059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Jsou uloženy záznamy až za sedm dní.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Zpráva";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Zpráva odeslána";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d zpráv";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Nový chat s botem";
@@ -7167,35 +7075,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "Žádné záznamy nenalezeny";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Otevřít tiket podpory";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(Nepovinné)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Odpovědět";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Uložit jako soubor ke sdílení nebo archivaci";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Snímky obrazovky";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Přidání snímků obrazovky nám může pomoci rychleji pochopit a vyřešit váš problém.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Odeslat";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Odeslat záznamy přímo týmu podpory";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Odesílání";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Odesílání zprávy";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Sdílet";
@@ -7206,47 +7090,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Sdílení s podporou!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Adresa webu";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Zahajte novou konverzaci pomocí tlačítka výše";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Předmět";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Stručný popis vašeho problému";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Odeslat požadavek podpory";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Konverzace s podporou";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Požadavek odeslán!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Váš požadavek podpory byl úspěšně odeslán. Odpovíme e-mailem co nejdříve.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Přemýšlím...";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Kontaktovat podporu";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Zkusit znovu";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "Záznamy nelze smazat";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "Konverzaci nelze zobrazit";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "Video nelze zobrazit";
@@ -7260,11 +7114,167 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Zprávy nelze načíst";
 
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "Zprávu nelze odeslat";
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Přidat další informace";
 
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Zobrazit";
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Načítání přílohy…";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "%1$d%% shoda";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Otevřít odkaz: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "Související:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Tento rozhovor je uzavřen. Již na něj nelze odpovídat.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Poslední aktualizace %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Načítání konverzace…";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Napište zprávu…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Odeslat";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "Přeneseno do oddělení podpory pro lidi";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "AI asistent právě píše";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Zahajte konverzaci s naším týmem podpory a získejte pomoc s vašimi dotazy.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Zatím žádné konverzace";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Načítání konverzací…";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Získat pomoc";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Něco se pokazilo. Zkuste to prosím později.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Něco se pokazilo";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "právě teď";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "Protokoly aplikace nejsou momentálně k dispozici.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Nová konverzace";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Přihlaste se na WordPress.com a získejte pomoc od našeho týmu podpory.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Zkontrolujte své připojení k internetu a zkuste to znovu.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Síť není dostupná";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Odpovědět";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Přílohy";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Přidejte snímky obrazovky, videa nebo dokumenty, které problém ilustrují.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Nelze připojit soubor";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Vybrat soubory";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Knihovna fotografií";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Byla dosažena maximální velikost. Bude odesláno pouze %1$d ze %2$d souborů";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "Odebrat %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Tento soubor je příliš velký na to, aby se dal odeslat.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Tyto soubory jsou příliš velké na to, aby se daly odeslat.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Zrušit";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Pište dál";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Zrušit";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Vaše zpráva a její přílohy budou ztraceny.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Mám tuto odpověď smazat?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Vaše odpověď nebyla odeslána";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Zkuste to prosím znovu";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Zpráva";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "Dobře";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Volitelný";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Odeslat";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Odesílám…";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "Vaše odpověď byla odeslána. Sledujte svůj e-mail, kde se dozvíte další informace.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Zahájit konverzaci";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "AI asistent";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "Zavřeno";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "Probíhá";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Vyřešeno";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Neznámé";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Zkusit znovu";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Pracuji";
@@ -7286,6 +7296,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Odpovědět %1$@";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Odeslání odpovědi";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Zrušit";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Smazat koncept";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Pokračovat v úpravách";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Uložit koncept";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Odeslat";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "Sending tento komentář rovněž schválí.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "K tomuto příspěvku již nelze přidávat komentáře.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Odeslání odpovědi se nezdařilo.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Tato odpověď již byla zveřejněna.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Odpověď byla odeslána ke schválení.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Odpověď byla odeslána.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Napsat odpověď…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Odpovědět";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Smazat koncept";
@@ -7328,6 +7380,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "Přesunout do stavu „Čeká na vyřízení“";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Odpovědět";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "Obnovit";
@@ -7377,17 +7432,17 @@ Example: Reply to Pamela Nguyen */
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "V odpovědi na %@";
 
-/* Status pill label on the comment detail screen for an approved comment */
+/* Status label on the comment detail screen for an approved comment */
 "commentDetail.status.approved" = "Schváleno";
 
-/* Status pill label on the comment detail screen for a comment awaiting moderation */
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
 "commentDetail.status.pending" = "Čeká na vyřízení";
 
-/* Status pill label on the comment detail screen for a comment marked as spam */
+/* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "Nevyžádaná pošta";
 
-/* Status pill label on the comment detail screen for a trashed comment */
-"commentDetail.status.trash" = "Silný";
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Smazáno";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Zahodit změny";
@@ -7439,9 +7494,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Comment row headline. %1$@ is the comment author, %2$@ is the post title. */
 "commentsList.row.authorOnPost" = "%1$@ je %2$@";
-
-/* Accessibility value announced for a comment row that is awaiting moderation */
-"commentsList.row.pendingAccessibilityValue" = "Čeká se na vyřízení";
 
 /* Title for the comments list screen */
 "commentsList.screen.title" = "Komentáře";
@@ -7575,6 +7627,9 @@ Example: Reply to Pamela Nguyen */
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "Lepivé";
 
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Smazané";
+
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Tuto akci nelze vrátit zpět.";
 
@@ -7628,18 +7683,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
 "customPostType.navigation.betaBadge" = "BETA";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Žádné vlastní typy příspěvků";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Připnout";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Více";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Odepnout";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Vytvořte si vlastní přizpůsobený řídicí panel a vyberte, jaké přehledy chcete zobrazit. Zaměřte se na data, na kterých vám nejvíce záleží.";
@@ -10448,7 +10491,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Upozornění";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "\\\"%1$@\\\" není na tomto webu dostupné.";
 
 /* Title for the plan selection view */
@@ -11573,7 +11616,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.header.subscribed" = "Přihlášen k odběru";
 
 /* Appended to the truncated excerpt in the reader post header to indicate more content is available */
-"reader.post.header.viewMore" = "u{2026}zobrazit více";
+"reader.post.header.viewMore" = "…zobrazit více";
 
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Další akce";
@@ -12020,6 +12063,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Revize";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Zrušit sdílení";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Při načítání obsahu, který jste sdíleli, došlo k chybě. Zkuste to prosím znovu.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Nelze načíst sdílený obsah";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Odmítnout";
 
@@ -12028,6 +12080,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Nastavení médií";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "Dobře";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Jednu nebo více sdílených položek se nepodařilo načíst, a proto byly přeskočeny.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "Část obsahu byla přeskočena";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Zkusit znovu";
@@ -12956,6 +13017,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Přepis bota Jetpack Mobile";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Zeptejte se a nechte si poradit od naší skupiny dobrovolníků.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Komunitní fóra";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Získejte odpovědi od našeho týmu podpory, kdykoli budete potřebovat";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Získat pomoc";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Položte otázku v komunitním fóru a získejte pomoc od naší skupiny dobrovolníků.";
 
@@ -13044,6 +13117,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Štítky";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Aktivace";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "tyto položky budou smazány:";
 
@@ -13128,6 +13204,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Chyba";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Při aktualizaci hesla došlo k chybě.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Chyba";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Biografické informace";

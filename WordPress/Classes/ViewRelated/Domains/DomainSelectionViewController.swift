@@ -230,8 +230,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        updateNoResultsLabelTopInset()
-
         coordinator.animate(alongsideTransition: nil) { [weak self] _ in
             guard let self else { return }
 
@@ -434,11 +432,15 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         ])
 
         updateNoResultsLabelTopInset()
+
+        registerForTraitChanges([UITraitVerticalSizeClass.self]) { (self: Self, _: UITraitCollection) in
+            self.updateNoResultsLabelTopInset()
+        }
     }
 
-    /// Sets the top inset for the noResultsLabel based on layout orientation
+    /// Sets the top inset for the noResultsLabel, dropping it when vertical space is constrained
     private func updateNoResultsLabelTopInset() {
-        noResultsLabelTopAnchor?.constant = UIDevice.current.orientation.isPortrait ? Metrics.noResultsTopInset : 0
+        noResultsLabelTopAnchor?.constant = traitCollection.verticalSizeClass != .compact ? Metrics.noResultsTopInset : 0
     }
 
     private func setupTable() {
@@ -806,7 +808,7 @@ private extension DomainSelectionViewController {
 private extension DomainSelectionViewController {
     private func pushRegisterDomainDetailsViewController() {
         guard let siteID = coordinator?.site?.dotComID?.intValue else {
-            DDLogError("Cannot register domains for sites without a dotComID")
+            Loggers.app.error("Cannot register domains for sites without a dotComID")
             return
         }
 

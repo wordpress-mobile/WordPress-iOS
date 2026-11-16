@@ -235,7 +235,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
             title: nil,
             message: selection.count == 1
                 ? Strings.deleteConfirmationMessageOne : Strings.deleteConfirmationMessageMany,
-            preferredStyle: UIDevice.current.userInterfaceIdiom == .phone ? .actionSheet : .alert
+            preferredStyle: traitCollection.userInterfaceIdiom == .phone ? .actionSheet : .alert
         )
         alert.addCancelActionWithTitle(Strings.deleteConfirmationCancel)
         alert.addDestructiveActionWithTitle(Strings.deleteConfirmationConfirm) { _ in

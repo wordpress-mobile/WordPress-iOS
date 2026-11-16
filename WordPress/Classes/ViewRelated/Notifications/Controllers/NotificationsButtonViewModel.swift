@@ -13,8 +13,14 @@ final class NotificationsButtonViewModel: ObservableObject {
 
     private var cancellables: [AnyCancellable] = []
 
-    init() {
-        NotificationActivityService.shared.$hasNewActivity
+    /// - Parameter scope: The scope of the list the bell opens. The bell has no badge when that
+    ///   list doesn't track the account's activity.
+    init(scope: NotificationsListScope = .all, activityService: NotificationActivityService = .shared) {
+        guard scope.tracksAccountActivity else {
+            update(hasNewActivity: false)
+            return
+        }
+        activityService.$hasNewActivity
             .sink { [weak self] in self?.update(hasNewActivity: $0) }
             .store(in: &cancellables)
     }
@@ -27,6 +33,20 @@ final class NotificationsButtonViewModel: ObservableObject {
                 .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [.systemRed, .label]))
         } else {
             image = UIImage(systemName: "bell")
+        }
+    }
+}
+
+/// The bell icon for SwiftUI surfaces, with a badge when there is new activity.
+struct NotificationsBellImage: View {
+    let hasNewActivity: Bool
+
+    var body: some View {
+        if hasNewActivity {
+            Image(systemName: "bell.badge")
+                .foregroundStyle(.red, .primary)
+        } else {
+            Image(systemName: "bell")
         }
     }
 }

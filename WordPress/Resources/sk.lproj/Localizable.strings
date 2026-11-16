@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-08 15:01:32+0000 */
+/* Translation-Revision-Date: 2026-10-20 11:31:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: sk */
@@ -11,6 +11,9 @@
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Tlačidlo \"Viac\"";
+
+/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
+"%1$@ of %2$@ used" = "%1$@ z %2$@ použitých";
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ on %2$@";
@@ -421,7 +424,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -657,7 +659,6 @@
 "Country" = "Krajina";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Vytvoriť stránku";
 
@@ -1376,9 +1377,6 @@
 /* Jetpack Settings: Manage Connection
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Spravovať pripojenie";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Spravovať stránku";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manuálne odsadenia";

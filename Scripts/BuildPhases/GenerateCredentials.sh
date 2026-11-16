@@ -59,6 +59,10 @@ ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
 SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
+# Build phases don't inherit the shell's PATH, so point at a8c-secrets' default
+# install location.
+export PATH="$HOME/.local/bin:$PATH"
+
 # `a8c-secrets which` exits non-zero when the file has not been decrypted yet.
 # NOTE: WordPress, Jetpack, and Reader use all the same secrets at this time.
 if command -v a8c-secrets > /dev/null 2>&1 && SECRETS_FILE=$(a8c-secrets which Secrets.swift 2>/dev/null); then
@@ -87,7 +91,7 @@ fi
 
 COULD_NOT_FIND_SECRET_MSG="Could not find secrets file at ${SECRETS_DESTINATION_FILE}. This is likely due to the secrets not having been decrypted"
 INTERNAL_CONTRIBUTOR_MSG="If you are an internal contributor, run \`a8c-secrets decrypt\` to update your secrets and try again (see https://github.com/Automattic/a8c-secrets for setup)"
-EXTERNAL_CONTRIBUTOR_MSG="If you are an external contributor, run \`bundle exec rake init:oss\` to set up and use your own credentials"
+EXTERNAL_CONTRIBUTOR_MSG="If you are an external contributor, run \`make credentials\` to set up and use your own credentials"
 
 case $CONFIGURATION in
   Release*)

@@ -193,7 +193,7 @@ extension ReaderTagsTableViewModel {
                 self.scrollToTag(tag)
             }
         }, failure: { error in
-            DDLogError("Could not follow topic named \(tagName) : \(String(describing: error))")
+            Loggers.app.error("Could not follow topic named \(tagName) : \(String(describing: error))")
 
             generator.notificationOccurred(.error)
 
@@ -214,7 +214,7 @@ extension ReaderTagsTableViewModel {
         service.unfollowTag(topic, withSuccess: {
             // Do nothing
         }, failure: { error in
-            DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
+            Loggers.app.error("Could not unfollow topic \(topic), \(String(describing: error))")
 
             let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription

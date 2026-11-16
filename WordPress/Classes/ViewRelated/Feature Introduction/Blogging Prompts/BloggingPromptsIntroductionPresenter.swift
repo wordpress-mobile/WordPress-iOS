@@ -158,7 +158,7 @@ private extension BloggingPromptsIntroductionPresenter {
         // TODO: check for cached prompt first.
 
         guard let bloggingPromptsService else {
-            DDLogError("Feature Introduction: failed creating BloggingPromptsService instance.")
+            Loggers.app.error("Feature Introduction: failed creating BloggingPromptsService instance.")
             return
         }
 
@@ -168,7 +168,7 @@ private extension BloggingPromptsIntroductionPresenter {
             },
             failure: { error in
                 completion(nil)
-                DDLogError("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
+                Loggers.app.error("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
             }
         )
     }

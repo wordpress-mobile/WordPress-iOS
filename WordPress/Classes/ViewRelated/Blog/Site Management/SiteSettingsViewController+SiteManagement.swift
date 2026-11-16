@@ -61,7 +61,7 @@ public extension SiteSettingsViewController {
             let status = NSLocalizedString("Email sent!", comment: "Overlay message displayed when export content started")
             SVProgressHUD.showDismissibleSuccess(status: status)
         }, failure: { error in
-            DDLogError("Error exporting content: \(error.localizedDescription)")
+            Loggers.app.error("Error exporting content: \(error.localizedDescription)")
             WPAppAnalytics.track(.siteSettingsExportSiteResponseError, blog: trackedBlog)
 
             SVProgressHUD.dismiss()
@@ -102,7 +102,7 @@ public extension SiteSettingsViewController {
                 }
             },
             failure: { error in
-                DDLogError("Error getting purchases: \(error.localizedDescription)")
+                Loggers.app.error("Error getting purchases: \(error.localizedDescription)")
                 SVProgressHUD.dismiss()
 
                 let errorTitle = NSLocalizedString("Check Purchases Error", comment: "Title of alert when getting purchases fails")

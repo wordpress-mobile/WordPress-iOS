@@ -47,7 +47,7 @@ struct ViewsVisitorsRow: StatsHashableImmuTableRow {
     typealias CellType = ViewsVisitorsLineChartCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let segmentsData: [StatsSegmentedControlData]
@@ -82,7 +82,7 @@ struct SubscriberChartRow: StatsHashableImmuTableRow {
     typealias CellType = StatsSubscribersChartCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let action: ImmuTableAction? = nil
@@ -112,7 +112,7 @@ struct CellHeaderRow: StatsHashableImmuTableRow {
     typealias CellType = StatsCellHeader
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let statSection: StatSection?
@@ -138,7 +138,7 @@ struct TableFooterRow: HashableImmutableRow {
     typealias CellType = StatsTableFooter
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let action: ImmuTableAction? = nil
@@ -159,7 +159,7 @@ struct GrowAudienceRow: StatsHashableImmuTableRow {
     typealias CellType = GrowAudienceCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let hintType: GrowAudienceCell.HintType
@@ -193,7 +193,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
     typealias CellType = CustomizeInsightsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
@@ -248,7 +248,7 @@ struct PostingActivityRow: StatsHashableImmuTableRow {
     typealias CellType = PostingActivityCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let monthsData: [[PostingStreakEvent]]
@@ -274,7 +274,7 @@ struct TabbedTotalsStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TabbedTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let tabsData: [TabData]
@@ -309,7 +309,7 @@ struct TopTotalsInsightStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let itemSubtitle: String
@@ -347,7 +347,7 @@ struct TwoColumnStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TwoColumnCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let dataRows: [StatsTwoColumnRowData]
@@ -484,7 +484,7 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow {
     typealias CellType = StatsCellHeader
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let action: ImmuTableAction? = nil
@@ -504,7 +504,7 @@ struct TopTotalsPeriodStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let itemSubtitle: String
@@ -553,7 +553,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let dataRows: [StatsTotalRowData]
@@ -679,7 +679,7 @@ struct TopTotalsPostStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let itemSubtitle: String
@@ -716,7 +716,7 @@ struct PostStatsEmptyCellHeaderRow: StatsHashableImmuTableRow {
     typealias CellType = StatsCellHeader
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let action: ImmuTableAction? = nil
@@ -743,7 +743,7 @@ struct DetailDataRow: HashableImmutableRow {
     typealias CellType = DetailDataCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let rowData: StatsTotalRowData
@@ -776,7 +776,7 @@ struct DetailExpandableRow: HashableImmutableRow {
     typealias CellType = DetailDataCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let rowData: StatsTotalRowData
@@ -814,7 +814,7 @@ struct DetailExpandableChildRow: HashableImmutableRow {
     typealias CellType = DetailDataCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let rowData: StatsTotalRowData
@@ -850,7 +850,7 @@ struct DetailSubtitlesHeaderRow: HashableImmutableRow {
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let itemSubtitle: String
@@ -905,7 +905,7 @@ struct DetailSubtitlesTabbedHeaderRow: HashableImmutableRow {
     typealias CellType = TabbedTotalsCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let tabsData: [TabData]
@@ -936,14 +936,14 @@ struct DetailSubtitlesTabbedHeaderRow: HashableImmutableRow {
 
 struct StatsErrorRow: StatsHashableImmuTableRow {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
+        return ImmuTableCell.class(StatsStackViewCell.self)
     }()
     let action: ImmuTableAction? = nil
     let rowStatus: StoreFetchingStatus
     let statType: StatType
     let statSection: StatSection?
 
-    private let noDataRow = StatsNoDataRow.loadFromNib()
+    private let noDataRow = StatsNoDataRow()
 
     // MARK: - Hashable
 

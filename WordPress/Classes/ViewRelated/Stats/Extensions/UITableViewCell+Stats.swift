@@ -21,7 +21,7 @@ extension UITableViewCell {
         let numberOfDataRows = dataRows.count
 
         guard numberOfDataRows > 0 else {
-            let row = StatsNoDataRow.loadFromNib()
+            let row = StatsNoDataRow()
             row.configure(forType: statType)
             rowsStackView.addArrangedSubview(row)
             return
@@ -39,7 +39,7 @@ extension UITableViewCell {
 
         for index in 0..<numberOfRowsToAdd {
             let dataRow = dataRows[index]
-            let row = StatsTotalRow.loadFromNib()
+            let row = StatsTotalRow()
             row.configure(rowData: dataRow, delegate: rowDelegate, referrerDelegate: referrerDelegate)
 
             // Don't show the separator line on the last row.
@@ -66,7 +66,7 @@ extension UITableViewCell {
     func addViewMoreToStackView(_ rowsStackView: UIStackView,
                                 forStatSection statSection: StatSection?,
                                 withDelegate delegate: ViewMoreRowDelegate?) {
-        let row = ViewMoreRow.loadFromNib()
+        let row = ViewMoreRow()
         row.configure(statSection: statSection, delegate: delegate)
         rowsStackView.addArrangedSubview(row)
     }

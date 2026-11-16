@@ -25,7 +25,46 @@ pre { overflow-x: scroll; background-color: var(--color-neutral-0); padding: 1em
 
 p, div, li { line-height: 1.6em; font-size: 100%; }
 
-h1, h2, h3, h4, h5, h6 { line-height: 1.6em; }
+/* Headings: tighter line spacing than body text, and 16px above and below.
+   Both body classes are used so these rules beat the remote stylesheet's rules,
+   including block rules like `.wp-block-image` and `.aligncenter`. */
+.reader-full-post.reader-full-post__story-content :is(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.25;
+  margin: 16px 0;
+}
+
+/* The element before a heading can have a bigger bottom margin, or a last child whose
+   margin passes through it (like a centred image in a paragraph). Cap both at 16px. */
+.reader-full-post.reader-full-post__story-content :has(+ :is(h1, h2, h3, h4, h5, h6)) {
+  margin-bottom: 16px;
+  margin-trim: block-end;
+}
+
+/* Keep a subheading close to the heading above it */
+.reader-full-post.reader-full-post__story-content :is(h1, h2, h3, h4, h5, h6):has(+ :is(h1, h2, h3, h4, h5, h6)) {
+  margin-bottom: 8px;
+}
+
+.reader-full-post.reader-full-post__story-content :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 8px;
+}
+
+/* No space above the first thing in the post, or above a heading that starts a container.
+   `margin-trim` skips elements that aren't shown but not text, so a heading right after
+   plain text keeps its space. */
+.reader-full-post.reader-full-post__story-content,
+.reader-full-post.reader-full-post__story-content :has(> :is(h1, h2, h3, h4, h5, h6)) {
+  margin-trim: block-start;
+}
+
+.reader-full-post.reader-full-post__story-content :is(h1, h2, h3, h4, h5, h6):last-child {
+  margin-bottom: 0;
+}
+
+/* A block inside a heading keeps the heading's line spacing */
+.reader-full-post.reader-full-post__story-content :is(h1, h2, h3, h4, h5, h6) :is(p, div, li) {
+  line-height: inherit;
+}
 
 hr {
   border: 1px solid var(--color-neutral-0);

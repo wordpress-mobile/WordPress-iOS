@@ -44,7 +44,7 @@ extension PostService {
     ) {
 
         guard let remote = postServiceRemoteFactory.restRemoteFor(siteID: siteID, context: managedObjectContext) else {
-            DDLogError("Unable to create a REST remote for posts.")
+            Loggers.app.error("Unable to create a REST remote for posts.")
             failure(nil)
             return
         }
@@ -66,7 +66,7 @@ extension PostService {
                 }
             },
             failure: { error in
-                DDLogError("\(String(describing: error))")
+                Loggers.app.error("\(String(describing: error))")
                 failure(error)
             }
         )
@@ -186,7 +186,7 @@ private extension PostService {
             let users = try context.fetch(request)
             users.forEach { context.delete($0) }
         } catch {
-            DDLogError("Error fetching post Like Users: \(error)")
+            Loggers.app.error("Error fetching post Like Users: \(error)")
         }
     }
 }

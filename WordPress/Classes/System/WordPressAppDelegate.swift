@@ -4,7 +4,6 @@ import AutomatticEncryptedLogs
 import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
-import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
@@ -41,6 +40,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // Recover by creating the window now: `WordPressSceneDelegate` attaches it to
             // the scene once one connects.
             assertionFailure("windowManager accessed before any scene connected")
+            // TODO: Modernization - Replace with UIWindow(windowScene:) once this fallback can receive the
+            // connecting UIWindowScene (e.g. by moving window creation into
+            // WordPressSceneDelegate.scene(_:willConnectTo:options:)). Do not look the scene up via
+            // UIApplication.shared.connectedScenes here.
             window = UIWindow(frame: UIScreen.main.bounds)
         }
         let window = window!
@@ -90,15 +93,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // We need to set up the swift-log logging system right after app launch, so that logs can be written
-        // into the log handlers configured below.
-        LoggingSystem.bootstrap { label in
-            let ddLogHandlerFactory: (String) -> LogHandler = DDLogHandler.handlerFactory()
-            return MultiplexLogHandler([
-                ddLogHandlerFactory(label),
-                ExtensiveLogger(label: label)
-            ])
-        }
+        // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPSetLoggingDelegate(libraryLogger)
 
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
@@ -373,12 +372,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
-        let libraryLogger = WordPressLibraryLogger()
-        TracksLogging.delegate = libraryLogger
-        WPKitSetLoggingDelegate(libraryLogger)
-        WPSetLoggingDelegate(libraryLogger)
+        WordPressAppDelegate.restoreExtraDebugSetting()
         printDebugLaunchInfo()
-        toggleExtraDebuggingIfNeeded()
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
@@ -717,39 +712,34 @@ extension WordPressAppDelegate {
         Loggers.app.info("===========================================================================")
     }
 
-    func toggleExtraDebuggingIfNeeded() {
-        if !AccountHelper.isLoggedIn {
-            // When there are no blogs in the app the settings screen is unavailable.
-            // In this case, enable extra_debugging by default to help troubleshoot any issues.
-            guard UserPersistentStoreFactory.instance().object(forKey: "orig_extra_debug") == nil else {
-                // Already saved. Don't save again or we could loose the original value.
-                return
-            }
+    /// Extra debug used to turn itself on for signed-out users, saving their choice in `orig_extra_debug`.
+    /// It's opt-in now, so this puts back the saved choice on devices that still have one.
+    static func restoreExtraDebugSetting(
+        in store: UserPersistentRepository = UserPersistentStoreFactory.instance()
+    ) {
+        guard let savedValue = store.string(forKey: "orig_extra_debug") else {
+            return
+        }
 
-            let origExtraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug") ? "YES" : "NO"
-            UserPersistentStoreFactory.instance().set(origExtraDebug, forKey: "orig_extra_debug")
-            UserPersistentStoreFactory.instance().set(true, forKey: "extra_debug")
-            WordPressAppDelegate.setLogLevel(.verbose)
-        } else {
-            guard let origExtraDebug = UserPersistentStoreFactory.instance().string(forKey: "orig_extra_debug") else {
-                return
-            }
+        store.set((savedValue as NSString).boolValue, forKey: "extra_debug")
+        store.removeObject(forKey: "orig_extra_debug")
+        WPLogger.configureLoggerLevelWithExtraDebug()
+    }
 
-            let origExtraDebugValue = (origExtraDebug as NSString).boolValue
-
-            // Restore the original setting and remove orig_extra_debug
-            UserPersistentStoreFactory.instance().set(origExtraDebugValue, forKey: "extra_debug")
-            UserPersistentStoreFactory.instance().removeObject(forKey: "orig_extra_debug")
-
-            if origExtraDebugValue {
-                WordPressAppDelegate.setLogLevel(.verbose)
-            }
+    /// Sets up swift-log. Every `main.swift` MUST call this before it creates the app delegate.
+    ///
+    /// A `Logger` keeps the handler it was created with, and the delegate's stored properties create
+    /// `ContextManager.shared`, which logs. A logger created before this call would write to stdout,
+    /// and never to the log files, until the app quits.
+    public static func bootstrapLogging() {
+        LoggingSystem.bootstrap { label in
+            AppLogLevelHandler.makeAppHandler(label: label)
         }
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
-        SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjackSwift.dynamicLogLevel = level
+        AppLogLevel.shared.current = Logging.Logger.Level(level)
     }
 
     /// Logs the error in Sentry.
@@ -792,6 +782,9 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupWordPressExtensions()
             AccountService.loadDefaultAccountCookies()
+            // Flags can target an account. Without this fetch, the new account's flags
+            // wait for the next foreground or launch.
+            updateFeatureFlags()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
@@ -805,8 +798,6 @@ extension WordPressAppDelegate {
             }
             clearReaderStuff()
         }
-
-        toggleExtraDebuggingIfNeeded()
 
         WPAnalytics.track(.defaultAccountChanged)
     }

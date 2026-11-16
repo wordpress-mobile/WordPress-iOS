@@ -167,7 +167,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             divider.bottomAnchor.constraint(equalTo: doneButtonContainer.topAnchor),
-            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            divider.makeHairlineConstraint(for: divider.heightAnchor)
         ])
     }
 

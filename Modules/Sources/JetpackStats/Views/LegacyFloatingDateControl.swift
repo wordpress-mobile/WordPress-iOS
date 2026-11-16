@@ -173,11 +173,11 @@ private struct MinimumBottomSafeArea: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.bottom, bottomInset == 0 ? minPadding : 0)
+            .padding(.bottom, max(minPadding - bottomInset, 0))
             .overlay(
                 GeometryReader { geometry in
-                    Color.clear.onAppear {
-                        self.bottomInset = geometry.safeAreaInsets.bottom
+                    Color.clear.onChange(of: geometry.safeAreaInsets.bottom, initial: true) { _, newValue in
+                        self.bottomInset = newValue
                     }
                 }
             )

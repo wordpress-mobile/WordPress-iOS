@@ -3,29 +3,37 @@ import WordPressSharedUI
 
 public class SubjectContentStyles: FormattableContentStyles {
     public var attributes: [NSAttributedString.Key: Any] {
-        return WPStyleGuide.Notifications.subjectRegularStyle
+        WPStyleGuide.Notifications.subjectRegularStyle(for: horizontalSizeClass)
     }
 
     public var quoteStyles: [NSAttributedString.Key: Any]? {
-        return WPStyleGuide.Notifications.subjectItalicsStyle
+        WPStyleGuide.Notifications.subjectItalicsStyle(for: horizontalSizeClass)
     }
 
     public var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
-        return [
-            .user: WPStyleGuide.Notifications.subjectSemiBoldStyle,
-            .post: WPStyleGuide.Notifications.subjectSemiBoldStyle,
-            .site: WPStyleGuide.Notifications.subjectSemiBoldStyle,
-            .comment: WPStyleGuide.Notifications.subjectRegularStyle,
-            .blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
-            .noticon: WPStyleGuide.Notifications.subjectNoticonStyle
+        [
+            .user: WPStyleGuide.Notifications.subjectSemiBoldStyle(for: horizontalSizeClass),
+            .post: WPStyleGuide.Notifications.subjectSemiBoldStyle(for: horizontalSizeClass),
+            .site: WPStyleGuide.Notifications.subjectSemiBoldStyle(for: horizontalSizeClass),
+            .comment: WPStyleGuide.Notifications.subjectRegularStyle(for: horizontalSizeClass),
+            .blockquote: WPStyleGuide.Notifications.subjectQuotedStyle(for: horizontalSizeClass),
+            .noticon: WPStyleGuide.Notifications.subjectNoticonStyle(for: horizontalSizeClass)
         ]
     }
 
     public var linksColor: UIColor?
     public var key: String
 
-    public init(linkColor: UIColor? = nil, key: String = "SubjectContentStyles") {
+    private let horizontalSizeClass: UIUserInterfaceSizeClass
+
+    /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the subject.
+    public init(
+        horizontalSizeClass: UIUserInterfaceSizeClass,
+        linkColor: UIColor? = nil,
+        key: String = "SubjectContentStyles"
+    ) {
+        self.horizontalSizeClass = horizontalSizeClass
         self.linksColor = linkColor
-        self.key = key
+        self.key = WPStyleGuide.Notifications.cacheKey(key, for: horizontalSizeClass)
     }
 }

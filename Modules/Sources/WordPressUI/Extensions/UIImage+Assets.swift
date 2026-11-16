@@ -34,16 +34,20 @@ extension UIImage {
 
     /// Renders the Background Image with the specified Background + Size + Insets parameters.
     ///
+    /// - Parameter traitCollection: The trait collection of the view that will display the image.
+    ///
     public class func renderBackgroundImage(fill: UIColor,
                                border: UIColor? = nil,
                                size: CGSize = DefaultRenderMetrics.backgroundImageSize,
                                cornerRadius: CGFloat = DefaultRenderMetrics.backgroundCornerRadius,
-                               capInsets: UIEdgeInsets = DefaultRenderMetrics.backgroundCapInsets) -> UIImage {
+                               capInsets: UIEdgeInsets = DefaultRenderMetrics.backgroundCapInsets,
+                               traitCollection: UITraitCollection) -> UIImage {
 
-        let renderer = UIGraphicsImageRenderer(size: size)
+        // The default format uses the main screen's scale, so ask for the display's own.
+        let renderer = UIGraphicsImageRenderer(size: size, format: UIGraphicsImageRendererFormat(for: traitCollection))
         let image = renderer.image { context in
 
-            let lineWidthInPixels = 1 / UIScreen.main.scale
+            let lineWidthInPixels = 1 / traitCollection.displayScale
             let cgContext = context.cgContext
 
             /// Apply a 1px inset to the bounds, for our bezier (so that the border doesn't fall outside, capicci?)

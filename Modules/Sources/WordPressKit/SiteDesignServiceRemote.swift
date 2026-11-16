@@ -1,9 +1,4 @@
 import Foundation
-#if canImport(AppKit)
-import AppKit
-#elseif canImport(UIKit)
-import UIKit
-#endif
 
 public struct SiteDesignRequest {
     public enum TemplateGroup: String {
@@ -14,26 +9,23 @@ public struct SiteDesignRequest {
 
     public let parameters: [String: AnyObject]
 
-    public init(withThumbnailSize thumbnailSize: CGSize, withGroups groups: [TemplateGroup] = []) {
+    /// - Parameters:
+    ///   - thumbnailSize: The size of the thumbnails, in points.
+    ///   - scale: The native scale of the screen that will display the thumbnails,
+    ///     for example `view.window?.windowScene?.screen.nativeScale`.
+    ///   - groups: The template groups to request.
+    public init(withThumbnailSize thumbnailSize: CGSize, scale: CGFloat, withGroups groups: [TemplateGroup] = []) {
         var parameters: [String: AnyObject]
         parameters = [
             "preview_width": "\(thumbnailSize.width)" as AnyObject,
             "preview_height": "\(thumbnailSize.height)" as AnyObject,
-            "scale": Self.screenScale as AnyObject
+            "scale": scale as AnyObject
         ]
         if !groups.isEmpty {
             let groups = groups.map { $0.rawValue }
             parameters["group"] = groups.joined(separator: ",") as AnyObject
         }
         self.parameters = parameters
-    }
-
-    private static var screenScale: CGFloat {
-        #if canImport(UIKit)
-        return UIScreen.main.nativeScale
-        #else
-        return 1.0
-        #endif
     }
 }
 
@@ -46,26 +38,44 @@ public class SiteDesignServiceRemote {
         "type": ("mobile" as AnyObject)
     ]
 
-    private static func joinParameters(_ parameters: [String: AnyObject], additionalParameters: [String: AnyObject]?) -> [String: AnyObject] {
+    private static func joinParameters(
+        _ parameters: [String: AnyObject],
+        additionalParameters: [String: AnyObject]?
+    ) -> [String: AnyObject] {
         guard let additionalParameters else { return parameters }
-        return parameters.reduce(into: additionalParameters, { result, element in
-            result[element.key] = element.value
-        })
+        return parameters.reduce(
+            into: additionalParameters,
+            { result, element in
+                result[element.key] = element.value
+            }
+        )
     }
 
-    public static func fetchSiteDesigns(_ api: WordPressComRestApi, request: SiteDesignRequest? = nil, completion: @escaping CompletionHandler) {
-        let combinedParameters: [String: AnyObject] = joinParameters(parameters, additionalParameters: request?.parameters)
-        api.GET(endpoint, parameters: combinedParameters, success: { responseObject, _ in
-            do {
-                let result = try parseLayouts(fromResponse: responseObject)
-                completion(.success(result))
-            } catch {
-                NSLog("error response object: %@", String(describing: responseObject))
+    public static func fetchSiteDesigns(
+        _ api: WordPressComRestApi,
+        request: SiteDesignRequest? = nil,
+        completion: @escaping CompletionHandler
+    ) {
+        let combinedParameters: [String: AnyObject] = joinParameters(
+            parameters,
+            additionalParameters: request?.parameters
+        )
+        api.GET(
+            endpoint,
+            parameters: combinedParameters,
+            success: { responseObject, _ in
+                do {
+                    let result = try parseLayouts(fromResponse: responseObject)
+                    completion(.success(result))
+                } catch {
+                    NSLog("error response object: %@", String(describing: responseObject))
+                    completion(.failure(error))
+                }
+            },
+            failure: { error, _ in
                 completion(.failure(error))
             }
-        }, failure: { error, _ in
-            completion(.failure(error))
-        })
+        )
     }
 
     private static func parseLayouts(fromResponse response: Any) throws -> RemoteSiteDesigns {

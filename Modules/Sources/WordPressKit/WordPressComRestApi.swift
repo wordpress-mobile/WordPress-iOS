@@ -96,15 +96,11 @@ open class WordPressComRestApi: NSObject {
 
     @objc public let sharedContainerIdentifier: String?
 
-    private let backgroundUploads: Bool
-
     private let localeKey: String
 
     @objc public let baseURL: URL
 
     private var invalidTokenHandler: (() -> Void)?
-
-    private var useEphemeralSession: Bool
 
     /**
      Configure whether or not the user's preferred language locale should be appended. Defaults to true.
@@ -146,12 +142,32 @@ open class WordPressComRestApi: NSObject {
                 useEphemeralSession: Bool = false) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
-        self.backgroundUploads = backgroundUploads
         self.backgroundSessionIdentifier = backgroundSessionIdentifier
         self.sharedContainerIdentifier = sharedContainerIdentifier
         self.localeKey = localeKey
         self.baseURL = baseURL
-        self.useEphemeralSession = useEphemeralSession
+
+        self.urlSession = URLSession(
+            configuration: Self.sessionConfiguration(
+                backgroundSessionIdentifier: nil,
+                useEphemeralSession: useEphemeralSession,
+                oAuthToken: oAuthToken,
+                userAgent: userAgent
+            )
+        )
+
+        let uploadConfiguration = Self.sessionConfiguration(
+            backgroundSessionIdentifier: backgroundUploads ? backgroundSessionIdentifier : nil,
+            useEphemeralSession: useEphemeralSession,
+            oAuthToken: oAuthToken,
+            userAgent: userAgent
+        )
+        uploadConfiguration.sharedContainerIdentifier = sharedContainerIdentifier
+        if uploadConfiguration.identifier != nil {
+            self.uploadURLSession = URLSession.backgroundSession(configuration: uploadConfiguration)
+        } else {
+            self.uploadURLSession = URLSession(configuration: uploadConfiguration)
+        }
 
         super.init()
     }
@@ -337,24 +353,27 @@ open class WordPressComRestApi: NSObject {
 
     // MARK: - Async
 
-    private lazy var urlSession: URLSession = {
-        URLSession(configuration: sessionConfiguration(background: false))
-    }()
+    /// The sessions requests are sent on. They're created with the object and never replaced, so
+    /// requests running concurrently, off the main actor, always agree on which session to use.
+    ///
+    /// They must not be created lazily. A `lazy var` isn't thread-safe: requests that start
+    /// together on a new instance can each find no session, create one and store it. Those
+    /// stores race. Two of them can each release the session that a third request stored, which
+    /// frees it while that request is still using it and crashes in `URLSession`.
+    private let urlSession: URLSession
+    private let uploadURLSession: URLSession
 
-    private lazy var uploadURLSession: URLSession = {
-        let configuration = sessionConfiguration(background: backgroundUploads)
-        configuration.sharedContainerIdentifier = self.sharedContainerIdentifier
-        if configuration.identifier != nil {
-            return URLSession.backgroundSession(configuration: configuration)
-        } else {
-            return URLSession(configuration: configuration)
-        }
-    }()
-
-    private func sessionConfiguration(background: Bool) -> URLSessionConfiguration {
+    /// - Parameter backgroundSessionIdentifier: The identifier of a background session, or `nil`
+    ///   for a session that isn't one.
+    private static func sessionConfiguration(
+        backgroundSessionIdentifier: String?,
+        useEphemeralSession: Bool,
+        oAuthToken: String?,
+        userAgent: String?
+    ) -> URLSessionConfiguration {
         let configuration: URLSessionConfiguration
-        if background {
-            configuration = .background(withIdentifier: self.backgroundSessionIdentifier)
+        if let backgroundSessionIdentifier {
+            configuration = .background(withIdentifier: backgroundSessionIdentifier)
         } else if useEphemeralSession {
             configuration = .ephemeral
         } else {
@@ -362,10 +381,10 @@ open class WordPressComRestApi: NSObject {
         }
 
         var additionalHeaders: [String: AnyObject] = [:]
-        if let oAuthToken = self.oAuthToken {
+        if let oAuthToken {
             additionalHeaders["Authorization"] = "Bearer \(oAuthToken)" as AnyObject
         }
-        if let userAgent = self.userAgent {
+        if let userAgent {
             additionalHeaders["User-Agent"] = userAgent as AnyObject
         }
 

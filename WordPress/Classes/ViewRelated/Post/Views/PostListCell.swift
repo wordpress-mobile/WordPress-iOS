@@ -87,7 +87,12 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         featuredImageView.layer.opacity = viewModel.syncStateViewModel.isEditable ? 1 : 0.25
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(viewModel.post)
-            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.post.blog, size: Constants.imageSize.scaled(by: max(1, traitCollection.displayScale)))
+            let thumbnailURL = MediaImageService.getResizedImageURL(
+                for: imageURL,
+                blog: viewModel.post.blog,
+                size: Constants.imageSize.scaled(by: max(1, traitCollection.displayScale)),
+                traitCollection: traitCollection
+            )
             featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 

@@ -107,7 +107,7 @@ class FollowCommentsService: NSObject {
                 }
             }, completion: success, on: .main)
         } failure: { error in
-            DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
+            Loggers.app.error("Error updating notification settings for followed conversation: \(String(describing: error))")
             failure(error)
         }
     }

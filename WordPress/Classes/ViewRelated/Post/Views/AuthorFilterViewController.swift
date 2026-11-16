@@ -233,7 +233,7 @@ private class AuthorFilterCell: UITableViewCell {
             separator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             separator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            separator.makeHairlineConstraint(for: separator.heightAnchor)
         ])
 
         tintColor = UIAppColor.primary(.shade40)

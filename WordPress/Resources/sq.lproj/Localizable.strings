@@ -993,7 +993,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
@@ -1491,7 +1490,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create Page" = "Krijoni Faqe";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Krijoje Sajtin";
 
@@ -2503,9 +2501,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jam kaq i frymëzuar nga vepra e gdhendësit Çome Çomanga. Do t’i provoj këto teknika në veprën time të ardhshme";
 
-/* Text on the support form to refer to what area the user has problem with. */
-"I need help with" = "Më duhet ndihmë për";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adresë IP";
 
@@ -2882,12 +2877,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Bëmani të ditur kur të mbarojë!";
 
-/* Message info on the support screen. */
-"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Na tregoni adresën (URL) e sajtit tuaj dhe do t’ju themi aq sa mundemi rreth problemit dhe do të lidhemi së shpejti bashkë.";
-
-/* Title to let the user know what do we want on the support screen. */
-"Let’s get this sorted" = "Le ta ujdisim";
-
 /* Lifestyle site intent topic */
 "Lifestyle" = "Stil Jetese";
 
@@ -3074,9 +3063,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Administroni Prirje";
-
-/* Return to blog screen action when theme activation succeeds */
-"Manage site" = "Administroni sajtin";
 
 /* No comment provided by engineer. */
 "Manual" = "Doracak";
@@ -5153,9 +5139,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Teknologji";
 
-/* Create site, step 1. Select type of site. Title */
-"Tell us what kind of site you'd like to make" = "Tregonani se ç’lloj sajti do të donit të bënit";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Terma dhe Kushte";
 
@@ -5230,9 +5213,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Figura s’u shtua dot te Mediateka.";
-
-/* Accessibility hint for list */
-"The kinds of sites that can be created" = "Llojet e sajteve që mund të krijohen";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Gjuha në të cilën shkruhet kryesisht në këtë sajt.";
@@ -5398,9 +5378,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Kartela është shumë e madhe për t’u ngarkuar te sajti juaj ose ky format mediash nuk mbulohet.";
-
-/* Create site, step 1. Select type of site. Subtitle */
-"This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Kjo na ndihmon të bëjmë rekomandime. Por s’jeni kurrë të kyçur në to - krejt sajtet evoluojnë!";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Këto të dhëna na ndihmojnë të përmirësojmë produktet tona, ta bëjmë marketingun më specifik për ju, më personal punimin tuaj në WordPress.com, etj, siç përshkruhet hollësisht te rregullat tona mbi privatësinë.";
@@ -6674,9 +6651,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "S’gjendet dot URL-ja e sajtit të tanishëm";
 
-/* Error message shown when the site doesn't support Application Passwords feature */
-"applicationPasswordMigration.error.unsupported" = "Ky sajt s’mbulon Fjalëkalim Aplikacioni.";
-
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Lypset të bëni hyrjen me përdorues “%@”";
 
@@ -6921,12 +6895,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Ruaje Skicën";
 
-/* Button to add more screenshots */
-"com.jetpack.support.addMoreScreenshots" = "Shtoni Më Tepër Foto Ekrani";
-
-/* Button to add screenshots */
-"com.jetpack.support.addScreenshots" = "Shtoni Foto Ekrani";
-
 /* Header for application logs section */
 "com.jetpack.support.applicationLogs" = "Regjistra Aplikacionesh";
 
@@ -6935,12 +6903,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Navigation title for application logs screen */
 "com.jetpack.support.applicationLogsTitle" = "Regjistra Aplikacionesh";
-
-/* Format string for attachment identifier */
-"com.jetpack.support.attachment" = "Bashkëngjitje %@";
-
-/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
-"com.jetpack.support.attachmentLimit" = "Kufi Bashkëngjitjesh:: %1$@ \/ %2$@";
 
 /* Bot greeting message. %1$@ is the user's name */
 "com.jetpack.support.botGreeting" = "Njatjeta %1$@!";
@@ -6975,23 +6937,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when cache clearing is complete */
 "com.jetpack.support.complete" = "U plotësua";
 
-/* Confirmation message when canceling a draft */
-"com.jetpack.support.confirmCancelMessage" = "Jeni i sigurt se doni të anulohet ky mesazh? Do të humbni çfarëdo të dhënash që keni dhënë";
-
-/* Title for alert confirming cancellation */
-"com.jetpack.support.confirmCancellation" = "Ripohoni Anulimin";
-
 /* Confirmation dialog title when deleting all logs */
 "com.jetpack.support.confirmDeleteAllLogs" = "Jeni i sigurt se doni të fshihen krejt regjistrat?";
-
-/* Section title for contact information */
-"com.jetpack.support.contactInformation" = "Hollësi Kontakti";
-
-/* Button to continue editing a message */
-"com.jetpack.support.continueWriting" = "Vazhdoni Shkrimin";
-
-/* Message shown at end of closed support conversation */
-"com.jetpack.support.conversationEnded" = "Fund i bisedës. S’ka të mundshme përgjigje të mëtejshme.";
 
 /* Navigation title for bot conversations list */
 "com.jetpack.support.conversations" = "Biseda";
@@ -7005,20 +6952,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Navigation title for diagnostics screen */
 "com.jetpack.support.diagnosticsTitle" = "Diagnostikime";
 
-/* Button to discard changes in a draft message */
-"com.jetpack.support.discardChanges" = "Hidhi Tej Ndryshimet";
-
-/* Notice explaining where support will send email responses */
-"com.jetpack.support.emailNotice" = "Do t’ju dërgojmë email në këtë adresë.";
-
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Gabim në ngarkim regjistrash";
-
-/* Error message when support conversations fail to load */
-"com.jetpack.support.errorLoadingSupportConversations" = "Gabim gjatë ngarkimit të bisedave të asistencës";
-
-/* Title for error alerts */
-"com.jetpack.support.errorTitle" = "Gabim";
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Eksportoje si Kartelë";
@@ -7038,20 +6973,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Link title to view extensive logs */
 "com.jetpack.support.extensiveLogs" = "Regjistra të Zgjeruar";
 
-/* Button to dismiss alerts. */
-"com.jetpack.support.gotIt" = "E mora vesh";
-
-/* Text on the support form to refer to what area the user has problem with. */
-"com.jetpack.support.iNeedHelp" = "Më duhet ndihmë për";
-
 /* Toggle label to include application logs in the support request */
 "com.jetpack.support.includeApplicationLogs" = "Përfshi regjistra aplikacioni";
-
-/* Section title for issue details */
-"com.jetpack.support.issueDetails" = "Hollësi Problemi";
-
-/* Format string for when conversation was last updated */
-"com.jetpack.support.lastUpdated" = "Përditësuar së fundi më %@";
 
 /* Progress message while loading conversation messages */
 "com.jetpack.support.loadingBotConversationMessages" = "Po Ngarkohen Mesazhe";
@@ -7059,14 +6982,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Progress message while loading bot conversations */
 "com.jetpack.support.loadingBotConversations" = "Po Ngarkohen Biseda Me Robotë";
 
-/* Progress text while loading support conversations */
-"com.jetpack.support.loadingConversations" = "Po Ngarkohen Biseda";
-
 /* Progress message while loading disk usage information */
 "com.jetpack.support.loadingDiskUsage" = "Po Ngarkohet Përdorim Disku";
-
-/* Progress message while loading an image attachment */
-"com.jetpack.support.loadingImage" = "Po Ngarkohet Figurë";
 
 /* Progress message shown in overlay while refreshing content */
 "com.jetpack.support.loadingLatestContent" = "Po ngarkohet lënda më e re";
@@ -7076,9 +6993,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Progress message while loading log files */
 "com.jetpack.support.loadingLogs" = "Po ngarkohen regjistra…";
-
-/* Progress text while loading conversation messages */
-"com.jetpack.support.loadingMessages" = "Po Ngarkohen Mesazhe";
 
 /* Progress message while loading a video attachment */
 "com.jetpack.support.loadingVideo" = "Po Ngarkohet Video";
@@ -7091,15 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Ruhen regjistrime deri për shtatë ditë.";
-
-/* Section header for message text input */
-"com.jetpack.support.message" = "Mesazh";
-
-/* Success message when reply is sent successfully */
-"com.jetpack.support.messageSent" = "Mesazhi u Dërgua";
-
-/* Format string for number of messages in conversation */
-"com.jetpack.support.messagesCount" = "%d Mesazhe";
 
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "Fjalosje e Re Me Robot";
@@ -7116,35 +7021,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "S’u Gjetën Regjistra";
 
-/* Button to open a support ticket */
-"com.jetpack.support.openSupportTicket" = "Hapni një Çështje Asistence";
-
-/* Text indicating a field is optional */
-"com.jetpack.support.optional" = "(Opsionale)";
-
-/* Navigation title for replying to a support conversation */
-"com.jetpack.support.reply" = "Përgjigju";
-
 /* Description for saving log as a file */
 "com.jetpack.support.saveAsFile" = "Ruajeni si një kartelë, për ta ndarë me të tjerët, ose depozituar diku";
 
-/* Label for screenshots section */
-"com.jetpack.support.screenshots" = "Foto ekrani";
-
-/* Description for screenshots section */
-"com.jetpack.support.screenshotsDescription" = "Shtimi i fotove të ekrani mund të na ndihmojë të kuptojmë dhe zgjidhim më shpejt problemin tuaj.";
-
-/* Button to send a message or reply */
-"com.jetpack.support.send" = "Dërgoje";
-
 /* Description for sending logs to support */
 "com.jetpack.support.sendLogsToSupport" = "Dërgoni regjistrim drejt e te ekipi i asistencës";
-
-/* Progress text while sending a message */
-"com.jetpack.support.sending" = "Po dërgohet";
-
-/* Progress message shown while sending a message */
-"com.jetpack.support.sendingMessage" = "Po Dërgohet Mesazhi";
 
 /* Button to share content */
 "com.jetpack.support.share" = "Ndajeni me të tjerët";
@@ -7155,47 +7036,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when sharing log with support */
 "com.jetpack.support.sharingWithSupport" = "Po ndahet me asistencën!";
 
-/* Site Address title on the support form */
-"com.jetpack.support.siteAddress" = "Adresë Sajti";
-
-/* Placeholder for site address field */
-"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/sajtijuaj.com";
-
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Filloni një bisedë të re duke përdorur butonin më sipër";
 
-/* Subject title on the support form */
-"com.jetpack.support.subject" = "Subjekt";
-
-/* Placeholder for subject field */
-"com.jetpack.support.subjectPlaceholder" = "Përmbledhje e shkurtër e çështjes suaj";
-
-/* Button title to submit a support request. */
-"com.jetpack.support.submitRequest" = "Parashtroni Kërkesë Asistence";
-
-/* Navigation title for the support conversations list */
-"com.jetpack.support.supportConversations" = "Biseda Me Asistencën";
-
-/* Title for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSent" = "Kërkesa u Dërgua!";
-
-/* Message for the alert after the support request is created. */
-"com.jetpack.support.supportRequestSentMessage" = "Kërkesa juaj për asistencë është dërguar me sukses. Do të përgjigjemi përmes email-i sa më shpejt që të kemi mundësi.";
-
 /* Progress message shown while bot is thinking */
 "com.jetpack.support.thinking" = "Po vras mendjen…";
-
-/* Title of the view for contacting support. */
-"com.jetpack.support.title" = "Lidhuni me Asistencën";
 
 /* Button to retry a failed operation */
 "com.jetpack.support.tryAgain" = "Riprovoni";
 
 /* Error title when log deletion fails */
 "com.jetpack.support.unableToDeleteLogs" = "S’arrihet të fshihen regjistra";
-
-/* Error message when conversation cannot be displayed */
-"com.jetpack.support.unableToDisplayConversation" = "S’arrihet të shfaqet biseda";
 
 /* Error title when video cannot be loaded or played */
 "com.jetpack.support.unableToDisplayVideo" = "S’arrihet të shfaqet video";
@@ -7208,12 +7059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "S’arrihet të Ngarkohen Mesazhe";
-
-/* Error title when message sending fails */
-"com.jetpack.support.unableToSendMessage" = "S’arrihet të dërgohet Mesazh";
-
-/* Button to view an attachment */
-"com.jetpack.support.view" = "Shiheni";
 
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Po kryhet";
@@ -7403,18 +7248,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Hedhurina";
-
-/* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "S’ka Lloje Vetjake Postimesh";
-
-/* Accessibility label for the button to pin a custom post type */
-"customPostTypes.pin.accessibilityLabel" = "Fiksoje";
-
-/* Title for the Custom Post Types screen */
-"customPostTypes.title" = "Më tepër";
-
-/* Accessibility label for the button to unpin a custom post type */
-"customPostTypes.unpin.accessibilityLabel" = "Shfiksoje";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Krijoni pultin tuaj të përshtatur dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
@@ -9767,7 +9600,7 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Kujdes";
 
-/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+/* Error message when a post type cannot be found on the site. %1$@ is the post type slug, e.g. 'post'. */
 "pinnedPostType.error.notFound" = "“%1$@” s’është i përdorshëm në këtë sajt.";
 
 /* Title for the plan selection view */

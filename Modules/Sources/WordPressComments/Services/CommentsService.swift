@@ -60,6 +60,9 @@ protocol CommentsServiceProtocol: Sendable {
     /// Creates a reply to `parentID` on `postID` and returns the created
     /// comment's detail.
     func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail
+
+    /// Updates the comment's content and returns the updated detail.
+    func updateContent(id: Int64, content: String) async throws -> CommentDetail
 }
 
 /// Errors raised by `CommentsService` that don't originate from wordpress-rs.
@@ -179,6 +182,14 @@ final class CommentsService: CommentsServiceProtocol {
         // only reads its status.
         let response = try await client.api.comments.create(
             params: CommentCreateParams(post: postID, content: content, parent: parentID)
+        )
+        return CommentDetail(comment: response.data)
+    }
+
+    func updateContent(id: Int64, content: String) async throws -> CommentDetail {
+        let response = try await client.api.comments.update(
+            commentId: id,
+            params: CommentUpdateParams(content: content)
         )
         return CommentDetail(comment: response.data)
     }

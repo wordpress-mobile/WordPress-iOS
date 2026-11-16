@@ -196,13 +196,13 @@ extension BlazeWebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+        Loggers.app.info("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
 
         if !ReachabilityUtils.isInternetReachable() {
             observeReachability()
         } else {
             viewModel?.webViewDidFail(with: error)
-            DDLogError("Blaze WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
+            Loggers.app.error("Blaze WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
         }
     }
 }

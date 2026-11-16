@@ -26,6 +26,23 @@ We always try to avoid duplicating efforts, so if you decide to work on an issue
 
 If the change is trivial, feel free to send a pull request without notifying us.
 
+### Before Opening a Pull Request
+
+CI does not run on pull requests from forks, so a maintainer is the first person to build your change. Before you open a pull request:
+
+1. Build your change and run the tests for the code you changed. This needs macOS and Xcode.
+2. Run each affected test suite with this command. If you don't have an `iPhone 18 Pro` simulator, use any iPhone simulator listed by `xcrun simctl list devices available`.
+
+    ```bash
+    xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests -destination 'platform=iOS Simulator,name=iPhone 18 Pro' test -only-testing:<TestTarget>/<Suite>
+    ```
+
+    For example, `-only-testing:WordPressTest/RemoteFeatureFlagTests`. Repeat `-only-testing:` once for each suite.
+3. If you're opening the pull request from a fork, add a "What I ran" section to the description. List the test suites you ran and paste the result line each one printed. XCTest prints a line like `Executed 3 tests, with 0 failures`. Swift Testing prints a line like `Test run with 6 tests in 1 suite passed`. If your change has no tests to run (for example, a documentation change), write `No tests apply:` followed by the reason.
+4. If you could not build the change or run its tests (for example, because you aren't on macOS), don't open a pull request. Comment on the issue with your proposed approach instead.
+
+You are responsible for every line in your pull request, including code written by an AI tool. Build it and run it yourself before you submit it.
+
 ### Pull Requests and Code Reviews
 
 All code contributions pass through pull requests. If you haven't created a pull request before, we recommend this free video series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github).

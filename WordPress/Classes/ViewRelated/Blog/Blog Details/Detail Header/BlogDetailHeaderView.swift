@@ -293,6 +293,10 @@ extension BlogDetailHeaderView {
             if isSidebarModeEnabled {
                 configureLargeTitleMode()
             }
+
+            registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+                self.refreshMainStackViewAxis()
+            }
         }
 
         required init?(coder: NSCoder) {
@@ -309,14 +313,6 @@ extension BlogDetailHeaderView {
         func set(url: String) {
             subtitleButton.setTitle(url, for: .normal)
             subtitleButton.accessibilityIdentifier = .siteUrlAccessibilityId
-        }
-
-        // MARK: - Accessibility
-
-        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-            super.traitCollectionDidChange(previousTraitCollection)
-
-            refreshMainStackViewAxis()
         }
 
         // MARK: - Child View Setup

@@ -25,9 +25,21 @@ extension RevisionPreviewTextViewManager: TextViewAttachmentDelegate {
                 fetchPosterImageFor(videoAttachment: videoAttachment, onSuccess: success, onFailure: failure)
                 return
             }
-            downloadImage(from: posterURL, success: success, onFailure: failure)
+            downloadImage(
+                from: posterURL,
+                bounds: textView.bounds,
+                traitCollection: textView.traitCollection,
+                success: success,
+                onFailure: failure
+            )
         case is ImageAttachment:
-            downloadImage(from: url, success: success, onFailure: failure)
+            downloadImage(
+                from: url,
+                bounds: textView.bounds,
+                traitCollection: textView.traitCollection,
+                success: success,
+                onFailure: failure
+            )
         default:
             failure()
         }
@@ -60,12 +72,25 @@ private extension RevisionPreviewTextViewManager {
         mediaUtility.fetchPosterImage(for: videoSrcURL, onSuccess: onSuccess, onFailure: onFailure)
     }
 
-    private func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
+    private func downloadImage(
+        from url: URL,
+        bounds: CGRect,
+        traitCollection: UITraitCollection,
+        success: @escaping (UIImage) -> Void,
+        onFailure failure: @escaping () -> Void
+    ) {
         guard let post else {
             return
         }
 
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { _ in failure() })
+        let receipt = mediaUtility.downloadImage(
+            from: url,
+            post: post,
+            bounds: bounds,
+            traitCollection: traitCollection,
+            success: success,
+            onFailure: { _ in failure() }
+        )
         activeMediaRequests.append(receipt)
     }
 }

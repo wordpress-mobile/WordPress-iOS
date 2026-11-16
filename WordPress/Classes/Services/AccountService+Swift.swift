@@ -68,14 +68,17 @@ extension AccountService {
             }
         }
 
-        // Clear WordPress.com cookies
-        let cookieJars: [CookieJar] = [
-            HTTPCookieStorage.shared,
-            WKWebsiteDataStore.default().httpCookieStore
-        ]
+        // Clear WordPress.com cookies. The shared storage is cleared before this function
+        // returns, so that it can't remove the cookies loaded for an account that becomes
+        // the default right after this one is removed.
+        let cookieStorage = HTTPCookieStorage.shared
+        cookieStorage.cookies?
+            .filter(\.isWordPressComCookie)
+            .forEach(cookieStorage.deleteCookie)
 
-        for cookieJar in cookieJars {
-            cookieJar.removeWordPressComCookies(completion: {})
+        let webCookieStore = WKWebsiteDataStore.default().httpCookieStore
+        Task {
+            await webCookieStore.removeWordPressComCookies()
         }
 
         URLCache.shared.removeAllCachedResponses()

@@ -158,10 +158,8 @@ final class CreateButtonCoordinator: NSObject {
             }
         ]
 
-        if #available(iOS 18.0, *) {
-            viewController.preferredTransition = .zoom { [weak self] _ in
-                self?.button
-            }
+        viewController.preferredTransition = .zoom { [weak self] _ in
+            self?.button
         }
     }
 
@@ -200,7 +198,7 @@ private extension CreateButtonCoordinator {
         // TODO: check for cached prompt first.
 
         guard let bloggingPromptsService else {
-            DDLogError("FAB: failed creating BloggingPromptsService instance.")
+            Loggers.app.error("FAB: failed creating BloggingPromptsService instance.")
             prompt = nil
             return
         }
@@ -211,7 +209,7 @@ private extension CreateButtonCoordinator {
             },
             failure: { [weak self] error in
                 self?.prompt = nil
-                DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
+                Loggers.app.error("FAB: failed fetching blogging prompt: \(String(describing: error))")
             }
         )
     }

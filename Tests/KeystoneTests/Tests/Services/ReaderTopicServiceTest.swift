@@ -221,6 +221,46 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     }
 
     /**
+    Ensure that a WordPress.com site whose site meta turns into an error object (a private site the user
+    can no longer read) keeps one followed topic, instead of gaining a duplicate under the feed endpoint.
+    */
+    func testFollowedSiteIsNotDuplicatedWhenSiteMetaBecomesAnError() throws {
+        let service = ReaderTopicService(coreDataStack: contextManager)
+        let error: NSDictionary = ["errors": ["unauthorized": ["User cannot access this private blog."]]]
+        let site: NSDictionary = [
+            "ID": 1001,
+            "name": "Private Site",
+            "URL": "https://private-site.example.com",
+            "feed_ID": 2002,
+            "is_following": true
+        ]
+        func merge(siteMeta: NSDictionary) {
+            let entry: NSDictionary = [
+                "blog_ID": "1001",
+                "feed_ID": "2002",
+                "URL": "https://private-site.example.com",
+                "name": "Private Site",
+                "meta": ["data": ["site": siteMeta, "feed": error]]
+            ]
+            let siteInfo = RemoteReaderSiteInfo.siteInfo(forFollowedSiteResponse: entry)
+            siteInfo.postsEndpoint = siteInfo.endpointPath
+            let expect = expectation(description: "sites saved expectation")
+            service.mergeFollowedSites([siteInfo], withSuccess: { expect.fulfill() })
+            waitForExpectations(timeout: expectationTimeout, handler: nil)
+        }
+
+        merge(siteMeta: site)
+        merge(siteMeta: error)
+
+        let request = NSFetchRequest<ReaderSiteTopic>(entityName: ReaderSiteTopic.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "following = YES")
+        let topics = try mainContext.fetch(request)
+        XCTAssertEqual(topics.count, 1)
+        XCTAssertEqual(topics.first?.siteID, 1001)
+        XCTAssertEqual(topics.first?.path, "read/sites/1001/posts/")
+    }
+
+    /**
     Ensure that topics a user unsubscribes from are removed from core data when merging
     results from the REST API.
     */

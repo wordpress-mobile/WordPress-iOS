@@ -11,15 +11,13 @@ extension WPStyleGuide {
 
     static let aztecFormatBarDividerColor: UIColor = .separator
 
-    static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
-        get {
-            return (UIDevice.isPad()) ? UIAppColor.neutral(.shade0) : UIAppColor.neutral(.shade5)
-        }
+    /// The format picker is a popover on the pad idiom and a sheet elsewhere, so its background
+    /// follows the idiom of the presenting view controller.
+    static func aztecFormatPickerSelectedCellBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+        (traitCollection.userInterfaceIdiom == .pad) ? UIAppColor.neutral(.shade0) : UIAppColor.neutral(.shade5)
     }
 
-    static var aztecFormatPickerBackgroundColor: UIColor {
-        get {
-            return (UIDevice.isPad()) ? .systemBackground : UIAppColor.neutral(.shade0)
-        }
+    static func aztecFormatPickerBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+        (traitCollection.userInterfaceIdiom == .pad) ? .systemBackground : UIAppColor.neutral(.shade0)
     }
 }

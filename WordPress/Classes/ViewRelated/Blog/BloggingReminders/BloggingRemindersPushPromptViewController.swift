@@ -114,6 +114,16 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
 
         view.addSubview(turnOnNotificationsButton)
         configureConstraints()
+
+        updateHintVisibility()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.updateHintVisibility()
+        }
+    }
+
+    private func updateHintVisibility() {
+        hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -130,12 +140,6 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
             tracker.flowDismissed(source: .enableNotifications)
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     @objc

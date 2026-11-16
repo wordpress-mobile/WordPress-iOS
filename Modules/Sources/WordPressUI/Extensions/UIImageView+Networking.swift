@@ -4,7 +4,9 @@ import UIKit
 public extension UIImageView {
     enum ImageDownloadError: Error {
         case noURLSpecifiedInRequest
-        case urlMismatch
+        /// mShots answered with its placeholder image because the screenshot is still being generated.
+        /// Requesting the same URL again later returns the screenshot.
+        case mShotsPlaceholder
     }
 
     /// Downloads an image and updates the current UIImageView Instance.
@@ -97,11 +99,14 @@ public extension UIImageView {
             }
 
             DispatchQueue.main.async {
-                if response?.url == url {
+                // Redirects are fine, except to the placeholder mShots serves while it generates a screenshot:
+                // caching it under the requested URL would show the placeholder instead of the screenshot
+                // until the app restarts.
+                if response?.url?.path == "/mshots/v1/default" {
+                    failure?(ImageDownloadError.mShotsPlaceholder)
+                } else {
                     ImageCache.shared.setImage(image, forKey: url.absoluteString)
                     handleSuccess(image, url)
-                } else {
-                    failure?(ImageDownloadError.urlMismatch)
                 }
 
                 self?.downloadTask = nil
@@ -110,20 +115,6 @@ public extension UIImageView {
 
         downloadTask = task
         task.resume()
-    }
-
-    /// Overrides the cached UIImage, for a given URL. This is useful for whenever we've just updated a remote resource,
-    /// and we need to prevent returning the (old) cached entry.
-    ///
-    @objc func overrideImageCache(for url: URL, with image: UIImage) {
-        ImageCache.shared.setImage(image, forKey: url.absoluteString)
-
-        // Remove all cached responses - removing an individual response does not work since iOS 7.
-        // This feels hacky to do but what else can we do...
-        //
-        // Update: Years have gone by (iOS 11 era). Still broken. Still ashamed about this. Thank you, Apple.
-        //
-        URLSession.shared.configuration.urlCache?.removeAllCachedResponses()
     }
 
     /// Cancels the current download task and clear the downloadURL

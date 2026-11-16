@@ -4,6 +4,7 @@
 @import WordPressKit;
 @import WordPressShared;
 @import WordPressData;
+@import WordPressSharedObjC;
 
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
@@ -86,7 +87,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 NSError *error;
                 Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
                 if (!blogInContext || error) {
-                    DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
+                    WPLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
                     return;
                 }
                 NSArray *posts = [PostHelper mergePosts:[loadedPosts copy]

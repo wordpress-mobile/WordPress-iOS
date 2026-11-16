@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Modules",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v18),
         .macOS(.v14)
     ],
     products: XcodeSupport.products + [
@@ -63,7 +63,7 @@ let package = Package(
             revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.20.0-alpha.2"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
             exact: "0.9.1"
@@ -80,7 +80,8 @@ let package = Package(
             name: "AsyncImageKit",
             dependencies: [
                 .product(name: "Collections", package: "swift-collections"),
-                .product(name: "Gifu", package: "Gifu")
+                .product(name: "Gifu", package: "Gifu"),
+                .product(name: "Logging", package: "swift-log")
             ]
         ),
         .target(
@@ -200,7 +201,8 @@ let package = Package(
                 //  "_OBJC_CLASS_$_DDLog", referenced from:
                 //       in SharedCoreDataStack.o
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources/Extensions.xcdatamodeld")]
         ),
@@ -218,7 +220,9 @@ let package = Package(
             name: "Support",
             dependencies: [
                 "AsyncImageKit",
-                "WordPressCoreProtocols"
+                "DesignSystem",
+                "WordPressCoreProtocols",
+                "WordPressUI"
             ]
         ),
         .target(name: "TextBundle"),
@@ -344,7 +348,8 @@ let package = Package(
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-                .product(name: "WordPressAPI", package: "wordpress-rs")
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources")],
             swiftSettings: [
@@ -420,7 +425,11 @@ let package = Package(
         ),
         .testTarget(
             name: "WordPressUIUnitTests",
-            dependencies: [.target(name: "WordPressUI"), .target(name: "WordPressSharedUI")],
+            dependencies: [
+                .target(name: "WordPressUI"),
+                .target(name: "WordPressSharedUI"),
+                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
@@ -510,7 +519,8 @@ enum XcodeSupport {
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
-            .product(name: "WordPressEditor", package: "AztecEditor-iOS")
+            .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
+            .product(name: "Logging", package: "swift-log")
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -645,7 +655,8 @@ enum XcodeSupport {
                     //  "_OBJC_CLASS_$_DDLog", referenced from:
                     //       in AppExtensionsService.o
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                    .product(name: "Logging", package: "swift-log")
                 ]
             )
         ]
