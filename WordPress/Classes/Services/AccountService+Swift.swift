@@ -72,6 +72,15 @@ extension AccountService {
     /// provider, with the rejected token.
     @objc(postDefaultAccountTokenReplacedForAccountID:)
     func postDefaultAccountTokenReplaced(accountID: NSManagedObjectID) {
+        // The account was stored through a background context, and the main context merges that save later.
+        // Observers read the account from the main context, and the token is stored under the username, which may
+        // have changed. So the main context must read the stored account first.
+        let mainContext = coreDataStack.mainContext
+        mainContext.performAndWait {
+            if let account = try? mainContext.existingObject(with: accountID) {
+                mainContext.refresh(account, mergeChanges: true)
+            }
+        }
         postDefaultAccountChanged(accountID: accountID)
     }
 
