@@ -9,17 +9,23 @@ struct UploadRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            if let fileURL = item.localFileURL {
-                UploadThumbnailView(
-                    fileURL: fileURL,
-                    fallbackSystemImage: item.kind.systemImageName
-                )
-            } else {
-                Image(systemName: item.kind.systemImageName)
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .frame(width: 44, height: 44)
+            Group {
+                if let fileURL = item.localFileURL {
+                    UploadThumbnailView(
+                        fileURL: fileURL,
+                        fallbackSystemImage: item.kind.systemImageName
+                    )
+                } else {
+                    Image(systemName: item.kind.systemImageName)
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                        .frame(width: 44, height: 44)
+                }
             }
+            // Decorative: the file name next to it identifies the row. Left
+            // visible, the icon is a separate accessibility element labeled
+            // with the symbol's built-in label (e.g. "move" for "folder").
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.displayName)
