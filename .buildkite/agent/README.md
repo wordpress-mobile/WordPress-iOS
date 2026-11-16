@@ -77,8 +77,9 @@ arguments for an approved fixture. Keep account data out of logs and screenshots
 ## Draft PRs and CI
 
 An explicitly requested change can become a draft PR after its final checks
-pass. Investigation tasks keep their temporary edits private. This happens after its VM has been removed, so the coding agent
-does not need GitHub credentials. These PRs use `iris/task-<task_id>` branches.
+pass. The [publisher in buildkite-ci](https://github.com/Automattic/buildkite-ci/blob/trunk/src/agents/macos-hosts/PUBLISHING.md)
+handles that after the VM has been removed, so the coding agent does not need
+GitHub credentials. Investigation tasks keep their temporary edits private. These PRs use `iris/task-<task_id>` branches.
 Automatic Buildkite builds, Danger
 event retries, and `@claude` reviews stay off for them, even after marking a draft
 ready for review.
