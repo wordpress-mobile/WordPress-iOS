@@ -54,7 +54,7 @@ struct LineChartView: View {
     @ChartContentBuilder
     private var currentPeriodMarks: some ChartContent {
         // Solid line and area for complete data points
-        ForEach(completeDataPoints) { point in
+        ForEach(completeDataPoints, id: \.date) { point in
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
@@ -87,7 +87,7 @@ struct LineChartView: View {
         }
 
         // Dashed line segment connecting the last complete point to today's incomplete point
-        ForEach(incompleteSegmentPoints) { point in
+        ForEach(incompleteSegmentPoints, id: \.date) { point in
             LineMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
@@ -126,7 +126,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var previousPeriodMarks: some ChartContent {
-        ForEach(data.mappedPreviousData) { point in
+        ForEach(data.mappedPreviousData, id: \.date) { point in
             // Important: AreaMark is needed for smooth animation
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),

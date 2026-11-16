@@ -66,7 +66,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var currentPeriodBars: some ChartContent {
-        ForEach(data.currentData) { point in
+        ForEach(data.currentData, id: \.date) { point in
             let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
@@ -130,7 +130,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var previousPeriodBars: some ChartContent {
-        ForEach(data.mappedPreviousData) { point in
+        ForEach(data.mappedPreviousData, id: \.date) { point in
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),

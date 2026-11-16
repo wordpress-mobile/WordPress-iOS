@@ -117,16 +117,21 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var chartContentView: some View {
-        if viewModel.isFirstLoad {
-            mainChartView(metric: selectedMetric, data: viewModel.placeholderChartData(for: selectedMetric))
-                .redacted(reason: .placeholder)
-                .opacity(0.2)
-                .pulsating()
-        } else if let data = viewModel.chartData[selectedMetric] {
+        let isPlaceholder = viewModel.isFirstLoad
+        let data =
+            isPlaceholder
+            ? viewModel.placeholderChartData(for: selectedMetric)
+            : viewModel.chartData[selectedMetric]
+        if let data {
             if data.isEmpty, data.granularity == .hour {
                 loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
             } else {
+                // The placeholder and the loaded chart are the same view, so when the data
+                // arrives the placeholder's bars and lines animate to the real values.
                 mainChartView(metric: selectedMetric, data: data)
+                    .redacted(reason: isPlaceholder ? .placeholder : [])
+                    .opacity(isPlaceholder ? 0.2 : 1)
+                    .pulsating(isPlaceholder)
                     .accessibilityIdentifier("chart_card_chart_view")
                     .transition(.opacity.combined(with: .scale(scale: 0.97)))
             }

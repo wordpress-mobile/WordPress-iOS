@@ -109,17 +109,15 @@ struct TodayCard<MenuContent: View>: View {
 
     @ViewBuilder
     private var sparklineView: some View {
-        if let data = viewModel.data {
-            makeSparklineView(data)
-        } else {
-            let placeholder = makeSparklineView(viewModel.placeholderData)
-                .redacted(reason: .placeholder)
-            if viewModel.isLoading {
-                placeholder.pulsating().opacity(0.33)
-            } else {
-                placeholder.grayscale(1).opacity(0.25)
-            }
-        }
+        // The placeholder and the loaded sparkline are the same view, so when the data
+        // arrives the placeholder's line animates to the real values.
+        let isPlaceholder = viewModel.data == nil
+        let isFailed = isPlaceholder && !viewModel.isLoading
+        makeSparklineView(viewModel.data ?? viewModel.placeholderData)
+            .redacted(reason: isPlaceholder ? .placeholder : [])
+            .pulsating(isPlaceholder && !isFailed)
+            .grayscale(isFailed ? 1 : 0)
+            .opacity(isFailed ? 0.25 : (isPlaceholder ? 0.33 : 1))
     }
 
     private func makeSparklineView(_ data: TodayCardData) -> some View {

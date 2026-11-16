@@ -4,14 +4,16 @@ struct PulseAnimationModifier: ViewModifier {
     let isEnabled: Bool
 
     func body(content: Content) -> some View {
-        if isEnabled {
-            content
-                .mask {
+        // Always apply the mask, so toggling the pulse keeps the content's identity
+        // (and lets a placeholder chart animate into the loaded one).
+        content
+            .mask {
+                if isEnabled {
                     PulsingMask()
+                } else {
+                    Rectangle()
                 }
-        } else {
-            content
-        }
+            }
     }
 }
 
