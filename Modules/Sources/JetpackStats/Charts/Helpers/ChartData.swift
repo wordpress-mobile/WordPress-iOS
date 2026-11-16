@@ -101,28 +101,42 @@ final class ChartData: Sendable {
 // MARK: - Placeholder Data
 
 extension ChartData {
-    /// Mock data with the same shape as a loaded chart: the current period has no points
-    /// after `now` (``StatsService`` filters out future dates), and the previous period
-    /// covers the whole range.
+    /// Mock data with the same shape as a loaded chart, built the way ``StatsService``
+    /// and ``ChartCardViewModel`` build the real data:
+    /// - one point per calendar period that overlaps the range (weeks start on Monday,
+    ///   like the API's), so the first point can fall before the range start;
+    /// - no points after `now`;
+    /// - the comparison series is generated for the comparison interval and mapped onto
+    ///   the current range with ``DataPoint/mapDataPoints(currentData:previousData:dateRange:)``.
     static func mock(
         metric: SiteMetric,
         granularity: DateRangeGranularity,
         range: StatsDateRange,
         now: Date = .now
     ) -> ChartData {
-        let allDataPoints = generateMockDataPoints(
+        let valueRange = valueRange(for: metric)
+        let dataPoints = periodStarts(
+            in: range.dateInterval,
             granularity: granularity,
-            range: range,
-            metric: metric
+            calendar: range.calendar,
+            now: now
         )
-        let dataPoints = allDataPoints.filter { $0.date <= now }
-        let previousData = allDataPoints.map { dataPoint in
+        .map { DataPoint(date: $0, value: Int.random(in: valueRange)) }
+        let previousData = periodStarts(
+            in: range.effectiveComparisonInterval,
+            granularity: granularity,
+            calendar: range.calendar,
+            now: now
+        )
+        .map { date in
             let variation = Double.random(in: 0.75...0.95)
-            return DataPoint(
-                date: dataPoint.date,
-                value: Int(Double(dataPoint.value) * variation)
-            )
+            return DataPoint(date: date, value: Int(Double(Int.random(in: valueRange)) * variation))
         }
+        let mappedPreviousData = DataPoint.mapDataPoints(
+            currentData: dataPoints,
+            previousData: previousData,
+            dateRange: range
+        )
         return ChartData(
             metric: metric,
             granularity: granularity,
@@ -131,33 +145,34 @@ extension ChartData {
             currentData: dataPoints,
             previousTotal: DataPoint.getTotalValue(for: previousData, metric: metric) ?? 0,
             previousData: previousData,
-            mappedPreviousData: previousData
+            mappedPreviousData: mappedPreviousData
         )
     }
 
-    private static func generateMockDataPoints(
+    /// The start of every period of `granularity` that overlaps `interval`, up to `now`.
+    static func periodStarts(
+        in interval: DateInterval,
         granularity: DateRangeGranularity,
-        range: StatsDateRange,
-        metric: SiteMetric
-    ) -> [DataPoint] {
-        let calendar = range.calendar
-        var dataPoints: [DataPoint] = []
-
-        let valueRange = valueRange(for: metric)
-
-        // Generate data points for each component in the range
-        var currentDate = range.dateInterval.start
-        while currentDate < range.dateInterval.end {
-            let value = Int.random(in: valueRange)
-            dataPoints.append(DataPoint(date: currentDate, value: value))
-
-            guard let nextDate = calendar.date(byAdding: granularity.component, value: 1, to: currentDate) else {
+        calendar: Calendar,
+        now: Date
+    ) -> [Date] {
+        var calendar = calendar
+        if granularity == .week {
+            calendar.firstWeekday = 2 // The stats API's weeks start on Monday.
+        }
+        let component = granularity.component
+        guard var date = calendar.dateInterval(of: component, for: interval.start)?.start else {
+            return []
+        }
+        var dates: [Date] = []
+        while date < interval.end, date <= now {
+            dates.append(date)
+            guard let next = calendar.date(byAdding: component, value: 1, to: date) else {
                 break
             }
-            currentDate = nextDate
+            date = next
         }
-
-        return dataPoints
+        return dates
     }
 
     private static func valueRange(for metric: SiteMetric) -> ClosedRange<Int> {

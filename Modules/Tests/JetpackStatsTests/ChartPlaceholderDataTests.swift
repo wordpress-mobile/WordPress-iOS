@@ -47,6 +47,48 @@ struct ChartPlaceholderDataTests {
     }
 
     @Test
+    func weeksStartOnMondayBeforeTheRangeStart() {
+        // Tue 2026-08-25 ..< Tue 2026-11-17 ("Last 12 weeks"), now Mon 2026-11-16.
+        let range = StatsDateRange(
+            interval: DateInterval(start: Date("2026-08-25T00:00:00Z"), end: Date("2026-11-17T00:00:00Z")),
+            component: .weekOfYear,
+            calendar: calendar
+        )
+        let data = ChartData.mock(metric: .views, granularity: .week, range: range, now: Date("2026-11-16T12:00:00Z"))
+
+        // 13 Monday-start weeks, from Mon 24 Aug (before the range start) to Mon 16 Nov.
+        #expect(data.currentData.count == 13)
+        #expect(data.currentData.first?.date == Date("2026-08-24T00:00:00Z"))
+        #expect(data.currentData.last?.date == Date("2026-11-16T00:00:00Z"))
+    }
+
+    @Test
+    func monthsCoverEveryMonthTheRangeTouches() {
+        // 2026-10-20 ..< 2026-11-17 ("Last 28 days") by month.
+        let range = StatsDateRange(
+            interval: DateInterval(start: Date("2026-10-20T00:00:00Z"), end: Date("2026-11-17T00:00:00Z")),
+            component: .day,
+            calendar: calendar
+        )
+        let data = ChartData.mock(metric: .views, granularity: .month, range: range, now: Date("2026-11-16T12:00:00Z"))
+
+        #expect(data.currentData.map(\.date) == [Date("2026-10-01T00:00:00Z"), Date("2026-11-01T00:00:00Z")])
+    }
+
+    @Test
+    func comparisonIsMappedLikeLoadedData() {
+        let range = makeMonthRange()
+        let data = ChartData.mock(metric: .views, granularity: .day, range: range, now: Date("2025-03-01T00:00:00Z"))
+
+        let expected = DataPoint.mapDataPoints(
+            currentData: data.currentData,
+            previousData: data.previousData,
+            dateRange: range
+        )
+        #expect(data.mappedPreviousData.map(\.date) == expected.map(\.date))
+    }
+
+    @Test
     func mockUsesRequestedMetric() {
         let data = ChartData.mock(metric: .likes, granularity: .day, range: makeMonthRange())
 
