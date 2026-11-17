@@ -10,9 +10,9 @@ import WordPressShared
 
 struct GBKMediaUploadProcessorTests {
 
-    /// Where this test's processor clones sources, so tests can check it's
-    /// left empty without seeing other tests' files.
-    private let sourceDirectory = FileManager.default.temporaryDirectory
+    /// Where this test's processor stages exports, so tests can inspect it
+    /// without seeing other tests' files.
+    private let stagingDirectory = FileManager.default.temporaryDirectory
         .appendingPathComponent("GBKMediaUploadProcessorTests-\(UUID().uuidString)", isDirectory: true)
 
     // MARK: - Images
@@ -78,8 +78,7 @@ struct GBKMediaUploadProcessorTests {
     }
 
     /// GutenbergKit stages each upload under the editor's filename, in a
-    /// directory per upload, and processes uploads concurrently. The exporters
-    /// pick output names with an unlocked check-then-act loop, so same-named
+    /// directory per upload, and processes uploads concurrently, so same-named
     /// uploads must still produce distinct files.
     @Test func concurrentSameNamedUploadsDoNotCollide() async throws {
         let settings = makeSettings()
@@ -112,28 +111,23 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
-    /// `MediaImageExporter` writes the decoded type, not the claimed one, and
-    /// some types ImageIO writes have no MIME type (e.g. PBM, KTX).
-    @Test func exportIsRemovedWhenItsMIMETypeIsUnknown() async throws {
+    /// The bytes decide the type, not the extension. Some types ImageIO
+    /// decodes have no MIME type (e.g. PBM, KTX), so they're converted too.
+    @Test func imageIsConvertedByItsDecodedType() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
-        let exportDirectoryID = UUID()
-        let processor = GBKMediaUploadProcessor(
-            makeMediaSettings: makeSettingsFactory(settings),
-            exportDirectoryID: exportDirectoryID,
-            sourceDirectory: sourceDirectory
-        )
+        let processor = makeProcessor(settings: settings)
         let url = try stageImageWithoutMIMEType(as: "photo.png")
 
-        await #expect(throws: MediaURLExporter.URLExportError.unknownFileUTI) {
-            try await processor.processFile(at: url, mimeType: "image/png", filename: "photo.png")
-        }
-        let exportDirectory = MediaDirectory.temporary(id: exportDirectoryID).url
-        let exports = (try? FileManager.default.contentsOfDirectory(atPath: exportDirectory.path)) ?? []
-        #expect(exports.isEmpty)
+        let result = try await processor.processFile(at: url, mimeType: "image/png", filename: "photo.png")
+
+        let output = try processedFile(result)
+        defer { cleanUp(output.url) }
+        #expect(output.mimeType == "image/jpeg")
+        #expect(output.filename == "photo.jpg")
     }
 
-    @Test func clonedSourceIsRemovedAfterExport() async throws {
+    @Test func exportIsStagedApartFromTheSource() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
         let processor = makeProcessor(settings: settings)
@@ -143,8 +137,7 @@ struct GBKMediaUploadProcessorTests {
 
         let output = try processedFile(result)
         defer { cleanUp(output.url) }
-        let remaining = try FileManager.default.contentsOfDirectory(atPath: sourceDirectory.path)
-        #expect(remaining.isEmpty)
+        #expect(output.url.deletingLastPathComponent().deletingLastPathComponent() == stagingDirectory)
         // The staged file belongs to GutenbergKit and is left alone.
         #expect(FileManager.default.fileExists(atPath: url.path))
     }
@@ -286,8 +279,22 @@ struct GBKMediaUploadProcessorTests {
         #expect(output.filename == "clip.mp4")
     }
 
+    /// AVFoundation identifies a container by its extension unless told
+    /// otherwise, so the reported MIME type has to reach it.
+    @Test func extensionlessVideoIsExportedUsingReportedMIMEType() async throws {
+        let processor = makeProcessor(settings: makeSettings())
+        let url = try stageFixture("test-video-device-gps.m4v", as: "clip")
+
+        let result = try await processor.processFile(at: url, mimeType: "video/mp4", filename: "clip")
+
+        let output = try processedFile(result)
+        defer { cleanUp(output.url) }
+        #expect(output.mimeType == "video/mp4")
+        #expect(output.filename == "clip.mp4")
+    }
+
     /// WebM and WMV conform to `UTType.movie`, but AVFoundation can't open
-    /// either, and `MediaVideoExporter` would fail uploads WordPress accepts.
+    /// either, and exporting would fail uploads WordPress accepts.
     @Test(arguments: [("clip.webm", "video/webm"), ("clip.wmv", "video/x-ms-wmv")])
     func videoAVFoundationCannotReadPassesThroughUntouched(filename: String, mimeType: String) async throws {
         let processor = makeProcessor(settings: makeSettings())
@@ -317,9 +324,9 @@ struct GBKMediaUploadProcessorTests {
         await #expect(throws: CancellationError.self) {
             try await task.value
         }
-        // Cancelled before the source was cloned for export.
-        let clones = (try? FileManager.default.contentsOfDirectory(atPath: sourceDirectory.path)) ?? []
-        #expect(clones.isEmpty)
+        // Cancelled before anything was staged for export.
+        let staged = (try? FileManager.default.contentsOfDirectory(atPath: stagingDirectory.path)) ?? []
+        #expect(staged.isEmpty)
     }
 
     // MARK: - Helpers
@@ -330,7 +337,7 @@ struct GBKMediaUploadProcessorTests {
     private func makeProcessor(settings: MediaSettings) -> any MediaProcessor {
         GBKMediaUploadProcessor(
             makeMediaSettings: makeSettingsFactory(settings),
-            sourceDirectory: sourceDirectory
+            stagingDirectory: stagingDirectory
         )
     }
 

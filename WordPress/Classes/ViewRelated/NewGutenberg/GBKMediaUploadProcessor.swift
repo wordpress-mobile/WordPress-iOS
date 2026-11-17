@@ -4,6 +4,7 @@ import GutenbergKit
 import os
 import UniformTypeIdentifiers
 import WordPressData
+import WordPressMediaLibrary
 import WordPressShared
 
 /// Applies the app's Media settings (image optimization, max upload size, image
@@ -21,204 +22,89 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     /// the next upload.
     private let makeMediaSettings: @Sendable () -> MediaSettings
 
-    /// Identifies the temporary directory exports are written to. GutenbergKit
-    /// deletes each export once its upload ends, so one directory is reused.
-    private let exportDirectoryID: UUID
+    /// Where each export is staged, in a directory of its own. GutenbergKit
+    /// deletes the export once its upload ends, and the system purges the
+    /// empty directory it leaves.
+    private let stagingDirectory: URL
 
-    /// Where each upload's source is cloned under a unique name before export.
-    private let sourceDirectory: URL
+    /// Each materializer owns a `URLSession`, which lives until it's
+    /// invalidated, so one is reused until the settings it applies change.
+    private let materializerCache = OSAllocatedUnfairLock<
+        (settings: UploadSettings, materializer: UploadSourceMaterializer)?
+    >(initialState: nil)
 
-    private static let defaultExportDirectoryID = UUID(uuidString: "1D8A4E5C-1F3B-4E7A-9C2D-6B0F8A5E3C71")!
-
-    /// Raster image types the WordPress REST API reliably accepts. Other image
-    /// formats (e.g. HEIC) are converted to JPEG, mirroring
-    /// `ItemProviderMediaExporter`. GIF and SVG return `.original` before this
-    /// is read.
+    /// Raster image types the WordPress REST API reliably accepts. The
+    /// materializer converts other image formats (e.g. HEIC) to JPEG.
     private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg]
 
     init(
         makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() },
-        exportDirectoryID: UUID = GBKMediaUploadProcessor.defaultExportDirectoryID,
-        sourceDirectory: URL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("GBKMediaUploadProcessor-sources", isDirectory: true)
+        stagingDirectory: URL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("GBKMediaUploadProcessor", isDirectory: true)
     ) {
         self.makeMediaSettings = makeMediaSettings
-        self.exportDirectoryID = exportDirectoryID
-        self.sourceDirectory = sourceDirectory
+        self.stagingDirectory = stagingDirectory
     }
 
     // MARK: - MediaProcessor
 
     func processFile(at url: URL, mimeType: String, filename: String) async throws -> ProcessedProxyFile {
-        let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType)
-        let expected: MediaURLExporter.URLExportExpectation
-        do {
-            expected = try MediaURLExporter.expectedExport(with: url, type: sourceType)
-        } catch MediaURLExporter.URLExportError.unknownFileUTI, MediaURLExporter.URLExportError.unsupportedFileType {
-            // Only images and videos have settings to apply. The server decides
-            // whether to accept anything else (e.g. archives and fonts).
+        // Only images and videos have settings to apply. The server decides
+        // whether to accept anything else (e.g. archives and fonts).
+        guard let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType),
+            Self.isProcessable(sourceType)
+        else {
             return .original
         }
         let settings = makeMediaSettings()
 
-        switch expected {
-        case .gif:
+        // Nothing would change (no downscaling, location stripping, or
+        // conversion), so skip copying the file.
+        if Self.webSafeImageTypes.contains(sourceType),
+            !settings.imageOptimizationEnabled,
+            !settings.removeLocationSetting
+        {
             return .original
-        case .other:
-            // Not re-checked against `Blog.allowedFileTypes`: the editor already
-            // validated the type, and that cached option can lag the server, so
-            // it could only refuse a file the server would accept.
-            return .original
-        case .image:
-            // SVG conforms to `UTType.image`, but ImageIO can't decode it.
-            if sourceType == .svg {
-                return .original
-            }
-            // Nothing would change: no downscaling, location stripping, or
-            // conversion. Skipping the export also skips the exporter's EXIF
-            // orientation normalization, which WordPress 5.3+ performs on the
-            // server anyway (WordPress-iOS#12703, core changeset 46202).
-            if !settings.imageOptimizationEnabled,
-                !settings.removeLocationSetting,
-                let sourceType,
-                Self.webSafeImageTypes.contains(sourceType)
-            {
-                return .original
-            }
-        case .video:
-            // AVFoundation can't read every container that conforms to `.movie`
-            // (e.g. WebM, WMV), and `MediaVideoExporter` rejects those rather
-            // than passing them along.
-            if let sourceType, !Self.isExportableVideoType(sourceType) {
-                return .original
-            }
         }
 
         try Task.checkCancellation()
 
-        let source = try cloneSource(at: url, type: sourceType)
-        defer { try? FileManager.default.removeItem(at: source) }
+        let materializer = materializer(for: UploadSettings(settings))
+        let export = try await Self.gate.run {
+            try await materializer.materialize(fileAt: url, contentType: sourceType)
+        }
 
-        let exportImageType = Self.exportImageType(for: expected, sourceType: sourceType)
-        let exporter = makeExporter(
-            for: source,
-            expected: expected,
-            settings: settings,
-            exportImageType: exportImageType
-        )
-        let export = try await Self.run(exporter)
-
-        let exportMIMEType: String
-        do {
-            exportMIMEType = try Self.mimeType(of: export.url, exportImageType: exportImageType)
-        } catch {
+        guard let exportMIMEType = UTType(filenameExtension: export.pathExtension)?.preferredMIMEType else {
             // GutenbergKit only deletes exports it receives.
-            try? FileManager.default.removeItem(at: export.url)
-            throw error
+            try? FileManager.default.removeItem(at: export.deletingLastPathComponent())
+            throw ProcessingError.unknownExportType
         }
         return .processed(
-            export.url,
+            export,
             mimeType: exportMIMEType,
-            filename: Self.uploadFilename(original: filename, exportURL: export.url)
+            filename: Self.uploadFilename(original: filename, exportURL: export)
         )
     }
 
     // MARK: - Export
 
-    /// Clones the staged upload to a unique name for the exporters to read.
-    ///
-    /// The exporters name their output after the source file, and pick a free
-    /// name with an unlocked check-then-act loop. GutenbergKit stages uploads
-    /// under the editor's filename, so two concurrent uploads of `IMG_0001.HEIC`
-    /// would otherwise race for one output name. The clone also gets an
-    /// extension from the resolved type, which `AVURLAsset` needs. On APFS the
-    /// copy is a clone, so it costs no disk space.
-    private func cloneSource(at url: URL, type: UTType?) throws -> URL {
-        try FileManager.default.createDirectory(at: sourceDirectory, withIntermediateDirectories: true)
-        var clone = sourceDirectory.appendingPathComponent(UUID().uuidString, isDirectory: false)
-        if let fileExtension = type?.preferredFilenameExtension ?? url.pathExtension.nonEmptyString() {
-            clone.appendPathExtension(fileExtension)
-        }
-        try FileManager.default.copyItem(at: url, to: clone)
-        return clone
-    }
-
-    /// Builds an exporter configured from the app's Media settings, mirroring
-    /// the option mapping in `MediaImportService`.
-    ///
-    /// Uses the concrete exporters rather than `MediaURLExporter`, which
-    /// re-derives the type from the path extension and would reject a file
-    /// classified from its reported MIME type.
-    private func makeExporter(
-        for url: URL,
-        expected: MediaURLExporter.URLExportExpectation,
-        settings: MediaSettings,
-        exportImageType: UTType?
-    ) -> any MediaExporter {
-        switch expected {
-        case .video:
-            let exporter = MediaVideoExporter(url: url)
-            exporter.mediaDirectoryType = .temporary(id: exportDirectoryID)
-            var options = MediaVideoExporter.Options()
-            options.stripsGeoLocationIfNeeded = settings.removeLocationSetting
-            options.exportPreset = settings.maxVideoSizeSetting.videoPreset
-            exporter.options = options
-            return exporter
-        case .image, .gif, .other:
-            // Only images get here: `.gif` and `.other` return `.original` first.
-            let exporter = MediaImageExporter(url: url)
-            exporter.mediaDirectoryType = .temporary(id: exportDirectoryID)
-            var options = MediaImageExporter.Options()
-            let maxUploadSize = settings.imageSizeForUpload
-            options.maximumImageSize = maxUploadSize < Int.max ? CGFloat(maxUploadSize) : nil
-            options.stripsGeoLocationIfNeeded = settings.removeLocationSetting
-            options.imageCompressionQuality = settings.imageQualityForUpload.doubleValue
-            // Also sets the output extension. Nil keeps the source type.
-            options.exportImageType = exportImageType?.identifier
-            exporter.options = options
-            return exporter
-        }
-    }
-
-    /// Starts exports one at a time, as `MediaImportService` does.
-    /// `MediaImageExporter` works synchronously, so this keeps image work off
-    /// the Swift concurrency pool and limits peak memory to one decode.
-    private static let exportQueue = DispatchQueue(
-        label: "org.wordpress.gbk-media-upload-processor",
-        autoreleaseFrequency: .workItem
-    )
-
-    /// Runs an export on `exportQueue`, cancelling it if the task is cancelled.
-    ///
-    /// GutenbergKit cancels the task when the editor goes away or the page
-    /// abandons the upload, and `MediaExporter.export()` doesn't observe that.
-    private static func run(_ exporter: any MediaExporter) async throws -> MediaExport {
-        let progress = OSAllocatedUnfairLock<Progress?>(initialState: nil)
-        let isCancelled = OSAllocatedUnfairLock(initialState: false)
-        return try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { continuation in
-                exportQueue.async {
-                    // Cancelled while queued behind other exports.
-                    guard !isCancelled.withLock({ $0 }) else {
-                        continuation.resume(throwing: CancellationError())
-                        return
-                    }
-                    let started = exporter.export(
-                        onCompletion: { continuation.resume(returning: $0) },
-                        onError: { continuation.resume(throwing: $0) }
-                    )
-                    progress.withLock { $0 = started }
-                    // Cancelled while the export was starting, so `onCancel`
-                    // had nothing to cancel.
-                    if isCancelled.withLock({ $0 }) {
-                        started.cancel()
-                    }
-                }
+    private func materializer(for settings: UploadSettings) -> UploadSourceMaterializer {
+        materializerCache.withLock { cache in
+            if let cache, cache.settings == settings {
+                return cache.materializer
             }
-        } onCancel: {
-            isCancelled.withLock { $0 = true }
-            progress.withLock { $0 }?.cancel()
+            let materializer = UploadSourceMaterializer(policy: settings.policy, stagingDirectory: stagingDirectory)
+            cache = (settings, materializer)
+            return materializer
         }
+    }
+
+    /// Runs exports one at a time, as `MediaImportService` does, to limit
+    /// peak memory to one decoded image.
+    private static let gate = MaterializationGate()
+
+    private enum ProcessingError: Error {
+        case unknownExportType
     }
 
     // MARK: - Output naming
@@ -256,7 +142,23 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         type == .data || type.isDynamic
     }
 
-    /// Whether `MediaVideoExporter` can open the container at all. Matched by
+    /// Whether the type is an image or video the materializer can apply
+    /// settings to. GIF and SVG pass through, since re-encoding would flatten
+    /// an animation or rasterize vectors.
+    private static func isProcessable(_ type: UTType) -> Bool {
+        if type == .gif || type == .svg {
+            return false
+        }
+        if type.conforms(to: .movie) {
+            // AVFoundation can't read every container that conforms to
+            // `.movie` (e.g. WebM, WMV), and the export would fail an upload
+            // WordPress accepts.
+            return isExportableVideoType(type)
+        }
+        return type.conforms(to: .image)
+    }
+
+    /// Whether AVFoundation can open the container at all. Matched by
     /// conformance, since a subtype (e.g. DRM-wrapped MPEG-4) may not be listed.
     private static func isExportableVideoType(_ type: UTType) -> Bool {
         exportableVideoTypes.contains { type.conforms(to: $0) }
@@ -278,24 +180,90 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         }
         return UTType(mimeType: normalized)
     }
+}
 
-    /// The type `MediaImageExporter` should write, or `nil` to keep the
-    /// source type.
-    private static func exportImageType(
-        for expected: MediaURLExporter.URLExportExpectation,
-        sourceType: UTType?
-    ) -> UTType? {
-        guard case .image = expected, let sourceType else {
-            return nil
-        }
-        return webSafeImageTypes.contains(sourceType) ? nil : .jpeg
+/// The Media settings an upload policy is built from, mirroring the option
+/// mapping in `MediaImportService`.
+private struct UploadSettings: Equatable {
+    let imageMaxDimension: Int?
+    let imageQuality: Double
+    let videoPreset: String
+    let removesLocation: Bool
+
+    init(_ settings: MediaSettings) {
+        let maxUploadSize = settings.imageSizeForUpload
+        imageMaxDimension = maxUploadSize < Int.max ? maxUploadSize : nil
+        imageQuality = settings.imageQualityForUpload.doubleValue
+        videoPreset = settings.maxVideoSizeSetting.videoPreset
+        removesLocation = settings.removeLocationSetting
     }
 
-    private static func mimeType(of url: URL, exportImageType: UTType?) throws -> String {
-        let type = exportImageType ?? url.typeIdentifier.flatMap(UTType.init)
-        guard let mimeType = type?.preferredMIMEType else {
-            throw MediaURLExporter.URLExportError.unknownFileUTI
+    var policy: MediaUploadPolicy {
+        MediaUploadPolicy(
+            // The editor picks its own files.
+            filePickerContentTypes: [],
+            // Not checked against `Blog.allowedFileTypes`: the editor already
+            // validated the type, and that cached option can lag the server,
+            // so it could only refuse a file the server would accept.
+            isAllowedForUpload: { _, _ in true },
+            imageMaxDimension: imageMaxDimension,
+            imageJpegQuality: imageQuality,
+            // Mirrors `ItemProviderMediaExporter`, which converts every image
+            // type but PNG and JPEG.
+            convertHEICToJPEG: true,
+            videoMaxDurationSeconds: nil,
+            videoExportPreset: videoPreset,
+            videoOutputContentType: .mpeg4Movie,
+            stripGPSLocation: removesLocation
+        )
+    }
+}
+
+/// Admits one operation at a time, in arrival order. A task cancelled while
+/// it waits leaves the queue without running.
+private actor MaterializationGate {
+    private var isBusy = false
+    private var waiters: [(id: UUID, continuation: CheckedContinuation<Void, any Error>)] = []
+
+    func run<T: Sendable>(_ operation: @Sendable () async throws -> T) async throws -> T {
+        try await enter()
+        defer { leave() }
+        // Cancelled as the gate was handed over, before `cancelWaiter` ran.
+        try Task.checkCancellation()
+        return try await operation()
+    }
+
+    private func enter() async throws {
+        try Task.checkCancellation()
+        guard isBusy else {
+            isBusy = true
+            return
         }
-        return mimeType
+        let id = UUID()
+        try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { continuation in
+                waiters.append((id, continuation))
+            }
+        } onCancel: {
+            // Runs after the append: it needs the actor, which `enter` holds
+            // until the continuation suspends.
+            Task { await self.cancelWaiter(id) }
+        }
+    }
+
+    /// Hands the gate straight to the next waiter, if there is one.
+    private func leave() {
+        if waiters.isEmpty {
+            isBusy = false
+        } else {
+            waiters.removeFirst().continuation.resume()
+        }
+    }
+
+    private func cancelWaiter(_ id: UUID) {
+        guard let index = waiters.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        waiters.remove(at: index).continuation.resume(throwing: CancellationError())
     }
 }
