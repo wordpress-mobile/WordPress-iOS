@@ -99,13 +99,9 @@ public final class UploadSourceMaterializer: Sendable {
         self.init(policy: policy, temporaryRoot: stagingDirectory)
     }
 
-    /// Applies the policy to a local image or video and returns the file to
-    /// upload, which the caller owns. It sits in a per-upload directory under
-    /// the staging root that deleting the file leaves behind, so root staging
-    /// somewhere the system purges.
-    ///
-    /// `contentType` is trusted over the file's extension, which may be
-    /// missing or undeclared when the file came from a web view.
+    /// Applies the policy to a local image or video of `contentType`, which
+    /// wins over the file's extension, and returns the file to upload.
+    /// The caller owns that file, whose per-upload directory outlives it.
     public func materialize(fileAt url: URL, contentType: UTType) async throws -> URL {
         let upload = try await withStagingDirectory { parentDir in
             try await materializeLocalFile(
