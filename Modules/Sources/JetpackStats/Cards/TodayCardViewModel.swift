@@ -29,6 +29,20 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && data == nil }
 
+    private var cachedPlaceholderData: TodayCardData?
+
+    /// Mock data for the redacted placeholder. Kept between re-renders so the sparkline
+    /// doesn't redraw with new random values, and regenerated when the hour changes.
+    var placeholderData: TodayCardData {
+        let currentHour = effectiveDateRange.calendar.component(.hour, from: .now)
+        if let cached = cachedPlaceholderData, cached.hourlyViews.last?.hour == currentHour {
+            return cached
+        }
+        let data = TodayCardData.placeholder(currentHour: currentHour)
+        cachedPlaceholderData = data
+        return data
+    }
+
     private let service: any StatsServiceProtocol
     let tracker: (any StatsTracker)?
 
@@ -72,10 +86,14 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
         guard isFirstAppear else { return }
         isFirstAppear = false
 
-        tracker?.send(.cardShown, properties: [
-            "card_type": CardType.today.rawValue,
-            "configuration": configuration.metrics.map(\.analyticsName).joined(separator: "_")
-        ])
+        tracker?
+            .send(
+                .cardShown,
+                properties: [
+                    "card_type": CardType.today.rawValue,
+                    "configuration": configuration.metrics.map(\.analyticsName).joined(separator: "_")
+                ]
+            )
 
         loadData(for: effectiveDateRange)
     }
@@ -189,12 +207,14 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
 
         // Extract hourly views data and convert to simple tuples
         let calendar = dateRange.calendar
-        let hourlyViews = (currentResponse.metrics[.views] ?? []).map { dataPoint in
-            (hour: calendar.component(.hour, from: dataPoint.date), value: dataPoint.value)
-        }
-        let previousHourlyViews = previousResponse?.metrics[.views]?.map { dataPoint in
-            (hour: calendar.component(.hour, from: dataPoint.date), value: dataPoint.value)
-        }
+        let hourlyViews = (currentResponse.metrics[.views] ?? [])
+            .map { dataPoint in
+                (hour: calendar.component(.hour, from: dataPoint.date), value: dataPoint.value)
+            }
+        let previousHourlyViews = previousResponse?.metrics[.views]?
+            .map { dataPoint in
+                (hour: calendar.component(.hour, from: dataPoint.date), value: dataPoint.value)
+            }
 
         var metricsSet = SiteMetricsSet()
         for metric in configuration.metrics {
@@ -214,4 +234,55 @@ struct TodayCardData {
     let hourlyViews: [(hour: Int, value: Int)]
     let previousHourlyViews: [(hour: Int, value: Int)]?
     let metrics: SiteMetricsSet
+}
+
+extension TodayCardData {
+    /// Mock data shaped like loaded data: today's series ends at the current hour
+    /// (``StatsService`` filters out future dates) and the previous day's covers all 24 hours.
+    static func placeholder(currentHour: Int) -> TodayCardData {
+        // Generate hourly data points with a realistic curve peaking mid-day
+        let hourlyViews = (0...currentHour)
+            .map { hour in
+                let normalizedHour = Double(hour)
+                // Create a bell curve centered around hour 14 (2 PM)
+                let peakHour = 14.0
+                let spread = 4.5 // Reduced spread for sharper peak
+                let amplitude = 300.0 // Increased amplitude for higher peak
+                let baseline = 20.0 // Lower baseline to increase contrast
+
+                let bellCurve = amplitude * exp(-pow(normalizedHour - peakHour, 2) / (2 * pow(spread, 2))) + baseline
+                let noise = Double.random(in: -30...30)
+                let value = Int(bellCurve + noise)
+
+                return (hour: hour, value: max(15, value))
+            }
+
+        let previousHourlyViews = (0..<24)
+            .map { hour in
+                let normalizedHour = Double(hour)
+                // Similar curve but slightly different for comparison
+                let peakHour = 12.0
+                let spread = 3.0 // Reduced spread for sharper peak
+                let amplitude = 280.0 // Increased amplitude for higher peak
+                let baseline = 18.0 // Lower baseline to increase contrast
+
+                let bellCurve = amplitude * exp(-pow(normalizedHour - peakHour, 2) / (2 * pow(spread, 2))) + baseline
+                let noise = Double.random(in: -30...30)
+                let value = Int(bellCurve + noise)
+
+                return (hour: hour, value: max(12, value))
+            }
+
+        var metricsSet = SiteMetricsSet()
+        metricsSet[.views] = 1234
+        metricsSet[.visitors] = 567
+        metricsSet[.likes] = 89
+        metricsSet[.comments] = 12
+
+        return TodayCardData(
+            hourlyViews: hourlyViews,
+            previousHourlyViews: previousHourlyViews,
+            metrics: metricsSet
+        )
+    }
 }
