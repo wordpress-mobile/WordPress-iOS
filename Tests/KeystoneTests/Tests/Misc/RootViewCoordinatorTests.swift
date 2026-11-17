@@ -303,14 +303,14 @@ final class RootViewCoordinatorTests: XCTestCase {
 
     // MARK: - Sign-In
 
-    func testSignInInTheTreatmentGroupShowsLiveReaderWithoutRelaunch() throws {
+    func testSignInWithTheFlagOnShowsLiveReaderWithoutRelaunch() throws {
         try XCTSkipIf(UIDevice.isPad(), "The iPad presenter ignores the app UI type")
 
         // Given a launch while signed out, with Reader off
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         signInToWordPressDotCom()
 
-        // When the fetch puts the account in the treatment group
+        // When the fetch turns the flag on for the account
         prepareAppUIAfterSignIn(fetch: { $0() }, readerInWordPressAppEnabled: true)
         sut.showAppUI()
 
@@ -322,7 +322,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
     }
 
-    func testSignInInTheControlGroupKeepsTheExistingSignInPath() {
+    func testSignInWithTheFlagOffKeepsTheExistingSignInPath() {
         // Given
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         signInToWordPressDotCom()
@@ -337,38 +337,13 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
     }
 
-    func testSignInUsesTheStoredAssignmentWhenTheFetchTimesOut() throws {
-        // Given a treatment assignment stored where ExPlat keeps it, and a fetch that never returns
-        let savedExPlat = ExPlat.shared
-        let savedAssignments = UserDefaults.standard.object(forKey: "ab-testing-assignments")
-        addTeardownBlock {
-            ExPlat.shared = savedExPlat
-            UserDefaults.standard.set(savedAssignments, forKey: "ab-testing-assignments")
-        }
-        ExPlat.configure(platform: "wpios", oAuthToken: nil, userAgent: nil, anonId: nil)
-        UserDefaults.standard.set(
-            [ABTest.readerInWordPressApp.rawValue: "treatment"],
-            forKey: "ab-testing-assignments"
-        )
+    func testSignInUsesTheCachedFlagWhenTheFetchTimesOut() {
+        // Given a flag fetch that never returns
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         signInToWordPressDotCom()
 
-        // When the value is read from the stored assignment after the timeout
-        let completed = expectation(description: "prepareAppUIAfterSignIn")
-        sut.prepareAppUIAfterSignIn(
-            timeout: 0.05,
-            hasDotComAccount: true,
-            fetch: { _ in },
-            readerInWordPressAppEnabled: {
-                JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled(
-                    flagOverride: nil,
-                    isFlagEnabled: false,
-                    isInExperimentTreatment: ABTest.readerInWordPressApp.variation(in: .wordpress) == .treatment
-                )
-            },
-            completion: { completed.fulfill() }
-        )
-        wait(for: [completed], timeout: 1)
+        // When the cached value has the flag on
+        prepareAppUIAfterSignIn(fetch: { _ in }, readerInWordPressAppEnabled: true)
 
         // Then
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
@@ -437,7 +412,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertFalse(didFetch)
     }
 
-    func testSignOutAfterTreatmentSignInRebuildsTheUIOnReload() {
+    func testSignOutAfterAFlagOnSignInRebuildsTheUIOnReload() {
         // Given a sign-in that turned Reader on, which starts observing account changes
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         signInToWordPressDotCom()
@@ -453,7 +428,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertTrue(sut.reloadUIIfNeeded(blog: nil))
     }
 
-    func testTreatmentSignInBuildsTheSplitViewWithLiveReaderOnIPad() throws {
+    func testFlagOnSignInBuildsTheSplitViewWithLiveReaderOnIPad() throws {
         try XCTSkipUnless(UIDevice.isPad(), "Only the iPad uses the split view presenter")
 
         // Given
@@ -470,56 +445,6 @@ final class RootViewCoordinatorTests: XCTestCase {
         let tabBar = try XCTUnwrap(splitVC.viewController(for: .compact) as? WPTabBarController)
         XCTAssertFalse(tabBar.showsPoster(in: .reader))
         XCTAssertTrue(tabBar.showsPoster(in: .notifications))
-    }
-
-    func testFetchWaitsForBothAssignmentsAndFeatureFlags() {
-        // Given
-        var answerAssignments: (() -> Void)?
-        var answerFeatureFlags: (() -> Void)?
-        var didComplete = false
-        let completed = expectation(description: "fetch")
-
-        // When
-        RootViewCoordinator.fetchAssignmentsAndFeatureFlags(
-            startExperiments: { answerAssignments = $0 },
-            waitForFeatureFlags: { answerFeatureFlags = $0 },
-            completion: {
-                XCTAssertTrue(Thread.isMainThread)
-                didComplete = true
-                completed.fulfill()
-            }
-        )
-        answerAssignments?()
-        RunLoop.main.run(until: Date().addingTimeInterval(0.05))
-
-        // Then it waits for the flags too
-        XCTAssertFalse(didComplete)
-        DispatchQueue.global().async { answerFeatureFlags?() }
-        wait(for: [completed], timeout: 1)
-    }
-
-    func testSignOutForgetsTheTreatmentOfThePreviousAccount() {
-        // Given an account in the treatment group
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
-        signInToWordPressDotCom()
-        prepareAppUIAfterSignIn(fetch: { $0() }, readerInWordPressAppEnabled: true)
-        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
-
-        // When it signs out and its assignment is gone
-        UserSettings.defaultDotComUUID = nil
-        sut.readerInWordPressAppDidSignOut(isEnabled: false)
-
-        // Then
-        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
-        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
-
-        // And the next account's sign-in keeps the existing flag-off path until My Site reloads
-        sut.showAppUI()
-        signInToWordPressDotCom()
-        postAccountChangeNotification()
-        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
-        XCTAssertTrue(sut.reloadUIIfNeeded(blog: nil))
-        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
     }
 
     // MARK: - Helpers

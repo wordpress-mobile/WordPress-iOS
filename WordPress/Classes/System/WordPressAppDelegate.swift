@@ -807,9 +807,6 @@ extension WordPressAppDelegate {
             // wait for the next foreground or launch.
             updateSignInFeatureFlags()
         } else {
-            // Forget the account's experiment groups before anything reads them again.
-            ABTest.reset()
-            RootViewCoordinator.shared.readerInWordPressAppDidSignOut()
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()

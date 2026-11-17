@@ -199,28 +199,25 @@ class RootViewCoordinator {
 
     // MARK: Sign-In
 
-    /// How long a sign-in waits for ExPlat and the remote feature flags before showing the app UI.
+    /// How long a sign-in waits for the remote feature flags before showing the app UI.
     static let signInFetchTimeout: TimeInterval = 2
 
     /// Prepares the app UI for an account that just signed in from the signed-out state, then
     /// calls `completion` on the main queue.
     ///
-    /// In the WordPress app, `ABTest.readerInWordPressApp` and `RemoteFeatureFlag.readerInWordPressApp`
-    /// decide whether Reader is live. The value read at launch is stale for someone who signs in for
-    /// the first time, so without this they would see the Moved-to-Jetpack poster until the next
-    /// launch whatever their group. This waits up to `timeout` for ExPlat's assignments and the
-    /// account's feature flags, and then reads the value again. No app UI exists yet, so the
-    /// Notifications lists can't disagree with the new value. On a timeout, whatever is stored
-    /// decides: sign-out clears the assignments, so that is usually control.
+    /// In the WordPress app, `RemoteFeatureFlag.readerInWordPressApp` decides whether Reader is
+    /// live. The value read at launch is stale for someone who signs in for the first time, so
+    /// without this they would see the Moved-to-Jetpack poster until the next launch. This waits
+    /// up to `timeout` for the account's feature flags, and then reads the flag again. No app UI
+    /// exists yet, so the Notifications lists can't disagree with the new value. On a timeout,
+    /// the cached value decides.
     ///
     /// Other apps, and sign-ins without a WordPress.com account, call `completion` right away.
     func prepareAppUIAfterSignIn(
         timeout: TimeInterval = RootViewCoordinator.signInFetchTimeout,
         hasDotComAccount: Bool = AccountHelper.isDotcomAvailable(),
-        fetch: (@escaping () -> Void) -> Void = { RootViewCoordinator.fetchAssignmentsAndFeatureFlags(completion: $0) },
-        readerInWordPressAppEnabled: @escaping () -> Bool = {
-            JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled()
-        },
+        fetch: (@escaping () -> Void) -> Void = RootViewCoordinator.waitForSignInFeatureFlags,
+        readerInWordPressAppEnabled: @escaping () -> Bool = { RemoteFeatureFlag.readerInWordPressApp.enabled() },
         completion: @escaping () -> Void
     ) {
         guard app == .wordpress, hasDotComAccount else {
@@ -246,37 +243,13 @@ class RootViewCoordinator {
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: finish)
     }
 
-    /// Waits for ExPlat's assignments and the account's feature flags, and calls `completion` on
-    /// the main queue once both have answered or failed.
-    ///
-    /// Both fetches are usually already running: the sign-in flow starts the ExPlat request
-    /// (`WordPressAuthenticationManager`) and the account change starts the flag fetch
-    /// (`WordPressAppDelegate`). This joins them rather than starting new ones.
-    static func fetchAssignmentsAndFeatureFlags(
-        startExperiments: (@escaping () -> Void) -> Void = { ABTest.start(completion: $0) },
-        waitForFeatureFlags: (@escaping () -> Void) -> Void = { completion in
-            guard let appDelegate = WordPressAppDelegate.shared else {
-                return completion()
-            }
-            appDelegate.waitForSignInFeatureFlags(completion: completion)
-        },
-        completion: @escaping () -> Void
-    ) {
-        let group = DispatchGroup()
-        group.enter()
-        startExperiments { group.leave() }
-        group.enter()
-        waitForFeatureFlags { group.leave() }
-        group.notify(queue: .main, execute: completion)
-    }
-
-    /// Reads whether Reader is live again after sign-out, once `ABTest.reset()` has cleared the
-    /// previous account's assignments, so the next account doesn't inherit them. The sign-in UI
-    /// replaces the app UI, so no Notifications list is left with the old scope.
-    func readerInWordPressAppDidSignOut(
-        isEnabled: Bool = JetpackFeaturesRemovalCoordinator.readerInWordPressAppEnabled()
-    ) {
-        updateReaderInWordPressApp(isEnabled: isEnabled)
+    /// Waits for the feature-flag fetch that the account change started (`WordPressAppDelegate`),
+    /// rather than starting another.
+    private static func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
+        guard let appDelegate = WordPressAppDelegate.shared else {
+            return completion()
+        }
+        appDelegate.waitForSignInFeatureFlags(completion: completion)
     }
 
     private func updateReaderInWordPressApp(isEnabled: Bool) {
