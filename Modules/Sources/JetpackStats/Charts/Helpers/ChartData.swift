@@ -101,8 +101,14 @@ final class ChartData: Sendable {
 // MARK: - Placeholder Data
 
 extension ChartData {
-    /// Mock data with the same shape as a loaded chart, built the way ``StatsService``
-    /// and ``ChartCardViewModel`` build the real data:
+    enum PlaceholderDateAlignment {
+        case calendarPeriods
+        case rangeStart
+    }
+
+    /// Mock data with the same shape as a loaded chart. Calendar-aligned dates match
+    /// ``StatsService``; range-aligned dates use ``StatsDataAggregator`` for standalone charts.
+    /// The default calendar alignment has:
     /// - one point per calendar period that overlaps the range (weeks start on Monday,
     ///   like the API's), so the first point can fall before the range start;
     /// - no points after `now`;
@@ -112,26 +118,31 @@ extension ChartData {
         metric: SiteMetric,
         granularity: DateRangeGranularity,
         range: StatsDateRange,
+        dateAlignment: PlaceholderDateAlignment = .calendarPeriods,
         now: Date = .now
     ) -> ChartData {
-        let valueRange = valueRange(for: metric)
-        let dataPoints = periodStarts(
-            in: range.dateInterval,
-            granularity: granularity,
-            calendar: range.calendar,
-            now: now
-        )
-        .map { DataPoint(date: $0, value: Int.random(in: valueRange)) }
-        let previousData = periodStarts(
-            in: range.effectiveComparisonInterval,
-            granularity: granularity,
-            calendar: range.calendar,
-            now: now
-        )
-        .map { date in
-            let variation = Double.random(in: 0.75...0.95)
-            return DataPoint(date: date, value: Int(Double(Int.random(in: valueRange)) * variation))
+        func dates(in interval: DateInterval) -> [Date] {
+            switch dateAlignment {
+            case .calendarPeriods:
+                return periodStarts(in: interval, granularity: granularity, calendar: range.calendar, now: now)
+            case .rangeStart:
+                return StatsDataAggregator(calendar: range.calendar)
+                    .generateDateSequence(
+                        dateInterval: interval,
+                        by: granularity.component,
+                        now: now
+                    )
+            }
         }
+
+        let valueRange = valueRange(for: metric)
+        let dataPoints = dates(in: range.dateInterval)
+            .map { DataPoint(date: $0, value: Int.random(in: valueRange)) }
+        let previousData = dates(in: range.effectiveComparisonInterval)
+            .map { date in
+                let variation = Double.random(in: 0.75...0.95)
+                return DataPoint(date: date, value: Int(Double(Int.random(in: valueRange)) * variation))
+            }
         let mappedPreviousData = DataPoint.mapDataPoints(
             currentData: dataPoints,
             previousData: previousData,
@@ -211,6 +222,11 @@ extension ChartData {
 final class PlaceholderChartDataCache {
     private var cached: ChartData?
     private var cachedRange: StatsDateRange?
+    private let dateAlignment: ChartData.PlaceholderDateAlignment
+
+    init(dateAlignment: ChartData.PlaceholderDateAlignment = .calendarPeriods) {
+        self.dateAlignment = dateAlignment
+    }
 
     func data(metric: SiteMetric, granularity: DateRangeGranularity, range: StatsDateRange) -> ChartData {
         if let cached,
@@ -220,7 +236,7 @@ final class PlaceholderChartDataCache {
         {
             return cached
         }
-        let data = ChartData.mock(metric: metric, granularity: granularity, range: range)
+        let data = ChartData.mock(metric: metric, granularity: granularity, range: range, dateAlignment: dateAlignment)
         cached = data
         cachedRange = range
         return data

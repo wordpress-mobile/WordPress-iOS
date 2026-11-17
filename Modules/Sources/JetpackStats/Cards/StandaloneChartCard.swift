@@ -21,7 +21,7 @@ struct StandaloneChartCard: View {
     @Binding var chartType: ChartType
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
-    @State private var placeholderCache = PlaceholderChartDataCache()
+    @State private var placeholderCache = PlaceholderChartDataCache(dateAlignment: .rangeStart)
 
     @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 140
 
