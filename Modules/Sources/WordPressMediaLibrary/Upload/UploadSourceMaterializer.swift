@@ -682,6 +682,22 @@ public final class UploadSourceMaterializer: Sendable {
         // as image/jpeg must still be converted.
         let actualType = CGImageSourceGetType(source).flatMap { UTType($0 as String) } ?? declaredType
 
+        // A mislabeled GIF must not be re-encoded either, which would flatten
+        // its animation, so it gets the same raw copy as a labeled one.
+        if Self.rawPassthroughImageTypes.contains(actualType) {
+            let ext = actualType.preferredFilenameExtension ?? "bin"
+            guard policy.isAllowedForUpload(actualType, ext) else {
+                throw MaterializerError.disallowedContentType
+            }
+            let destURL = parentDir.appendingPathComponent(filenames.basename(stem: stem, ext: ext))
+            try data.write(to: destURL)
+            return MaterializedUpload(
+                tempFileURL: destURL,
+                params: MediaCreateParams(caption: caption, filePath: destURL.path),
+                kind: .image
+            )
+        }
+
         var transforms: ImageTransforms = []
         var effectiveType = actualType
         if !Self.webSafeImageTypes.contains(actualType), policy.convertHEICToJPEG {
@@ -943,7 +959,8 @@ public final class UploadSourceMaterializer: Sendable {
 
     /// Image types that must never round-trip through ImageIO: re-encoding
     /// would flatten GIF animation and rasterize SVG vectors. Every source
-    /// branch routes these to a raw byte copy instead of the image tail.
+    /// branch routes these to a raw byte copy, and the image tail copies one
+    /// that arrives mislabeled.
     /// (Animated WebP and APNG are not exempt: WebP converts to a JPEG still
     /// and an oversized APNG resizes to a single frame, matching V1.)
     private static let rawPassthroughImageTypes: Set<UTType> = [.gif, .svg]

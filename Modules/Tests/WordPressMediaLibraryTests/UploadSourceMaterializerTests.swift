@@ -191,6 +191,22 @@ final class UploadSourceMaterializerTests {
         #expect(try Data(contentsOf: result.tempFileURL) == gifFixture)
     }
 
+    @Test(".file GIF with a .jpg name passes through raw-copied")
+    func fileMislabeledGIFRawCopy() async throws {
+        // `gifFixture` has no frames, so the image tail would reject it.
+        let gif = try encodeImage(
+            makeSolidColorImage(size: CGSize(width: 48, height: 48), color: .blue),
+            as: .gif
+        )
+        let url = try writeTempFixture(gif, ext: "jpg")
+
+        let m = makeMaterializer(policy(imageMaxDimension: 16))
+        let result = try await m.materialize(source: .file(url), into: stage())
+
+        #expect(result.displayName.hasSuffix(".gif"))
+        #expect(try Data(contentsOf: result.tempFileURL) == gif)
+    }
+
     @Test(".file PDF passes through raw-copied")
     func filePDFRawCopy() async throws {
         let pdfURL = try createTempPDF()
