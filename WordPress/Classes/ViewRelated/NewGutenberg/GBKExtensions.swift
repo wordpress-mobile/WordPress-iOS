@@ -65,12 +65,38 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Failed to insert media",
             comment: "Error message when media insertion fails"
         )
+    case .someMediaFailedToInsert:
+        NSLocalizedString(
+            "editor.media.someFailedToInsert",
+            value: "Some media could not be inserted",
+            comment: "Error message when some, but not all, of the media picked in the block inserter fails to insert"
+        )
     case .failedToLoadSelectedMedia:
         NSLocalizedString(
             "editor.media.failedToLoadSelected",
             value: "The selected media could not be loaded. It may not be fully downloaded to this device.",
             comment: "Error message when media picked in the block inserter cannot be loaded, e.g. an iCloud photo"
         )
+    case .someSelectedMediaFailedToLoad(let count):
+        if count == 1 {
+            NSLocalizedString(
+                "editor.media.someSelectedFailedToLoad.singular",
+                value: "1 item could not be loaded and was skipped. It may not be fully downloaded to this device.",
+                comment:
+                    "Error message when one of several media items picked in the block inserter cannot be loaded, e.g. an iCloud photo"
+            )
+        } else {
+            String(
+                format: NSLocalizedString(
+                    "editor.media.someSelectedFailedToLoad.plural",
+                    value:
+                        "%1$d items could not be loaded and were skipped. They may not be fully downloaded to this device.",
+                    comment:
+                        "Error message when some of the media items picked in the block inserter cannot be loaded, e.g. iCloud photos. %1$d is a placeholder for the number of items."
+                ),
+                count
+            )
+        }
     case .failedToProcessCapturedMedia:
         NSLocalizedString(
             "editor.media.failedToProcessCaptured",
