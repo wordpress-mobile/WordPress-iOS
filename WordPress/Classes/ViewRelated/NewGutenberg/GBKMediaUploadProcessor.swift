@@ -50,12 +50,13 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     // MARK: - MediaProcessor
 
     func processFile(at url: URL, mimeType: String, filename: String) async throws -> ProcessedProxyFile {
+        let declaredType = Self.declaredType(of: url, reportedMIMEType: mimeType)
+        let sourceType = Self.sourceType(of: url, declaredType: declaredType)
+
         // Only images and videos have settings to apply. The server decides
         // whether to accept anything else (e.g. archives and fonts).
-        guard let sourceType = Self.sourceType(of: url, reportedMIMEType: mimeType),
-            Self.isProcessable(sourceType)
-        else {
-            return .original
+        guard let sourceType, Self.isProcessable(sourceType) else {
+            return Self.passThrough(url, type: sourceType, declaredType: declaredType, filename: filename)
         }
         let settings = makeMediaSettings()
 
@@ -65,7 +66,7 @@ struct GBKMediaUploadProcessor: MediaProcessor {
             !settings.imageOptimizationEnabled,
             !settings.removeLocationSetting
         {
-            return .original
+            return Self.passThrough(url, type: sourceType, declaredType: declaredType, filename: filename)
         }
 
         try Task.checkCancellation()
@@ -85,7 +86,29 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         return .processed(
             export,
             mimeType: exportMIMEType,
-            filename: Self.uploadFilename(original: filename, exportURL: export)
+            filename: Self.uploadFilename(original: filename, fileURL: export, fileExtension: export.pathExtension)
+        )
+    }
+
+    /// The file unchanged, relabeled when its header contradicts its declared
+    /// type so WordPress stores, say, a GIF named `.jpg` as a GIF. GutenbergKit
+    /// deletes only files that differ from the one it staged.
+    private static func passThrough(
+        _ url: URL,
+        type: UTType?,
+        declaredType: UTType?,
+        filename: String
+    ) -> ProcessedProxyFile {
+        guard let type, type != declaredType,
+            let mimeType = type.preferredMIMEType,
+            let fileExtension = type.preferredFilenameExtension
+        else {
+            return .original
+        }
+        return .processed(
+            url,
+            mimeType: mimeType,
+            filename: uploadFilename(original: filename, fileURL: url, fileExtension: fileExtension)
         )
     }
 
@@ -115,17 +138,18 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     // MARK: - Output naming
 
     /// The name WordPress turns into the attachment's slug and title: the
-    /// editor's, with the export's extension because a conversion changes it.
-    private static func uploadFilename(original: String, exportURL: URL) -> String {
+    /// editor's, with the uploaded type's extension because a conversion
+    /// changes it. Falls back to the uploaded file's own name.
+    private static func uploadFilename(original: String, fileURL: URL, fileExtension: String) -> String {
         let originalBase = ((original as NSString).lastPathComponent as NSString).deletingPathExtension
-        let base = originalBase.nonEmptyString() ?? exportURL.deletingPathExtension().lastPathComponent
-        guard let exportExtension = exportURL.pathExtension.nonEmptyString() else {
+        let base = originalBase.nonEmptyString() ?? fileURL.deletingPathExtension().lastPathComponent
+        guard !fileExtension.isEmpty else {
             return base
         }
         // `.jpg`, as `MediaService` uploads, because some image plugins expect
         // it (WordPress-iOS#4663).
-        let fileExtension = exportExtension.lowercased() == "jpeg" ? "jpg" : exportExtension
-        return "\(base).\(fileExtension)"
+        let normalizedExtension = fileExtension.lowercased() == "jpeg" ? "jpg" : fileExtension
+        return "\(base).\(normalizedExtension)"
     }
 
     // MARK: - Type resolution
@@ -133,12 +157,11 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     /// The type of the file to process. An image's header wins over its
     /// declared type, as in the materializer, so a mislabeled file is handled
     /// as what it is (e.g. a GIF named `.jpg` keeps its animation).
-    private static func sourceType(of url: URL, reportedMIMEType: String) -> UTType? {
-        let declared = declaredType(of: url, reportedMIMEType: reportedMIMEType)
-        guard let declared, declared.conforms(to: .image) else {
-            return declared
+    private static func sourceType(of url: URL, declaredType: UTType?) -> UTType? {
+        guard let declaredType, declaredType.conforms(to: .image) else {
+            return declaredType
         }
-        return decodedImageType(of: url) ?? declared
+        return decodedImageType(of: url) ?? declaredType
     }
 
     /// The type from the file's extension, or the reported MIME type when the

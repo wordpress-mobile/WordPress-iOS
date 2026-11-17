@@ -94,8 +94,9 @@ struct GBKMediaUploadProcessorTests {
         #expect(try decodedType(at: output.url) == .jpeg)
     }
 
-    /// Converting a mislabeled GIF would keep only its first frame.
-    @Test func gifNamedAsJPEGPassesThroughUntouched() async throws {
+    /// Converting a mislabeled GIF would keep only its first frame, so the
+    /// staged file goes up as is, under the type its header names.
+    @Test func gifNamedAsJPEGIsRelabeledWithoutConverting() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
         settings.removeLocationSetting = true
@@ -104,7 +105,25 @@ struct GBKMediaUploadProcessorTests {
 
         let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "reaction.jpg")
 
-        try expectOriginal(result)
+        let output = try processedFile(result)
+        #expect(output.url == url)
+        #expect(output.mimeType == "image/gif")
+        #expect(output.filename == "reaction.gif")
+    }
+
+    @Test func pngNamedAsJPEGIsRelabeledWhenProcessingWouldBeNoOp() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = false
+        settings.removeLocationSetting = false
+        let processor = makeProcessor(settings: settings)
+        let url = try stageImage(as: "screenshot.jpg", type: .png)
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "screenshot.jpg")
+
+        let output = try processedFile(result)
+        #expect(output.url == url)
+        #expect(output.mimeType == "image/png")
+        #expect(output.filename == "screenshot.png")
     }
 
     /// GutenbergKit stages each upload under the editor's filename, in a
@@ -405,6 +424,11 @@ struct GBKMediaUploadProcessorTests {
                 .compactMap(UTType.init)
                 .first { $0.preferredMIMEType == nil && $0.preferredFilenameExtension != nil }
         )
+        return try stageImage(as: name, type: type)
+    }
+
+    /// Re-encodes a fixture as `type`, whatever `name` claims.
+    private func stageImage(as name: String, type: UTType) throws -> URL {
         let source = try #require(
             CGImageSourceCreateWithURL(try fixtureURL("test-image-device-photo-gps.jpg") as CFURL, nil)
         )
