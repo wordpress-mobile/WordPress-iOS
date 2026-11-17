@@ -216,6 +216,24 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return details
     }
 
+    func getFeaturedImageURLs(forPostIDs postIDs: [Int]) async throws -> [Int: URL] {
+        // Simulate network delay
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
+
+        // Stands in for a site where only some posts have a featured image, so the
+        // previews show both the image and the type glyph it falls back to.
+        var urls: [Int: URL] = [:]
+        for postID in postIDs where postID.isMultiple(of: 2) {
+            let name = "author\((postID % 4) + 1)"
+            if let path = Bundle.module.path(forResource: name, ofType: "jpg") {
+                urls[postID] = URL(filePath: path)
+            }
+        }
+        return urls
+    }
+
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         // Simulate network delay
         if !delaysDisabled {
