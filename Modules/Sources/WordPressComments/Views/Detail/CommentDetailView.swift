@@ -44,6 +44,8 @@ struct CommentDetailView: View {
             retry: { Task { await viewModel.retry() } }
         )
         .safeAreaInset(edge: .bottom, spacing: 0) { bottomToolbar }
+        // Search can retain a keyboard inset after rotation. Detail has no text input.
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .toolbar { trailingToolbarItems }
         .navigationBarTitleDisplayMode(.inline)
         .task { await viewModel.onAppear() }
