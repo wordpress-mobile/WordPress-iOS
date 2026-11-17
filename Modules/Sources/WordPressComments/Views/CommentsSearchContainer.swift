@@ -49,12 +49,6 @@ struct CommentsSearchContainer: View {
     }
 
     private var searchPlacement: SearchFieldPlacement {
-        // Drawer search overlaps the title on iOS 26; compact toolbar search is missing on iOS 27.
-        if #unavailable(iOS 27) {
-            if #available(iOS 26, *) {
-                return .toolbar
-            }
-        }
-        return horizontalSizeClass == .regular ? .toolbar : .navigationBarDrawer(displayMode: .always)
+        horizontalSizeClass == .regular ? .toolbar : .navigationBarDrawer(displayMode: .always)
     }
 }

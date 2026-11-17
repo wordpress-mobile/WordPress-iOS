@@ -12,7 +12,7 @@ public enum CommentsHostingController {
         noticePresenter: any NoticePresenting,
         draftStore: any CommentDraftStoring
     ) -> UIViewController {
-        let host = UIHostingController(
+        let host = CommentsRootHostingController(
             rootView: CommentsView(
                 client: client,
                 makeContentRenderer: makeContentRenderer,
@@ -23,6 +23,23 @@ public enum CommentsHostingController {
         )
         host.navigationItem.largeTitleDisplayMode = .never
         return host
+    }
+}
+
+private final class CommentsRootHostingController: UIHostingController<CommentsView> {
+    private weak var laidOutSearchController: UISearchController?
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard let searchController = navigationItem.searchController,
+            searchController !== laidOutSearchController,
+            let navigationController,
+            navigationController.topViewController === self
+        else { return }
+        laidOutSearchController = searchController
+        // SwiftUI can leave the initial search field over the title in a UIKit host.
+        navigationController.navigationBar.setNeedsLayout()
+        navigationController.navigationBar.layoutIfNeeded()
     }
 }
 
