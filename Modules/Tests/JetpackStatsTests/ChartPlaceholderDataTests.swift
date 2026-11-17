@@ -107,6 +107,47 @@ struct ChartPlaceholderDataTests {
         #expect(cache.data(metric: .visitors, granularity: .week, range: range).granularity == .week)
     }
 
+    @Test
+    @MainActor
+    func comparisonChangeInvalidatesCache() {
+        var range = StatsDateRange(
+            interval: DateInterval(start: Date("2024-03-01T00:00:00Z"), end: Date("2024-04-01T00:00:00Z")),
+            component: .month,
+            calendar: calendar
+        )
+        let cache = PlaceholderChartDataCache()
+        let first = cache.data(metric: .views, granularity: .day, range: range)
+        #expect(first.mappedPreviousData.count == 29)
+
+        range.update(comparisonPeriod: .samePeriodLastYear)
+        let updated = cache.data(metric: .views, granularity: .day, range: range)
+        let fresh = ChartData.mock(metric: .views, granularity: .day, range: range)
+
+        #expect(updated !== first)
+        #expect(updated.mappedPreviousData.count == 31)
+        #expect(updated.mappedPreviousData.map(\.date) == fresh.mappedPreviousData.map(\.date))
+        #expect(cache.data(metric: .views, granularity: .day, range: range) === updated)
+    }
+
+    @Test
+    @MainActor
+    func calendarChangeInvalidatesCache() {
+        let range = makeMonthRange()
+        var otherCalendar = calendar
+        otherCalendar.timeZone = TimeZone(secondsFromGMT: -8 * 3600)!
+        let otherRange = StatsDateRange(interval: range.dateInterval, component: .month, calendar: otherCalendar)
+        let cache = PlaceholderChartDataCache()
+        let first = cache.data(metric: .views, granularity: .day, range: range)
+
+        let updated = cache.data(metric: .views, granularity: .day, range: otherRange)
+        let fresh = ChartData.mock(metric: .views, granularity: .day, range: otherRange)
+
+        #expect(updated !== first)
+        #expect(updated.currentData.map(\.date) == fresh.currentData.map(\.date))
+        #expect(updated.previousData.map(\.date) == fresh.previousData.map(\.date))
+        #expect(cache.data(metric: .views, granularity: .day, range: otherRange) === updated)
+    }
+
     @Test(arguments: [0, 9, 23])
     func todayPlaceholderEndsAtCurrentHour(currentHour: Int) {
         let data = TodayCardData.placeholder(currentHour: currentHour)

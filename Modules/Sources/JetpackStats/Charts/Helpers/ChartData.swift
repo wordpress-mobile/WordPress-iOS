@@ -210,17 +210,19 @@ extension ChartData {
 @MainActor
 final class PlaceholderChartDataCache {
     private var cached: ChartData?
+    private var cachedRange: StatsDateRange?
 
     func data(metric: SiteMetric, granularity: DateRangeGranularity, range: StatsDateRange) -> ChartData {
         if let cached,
             cached.metric == metric,
             cached.granularity == granularity,
-            cached.dateInterval == range.dateInterval
+            cachedRange == range
         {
             return cached
         }
         let data = ChartData.mock(metric: metric, granularity: granularity, range: range)
         cached = data
+        cachedRange = range
         return data
     }
 }
