@@ -1,6 +1,7 @@
 import AVFoundation
 import Foundation
 import GutenbergKit
+import ImageIO
 import os
 import UniformTypeIdentifiers
 import WordPressData
@@ -129,17 +130,40 @@ struct GBKMediaUploadProcessor: MediaProcessor {
 
     // MARK: - Type resolution
 
-    /// The type of the file to process: from its extension, or the reported
-    /// MIME type when the extension says nothing.
+    /// The type of the file to process. An image's header wins over its
+    /// declared type, as in the materializer, so a mislabeled file is handled
+    /// as what it is (e.g. a GIF named `.jpg` keeps its animation).
+    private static func sourceType(of url: URL, reportedMIMEType: String) -> UTType? {
+        let declared = declaredType(of: url, reportedMIMEType: reportedMIMEType)
+        guard let declared, declared.conforms(to: .image) else {
+            return declared
+        }
+        return decodedImageType(of: url) ?? declared
+    }
+
+    /// The type from the file's extension, or the reported MIME type when the
+    /// extension says nothing.
     ///
     /// The editor doesn't guarantee a filename has an extension, and one no
     /// UTI declares (e.g. `.jfif`) resolves to a dynamic type that conforms to
     /// nothing. Either would fail an upload the MIME type describes correctly.
-    private static func sourceType(of url: URL, reportedMIMEType: String) -> UTType? {
+    private static func declaredType(of url: URL, reportedMIMEType: String) -> UTType? {
         guard let type = url.typeIdentifier.flatMap(UTType.init), !isUninformative(type) else {
             return type(ofMIMEType: reportedMIMEType)
         }
         return type
+    }
+
+    /// The type ImageIO reads from the file's header, without decoding it.
+    /// `nil` for formats ImageIO can't read, such as SVG.
+    private static func decodedImageType(of url: URL) -> UTType? {
+        let options = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let source = CGImageSourceCreateWithURL(url as CFURL, options),
+            let identifier = CGImageSourceGetType(source)
+        else {
+            return nil
+        }
+        return UTType(identifier as String)
     }
 
     private static func isUninformative(_ type: UTType) -> Bool {

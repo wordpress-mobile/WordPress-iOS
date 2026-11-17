@@ -77,6 +77,36 @@ struct GBKMediaUploadProcessorTests {
         #expect(output.filename == "IMG_1234.jpg")
     }
 
+    /// The header decides, so a mislabeled HEIC is converted even when no
+    /// setting would otherwise change the file.
+    @Test func heicNamedAsJPEGIsConvertedToJPEG() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = false
+        settings.removeLocationSetting = false
+        let processor = makeProcessor(settings: settings)
+        let url = try stageFixture("iphone-photo.heic", as: "IMG_1234.jpg")
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "IMG_1234.jpg")
+
+        let output = try processedFile(result)
+        defer { cleanUp(output.url) }
+        #expect(output.mimeType == "image/jpeg")
+        #expect(try decodedType(at: output.url) == .jpeg)
+    }
+
+    /// Converting a mislabeled GIF would keep only its first frame.
+    @Test func gifNamedAsJPEGPassesThroughUntouched() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.removeLocationSetting = true
+        let processor = makeProcessor(settings: settings)
+        let url = try stageFixture("test-gif.gif", as: "reaction.jpg")
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "reaction.jpg")
+
+        try expectOriginal(result)
+    }
+
     /// GutenbergKit stages each upload under the editor's filename, in a
     /// directory per upload, and processes uploads concurrently, so same-named
     /// uploads must still produce distinct files.
@@ -418,6 +448,11 @@ struct GBKMediaUploadProcessorTests {
     private func imageProperties(at url: URL) throws -> [CFString: Any] {
         let source = try #require(CGImageSourceCreateWithURL(url as CFURL, nil))
         return try #require(CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any])
+    }
+
+    private func decodedType(at url: URL) throws -> UTType? {
+        let source = try #require(CGImageSourceCreateWithURL(url as CFURL, nil))
+        return CGImageSourceGetType(source).flatMap { UTType($0 as String) }
     }
 
     private func imageSize(at url: URL) throws -> CGSize {
