@@ -624,6 +624,45 @@ final class UploadSourceMaterializerTests {
         #expect(!outputHasLocation)
     }
 
+    // MARK: - Local file with a known type
+
+    @Test("local file: the given type stands in for a missing extension")
+    func localFileWithoutExtensionUsesGivenType() async throws {
+        let url = try fixtures.writeFile(name: "IMG_0001", content: makeSyntheticHEIC())
+        let stagingDirectory = try fixtures.makeDirectory()
+        let m = UploadSourceMaterializer(policy: policy(), stagingDirectory: stagingDirectory)
+
+        let output = try await m.materialize(fileAt: url, contentType: .heic)
+
+        #expect(output.lastPathComponent == "IMG_0001.jpeg")
+        #expect(imageType(of: output) == .jpeg)
+        // Staged in its own directory under the given root.
+        #expect(output.deletingLastPathComponent().deletingLastPathComponent() == stagingDirectory)
+    }
+
+    @Test("local file: a video without an extension exports using the given type")
+    func localVideoWithoutExtensionUsesGivenType() async throws {
+        let videoURL = try await sharedBlankVideoTask.value
+        let url = try fixtures.writeFile(name: "clip", content: Data(contentsOf: videoURL))
+        let m = UploadSourceMaterializer(policy: policy(), stagingDirectory: try fixtures.makeDirectory())
+
+        let output = try await m.materialize(fileAt: url, contentType: .mpeg4Movie)
+
+        #expect(output.lastPathComponent == "clip.mp4")
+    }
+
+    @Test("local file: failures remove the upload's staging directory")
+    func localFileFailureRemovesStagingDirectory() async throws {
+        let url = try fixtures.writeFile(name: "photo", content: Data("not an image".utf8))
+        let stagingDirectory = try fixtures.makeDirectory()
+        let m = UploadSourceMaterializer(policy: policy(), stagingDirectory: stagingDirectory)
+
+        await expectThrowsCase(.invalidImageData) {
+            try await m.materialize(fileAt: url, contentType: .jpeg)
+        }
+        #expect(try FileManager.default.contentsOfDirectory(atPath: stagingDirectory.path).isEmpty)
+    }
+
     @Test("orphan sweep deletes only entries created before the cutoff")
     func sweepSkipsEntriesCreatedAfterCutoff() throws {
         let sweepRoot = try fixtures.makeDirectory()

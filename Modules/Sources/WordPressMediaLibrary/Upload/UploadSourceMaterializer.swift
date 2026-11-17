@@ -26,7 +26,7 @@ struct MaterializedUpload: Sendable {
     }
 }
 
-final class UploadSourceMaterializer: Sendable {
+public final class UploadSourceMaterializer: Sendable {
     private let policy: MediaUploadPolicy
     private let temporaryRoot: URL
     private let filenames = UploadFilenameAllocator()
@@ -93,15 +93,36 @@ final class UploadSourceMaterializer: Sendable {
         self.temporaryRoot = temporaryRoot
     }
 
+    /// For callers outside the module, which stage uploads under their own
+    /// root rather than the Media Library's swept one.
+    public convenience init(policy: MediaUploadPolicy, stagingDirectory: URL) {
+        self.init(policy: policy, temporaryRoot: stagingDirectory)
+    }
+
+    /// Applies the policy to a local image or video and returns the file to
+    /// upload, which the caller owns. It sits in a per-upload directory under
+    /// the staging root that deleting the file leaves behind, so root staging
+    /// somewhere the system purges.
+    ///
+    /// `contentType` is trusted over the file's extension, which may be
+    /// missing or undeclared when the file came from a web view.
+    public func materialize(fileAt url: URL, contentType: UTType) async throws -> URL {
+        let upload = try await withStagingDirectory { parentDir in
+            try await materializeLocalFile(
+                parentDir: parentDir,
+                sourceURL: url,
+                contentType: contentType,
+                stageProgress: Progress(totalUnitCount: 1)
+            )
+        }
+        return upload.tempFileURL
+    }
+
     func materialize(
         source: UploadSource,
         into stageProgress: Progress
     ) async throws -> MaterializedUpload {
-        try ensureStagingRoot()
-        let parentDir = temporaryRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: parentDir, withIntermediateDirectories: true)
-
-        do {
+        try await withStagingDirectory { parentDir in
             let result: MaterializedUpload
             switch source {
             case .photoLibrary(let itemProvider, let suggestedName, let hint):
@@ -149,6 +170,19 @@ final class UploadSourceMaterializer: Sendable {
             // 0→100 here; video sub-methods set it themselves after polling).
             stageProgress.completedUnitCount = stageProgress.totalUnitCount
             return result
+        }
+    }
+
+    /// Runs `body` in a new per-upload directory, which is removed if it throws.
+    private func withStagingDirectory(
+        _ body: (URL) async throws -> MaterializedUpload
+    ) async throws -> MaterializedUpload {
+        try ensureStagingRoot()
+        let parentDir = temporaryRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: parentDir, withIntermediateDirectories: true)
+
+        do {
+            return try await body(parentDir)
         } catch {
             try? FileManager.default.removeItem(at: parentDir)
             throw error
@@ -389,7 +423,20 @@ final class UploadSourceMaterializer: Sendable {
         }
         defer { sourceURL.stopAccessingSecurityScopedResource() }
 
-        let contentType = try resolveContentType(of: sourceURL)
+        return try await materializeLocalFile(
+            parentDir: parentDir,
+            sourceURL: sourceURL,
+            contentType: try resolveContentType(of: sourceURL),
+            stageProgress: stageProgress
+        )
+    }
+
+    private func materializeLocalFile(
+        parentDir: URL,
+        sourceURL: URL,
+        contentType: UTType,
+        stageProgress: Progress
+    ) async throws -> MaterializedUpload {
         let stem = filenames.stem(
             preferred: sourceURL.deletingPathExtension().lastPathComponent,
             fallbackPrefix: "File",
@@ -411,6 +458,7 @@ final class UploadSourceMaterializer: Sendable {
             return try await materializeFileVideo(
                 parentDir: parentDir,
                 sourceURL: sourceURL,
+                contentType: contentType,
                 stem: stem,
                 stageProgress: stageProgress
             )
@@ -461,11 +509,15 @@ final class UploadSourceMaterializer: Sendable {
     private func materializeFileVideo(
         parentDir: URL,
         sourceURL: URL,
+        contentType: UTType,
         stem: String,
         stageProgress: Progress
     ) async throws -> MaterializedUpload {
-        try await finalizeVideo(
-            asset: AVURLAsset(url: sourceURL),
+        // AVFoundation otherwise identifies the container by its extension
+        // alone, which a file staged by a web view may lack.
+        let options = contentType.preferredMIMEType.map { [AVURLAssetOverrideMIMETypeKey: $0] }
+        return try await finalizeVideo(
+            asset: AVURLAsset(url: sourceURL, options: options),
             stem: stem,
             parentDir: parentDir,
             stageProgress: stageProgress
