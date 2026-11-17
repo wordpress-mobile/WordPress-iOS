@@ -28,9 +28,9 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     private let stagingDirectory: URL
 
     /// Each materializer owns a `URLSession`, which lives until it's
-    /// invalidated, so one is reused until the settings it applies change.
-    private let materializerCache = OSAllocatedUnfairLock<
-        (settings: UploadSettings, materializer: UploadSourceMaterializer)?
+    /// invalidated, so editors share one until the settings it applies change.
+    private static let materializerCache = OSAllocatedUnfairLock<
+        (key: MaterializerKey, materializer: UploadSourceMaterializer)?
     >(initialState: nil)
 
     /// Raster image types the WordPress REST API reliably accepts. The
@@ -91,12 +91,13 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     // MARK: - Export
 
     private func materializer(for settings: UploadSettings) -> UploadSourceMaterializer {
-        materializerCache.withLock { cache in
-            if let cache, cache.settings == settings {
+        let key = MaterializerKey(settings: settings, stagingDirectory: stagingDirectory)
+        return Self.materializerCache.withLock { cache in
+            if let cache, cache.key == key {
                 return cache.materializer
             }
             let materializer = UploadSourceMaterializer(policy: settings.policy, stagingDirectory: stagingDirectory)
-            cache = (settings, materializer)
+            cache = (key, materializer)
             return materializer
         }
     }
@@ -183,6 +184,11 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         }
         return UTType(mimeType: normalized)
     }
+}
+
+private struct MaterializerKey: Equatable {
+    let settings: UploadSettings
+    let stagingDirectory: URL
 }
 
 /// The Media settings an upload policy is built from, mirroring the option
