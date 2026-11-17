@@ -23,6 +23,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case newGutenbergPlugins
     case statsAds
     case readerInWordPressApp
+    case newStats
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
@@ -67,6 +68,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .statsAds:
             return false
         case .readerInWordPressApp:
+            return false
+        case .newStats:
             return false
         }
     }
@@ -114,6 +117,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "stats_ads"
         case .readerInWordPressApp:
             return "wordpress_ios_reader"
+        case .newStats:
+            return "ios_new_stats"
         }
     }
 
@@ -159,6 +164,13 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Stats Ads Tab"
         case .readerInWordPressApp:
             return "Reader in WordPress App"
+        case .newStats:
+            // - warning: This string is also the override's storage key: `key` builds it
+            // with `String(describing:)`, which resolves through `CustomStringConvertible`.
+            // It carries every pre-existing opt-in across the move from `FeatureFlag.newStats`,
+            // so changing it silently re-enrols everyone who had turned New Stats on or off.
+            // `NewStatsFeatureFlagTests` pins it.
+            return "New Stats"
         }
     }
 
@@ -175,7 +187,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         if let remoteValue = remoteStore.value(for: remoteKey) { // The value may not be in the cache if this is the first run
             return remoteValue
         }
-        DDLogInfo("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
+        Loggers.app.info("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
         return defaultValue
     }
 }
@@ -191,6 +203,12 @@ extension RemoteFeatureFlag: OverridableFlag {
 
     var canOverride: Bool {
         true
+    }
+
+    /// New Stats is rolled out remotely, but an explicit choice by the user always wins:
+    /// opting out keeps the classic experience even once the rollout reaches them.
+    var isStickyOverride: Bool {
+        self == .newStats
     }
 }
 

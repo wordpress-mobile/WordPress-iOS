@@ -7,7 +7,6 @@ import GutenbergKit
 import WordPressData
 import WordPressShared
 import WebKit
-import CocoaLumberjackSwift
 import Photos
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
@@ -134,7 +133,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
         ////            self?.gutenberg.updateCapabilities()
         //        }, failure: { (error) in
-        //            DDLogError("Error syncing JETPACK: \(String(describing: error))")
+        //            Loggers.app.error("Error syncing JETPACK: \(String(describing: error))")
         //        })
 
         onViewDidLoad()
@@ -201,7 +200,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         let startTime = CFAbsoluteTimeGetCurrent()
         let editorData = try? await editorViewController.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
-        DDLogDebug("gutenbergkit-measure_get-latest-content: \(duration)")
+        Loggers.app.debug("gutenbergkit-measure_get-latest-content: \(duration)")
 
         if let title = editorData?.title,
             let content = editorData?.content,

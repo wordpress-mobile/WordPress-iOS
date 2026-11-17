@@ -118,7 +118,7 @@ private extension BloggingPromptsViewController {
 
     func fetchPrompts() {
         guard let bloggingPromptsService else {
-            DDLogError("Failed creating BloggingPromptsService instance.")
+            Loggers.app.error("Failed creating BloggingPromptsService instance.")
             showErrorView()
             return
         }
@@ -131,7 +131,7 @@ private extension BloggingPromptsViewController {
                 self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
             },
             failure: { [weak self] error in
-                DDLogError("Failed fetching blogging prompts: \(String(describing: error))")
+                Loggers.app.error("Failed fetching blogging prompts: \(String(describing: error))")
                 self?.isLoading = false
                 self?.showErrorView()
             }

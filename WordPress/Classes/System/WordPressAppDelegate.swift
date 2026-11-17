@@ -93,12 +93,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // We need to set up the swift-log logging system right after app launch, so that logs can be written
-        // into the log handlers configured below.
-        LoggingSystem.bootstrap { label in
-            AppLogLevelHandler.makeAppHandler(label: label)
-        }
-
         // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
         let libraryLogger = WordPressLibraryLogger()
         TracksLogging.delegate = libraryLogger
@@ -643,9 +637,17 @@ extension WordPressAppDelegate {
     /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
-        /// - warning: must be called before the `update(using:then:)`.
-        if remoteFeatureFlagStore.isFreshInstall {
-            FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+        /// New Stats is on for fresh installs regardless of the remote rollout. The guard on
+        /// an existing override matters if `FeatureFlagDeviceId` is ever cleared without the
+        /// rest of the defaults (a partial restore, the debug menu): the pin must not
+        /// overwrite a deliberate opt-out.
+        ///
+        /// - warning: must run before anything reads `remoteFeatureFlagStore.deviceID` —
+        /// including `update(using:then:)` below — because reading it creates it, which makes
+        /// `isFreshInstall` false.
+        let overrideStore = FeatureFlagOverrideStore()
+        if remoteFeatureFlagStore.isFreshInstall, !overrideStore.isOverridden(RemoteFeatureFlag.newStats) {
+            overrideStore.override(RemoteFeatureFlag.newStats, withValue: true)
         }
 
         var api: WordPressComRestApi
@@ -714,7 +716,10 @@ extension WordPressAppDelegate {
         Loggers.app.info("UDID:      \(udid)")
         Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
 
-        AccountHelper.logBlogsAndAccounts(context: mainContext)
+        // Fetching every blog is slow for accounts with many sites, so log them off the main thread.
+        Task {
+            await ContextManager.shared.performQuery { AccountHelper.logBlogsAndAccounts(context: $0) }
+        }
         Loggers.app.info("===========================================================================")
     }
 
@@ -730,6 +735,17 @@ extension WordPressAppDelegate {
         store.set((savedValue as NSString).boolValue, forKey: "extra_debug")
         store.removeObject(forKey: "orig_extra_debug")
         WPLogger.configureLoggerLevelWithExtraDebug()
+    }
+
+    /// Sets up swift-log. Every `main.swift` MUST call this before it creates the app delegate.
+    ///
+    /// A `Logger` keeps the handler it was created with, and the delegate's stored properties create
+    /// `ContextManager.shared`, which logs. A logger created before this call would write to stdout,
+    /// and never to the log files, until the app quits.
+    public static func bootstrapLogging() {
+        LoggingSystem.bootstrap { label in
+            AppLogLevelHandler.makeAppHandler(label: label)
+        }
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {

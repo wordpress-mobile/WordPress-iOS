@@ -1,6 +1,8 @@
 27.5
 -----
 * [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
+* [*] Stats: Roll out New Stats remotely and remove the announcement screen. Your choice to use New Stats or Classic Stats is kept [#26335]
+* [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26388]
 * [*] Reader: Fix the comments list jumping to the top and hiding your new comment after posting it [#26357]
 * [*] Self-hosted sites: Fix new posts having comments closed instead of following the site's discussion settings [#26356]
 * [*] Reader: Tapping a mention in a post now shows that person's profile [#25793]
@@ -23,6 +25,10 @@
 * [*] Experimental editor: Recover from editor crashes, and ask before saving while media is still uploading [#26267]
 * [*] Experimental editor: Fix block assets not loading on self-hosted sites that use plain permalinks [#25859]
 * [*] Fix a rare crash when several network requests start at the same time [#26116]
+* [*] Fix avatars and other images sometimes showing the previous row's image, and free their memory after leaving the screen [#26394]
+* [*] Notifications: Fix a rare crash when opening a notification with images, and GIFs keeping their old size after rotating [#26396]
+* [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
+* [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
 
 
 27.4
@@ -42,6 +48,7 @@
 
 27.3
 -----
+* [*] Enforce the minimum age of 13 using Apple's age range checks in eligible regions [#25979]
 * [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]
 * [*] Stats: Improve performance when opening the Stats screen [#25938]
 * [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]

@@ -466,7 +466,7 @@ public class FilterTabBar: UIControl {
 
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
         guard items.indices.contains(index) else {
-            DDLogError("FilterTabBar - Tried to set an invalid index")
+            Loggers.app.error("FilterTabBar - Tried to set an invalid index")
             return
         }
 

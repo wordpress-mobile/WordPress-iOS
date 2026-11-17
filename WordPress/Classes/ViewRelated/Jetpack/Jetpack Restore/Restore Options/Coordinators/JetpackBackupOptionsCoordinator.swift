@@ -52,7 +52,7 @@ class JetpackBackupOptionsCoordinator {
 
             self?.view.showBackupStarted(for: backup.downloadID)
         }, failure: { [weak self] error in
-            DDLogError("Error preparing downloadable backup object: \(error.localizedDescription)")
+            Loggers.app.error("Error preparing downloadable backup object: \(error.localizedDescription)")
 
             self?.view.showBackupRequestFailed()
         })

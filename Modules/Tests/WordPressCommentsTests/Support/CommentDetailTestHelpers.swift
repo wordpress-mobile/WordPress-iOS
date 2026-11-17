@@ -7,6 +7,23 @@ func makeResolver() -> PostTitleResolver {
     PostTitleResolver(fetcher: { _ in PostTitleResolver.FetchResult(titles: [:]) })
 }
 
+@MainActor
+func makeDetailContext(
+    service: FakeCommentsService = FakeCommentsService(),
+    capabilities: FakeCommentsCapabilities = FakeCommentsCapabilities()
+) -> CommentDetailContext {
+    CommentDetailContext(
+        service: service,
+        capabilities: capabilities,
+        coordinator: CommentsModerationCoordinator(service: service),
+        draftStore: FakeCommentDraftStore(),
+        titleResolver: makeResolver(),
+        tracker: nil,
+        noticePresenter: FakeNoticePresenter(),
+        makeContentRenderer: { FakeContentRenderer() }
+    )
+}
+
 func makeDetail(
     id: Int64 = 1,
     parent: Int64 = 0,
@@ -58,7 +75,7 @@ func makeVM(
 }
 
 /// A resolver whose lookup has already landed with `canModerate`, standing in
-/// for the router's prefetch finishing before a detail screen opens.
+/// for the context's prefetch finishing before a detail screen opens.
 @MainActor
 func makeResolvedCapabilities(canModerate: Bool) async -> CommentsCapabilityResolver {
     let capabilities = FakeCommentsCapabilities()
