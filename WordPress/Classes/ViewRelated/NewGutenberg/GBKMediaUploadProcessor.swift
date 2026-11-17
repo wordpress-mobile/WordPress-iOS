@@ -70,8 +70,10 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         try Task.checkCancellation()
 
         let materializer = materializer(for: UploadSettings(settings))
-        let export = try await Self.gate.run {
-            try await materializer.materialize(fileAt: url, contentType: sourceType)
+        let export = try await withTaskExecutorPreference(Self.exportExecutor) {
+            // Cancelled while queued behind other exports.
+            try Task.checkCancellation()
+            return try await materializer.materialize(fileAt: url, contentType: sourceType)
         }
 
         guard let exportMIMEType = UTType(filenameExtension: export.pathExtension)?.preferredMIMEType else {
@@ -99,9 +101,10 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         }
     }
 
-    /// Runs exports one at a time, as `MediaImportService` does, to limit
-    /// peak memory to one decoded image.
-    private static let gate = MaterializationGate()
+    /// Starts exports one at a time, as `MediaImportService` does. Image work
+    /// is synchronous, so this keeps it off the Swift concurrency pool and
+    /// limits peak memory to one decode.
+    private static let exportExecutor = SerialQueueExecutor(label: "org.wordpress.gbk-media-upload-processor")
 
     private enum ProcessingError: Error {
         case unknownExportType
@@ -219,51 +222,20 @@ private struct UploadSettings: Equatable {
     }
 }
 
-/// Admits one operation at a time, in arrival order. A task cancelled while
-/// it waits leaves the queue without running.
-private actor MaterializationGate {
-    private var isBusy = false
-    private var waiters: [(id: UUID, continuation: CheckedContinuation<Void, any Error>)] = []
+/// Runs the nonisolated async work of tasks that prefer it on a serial
+/// dispatch queue. Synchronous stretches run one at a time, while a video
+/// export that suspends lets the next export start, as in the legacy editor.
+private final class SerialQueueExecutor: TaskExecutor {
+    private let queue: DispatchQueue
 
-    func run<T: Sendable>(_ operation: @Sendable () async throws -> T) async throws -> T {
-        try await enter()
-        defer { leave() }
-        // Cancelled as the gate was handed over, before `cancelWaiter` ran.
-        try Task.checkCancellation()
-        return try await operation()
+    init(label: String) {
+        queue = DispatchQueue(label: label, autoreleaseFrequency: .workItem)
     }
 
-    private func enter() async throws {
-        try Task.checkCancellation()
-        guard isBusy else {
-            isBusy = true
-            return
+    func enqueue(_ job: consuming ExecutorJob) {
+        let job = UnownedJob(job)
+        queue.async {
+            job.runSynchronously(on: self.asUnownedTaskExecutor())
         }
-        let id = UUID()
-        try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { continuation in
-                waiters.append((id, continuation))
-            }
-        } onCancel: {
-            // Runs after the append: it needs the actor, which `enter` holds
-            // until the continuation suspends.
-            Task { await self.cancelWaiter(id) }
-        }
-    }
-
-    /// Hands the gate straight to the next waiter, if there is one.
-    private func leave() {
-        if waiters.isEmpty {
-            isBusy = false
-        } else {
-            waiters.removeFirst().continuation.resume()
-        }
-    }
-
-    private func cancelWaiter(_ id: UUID) {
-        guard let index = waiters.firstIndex(where: { $0.id == id }) else {
-            return
-        }
-        waiters.remove(at: index).continuation.resume(throwing: CancellationError())
     }
 }
