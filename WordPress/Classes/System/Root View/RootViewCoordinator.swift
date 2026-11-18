@@ -199,57 +199,21 @@ class RootViewCoordinator {
 
     // MARK: Sign-In
 
-    /// How long a sign-in waits for the remote feature flags before showing the app UI.
-    static let signInFetchTimeout: TimeInterval = 2
-
-    /// Prepares the app UI for an account that just signed in from the signed-out state, then
-    /// calls `completion` on the main queue.
+    /// Reads `RemoteFeatureFlag.readerInWordPressApp` again for an account that just signed in
+    /// from the signed-out state. Call it before building the app UI.
     ///
-    /// In the WordPress app, `RemoteFeatureFlag.readerInWordPressApp` decides whether Reader is
-    /// live. The value read at launch is stale for someone who signs in for the first time, so
-    /// without this they would see the Moved-to-Jetpack poster until the next launch. This waits
-    /// up to `timeout` for the account's feature flags, and then reads the flag again. No app UI
-    /// exists yet, so the Notifications lists can't disagree with the new value. On a timeout,
-    /// the cached value decides.
-    ///
-    /// Other apps, and sign-ins without a WordPress.com account, call `completion` right away.
-    func prepareAppUIAfterSignIn(
-        timeout: TimeInterval = RootViewCoordinator.signInFetchTimeout,
-        hasDotComAccount: Bool = AccountHelper.isDotcomAvailable(),
-        fetch: (@escaping () -> Void) -> Void = RootViewCoordinator.waitForSignInFeatureFlags,
-        readerInWordPressAppEnabled: @escaping () -> Bool = { RemoteFeatureFlag.readerInWordPressApp.enabled() },
-        completion: @escaping () -> Void
+    /// The value read at launch is stale for someone who signs in for the first time: a fresh
+    /// install has no cached flags until the launch-time fetch answers, and the account's own
+    /// flags arrive only after sign-in. Without this, they would see the Moved-to-Jetpack poster
+    /// on the Reader tab until the next launch. No app UI exists yet, so the Notifications lists
+    /// can't disagree with the new value.
+    func refreshReaderInWordPressAppAfterSignIn(
+        isEnabled: Bool = RemoteFeatureFlag.readerInWordPressApp.enabled()
     ) {
-        guard app == .wordpress, hasDotComAccount else {
-            completion()
+        guard app == .wordpress else {
             return
         }
-
-        final class Once {
-            var hasRun = false
-        }
-        let once = Once()
-        let finish = { [weak self] in
-            guard !once.hasRun else {
-                return
-            }
-            once.hasRun = true
-            self?.updateReaderInWordPressApp(isEnabled: readerInWordPressAppEnabled())
-            completion()
-        }
-        fetch {
-            DispatchQueue.main.async(execute: finish)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: finish)
-    }
-
-    /// Waits for the feature-flag fetch that the account change started (`WordPressAppDelegate`),
-    /// rather than starting another.
-    private static func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
-        guard let appDelegate = WordPressAppDelegate.shared else {
-            return completion()
-        }
-        appDelegate.waitForSignInFeatureFlags(completion: completion)
+        updateReaderInWordPressApp(isEnabled: isEnabled)
     }
 
     private func updateReaderInWordPressApp(isEnabled: Bool) {

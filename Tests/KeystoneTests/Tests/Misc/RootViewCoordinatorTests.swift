@@ -1,4 +1,3 @@
-import AutomatticTracks
 import BuildSettingsKit
 import Foundation
 import XCTest
@@ -310,8 +309,8 @@ final class RootViewCoordinatorTests: XCTestCase {
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         signInToWordPressDotCom()
 
-        // When the fetch turns the flag on for the account
-        prepareAppUIAfterSignIn(fetch: { $0() }, readerInWordPressAppEnabled: true)
+        // When the account's flags turn Reader on
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
         sut.showAppUI()
 
         // Then
@@ -328,7 +327,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         signInToWordPressDotCom()
 
         // When
-        prepareAppUIAfterSignIn(fetch: { $0() }, readerInWordPressAppEnabled: false)
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: false)
         sut.showAppUI()
 
         // Then, as before this change, My Site's reload switches to the static screens with both posters
@@ -337,86 +336,26 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
     }
 
-    func testSignInUsesTheCachedFlagWhenTheFetchTimesOut() {
-        // Given a flag fetch that never returns
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
-        signInToWordPressDotCom()
-
-        // When the cached value has the flag on
-        prepareAppUIAfterSignIn(fetch: { _ in }, readerInWordPressAppEnabled: true)
-
-        // Then
-        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
-    }
-
-    func testSignInCompletesOnceWhenTheFetchAnswersAfterTheTimeout() {
-        // Given
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
-        signInToWordPressDotCom()
-        var pendingAnswer: (() -> Void)?
-        var completionCount = 0
-        let completed = expectation(description: "completion")
-
-        // When
-        sut.prepareAppUIAfterSignIn(
-            timeout: 0.01,
-            hasDotComAccount: true,
-            fetch: { pendingAnswer = $0 },
-            readerInWordPressAppEnabled: { false },
-            completion: {
-                completionCount += 1
-                completed.fulfill()
-            }
-        )
-        wait(for: [completed], timeout: 1)
-        pendingAnswer?()
-        RunLoop.main.run(until: Date().addingTimeInterval(0.05))
-
-        // Then
-        XCTAssertEqual(completionCount, 1)
-    }
-
-    func testSignInDoesNotWaitInOtherApps() {
+    func testSignInDoesNotChangeReaderInOtherApps() {
         // Given
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false, app: .jetpack)
-        var didFetch = false
-        var didComplete = false
+        signInToWordPressDotCom()
+        let appUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
+        let wasReaderInWordPressAppEnabled = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
 
         // When
-        sut.prepareAppUIAfterSignIn(
-            hasDotComAccount: true,
-            fetch: { _ in didFetch = true },
-            completion: { didComplete = true }
-        )
-
-        // Then the completion runs right away
-        XCTAssertTrue(didComplete)
-        XCTAssertFalse(didFetch)
-    }
-
-    func testSignInDoesNotWaitWithoutAWordPressDotComAccount() {
-        // Given a self-hosted sign-in
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
-        var didFetch = false
-        var didComplete = false
-
-        // When
-        sut.prepareAppUIAfterSignIn(
-            hasDotComAccount: false,
-            fetch: { _ in didFetch = true },
-            completion: { didComplete = true }
-        )
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
 
         // Then
-        XCTAssertTrue(didComplete)
-        XCTAssertFalse(didFetch)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled, wasReaderInWordPressAppEnabled)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, appUIType)
     }
 
     func testSignOutAfterAFlagOnSignInRebuildsTheUIOnReload() {
         // Given a sign-in that turned Reader on, which starts observing account changes
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
         signInToWordPressDotCom()
-        prepareAppUIAfterSignIn(fetch: { $0() }, readerInWordPressAppEnabled: true)
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
         sut.showAppUI()
 
         // When
@@ -436,7 +375,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         signInToWordPressDotCom()
 
         // When
-        prepareAppUIAfterSignIn(fetch: { $0() }, readerInWordPressAppEnabled: true)
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
         sut.showAppUI()
 
         // Then the compact layout's tab bar has live Reader and the Notifications poster
@@ -448,21 +387,6 @@ final class RootViewCoordinatorTests: XCTestCase {
     }
 
     // MARK: - Helpers
-
-    private func prepareAppUIAfterSignIn(
-        fetch: @escaping (@escaping () -> Void) -> Void,
-        readerInWordPressAppEnabled: Bool
-    ) {
-        let completed = expectation(description: "prepareAppUIAfterSignIn")
-        sut.prepareAppUIAfterSignIn(
-            timeout: 0.05,
-            hasDotComAccount: true,
-            fetch: fetch,
-            readerInWordPressAppEnabled: { readerInWordPressAppEnabled },
-            completion: { completed.fulfill() }
-        )
-        wait(for: [completed], timeout: 1)
-    }
 
     private func makeCoordinator(
         isReaderInWordPressAppEnabled: Bool,

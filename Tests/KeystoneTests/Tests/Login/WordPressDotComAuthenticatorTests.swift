@@ -111,6 +111,67 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
     }
 
     @MainActor
+    func testSignInWaitsForFeatureFlagsAfterSavingTheAccount() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        stubGetSites()
+
+        // Given
+        var defaultAccountWhileWaiting: [String?] = []
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp",
+            waitForFeatureFlags: { [mainContext] in
+                let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
+                defaultAccountWhileWaiting.append(account?.username)
+            }
+        )
+
+        // When
+        let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+
+        // Then the wait ran once, after the account was saved, which is what starts the flag fetch
+        XCTAssertNotNil(accountID)
+        XCTAssertEqual(defaultAccountWhileWaiting, ["jimthetester"])
+    }
+
+    @MainActor
+    func testFailedSignInDoesNotWaitForFeatureFlags() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+
+        // Given the app is signed in with another account
+        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account")
+            .with(authToken: "token").build()
+        try mainContext.save()
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
+        var didWait = false
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp",
+            waitForFeatureFlags: { didWait = true }
+        )
+
+        // When re-authentication returns a different account
+        do {
+            _ = try await authenticator.attemptSignIn(
+                from: UIViewController(),
+                context: .reauthentication(accountEmail: account.email)
+            )
+            XCTFail("Unexpected successful result")
+        } catch .mismatchedEmail {
+            // Expected
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        // Then
+        XCTAssertFalse(didWait)
+    }
+
+    @MainActor
     func testSignInViaMagicLink() async throws {
         stubTokenExchange()
         stubGetAccountDetails()

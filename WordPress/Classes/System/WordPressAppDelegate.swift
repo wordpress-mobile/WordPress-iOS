@@ -661,7 +661,7 @@ extension WordPressAppDelegate {
     }
 
     /// Fetches the feature flags for an account that just signed in. `waitForSignInFeatureFlags`
-    /// lets the sign-in flow wait for this fetch instead of starting another.
+    /// lets `WordPressDotComAuthenticator` wait for this fetch instead of starting another.
     private func updateSignInFeatureFlags() {
         signInFeatureFlagsCompletions = signInFeatureFlagsCompletions ?? []
         updateFeatureFlags { [weak self] in
@@ -673,9 +673,30 @@ extension WordPressAppDelegate {
         }
     }
 
+    /// Waits until the sign-in feature-flag fetch has answered or failed, for at most `timeout`.
+    /// Returns right away if none is running.
+    @MainActor
+    func waitForSignInFeatureFlags(timeout: TimeInterval) async {
+        final class Once {
+            var hasResumed = false
+        }
+        let once = Once()
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            let resume = {
+                guard !once.hasResumed else {
+                    return
+                }
+                once.hasResumed = true
+                continuation.resume()
+            }
+            waitForSignInFeatureFlags(completion: resume)
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: resume)
+        }
+    }
+
     /// Calls `completion` on the main queue once the sign-in feature-flag fetch has answered or
     /// failed, or right away if none is running.
-    func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
+    private func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
         wpAssert(Thread.isMainThread)
         if signInFeatureFlagsCompletions == nil {
             completion()

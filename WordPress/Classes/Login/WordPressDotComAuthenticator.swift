@@ -76,6 +76,7 @@ struct WordPressDotComAuthenticator {
     private let coreDataStack: CoreDataStack
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
+    private let waitForFeatureFlags: @MainActor () async -> Void
 
     private let clientId: String
     private let clientSecret: String
@@ -86,11 +87,14 @@ struct WordPressDotComAuthenticator {
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
         clientId: String = BuildSettings.current.secrets.oauth.client,
-        clientSecret: String = BuildSettings.current.secrets.oauth.secret
+        clientSecret: String = BuildSettings.current.secrets.oauth.secret,
+        waitForFeatureFlags: @escaping @MainActor () async -> Void = WordPressDotComAuthenticator
+            .waitForSignInFeatureFlags
     ) {
         self.coreDataStack = coreDataStack
         self.showProgressHUD = showProgressHUD
         self.authenticator = authenticator
+        self.waitForFeatureFlags = waitForFeatureFlags
         self.redirectURIScheme = redirectURIScheme
         self.clientId = clientId
         self.clientSecret = clientSecret
@@ -200,6 +204,10 @@ struct WordPressDotComAuthenticator {
             throw .loadingSites(error)
         }
 
+        // Saving the account starts a fetch of its feature flags, which can target an account.
+        // Wait for it, so the app UI built after sign-in doesn't use the signed-out values.
+        await waitForFeatureFlags()
+
         // Post a notification if the current signed-in account is set as the default account.
         // Several parts of the app (My Sites, widgets, shortcuts, sidebar) observe this
         // notification to react to a completed sign-in.
@@ -212,6 +220,16 @@ struct WordPressDotComAuthenticator {
         }
 
         return accountID
+    }
+
+    /// How long a sign-in waits for the new account's feature flags.
+    static let featureFlagsTimeout: TimeInterval = 2
+
+    /// Waits for the feature-flag fetch that saving the account started (`WordPressAppDelegate`),
+    /// rather than starting another.
+    @MainActor
+    static func waitForSignInFeatureFlags() async {
+        await WordPressAppDelegate.shared?.waitForSignInFeatureFlags(timeout: featureFlagsTimeout)
     }
 
     func present(_ error: SignInError, from viewController: UIViewController) {
