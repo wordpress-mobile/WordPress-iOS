@@ -392,7 +392,10 @@ final class RootViewCoordinatorTests: XCTestCase {
         isReaderInWordPressAppEnabled: Bool,
         app: AppBrand = .wordpress
     ) -> RootViewCoordinator {
-        RootViewCoordinator(
+        // A real launch reads both values from the same cached flag. Set the shared one too, so tests don't depend
+        // on whatever flag value this simulator has cached.
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = isReaderInWordPressAppEnabled
+        return RootViewCoordinator(
             windowManager: windowManager,
             app: app,
             isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled
