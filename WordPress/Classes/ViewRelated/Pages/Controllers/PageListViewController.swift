@@ -354,10 +354,18 @@ final class PageListViewController: AbstractPostListViewController {
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard indexPath.section == Section.pages.rawValue else { return nil }
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
-            guard let self else { return nil }
-            let page = self.pages[indexPath.row]
-            let cell = self.tableView.cellForRow(at: indexPath)
+        // UIKit calls the action provider when it recognizes the press, after `pages`
+        // may have been rebuilt, so keep the page rather than its row.
+        let page = pages[indexPath.row]
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self, weak page] _ in
+            // `pages` keeps a page whose deletion was saved until the asynchronous rebuild
+            // finishes. Such a page has no context.
+            guard let self, let page, !page.isDeleted, page.managedObjectContext != nil,
+                let row = self.pages.firstIndex(of: page)
+            else {
+                return nil
+            }
+            let cell = self.tableView.cellForRow(at: IndexPath(row: row, section: Section.pages.rawValue))
             return AbstractPostMenuHelper(page).makeMenu(presentingView: cell ?? UIView(), delegate: self)
         }
     }

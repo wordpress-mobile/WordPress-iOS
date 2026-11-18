@@ -182,10 +182,18 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
     }
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard indexPath.section == SectionID.posts.rawValue else { return nil }
+        // UIKit calls the action provider when it recognizes the press, after the results
+        // may have changed, so keep the item rather than its row.
+        guard let item = dataSource.itemIdentifier(for: indexPath), case .post(let objectID) = item else { return nil }
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
-            guard let self, let delegate = self.delegate else { return nil }
-            let post = self.viewModel.posts[indexPath.row]
+            guard let self,
+                let delegate = self.delegate,
+                let indexPath = self.dataSource.indexPath(for: item),
+                let post = self.viewModel.posts.first(where: { $0.objectID == objectID }),
+                !post.isDeleted
+            else {
+                return nil
+            }
             let cell = self.tableView.cellForRow(at: indexPath)
             return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: delegate)
         }
