@@ -682,33 +682,21 @@ public final class UploadSourceMaterializer: Sendable {
         // as image/jpeg must still be converted.
         let actualType = CGImageSourceGetType(source).flatMap { UTType($0 as String) } ?? declaredType
 
-        // A mislabeled GIF must not be re-encoded either, which would flatten
-        // its animation, so it gets the same raw copy as a labeled one.
-        if Self.rawPassthroughImageTypes.contains(actualType) {
-            let ext = actualType.preferredFilenameExtension ?? "bin"
-            guard policy.isAllowedForUpload(actualType, ext) else {
-                throw MaterializerError.disallowedContentType
-            }
-            let destURL = parentDir.appendingPathComponent(filenames.basename(stem: stem, ext: ext))
-            try data.write(to: destURL)
-            return MaterializedUpload(
-                tempFileURL: destURL,
-                params: MediaCreateParams(caption: caption, filePath: destURL.path),
-                kind: .image
-            )
-        }
-
         var transforms: ImageTransforms = []
         var effectiveType = actualType
-        if !Self.webSafeImageTypes.contains(actualType), policy.convertHEICToJPEG {
-            effectiveType = .jpeg
-            transforms.insert(.convert)
-        }
-        if let cap = policy.imageMaxDimension, cap > 0, max(width, height) > cap {
-            transforms.insert(.resize)
-        }
-        if policy.stripGPSLocation, props[kCGImagePropertyGPSDictionary] != nil {
-            transforms.insert(.stripGPS)
+        // A mislabeled GIF must not be re-encoded either, which would flatten
+        // its animation, so its bytes are written unchanged.
+        if !Self.rawPassthroughImageTypes.contains(actualType) {
+            if !Self.webSafeImageTypes.contains(actualType), policy.convertHEICToJPEG {
+                effectiveType = .jpeg
+                transforms.insert(.convert)
+            }
+            if let cap = policy.imageMaxDimension, cap > 0, max(width, height) > cap {
+                transforms.insert(.resize)
+            }
+            if policy.stripGPSLocation, props[kCGImagePropertyGPSDictionary] != nil {
+                transforms.insert(.stripGPS)
+            }
         }
         // A transform re-encodes, and the re-encode target must be
         // web-renderable and ImageIO-writable (e.g. an oversized DNG with
