@@ -646,13 +646,13 @@ final class UploadSourceMaterializerTests {
     func localFileWithoutExtensionUsesGivenType() async throws {
         let url = try fixtures.writeFile(name: "IMG_0001", content: makeSyntheticHEIC())
         let stagingDirectory = try fixtures.makeDirectory()
-        let m = UploadSourceMaterializer(policy: policy(), stagingDirectory: stagingDirectory)
+        let m = makeMaterializer(policy(), temporaryRoot: stagingDirectory)
 
         let output = try await m.materialize(fileAt: url, contentType: .heic)
 
         #expect(output.lastPathComponent == "IMG_0001.jpeg")
         #expect(imageType(of: output) == .jpeg)
-        // Staged in its own directory under the given root.
+        // Staged in its own directory under the root.
         #expect(output.deletingLastPathComponent().deletingLastPathComponent() == stagingDirectory)
     }
 
@@ -660,7 +660,7 @@ final class UploadSourceMaterializerTests {
     func localVideoWithoutExtensionUsesGivenType() async throws {
         let videoURL = try await sharedBlankVideoTask.value
         let url = try fixtures.writeFile(name: "clip", content: Data(contentsOf: videoURL))
-        let m = UploadSourceMaterializer(policy: policy(), stagingDirectory: try fixtures.makeDirectory())
+        let m = makeMaterializer(policy())
 
         let output = try await m.materialize(fileAt: url, contentType: .mpeg4Movie)
 
@@ -671,7 +671,7 @@ final class UploadSourceMaterializerTests {
     func localFileFailureRemovesStagingDirectory() async throws {
         let url = try fixtures.writeFile(name: "photo", content: Data("not an image".utf8))
         let stagingDirectory = try fixtures.makeDirectory()
-        let m = UploadSourceMaterializer(policy: policy(), stagingDirectory: stagingDirectory)
+        let m = makeMaterializer(policy(), temporaryRoot: stagingDirectory)
 
         await expectThrowsCase(.invalidImageData) {
             try await m.materialize(fileAt: url, contentType: .jpeg)

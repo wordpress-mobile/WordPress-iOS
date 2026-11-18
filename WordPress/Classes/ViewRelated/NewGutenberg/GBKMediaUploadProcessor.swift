@@ -22,22 +22,12 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     /// the next upload.
     private let makeMediaSettings: @Sendable () -> MediaSettings
 
-    /// Where each export is staged, in a directory of its own. GutenbergKit
-    /// deletes the export once its upload ends, and the system purges the
-    /// empty directory it leaves.
-    private let stagingDirectory: URL
-
     /// Raster image types the WordPress REST API reliably accepts. The
     /// materializer converts other image formats (e.g. HEIC) to JPEG.
     private static let webSafeImageTypes: Set<UTType> = [.png, .jpeg]
 
-    init(
-        makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() },
-        stagingDirectory: URL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("GBKMediaUploadProcessor", isDirectory: true)
-    ) {
+    init(makeMediaSettings: @escaping @Sendable () -> MediaSettings = { MediaSettings() }) {
         self.makeMediaSettings = makeMediaSettings
-        self.stagingDirectory = stagingDirectory
     }
 
     // MARK: - MediaProcessor
@@ -64,10 +54,7 @@ struct GBKMediaUploadProcessor: MediaProcessor {
 
         try Task.checkCancellation()
 
-        let materializer = UploadSourceMaterializer(
-            policy: MediaUploadPolicy(editorUploadsWith: settings),
-            stagingDirectory: stagingDirectory
-        )
+        let materializer = UploadSourceMaterializer(policy: MediaUploadPolicy(editorUploadsWith: settings))
         let export = try await withTaskExecutorPreference(Self.exportExecutor) {
             // Cancelled while queued behind other exports.
             try Task.checkCancellation()

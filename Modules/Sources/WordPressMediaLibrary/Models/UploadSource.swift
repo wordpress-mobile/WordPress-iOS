@@ -22,6 +22,11 @@ enum UploadSource: @unchecked Sendable {
     /// `startAccessingSecurityScopedResource()`.
     case file(URL)
 
+    /// A file in the app's sandbox whose type the caller already resolved,
+    /// e.g. one the block editor staged from a web view. The type wins over
+    /// the file's extension, which may be missing.
+    case localFile(URL, contentType: UTType)
+
     /// Remote-URL source for external pickers (Stock Photos). The
     /// materializer downloads bytes via `RemoteDownloader` before dispatching
     /// to the image / GIF / disallowed branches.
@@ -51,7 +56,7 @@ extension UploadSource {
     /// relative to the upload itself.
     var materializationProgressWeight: Double {
         switch self {
-        case .photoLibrary, .cameraImage, .cameraVideo, .file, .imagePlayground:
+        case .photoLibrary, .cameraImage, .cameraVideo, .file, .localFile, .imagePlayground:
             return 0.05
         case .remoteURL:
             // Remote sources download the full file during materialization, then
@@ -76,6 +81,8 @@ extension UploadSource {
             return .video
         case .file(let url):
             return url.resolvedContentType.map { MediaKind(estimating: $0) } ?? .document
+        case .localFile(_, let contentType):
+            return MediaKind(estimating: contentType)
         case .remoteURL(let remote):
             return MediaKind(estimating: remote.contentType)
         case .imagePlayground:

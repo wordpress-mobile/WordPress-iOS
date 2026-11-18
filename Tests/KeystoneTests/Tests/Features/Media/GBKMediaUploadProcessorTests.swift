@@ -10,11 +10,6 @@ import WordPressShared
 
 struct GBKMediaUploadProcessorTests {
 
-    /// Where this test's processor stages exports, so tests can inspect it
-    /// without seeing other tests' files.
-    private let stagingDirectory = FileManager.default.temporaryDirectory
-        .appendingPathComponent("GBKMediaUploadProcessorTests-\(UUID().uuidString)", isDirectory: true)
-
     // MARK: - Images
 
     @Test func imageIsResizedWhenOptimizationEnabled() async throws {
@@ -186,7 +181,7 @@ struct GBKMediaUploadProcessorTests {
 
         let output = try processedFile(result)
         defer { cleanUp(output.url) }
-        #expect(output.url.deletingLastPathComponent().deletingLastPathComponent() == stagingDirectory)
+        #expect(output.url.deletingLastPathComponent() != url.deletingLastPathComponent())
         // The staged file belongs to GutenbergKit and is left alone.
         #expect(FileManager.default.fileExists(atPath: url.path))
     }
@@ -373,9 +368,6 @@ struct GBKMediaUploadProcessorTests {
         await #expect(throws: CancellationError.self) {
             try await task.value
         }
-        // Cancelled before anything was staged for export.
-        let staged = (try? FileManager.default.contentsOfDirectory(atPath: stagingDirectory.path)) ?? []
-        #expect(staged.isEmpty)
     }
 
     // MARK: - Helpers
@@ -384,10 +376,7 @@ struct GBKMediaUploadProcessorTests {
     /// don't match resolves to the protocol's no-op default instead of
     /// failing to build, and calling through the protocol catches that.
     private func makeProcessor(settings: MediaSettings) -> any MediaProcessor {
-        GBKMediaUploadProcessor(
-            makeMediaSettings: makeSettingsFactory(settings),
-            stagingDirectory: stagingDirectory
-        )
+        GBKMediaUploadProcessor(makeMediaSettings: makeSettingsFactory(settings))
     }
 
     private func makeSettings() -> MediaSettings {
@@ -486,8 +475,10 @@ struct GBKMediaUploadProcessorTests {
         return CGSize(width: width, height: height)
     }
 
-    private func cleanUp(_ url: URL) {
-        try? FileManager.default.removeItem(at: url)
+    /// Removes an export's whole directory, which the materializer creates
+    /// for each upload under the shared staging root.
+    private func cleanUp(_ exportURL: URL) {
+        try? FileManager.default.removeItem(at: exportURL.deletingLastPathComponent())
     }
 
     private enum ProcessingError: Error {

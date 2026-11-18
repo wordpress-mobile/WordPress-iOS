@@ -93,24 +93,20 @@ public final class UploadSourceMaterializer: Sendable {
         self.temporaryRoot = temporaryRoot
     }
 
-    /// For callers outside the module, which stage uploads under their own
-    /// root rather than the Media Library's swept one.
-    public convenience init(policy: MediaUploadPolicy, stagingDirectory: URL) {
-        self.init(policy: policy, temporaryRoot: stagingDirectory)
+    /// For callers outside the module. Uploads are staged under the default
+    /// root, which `sweepOrphanedStagingFiles()` clears at launch.
+    public convenience init(policy: MediaUploadPolicy) {
+        self.init(policy: policy, temporaryRoot: Self.defaultStagingDirectory)
     }
 
-    /// Applies the policy to a local image or video of `contentType`, which
-    /// wins over the file's extension, and returns the file to upload.
-    /// The caller owns that file, whose per-upload directory outlives it.
+    /// Materializes `.localFile` for callers outside the module, which keeps
+    /// `UploadSource` module-internal. Returns the file to upload, which the
+    /// caller owns.
     public func materialize(fileAt url: URL, contentType: UTType) async throws -> URL {
-        let upload = try await withStagingDirectory { parentDir in
-            try await materializeLocalFile(
-                parentDir: parentDir,
-                sourceURL: url,
-                contentType: contentType,
-                stageProgress: Progress(totalUnitCount: 1)
-            )
-        }
+        let upload = try await materialize(
+            source: .localFile(url, contentType: contentType),
+            into: Progress(totalUnitCount: 1)
+        )
         return upload.tempFileURL
     }
 
@@ -118,7 +114,11 @@ public final class UploadSourceMaterializer: Sendable {
         source: UploadSource,
         into stageProgress: Progress
     ) async throws -> MaterializedUpload {
-        try await withStagingDirectory { parentDir in
+        try ensureStagingRoot()
+        let parentDir = temporaryRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: parentDir, withIntermediateDirectories: true)
+
+        do {
             let result: MaterializedUpload
             switch source {
             case .photoLibrary(let itemProvider, let suggestedName, let hint):
@@ -148,6 +148,13 @@ public final class UploadSourceMaterializer: Sendable {
                     sourceURL: url,
                     stageProgress: stageProgress
                 )
+            case .localFile(let url, let contentType):
+                result = try await materializeLocalFile(
+                    parentDir: parentDir,
+                    sourceURL: url,
+                    contentType: contentType,
+                    stageProgress: stageProgress
+                )
             case .remoteURL(let remote):
                 result = try await materializeRemoteURL(
                     parentDir: parentDir,
@@ -166,19 +173,6 @@ public final class UploadSourceMaterializer: Sendable {
             // 0→100 here; video sub-methods set it themselves after polling).
             stageProgress.completedUnitCount = stageProgress.totalUnitCount
             return result
-        }
-    }
-
-    /// Runs `body` in a new per-upload directory, which is removed if it throws.
-    private func withStagingDirectory(
-        _ body: (URL) async throws -> MaterializedUpload
-    ) async throws -> MaterializedUpload {
-        try ensureStagingRoot()
-        let parentDir = temporaryRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: parentDir, withIntermediateDirectories: true)
-
-        do {
-            return try await body(parentDir)
         } catch {
             try? FileManager.default.removeItem(at: parentDir)
             throw error
