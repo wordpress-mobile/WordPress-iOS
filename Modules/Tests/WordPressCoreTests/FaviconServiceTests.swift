@@ -1,7 +1,7 @@
 import Foundation
 import Testing
+import os
 @testable import WordPressCore
-import Synchronization
 
 @Suite final class FaviconServiceTests {
     // MARK: - Picking an icon
@@ -183,7 +183,7 @@ import Synchronization
 
 /// A clock that tests move forward by hand.
 private final class TestClock: Sendable {
-    private let date = Mutex(Date(timeIntervalSince1970: 0))
+    private let date = OSAllocatedUnfairLock(initialState: Date(timeIntervalSince1970: 0))
 
     var now: @Sendable () -> Date {
         { self.date.withLock { $0 } }
@@ -205,7 +205,7 @@ private final class StubURLProtocol: URLProtocol {
         var delay: TimeInterval = 0
     }
 
-    private static let hosts = Mutex<[String: Host]>([:])
+    private static let hosts = OSAllocatedUnfairLock<[String: Host]>(initialState: [:])
 
     static func makeSession() -> URLSession {
         let configuration = URLSessionConfiguration.ephemeral
