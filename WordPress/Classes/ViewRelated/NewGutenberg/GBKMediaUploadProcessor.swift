@@ -2,7 +2,6 @@ import AVFoundation
 import Foundation
 import GutenbergKit
 import ImageIO
-import os
 import UniformTypeIdentifiers
 import WordPressData
 import WordPressMediaLibrary
@@ -27,12 +26,6 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     /// deletes the export once its upload ends, and the system purges the
     /// empty directory it leaves.
     private let stagingDirectory: URL
-
-    /// Each materializer owns a `URLSession`, which lives until it's
-    /// invalidated, so editors share one until the settings it applies change.
-    private static let materializerCache = OSAllocatedUnfairLock<
-        (key: MaterializerKey, materializer: UploadSourceMaterializer)?
-    >(initialState: nil)
 
     /// Raster image types the WordPress REST API reliably accepts. The
     /// materializer converts other image formats (e.g. HEIC) to JPEG.
@@ -71,7 +64,10 @@ struct GBKMediaUploadProcessor: MediaProcessor {
 
         try Task.checkCancellation()
 
-        let materializer = materializer(for: UploadSettings(settings))
+        let materializer = UploadSourceMaterializer(
+            policy: MediaUploadPolicy(editorUploadsWith: settings),
+            stagingDirectory: stagingDirectory
+        )
         let export = try await withTaskExecutorPreference(Self.exportExecutor) {
             // Cancelled while queued behind other exports.
             try Task.checkCancellation()
@@ -113,18 +109,6 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     }
 
     // MARK: - Export
-
-    private func materializer(for settings: UploadSettings) -> UploadSourceMaterializer {
-        let key = MaterializerKey(settings: settings, stagingDirectory: stagingDirectory)
-        return Self.materializerCache.withLock { cache in
-            if let cache, cache.key == key {
-                return cache.materializer
-            }
-            let materializer = UploadSourceMaterializer(policy: settings.policy, stagingDirectory: stagingDirectory)
-            cache = (key, materializer)
-            return materializer
-        }
-    }
 
     /// Starts exports one at a time, as `MediaImportService` does. Image work
     /// is synchronous, so this keeps it off the Swift concurrency pool and
@@ -233,44 +217,27 @@ struct GBKMediaUploadProcessor: MediaProcessor {
     }
 }
 
-private struct MaterializerKey: Equatable {
-    let settings: UploadSettings
-    let stagingDirectory: URL
-}
-
-/// The Media settings an upload policy is built from, mirroring the option
-/// mapping in `MediaImportService`.
-private struct UploadSettings: Equatable {
-    let imageMaxDimension: Int?
-    let imageQuality: Double
-    let videoPreset: String
-    let removesLocation: Bool
-
-    init(_ settings: MediaSettings) {
+extension MediaUploadPolicy {
+    /// The policy for editor uploads, mirroring the option mapping in
+    /// `MediaImportService`.
+    fileprivate init(editorUploadsWith settings: MediaSettings) {
         let maxUploadSize = settings.imageSizeForUpload
-        imageMaxDimension = maxUploadSize < Int.max ? maxUploadSize : nil
-        imageQuality = settings.imageQualityForUpload.doubleValue
-        videoPreset = settings.maxVideoSizeSetting.videoPreset
-        removesLocation = settings.removeLocationSetting
-    }
-
-    var policy: MediaUploadPolicy {
-        MediaUploadPolicy(
+        self.init(
             // The editor picks its own files.
             filePickerContentTypes: [],
             // Not checked against `Blog.allowedFileTypes`: the editor already
             // validated the type, and that cached option can lag the server,
             // so it could only refuse a file the server would accept.
             isAllowedForUpload: { _, _ in true },
-            imageMaxDimension: imageMaxDimension,
-            imageJpegQuality: imageQuality,
+            imageMaxDimension: maxUploadSize < Int.max ? maxUploadSize : nil,
+            imageJpegQuality: settings.imageQualityForUpload.doubleValue,
             // Mirrors `ItemProviderMediaExporter`, which converts every image
             // type but PNG and JPEG.
             convertHEICToJPEG: true,
             videoMaxDurationSeconds: nil,
-            videoExportPreset: videoPreset,
+            videoExportPreset: settings.maxVideoSizeSetting.videoPreset,
             videoOutputContentType: .mpeg4Movie,
-            stripGPSLocation: removesLocation
+            stripGPSLocation: settings.removeLocationSetting
         )
     }
 }
