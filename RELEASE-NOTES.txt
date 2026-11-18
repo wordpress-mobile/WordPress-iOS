@@ -1,5 +1,6 @@
 27.5
 -----
+* [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
 * [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
 * [*] Stats: Roll out New Stats remotely and remove the announcement screen. Your choice to use New Stats or Classic Stats is kept [#26335]
 * [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26388]
