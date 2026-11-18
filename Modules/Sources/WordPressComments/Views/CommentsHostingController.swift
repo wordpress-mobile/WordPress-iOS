@@ -12,7 +12,7 @@ public enum CommentsHostingController {
         noticePresenter: any NoticePresenting,
         draftStore: any CommentDraftStoring
     ) -> UIViewController {
-        let host = UIHostingController(
+        let host = CommentsRootHostingController(
             rootView: CommentsView(
                 client: client,
                 makeContentRenderer: makeContentRenderer,
@@ -23,6 +23,23 @@ public enum CommentsHostingController {
         )
         host.navigationItem.largeTitleDisplayMode = .never
         return host
+    }
+}
+
+private final class CommentsRootHostingController: UIHostingController<CommentsView> {
+    private weak var laidOutSearchController: UISearchController?
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard let searchController = navigationItem.searchController,
+            searchController !== laidOutSearchController,
+            let navigationController,
+            navigationController.topViewController === self
+        else { return }
+        laidOutSearchController = searchController
+        // SwiftUI can leave the initial search field over the title in a UIKit host.
+        navigationController.navigationBar.setNeedsLayout()
+        navigationController.navigationBar.layoutIfNeeded()
     }
 }
 
@@ -50,7 +67,11 @@ public struct CommentsView: View {
     }
 
     public var body: some View {
-        CommentsTabView(viewModels: context.listViewModels, context: context.detailContext)
+        CommentsSearchContainer(
+            search: context.searchViewModel,
+            listViewModels: context.listViewModels,
+            context: context.detailContext
+        )
     }
 }
 
@@ -58,6 +79,7 @@ public struct CommentsView: View {
 @MainActor
 private final class CommentsContext: ObservableObject {
     let listViewModels: [CommentsListFilter: CommentsListViewModel]
+    let searchViewModel: CommentsSearchViewModel
     let detailContext: CommentDetailContext
 
     init(
@@ -86,6 +108,12 @@ private final class CommentsContext: ObservableObject {
             service: service,
             titleResolver: titleResolver,
             coordinator: coordinator
+        )
+
+        searchViewModel = CommentsSearchViewModel(
+            service: service,
+            onItemsAppended: { titleResolver.resolve(ids: $0.map(\.postID)) },
+            changeEvents: coordinator.events.eraseToAnyPublisher()
         )
     }
 }
