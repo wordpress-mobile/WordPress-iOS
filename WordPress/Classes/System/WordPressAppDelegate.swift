@@ -64,6 +64,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
     private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
+    /// Completions waiting for the sign-in feature-flag fetch, or `nil` when none is running.
+    private var signInFeatureFlagsCompletions: [() -> Void]?
     private let remoteConfigStore = RemoteConfigStore()
 
     private var mainContext: NSManagedObjectContext {
@@ -660,6 +662,51 @@ extension WordPressAppDelegate {
         remoteFeatureFlagStore.update(using: remote, then: completion)
     }
 
+    /// Fetches the feature flags for an account that just signed in. `waitForSignInFeatureFlags`
+    /// lets `WordPressDotComAuthenticator` wait for this fetch instead of starting another.
+    private func updateSignInFeatureFlags() {
+        signInFeatureFlagsCompletions = signInFeatureFlagsCompletions ?? []
+        updateFeatureFlags { [weak self] in
+            DispatchQueue.main.async {
+                let completions = self?.signInFeatureFlagsCompletions ?? []
+                self?.signInFeatureFlagsCompletions = nil
+                completions.forEach { $0() }
+            }
+        }
+    }
+
+    /// Waits until the sign-in feature-flag fetch has answered or failed, for at most `timeout`.
+    /// Returns right away if none is running.
+    @MainActor
+    func waitForSignInFeatureFlags(timeout: TimeInterval) async {
+        final class Once {
+            var hasResumed = false
+        }
+        let once = Once()
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            let resume = {
+                guard !once.hasResumed else {
+                    return
+                }
+                once.hasResumed = true
+                continuation.resume()
+            }
+            waitForSignInFeatureFlags(completion: resume)
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: resume)
+        }
+    }
+
+    /// Calls `completion` on the main queue once the sign-in feature-flag fetch has answered or
+    /// failed, or right away if none is running.
+    private func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
+        wpAssert(Thread.isMainThread)
+        if signInFeatureFlagsCompletions == nil {
+            completion()
+        } else {
+            signInFeatureFlagsCompletions?.append(completion)
+        }
+    }
+
     func updateRemoteConfig() {
         remoteConfigStore.update { [weak self] in
             self?.checkForAppUpdates()
@@ -795,7 +842,7 @@ extension WordPressAppDelegate {
             AccountService.loadDefaultAccountCookies()
             // Flags can target an account. Without this fetch, the new account's flags
             // wait for the next foreground or launch.
-            updateFeatureFlags()
+            updateSignInFeatureFlags()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
