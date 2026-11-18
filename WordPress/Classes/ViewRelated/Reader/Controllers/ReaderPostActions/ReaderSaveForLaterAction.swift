@@ -34,6 +34,12 @@ final class ReaderSaveForLaterAction {
             comment:
                 "Body text of alert informing users about the Reader Save for Later feature, when saved posts sync with their WordPress.com account."
         )
+        static let tooManySaves = NSLocalizedString(
+            "reader.saveForLater.error.tooManySaves",
+            value: "You've reached the limit of 1,000 saved posts. Remove some to save more.",
+            comment:
+                "Shown in Reader when saving a post fails because the WordPress.com account already has the most saved posts it can keep."
+        )
     }
 
     var visibleConfirmation: Bool
@@ -171,6 +177,7 @@ final class ReaderSaveForLaterAction {
             case .Api(let apiError): apiError.localizedDescription
             // The title already says the post couldn't be saved.
             case .PostCannotBeSaved: nil
+            case .TooManySaves: Strings.tooManySaves
             default: error.localizedDescription
             }
         default:

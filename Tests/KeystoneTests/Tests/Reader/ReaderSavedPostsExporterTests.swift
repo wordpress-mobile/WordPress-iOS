@@ -69,7 +69,7 @@ struct ReaderSavedPostsExporterTests {
             key: .feedItem(feedItemId: 55),
             post: ReaderPostRecord(key: .feedItem(feedItemId: 55), identity: identity, title: "Feed post"),
             isPending: false,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
 
         let post = ReaderSavedPostsExporter.exportedPost(for: item)
@@ -95,7 +95,7 @@ struct ReaderSavedPostsExporterTests {
             key: .post(blogId: 100, postId: 1),
             post: ReaderPostRecord(key: .post(blogId: 100, postId: 1), identity: identity, tags: tags),
             isPending: false,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
 
         #expect(ReaderSavedPostsExporter.exportedPost(for: item).tags == ["One", "Two", "Three", "Four"])
@@ -103,7 +103,7 @@ struct ReaderSavedPostsExporterTests {
 
     @Test("A save the list hasn't sent yet is exported from its key")
     func exportRecentSave() {
-        let item = ReaderSavedListItem(key: .post(blogId: 100, postId: 5), isPending: true, isLocalOnly: false)
+        let item = ReaderSavedListItem(key: .post(blogId: 100, postId: 5), isPending: true, isWaitingForRoom: false)
 
         let post = ReaderSavedPostsExporter.exportedPost(for: item)
 
@@ -165,6 +165,7 @@ struct ReaderSavedPostsExporterTests {
                 .init(userID: 42, service: service, savedPosts: FakeReaderSavedPostsCollection(), client: nil)
             },
             removeAccountData: { _ in },
+            defaults: UserDefaults(suiteName: "ReaderSavedPostsExporterTests-\(UUID().uuidString)")!,
             observesAccountChanges: false
         )
 
@@ -180,11 +181,22 @@ struct ReaderSavedPostsExporterTests {
         #expect(result.imported == 2)
         #expect(result.skipped == 1)
         #expect(result.failed == 0)
-        #expect(
-            Set(service.savedIdentities.compactMap(\.savedKey)) == [
-                .post(blogId: 100, postId: 1), .feedItem(feedItemId: 55)
-            ]
-        )
+        #expect(service.savedKeys == [.post(blogId: 100, postId: 1), .feedItem(feedItemId: 55)])
+    }
+
+    @Test("An imported post shows what the file has of it until the server sends the post")
+    func importKeepsTheFileDetails() {
+        var post = Self.exportedPost(siteID: 100, postID: 1)
+        post.title = "Title"
+        post.summary = ""
+        post.siteName = "Site"
+
+        let save = ReaderSavedPostsExporter.localSave(for: post)
+
+        #expect(save.identity.savedKey == .post(blogId: 100, postId: 1))
+        #expect(save.title == "Title")
+        #expect(save.excerpt == nil)
+        #expect(save.siteName == "Site")
     }
 
     @Test("Import fails every post without an account")
@@ -194,6 +206,7 @@ struct ReaderSavedPostsExporterTests {
             track: { _, _ in },
             makeSession: { _ in nil },
             removeAccountData: { _ in },
+            defaults: UserDefaults(suiteName: "ReaderSavedPostsExporterTests-\(UUID().uuidString)")!,
             observesAccountChanges: false
         )
 

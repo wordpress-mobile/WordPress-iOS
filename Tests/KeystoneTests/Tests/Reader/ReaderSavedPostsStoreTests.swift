@@ -148,42 +148,6 @@ struct ReaderSavedPostsSyncTests {
         #expect(save.dateSaved == nil)
     }
 
-    // MARK: - Import plan
-
-    @Test("Saving a list keeps the posts' order, and saves URLs by URL")
-    func importPlanKeepsOrder() {
-        let page = Self.snapshot(url: "https://example.com/page")
-        let identities = [
-            Self.identity(id: 1, siteID: 100),
-            page,
-            Self.feedItem(55),
-            Self.identity(id: 0, siteID: nil),
-            Self.identity(id: 2, siteID: 100)
-        ]
-
-        let plan = ReaderSavedPostsSync.importPlan(for: identities)
-
-        #expect(
-            plan.saves == [
-                .post(Self.identity(id: 1, siteID: 100)),
-                .url("https://example.com/page"),
-                .post(Self.feedItem(55)),
-                .post(Self.identity(id: 2, siteID: 100))
-            ]
-        )
-        #expect(plan.unsaveableCount == 1)
-    }
-
-    @Test("A post listed twice is sent once")
-    func importPlanSkipsDuplicates() {
-        let plan = ReaderSavedPostsSync.importPlan(for: [
-            Self.identity(id: 1, siteID: 100),
-            Self.identity(id: 1, siteID: 100)
-        ])
-
-        #expect(plan.saves == [.post(Self.identity(id: 1, siteID: 100))])
-    }
-
     // MARK: - Helpers
 
     static func identity(id: UInt64, siteID: UInt64?) -> ReaderPostSaveIdentity {
@@ -206,6 +170,11 @@ final class ReaderSavedPostsStoreTests {
     private let contextManager = ContextManager.forTesting()
     private let service = FakeReaderSavedService()
     private let savedPosts = FakeReaderSavedPostsCollection()
+    /// A suite of its own, so the record of an import doesn't leak between tests or into the app's.
+    private let defaults = UserDefaults(suiteName: "ReaderSavedPostsStoreTests-\(UUID().uuidString)")!
+    /// A center of its own, as tests run in parallel and another test's stores would hear this one's
+    /// notifications.
+    private let notificationCenter = NotificationCenter()
     /// What the store did. A reference, so a store's work that finishes after the test doesn't
     /// reach back into the test.
     private let record = StoreRecord()
@@ -222,6 +191,8 @@ final class ReaderSavedPostsStoreTests {
                 return .init(userID: 42, service: service, savedPosts: savedPosts, client: nil)
             },
             removeAccountData: { [record] in record.removedAccounts.append($0) },
+            defaults: defaults,
+            notificationCenter: notificationCenter,
             observesAccountChanges: observesAccountChanges
         )
     }
@@ -263,17 +234,44 @@ final class ReaderSavedPostsStoreTests {
         #expect(service.syncCount == 1)
     }
 
-    @Test("An import that ran before sends no event and doesn't refresh the list")
-    func alreadyImported() async throws {
+    @Test("The import runs once per account, so a post unsaved since doesn't come back")
+    func importRunsOnce() async throws {
         try makeSavedPost(postID: 1, siteID: 100)
-        service.alreadyImported = true
+        await makeStore().start()?.value
+        #expect(service.importedSaves.count == 1)
 
+        // The next launch.
         let store = makeStore()
         await store.start()?.value
+        await store.start()?.value
 
-        #expect(tracked.isEmpty)
-        #expect(savedPosts.refreshCount == 0)
-        #expect(service.syncCount == 1)
+        #expect(service.importedSaves.count == 1)
+        #expect(tracked.count == 1)
+        #expect(savedPosts.refreshCount == 1)
+        #expect(service.syncCount == 2)
+    }
+
+    @Test("Two starts at once import once")
+    func concurrentStartsImportOnce() async throws {
+        try makeSavedPost(postID: 1, siteID: 100)
+        let store = makeStore()
+        let first = store.start()
+        let second = store.start()
+        await first?.value
+        await second?.value
+
+        #expect(service.importedSaves.count == 1)
+    }
+
+    @Test("Signing out forgets that the account's saves were imported")
+    func removeAccountForgetsTheImport() async throws {
+        let store = makeStore()
+        await store.start()?.value
+        #expect(defaults.bool(forKey: ReaderSavedPostsStore.importedKey(userID: 42)))
+
+        store.removeAccount(userID: 42)
+
+        #expect(!defaults.bool(forKey: ReaderSavedPostsStore.importedKey(userID: 42)))
     }
 
     @Test("The import's event has its counts, and nothing that identifies a post")
@@ -281,10 +279,10 @@ final class ReaderSavedPostsStoreTests {
         try makeSavedPost(postID: 1, siteID: 100)
         try makeSavedPost(postID: 2, siteID: 100)
         service.importReport = ReaderSavedImportReport(
-            alreadyImported: false,
             imported: 1,
             rejected: [.post(blogId: 100, postId: 2)],
             pending: 0,
+            waitingForRoom: 0,
             unsaveable: 0
         )
 
@@ -299,8 +297,9 @@ final class ReaderSavedPostsStoreTests {
         #expect(properties["imported"] as? Int == 1)
         #expect(properties["refused"] as? Int == 1)
         #expect(properties["pending"] as? Int == 0)
+        #expect(properties["waiting_for_room"] as? Int == 0)
         #expect(properties["unsaveable"] as? Int == 0)
-        #expect(properties.count == 6)
+        #expect(properties.count == 7)
     }
 
     @Test("A failed import sends its error kind, still refreshes, and runs again next time")
@@ -322,13 +321,19 @@ final class ReaderSavedPostsStoreTests {
         #expect(service.importedSaves.count == 2)
         #expect(tracked.last?.properties["result"] as? String == "imported")
         #expect(savedPosts.refreshCount == 1)
+
+        await store.start()?.value
+
+        #expect(service.importedSaves.count == 2)
     }
 
     @Test(
         "Import errors are reported by kind",
         arguments: [
             (ReaderSavedError.PostCannotBeSaved as Error, "post_cannot_be_saved"),
+            (ReaderSavedError.TooManySaves, "too_many_saves"),
             (ReaderSavedError.UnexpectedImportResults(sent: 2, received: 1), "unexpected_import_results"),
+            (ReaderSavedError.UnmatchedImportResults, "unmatched_import_results"),
             (URLError(.timedOut), "network"),
             (CocoaError(.coreData), "core_data"),
             (NSError(domain: "other", code: 1), "other")
@@ -352,6 +357,7 @@ final class ReaderSavedPostsStoreTests {
                 hasAccount ? .init(userID: 42, service: service, savedPosts: savedPosts, client: nil) : nil
             },
             removeAccountData: { _ in },
+            defaults: defaults,
             observesAccountChanges: false
         )
         #expect(store.start() == nil)
@@ -398,7 +404,7 @@ final class ReaderSavedPostsStoreTests {
         #expect(details.siteName == "A site")
         #expect(details.siteIconUrl == "https://example.com/icon.png")
         #expect(details.featuredImage == "https://example.com/image.jpg")
-        #expect(details.tags.map(\.slug) == ["news", "swift"])
+        #expect(details.tags?.map(\.slug) == ["news", "swift"])
         #expect(details.commentCount == 3)
     }
 
@@ -415,11 +421,11 @@ final class ReaderSavedPostsStoreTests {
         #expect(details.displayImageUrl == "https://example.com/content-image.jpg")
     }
 
-    @Test("A post without tags sends none, which wordpress-rs reads as not known")
+    @Test("A post without tags sends them as not known, since it can't tell that from a post with none")
     func detailsWithoutTags() throws {
         let post = try makePost(postID: 5, siteID: 100)
 
-        #expect(ReaderSavedPostsSync.details(for: post).tags.isEmpty)
+        #expect(ReaderSavedPostsSync.details(for: post).tags == nil)
         #expect(ReaderSavedPostsSync.details(for: post).author == nil)
     }
 
@@ -465,32 +471,43 @@ final class ReaderSavedPostsStoreTests {
         #expect(!post.isSavedForLater)
     }
 
-    @Test("Saving a list saves each post, oldest first, and counts the refused ones as failed")
+    @Test("Saving a list imports the posts in its order, and counts the refused ones as failed")
     func saveList() async throws {
         service.rejectedKeys = [.feedItem(feedItemId: 55)]
 
         let store = makeStore()
+        await store.start()?.value
         let result = try await store.save([
-            ReaderSavedPostsSyncTests.identity(id: 1, siteID: 100),
-            ReaderSavedPostsSyncTests.feedItem(55),
-            ReaderSavedPostsSyncTests.snapshot(url: "https://example.com/page"),
-            ReaderSavedPostsSyncTests.identity(id: 0, siteID: nil)
+            Self.save(ReaderSavedPostsSyncTests.identity(id: 1, siteID: 100)),
+            Self.save(ReaderSavedPostsSyncTests.feedItem(55)),
+            Self.save(ReaderSavedPostsSyncTests.snapshot(url: "https://example.com/page")),
+            Self.save(ReaderSavedPostsSyncTests.identity(id: 0, siteID: nil))
         ])
 
         #expect(result == .init(saved: 2, failed: 1, unsaveable: 1))
-        // Oldest first, so the newest ends up at the top of the saved list.
-        #expect(service.savedIdentities.map(\.savedKey) == [.feedItem(feedItemId: 55), .post(blogId: 100, postId: 1)])
-        #expect(service.savedURLs == ["https://example.com/page"])
+        #expect(
+            service.importedSaves.last?.map(\.identity.savedKey) == [
+                .post(blogId: 100, postId: 1),
+                .feedItem(feedItemId: 55),
+                .url(url: "https://example.com/page"),
+                nil
+            ]
+        )
     }
 
-    @Test("A save that waits for a later sync counts as saved")
+    @Test("A save that waits for a later sync, or for room under the save cap, counts as saved")
     func saveListCountsPendingSaves() async throws {
         service.pendingKeys = [.post(blogId: 100, postId: 1)]
+        service.waitingKeys = [.post(blogId: 100, postId: 2)]
 
         let store = makeStore()
-        let result = try await store.save([ReaderSavedPostsSyncTests.identity(id: 1, siteID: 100)])
+        await store.start()?.value
+        let result = try await store.save([
+            Self.save(ReaderSavedPostsSyncTests.identity(id: 1, siteID: 100)),
+            Self.save(ReaderSavedPostsSyncTests.identity(id: 2, siteID: 100))
+        ])
 
-        #expect(result == .init(saved: 1))
+        #expect(result == .init(saved: 2))
     }
 
     @Test("Saving a list skips posts the account has, and refreshes the saved list")
@@ -501,12 +518,12 @@ final class ReaderSavedPostsStoreTests {
         await store.start()?.value
         let refreshesBefore = savedPosts.refreshCount
         let result = try await store.save([
-            ReaderSavedPostsSyncTests.identity(id: 7, siteID: 100),
-            ReaderSavedPostsSyncTests.identity(id: 8, siteID: 100)
+            Self.save(ReaderSavedPostsSyncTests.identity(id: 7, siteID: 100)),
+            Self.save(ReaderSavedPostsSyncTests.identity(id: 8, siteID: 100))
         ])
 
         #expect(result == .init(alreadySaved: 1, saved: 1))
-        #expect(service.savedIdentities.map(\.id) == [8])
+        #expect(service.importedSaves.last?.map(\.identity.id) == [8])
         #expect(savedPosts.refreshCount == refreshesBefore + 1)
     }
 
@@ -517,10 +534,11 @@ final class ReaderSavedPostsStoreTests {
         let store = makeStore()
         await store.start()?.value
         let refreshesBefore = savedPosts.refreshCount
-        let result = try await store.save([ReaderSavedPostsSyncTests.identity(id: 7, siteID: 100)])
+        let importsBefore = service.importedSaves.count
+        let result = try await store.save([Self.save(ReaderSavedPostsSyncTests.identity(id: 7, siteID: 100))])
 
         #expect(result == .init(alreadySaved: 1))
-        #expect(service.savedIdentities.isEmpty)
+        #expect(service.importedSaves.count == importsBefore)
         #expect(savedPosts.refreshCount == refreshesBefore)
     }
 
@@ -530,7 +548,7 @@ final class ReaderSavedPostsStoreTests {
         await store.start()?.value
         let syncsBefore = service.syncCount
 
-        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        notificationCenter.post(name: UIApplication.willEnterForegroundNotification, object: nil)
         await store.startTask?.value
 
         #expect(service.syncCount == syncsBefore + 1)
@@ -542,7 +560,7 @@ final class ReaderSavedPostsStoreTests {
         await store.start()?.value
         let syncsBefore = service.syncCount
 
-        NotificationCenter.default.post(
+        notificationCenter.post(
             name: .reachabilityUpdated,
             object: nil,
             userInfo: [Foundation.Notification.reachabilityKey: false]
@@ -550,7 +568,7 @@ final class ReaderSavedPostsStoreTests {
         await store.startTask?.value
         #expect(service.syncCount == syncsBefore)
 
-        NotificationCenter.default.post(
+        notificationCenter.post(
             name: .reachabilityUpdated,
             object: nil,
             userInfo: [Foundation.Notification.reachabilityKey: true]
@@ -581,7 +599,7 @@ final class ReaderSavedPostsStoreTests {
         // A bookmark on screen updates when the session is dropped, while the Core Data account
         // still exists.
         var answersDuringSignOut: [Bool] = []
-        let observer = NotificationCenter.default.addObserver(
+        let observer = notificationCenter.addObserver(
             forName: .readerSavedPostsDidChange,
             object: nil,
             queue: nil
@@ -590,7 +608,7 @@ final class ReaderSavedPostsStoreTests {
                 answersDuringSignOut.append(store.isSavedForDisplay(post))
             }
         }
-        defer { NotificationCenter.default.removeObserver(observer) }
+        defer { notificationCenter.removeObserver(observer) }
 
         store.removeAccount(userID: 42)
 
@@ -599,7 +617,7 @@ final class ReaderSavedPostsStoreTests {
         #expect(sessionsMade == 1)
 
         // The account change that follows deleting the account lets the next account in.
-        NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
         #expect(store.isActive)
         #expect(sessionsMade == 2)
     }
@@ -612,6 +630,7 @@ final class ReaderSavedPostsStoreTests {
             track: { _, _ in },
             makeSession: { _ in nil },
             removeAccountData: { _ in },
+            defaults: defaults,
             observesAccountChanges: false
         )
 
@@ -626,7 +645,32 @@ final class ReaderSavedPostsStoreTests {
         #expect(post.isSavedForLater)
     }
 
+    @Test("A sync that leaves saves waiting for room doesn't stop the next one")
+    func syncWithSavesWaitingForRoom() async throws {
+        service.syncError = ReaderSavedError.TooManySaves
+        let store = makeStore()
+        await store.start()?.value
+        let syncsBefore = service.syncCount
+
+        store.sync()
+        await store.startTask?.value
+
+        #expect(service.syncCount == syncsBefore + 1)
+    }
+
     // MARK: - Helpers
+
+    private static func save(_ identity: ReaderPostSaveIdentity) -> ReaderLocalSave {
+        ReaderLocalSave(
+            identity: identity,
+            dateSaved: nil,
+            title: nil,
+            excerpt: nil,
+            featuredImage: nil,
+            siteName: nil,
+            siteUrl: nil
+        )
+    }
 
     @discardableResult
     private func makePost(
@@ -673,27 +717,6 @@ private final class StoreRecord {
 struct ReaderSavedPostsCacheTests {
     private let client = WPComApiClient(authentication: .none)
 
-    @Test("Signing out forgets that the account's saves were imported")
-    func removeAccountDeletesTheAccount() async throws {
-        let cache = try Self.makeCache()
-        let service = try client.makeReaderSavedService(source: .ios, cache: cache, userID: 42)
-        #expect(try await !service.importLocalSaves(saves: []).alreadyImported)
-        #expect(try await service.importLocalSaves(saves: []).alreadyImported)
-
-        let store = ReaderSavedPostsStore(
-            coreDataStack: ContextManager.forTesting(),
-            track: { _, _ in },
-            makeSession: { _ in .init(userID: 42, service: service, client: nil) },
-            removeAccountData: { try cache.removeWordpressComAccount(userId: UInt64($0)) },
-            observesAccountChanges: false
-        )
-        // Not asking whether the store is active: that would start a refresh, which needs the network.
-        store.removeAccount(userID: 42)
-
-        let newService = try client.makeReaderSavedService(source: .ios, cache: cache, userID: 42)
-        #expect(try await !newService.importLocalSaves(saves: []).alreadyImported)
-    }
-
     @Test("The Saved list reads an empty account from the cache")
     func emptyListFromCache() async throws {
         let cache = try Self.makeCache()
@@ -729,9 +752,11 @@ final class FakeReaderSavedService: ReaderSavedServiceProtocol, @unchecked Senda
     var rejectedKeys: Set<ReaderSavedKey> = []
     /// Keys whose save waits for a later sync.
     var pendingKeys: Set<ReaderSavedKey> = []
+    /// Keys whose import waits for room under the account's save cap.
+    var waitingKeys: Set<ReaderSavedKey> = []
     var importError: Error?
-    var alreadyImported = false
-    /// What the import reports, instead of every save imported.
+    var syncError: Error?
+    /// What the import reports, instead of what it worked out from the keys above.
     var importReport: ReaderSavedImportReport?
     var saveError: Error?
     var unsaveError: Error?
@@ -744,24 +769,50 @@ final class FakeReaderSavedService: ReaderSavedServiceProtocol, @unchecked Senda
     private(set) var syncCount = 0
     private(set) var observer: ReaderSavedObserver?
 
-    func importLocalSaves(saves: [ReaderLocalSave]) async throws -> ReaderSavedImportReport {
+    func importSaves(saves: [ReaderLocalSave]) async throws -> ReaderSavedImportReport {
         importedSaves.append(saves)
         if let importError { throw importError }
-        if alreadyImported {
-            return ReaderSavedImportReport(alreadyImported: true, imported: 0, rejected: [], pending: 0, unsaveable: 0)
+        if let importReport { return importReport }
+
+        var imported: UInt64 = 0
+        var rejected: [ReaderSavedKey] = []
+        var pending: UInt64 = 0
+        var waiting: UInt64 = 0
+        var unsaveable: UInt64 = 0
+        for save in saves {
+            guard let key = save.identity.savedKey else {
+                unsaveable += 1
+                continue
+            }
+            if rejectedKeys.contains(key) {
+                rejected.append(key)
+                continue
+            }
+            savedKeys.insert(key)
+            if waitingKeys.contains(key) {
+                waiting += 1
+            } else if pendingKeys.contains(key) {
+                pending += 1
+            } else {
+                imported += 1
+            }
         }
-        return importReport
-            ?? ReaderSavedImportReport(
-                alreadyImported: false,
-                imported: UInt64(saves.count),
-                rejected: [],
-                pending: 0,
-                unsaveable: 0
-            )
+        return ReaderSavedImportReport(
+            imported: imported,
+            rejected: rejected,
+            pending: pending,
+            waitingForRoom: waiting,
+            unsaveable: unsaveable
+        )
+    }
+
+    func savesWaitingForRoom() throws -> UInt64 {
+        UInt64(waitingKeys.count)
     }
 
     func sync() async throws {
         syncCount += 1
+        if let syncError { throw syncError }
     }
 
     func save(post: ReaderPostSaveIdentity) async throws -> ReaderSavedOutcome {

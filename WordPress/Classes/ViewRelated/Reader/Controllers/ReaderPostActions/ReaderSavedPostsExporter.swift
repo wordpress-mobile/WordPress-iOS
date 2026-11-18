@@ -63,7 +63,7 @@ struct ReaderSavedPostsExporter {
         store: ReaderSavedPostsStore
     ) async -> ImportResult {
         do {
-            let result = try await store.save(posts.map(identity(for:)))
+            let result = try await store.save(posts.map(localSave(for:)))
             return ImportResult(
                 imported: result.saved,
                 skipped: result.alreadySaved + result.unsaveable,
@@ -73,6 +73,20 @@ struct ReaderSavedPostsExporter {
             Loggers.app.error("Import: saving to the account failed: \(String(describing: error))")
             return ImportResult(imported: 0, skipped: 0, failed: posts.count)
         }
+    }
+
+    /// A post from an export file, to save in the account. What the file has of it shows in the
+    /// saved list until the server sends the post.
+    static func localSave(for post: ExportedPost) -> ReaderLocalSave {
+        ReaderLocalSave(
+            identity: identity(for: post),
+            dateSaved: nil,
+            title: post.title.nonEmptyString(),
+            excerpt: post.summary.nonEmptyString(),
+            featuredImage: post.featuredImageURL?.nonEmptyString(),
+            siteName: post.siteName.nonEmptyString(),
+            siteUrl: post.siteURL.nonEmptyString()
+        )
     }
 
     /// The identity of a post from an export file. It's read like a Core Data post: an RSS item's

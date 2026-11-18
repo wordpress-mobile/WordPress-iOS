@@ -18,7 +18,8 @@ extension Foundation.Notification.Name {
 /// `ReaderSavedService` from wordpress-rs keeps what's saved, and the saved list, in
 /// `WordPressApiCache` under the account. It answers whether a post is saved from disk after a
 /// relaunch, and the Saved screen reads its list from there. Core Data is only read once per account,
-/// to hand this device's saves over to the account. Saving needs a WordPress.com account.
+/// to hand this device's saves over to the account, and `UserDefaults` remembers that it has been.
+/// Saving needs a WordPress.com account.
 ///
 /// The Core Data `isSavedForLater` flags stay after the import, as a way back if this has to be
 /// rolled back. Nothing writes them any more, and signing out still clears them.
@@ -63,7 +64,10 @@ final class ReaderSavedPostsStore {
     private let track: @MainActor (WPAnalyticsEvent, [AnyHashable: Any]) -> Void
     private let makeSession: @MainActor (CoreDataStack) -> Session?
     private let removeAccountData: @MainActor (Int64) throws -> Void
-    private let observer = ChangeObserver()
+    private let defaults: UserDefaults
+    /// Where the store hears about the app and the account, and says when saved posts change.
+    private let notificationCenter: NotificationCenter
+    private let observer: ChangeObserver
 
     private var session: Session?
     /// The launch import and the syncs after it, in order. Visible so tests can wait for them.
@@ -82,15 +86,20 @@ final class ReaderSavedPostsStore {
         },
         makeSession: @escaping @MainActor (CoreDataStack) -> Session? = ReaderSavedPostsStore.makeDefaultSession,
         removeAccountData: @escaping @MainActor (Int64) throws -> Void = ReaderSavedPostsStore.removeCachedAccount,
+        defaults: UserDefaults = .standard,
+        notificationCenter: NotificationCenter = .default,
         observesAccountChanges: Bool = true
     ) {
         self.coreDataStack = coreDataStack
         self.track = track
         self.makeSession = makeSession
         self.removeAccountData = removeAccountData
+        self.defaults = defaults
+        self.notificationCenter = notificationCenter
+        self.observer = ChangeObserver(notificationCenter: notificationCenter)
 
         if observesAccountChanges {
-            accountObserver = NotificationCenter.default.addObserver(
+            accountObserver = notificationCenter.addObserver(
                 forName: .wpAccountDefaultWordPressComAccountChanged,
                 object: nil,
                 queue: .main
@@ -100,7 +109,7 @@ final class ReaderSavedPostsStore {
                 }
             }
             syncObservers = [
-                NotificationCenter.default.addObserver(
+                notificationCenter.addObserver(
                     forName: UIApplication.willEnterForegroundNotification,
                     object: nil,
                     queue: .main
@@ -109,7 +118,7 @@ final class ReaderSavedPostsStore {
                         self?.sync()
                     }
                 },
-                NotificationCenter.default.addObserver(
+                notificationCenter.addObserver(
                     forName: .reachabilityUpdated,
                     object: nil,
                     queue: .main
@@ -127,7 +136,7 @@ final class ReaderSavedPostsStore {
 
     deinit {
         for observer in [accountObserver].compactMap({ $0 }) + syncObservers {
-            NotificationCenter.default.removeObserver(observer)
+            notificationCenter.removeObserver(observer)
         }
     }
 
@@ -166,8 +175,20 @@ final class ReaderSavedPostsStore {
     }
 
     private func importAndRefresh(_ session: Session) -> Task<Void, Never> {
-        Task { @MainActor [coreDataStack, track] in
-            let didSend = await Self.importLocalSaves(from: coreDataStack, to: session.service, track: track)
+        let importedKey = Self.importedKey(userID: session.userID)
+        let previous = startTask
+        return Task { @MainActor [coreDataStack, track, defaults] in
+            // After any earlier run, which may be importing.
+            await previous?.value
+            var didSend = false
+            if !defaults.bool(forKey: importedKey) {
+                let outcome = await Self.importLocalSaves(from: coreDataStack, to: session.service, track: track)
+                if let outcome {
+                    // The service imports whenever it's asked, so a post unsaved since would come back.
+                    defaults.set(true, forKey: importedKey)
+                    didSend = outcome
+                }
+            }
             do {
                 if didSend {
                     // Fetches the imported posts' details for the saved list. It syncs first.
@@ -176,7 +197,7 @@ final class ReaderSavedPostsStore {
                     try await session.service.sync()
                 }
             } catch {
-                Loggers.app.error("Reader saved posts: refresh failed: \(String(describing: error))")
+                Self.logSyncError(error, session: session)
             }
         }
     }
@@ -191,8 +212,19 @@ final class ReaderSavedPostsStore {
             do {
                 try await session.service.sync()
             } catch {
-                Loggers.app.warning("Reader saved posts: sync failed: \(String(describing: error))")
+                Self.logSyncError(error, session: session)
             }
+        }
+    }
+
+    /// A sync that sent everything it could still fails while saves wait for room under the
+    /// account's save cap, which isn't something to fix.
+    private static func logSyncError(_ error: Error, session: Session) {
+        if case ReaderSavedError.TooManySaves = error {
+            let waiting = (try? session.service.savesWaitingForRoom()).map(String.init) ?? "unknown"
+            Loggers.app.info("Reader saved posts: \(waiting) saves wait for room under the save cap")
+        } else {
+            Loggers.app.warning("Reader saved posts: sync failed: \(String(describing: error))")
         }
     }
 
@@ -245,40 +277,27 @@ final class ReaderSavedPostsStore {
     /// one-time import of this device's saves, this runs every time it's called. Posts the account
     /// already has aren't sent again.
     ///
-    /// Each post is saved as a tap would save it, oldest first so the newest ends up at the top. A
-    /// save that can't be sent yet still counts as saved: it shows in the list, and a later sync
-    /// sends it.
-    func save(_ identities: [ReaderPostSaveIdentity]) async throws -> ReaderSavedPostsSync.SaveResult {
+    /// The saves must be newest first. A save that can't be sent yet still counts as saved: it shows
+    /// in the list, and a later sync sends it. So does one past the account's save cap, which is sent
+    /// once there's room.
+    func save(_ saves: [ReaderLocalSave]) async throws -> ReaderSavedPostsSync.SaveResult {
         guard let service, let savedPosts = session?.savedPosts else {
             throw StoreError.notActive
         }
-        let newIdentities = identities.filter { (try? service.status(post: $0)) != .saved }
-        let plan = ReaderSavedPostsSync.importPlan(for: newIdentities)
-        var result = ReaderSavedPostsSync.SaveResult(
-            alreadySaved: identities.count - newIdentities.count,
-            unsaveable: plan.unsaveableCount
+        let newSaves = saves.filter { (try? service.status(post: $0.identity)) != .saved }
+        var result = ReaderSavedPostsSync.SaveResult(alreadySaved: saves.count - newSaves.count)
+        guard !newSaves.isEmpty else { return result }
+
+        let report = try await service.importSaves(saves: newSaves)
+        Loggers.app.info(
+            "Reader saved posts: saved \(report.imported), refused \(report.rejected.count), pending \(report.pending), waiting for room \(report.waitingForRoom), unsaveable \(report.unsaveable)"
         )
-        for save in plan.saves.reversed() {
-            do {
-                let outcome: ReaderSavedOutcome
-                switch save {
-                case let .post(identity):
-                    outcome = try await service.save(post: identity)
-                case let .url(url):
-                    outcome = try await service.saveUrl(url: url, pageDetails: nil)
-                }
-                if case let .pending(reason) = outcome {
-                    Loggers.app.info("Reader saved posts: a save will be sent later: \(reason)")
-                }
-                result.saved += 1
-            } catch {
-                Loggers.app.warning("Reader saved posts: a save failed: \(String(describing: error))")
-                result.failed += 1
-            }
-        }
+        result.saved = Int(report.imported + report.pending + report.waitingForRoom)
+        result.failed = report.rejected.count
+        result.unsaveable = Int(report.unsaveable)
 
         if result.saved > 0 {
-            // The saves are in the list already, but only with their keys. This fetches the posts.
+            // The saves are in the list already, with what the file had. This fetches the posts.
             do {
                 _ = try await savedPosts.refresh()
             } catch {
@@ -290,40 +309,44 @@ final class ReaderSavedPostsStore {
 
     // MARK: - Importing local saves
 
-    /// Hands the posts saved on this device to the account. The service does it once per account and
-    /// remembers that it has, so this sends nothing after the first time it succeeds.
+    /// Hands the posts saved on this device to the account.
     ///
-    /// - Returns: Whether the import sent any posts, so the saved list has new posts to show.
+    /// - Returns: Whether the import sent any posts, so the saved list has new posts to show, or
+    ///   `nil` if it failed and should be tried again.
     private static func importLocalSaves(
         from coreDataStack: CoreDataStack,
         to service: any ReaderSavedServiceProtocol,
         track: @MainActor (WPAnalyticsEvent, [AnyHashable: Any]) -> Void
-    ) async -> Bool {
+    ) async -> Bool? {
         var saveCount = 0
         do {
             let saves = try await coreDataStack.performQuery { context in
                 try ReaderSavedPostsSync.fetchLocalSaves(in: context)
             }
             saveCount = saves.count
-            let report = try await service.importLocalSaves(saves: saves)
-            guard !report.alreadyImported else { return false }
+            let report = try await service.importSaves(saves: saves)
             Loggers.app.info(
-                "Reader saved posts: imported \(report.imported), refused \(report.rejected.count), pending \(report.pending), unsaveable \(report.unsaveable)"
+                "Reader saved posts: imported \(report.imported), refused \(report.rejected.count), pending \(report.pending), waiting for room \(report.waitingForRoom), unsaveable \(report.unsaveable)"
             )
             track(
                 .readerSavedPostsAccountImport,
                 ReaderSavedPostsSync.importProperties(for: report, saveCount: saveCount)
             )
-            return report.imported > 0 || report.pending > 0 || !report.rejected.isEmpty
+            return report.imported > 0 || report.pending > 0 || report.waitingForRoom > 0 || !report.rejected.isEmpty
         } catch {
-            // The service tries again next time.
+            // It's tried again at the next launch.
             Loggers.app.error("Reader saved posts: import failed: \(String(describing: error))")
             track(
                 .readerSavedPostsAccountImport,
                 ReaderSavedPostsSync.importProperties(for: error, saveCount: saveCount)
             )
-            return false
+            return nil
         }
+    }
+
+    /// The `UserDefaults` key that records the account has had this device's saves.
+    static func importedKey(userID: Int64) -> String {
+        "reader-saved-posts-imported-\(userID)"
     }
 
     // MARK: - Account
@@ -335,6 +358,7 @@ final class ReaderSavedPostsStore {
             dropSession()
         }
         guard userID > 0 else { return }
+        defaults.removeObject(forKey: Self.importedKey(userID: userID))
         do {
             try removeAccountData(userID)
         } catch {
@@ -354,7 +378,7 @@ final class ReaderSavedPostsStore {
         startTask = nil
         session?.service.setObserver(observer: nil)
         session = nil
-        NotificationCenter.default.post(name: .readerSavedPostsDidChange, object: nil)
+        notificationCenter.post(name: .readerSavedPostsDidChange, object: nil)
     }
 
     private func accountChanged() {
@@ -403,8 +427,13 @@ extension WordPressData.ReaderPost {
 /// Turns the service's change callbacks, which come on any thread, into one notification on the main
 /// queue per run loop turn.
 private final class ChangeObserver: ReaderSavedObserver, @unchecked Sendable {
+    private let notificationCenter: NotificationCenter
     private let lock = NSLock()
     private var isScheduled = false
+
+    init(notificationCenter: NotificationCenter) {
+        self.notificationCenter = notificationCenter
+    }
 
     func savedPostsChanged() {
         lock.lock()
@@ -416,7 +445,7 @@ private final class ChangeObserver: ReaderSavedObserver, @unchecked Sendable {
             lock.lock()
             isScheduled = false
             lock.unlock()
-            NotificationCenter.default.post(name: .readerSavedPostsDidChange, object: nil)
+            notificationCenter.post(name: .readerSavedPostsDidChange, object: nil)
         }
     }
 }
@@ -435,21 +464,6 @@ enum ReaderSavedPostsSync {
         var failed = 0
         /// Posts missing the IDs the API needs.
         var unsaveable = 0
-    }
-
-    /// One post to save, by the call that saves it.
-    enum PlannedSave: Equatable {
-        case post(ReaderPostSaveIdentity)
-        /// A page saved by URL.
-        case url(String)
-    }
-
-    /// What to send to the server to save a list of posts.
-    struct ImportPlan: Equatable {
-        /// The saves, newest first, with each key once.
-        var saves: [PlannedSave] = []
-        /// Posts missing the IDs the API needs.
-        var unsaveableCount = 0
     }
 
     /// The fields of a post that decide which key it's saved under. They mirror the raw REST fields
@@ -516,7 +530,8 @@ enum ReaderSavedPostsSync {
                 },
             // The image the post's Reader card shows, so Saved shows the same one.
             displayImageUrl: post.featuredImage?.nonEmptyString() ?? post.pathForDisplayImage?.nonEmptyString(),
-            tags: tags(from: post.tags),
+            // Core Data can't tell a post without tags from one whose tags it doesn't have.
+            tags: tags(from: post.tags).nonEmpty,
             likeCount: post.likeCount?.uint64Value,
             commentCount: post.commentCount?.uint64Value
         )
@@ -533,7 +548,7 @@ enum ReaderSavedPostsSync {
     }
 
     /// What the account needs to know about a post saved on this device. The details besides the
-    /// identity are shown if the server refuses the save, which keeps it on this device.
+    /// identity are shown until the server sends the post.
     static func localSave(for post: WordPressData.ReaderPost) -> ReaderLocalSave {
         ReaderLocalSave(
             identity: identity(for: post),
@@ -544,28 +559,6 @@ enum ReaderSavedPostsSync {
             siteName: post.blogName?.nonEmptyString(),
             siteUrl: post.blogURL?.nonEmptyString()
         )
-    }
-
-    /// The saves for the given posts, which must be newest first, without duplicates or posts that
-    /// can't be saved.
-    static func importPlan(for identities: [ReaderPostSaveIdentity]) -> ImportPlan {
-        var plan = ImportPlan()
-        var seen = Set<ReaderSavedKey>()
-        for identity in identities {
-            guard let key = identity.savedKey else {
-                plan.unsaveableCount += 1
-                continue
-            }
-            guard seen.insert(key.normalized).inserted else { continue }
-
-            switch key {
-            case .post, .feedItem:
-                plan.saves.append(.post(identity))
-            case let .url(url):
-                plan.saves.append(.url(url))
-            }
-        }
-        return plan
     }
 
     /// A stable string for a key, such as to identify a row.
@@ -590,6 +583,7 @@ enum ReaderSavedPostsSync {
             "imported": Int(report.imported),
             "refused": report.rejected.count,
             "pending": Int(report.pending),
+            "waiting_for_room": Int(report.waitingForRoom),
             "unsaveable": Int(report.unsaveable)
         ]
     }
@@ -613,7 +607,9 @@ enum ReaderSavedPostsSync {
             switch error {
             case .Api: "api"
             case .PostCannotBeSaved: "post_cannot_be_saved"
+            case .TooManySaves: "too_many_saves"
             case .UnexpectedImportResults: "unexpected_import_results"
+            case .UnmatchedImportResults: "unmatched_import_results"
             case .Database: "database"
             }
         case is URLError: "network"
@@ -640,4 +636,8 @@ enum ReaderSavedPostsSync {
         request.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: false)]
         return try context.fetch(request).map(localSave(for:))
     }
+}
+
+private extension Array {
+    var nonEmpty: Self? { isEmpty ? nil : self }
 }

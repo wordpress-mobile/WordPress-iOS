@@ -64,7 +64,7 @@ struct ReaderSavedPostsViewModelTests {
                 commentCount: 12
             ),
             isPending: false,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
 
         let row = ReaderSavedPostRow(item)
@@ -93,7 +93,7 @@ struct ReaderSavedPostsViewModelTests {
                 displayImageUrl: "https://example.com/content-image.jpg"
             ),
             isPending: false,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
 
         #expect(ReaderSavedPostRow(item).featuredImageURL == URL(string: "https://example.com/content-image.jpg"))
@@ -122,7 +122,7 @@ struct ReaderSavedPostsViewModelTests {
             key: .feedItem(feedItemId: 55),
             post: ReaderPostRecord(key: .feedItem(feedItemId: 55), identity: identity, title: "Feed post"),
             isPending: false,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
 
         #expect(ReaderSavedPostRow(item).destination == .feedItem(feedItemID: 55, feedID: 7))
@@ -134,7 +134,7 @@ struct ReaderSavedPostsViewModelTests {
         let item = ReaderSavedListItem(
             key: .url(url: "https://example.com/some/page"),
             isPending: true,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
 
         let row = ReaderSavedPostRow(item)
@@ -237,7 +237,7 @@ struct ReaderSavedPostsViewModelTests {
     @Test("A save the list hasn't sent yet is unsaved by its key")
     func unsaveByKey() async {
         collection.items = [
-            ReaderSavedListItem(key: .url(url: "https://example.com/a"), isPending: true, isLocalOnly: false)
+            ReaderSavedListItem(key: .url(url: "https://example.com/a"), isPending: true, isWaitingForRoom: false)
         ]
         let viewModel = makeViewModel()
         await viewModel.reloadFromCache()
@@ -284,7 +284,7 @@ struct ReaderSavedPostsViewModelTests {
                 siteName: "Site"
             ),
             isPending: false,
-            isLocalOnly: false
+            isWaitingForRoom: false
         )
     }
 }
