@@ -19,7 +19,7 @@ extension BlogService {
             // it's only used when removing blogs or accounts, and there's
             // no extra action we can take if it fails anyway.
         } catch {
-            DDLogError("Could not instantiate the reminders scheduler: \(error.localizedDescription)")
+            Loggers.app.error("Could not instantiate the reminders scheduler: \(error.localizedDescription)")
         }
     }
 
@@ -117,6 +117,21 @@ extension BlogService {
         }
         guard let service else { return }
         try await service.refresh()
+        await reportPostTypeUsage(using: service, for: blogId)
+    }
+
+    /// Tracking must not change what `syncPostTypes(for:)` throws, so a failed cache read is ignored.
+    private func reportPostTypeUsage(
+        using service: CustomPostTypeService,
+        for blogId: TaggedManagedObjectID<Blog>
+    ) async {
+        guard
+            await !CustomPostTypeUsageTracker.shared.hasReported(blogId),
+            let postTypes = try? await service.allPostTypes()
+        else {
+            return
+        }
+        await CustomPostTypeUsageTracker.shared.report(PostTypeClassification(postTypes), for: blogId)
     }
 
     @objc
@@ -195,7 +210,7 @@ extension BlogService {
                             failure(WordPressOrgXMLRPCApiError.responseSerializationFailed)
                         }
                     case .failure(let error):
-                        DDLogError("Failed syncing XML-RPC options for blog: \(error)")
+                        Loggers.app.error("Failed syncing XML-RPC options for blog: \(error)")
                         failure(error)
                     }
                 },

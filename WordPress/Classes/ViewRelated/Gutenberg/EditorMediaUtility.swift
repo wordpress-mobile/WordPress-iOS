@@ -51,7 +51,7 @@ class EditorMediaUtility {
                 onSuccess(image)
             }
         }, onError: { error in
-            DDLogError("Unable to grab frame from video = \(sourceURL). Details: \(error.localizedDescription)")
+            Loggers.app.error("Unable to grab frame from video = \(sourceURL). Details: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 onFailure()
             }
@@ -195,7 +195,7 @@ class EditorMediaUtility {
         // Return the attachment url it it's not a VideoPress video
         if media.videopressGUID == nil {
             guard let videoURLString = media.remoteURL, let videoURL = URL(string: videoURLString) else {
-                DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
+                Loggers.app.error("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
                 completion(Result.failure(InternalInconsistencyError))
                 return
             }
@@ -206,7 +206,7 @@ class EditorMediaUtility {
                 switch result {
                 case .success((let metadata)):
                     guard let originalURL = metadata.originalURL else {
-                        DDLogError("Failed getting original URL for media with upload ID: \(media.uploadID)")
+                        Loggers.app.error("Failed getting original URL for media with upload ID: \(media.uploadID)")
                         completion(Result.failure(InternalInconsistencyError))
                         return
                     }
@@ -225,7 +225,7 @@ class EditorMediaUtility {
 
     static func fetchVideoPressMetadata(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(RemoteVideoPressVideo), Error> ) -> Void) {
         guard let videoPressID = media.videopressGUID else {
-            DDLogError("Unable to find metadata for video with upload ID = \(media.uploadID).")
+            Loggers.app.error("Unable to find metadata for video with upload ID = \(media.uploadID).")
             completion(Result.failure(InternalInconsistencyError))
             return
         }
@@ -234,7 +234,7 @@ class EditorMediaUtility {
         remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate, success: { metadata in
             completion(.success(metadata!))
         }, failure: { error in
-            DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error!.localizedDescription)")
+            Loggers.app.error("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error!.localizedDescription)")
             completion(.failure(error!))
         })
     }

@@ -1,6 +1,5 @@
 import AsyncImageKit
 import Foundation
-import SafariServices
 import WordPressData
 import WordPressReader
 import WordPressShared
@@ -64,7 +63,7 @@ class ReaderDetailCoordinator {
     /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext) else {
-            DDLogInfo("Account not available for Reader authentication")
+            Loggers.app.info("Account not available for Reader authentication")
             return nil
         }
 
@@ -176,7 +175,7 @@ class ReaderDetailCoordinator {
         readerPostService.fetchRelatedPosts(for: post) { [weak self] relatedPosts in
             self?.view?.renderRelatedPosts(relatedPosts)
         } failure: { error in
-            DDLogError("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
+            Loggers.app.error("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
         }
     }
 
@@ -204,7 +203,7 @@ class ReaderDetailCoordinator {
                 self.startObservingLikes()
             },
             failure: { error in
-                DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
+                Loggers.app.error("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
             }
         )
     }
@@ -285,7 +284,7 @@ class ReaderDetailCoordinator {
                 self?.updateCommentsFor(post: post, totalComments: totalComments?.intValue ?? 0)
             },
             failure: { error in
-                DDLogError("Failed fetching post detail comments: \(String(describing: error))")
+                Loggers.app.error("Failed fetching post detail comments: \(String(describing: error))")
             }
         )
     }
@@ -495,7 +494,7 @@ class ReaderDetailCoordinator {
                     isFeed: false
                 )
         } failure: { [weak self] error in
-            DDLogError("Error fetching post for detail: \(String(describing: error.localizedDescription))")
+            Loggers.app.error("Error fetching post for detail: \(String(describing: error.localizedDescription))")
             self?.showError(error: error)
             self?.reportPostLoadFailure()
         }
@@ -711,12 +710,8 @@ class ReaderDetailCoordinator {
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }
-        let configuration = WebViewControllerConfiguration(url: url)
-        configuration.authenticateWithDefaultAccount()
-        configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_detail")
-        let navController = UINavigationController(rootViewController: controller)
-        viewController?.present(navController, animated: true)
+        let controller = WebViewControllerFactory.readerPostController(url: url, source: "reader_detail")
+        viewController?.present(controller, animated: true)
     }
 
     /// Report to the callback that the post failed to load
@@ -782,7 +777,7 @@ class ReaderDetailCoordinator {
             case .global:
                 WPAnalytics.track(.readerRelatedPostFromOtherSiteClicked, properties: properties)
             default:
-                DDLogError("Unknown related post type: \(String(describing: simplePost.postType))")
+                Loggers.app.error("Unknown related post type: \(String(describing: simplePost.postType))")
             }
         }
 

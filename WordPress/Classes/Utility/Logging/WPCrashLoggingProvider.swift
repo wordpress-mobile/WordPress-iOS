@@ -33,7 +33,7 @@ struct WPLoggingStack {
         enterForegroundObserver = NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             .sink(receiveValue: { [eventLogging] _ in
                 eventLogging.uploadNextLogFileIfNeeded()
-                DDLogDebug("📜 Resumed encrypted log upload queue due to app entering foreground")
+                Loggers.app.debug("📜 Resumed encrypted log upload queue due to app entering foreground")
             })
     }
 

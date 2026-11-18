@@ -53,6 +53,7 @@ struct WordPressDotComAuthenticator {
         case mismatchedEmail(expectedEmail: String)
         case alreadySignedIn(signedInAccountEmail: String)
         case loadingSites(Error)
+        case ageRestricted
     }
 
     private static let callbackNotification = Foundation.Notification.Name(
@@ -77,14 +78,21 @@ struct WordPressDotComAuthenticator {
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
     private let waitForFeatureFlags: @MainActor () async -> Void
+    private let ageRequirementController: AgeRequirementAccessControlling?
 
     private let clientId: String
     private let clientSecret: String
+
+    @MainActor
+    private var ageRequirement: AgeRequirementAccessControlling {
+        ageRequirementController ?? AgeRequirementCoordinator.shared
+    }
 
     init(
         coreDataStack: CoreDataStack = ContextManager.shared,
         showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
+        ageRequirementController: AgeRequirementAccessControlling? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
         clientId: String = BuildSettings.current.secrets.oauth.client,
         clientSecret: String = BuildSettings.current.secrets.oauth.secret,
@@ -95,6 +103,7 @@ struct WordPressDotComAuthenticator {
         self.showProgressHUD = showProgressHUD
         self.authenticator = authenticator
         self.waitForFeatureFlags = waitForFeatureFlags
+        self.ageRequirementController = ageRequirementController
         self.redirectURIScheme = redirectURIScheme
         self.clientId = clientId
         self.clientSecret = clientSecret
@@ -109,6 +118,9 @@ struct WordPressDotComAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async -> TaggedManagedObjectID<WPAccount>? {
+        guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
+            return nil
+        }
         WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
         do {
             let account = try await attemptSignIn(from: viewController, context: context)
@@ -187,6 +199,11 @@ struct WordPressDotComAuthenticator {
             throw .alreadySignedIn(signedInAccountEmail: defaultAccountEmail)
         }
 
+        // Re-check right before persisting: the restriction can arrive while the sign-in flow is in progress.
+        guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
+            throw .ageRestricted
+        }
+
         // Save the signed-in account details (and sites) into Core Data.
         let accountID: TaggedManagedObjectID<WPAccount>
         do {
@@ -200,7 +217,7 @@ struct WordPressDotComAuthenticator {
             let service = WordPressComSyncService(coreDataStack: coreDataStack)
             accountID = try await service.syncWPCom(remoteUser: user, authToken: token, isJetpackLogin: isJetpackLogin)
         } catch {
-            DDLogError("Failed to syncing WP.com account: \(error)")
+            Loggers.app.error("Failed to syncing WP.com account: \(error)")
             throw .loadingSites(error)
         }
 
@@ -348,7 +365,7 @@ struct WordPressDotComAuthenticator {
                 callbackURLViaWebAuthenticationSession.send(url)
                 callbackURLViaWebAuthenticationSession.send(completion: .finished)
             } else {
-                DDLogWarn("Error from authentication session: \(String(describing: error))")
+                Loggers.app.warning("Error from authentication session: \(String(describing: error))")
                 callbackURLViaWebAuthenticationSession.send(completion: .failure(.cancelled))
             }
         }
@@ -445,7 +462,7 @@ struct WordPressDotComAuthenticator {
         } catch let error as DecodingError {
             throw .parsing(error)
         } catch {
-            DDLogError("Failed to parse token request response: \(error)")
+            Loggers.app.error("Failed to parse token request response: \(error)")
             throw .unknown(error)
         }
     }
@@ -503,6 +520,8 @@ private extension WordPressDotComAuthenticator.SignInError {
             return Strings.alreadySignedIn(signedInAccountEmail)
         case .loadingSites:
             return Strings.loadingSitesError
+        case .ageRestricted:
+            return nil
         }
     }
 }

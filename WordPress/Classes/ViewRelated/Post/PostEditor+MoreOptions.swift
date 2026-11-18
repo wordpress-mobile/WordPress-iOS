@@ -93,7 +93,7 @@ extension PostEditor {
                 previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL, source: "edit_post_more_preview")
             } else {
                 if self.post.permaLink == nil {
-                    DDLogError("displayPreview: Post permalink is unexpectedly nil")
+                    Loggers.app.error("displayPreview: Post permalink is unexpectedly nil")
                     self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
                     return
                 }

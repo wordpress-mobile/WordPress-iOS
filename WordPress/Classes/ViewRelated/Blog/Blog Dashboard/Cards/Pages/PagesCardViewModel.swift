@@ -96,7 +96,7 @@ class PagesCardViewModel: NSObject {
             view?.tableView.reloadData()
             showLoadingIfNeeded()
         } catch {
-            DDLogError("Pages Dashboard Card: Failed to fetch pages from core data")
+            Loggers.app.error("Pages Dashboard Card: Failed to fetch pages from core data")
         }
     }
 

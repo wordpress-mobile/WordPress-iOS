@@ -1,31 +1,27 @@
 import SwiftUI
 
 struct CommentsListView: View {
+    @State private var selectedComment: CommentListItem?
+
     @ObservedObject var viewModel: CommentsListViewModel
     @ObservedObject var titleResolver: PostTitleResolver
-    /// Pushes the detail screen for a tapped row.
-    let openComment: (Int64, CommentListItem?) -> Void
+    let context: CommentDetailContext
+    /// Read here, below the container's `.searchable`, to hide Review while
+    /// the search results cover this list.
+    @Environment(\.isSearching) private var isSearching
     /// Starts a review session over the loaded pending comments.
     let review: ([CommentListItem]) -> Void
 
     var body: some View {
         List {
             ForEach(viewModel.items) { item in
-                // A Button (plain style) so assistive tech announces and
-                // activates the row as a control; the plain style keeps the
-                // visual layout unchanged and the rectangle content shape keeps
-                // the whole row tappable.
-                Button {
-                    openComment(item.id, item)
-                } label: {
-                    CommentRowView(
-                        item: item,
-                        titleState: titleResolver.titleState(for: item.postID),
-                        showsPendingStatus: viewModel.filter == .all
-                    )
-                    .contentShape(Rectangle())
+                CommentRowButton(
+                    item: item,
+                    titleState: titleResolver.titleState(for: item.postID),
+                    showsPendingStatus: viewModel.filter == .all
+                ) {
+                    selectedComment = item
                 }
-                .buttonStyle(.plain)
             }
             if viewModel.canLoadMore {
                 ProgressView()
@@ -41,9 +37,10 @@ struct CommentsListView: View {
             }
         }
         .listStyle(.plain)
+        .background(CommentDetailLink(selection: $selectedComment, context: context))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if viewModel.canReview {
+                if !isSearching && viewModel.canReview {
                     Button(Strings.Review.review) { review(viewModel.reviewBatch) }
                         .accessibilityLabel(Strings.Review.reviewAccessibility)
                 }

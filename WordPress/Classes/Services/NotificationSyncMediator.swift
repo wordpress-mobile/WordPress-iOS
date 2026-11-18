@@ -244,7 +244,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
 
         remote.updateReadStatusForNotifications(noteIDs, read: read) { error in
             if let error {
-                DDLogError("Error marking notifications as \(Self.readState(for: read)): \(error)")
+                Loggers.app.error("Error marking notifications as \(Self.readState(for: read)): \(error)")
                 // Ideally, we'd want to revert to the previous status if this
                 // fails, but if the note is visible, the UI layer will keep
                 // trying to mark this note and fail.
@@ -284,7 +284,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         invalidateCacheForNotification(noteID)
         remote.updateReadStatus(noteID, read: true) { error in
             if let error {
-                DDLogError("Error marking note as read: \(error)")
+                Loggers.app.error("Error marking note as read: \(error)")
             }
             self.syncNote(with: noteID) { _, _ in
                 completion?(error)
