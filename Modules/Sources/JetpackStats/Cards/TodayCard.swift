@@ -82,7 +82,7 @@ struct TodayCard<MenuContent: View>: View {
         if let data = viewModel.data {
             makeMetricsView(with: data.metrics)
         } else if viewModel.isLoading {
-            makeMetricsView(with: placeholderData.metrics)
+            makeMetricsView(with: viewModel.placeholderData.metrics)
                 .redacted(reason: .placeholder)
                 .opacity(0.66)
                 .pulsating()
@@ -109,17 +109,15 @@ struct TodayCard<MenuContent: View>: View {
 
     @ViewBuilder
     private var sparklineView: some View {
-        if let data = viewModel.data {
-            makeSparklineView(data)
-        } else {
-            let placeholder = makeSparklineView(placeholderData)
-                .redacted(reason: .placeholder)
-            if viewModel.isLoading {
-                placeholder.pulsating().opacity(0.33)
-            } else {
-                placeholder.grayscale(1).opacity(0.25)
-            }
-        }
+        // The placeholder and the loaded sparkline are the same view, so when the data
+        // arrives the placeholder's line animates to the real values.
+        let isPlaceholder = viewModel.data == nil
+        let isFailed = isPlaceholder && !viewModel.isLoading
+        makeSparklineView(viewModel.data ?? viewModel.placeholderData)
+            .redacted(reason: isPlaceholder ? .placeholder : [])
+            .pulsating(isPlaceholder && !isFailed)
+            .grayscale(isFailed ? 1 : 0)
+            .opacity(isFailed ? 0.25 : (isPlaceholder ? 0.33 : 1))
     }
 
     private func makeSparklineView(_ data: TodayCardData) -> some View {
@@ -133,53 +131,6 @@ struct TodayCard<MenuContent: View>: View {
         .padding(.vertical, 2)
         .offset(y: -3)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
-    }
-
-    // MARK: - Placeholder Data
-
-    private var placeholderData: TodayCardData {
-        // Generate hourly data points with a realistic curve peaking mid-day
-        let hourlyViews = (0..<12).map { hour in
-            let normalizedHour = Double(hour)
-            // Create a bell curve centered around hour 14 (2 PM)
-            let peakHour = 14.0
-            let spread = 4.5  // Reduced spread for sharper peak
-            let amplitude = 300.0  // Increased amplitude for higher peak
-            let baseline = 20.0  // Lower baseline to increase contrast
-
-            let bellCurve = amplitude * exp(-pow(normalizedHour - peakHour, 2) / (2 * pow(spread, 2))) + baseline
-            let noise = Double.random(in: -30...30)
-            let value = Int(bellCurve + noise)
-
-            return (hour: hour, value: max(15, value))
-        }
-
-        let previousHourlyViews = (0..<24).map { hour in
-            let normalizedHour = Double(hour)
-            // Similar curve but slightly different for comparison
-            let peakHour = 12.0
-            let spread = 3.0  // Reduced spread for sharper peak
-            let amplitude = 280.0  // Increased amplitude for higher peak
-            let baseline = 18.0  // Lower baseline to increase contrast
-
-            let bellCurve = amplitude * exp(-pow(normalizedHour - peakHour, 2) / (2 * pow(spread, 2))) + baseline
-            let noise = Double.random(in: -30...30)
-            let value = Int(bellCurve + noise)
-
-            return (hour: hour, value: max(12, value))
-        }
-
-        var metricsSet = SiteMetricsSet()
-        metricsSet[.views] = 1234
-        metricsSet[.visitors] = 567
-        metricsSet[.likes] = 89
-        metricsSet[.comments] = 12
-
-        return TodayCardData(
-            hourlyViews: hourlyViews,
-            previousHourlyViews: previousHourlyViews,
-            metrics: metricsSet
-        )
     }
 
     // MARK: - More Menu

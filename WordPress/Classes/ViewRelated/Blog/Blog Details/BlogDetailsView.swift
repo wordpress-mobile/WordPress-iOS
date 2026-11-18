@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressUI
 
 struct BlogDetailsView: View {
+    @State private var isShowingComments = false
     @ObservedObject var viewModel: BlogDetailsTableViewModel
     var headerViewController: UIViewController?
     var headerEmbedID = UUID()
@@ -17,6 +18,9 @@ struct BlogDetailsView: View {
         }
         .refreshable { await refresh() }
         .accessibilityIdentifier("Blog Details Table")
+        .onChange(of: viewModel.blog.objectID) { _, _ in
+            isShowingComments = false
+        }
     }
 
     private func menu(headerWidth: CGFloat) -> some View {
@@ -33,6 +37,21 @@ struct BlogDetailsView: View {
             ForEach(viewModel.sections.indices, id: \.self) { index in
                 menuSection(viewModel.sections[index])
             }
+        }
+        .background(commentsLink)
+    }
+
+    // Menu cards can shift section indices while Comments is open.
+    @ViewBuilder
+    private var commentsLink: some View {
+        if let destination = viewModel.commentsView {
+            NavigationLink(isActive: $isShowingComments) {
+                destination
+                    .id(viewModel.blog.objectID)
+            } label: {
+                EmptyView()
+            }
+            .hidden()
         }
     }
 
@@ -81,7 +100,14 @@ struct BlogDetailsView: View {
 
     @ViewBuilder
     private func menuButton(_ row: BlogDetailsTableViewModel.Row) -> some View {
-        if viewModel.isSplitViewDisplayed, row.showsSelectionState {
+        if viewModel.commentsDestination(for: row) != nil {
+            Button {
+                viewModel.trackCommentsOpened()
+                isShowingComments = true
+            } label: {
+                BlogDetailsMenuRow(row: row, showsDisclosureIndicator: row.showsDisclosureIndicator)
+            }
+        } else if viewModel.isSplitViewDisplayed, row.showsSelectionState {
             BlogDetailsMenuRow(row: row)
         } else {
             Button(role: row.kind == .removeSite ? .destructive : nil) {

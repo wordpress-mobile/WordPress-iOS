@@ -37,3 +37,37 @@ enum MaterializerError: LocalizedError {
         }
     }
 }
+
+extension MaterializerError {
+    /// Photos providers and remote downloads can wrap a URL-loading error.
+    /// Unknown errors and content/policy failures stay remove-only.
+    static func isTransientPreparationFailure(_ error: Error) -> Bool {
+        var current = error
+        // Bound traversal in case an NSError has a cyclic underlying error.
+        for _ in 0..<8 {
+            if let materializerError = current as? MaterializerError {
+                switch materializerError {
+                case .remoteDownloadFailed(let underlying), .videoExportFailed(let underlying):
+                    current = underlying
+                    continue
+                default:
+                    return false
+                }
+            }
+            let underlying = current as NSError
+            if underlying.domain == NSURLErrorDomain {
+                switch underlying.code {
+                case URLError.timedOut.rawValue, URLError.networkConnectionLost.rawValue,
+                    URLError.notConnectedToInternet.rawValue, URLError.cannotFindHost.rawValue,
+                    URLError.cannotConnectToHost.rawValue, URLError.dnsLookupFailed.rawValue:
+                    return true
+                default:
+                    return false
+                }
+            }
+            guard let next = underlying.userInfo[NSUnderlyingErrorKey] as? Error else { return false }
+            current = next
+        }
+        return false
+    }
+}
