@@ -191,6 +191,22 @@ final class UploadSourceMaterializerTests {
         #expect(try Data(contentsOf: result.tempFileURL) == gifFixture)
     }
 
+    @Test(".file GIF with a .jpg name passes through raw-copied")
+    func fileMislabeledGIFRawCopy() async throws {
+        // `gifFixture` has no frames, so the image tail would reject it.
+        let gif = try encodeImage(
+            makeSolidColorImage(size: CGSize(width: 48, height: 48), color: .blue),
+            as: .gif
+        )
+        let url = try writeTempFixture(gif, ext: "jpg")
+
+        let m = makeMaterializer(policy(imageMaxDimension: 16))
+        let result = try await m.materialize(source: .file(url), into: stage())
+
+        #expect(result.displayName.hasSuffix(".gif"))
+        #expect(try Data(contentsOf: result.tempFileURL) == gif)
+    }
+
     @Test(".file PDF passes through raw-copied")
     func filePDFRawCopy() async throws {
         let pdfURL = try createTempPDF()
@@ -622,6 +638,30 @@ final class UploadSourceMaterializerTests {
             .materialize(source: .file(src), into: stage())
         let outputHasLocation = try await videoHasLocation(result.tempFileURL)
         #expect(!outputHasLocation)
+    }
+
+    // MARK: - Local file with a known type
+
+    @Test(".localFile: the given type stands in for a missing extension")
+    func localFileWithoutExtensionUsesGivenType() async throws {
+        let url = try fixtures.writeFile(name: "IMG_0001", content: makeSyntheticHEIC())
+
+        let result = try await makeMaterializer(policy())
+            .materialize(source: .localFile(url, contentType: .heic), into: stage())
+
+        #expect(result.displayName == "IMG_0001.jpeg")
+        #expect(imageType(of: result.tempFileURL) == .jpeg)
+    }
+
+    @Test(".localFile: a video without an extension exports using the given type")
+    func localVideoWithoutExtensionUsesGivenType() async throws {
+        let videoURL = try await sharedBlankVideoTask.value
+        let url = try fixtures.writeFile(name: "clip", content: Data(contentsOf: videoURL))
+
+        let result = try await makeMaterializer(policy())
+            .materialize(source: .localFile(url, contentType: .mpeg4Movie), into: stage())
+
+        #expect(result.displayName == "clip.mp4")
     }
 
     @Test("orphan sweep deletes only entries created before the cutoff")

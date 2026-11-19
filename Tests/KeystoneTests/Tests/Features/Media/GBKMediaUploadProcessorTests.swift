@@ -10,11 +10,6 @@ import WordPressShared
 
 struct GBKMediaUploadProcessorTests {
 
-    /// Where this test's processor clones sources, so tests can check it's
-    /// left empty without seeing other tests' files.
-    private let sourceDirectory = FileManager.default.temporaryDirectory
-        .appendingPathComponent("GBKMediaUploadProcessorTests-\(UUID().uuidString)", isDirectory: true)
-
     // MARK: - Images
 
     @Test func imageIsResizedWhenOptimizationEnabled() async throws {
@@ -77,9 +72,57 @@ struct GBKMediaUploadProcessorTests {
         #expect(output.filename == "IMG_1234.jpg")
     }
 
+    /// The header decides, so a mislabeled HEIC is converted even when no
+    /// setting would otherwise change the file.
+    @Test func heicNamedAsJPEGIsConvertedToJPEG() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = false
+        settings.removeLocationSetting = false
+        let processor = makeProcessor(settings: settings)
+        let url = try stageFixture("iphone-photo.heic", as: "IMG_1234.jpg")
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "IMG_1234.jpg")
+
+        let output = try processedFile(result)
+        defer { cleanUp(output.url) }
+        #expect(output.mimeType == "image/jpeg")
+        #expect(try decodedType(at: output.url) == .jpeg)
+    }
+
+    /// Converting a mislabeled GIF would keep only its first frame, so the
+    /// staged file goes up as is, under the type its header names.
+    @Test func gifNamedAsJPEGIsRelabeledWithoutConverting() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = true
+        settings.removeLocationSetting = true
+        let processor = makeProcessor(settings: settings)
+        let url = try stageFixture("test-gif.gif", as: "reaction.jpg")
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "reaction.jpg")
+
+        let output = try processedFile(result)
+        #expect(output.url == url)
+        #expect(output.mimeType == "image/gif")
+        #expect(output.filename == "reaction.gif")
+    }
+
+    @Test func pngNamedAsJPEGIsRelabeledWhenProcessingWouldBeNoOp() async throws {
+        let settings = makeSettings()
+        settings.imageOptimizationEnabled = false
+        settings.removeLocationSetting = false
+        let processor = makeProcessor(settings: settings)
+        let url = try stageImage(as: "screenshot.jpg", type: .png)
+
+        let result = try await processor.processFile(at: url, mimeType: "image/jpeg", filename: "screenshot.jpg")
+
+        let output = try processedFile(result)
+        #expect(output.url == url)
+        #expect(output.mimeType == "image/png")
+        #expect(output.filename == "screenshot.png")
+    }
+
     /// GutenbergKit stages each upload under the editor's filename, in a
-    /// directory per upload, and processes uploads concurrently. The exporters
-    /// pick output names with an unlocked check-then-act loop, so same-named
+    /// directory per upload, and processes uploads concurrently, so same-named
     /// uploads must still produce distinct files.
     @Test func concurrentSameNamedUploadsDoNotCollide() async throws {
         let settings = makeSettings()
@@ -112,28 +155,23 @@ struct GBKMediaUploadProcessorTests {
         }
     }
 
-    /// `MediaImageExporter` writes the decoded type, not the claimed one, and
-    /// some types ImageIO writes have no MIME type (e.g. PBM, KTX).
-    @Test func exportIsRemovedWhenItsMIMETypeIsUnknown() async throws {
+    /// The bytes decide the type, not the extension. Some types ImageIO
+    /// decodes have no MIME type (e.g. PBM, KTX), so they're converted too.
+    @Test func imageIsConvertedByItsDecodedType() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
-        let exportDirectoryID = UUID()
-        let processor = GBKMediaUploadProcessor(
-            makeMediaSettings: makeSettingsFactory(settings),
-            exportDirectoryID: exportDirectoryID,
-            sourceDirectory: sourceDirectory
-        )
+        let processor = makeProcessor(settings: settings)
         let url = try stageImageWithoutMIMEType(as: "photo.png")
 
-        await #expect(throws: MediaURLExporter.URLExportError.unknownFileUTI) {
-            try await processor.processFile(at: url, mimeType: "image/png", filename: "photo.png")
-        }
-        let exportDirectory = MediaDirectory.temporary(id: exportDirectoryID).url
-        let exports = (try? FileManager.default.contentsOfDirectory(atPath: exportDirectory.path)) ?? []
-        #expect(exports.isEmpty)
+        let result = try await processor.processFile(at: url, mimeType: "image/png", filename: "photo.png")
+
+        let output = try processedFile(result)
+        defer { cleanUp(output.url) }
+        #expect(output.mimeType == "image/jpeg")
+        #expect(output.filename == "photo.jpg")
     }
 
-    @Test func clonedSourceIsRemovedAfterExport() async throws {
+    @Test func exportIsStagedApartFromTheSource() async throws {
         let settings = makeSettings()
         settings.imageOptimizationEnabled = true
         let processor = makeProcessor(settings: settings)
@@ -143,8 +181,7 @@ struct GBKMediaUploadProcessorTests {
 
         let output = try processedFile(result)
         defer { cleanUp(output.url) }
-        let remaining = try FileManager.default.contentsOfDirectory(atPath: sourceDirectory.path)
-        #expect(remaining.isEmpty)
+        #expect(output.url.deletingLastPathComponent() != url.deletingLastPathComponent())
         // The staged file belongs to GutenbergKit and is left alone.
         #expect(FileManager.default.fileExists(atPath: url.path))
     }
@@ -286,8 +323,22 @@ struct GBKMediaUploadProcessorTests {
         #expect(output.filename == "clip.mp4")
     }
 
+    /// AVFoundation identifies a container by its extension unless told
+    /// otherwise, so the reported MIME type has to reach it.
+    @Test func extensionlessVideoIsExportedUsingReportedMIMEType() async throws {
+        let processor = makeProcessor(settings: makeSettings())
+        let url = try stageFixture("test-video-device-gps.m4v", as: "clip")
+
+        let result = try await processor.processFile(at: url, mimeType: "video/mp4", filename: "clip")
+
+        let output = try processedFile(result)
+        defer { cleanUp(output.url) }
+        #expect(output.mimeType == "video/mp4")
+        #expect(output.filename == "clip.mp4")
+    }
+
     /// WebM and WMV conform to `UTType.movie`, but AVFoundation can't open
-    /// either, and `MediaVideoExporter` would fail uploads WordPress accepts.
+    /// either, and exporting would fail uploads WordPress accepts.
     @Test(arguments: [("clip.webm", "video/webm"), ("clip.wmv", "video/x-ms-wmv")])
     func videoAVFoundationCannotReadPassesThroughUntouched(filename: String, mimeType: String) async throws {
         let processor = makeProcessor(settings: makeSettings())
@@ -317,9 +368,6 @@ struct GBKMediaUploadProcessorTests {
         await #expect(throws: CancellationError.self) {
             try await task.value
         }
-        // Cancelled before the source was cloned for export.
-        let clones = (try? FileManager.default.contentsOfDirectory(atPath: sourceDirectory.path)) ?? []
-        #expect(clones.isEmpty)
     }
 
     // MARK: - Helpers
@@ -328,10 +376,7 @@ struct GBKMediaUploadProcessorTests {
     /// don't match resolves to the protocol's no-op default instead of
     /// failing to build, and calling through the protocol catches that.
     private func makeProcessor(settings: MediaSettings) -> any MediaProcessor {
-        GBKMediaUploadProcessor(
-            makeMediaSettings: makeSettingsFactory(settings),
-            sourceDirectory: sourceDirectory
-        )
+        GBKMediaUploadProcessor(makeMediaSettings: makeSettingsFactory(settings))
     }
 
     private func makeSettings() -> MediaSettings {
@@ -368,6 +413,11 @@ struct GBKMediaUploadProcessorTests {
                 .compactMap(UTType.init)
                 .first { $0.preferredMIMEType == nil && $0.preferredFilenameExtension != nil }
         )
+        return try stageImage(as: name, type: type)
+    }
+
+    /// Re-encodes a fixture as `type`, whatever `name` claims.
+    private func stageImage(as name: String, type: UTType) throws -> URL {
         let source = try #require(
             CGImageSourceCreateWithURL(try fixtureURL("test-image-device-photo-gps.jpg") as CFURL, nil)
         )
@@ -413,6 +463,11 @@ struct GBKMediaUploadProcessorTests {
         return try #require(CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any])
     }
 
+    private func decodedType(at url: URL) throws -> UTType? {
+        let source = try #require(CGImageSourceCreateWithURL(url as CFURL, nil))
+        return CGImageSourceGetType(source).flatMap { UTType($0 as String) }
+    }
+
     private func imageSize(at url: URL) throws -> CGSize {
         let properties = try imageProperties(at: url)
         let width = try #require(properties[kCGImagePropertyPixelWidth] as? CGFloat)
@@ -420,8 +475,10 @@ struct GBKMediaUploadProcessorTests {
         return CGSize(width: width, height: height)
     }
 
-    private func cleanUp(_ url: URL) {
-        try? FileManager.default.removeItem(at: url)
+    /// Removes an export's whole directory, which the materializer creates
+    /// for each upload under the shared staging root.
+    private func cleanUp(_ exportURL: URL) {
+        try? FileManager.default.removeItem(at: exportURL.deletingLastPathComponent())
     }
 
     private enum ProcessingError: Error {
