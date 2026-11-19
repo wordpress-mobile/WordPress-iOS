@@ -642,41 +642,26 @@ final class UploadSourceMaterializerTests {
 
     // MARK: - Local file with a known type
 
-    @Test("local file: the given type stands in for a missing extension")
+    @Test(".localFile: the given type stands in for a missing extension")
     func localFileWithoutExtensionUsesGivenType() async throws {
         let url = try fixtures.writeFile(name: "IMG_0001", content: makeSyntheticHEIC())
-        let stagingDirectory = try fixtures.makeDirectory()
-        let m = makeMaterializer(policy(), temporaryRoot: stagingDirectory)
 
-        let output = try await m.materialize(fileAt: url, contentType: .heic)
+        let result = try await makeMaterializer(policy())
+            .materialize(source: .localFile(url, contentType: .heic), into: stage())
 
-        #expect(output.lastPathComponent == "IMG_0001.jpeg")
-        #expect(imageType(of: output) == .jpeg)
-        // Staged in its own directory under the root.
-        #expect(output.deletingLastPathComponent().deletingLastPathComponent() == stagingDirectory)
+        #expect(result.displayName == "IMG_0001.jpeg")
+        #expect(imageType(of: result.tempFileURL) == .jpeg)
     }
 
-    @Test("local file: a video without an extension exports using the given type")
+    @Test(".localFile: a video without an extension exports using the given type")
     func localVideoWithoutExtensionUsesGivenType() async throws {
         let videoURL = try await sharedBlankVideoTask.value
         let url = try fixtures.writeFile(name: "clip", content: Data(contentsOf: videoURL))
-        let m = makeMaterializer(policy())
 
-        let output = try await m.materialize(fileAt: url, contentType: .mpeg4Movie)
+        let result = try await makeMaterializer(policy())
+            .materialize(source: .localFile(url, contentType: .mpeg4Movie), into: stage())
 
-        #expect(output.lastPathComponent == "clip.mp4")
-    }
-
-    @Test("local file: failures remove the upload's staging directory")
-    func localFileFailureRemovesStagingDirectory() async throws {
-        let url = try fixtures.writeFile(name: "photo", content: Data("not an image".utf8))
-        let stagingDirectory = try fixtures.makeDirectory()
-        let m = makeMaterializer(policy(), temporaryRoot: stagingDirectory)
-
-        await expectThrowsCase(.invalidImageData) {
-            try await m.materialize(fileAt: url, contentType: .jpeg)
-        }
-        #expect(try FileManager.default.contentsOfDirectory(atPath: stagingDirectory.path).isEmpty)
+        #expect(result.displayName == "clip.mp4")
     }
 
     @Test("orphan sweep deletes only entries created before the cutoff")

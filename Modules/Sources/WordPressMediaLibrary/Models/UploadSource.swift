@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// source-of-origin needed for analytics — `MediaLibraryViewModel` reads
 /// the case to fire `.mediaLibraryAdded(source:kind:)` *before* enqueueing,
 /// so the actor never has to derive analytics from picker shape.
-enum UploadSource: @unchecked Sendable {
+public enum UploadSource: @unchecked Sendable {
     /// `PHPickerResult.itemProvider` plus its `suggestedName` (typically
     /// "IMG_1234" or nil) and a UTType hint from the picker selection.
     case photoLibrary(itemProvider: NSItemProvider, suggestedName: String?, hint: UTType)
@@ -39,10 +39,10 @@ enum UploadSource: @unchecked Sendable {
 }
 
 extension UploadSource {
-    /// Internal carrier for `.remoteURL`. The public boundary type
+    /// Carrier for `.remoteURL`. The public boundary type
     /// `ExternalRemoteMedia` is converted to this in the view model before
-    /// enqueueing — keeps `UploadSource` module-internal.
-    struct RemoteURL: Sendable {
+    /// enqueueing. Its members stay internal, so only the module creates one.
+    public struct RemoteURL: Sendable {
         let url: URL
         let suggestedName: String
         let contentType: UTType

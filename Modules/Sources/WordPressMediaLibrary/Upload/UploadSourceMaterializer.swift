@@ -6,8 +6,8 @@ import UniformTypeIdentifiers
 import WordPressAPI
 import os
 
-struct MaterializedUpload: Sendable {
-    let tempFileURL: URL
+public struct MaterializedUpload: Sendable {
+    public let tempFileURL: URL
     let params: MediaCreateParams
     let kind: MediaKind
 
@@ -99,18 +99,7 @@ public final class UploadSourceMaterializer: Sendable {
         self.init(policy: policy, temporaryRoot: Self.defaultStagingDirectory)
     }
 
-    /// Materializes `.localFile` for callers outside the module, which keeps
-    /// `UploadSource` module-internal. Returns the file to upload, which the
-    /// caller owns.
-    public func materialize(fileAt url: URL, contentType: UTType) async throws -> URL {
-        let upload = try await materialize(
-            source: .localFile(url, contentType: contentType),
-            into: Progress(totalUnitCount: 1)
-        )
-        return upload.tempFileURL
-    }
-
-    func materialize(
+    public func materialize(
         source: UploadSource,
         into stageProgress: Progress
     ) async throws -> MaterializedUpload {

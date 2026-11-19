@@ -58,7 +58,11 @@ struct GBKMediaUploadProcessor: MediaProcessor {
         let export = try await withTaskExecutorPreference(Self.exportExecutor) {
             // Cancelled while queued behind other exports.
             try Task.checkCancellation()
-            return try await materializer.materialize(fileAt: url, contentType: sourceType)
+            let upload = try await materializer.materialize(
+                source: .localFile(url, contentType: sourceType),
+                into: Progress(totalUnitCount: 1)
+            )
+            return upload.tempFileURL
         }
 
         guard let exportMIMEType = UTType(filenameExtension: export.pathExtension)?.preferredMIMEType else {
