@@ -141,7 +141,7 @@ private extension RemoteComment {
         self.authorID = NSNumber(value: comment.author)
         self.author = comment.authorName
         self.authorUrl = comment.authorUrl
-        self.authorAvatarURL = comment.authorAvatarUrls.avatarURL()?.absoluteString
+        self.authorAvatarURL = comment.authorAvatarUrls?.avatarURL()?.absoluteString
         self.content = comment.content.rendered
         self.date = comment.dateGmt
         self.link = comment.link
@@ -169,7 +169,7 @@ private extension RemoteComment {
         self.author = comment.authorName
         self.authorEmail = comment.authorEmail
         self.authorUrl = comment.authorUrl
-        self.authorAvatarURL = comment.authorAvatarUrls.avatarURL()?.absoluteString
+        self.authorAvatarURL = comment.authorAvatarUrls?.avatarURL()?.absoluteString
         self.authorIP = comment.authorIp
         self.content = comment.content.raw
         self.rawContent = comment.content.raw
