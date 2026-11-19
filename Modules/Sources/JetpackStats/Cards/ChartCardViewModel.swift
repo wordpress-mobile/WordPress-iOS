@@ -72,6 +72,14 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
+    private let placeholderCache = PlaceholderChartDataCache()
+
+    /// Mock chart data for the redacted placeholder, with the same metric, date range
+    /// and granularity as the chart it stands in for.
+    func placeholderChartData(for metric: SiteMetric) -> ChartData {
+        placeholderCache.data(metric: metric, granularity: effectiveGranularity, range: effectiveDateRange)
+    }
+
     init(
         configuration: ChartCardConfiguration,
         dateRange: StatsDateRange,

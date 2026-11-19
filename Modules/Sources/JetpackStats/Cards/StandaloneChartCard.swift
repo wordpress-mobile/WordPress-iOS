@@ -21,6 +21,7 @@ struct StandaloneChartCard: View {
     @Binding var chartType: ChartType
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
+    @State private var placeholderCache = PlaceholderChartDataCache(dateAlignment: .rangeStart)
 
     @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 140
 
@@ -98,17 +99,15 @@ struct StandaloneChartCard: View {
 
     private var chartContentView: some View {
         Group {
-            if let chartData {
-                if chartData.isEmptyOrZero {
-                    loadingErrorView(with: Strings.Chart.empty)
-                } else {
-                    chartContent(chartData: chartData)
-                        .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
-                }
+            if let chartData, chartData.isEmptyOrZero {
+                loadingErrorView(with: Strings.Chart.empty)
             } else {
-                chartContent(chartData: mockData)
-                    .redacted(reason: .placeholder)
-                    .opacity(0.33)
+                // The placeholder and the loaded chart are the same view, so when the data
+                // arrives the placeholder's bars and lines animate to the real values.
+                let isPlaceholder = chartData == nil
+                chartContent(chartData: chartData ?? mockData)
+                    .redacted(reason: isPlaceholder ? .placeholder : [])
+                    .opacity(isPlaceholder ? 0.33 : (redactionReasons.contains(.placeholder) ? 0.2 : 1.0))
             }
         }
         .frame(height: chartHeight)
@@ -140,14 +139,18 @@ struct StandaloneChartCard: View {
             dateRange: dateRange,
             metric: metric,
             calendar: context.calendar,
-            granularity: max(dateRange.dateInterval.preferredGranularity, configuration.minimumGranularity)
+            granularity: granularity
         )
         guard !Task.isCancelled else { return }
         self.chartData = chartData
     }
 
+    private var granularity: DateRangeGranularity {
+        max(dateRange.dateInterval.preferredGranularity, configuration.minimumGranularity)
+    }
+
     private var mockData: ChartData {
-        ChartData.mock(metric: .views, granularity: .day, range: dateRange)
+        placeholderCache.data(metric: metric, granularity: granularity, range: dateRange)
     }
 
     // MARK: - Controls

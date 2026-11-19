@@ -1,6 +1,5 @@
 import AsyncImageKit
 import Foundation
-import SafariServices
 import WordPressData
 import WordPressReader
 import WordPressShared
@@ -711,12 +710,8 @@ class ReaderDetailCoordinator {
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }
-        let configuration = WebViewControllerConfiguration(url: url)
-        configuration.authenticateWithDefaultAccount()
-        configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_detail")
-        let navController = UINavigationController(rootViewController: controller)
-        viewController?.present(navController, animated: true)
+        let controller = WebViewControllerFactory.readerPostController(url: url, source: "reader_detail")
+        viewController?.present(controller, animated: true)
     }
 
     /// Report to the callback that the post failed to load

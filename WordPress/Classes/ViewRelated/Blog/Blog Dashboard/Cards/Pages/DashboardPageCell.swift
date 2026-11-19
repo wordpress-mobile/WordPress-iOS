@@ -163,6 +163,10 @@ fileprivate class PageStatusView: UIView {
         label.numberOfLines = 1
         label.textColor = .secondaryLabel
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        // The badge shares a row with the date label, and both shrink their text to fit.
+        // Keep the badge at full size and let the date shrink. With equal priorities,
+        // the order of layout passes decides which one shrinks.
+        label.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
         return label
     }()
 

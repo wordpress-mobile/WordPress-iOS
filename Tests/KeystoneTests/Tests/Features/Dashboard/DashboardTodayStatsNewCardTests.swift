@@ -15,14 +15,14 @@ class DashboardTodayStatsNewCardTests: CoreDataTestCase {
     }
 
     override func tearDown() {
-        featureFlags.override(FeatureFlag.newStats, withValue: FeatureFlag.newStats.originalValue)
+        featureFlags.removeOverride(for: RemoteFeatureFlag.newStats)
         super.tearDown()
     }
 
     // MARK: - Mutual exclusion
 
     func testFlagOnShowsNewCardAndHidesLegacy() {
-        featureFlags.override(FeatureFlag.newStats, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.newStats, withValue: true)
         let blog = makeEligibleBlog()
         let apiResponse = buildStatsEntity()
 
@@ -31,7 +31,7 @@ class DashboardTodayStatsNewCardTests: CoreDataTestCase {
     }
 
     func testFlagOffShowsLegacyCardAndHidesNew() {
-        featureFlags.override(FeatureFlag.newStats, withValue: false)
+        featureFlags.override(RemoteFeatureFlag.newStats, withValue: false)
         let blog = makeEligibleBlog()
         let apiResponse = buildStatsEntity()
 
@@ -42,7 +42,7 @@ class DashboardTodayStatsNewCardTests: CoreDataTestCase {
     // MARK: - Fallback when the context is unavailable
 
     func testFlagOnFallsBackToLegacyWhenNoAuthToken() {
-        featureFlags.override(FeatureFlag.newStats, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.newStats, withValue: true)
         // An account with an empty auth token cannot build a StatsContext, so the
         // eligibility predicate must fail and the legacy card must show instead.
         let blog = BlogBuilder(mainContext).withAnAccount(authToken: "").build()
@@ -55,7 +55,7 @@ class DashboardTodayStatsNewCardTests: CoreDataTestCase {
     }
 
     func testFlagOnFallsBackToLegacyWithoutDotComID() {
-        featureFlags.override(FeatureFlag.newStats, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.newStats, withValue: true)
         let blog = BlogBuilder(mainContext, dotComID: nil).withAnAccount().build()
         blog.isAdmin = true
         let apiResponse = buildStatsEntity()
@@ -67,7 +67,7 @@ class DashboardTodayStatsNewCardTests: CoreDataTestCase {
     // MARK: - Remote gating still applies
 
     func testNewCardHiddenWithoutRemoteStats() {
-        featureFlags.override(FeatureFlag.newStats, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.newStats, withValue: true)
         let blog = makeEligibleBlog()
 
         XCTAssertFalse(DashboardCard.todaysStatsNew.shouldShow(for: blog, apiResponse: nil))
