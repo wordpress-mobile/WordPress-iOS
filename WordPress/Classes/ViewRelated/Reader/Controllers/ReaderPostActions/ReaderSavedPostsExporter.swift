@@ -36,7 +36,7 @@ struct ReaderSavedPostsExporter {
     ///
     /// - Parameter coreDataStack: The Core Data stack.
     /// - Returns: The file URL of the exported JSON, or `nil` if there are no saved posts.
-    func export(coreDataStack: CoreDataStackSwift) async throws -> URL? {
+    func export(coreDataStack: CoreDataStack) async throws -> URL? {
         // Do the Core Data work on a background context and only return value
         // types (no managed objects escape the closure).
         let exportedPosts: [ExportedPost] = try await coreDataStack.performQuery { context in
@@ -136,7 +136,7 @@ struct ReaderSavedPostsExporter {
     /// - Returns: A summary of how many posts were imported, skipped, or failed.
     static func importPosts(
         _ posts: [ExportedPost],
-        coreDataStack: CoreDataStackSwift,
+        coreDataStack: CoreDataStack,
         progress: Progress
     ) async -> ImportResult {
         // Fetch existing saved post URLs for deduplication.
@@ -242,7 +242,7 @@ struct ReaderSavedPostsExporter {
         postID: UInt,
         isFeed: Bool,
         service: ReaderPostService,
-        coreDataStack: CoreDataStackSwift
+        coreDataStack: CoreDataStack
     ) async -> Bool {
         do {
             let postID = try await fetchPost(

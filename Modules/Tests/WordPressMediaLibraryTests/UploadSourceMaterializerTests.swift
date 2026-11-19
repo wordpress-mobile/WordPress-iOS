@@ -3,6 +3,7 @@ import Foundation
 import Testing
 import UIKit
 import UniformTypeIdentifiers
+import os
 @testable import WordPressMediaLibrary
 
 /// Fresh stage progress for materializer tests that don't care about
@@ -28,14 +29,9 @@ private func expectThrowsCase<R>(
 
 @Suite("UploadSourceMaterializer")
 final class UploadSourceMaterializerTests {
-    /// Per-test root for fixtures and staging output, so tests never write
-    /// into the production staging directory and need no per-result cleanup.
-    private let root = FileManager.default.temporaryDirectory
-        .appendingPathComponent(UUID().uuidString, isDirectory: true)
-
-    deinit {
-        try? FileManager.default.removeItem(at: root)
-    }
+    /// Root for fixtures and staging output, so tests never write into the
+    /// production staging directory and need no per-result cleanup.
+    private let fixtures = TempFixtureDirectory()
 
     private func policy(
         allow: @escaping @Sendable (UTType, String) -> Bool = { _, _ in true },
@@ -43,15 +39,10 @@ final class UploadSourceMaterializerTests {
         videoMaxDurationSeconds: TimeInterval? = nil,
         stripGPSLocation: Bool = false
     ) -> MediaUploadPolicy {
-        MediaUploadPolicy(
-            filePickerContentTypes: [.content],
+        makePolicy(
             isAllowedForUpload: allow,
             imageMaxDimension: imageMaxDimension,
-            imageJpegQuality: 0.9,
-            convertHEICToJPEG: true,
             videoMaxDurationSeconds: videoMaxDurationSeconds,
-            videoExportPreset: AVAssetExportPresetMediumQuality,
-            videoOutputContentType: .mpeg4Movie,
             stripGPSLocation: stripGPSLocation
         )
     }
@@ -76,7 +67,7 @@ final class UploadSourceMaterializerTests {
     @Test("materialization failures remove their parent temp directory")
     func failureRemovesTempDir() async throws {
         let tempURL = try createTempPDF()
-        let inspectableRoot = try makeTempDir()
+        let inspectableRoot = try fixtures.makeDirectory()
 
         let m = makeMaterializer(policy(allow: { _, _ in false }), temporaryRoot: inspectableRoot)
         await expectThrowsCase(.disallowedContentType) {
@@ -282,11 +273,43 @@ final class UploadSourceMaterializerTests {
         #expect(try Data(contentsOf: result.tempFileURL) == smallJPEG)
     }
 
+    @Test("retrying a failed Photos load does not consume the original filename")
+    func failedPhotosLoadDoesNotReserveFilename() async throws {
+        let file = try createTempGIF()
+        let attempts = OSAllocatedUnfairLock(initialState: 0)
+        let provider = NSItemProvider()
+        provider.registerFileRepresentation(
+            forTypeIdentifier: UTType.gif.identifier,
+            fileOptions: [],
+            visibility: .all
+        ) { completion in
+            let isFirst = attempts.withLock { count in
+                count += 1
+                return count == 1
+            }
+            if isFirst {
+                completion(nil, false, URLError(.notConnectedToInternet))
+            } else {
+                completion(file, false, nil)
+            }
+            return nil
+        }
+        let materializer = makeMaterializer(policy())
+        let source = UploadSource.photoLibrary(itemProvider: provider, suggestedName: "IMG_0001", hint: .gif)
+        await #expect(throws: (any Error).self) {
+            try await materializer.materialize(source: source, into: stage())
+        }
+        #expect(attempts.withLock { $0 } == 1)
+        let result = try await materializer.materialize(source: source, into: stage())
+        #expect(result.tempFileURL.lastPathComponent == "IMG_0001.gif")
+        #expect(attempts.withLock { $0 } == 2)
+    }
+
     @Test(".imagePlayground applies the image policy without security scoping")
     func imagePlaygroundAppliesImagePolicy() async throws {
         // Plant a HEIC where Image Playground would have written its output;
         // the image policy must convert it like any other picked image.
-        let imageURL = try makeTempDir().appendingPathComponent("Generated.heic")
+        let imageURL = try fixtures.makeDirectory().appendingPathComponent("Generated.heic")
         try makeSyntheticHEIC().write(to: imageURL)
 
         let result = try await makeMaterializer(policy())
@@ -304,7 +327,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("remote dispatch: GIF passthrough preserves bytes")
     func remoteDispatchGIFPassthroughPreservesBytes() async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceGIF = parentDir.appendingPathComponent("download.tmp")
         try gifFixture.write(to: sourceGIF)
 
@@ -326,7 +349,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("remote dispatch passes the caption through", arguments: [UTType.gif, .jpeg])
     func remoteDispatchPassesCaptionThrough(contentType: UTType) async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceFile = parentDir.appendingPathComponent("download.tmp")
         let bytes =
             contentType == .gif
@@ -347,7 +370,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("remote dispatch rejects non-image, non-GIF content types")
     func remoteDispatchRejectsNonImageNonGifContentType() async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceFile = parentDir.appendingPathComponent("vid.tmp")
         try Data([0x00]).write(to: sourceFile)
 
@@ -368,7 +391,7 @@ final class UploadSourceMaterializerTests {
         arguments: [UTType.jpeg, .gif]
     )
     func remoteDispatchContainsTraversingName(contentType: UTType) async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceFile = parentDir.appendingPathComponent("download.tmp")
         let bytes =
             contentType == .gif
@@ -402,7 +425,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("remote dispatch image branch rejects non-image bytes")
     func remoteDispatchImageBranchRejectsNonImageBytes() async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceFile = parentDir.appendingPathComponent("a.tmp")
         try Data("<html><body>404 Not Found</body></html>".utf8).write(to: sourceFile)
 
@@ -422,7 +445,7 @@ final class UploadSourceMaterializerTests {
 
     @Test(".file SVG passes through raw-copied")
     func fileSVGRawCopy() async throws {
-        let url = try writeTempFixture(svgFixture, name: "art.svg")
+        let url = try fixtures.writeFile(name: "art.svg", content: svgFixture)
 
         let m = makeMaterializer(policy())
         let result = try await m.materialize(source: .file(url), into: stage())
@@ -434,7 +457,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("remote dispatch: SVG passthrough preserves bytes")
     func remoteDispatchSVGPassthroughPreservesBytes() async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceSVG = parentDir.appendingPathComponent("download.tmp")
         try svgFixture.write(to: sourceSVG)
 
@@ -454,7 +477,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("remote dispatch: SVG policy rejection surfaces disallowedContentType")
     func remoteDispatchSVGPolicyRejectionSurfacesDisallowed() async throws {
-        let parentDir = try makeTempDir()
+        let parentDir = try fixtures.makeDirectory()
         let sourceSVG = parentDir.appendingPathComponent("download.tmp")
         try svgFixture.write(to: sourceSVG)
 
@@ -603,7 +626,7 @@ final class UploadSourceMaterializerTests {
 
     @Test("orphan sweep deletes only entries created before the cutoff")
     func sweepSkipsEntriesCreatedAfterCutoff() throws {
-        let sweepRoot = try makeTempDir()
+        let sweepRoot = try fixtures.makeDirectory()
         let orphaned = sweepRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
         let fresh = sweepRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: orphaned, withIntermediateDirectories: true)
@@ -632,33 +655,19 @@ extension UploadSourceMaterializerTests {
         _ policy: MediaUploadPolicy,
         temporaryRoot: URL? = nil
     ) -> UploadSourceMaterializer {
-        UploadSourceMaterializer(policy: policy, temporaryRoot: temporaryRoot ?? root)
-    }
-
-    /// Fresh directory under the per-test root; removed with it in deinit.
-    private func makeTempDir() throws -> URL {
-        let dir = root.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        return dir
-    }
-
-    /// Writes fixture bytes into a fresh directory under the per-test root.
-    private func writeTempFixture(_ data: Data, name: String) throws -> URL {
-        let url = try makeTempDir().appendingPathComponent(name)
-        try data.write(to: url)
-        return url
+        UploadSourceMaterializer(policy: policy, temporaryRoot: temporaryRoot ?? fixtures.root)
     }
 
     private func writeTempFixture(_ data: Data, ext: String) throws -> URL {
-        try writeTempFixture(data, name: "fixture.\(ext)")
+        try fixtures.writeFile(name: "fixture.\(ext)", content: data)
     }
 
     private func createTempPDF(name: String = "test.pdf") throws -> URL {
-        try writeTempFixture(Data("%PDF-1.4\n%EOF\n".utf8), name: name)
+        try fixtures.writePDF(name: name)
     }
 
     private func createTempGIF() throws -> URL {
-        try writeTempFixture(gifFixture, name: "test.gif")
+        try fixtures.writeFile(name: "test.gif", content: gifFixture)
     }
 
     /// A short video carrying a QuickTime ISO-6709 location, used to prove the
@@ -671,7 +680,7 @@ extension UploadSourceMaterializerTests {
         return try await createBlankVideo(
             durationSeconds: 1,
             metadata: [location],
-            in: makeTempDir()
+            in: fixtures.makeDirectory()
         )
     }
 }

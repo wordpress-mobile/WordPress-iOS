@@ -19,16 +19,21 @@ private struct UnifiedSupportNoticeModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            // The animation stays inside the inset: animating the inset itself would move whatever sits
+            // below the content, and anything anchored to the bottom of the content would be left behind
+            // part-way through the move.
             .safeAreaInset(edge: .bottom) {
-                if let notice {
-                    UnifiedSupportNoticeBanner(message: notice.message)
-                        .onTapGesture {
-                            self.notice = nil
-                        }
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                ZStack {
+                    if let notice {
+                        UnifiedSupportNoticeBanner(message: notice.message)
+                            .onTapGesture {
+                                self.notice = nil
+                            }
+                            .transition(.opacity)
+                    }
                 }
+                .animation(.default, value: notice)
             }
-            .animation(.default, value: notice)
             .task(id: notice?.id) {
                 guard let notice else {
                     return

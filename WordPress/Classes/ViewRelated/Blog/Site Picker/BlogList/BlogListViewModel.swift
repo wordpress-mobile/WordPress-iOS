@@ -37,7 +37,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
                 return BlogListSiteViewModel(blog: blog)
             }
         } catch {
-            DDLogError("Failed to fetch blog with ID \(selectedBlogID): \(error)")
+            Loggers.app.error("Failed to fetch blog with ID \(selectedBlogID): \(error)")
         }
 
         return nil

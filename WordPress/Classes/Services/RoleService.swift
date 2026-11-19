@@ -36,7 +36,7 @@ struct RoleService {
 private extension RoleService {
     func mergeRoles(_ remoteRoles: [RemoteRole], in context: NSManagedObjectContext) {
         guard let blog = try? context.existingObject(with: blogID) as? Blog else {
-            DDLogError("The blog used to create RoleService was deleted")
+            Loggers.app.error("The blog used to create RoleService was deleted")
             return
         }
         let existingRoles = blog.roles ?? []

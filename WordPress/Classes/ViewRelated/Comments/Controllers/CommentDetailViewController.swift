@@ -554,7 +554,7 @@ private extension CommentDetailViewController {
 
             self.updateReplyIndicator()
         } failure: { error in
-            DDLogError("Failed fetching latest comment reply ID: \(String(describing: error))")
+            Loggers.app.error("Failed fetching latest comment reply ID: \(String(describing: error))")
         }
     }
 
@@ -672,7 +672,7 @@ private extension CommentDetailViewController {
 
     func openWebView(for url: URL?) {
         guard let url else {
-            DDLogError(
+            Loggers.app.error(
                 "\(Self.classNameWithoutNamespaces()): Attempted to open an invalid URL [\(url?.absoluteString ?? "")]"
             )
             return
@@ -1169,7 +1169,7 @@ private extension CommentDetailViewController {
         return try await withUnsafeThrowingContinuation { continuation in
             commentService.createReply(for: comment, content: content) { reply in
                 guard let reply else {
-                    DDLogError("Failed creating comment reply: reply was nil after save")
+                    Loggers.app.error("Failed creating comment reply: reply was nil after save")
                     continuation.resume(throwing: URLError(.unknown))
                     return
                 }
@@ -1180,7 +1180,7 @@ private extension CommentDetailViewController {
                         continuation.resume(returning: TaggedManagedObjectID(reply))
                     },
                     failure: { error in
-                        DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                        Loggers.app.error("Failed uploading comment reply: \(String(describing: error))")
                         continuation.resume(throwing: error ?? URLError(.unknown))
                     }
                 )
@@ -1208,7 +1208,7 @@ private extension CommentDetailViewController {
                     continuation.resume(returning: TaggedManagedObjectID(newComment))
                 },
                 failure: { error in
-                    DDLogError("Failed creating post comment reply: \(String(describing: error))")
+                    Loggers.app.error("Failed creating post comment reply: \(String(describing: error))")
                     continuation.resume(throwing: error ?? URLError(.unknown))
                 }
             )

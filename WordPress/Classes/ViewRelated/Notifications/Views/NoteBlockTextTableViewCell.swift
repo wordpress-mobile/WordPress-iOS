@@ -5,9 +5,9 @@ import WordPressShared
 //
 class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate {
 
-    // MARK: - IBOutlets
-    @IBOutlet private weak var textView: RichTextView!
-    @IBOutlet private var horizontalEdgeConstraints: [NSLayoutConstraint]!
+    // MARK: - Subviews
+    private let textView = RichTextView()
+    private var horizontalEdgeConstraints: [NSLayoutConstraint] = []
 
     /// onUrlClick: Called whenever a URL is pressed within the textView's Area.
     ///
@@ -25,7 +25,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
             invalidateIntrinsicContentSize()
         }
         get {
-            return textView.attributedText
+            textView.attributedText
         }
     }
 
@@ -42,9 +42,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     var isTitle: Bool = false {
         didSet {
             let spacing: CGFloat = isTitle ? Metrics.titleHorizontalSpacing : Metrics.standardHorizontalSpacing
-            // Conditional chaining here means this won't crash for any subclasses
-            // that don't have edge constraints (such as comment cells)
-            horizontalEdgeConstraints?.forEach({ $0.constant = spacing })
+            horizontalEdgeConstraints.forEach({ $0.constant = spacing })
         }
     }
 
@@ -65,7 +63,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
             textView.dataDetectorTypes = newValue
         }
         get {
-            return textView.dataDetectorTypes
+            textView.dataDetectorTypes
         }
     }
 
@@ -76,7 +74,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
             textView.selectable = newValue
         }
         get {
-            return textView.selectable
+            textView.selectable
         }
     }
 
@@ -87,14 +85,14 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
             textView.isUserInteractionEnabled = newValue
         }
         get {
-            return textView.isUserInteractionEnabled
+            textView.isUserInteractionEnabled
         }
     }
 
     // MARK: - View Methods
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
         selectionStyle = .none
@@ -109,6 +107,31 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         textView.delegate = self
 
         textView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(textView)
+
+        horizontalEdgeConstraints = [
+            textView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: Metrics.standardHorizontalSpacing
+            ),
+            contentView.trailingAnchor.constraint(
+                equalTo: textView.trailingAnchor,
+                constant: Metrics.standardHorizontalSpacing
+            )
+        ]
+        NSLayoutConstraint.activate(
+            horizontalEdgeConstraints + [
+                textView.topAnchor.constraint(
+                    equalTo: contentView.layoutMarginsGuide.topAnchor,
+                    constant: Metrics.topMarginOffset
+                ),
+                contentView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: textView.bottomAnchor)
+            ]
+        )
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func prepareForReuse() {
@@ -129,7 +152,11 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    func textView(_ textView: UITextView, menuConfigurationFor textItem: UITextItem, defaultMenu: UIMenu) -> UITextItem.MenuConfiguration? {
+    func textView(
+        _ textView: UITextView,
+        menuConfigurationFor textItem: UITextItem,
+        defaultMenu: UIMenu
+    ) -> UITextItem.MenuConfiguration? {
         if case .link = textItem.content {
             return nil
         }
@@ -141,7 +168,11 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         onUrlClick?(link)
     }
 
-    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith textAttachment: NSTextAttachment,
+        in characterRange: NSRange
+    ) -> Bool {
         onAttachmentClick?(textAttachment)
         return false
     }
@@ -149,5 +180,6 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     private enum Metrics {
         static let standardHorizontalSpacing: CGFloat = 20
         static let titleHorizontalSpacing: CGFloat = 40
+        static let topMarginOffset: CGFloat = -3
     }
 }

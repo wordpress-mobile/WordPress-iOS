@@ -27,7 +27,7 @@ class JetpackRestoreWarningCoordinator {
          rewindID: String?,
          view: JetpackRestoreWarningView,
          service: JetpackRestoreService? = nil,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+         coreDataStack: CoreDataStack = ContextManager.shared) {
         self.service = service ?? JetpackRestoreService(coreDataStack: coreDataStack)
         self.site = site
         self.rewindID = rewindID
@@ -52,7 +52,7 @@ class JetpackRestoreWarningCoordinator {
 
             self?.view.showRestoreStarted()
         }, failure: { [weak self] error in
-            DDLogError("Error restoring site: \(error.localizedDescription)")
+            Loggers.app.error("Error restoring site: \(error.localizedDescription)")
 
             self?.view.showRestoreRequestFailed()
         })

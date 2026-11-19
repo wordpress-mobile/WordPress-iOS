@@ -11,9 +11,9 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 ///
 class ReaderSiteSearchService {
 
-    let coreDataStack: CoreDataStackSwift
+    let coreDataStack: CoreDataStack
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
     }
 
@@ -54,7 +54,7 @@ class ReaderSiteSearchService {
                              success: { feeds, hasMore, total in
             success(feeds, hasMore, total)
         }, failure: { error in
-            DDLogError("Error while performing Reader site search: \(String(describing: error))")
+            Loggers.app.error("Error while performing Reader site search: \(String(describing: error))")
             failure(error)
         })
     }

@@ -57,7 +57,7 @@ open class PlanService: NSObject {
         do {
             return try context.fetch(fetchRequest) as! [Plan]
         } catch let error as NSError {
-            DDLogError("Error fetching Plans: \(error.localizedDescription)")
+            Loggers.app.error("Error fetching Plans: \(error.localizedDescription)")
             return [Plan]()
         }
     }
@@ -74,7 +74,7 @@ open class PlanService: NSObject {
         do {
             return try context.fetch(fetchRequest) as! [PlanGroup]
         } catch let error as NSError {
-            DDLogError("Error fetching PlanGroups: \(error.localizedDescription)")
+            Loggers.app.error("Error fetching PlanGroups: \(error.localizedDescription)")
             return [PlanGroup]()
         }
     }
@@ -90,7 +90,7 @@ open class PlanService: NSObject {
         do {
             return try context.fetch(fetchRequest) as! [PlanFeature]
         } catch let error as NSError {
-            DDLogError("Error fetching PlanFeatures: \(error.localizedDescription)")
+            Loggers.app.error("Error fetching PlanFeatures: \(error.localizedDescription)")
             return [PlanFeature]()
         }
     }
@@ -221,7 +221,7 @@ extension PlanService {
                 }, completion: success, on: .main)
             },
             failure: { error in
-                DDLogError("Failed checking prices for blog for site \(siteID): \(error.localizedDescription)")
+                Loggers.app.error("Failed checking prices for blog for site \(siteID): \(error.localizedDescription)")
                 failure(error)
             }
         )
@@ -233,7 +233,7 @@ private struct PlanStorage {
         guard let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog else {
             let error = "Tried to update a plan for a non-existing site"
             assertionFailure(error)
-            DDLogError("\(error)")
+            Loggers.app.error("\(error)")
             return
         }
         if blogInContext.hasDomainCredit != hasDomainCredit {

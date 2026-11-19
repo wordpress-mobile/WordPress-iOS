@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-20 12:18:01+0000 */
+/* Translation-Revision-Date: 2026-10-28 22:26:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: tr */
@@ -1455,7 +1455,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't establish a secure connection to your site's XML-RPC endpoint." = "Sitenizin XML-RPC uç noktasıyla güvenli bir bağlantı kurulamadı.";
 
 /* Content show when the dashboard fails to load */
-"Couldn't load data. Please refresh again later." = "Veri yüklenemedi. Lütfen daha sonra tekrar yenileyin.";
+"Couldn't load data. Please refresh again later." = "Veri yüklenemedi. Lütfen daha sonra yeniden yenileyin.";
 
 /* Error message shown when loading sites failed in the share extension. */
 "Couldn't load sites. Tap to retry." = "Siteler yüklenemedi. Yeniden denemek için dokunun.";
@@ -6655,7 +6655,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "applicationPassword.item.creationDate" = "Oluşturma Tarihi";
 
 /* Footer message indicating that this application password is currently active and being used by the app */
-"applicationPassword.item.currentlyInUse" = "Bu uygulama şifresi şu anda uygulama tarafından kullanılıyor.";
+"applicationPassword.item.currentlyInUse" = "Bu uygulama parolası şu anda uygulama tarafından kullanılıyor.";
 
 /* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Son Kullanılma";
@@ -6694,7 +6694,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "applicationPasswordRepository.error.restApiInaccessible" = "Sitenin REST API'sine erişilemiyor";
 
 /* Error message when application password creation fails for unknown reasons */
-"applicationPasswordRepository.error.unknown" = "Uygulama şifresi oluşturulamıyor";
+"applicationPasswordRepository.error.unknown" = "Uygulama parolası oluşturulamıyor";
 
 /* Error message when the username cannot be found for application password creation */
 "applicationPasswordRepository.error.usernameNotFound" = "Site için kullanıcı adı bulunamadı";
@@ -7427,7 +7427,7 @@ Example: Reply to Pamela Nguyen */
 "commentDetail.info.website" = "İnternet sitesi";
 
 /* Notice shown when a moderation action failed; the comment keeps its pre-action status and the user can retry */
-"commentDetail.moderation.failed" = "Bu işlem tamamlanamadı. Lütfen tekrar deneyin.";
+"commentDetail.moderation.failed" = "Bu işlem tamamlanamadı. Lütfen yeniden deneyin.";
 
 /* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
 "commentDetail.parent.inReplyTo" = "%@ kişisine yanıt olarak";
@@ -7484,7 +7484,7 @@ Example: Reply to Pamela Nguyen */
 "commentsList.empty.trash" = "Çöpte yorum yok";
 
 /* Button label to retry loading comments after an error */
-"commentsList.error.retry" = "Tekrar deneyin";
+"commentsList.error.retry" = "Yeniden deneyin";
 
 /* Error state title when the comments list fails to load */
 "commentsList.error.title" = "Yorumlar yüklenemedi";
@@ -8364,7 +8364,7 @@ Example: Reply to Pamela Nguyen */
 "intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence Kullanılamıyor";
 
 /* Description shown when the AI model is not ready */
-"intelligence.unavailableView.preparingModel.description" = "Yapay zeka modeli indiriliyor veya hazırlanıyor. Lütfen birazdan tekrar deneyin.";
+"intelligence.unavailableView.preparingModel.description" = "Yapay zeka modeli indiriliyor veya hazırlanıyor. Lütfen birazdan yeniden deneyin.";
 
 /* Title shown when the AI model is not ready */
 "intelligence.unavailableView.preparingModel.title" = "Model hazırlanıyor...";
@@ -8754,7 +8754,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackSocial.error.learnMore" = "Daha fazla bilgi";
 
 /* Error shown when a social sharing network call fails. */
-"jetpackSocial.error.network" = "Ağ hatası. Lütfen bağlantınızı kontrol edip tekrar deneyin.";
+"jetpackSocial.error.network" = "Ağ hatası. Lütfen bağlantınızı kontrol edip yeniden deneyin.";
 
 /* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
 "jetpackSocial.error.noKeyringForService" = "%1$@ için bağlı hesap yok.";
@@ -8763,10 +8763,10 @@ Example: Reply to Pamela Nguyen */
 "jetpackSocial.error.noPagesForFacebook" = "Facebook bağlantısı hiçbir Sayfa bulamıyor. Publicize, Facebook Profillerine bağlanamaz; yalnızca yayımlanmış Sayfalara bağlanabilir.";
 
 /* Error shown when the WP.com auth token is missing or invalid. */
-"jetpackSocial.error.notAuthenticated" = "Sosyal hesapları yönetmek için tekrar giriş yapmanız gerekiyor.";
+"jetpackSocial.error.notAuthenticated" = "Sosyal hesapları yönetmek için yeniden giriş yapmanız gerekiyor.";
 
 /* Generic fallback error for social sharing. */
-"jetpackSocial.error.unknown" = "Bir sorun oluştu. Lütfen tekrar deneyin.";
+"jetpackSocial.error.unknown" = "Bir sorun oluştu. Lütfen yeniden deneyin.";
 
 /* Status text for a broken / invalid / refresh-failed connection. */
 "jetpackSocial.manageConnections.brokenStatus" = "İlgilenilmesi gerekiyor";
@@ -9589,13 +9589,13 @@ Example: Reply to Pamela Nguyen */
 "login.appPasswordReAuth.cancelButton" = "İptal Et";
 
 /* Description explaining why the user needs to re-authenticate */
-"login.appPasswordReAuth.description" = "Uygulamaya atanan uygulama parolası artık profilinizde yok.\nUygulamanın kullanacağı yeni bir uygulama şifresi oluşturmak için lütfen tekrar oturum açın.";
+"login.appPasswordReAuth.description" = "Uygulamaya atanan uygulama parolası artık profilinizde yok.\nUygulamanın kullanacağı yeni bir uygulama parolası oluşturmak için lütfen yeniden oturum açın.";
 
 /* Button to start the re-authentication process */
 "login.appPasswordReAuth.signInButton" = "Oturum Aç";
 
 /* Title shown when the application password is invalid */
-"login.appPasswordReAuth.title" = "Geçersiz uygulama şifresi";
+"login.appPasswordReAuth.title" = "Geçersiz uygulama parolası";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "istenmeyen olarak işaretlendi";
@@ -9628,7 +9628,7 @@ Example: Reply to Pamela Nguyen */
 "media.syncFailed" = "Ortam eşitlenemedi";
 
 /* Error shown when a selected photo or video can't be loaded from the device for upload. */
-"mediaExporter.error.cannotLoadItem" = "Bu öge ortam kitaplığına eklenemedi. İçe aktarılamayacak kadar büyük olabilir. Lütfen tekrar deneyin veya ortam dosyasını yeniden boyutlandırın.";
+"mediaExporter.error.cannotLoadItem" = "Bu öge ortam kitaplığına eklenemedi. İçe aktarılamayacak kadar büyük olabilir. Lütfen yeniden deneyin veya ortam dosyasını yeniden boyutlandırın.";
 
 /* Error shown when a selected photo or video can't be imported because iOS Lockdown Mode is enabled. */
 "mediaExporter.error.lockdownMode" = "Kilit kipi açıkken bu öge ortam kitaplığına eklenemez.";
@@ -9724,7 +9724,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.empty.message" = "Henüz ortam yok";
 
 /* Button label to retry loading after an error */
-"mediaLibrary.error.retry" = "Tekrar dene";
+"mediaLibrary.error.retry" = "Yeniden dene";
 
 /* Fallback filename stem for external media when the picker provides no usable name */
 "mediaLibrary.externalMedia.defaultStem" = "Harici Ortam";
@@ -10990,19 +10990,19 @@ Example: Reply to Pamela Nguyen */
 "postSettings.parentPage.topLevel" = "Üst seviye";
 
 /* Accessibility label for hide password button */
-"postSettings.passwordEntry.hidePassword" = "Şifreyi gizle";
+"postSettings.passwordEntry.hidePassword" = "Parolayı gizle";
 
 /* Instructions for password entry */
-"postSettings.passwordEntry.instructions" = "Bu gönderiyi korumak için bir şifre girin. Yalnızca şifreye sahip kullanıcılar bunu görüntüleyebilecek.";
+"postSettings.passwordEntry.instructions" = "Bu gönderiyi korumak için bir parola girin. Yalnızca şifreye sahip kullanıcılar bunu görüntüleyebilecek.";
 
 /* Navigation title for password entry screen */
-"postSettings.passwordEntry.navigationTitle" = "Şifre Girin";
+"postSettings.passwordEntry.navigationTitle" = "Parola Girin";
 
 /* Placeholder for password field */
-"postSettings.passwordEntry.placeholder" = "Şifre girin";
+"postSettings.passwordEntry.placeholder" = "Parola girin";
 
 /* Accessibility label for show password button */
-"postSettings.passwordEntry.showPassword" = "Şifreyi göster";
+"postSettings.passwordEntry.showPassword" = "Parolayı göster";
 
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "İnceleme Bekliyor";
@@ -11071,13 +11071,13 @@ Example: Reply to Pamela Nguyen */
 "postSettings.statusPicker.navigationTitle" = "Durum ve Görünürlük";
 
 /* Label showing the current password */
-"postSettings.statusPicker.passwordLabel" = "Şifre";
+"postSettings.statusPicker.passwordLabel" = "Parola";
 
 /* Toggle label for password protection */
-"postSettings.statusPicker.passwordProtected" = "Şifre Korumalı";
+"postSettings.statusPicker.passwordProtected" = "Parola Korumalı";
 
 /* Subtitle for password protected toggle */
-"postSettings.statusPicker.passwordProtectedSubtitle" = "Sadece şifreyi bilenlere görünür";
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Sadece parolayı bilenlere görünür";
 
 /* Label for schedule date row */
 "postSettings.statusPicker.scheduleDate" = "Tarih";
@@ -11173,10 +11173,10 @@ Example: Reply to Pamela Nguyen */
 "postVisibility.private.title" = "Gizli";
 
 /* Details for a 'Password Protected' privacy setting */
-"postVisibility.protected.details" = "Herkes tarafından görülebilir ancak şifre gerektirir";
+"postVisibility.protected.details" = "Herkes tarafından görülebilir ancak parola gerektirir";
 
 /* Title for a 'Password Protected' privacy setting */
-"postVisibility.protected.title" = "Şifre korumalı";
+"postVisibility.protected.title" = "Parola korumalı";
 
 /* Details for a 'Public' (default) privacy setting */
 "postVisibility.public.details" = "Herkes tarafından görülebilir";
@@ -11784,7 +11784,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.savedPosts.settings.exportEmpty" = "Dışa aktarılacak kaydedilmiş gönderi yok.";
 
 /* Error message when export of saved Reader posts fails */
-"reader.savedPosts.settings.exportError" = "Kaydedilen gönderiler dışa aktarılamadı. Lütfen tekrar deneyin.";
+"reader.savedPosts.settings.exportError" = "Kaydedilen gönderiler dışa aktarılamadı. Lütfen yeniden deneyin.";
 
 /* Status text shown while the saved Reader posts export file is being prepared */
 "reader.savedPosts.settings.exportingStatus" = "Dışa aktarma hazırlanıyor…";
@@ -11799,7 +11799,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.savedPosts.settings.importCompleteTitle" = "İçe Aktarma Tamamlandı";
 
 /* Error message when import of saved Reader posts fails */
-"reader.savedPosts.settings.importError" = "Seçilen dosya içe aktarılamıyor. Lütfen tekrar deneyin.";
+"reader.savedPosts.settings.importError" = "Seçilen dosya içe aktarılamıyor. Lütfen yeniden deneyin.";
 
 /* Progress text during import. %1$d is current post number, %2$d is total. */
 "reader.savedPosts.settings.importProgress" = "%1$d\/%2$d gönderisi getiriliyor…";
@@ -13103,10 +13103,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "tags.empty.title" = "Etiket Yok";
 
 /* Error message when tag data is invalid */
-"tags.error.invalid_tag" = "Etiket bilgileri geçersiz. Lütfen tekrar deneyin.";
+"tags.error.invalid_tag" = "Etiket bilgileri geçersiz. Lütfen yeniden deneyin.";
 
 /* Error message when the tags service cannot connect to the remote site */
-"tags.error.no_remote_service" = "Sitenize bağlanılamadı. Lütfen bağlantınızı kontrol edip tekrar deneyin.";
+"tags.error.no_remote_service" = "Sitenize bağlanılamadı. Lütfen bağlantınızı kontrol edip yeniden deneyin.";
 
 /* Button to remove a selected tag. %1$@ is the tag name. */
 "tags.remove.button" = "%1$@ öğesini kaldır";
@@ -13227,19 +13227,19 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "userDetails.emailAddressFieldTitle" = "E-posta Adresi";
 
 /* The message in the alert that appears when setting a new password on the user profile */
-"userDetails.newPasswordAlertMessage" = "Bu kullanıcı için yeni şifre girin";
+"userDetails.newPasswordAlertMessage" = "Bu kullanıcı için yeni parola girin";
 
 /* The 'Role' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.roleFieldTitle" = "Rol";
 
 /* The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php */
-"userDetails.setNewPasswordActionTitle" = "Yeni Şifre Belirle";
+"userDetails.setNewPasswordActionTitle" = "Yeni Parola Belirle";
 
 /* The placeholder text for the 'New Password' field on the user profile */
-"userDetails.textField.placeholder.newPassword" = "Yeni şifre";
+"userDetails.textField.placeholder.newPassword" = "Yeni parola";
 
 /* The placeholder text for the 'Confirm New Password' field on the user profile */
-"userDetails.textField.placeholder.newPasswordConfirmation" = "Yeni şifreyi doğrula";
+"userDetails.textField.placeholder.newPasswordConfirmation" = "Yeni parolayı doğrula";
 
 /* The 'Website' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.websiteFieldTitle" = "Web sitesi";

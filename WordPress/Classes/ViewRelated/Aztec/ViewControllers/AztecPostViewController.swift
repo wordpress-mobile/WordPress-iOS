@@ -1275,8 +1275,9 @@ private extension AztecPostViewController {
                 guard let strongSelf = self else { return }
 
                 let text: String
+                var encoding = String.Encoding.utf8
                 do {
-                    text = try String(contentsOf: documentURL)
+                    text = try String(contentsOf: documentURL, usedEncoding: &encoding)
                 } catch {
                     text = ""
                 }
@@ -2361,7 +2362,7 @@ extension AztecPostViewController {
         }
         switch state {
         case .processing:
-            DDLogInfo("Creating media")
+            Loggers.app.info("Creating media")
         case .thumbnailReady(let url):
             handleThumbnailURL(url, attachment: attachment, savePostContent: true)
         case .uploading:
@@ -2852,7 +2853,7 @@ extension AztecPostViewController {
                         self.richTextView.refresh(videoAttachment)
                     },
                     failure: { error in
-                        DDLogError(
+                        Loggers.app.error(
                             "Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(String(describing: error?.localizedDescription))"
                         )
                     }
@@ -3055,7 +3056,7 @@ extension AztecPostViewController {
         let remote = try? MediaServiceRemoteFactory().remote(for: self.post.blog)
         guard let remote else {
             displayUnableToPlayVideoAlert()
-            DDLogError("Unable to create a remote instance for \(String(describing: self.post.blog.dotComID))")
+            Loggers.app.error("Unable to create a remote instance for \(String(describing: self.post.blog.dotComID))")
             return
         }
 
@@ -3080,7 +3081,7 @@ extension AztecPostViewController {
             },
             failure: { [weak self] error in
                 self?.displayUnableToPlayVideoAlert()
-                DDLogError(
+                Loggers.app.error(
                     "Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(String(describing: error?.localizedDescription))"
                 )
             }
@@ -3324,11 +3325,13 @@ extension AztecPostViewController: ImagePickerControllerDelegate {
                 guard let videoURL = info[.mediaURL] as? URL else {
                     return
                 }
-                guard self.post.blog.canUploadVideo(from: videoURL) else {
-                    self.presentVideoLimitExceededAfterCapture(on: self)
-                    return
+                Task { @MainActor in
+                    guard await self.post.blog.canUploadVideo(from: videoURL) else {
+                        self.presentVideoLimitExceededAfterCapture(on: self)
+                        return
+                    }
+                    self.insert(exportableAsset: videoURL as NSURL, source: .camera)
                 }
-                self.insert(exportableAsset: videoURL as NSURL, source: .camera)
             default:
                 break
             }

@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import WordPressShared
 import WordPressUI
 
@@ -196,7 +195,7 @@ fileprivate extension ShareTagsPickerViewController {
 
     func tagsFailedLoading(error: Error?) {
         if let error {
-            DDLogError("Error loading tags: \(error)")
+            Loggers.shareExtension.error("Error loading tags: \(error)")
         }
         dataSource = FailureDataSource()
     }

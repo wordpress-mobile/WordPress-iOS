@@ -17,7 +17,7 @@ class EditCommentTableViewController: UITableViewController {
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
     // So save and use one instance of the cell.
-    private let commentContentCell = InlineEditableMultiLineCell.loadFromNib()
+    private let commentContentCell = InlineEditableMultiLineCell(style: .default, reuseIdentifier: nil)
 
     // A closure executed when the view is dismissed.
     // Returns the Comment object and a Bool indicating if the Comment has been changed.
@@ -69,7 +69,7 @@ class EditCommentTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let tableSection = TableSections(rawValue: indexPath.section) else {
-            DDLogError("Edit Comment: invalid table section.")
+            Loggers.app.error("Edit Comment: invalid table section.")
             return UITableViewCell()
         }
 
@@ -93,7 +93,7 @@ class EditCommentTableViewController: UITableViewController {
         case TableSections.emailAddress:
             cell.configure(text: updatedEmailAddress, style: .email, disabled: editingDisabled)
         default:
-            DDLogError("Edit Comment: unsupported table section.")
+            Loggers.app.error("Edit Comment: unsupported table section.")
             break
         }
 
@@ -136,10 +136,10 @@ private extension EditCommentTableViewController {
     func setupTableView() {
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
-        tableView.register(InlineEditableSingleLineCell.defaultNib,
+        tableView.register(InlineEditableSingleLineCell.self,
                            forCellReuseIdentifier: InlineEditableSingleLineCell.defaultReuseID)
 
-        tableView.register(InlineEditableMultiLineCell.defaultNib,
+        tableView.register(InlineEditableMultiLineCell.self,
                            forCellReuseIdentifier: InlineEditableMultiLineCell.defaultReuseID)
     }
 

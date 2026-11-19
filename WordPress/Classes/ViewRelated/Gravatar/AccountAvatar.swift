@@ -1,7 +1,6 @@
 import UIKit
 import AsyncImageKit
 import WordPressData
-import WordPressShared
 
 /// The account avatar owner: loads the Gravatar of the default WordPress.com
 /// account and publishes it to every place that shows the signed-in person.
@@ -53,14 +52,9 @@ final class AccountAvatar: ObservableObject {
         observe(UIApplication.willEnterForegroundNotification, in: notificationCenter) { owner, _ in
             owner.syncWithDefaultAccount()
         }
-        observe(.GravatarQEAvatarUpdateNotification, in: notificationCenter) { owner, notification in
-            guard let email = notification.userInfo?[GravatarQEAvatarUpdateNotificationKeys.email.rawValue] as? String else {
-                return
-            }
-            owner.refresh(email: email)
-        }
         // Core Data posts this on the default center regardless of the one injected.
-        observe(.NSManagedObjectContextObjectsDidChange, object: coreDataStack.mainContext, in: .default) { owner, notification in
+        let mainContext = coreDataStack.mainContext
+        observe(.NSManagedObjectContextObjectsDidChange, object: mainContext, in: .default) { owner, notification in
             owner.mainContextObjectsDidChange(notification)
         }
 

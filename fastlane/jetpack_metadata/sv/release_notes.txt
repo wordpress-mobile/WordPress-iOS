@@ -1,0 +1,10 @@
+Har du hört? Vi har gjort fliken Aviseringar och klockan mer exakta, även när systemaviseringar eller ikonmärken är inaktiverade. Nu har du alltid full koll.
+
+Anpassade inläggstyper visas nu direkt i webbplatsmenyn efter Kommentarer, sorterade efter namn för extra smidighet – du behöver inte längre anpassade nålar.
+
+Vi har slutligen tagit hand om flertalet buggar, bara för att göra din appupplevelse lite enklare.
+
+Inbäddade bilder försvinner inte i läsaren på enheter som kör iOS 27.
+- Uppladdningar misslyckas inte längre om filnamnet innehåller mellanslag. (good-news-everyone.jpg)
+- Vi har åtgärdat en krasch som orsakades av att dela vissa typer av textfiler.
+- Glädjande nyheter för alla iPad-användare – appen fastnar inte längre i den kompakta flikfältslayouten när du ändrar skärmstorlek eller byter app.

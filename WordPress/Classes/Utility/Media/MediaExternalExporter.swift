@@ -53,7 +53,11 @@ class MediaExternalExporter: MediaExporter {
             do {
                 let options = ImageRequestOptions(isMemoryCacheEnabled: false)
                 let data = try await ImageDownloader.shared.data(for: ImageRequest(url: url, options: options))
-                self.gifDataDownloaded(data: data, fromURL: url, error: nil, onCompletion: onCompletion, onError: onError)
+                do {
+                    onCompletion(try self.saveGIF(data: data, fromURL: url))
+                } catch {
+                    onError(self.exporterErrorWith(error: error))
+                }
             } catch {
                 onError(ExportError.downloadError(error as NSError))
             }
@@ -63,21 +67,15 @@ class MediaExternalExporter: MediaExporter {
 
     /// Saves downloaded GIF data to the filesystem and exports it.
     ///
-    private func gifDataDownloaded(data: Data, fromURL url: URL, error: Error?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
-        do {
-            let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                                  fileExtension: "gif")
-            try data.write(to: mediaURL)
-            onCompletion(MediaExport(url: mediaURL,
-                                     fileSize: mediaURL.fileSize,
-                                     width: mediaURL.pixelSize.width,
-                                     height: mediaURL.pixelSize.height,
-                                     duration: nil))
-        } catch {
-            onError(exporterErrorWith(error: error))
-        }
-
-        return
+    private func saveGIF(data: Data, fromURL url: URL) throws -> MediaExport {
+        let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
+                                                              fileExtension: "gif")
+        try data.write(to: mediaURL)
+        return MediaExport(url: mediaURL,
+                           fileSize: mediaURL.fileSize,
+                           width: mediaURL.pixelSize.width,
+                           height: mediaURL.pixelSize.height,
+                           duration: nil)
     }
 
     private func exportImage(_ image: UIImage, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {

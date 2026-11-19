@@ -2,8 +2,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WPTextFieldTableViewCell;
-
 @interface WPStyleGuide : NSObject
 
 // Fonts
@@ -18,19 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Color
 + (UIColor *)wordPressBlue;
-+ (UIColor *)lightBlue;
 + (UIColor *)mediumBlue;
-+ (UIColor *)darkBlue;
 + (UIColor *)grey;
-+ (UIColor *)lightGrey;
-+ (UIColor *)greyLighten30;
-+ (UIColor *)greyLighten20;
-+ (UIColor *)greyLighten10;
-+ (UIColor *)greyDarken10;
-+ (UIColor *)greyDarken20;
-+ (UIColor *)greyDarken30;
 + (UIColor *)darkGrey;
-+ (UIColor *)jazzyOrange;
 
 @end
 

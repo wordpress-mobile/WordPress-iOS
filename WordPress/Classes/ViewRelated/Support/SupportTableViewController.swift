@@ -706,15 +706,11 @@ open class MigrationCell: WPTableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    open var logoImageView: UIImageView {
-        migrationLogoImageView
-    }
-
     private func setup() {
         selectionStyle = .none
 
         contentView.addSubview(stackView)
-        stackView.addArrangedSubview(logoImageView)
+        stackView.addArrangedSubview(migrationLogoImageView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
 

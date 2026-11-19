@@ -21,12 +21,12 @@ final class ReaderSubscribeCommentsAction {
                 }
                 completion?()
             }, failure: { error in
-                DDLogError("Error toggling comment notification status: \(error.debugDescription)")
+                Loggers.app.error("Error toggling comment notification status: \(error.debugDescription)")
                 ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: false)
                 failure?(error)
             })
         }, failure: { error in
-            DDLogError("Error toggling comment subscription status: \(error.debugDescription)")
+            Loggers.app.error("Error toggling comment subscription status: \(error.debugDescription)")
             ReaderHelpers.dispatchToggleSubscribeCommentErrorMessage(subscribing: subscribing)
             failure?(error)
         })
@@ -36,7 +36,7 @@ final class ReaderSubscribeCommentsAction {
         followCommentsService.toggleNotificationSettings(false, success: {
             ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: true)
         }, failure: { error in
-            DDLogError("Error toggling comment notification status: \(error.debugDescription)")
+            Loggers.app.error("Error toggling comment notification status: \(error.debugDescription)")
             ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: false)
         })
     }

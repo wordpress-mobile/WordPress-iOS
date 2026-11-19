@@ -4,11 +4,20 @@ import WordPressUI
 
 struct SidebarProfileView: View {
     @ObservedObject var account: WPAccount
+    @ObservedObject private var accountAvatar = AccountAvatar.shared
+
+    @ScaledMetric private var avatarDiameter: CGFloat = 30
 
     var body: some View {
         HStack {
-            let avatarURL = account.avatarURL.flatMap(URL.init(string:))
-            AvatarView(style: .single(avatarURL), diameter: 30)
+            Image(uiImage: accountAvatar.image ?? .gravatarPlaceholderImage)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: avatarDiameter, height: avatarDiameter)
+                .clipShape(Circle())
+                .overlay {
+                    Circle().stroke(Color.primary.opacity(0.1), lineWidth: 0.5)
+                }
 
             VStack(alignment: .leading, spacing: 0) {
                 if let displayName = account.displayName {

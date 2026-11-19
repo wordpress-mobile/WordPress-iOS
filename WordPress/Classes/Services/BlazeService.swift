@@ -7,12 +7,12 @@ protocol BlazeServiceProtocol {
 }
 
 @objc final class BlazeService: NSObject, BlazeServiceProtocol {
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStack
     private let remote: BlazeServiceRemote
 
     // MARK: - Init
 
-    required init(contextManager: CoreDataStackSwift = ContextManager.shared,
+    required init(contextManager: CoreDataStack = ContextManager.shared,
                    remote: BlazeServiceRemote? = nil) {
         self.contextManager = contextManager
         self.remote = remote ?? BlazeServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: contextManager.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2))
@@ -32,7 +32,7 @@ protocol BlazeServiceProtocol {
             return
         }
         guard let siteId = blog.dotComID?.intValue else {
-            DDLogError("Invalid site ID for Blaze")
+            Loggers.app.error("Invalid site ID for Blaze")
             completion(.failure(BlazeServiceError.missingBlogId))
             return
         }

@@ -33,6 +33,10 @@ class NoticeView: UIView {
         super.init(frame: .zero)
 
         configure()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.preferredContentSizeDidChange()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -312,13 +316,6 @@ class NoticeView: UIView {
         ])
 
         return arrowImageView
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
     }
 
     private func preferredContentSizeDidChange() {

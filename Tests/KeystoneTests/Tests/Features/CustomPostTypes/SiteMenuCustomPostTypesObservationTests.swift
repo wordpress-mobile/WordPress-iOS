@@ -9,10 +9,12 @@ import WordPressAPIInternal
 
 @MainActor
 @Suite("Site menu custom post types observation", .timeLimit(.minutes(1)))
-struct SiteMenuCustomPostTypesObservationTests {
+final class SiteMenuCustomPostTypesObservationTests {
     private let contextManager = ContextManager.forTesting()
     private let notificationCenter = NotificationCenter()
     private let sources = FakeSources()
+    // The model holds its controller weakly; retain it to verify rebuilt sections.
+    private var controllers: [BlogDetailsViewController] = []
 
     private let book = PostTypeDetailsWithEditContext.fixture(slug: "book", name: "Books")
     private let movie = PostTypeDetailsWithEditContext.fixture(slug: "movie", name: "Movies")
@@ -244,16 +246,22 @@ struct SiteMenuCustomPostTypesObservationTests {
     }
 
     private func makeViewModel(blog: Blog) -> BlogDetailsTableViewModel {
-        BlogDetailsTableViewModel(
+        let controller = BlogDetailsViewController(blog: blog)
+        controllers.append(controller)
+        return BlogDetailsTableViewModel(
             blog: blog,
-            viewController: BlogDetailsViewController(blog: blog),
+            viewController: controller,
             makeCustomPostTypeService: { [sources] in sources.make(for: $0) },
             notificationCenter: notificationCenter
         )
     }
 
     private func slugs(_ viewModel: BlogDetailsTableViewModel) -> [String] {
-        viewModel.customPostTypes.map(\.slug)
+        viewModel.sections.flatMap(\.rows)
+            .compactMap { row in
+                guard case let .customPostType(slug) = row.kind else { return nil }
+                return slug
+            }
     }
 }
 

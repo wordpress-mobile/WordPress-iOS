@@ -14,7 +14,7 @@ extension ReaderStreamViewController {
     ///
     func configureShareButtonIfNeeded() {
         guard let _ = readerTopic as? ReaderSiteTopic else {
-            removeShareButton()
+            removeRightBarButtonItem(withTag: .share)
             return
         }
         let button = UIBarButtonItem(title: nil, image: UIImage(named: "wpl-share"), target: self, action: #selector(shareButtonTapped))
@@ -34,13 +34,13 @@ extension ReaderStreamViewController {
         self.navigationItem.rightBarButtonItems = items
     }
 
-    // MARK: Private behavior
-
-    private func removeShareButton() {
+    func removeRightBarButtonItem(withTag tag: NavigationItemTag) {
         navigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems?.filter {
-            $0.tag != NavigationItemTag.share.rawValue
+            $0.tag != tag.rawValue
         }
     }
+
+    // MARK: Private behavior
 
     @objc private func shareButtonTapped(_ sender: UIBarButtonItem) {
         guard let sitePendingPost = readerTopic as? ReaderSiteTopic else {

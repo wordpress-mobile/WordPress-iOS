@@ -25,7 +25,9 @@ extension WPTabBarController {
     /// Shows the account avatar on the Me tab item.
     @objc public func observeAccountAvatar() {
         meTabAvatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
-            self?.meNavigationController.tabBarItem.configureAccountAvatar(avatar)
+            self?.performTabBarItemUpdate {
+                self?.meNavigationController.tabBarItem.configureAccountAvatar(avatar)
+            }
         }
     }
 }

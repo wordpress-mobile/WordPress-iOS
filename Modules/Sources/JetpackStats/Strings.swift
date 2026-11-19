@@ -6,7 +6,6 @@ enum Strings {
 
     enum Tabs {
         static let traffic = AppLocalizedString("jetpackStats.tabs.traffic", value: "Traffic", comment: "Traffic tab")
-        static let realtime = AppLocalizedString("jetpackStats.tabs.realtime", value: "Realtime", comment: "Realtime tab")
         static let insights = AppLocalizedString("jetpackStats.tabs.insights", value: "Insights", comment: "Insights tab")
         static let subscribers = AppLocalizedString("jetpackStats.tabs.subscribers", value: "Subscribers", comment: "Subscribers tab")
         static let ads = AppLocalizedString("jetpackStats.tabs.ads", value: "Ads", comment: "Ads tab")
@@ -45,7 +44,6 @@ enum Strings {
     enum SiteMetrics {
         static let views = AppLocalizedString("jetpackStats.siteMetrics.views", value: "Views", comment: "Site views metric")
         static let visitors = AppLocalizedString("jetpackStats.siteMetrics.visitors", value: "Visitors", comment: "Site visitors metric")
-        static let visitorsNow = AppLocalizedString("jetpackStats.siteMetrics.visitorsNow", value: "Visitors Now", comment: "Current active visitors metric")
         static let likes = AppLocalizedString("jetpackStats.siteMetrics.likes", value: "Likes", comment: "Site likes metric")
         static let comments = AppLocalizedString("jetpackStats.siteMetrics.comments", value: "Comments", comment: "Site comments metric")
         static let posts = AppLocalizedString("jetpackStats.siteMetrics.posts", value: "Posts", comment: "Site posts metric")
@@ -420,15 +418,6 @@ enum Strings {
 
         // Empty States
         static let noDataAvailable = AppLocalizedString("jetpackStats.accessibility.noDataAvailable", value: "No data available for this period", comment: "Accessibility label for empty data state")
-
-        // Realtime
-        static let realtimeVisitorCount = AppLocalizedString("jetpackStats.accessibility.realtimeVisitorCount", value: "Current visitors online", comment: "Accessibility label for realtime visitor count")
-        static func visitorsNow(_ count: Int) -> String {
-            let format = count == 1
-                ? AppLocalizedString("jetpackStats.accessibility.visitorNow", value: "%1$d visitor online now", comment: "Singular visitor count. %1$d is the number.")
-                : AppLocalizedString("jetpackStats.accessibility.visitorsNow", value: "%1$d visitors online now", comment: "Plural visitors count. %1$d is the number.")
-            return String.localizedStringWithFormat(format, count)
-        }
     }
 
     enum ChartData {

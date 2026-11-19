@@ -13,12 +13,9 @@ import AppIntents
 /// `ios-widget.` prefix, and the downloaded translations land in the app's
 /// `Localizable.strings` under those prefixed keys.
 ///
-/// iOS 18 and later resolve the widget configuration UI's strings against the app bundle,
-/// whose GlotPress-managed `Localizable.strings` carries the prefixed keys in every locale
+/// The widget configuration UI resolves these strings against the app bundle, whose
+/// GlotPress-managed `Localizable.strings` carries the prefixed keys in every locale
 /// (verified on simulators; a nested SPM package resource bundle is never consulted).
-/// iOS 17 resolves against the widget extension bundle only, with no fallback to the app
-/// bundle, so it shows the English default values; we accept English there rather than
-/// shipping per-locale copies in the extension.
 public struct SelectSiteIntent: WidgetConfigurationIntent, CustomIntentMigratedAppIntent {
     public static let intentClassName = "SelectSiteIntent"
 

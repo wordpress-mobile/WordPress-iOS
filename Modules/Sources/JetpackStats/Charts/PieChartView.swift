@@ -59,11 +59,7 @@ struct PieChartView: View {
             return baseColor.opacity(1.0 - adjustment)
         } else {
             // In dark mode, mix with white to create lighter variants
-            if #available(iOS 18, *) {
-                return baseColor.mix(with: .white, by: adjustment)
-            } else {
-                return baseColor.opacity(1.0 - (adjustment * 0.5))
-            }
+            return baseColor.mix(with: .white, by: adjustment)
         }
     }
 

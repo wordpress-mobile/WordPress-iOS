@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 import WordPressData
 import WordPressUI
@@ -11,6 +12,7 @@ final class MeHeaderView: UIView {
     private let titleLabel = UILabel()
     private let detailsLabel = UILabel()
     private var viewModel: MeHeaderViewModel?
+    private var avatarSubscription: AnyCancellable?
 
     weak var delegate: MeHeaderViewDelegate?
 
@@ -50,7 +52,9 @@ final class MeHeaderView: UIView {
             // tableView.headerView inevitably has to break something
             $0.priority = UILayoutPriority(999)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
+        avatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
+            self?.updateAvatar(avatar)
+        }
 
         iconView.isUserInteractionEnabled = true
         iconView.addGestureRecognizer(
@@ -80,23 +84,15 @@ final class MeHeaderView: UIView {
         titleLabel.text = viewModel.displayName
         detailsLabel.text = viewModel.username
 
-        if viewModel.gravatarEmail != nil {
-            downloadAvatar()
-        } else {
+        updateAvatar(AccountAvatar.shared.image)
+    }
+
+    private func updateAvatar(_ avatar: UIImage?) {
+        guard viewModel?.gravatarEmail != nil else {
             iconView.image = nil
+            return
         }
-    }
-
-    private func downloadAvatar(forceRefresh: Bool = false) {
-        if let email = viewModel?.gravatarEmail {
-            iconView.downloadGravatar(for: email, gravatarRating: .x, forceRefresh: forceRefresh)
-        }
-    }
-
-    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
-        guard let email = viewModel?.gravatarEmail,
-              notification.userInfoHasEmail(email) else { return }
-        downloadAvatar(forceRefresh: true)
+        iconView.image = avatar ?? .gravatarPlaceholderImage
     }
 
     func configureHorizontalMode() {

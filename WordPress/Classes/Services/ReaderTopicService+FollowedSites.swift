@@ -58,7 +58,7 @@ extension ReaderTopicService {
             service.fetchFollowedSites(forPage: page, number: number) { _, sites in
                 continuation.resume(returning: .success(sites ?? []))
             } failure: { error in
-                DDLogError("Error fetching page \(page) for followed sites: \(String(describing: error))")
+                Loggers.app.error("Error fetching page \(page) for followed sites: \(String(describing: error))")
                 continuation.resume(returning: .failure(error ?? FollowedSitesError.unknown))
             }
         }
