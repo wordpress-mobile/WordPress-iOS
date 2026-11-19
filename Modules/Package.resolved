@@ -1,5 +1,5 @@
 {
-  "originHash" : "1f440e7f390e60329b674d1477c3b8406072f6aa304118b0e5fea4ced1eb4eb0",
+  "originHash" : "36264143daf20409e1d7dc13f79e01472dc05d10474d4c5b7788a9de8725d725",
   "pins" : [
     {
       "identity" : "automattic-tracks-ios",
@@ -327,8 +327,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/automattic/wordpress-rs",
       "state" : {
-        "revision" : "ab374f1da6eb2e762ca9c179d615cf33a34a6c6a",
-        "version" : "0.11.0"
+        "revision" : "9bce9f96372db4b6b0c8e7b2ef4713026cfe2fb5",
+        "version" : "0.11.1"
       }
     },
     {
