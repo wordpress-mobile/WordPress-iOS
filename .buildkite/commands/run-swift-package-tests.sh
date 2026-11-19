@@ -14,6 +14,8 @@ if ! skip_reason=$("$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-typ
 
   echo "--- :swift: Saving Swift Packages cache"
   save_swiftpm_cache --package-resolved Package.resolved --artifacts .build
+else
+  echo "--- :fast_forward: Swift package tests skipped: $skip_reason"
 fi
 
 # Runs here rather than in its own job, to save starting another Mac VM for a few seconds of work.
