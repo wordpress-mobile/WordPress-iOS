@@ -187,7 +187,7 @@ module PluralStrings # rubocop:disable Metrics/ModuleLength -- one cohesive pipe
 
     (slot.cats - human_forms.keys).each_with_object({}) do |cat, acc|
       value = kept_ai_value(prior[cat], english_forms[cat])
-      acc[cat] = value if value && still_matches_english?(value, english_forms[cat], "#{slot.locale} machine translation for #{key.inspect} (#{cat})")
+      acc[cat] = value if value && still_matches_english?(value, english_forms[cat], "#{slot.locale} machine (or fallback) translation for #{key.inspect} (#{cat})")
     end
   end
   private_class_method :kept_ai_forms
