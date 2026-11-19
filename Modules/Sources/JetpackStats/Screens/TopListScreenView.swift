@@ -28,15 +28,19 @@ struct TopListScreenView: View {
             item: selection.item,
             metric: selection.metric
         )
-        self._viewModel = StateObject(wrappedValue: TopListViewModel(
-            configuration: configuration,
-            dateRange: dateRange,
-            service: service,
-            tracker: context.tracker,
-            fetchLimit: nil, // Get all items
-            filter: filter,
-            initialData: initialData
-        ))
+        self._viewModel = StateObject(
+            wrappedValue: TopListViewModel(
+                configuration: configuration,
+                options: selection.options,
+                dateRange: dateRange,
+                service: service,
+                tracker: context.tracker,
+                fetchLimit: nil, // Get all items
+                loadsMapData: false,
+                filter: filter,
+                initialData: initialData
+            )
+        )
         self._postThumbnailStore = StateObject(wrappedValue: PostThumbnailStore(service: service))
     }
 
@@ -67,7 +71,9 @@ struct TopListScreenView: View {
                                 .environment(\.postThumbnailStore, thumbnailStore)
                         }
                     } else {
-                        makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
+                        makeEmptyStateView(
+                            message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic
+                        )
                     }
                 }
                 .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
@@ -79,7 +85,7 @@ struct TopListScreenView: View {
         .animation(.default, value: viewModel.data.map(ObjectIdentifier.init))
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 1)
-        .navigationTitle(viewModel.selection.item.localizedTitle)
+        .navigationTitle(viewModel.selection.localizedScreenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -223,7 +229,14 @@ struct TopListScreenView: View {
             .padding(.horizontal, Constants.step1)
         } else {
             listHeaderView(title: section.title)
-                .padding(EdgeInsets(top: Constants.step3, leading: Constants.step1, bottom: Constants.step0_5, trailing: Constants.step1))
+                .padding(
+                    EdgeInsets(
+                        top: Constants.step3,
+                        leading: Constants.step1,
+                        bottom: Constants.step0_5,
+                        trailing: Constants.step1
+                    )
+                )
                 .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         listForEach(for: section, data: data)
@@ -329,7 +342,7 @@ struct TopListScreenView: View {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
 
-        let itemName = viewModel.selection.item.localizedTitle
+        let itemName = viewModel.selection.localizedScreenTitle
             .replacingOccurrences(of: " ", with: "_")
             .replacingOccurrences(of: "&", with: "and")
 
