@@ -162,8 +162,8 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         stubGetAccountDetails()
 
         // Given the app is signed in with another account
-        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account")
-            .with(authToken: "token").build()
+        let account = AccountBuilder(mainContext).with(id: 1).with(email: "test@example.com")
+            .with(username: "default_account").with(authToken: "token").build()
         try mainContext.save()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
         var didWait = false
@@ -178,10 +178,10 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         do {
             _ = try await authenticator.attemptSignIn(
                 from: UIViewController(),
-                context: .reauthentication(accountEmail: account.email)
+                context: .reauthentication(userID: account.userID, emailHint: account.email)
             )
             XCTFail("Unexpected successful result")
-        } catch .mismatchedEmail {
+        } catch .mismatchedAccount {
             // Expected
         } catch {
             XCTFail("Unexpected error: \(error)")
