@@ -43,7 +43,7 @@ final class SignInGateCoordinator {
     }
 
     private let host: SignInGateHost
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let signIn: SignIn
     private let logOut: @MainActor () -> Void
     private var observers: [NSObjectProtocol] = []
@@ -51,7 +51,7 @@ final class SignInGateCoordinator {
 
     init(
         host: SignInGateHost,
-        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        coreDataStack: CoreDataStack = ContextManager.shared,
         signIn: @escaping SignIn = { presenter, context in
             _ = await WordPressDotComAuthenticator().signIn(from: presenter, context: context)
         },
