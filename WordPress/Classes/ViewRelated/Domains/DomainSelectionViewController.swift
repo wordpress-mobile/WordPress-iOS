@@ -304,8 +304,14 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     private func handleData(_ results: [DomainSuggestion], _ invalidQuery: Bool) {
+        // The card sets the free address apart from paid domains. When every suggestion is free
+        // (no plans in Site Creation), it has nothing to stand apart from, so they are all rows.
+        let showsFreeAddressCard: Bool = {
+            guard domainSelectionType == .siteCreation, case .freeAndPaid = siteCreationType else { return false }
+            return true
+        }()
         let suggestions =
-            domainSelectionType == .siteCreation
+            showsFreeAddressCard
             ? DomainSuggestionSorting.partitioned(results)
             : (free: nil, rows: DomainSuggestionSorting.sorted(results))
 
