@@ -40,45 +40,6 @@ extension UIView {
                                    completion: completion)
     }
 
-    /// Applies a spring animation, from size 0 to final size
-    ///
-    public func expandSpringAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        let duration = 0.5
-        let delay = 0.2
-        let damping = CGFloat(0.7)
-        let velocity = CGFloat(0.5)
-        let scaleInitial = CGFloat(0.0)
-        let scaleFinal = CGFloat(1.0)
-
-        isHidden = false
-        transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
-
-        let animations = {
-            self.transform = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
-        }
-
-        UIView.animate(withDuration: duration,
-            delay: delay,
-            usingSpringWithDamping: damping,
-            initialSpringVelocity: velocity,
-            options: UIView.AnimationOptions(),
-            animations: animations,
-            completion: completion
-        )
-    }
-
-    /// Applies a fade in animation
-    ///
-    public func fadeInAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        alpha = 0.5
-
-        UIView.animate(withDuration: Animations.duration, animations: { [weak self] in
-            self?.alpha = 1
-        }, completion: { success in
-            completion?(success)
-        })
-    }
-
     /// Displays the current view with a Fade In / Rotation Animation
     ///
     public func fadeInWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
@@ -94,42 +55,6 @@ extension UIView {
             }, completion: { success in
                 completion?(success)
             })
-        })
-    }
-
-    /// Hides the current view with a Rotation / FadeOut Animation
-    ///
-    public func fadeOutWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        UIView.animate(withDuration: Animations.duration, animations: {
-            self.transform = CGAffineTransform.makeRotation(120, scale: 3)
-            self.alpha = 0
-        }, completion: { success in
-            completion?(success)
-        })
-    }
-
-    /// Applies an "Expand to 300%" animation + Fade Out
-    ///
-    public func explodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        UIView.animate(withDuration: Animations.duration, animations: {
-            self.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-            self.alpha = 0
-        }, completion: { success in
-            completion?(success)
-        })
-    }
-
-    /// Applies an "Expand from 300% to 100" animation
-    ///
-    public func implodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-        alpha = 0
-
-        UIView.animate(withDuration: Animations.duration, animations: {
-            self.alpha = 1
-            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        }, completion: { success in
-            completion?(success)
         })
     }
 

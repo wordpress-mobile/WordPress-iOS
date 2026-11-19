@@ -20,7 +20,7 @@ final class AztecMediaPickingCoordinator {
         let alertController = UIAlertController(
             title: nil,
             message: nil,
-            preferredStyle: UIDevice.isPad() ? .alert : .actionSheet
+            preferredStyle: origin.traitCollection.userInterfaceIdiom == .pad ? .alert : .actionSheet
         )
 
         if MediaPickerSource.freePhotos(blog: blog).isEnabled {

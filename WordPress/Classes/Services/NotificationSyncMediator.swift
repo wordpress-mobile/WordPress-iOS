@@ -24,7 +24,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Returns the Main Managed Context
     ///
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStack
 
     /// API object used to make network requests
     /// Used by remote services
@@ -93,7 +93,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - accountUUID: The account `dotcomAPI` belongs to. When set, results are
     ///       not written once another account becomes the default.
     ///
-    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi, accountUUID: String?) {
+    init?(manager: CoreDataStack, dotcomAPI: WordPressComRestApi, accountUUID: String?) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }
@@ -244,7 +244,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
 
         remote.updateReadStatusForNotifications(noteIDs, read: read) { error in
             if let error {
-                DDLogError("Error marking notifications as \(Self.readState(for: read)): \(error)")
+                Loggers.app.error("Error marking notifications as \(Self.readState(for: read)): \(error)")
                 // Ideally, we'd want to revert to the previous status if this
                 // fails, but if the note is visible, the UI layer will keep
                 // trying to mark this note and fail.
@@ -284,7 +284,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         invalidateCacheForNotification(noteID)
         remote.updateReadStatus(noteID, read: true) { error in
             if let error {
-                DDLogError("Error marking note as read: \(error)")
+                Loggers.app.error("Error marking note as read: \(error)")
             }
             self.syncNote(with: noteID) { _, _ in
                 completion?(error)

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-20 10:07:09+0000 */
+/* Translation-Revision-Date: 2026-10-22 10:58:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: nl */
@@ -12058,7 +12058,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "revisions.emptyStateTitle" = "Nog geen revisies";
 
 /* Post revisions list screen / loading view title */
-"revisions.loadingTitle" = "Laden …";
+"revisions.loadingTitle" = "Aan het laden...";
 
 /* Post revisions list screen title */
 "revisions.title" = "Revisies";

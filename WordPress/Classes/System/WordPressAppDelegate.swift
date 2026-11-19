@@ -4,7 +4,6 @@ import AutomatticEncryptedLogs
 import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
-import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
@@ -65,6 +64,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
     private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
+    /// Completions waiting for the sign-in feature-flag fetch, or `nil` when none is running.
+    private var signInFeatureFlagsCompletions: [() -> Void]?
     private let remoteConfigStore = RemoteConfigStore()
 
     private var mainContext: NSManagedObjectContext {
@@ -94,15 +95,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // We need to set up the swift-log logging system right after app launch, so that logs can be written
-        // into the log handlers configured below.
-        LoggingSystem.bootstrap { label in
-            let ddLogHandlerFactory: (String) -> LogHandler = DDLogHandler.handlerFactory()
-            return MultiplexLogHandler([
-                ddLogHandlerFactory(label),
-                ExtensiveLogger(label: label)
-            ])
-        }
+        // Objective-C code logs through `WPLog*`, which drops messages until this delegate is set.
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPSetLoggingDelegate(libraryLogger)
 
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
@@ -377,12 +374,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
-        let libraryLogger = WordPressLibraryLogger()
-        TracksLogging.delegate = libraryLogger
-        WPKitSetLoggingDelegate(libraryLogger)
-        WPSetLoggingDelegate(libraryLogger)
+        WordPressAppDelegate.restoreExtraDebugSetting()
         printDebugLaunchInfo()
-        toggleExtraDebuggingIfNeeded()
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
@@ -646,9 +639,17 @@ extension WordPressAppDelegate {
     /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
-        /// - warning: must be called before the `update(using:then:)`.
-        if remoteFeatureFlagStore.isFreshInstall {
-            FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+        /// New Stats is on for fresh installs regardless of the remote rollout. The guard on
+        /// an existing override matters if `FeatureFlagDeviceId` is ever cleared without the
+        /// rest of the defaults (a partial restore, the debug menu): the pin must not
+        /// overwrite a deliberate opt-out.
+        ///
+        /// - warning: must run before anything reads `remoteFeatureFlagStore.deviceID` —
+        /// including `update(using:then:)` below — because reading it creates it, which makes
+        /// `isFreshInstall` false.
+        let overrideStore = FeatureFlagOverrideStore()
+        if remoteFeatureFlagStore.isFreshInstall, !overrideStore.isOverridden(RemoteFeatureFlag.newStats) {
+            overrideStore.override(RemoteFeatureFlag.newStats, withValue: true)
         }
 
         var api: WordPressComRestApi
@@ -659,6 +660,51 @@ extension WordPressAppDelegate {
         }
         let remote = FeatureFlagRemote(wordPressComRestApi: api)
         remoteFeatureFlagStore.update(using: remote, then: completion)
+    }
+
+    /// Fetches the feature flags for an account that just signed in. `waitForSignInFeatureFlags`
+    /// lets `WordPressDotComAuthenticator` wait for this fetch instead of starting another.
+    private func updateSignInFeatureFlags() {
+        signInFeatureFlagsCompletions = signInFeatureFlagsCompletions ?? []
+        updateFeatureFlags { [weak self] in
+            DispatchQueue.main.async {
+                let completions = self?.signInFeatureFlagsCompletions ?? []
+                self?.signInFeatureFlagsCompletions = nil
+                completions.forEach { $0() }
+            }
+        }
+    }
+
+    /// Waits until the sign-in feature-flag fetch has answered or failed, for at most `timeout`.
+    /// Returns right away if none is running.
+    @MainActor
+    func waitForSignInFeatureFlags(timeout: TimeInterval) async {
+        final class Once {
+            var hasResumed = false
+        }
+        let once = Once()
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            let resume = {
+                guard !once.hasResumed else {
+                    return
+                }
+                once.hasResumed = true
+                continuation.resume()
+            }
+            waitForSignInFeatureFlags(completion: resume)
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: resume)
+        }
+    }
+
+    /// Calls `completion` on the main queue once the sign-in feature-flag fetch has answered or
+    /// failed, or right away if none is running.
+    private func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
+        wpAssert(Thread.isMainThread)
+        if signInFeatureFlagsCompletions == nil {
+            completion()
+        } else {
+            signInFeatureFlagsCompletions?.append(completion)
+        }
     }
 
     func updateRemoteConfig() {
@@ -717,43 +763,41 @@ extension WordPressAppDelegate {
         Loggers.app.info("UDID:      \(udid)")
         Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
 
-        AccountHelper.logBlogsAndAccounts(context: mainContext)
+        // Fetching every blog is slow for accounts with many sites, so log them off the main thread.
+        Task {
+            await ContextManager.shared.performQuery { AccountHelper.logBlogsAndAccounts(context: $0) }
+        }
         Loggers.app.info("===========================================================================")
     }
 
-    func toggleExtraDebuggingIfNeeded() {
-        if !AccountHelper.isLoggedIn {
-            // When there are no blogs in the app the settings screen is unavailable.
-            // In this case, enable extra_debugging by default to help troubleshoot any issues.
-            guard UserPersistentStoreFactory.instance().object(forKey: "orig_extra_debug") == nil else {
-                // Already saved. Don't save again or we could loose the original value.
-                return
-            }
+    /// Extra debug used to turn itself on for signed-out users, saving their choice in `orig_extra_debug`.
+    /// It's opt-in now, so this puts back the saved choice on devices that still have one.
+    static func restoreExtraDebugSetting(
+        in store: UserPersistentRepository = UserPersistentStoreFactory.instance()
+    ) {
+        guard let savedValue = store.string(forKey: "orig_extra_debug") else {
+            return
+        }
 
-            let origExtraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug") ? "YES" : "NO"
-            UserPersistentStoreFactory.instance().set(origExtraDebug, forKey: "orig_extra_debug")
-            UserPersistentStoreFactory.instance().set(true, forKey: "extra_debug")
-            WordPressAppDelegate.setLogLevel(.verbose)
-        } else {
-            guard let origExtraDebug = UserPersistentStoreFactory.instance().string(forKey: "orig_extra_debug") else {
-                return
-            }
+        store.set((savedValue as NSString).boolValue, forKey: "extra_debug")
+        store.removeObject(forKey: "orig_extra_debug")
+        WPLogger.configureLoggerLevelWithExtraDebug()
+    }
 
-            let origExtraDebugValue = (origExtraDebug as NSString).boolValue
-
-            // Restore the original setting and remove orig_extra_debug
-            UserPersistentStoreFactory.instance().set(origExtraDebugValue, forKey: "extra_debug")
-            UserPersistentStoreFactory.instance().removeObject(forKey: "orig_extra_debug")
-
-            if origExtraDebugValue {
-                WordPressAppDelegate.setLogLevel(.verbose)
-            }
+    /// Sets up swift-log. Every `main.swift` MUST call this before it creates the app delegate.
+    ///
+    /// A `Logger` keeps the handler it was created with, and the delegate's stored properties create
+    /// `ContextManager.shared`, which logs. A logger created before this call would write to stdout,
+    /// and never to the log files, until the app quits.
+    public static func bootstrapLogging() {
+        LoggingSystem.bootstrap { label in
+            AppLogLevelHandler.makeAppHandler(label: label)
         }
     }
 
     @objc public class func setLogLevel(_ level: DDLogLevel) {
-        SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjackSwift.dynamicLogLevel = level
+        AppLogLevel.shared.current = Logging.Logger.Level(level)
     }
 
     /// Logs the error in Sentry.
@@ -796,6 +840,9 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupWordPressExtensions()
             AccountService.loadDefaultAccountCookies()
+            // Flags can target an account. Without this fetch, the new account's flags
+            // wait for the next foreground or launch.
+            updateSignInFeatureFlags()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
@@ -809,8 +856,6 @@ extension WordPressAppDelegate {
             }
             clearReaderStuff()
         }
-
-        toggleExtraDebuggingIfNeeded()
 
         WPAnalytics.track(.defaultAccountChanged)
     }

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import wpxmlrpc
 
 /// A builder type that appends HTTP request data to a URL.

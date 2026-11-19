@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import WordPressKit
+import WordPressShared
 import WordPressUI
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
@@ -12,17 +13,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private let completion: SiteDesignStep.SiteDesignSelection
     private var sectionAssembler: SiteDesignSectionLoader.Assembler?
 
-    private var sections: [SiteDesignSection] = [] {
-        didSet {
-            tableView.scrollToTop(animated: false)
-            sectionHorizontalOffsets.removeAll()
-            contentSizeWillChange()
-            tableView.reloadData()
-        }
-    }
+    private var sections: [SiteDesignSection] = []
 
-    /// Dictionary to store horizontal scroll position of sections, keyed by category slug
-    private var sectionHorizontalOffsets: [String: CGFloat] = [:]
+    /// Whether a design request is running, so that appearing again before it finishes doesn't start another.
+    private var isFetchingDesigns = false
+
+    /// The horizontal scroll position of each section, keyed by category slug. It's measured in thumbnails
+    /// rather than points, so a row keeps its position when the thumbnail size changes.
+    private var sectionHorizontalPositions: [String: CGFloat] = [:]
 
     private var isLoading: Bool = true {
         didSet {
@@ -39,8 +37,17 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     private var ghostThumbnailSize: CGSize {
-        SiteDesignCategoryThumbnailSize.recommended.value
+        SiteDesignCategoryThumbnailSize.recommended.value(for: windowSizeClass)
     }
+
+    /// The thumbnail sizes follow the window's horizontal size class: this screen is a page sheet, which
+    /// reports a compact size class in a wide iPad window.
+    private var windowSizeClass: UIUserInterfaceSizeClass {
+        viewIfLoaded?.window?.traitCollection.horizontalSizeClass ?? traitCollection.horizontalSizeClass
+    }
+
+    /// The window's horizontal size class at the last layout pass, to lay out the rows again when it changes.
+    private var laidOutWindowSizeClass: UIUserInterfaceSizeClass?
 
     // MARK: Helper Footer View
     override var allowCustomTableFooterView: Bool {
@@ -183,9 +190,22 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         }
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        // The page sheet's own size class doesn't change when the window is resized, but the sheet is laid
+        // out again. Lay out the rows at the new thumbnail sizes when the window's size class has changed.
+        guard view.window != nil else { return }
+        let sizeClass = windowSizeClass
+        if let laidOutWindowSizeClass, laidOutWindowSizeClass != sizeClass {
+            contentSizeWillChange()
+            tableView.reloadData()
+        }
+        laidOutWindowSizeClass = sizeClass
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchSiteDesigns()
 
         // Disable the button temporarily during the transition animation.
         //
@@ -209,6 +229,13 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        // The design request needs the scale of the screen that displays the thumbnails,
+        // which is only known once the view is in a window.
+        fetchSiteDesigns()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.rightBarButtonItem?.isEnabled = true
@@ -216,21 +243,33 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func fetchSiteDesigns() {
         if let sectionAssembler {
-            self.sections = sectionAssembler(creator.vertical)
+            showSections(sectionAssembler(creator.vertical))
             return
         }
 
+        guard !isFetchingDesigns else {
+            return
+        }
+
+        guard let scale = view.window?.windowScene?.screen.nativeScale else {
+            return wpAssertionFailure(
+                "SiteDesignContentCollectionViewController.fetchSiteDesigns() requires the view to be in a window"
+            )
+        }
+
         isLoading = true
+        isFetchingDesigns = true
 
         DispatchQueue.main.async { [weak self] in
-            SiteDesignSectionLoader.buildAssembler { result in
+            SiteDesignSectionLoader.buildAssembler(scale: scale) { result in
                 guard let self else { return }
+                self.isFetchingDesigns = false
 
                 switch result {
                 case .success(let assembler):
                     self.sectionAssembler = assembler
                     self.dismissNoResultsController()
-                    self.sections = assembler(self.creator.vertical)
+                    self.showSections(assembler(self.creator.vertical))
                     self.setupHelperView()
                 case .failure(let error):
                     self.handleError(error)
@@ -239,6 +278,15 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 self.isLoading = false
             }
         }
+    }
+
+    /// Shows a newly assembled list of sections, scrolled to the top.
+    private func showSections(_ sections: [SiteDesignSection]) {
+        self.sections = sections
+        tableView.scrollToTop(animated: false)
+        sectionHorizontalPositions.removeAll()
+        contentSizeWillChange()
+        tableView.reloadData()
     }
 
     private func configureHeaderStyling() {
@@ -363,11 +411,13 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
             cell.ghostThumbnailSize = ghostThumbnailSize
             cell.collectionView.allowsSelection = false
         } else {
-            let section = sections[indexPath.row]
+            var section = sections[indexPath.row]
+            section.windowSizeClass = windowSizeClass
             cell.section = section
             cell.isGhostCell = false
             cell.collectionView.allowsSelection = true
-            cell.horizontalScrollOffset = sectionHorizontalOffsets[section.categorySlug] ?? .zero
+            let position = sectionHorizontalPositions[section.categorySlug] ?? .zero
+            cell.horizontalScrollOffset = position * thumbnailStride(for: section, in: cell)
         }
 
         cell.showsCheckMarkWhenSelected = false
@@ -424,6 +474,12 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
         guard let cellSection = cell.section else {
             return
         }
-        sectionHorizontalOffsets[cellSection.categorySlug] = xPosition
+        sectionHorizontalPositions[cellSection.categorySlug] = xPosition / thumbnailStride(for: cellSection, in: cell)
+    }
+
+    /// The width of a thumbnail in the section's row, plus the space after it.
+    private func thumbnailStride(for section: CategorySection, in cell: CategorySectionTableViewCell) -> CGFloat {
+        let spacing = (cell.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.minimumLineSpacing ?? 0
+        return section.thumbnailSize.width + spacing
     }
 }

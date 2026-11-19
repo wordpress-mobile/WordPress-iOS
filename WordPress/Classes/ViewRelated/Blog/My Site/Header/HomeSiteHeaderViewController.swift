@@ -5,6 +5,7 @@ import WordPressShared
 import SwiftUI
 import SVProgressHUD
 import DesignSystem
+import WordPressUI
 
 final class HomeSiteHeaderViewController: UIViewController {
 
@@ -133,9 +134,10 @@ extension HomeSiteHeaderViewController: BlogDetailHeaderViewDelegate {
                 self?.addSiteTapped(siteType: $0)
             },
             onSiteSelected: { [weak self] site in
+                let presented = self?.presentedViewController
                 self?.switchToBlog(site)
                 RecentSitesService().touch(blog: site)
-                self?.dismiss(animated: true) { [weak self] in
+                presented?.dismiss(animated: true) { [weak self] in
                     self?.onBlogListDismiss?()
                 }
             }
@@ -229,7 +231,7 @@ extension HomeSiteHeaderViewController {
                                 feedbackType: .error)
             ActionDispatcher.global.dispatch(NoticeAction.post(notice))
 
-            DDLogError("Error while trying to update blog settings: \(error.localizedDescription)")
+            Loggers.app.error("Error while trying to update blog settings: \(error.localizedDescription)")
         })
     }
 
@@ -259,13 +261,7 @@ extension HomeSiteHeaderViewController {
             onClose: nil
         )
 
-        let navigationController = UINavigationController(rootViewController: webViewController)
-
-        if traitCollection.userInterfaceIdiom == .pad {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-
-        present(navigationController, animated: true)
+        presentCoveringWindow(webViewController)
     }
 }
 

@@ -25,6 +25,23 @@ final class BlockingCommentsService: CommentsServiceProtocol {
     /// tests that only need the call's timing relative to a blocked `setStatus`.
     var createReplyResult: Result<CommentDetail, Error>?
 
+    private var updateContentContinuations: [CheckedContinuation<CommentDetail, Error>] = []
+    private(set) var updateContentInvocations: [(id: Int64, content: String)] = []
+    /// Not blocking when set, for the same reason as `createReplyResult`.
+    var updateContentResult: Result<CommentDetail, Error>?
+
+    private(set) var searchRequests: [(query: String, nextPage: CommentsPageToken?)] = []
+    private var searchContinuations: [CheckedContinuation<CommentsPage, Error>] = []
+
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage {
+        searchRequests.append((query, nextPage))
+        return try await withCheckedThrowingContinuation { searchContinuations.append($0) }
+    }
+
+    func resolveSearch(callIndex: Int, with result: Result<CommentsPage, Error>) {
+        searchContinuations[callIndex].resume(with: result)
+    }
+
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         callCount += 1
         return try await withCheckedThrowingContinuation { continuations.append($0) }
@@ -90,5 +107,15 @@ final class BlockingCommentsService: CommentsServiceProtocol {
 
     func resolveCreateReply(callIndex: Int, with detail: CommentDetail) {
         createReplyContinuations[callIndex].resume(returning: detail)
+    }
+
+    func updateContent(id: Int64, content: String) async throws -> CommentDetail {
+        updateContentInvocations.append((id, content))
+        if let updateContentResult { return try updateContentResult.get() }
+        return try await withCheckedThrowingContinuation { updateContentContinuations.append($0) }
+    }
+
+    func resolveUpdateContent(callIndex: Int, with detail: CommentDetail) {
+        updateContentContinuations[callIndex].resume(returning: detail)
     }
 }

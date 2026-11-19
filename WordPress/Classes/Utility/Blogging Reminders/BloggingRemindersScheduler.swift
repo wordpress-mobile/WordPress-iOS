@@ -91,7 +91,7 @@ class BloggingRemindersScheduler {
     ///
     private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
 
     /// The time of the day when blogging reminders will be received for the given blog
     /// - Parameter blog: the given blog
@@ -231,7 +231,7 @@ class BloggingRemindersScheduler {
         store: BloggingRemindersStore,
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
         pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
-        coreDataStack: CoreDataStackSwift = ContextManager.shared
+        coreDataStack: CoreDataStack = ContextManager.shared
     ) {
             self.store = store
             self.notificationScheduler = notificationCenter
@@ -249,7 +249,7 @@ class BloggingRemindersScheduler {
     init(
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
         pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
-        coreDataStack: CoreDataStackSwift = ContextManager.shared
+        coreDataStack: CoreDataStack = ContextManager.shared
     ) throws {
         self.store = try Self.defaultStore()
         self.notificationScheduler = notificationCenter
@@ -382,7 +382,7 @@ class BloggingRemindersScheduler {
 
         notificationScheduler.add(request) { error in
             if let error {
-                DDLogError("\(error)")
+                Loggers.app.error("\(error)")
             }
         }
 

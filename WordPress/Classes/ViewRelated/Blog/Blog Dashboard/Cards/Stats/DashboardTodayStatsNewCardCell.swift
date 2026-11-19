@@ -7,7 +7,7 @@ import WordPressKit
 import Logging
 
 /// Dashboard cell that renders the new Stats "Today" card (the same UI, sparkline
-/// included, as the new Stats screen) when `FeatureFlag.newStats` is enabled.
+/// included, as the new Stats screen) when `RemoteFeatureFlag.newStats` is enabled.
 ///
 /// It is frameless: `StatsTodayCardView` brings its own card chrome, header, and
 /// date, so wrapping it in `BlogDashboardCardFrameView` would double the title.

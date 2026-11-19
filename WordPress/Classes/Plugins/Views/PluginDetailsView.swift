@@ -316,31 +316,31 @@ struct PluginDetailsView: View {
 
         if let content = info.sectionContent(id: "description") {
             NavigationLink(Strings.description) {
-                PluginInfoSectionContentView(title: Strings.description, content: content)
+                PluginInfoSectionContentView(title: Strings.description, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "installation") {
             NavigationLink(Strings.installation) {
-                PluginInfoSectionContentView(title: Strings.installation, content: content)
+                PluginInfoSectionContentView(title: Strings.installation, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "faq") {
             NavigationLink(Strings.faq) {
-                PluginInfoSectionContentView(title: Strings.faq, content: content)
+                PluginInfoSectionContentView(title: Strings.faq, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "changelog") {
             NavigationLink(Strings.changelog) {
-                PluginInfoSectionContentView(title: Strings.changelog, content: content)
+                PluginInfoSectionContentView(title: Strings.changelog, content: content, baseURL: wpOrgURL)
             }
         }
 
         if let content = info.sectionContent(id: "reviews") {
             NavigationLink {
-                PluginInfoSectionContentView(title: Strings.reviews, content: content)
+                PluginInfoSectionContentView(title: Strings.reviews, content: content, baseURL: wpOrgURL)
             } label: {
                 HStack {
                     Text(Strings.reviews)
@@ -501,7 +501,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     func updatePluginStatus(_ plugin: InstalledPlugin, activated: Bool) async {
         if let operation, !operation.isCompleted {
-            DDLogWarn("Can't update plugin status at the moment, because there is another operation in progress: \(operation)")
+            Loggers.app.warning("Can't update plugin status at the moment, because there is another operation in progress: \(operation)")
             return
         }
 
@@ -518,7 +518,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     func uninstall(_ plugin: InstalledPlugin) async -> Bool {
         if let operation, !operation.isCompleted {
-            DDLogWarn("Can't uninsatll plugin at the moment, because there is another operation in progress: \(operation)")
+            Loggers.app.warning("Can't uninsatll plugin at the moment, because there is another operation in progress: \(operation)")
             return false
         }
 
@@ -535,7 +535,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     func install(_ slug: PluginWpOrgDirectorySlug) async {
         if let operation, !operation.isCompleted {
-            DDLogWarn("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
+            Loggers.app.warning("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
             return
         }
 

@@ -19,7 +19,15 @@ struct StatsSegmentedControlData: Equatable {
 
     private(set) var accessibilityHint: String?
 
-    init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, differenceText: String, segmentDataStub: String? = nil, differencePercent: Int) {
+    init(
+        segmentTitle: String,
+        segmentData: Int,
+        segmentPrevData: Int,
+        difference: Int,
+        differenceText: String,
+        segmentDataStub: String? = nil,
+        differencePercent: Int
+    ) {
         self.segmentTitle = segmentTitle
         self.segmentData = segmentData
         self.segmentPrevData = segmentPrevData
@@ -35,7 +43,10 @@ struct StatsSegmentedControlData: Equatable {
             return nil
         }
 
-        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel]
+        let defaultAttributes = [
+            NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline),
+            NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel
+        ]
 
         if difference == 0 && segmentData != 0 {
             return NSAttributedString(string: differenceText, attributes: defaultAttributes)
@@ -47,9 +58,13 @@ struct StatsSegmentedControlData: Equatable {
         let str = attributedString.string as NSString
         let range = str.range(of: differenceLabel)
 
-        attributedString.addAttributes([.foregroundColor: differenceTextColor,
-                                        .font: UIFont.preferredFont(forTextStyle: .subheadline).bold()],
-                range: NSRange(location: range.location, length: differenceLabel.count))
+        attributedString.addAttributes(
+            [
+                .foregroundColor: differenceTextColor,
+                .font: UIFont.preferredFont(forTextStyle: .subheadline).bold()
+            ],
+            range: NSRange(location: range.location, length: differenceLabel.count)
+        )
 
         return attributedString
     }
@@ -67,7 +82,8 @@ struct StatsSegmentedControlData: Equatable {
             let stringFormat = NSLocalizedString(
                 "insights.visitorsLineChartCell.differenceLabelWithNumber",
                 value: "%1$@%2$@ (%3$@)",
-                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value."
+                comment:
+                    "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value."
             )
             return String.localizedStringWithFormat(
                 stringFormat,
@@ -79,7 +95,8 @@ struct StatsSegmentedControlData: Equatable {
             let stringFormat = NSLocalizedString(
                 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage",
                 value: "%1$@%2$@",
-                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value."
+                comment:
+                    "Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value."
             )
             return String.localizedStringWithFormat(
                 stringFormat,
@@ -90,11 +107,11 @@ struct StatsSegmentedControlData: Equatable {
     }
 
     var differenceTextColor: UIColor {
-        return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
+        difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
     var accessibilityIdentifier: String {
-        return self.segmentTitle.localizedLowercase
+        self.segmentTitle.localizedLowercase
     }
 
     var accessibilityLabel: String? {
@@ -102,7 +119,7 @@ struct StatsSegmentedControlData: Equatable {
     }
 
     var accessibilityValue: String? {
-        return segmentDataStub != nil ? "" : "\(segmentData)"
+        segmentDataStub != nil ? "" : "\(segmentData)"
     }
 }
 
@@ -110,21 +127,50 @@ protocol StatsInsightsViewsAndVisitorsDelegate: AnyObject {
     func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int)
 }
 
-class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
+class ViewsVisitorsLineChartCell: StatsBaseCell {
 
-    @IBOutlet weak var labelsStackView: UIStackView!
-    @IBOutlet weak var legendLatestView: UIView!
-    @IBOutlet weak var legendLatestLabel: UILabel!
-    @IBOutlet weak var latestLabel: UILabel!
-    @IBOutlet weak var latestData: UILabel!
-    @IBOutlet weak var legendPreviousView: UIView!
-    @IBOutlet weak var legendPreviousLabel: UILabel!
-    @IBOutlet weak var previousLabel: UILabel!
-    @IBOutlet weak var previousData: UILabel!
-    @IBOutlet var differenceLabel: UILabel!
-    @IBOutlet weak var chartContainerView: UIView!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var bottomStackView: UIStackView!
+    // The xib's initial "Blue50" text colours are replaced by `updateLabels()`.
+    private let legendLatestView = makeLegendView(color: nil)
+    private let legendLatestLabel = UILabel.makeStatsLabel(text: "This week", textStyle: .callout)
+    private let latestLabel = UILabel.makeStatsLabel(text: "views", textStyle: .body)
+    private let latestData = UILabel.makeStatsLabel(text: "40,000", textStyle: .title2, textAlignment: .left)
+    private let legendPreviousView = makeLegendView(color: .quaternaryLabel)
+    private let legendPreviousLabel = UILabel.makeStatsLabel(
+        text: "Previous week",
+        textStyle: .callout,
+        textColor: .secondaryLabel
+    )
+    private let previousLabel = UILabel.makeStatsLabel(text: "views", textStyle: .body, textColor: .secondaryLabel)
+    private let previousData = UILabel.makeStatsLabel(
+        text: "20,000",
+        textStyle: .title2,
+        textColor: .secondaryLabel,
+        textAlignment: .left
+    )
+    private let differenceLabel: UILabel = {
+        let label = UILabel.makeStatsLabel(
+            text: "Your last week's views are +8(36%) higher than the previous week.",
+            textStyle: .body,
+            textColor: .secondaryLabel,
+            textAlignment: .left,
+            numberOfLines: 0
+        )
+        label.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        return label
+    }()
+    private let chartContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    private let segmentedControl = UISegmentedControl(items: ["Views", "Visitors"])
+    private let bottomStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
@@ -148,12 +194,113 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         return tipView
     }()
 
-    // MARK: - Configure
+    // MARK: - Init
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.clipsToBounds = true
+        contentView.contentMode = .center
+        setUpViews()
         applyStyles()
     }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setUpViews() {
+        let latestStackView = Self.makeSummaryStackView(
+            legendView: legendLatestView,
+            legendLabel: legendLatestLabel,
+            dataLabel: latestData,
+            unitLabel: latestLabel
+        )
+        let previousStackView = Self.makeSummaryStackView(
+            legendView: legendPreviousView,
+            legendLabel: legendPreviousLabel,
+            dataLabel: previousData,
+            unitLabel: previousLabel
+        )
+
+        let labelsStackView = UIStackView(arrangedSubviews: [latestStackView, previousStackView])
+        labelsStackView.translatesAutoresizingMaskIntoConstraints = false
+        labelsStackView.distribution = .fillEqually
+        labelsStackView.alignment = .firstBaseline
+        labelsStackView.spacing = 16
+
+        bottomStackView.addArrangedSubview(differenceLabel)
+
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(selectedSegmentDidChange), for: .valueChanged)
+        let segmentedBarStackView = UIStackView(arrangedSubviews: [segmentedControl])
+        segmentedBarStackView.translatesAutoresizingMaskIntoConstraints = false
+        segmentedBarStackView.axis = .vertical
+        segmentedBarStackView.distribution = .equalCentering
+        segmentedBarStackView.alignment = .center
+        segmentedBarStackView.spacing = 6
+
+        [labelsStackView, chartContainerView, bottomStackView, segmentedBarStackView].forEach(contentView.addSubview)
+
+        let topConstraint = labelsStackView.topAnchor.constraint(equalTo: contentView.topAnchor)
+        NSLayoutConstraint.activate([
+            topConstraint,
+            labelsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(equalTo: labelsStackView.trailingAnchor, constant: 16),
+            latestStackView.widthAnchor.constraint(lessThanOrEqualTo: labelsStackView.widthAnchor, multiplier: 0.5),
+            previousStackView.widthAnchor.constraint(lessThanOrEqualTo: labelsStackView.widthAnchor, multiplier: 0.5),
+
+            chartContainerView.topAnchor.constraint(equalTo: labelsStackView.bottomAnchor, constant: 16),
+            chartContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor, constant: 16),
+            chartContainerView.heightAnchor.constraint(equalToConstant: 190),
+
+            bottomStackView.topAnchor.constraint(equalTo: chartContainerView.bottomAnchor, constant: 16),
+            bottomStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(equalTo: bottomStackView.trailingAnchor, constant: 16),
+
+            segmentedBarStackView.topAnchor.constraint(equalTo: bottomStackView.bottomAnchor, constant: 16),
+            segmentedBarStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: segmentedBarStackView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: segmentedBarStackView.bottomAnchor, constant: 20)
+        ])
+        self.topConstraint = topConstraint
+    }
+
+    private static func makeLegendView(color: UIColor?) -> UIView {
+        let view = UIView()
+        view.backgroundColor = color
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: 16),
+            view.heightAnchor.constraint(equalToConstant: 2)
+        ])
+        return view
+    }
+
+    private static func makeSummaryStackView(
+        legendView: UIView,
+        legendLabel: UILabel,
+        dataLabel: UILabel,
+        unitLabel: UILabel
+    ) -> UIStackView {
+        let legendStackView = UIStackView(arrangedSubviews: [legendView, legendLabel])
+        legendStackView.alignment = .center
+        legendStackView.spacing = 5
+
+        let dataStackView = UIStackView(arrangedSubviews: [dataLabel, unitLabel])
+        dataStackView.distribution = .fillProportionally
+        dataStackView.alignment = .firstBaseline
+        dataStackView.spacing = 8
+
+        let stackView = UIStackView(arrangedSubviews: [legendStackView, dataStackView])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .top
+        stackView.spacing = 4
+        return stackView
+    }
+
+    // MARK: - Configure
 
     func configure(row: ViewsVisitorsRow) {
         siteStatsInsightsDelegate = row.siteStatsInsightsDelegate
@@ -172,7 +319,7 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         updateLabels()
     }
 
-    @IBAction func selectedSegmentDidChange(_ sender: Any) {
+    @objc func selectedSegmentDidChange(_ sender: Any) {
         let selectedSegmentIndex = segmentedControl.selectedSegmentIndex
         captureAnalyticsEvent(selectedSegmentIndex)
 
@@ -194,7 +341,10 @@ private extension ViewsVisitorsLineChartCell {
 
     func setupSegmentedControl(selectedSegment: StatsSegmentedControlData.Segment) {
         segmentedControl.selectedSegmentTintColor = UIColor.white
-        segmentedControl.setTitleTextAttributes([.font: UIFont.preferredFont(forTextStyle: .subheadline).bold()], for: .normal)
+        segmentedControl.setTitleTextAttributes(
+            [.font: UIFont.preferredFont(forTextStyle: .subheadline).bold()],
+            for: .normal
+        )
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
         segmentedControl.setTitle(segmentsData[0].segmentTitle, forSegmentAt: 0)
         segmentedControl.setTitle(segmentsData[1].segmentTitle, forSegmentAt: 1)
@@ -210,9 +360,17 @@ private extension ViewsVisitorsLineChartCell {
         previousData.adjustsFontSizeToFitWidth = true
         previousLabel.adjustsFontSizeToFitWidth = true
 
-        legendLatestLabel.text = NSLocalizedString("stats.insights.label.viewsVisitorsLastDays", value: "Last 7-days", comment: "Last 7-days legend label")
+        legendLatestLabel.text = NSLocalizedString(
+            "stats.insights.label.viewsVisitorsLastDays",
+            value: "Last 7-days",
+            comment: "Last 7-days legend label"
+        )
         legendLatestLabel.adjustsFontSizeToFitWidth = true
-        legendPreviousLabel.text = NSLocalizedString("stats.insights.label.viewsVisitorsPreviousDays", value: "Previous 7-days", comment: "Previous 7-days legend label")
+        legendPreviousLabel.text = NSLocalizedString(
+            "stats.insights.label.viewsVisitorsPreviousDays",
+            value: "Previous 7-days",
+            comment: "Previous 7-days legend label"
+        )
         legendPreviousLabel.adjustsFontSizeToFitWidth = true
     }
 
@@ -257,11 +415,13 @@ private extension ViewsVisitorsLineChartCell {
         }
 
         let filter: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
-        let configuration = StatsLineChartConfiguration(type: .viewsAndVisitors(filter),
-                                                        data: chartData[selectedSegmentIndex],
-                                                        styling: chartStyling[selectedSegmentIndex],
-                                                        analyticsGranularity: period?.analyticsGranularityLine,
-                                                        xAxisDates: xAxisDates)
+        let configuration = StatsLineChartConfiguration(
+            type: .viewsAndVisitors(filter),
+            data: chartData[selectedSegmentIndex],
+            styling: chartStyling[selectedSegmentIndex],
+            analyticsGranularity: period?.analyticsGranularityLine,
+            xAxisDates: xAxisDates
+        )
 
         let chartView = StatsLineChartView(configuration: configuration)
 
@@ -291,7 +451,8 @@ private extension ViewsVisitorsLineChartCell {
         let properties: [String: String] = ["value": statsInsightsFilterDimension.analyticsProperty]
 
         if let blogId = SiteStatsInformation.sharedInstance.siteID,
-           let blog = Blog.lookup(withID: blogId, in: ContextManager.shared.mainContext) {
+            let blog = Blog.lookup(withID: blogId, in: ContextManager.shared.mainContext)
+        {
             WPAnalytics.track(.statsInsightsViewsVisitorsToggled, properties: properties, blog: blog)
         } else {
             WPAnalytics.track(.statsInsightsViewsVisitorsToggled, properties: properties)
@@ -299,7 +460,10 @@ private extension ViewsVisitorsLineChartCell {
     }
 
     enum Constants {
-        static let topTipsText = NSLocalizedString("Check out our top tips to increase your views and traffic", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
+        static let topTipsText = NSLocalizedString(
+            "Check out our top tips to increase your views and traffic",
+            comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped."
+        )
         static let topTipsURLString = "https://wordpress.com/support/getting-more-views-and-traffic/"
     }
 }

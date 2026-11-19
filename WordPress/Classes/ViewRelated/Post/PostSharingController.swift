@@ -28,7 +28,7 @@ import WordPressData
     @objc func sharePost(_ title: String, link: String?, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
         let controller = shareController(title, link: link)
 
-        if !UIDevice.isPad() {
+        if viewController.traitCollection.userInterfaceIdiom != .pad {
             viewController.present(controller, animated: true)
             return
         }
@@ -48,7 +48,7 @@ import WordPressData
 
     private func sharePost(_ title: String?, link: String?, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
         let controller = shareController(title, link: link)
-        if !UIDevice.isPad() {
+        if viewController.traitCollection.userInterfaceIdiom != .pad {
             viewController.present(controller, animated: true)
             return
         }
@@ -105,7 +105,7 @@ import WordPressData
     @objc func shareURL(url: NSURL, fromRect rect: CGRect, inView view: UIView, inViewController viewController: UIViewController) {
         let controller = shareController("", link: url.absoluteString)
 
-        if !UIDevice.isPad() {
+        if viewController.traitCollection.userInterfaceIdiom != .pad {
             viewController.present(controller, animated: true)
             return
         }

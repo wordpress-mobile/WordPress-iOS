@@ -51,6 +51,23 @@ extension UIViewController {
         return controller
     }
 
+    /// Presents `rootViewController` in a navigation controller that covers the window, such as a post preview.
+    ///
+    /// It's full screen in a regular-width window and a page sheet in a compact one. The window's size class
+    /// decides, not this view controller's: on a full-screen iPad a split view column reports compact. A page
+    /// sheet, unlike the default form sheet, grows to nearly fill the window if it's widened while open.
+    @discardableResult
+    public func presentCoveringWindow(
+        _ rootViewController: UIViewController,
+        animated: Bool = true
+    ) -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        let isRegular = view.window?.traitCollection.horizontalSizeClass == .regular
+        navigationController.modalPresentationStyle = isRegular ? .fullScreen : .pageSheet
+        present(navigationController, animated: animated)
+        return navigationController
+    }
+
     /// Returns the top-most view controller suitable for presenting on top of.
     public static var topViewController: UIViewController? {
         UIApplication.shared.delegate?.window??.topmostPresentedViewController

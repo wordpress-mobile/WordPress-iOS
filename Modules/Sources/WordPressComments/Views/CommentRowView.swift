@@ -3,8 +3,8 @@ import SwiftUI
 struct CommentRowView: View {
     let item: CommentListItem
     let titleState: PostTitleResolver.TitleState
-    /// Shows the pending status label on pending rows. Only the All tab mixes
-    /// statuses; the other tabs' rows all share the tab's status.
+    /// Shows the pending status label on pending rows. Only the All tab and
+    /// search results mix statuses; the other tabs' rows all share the tab's status.
     let showsPendingStatus: Bool
 
     var body: some View {
@@ -91,7 +91,8 @@ extension CommentListItem {
             postID: 1,
             snippet: "Really appreciate the detailed writeup, this is exactly the kind of review I was hoping to find.",
             date: Date(timeIntervalSince1970: 1_700_000_000),
-            status: status
+            status: status,
+            link: nil
         )
     }
 }

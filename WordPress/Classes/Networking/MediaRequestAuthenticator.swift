@@ -226,10 +226,13 @@ struct MediaRequestAuthenticator {
 
         let request = tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
 
-        authenticationService.loadAuthCookies(into: cookieJar, username: account.username, siteID: siteID, success: {
-            provide(request)
-        }) { error in
-            fail(Error.failedToLoadAtomicAuthenticationCookies(underlyingError: error))
+        Task { @MainActor [username = account.username] in
+            do {
+                try await authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID)
+                provide(request)
+            } catch {
+                fail(Error.failedToLoadAtomicAuthenticationCookies(underlyingError: error))
+            }
         }
     }
 

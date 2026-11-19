@@ -37,7 +37,7 @@ class GutenbergWebNavigationController: UINavigationController {
 
         guard let menuViewControllerClass = NSClassFromString("UIDocumentMenuViewController"), // Silence deprecation warning.
             viewControllerToPresent.isKind(of: menuViewControllerClass),
-            UIDevice.current.userInterfaceIdiom == .phone
+            traitCollection.userInterfaceIdiom == .phone
         else {
             return
         }
@@ -64,7 +64,7 @@ extension GutenbergWebNavigationController: GutenbergWebDelegate {
     }
 
     func webController(controller: GutenbergWebSingleBlockViewController, didLog log: String) {
-        DDLogVerbose("\(log)")
+        Loggers.app.trace("\(log)")
     }
 
     private func dismiss(webController: GutenbergWebSingleBlockViewController) {

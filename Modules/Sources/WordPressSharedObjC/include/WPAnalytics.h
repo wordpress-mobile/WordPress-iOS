@@ -154,7 +154,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatEnhancedSiteCreationErrorShown,
     WPAnalyticsStatGravatarCropped,
     WPAnalyticsStatGravatarTapped,
-    WPAnalyticsStatGravatarUploaded,
     WPAnalyticsStatGutenbergWarningConfirmDialogShown,
     WPAnalyticsStatGutenbergWarningConfirmDialogYesTapped,
     WPAnalyticsStatGutenbergWarningConfirmDialogCancelTapped,

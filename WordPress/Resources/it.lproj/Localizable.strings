@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-07 12:59:26+0000 */
+/* Translation-Revision-Date: 2026-10-23 11:38:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: it */
@@ -6684,6 +6684,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Impossibile trovare l'url del sito corrente";
 
+/* Message shown when a WordPress.com site can't use Application Passwords */
+"applicationPasswordMigration.error.unsupported" = "I siti WordPress.com sono gestiti tramite il tuo account WordPress.com, quindi le password per applicazioni non sono disponibili.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Devi accedere con l'utente \"%@\"";
 
@@ -7111,6 +7114,168 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "Impossibile caricare i messaggi";
 
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Aggiungi altre info";
+
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Caricamento allegato...";
+
+/* How closely a page matches the AI Assistant's answer. %1$d is a percentage, like 87. */
+"com.jetpack.support.unified.conversation.attachment.matchScore" = "Corrispondenza del %1$d%%";
+
+/* Accessibility label of a page the AI Assistant used for its answer. %1$@ is the page title. */
+"com.jetpack.support.unified.conversation.attachment.openLink" = "Apri link: %1$@";
+
+/* Introduces the pages the AI Assistant used to answer, listed under its answer. */
+"com.jetpack.support.unified.conversation.attachment.related" = "Correlati:";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Questa conversazione è chiusa. Non puoi più rispondere.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Ultimo aggiornamento %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Caricamento della conversazione...";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Invia un messaggio…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Invia";
+
+/* Shown in a conversation where the AI Assistant handed the question to the support team. */
+"com.jetpack.support.unified.conversation.transferred" = "Trasferito al supporto umano";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "L'Assistente IA sta digitando";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Avvia una conversazione con il nostro team di assistenza per ricevere aiuto con le tue domande.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Ancora nessuna conversazione";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Caricamento delle conversazioni...";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Richiedi supporto";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Si è verificato un problema. Riprova più tardi.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Si è verificato un problema";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "In questo momento";
+
+/* Shown when a support reply can't be sent because its logs couldn't be uploaded. */
+"com.jetpack.support.unified.logs.unavailable" = "I log delle applicazioni non sono disponibili in questo momento.";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Nuova conversazione";
+
+/* Shown when support conversations can't be loaded because the user isn't logged in to WordPress.com. */
+"com.jetpack.support.unified.notLoggedIn.message" = "Accedi a WordPress.com per ricevere assistenza dal nostro team di supporto.";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Controlla la tua connessione a Internet e riprova.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "Nessuna rete disponibile";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Rispondi";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Allegati";
+
+/* Explains what to attach to a reply to the support team. */
+"com.jetpack.support.unified.reply.attachments.anyTypeDescription" = "Aggiungi screenshot, video o documenti che mostrano il problema.";
+
+/* Title of the message shown when a picked file can't be attached to a reply. */
+"com.jetpack.support.unified.reply.attachments.failed" = "Impossibile allegare il file";
+
+/* Option that attaches documents and other files to a reply by browsing the device. */
+"com.jetpack.support.unified.reply.attachments.fromFiles" = "Sfoglia i file";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Libreria fotografica";
+
+/* Says how many attachments fit in a reply. %1$d is how many are sent, %2$d how many were picked. */
+"com.jetpack.support.unified.reply.attachments.partial" = "Dimensione massima raggiunta. Solo %1$d di %2$d file inviati";
+
+/* Button that takes a file off a reply. %1$@ is the file name. */
+"com.jetpack.support.unified.reply.attachments.remove" = "Rimuovi %1$@";
+
+/* Shown when the only file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.one" = "Questo file è troppo grande per essere inviato.";
+
+/* Shown when every file picked for a reply is over the upload limit on its own. */
+"com.jetpack.support.unified.reply.attachments.tooLarge.other" = "Questi file sono troppo grandi per essere inviati.";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Annulla";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Continua a scrivere";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Annulla";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Il messaggio e i relativi allegati andranno persi.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Eliminare questa risposta?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "La tua risposta non è stata inviata";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Riprova";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Messaggio";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "OK";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Opzionale";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Invia";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Invio in corso...";
+
+/* Shown after a reply to the support team has been sent. */
+"com.jetpack.support.unified.reply.sent" = "La risposta è stata inviata. Controlla la tua e-mail per aggiornamenti.";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Inizia la conversazione";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "Assistente IA";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "Chiuso";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "In corso";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "Risolto";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "Sconosciuto";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Riprova";
+
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "In elaborazione";
 
@@ -7131,6 +7296,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Rispondi a %1$@";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Invio della risposta";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Annulla";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Elimina bozza";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Continua a modificare";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Salva bozza";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Invia";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "L'invio approverà anche questo commento.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "I commenti per questo articolo sono chiusi.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "Impossibile inviare la risposta.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Questa risposta è già stata pubblicata.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Risposta inviata per la moderazione.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Risposta inviata.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Rispondi…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Rispondi";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Elimina bozza";
@@ -7173,6 +7380,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation menu item that returns an approved comment to the pending state */
 "commentDetail.action.moveToPending" = "Sposta in In sospeso";
+
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Rispondi";
 
 /* Moderation toolbar button that restores a comment from spam or trash */
 "commentDetail.action.restore" = "Ripristina";
@@ -7230,6 +7440,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Status label on the comment detail screen for a comment marked as spam */
 "commentDetail.status.spam" = "Spam";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Spostato nel cestino";
 
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Annulla modifiche";
@@ -7413,6 +7626,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "In evidenza";
+
+/* Badge shown in the post list for a post that has been moved to the trash */
+"customPostList.badge.trashed" = "Spostato nel cestino";
 
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Questa azione non può essere annullata.";
@@ -9453,6 +9669,9 @@ Example: Reply to Pamela Nguyen */
 /* Add-menu item that opens the system file picker. */
 "mediaLibrary.addMenu.chooseFile" = "Scegli file";
 
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Libreria fotografica";
+
 /* Add-menu item that opens the camera in photo mode. */
 "mediaLibrary.addMenu.takePhoto" = "Scatta una foto";
 
@@ -11396,6 +11615,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button in the reader post header showing the user is subscribed to the site */
 "reader.post.header.subscribed" = "Abbonato";
 
+/* Appended to the truncated excerpt in the reader post header to indicate more content is available */
+"reader.post.header.viewMore" = "...visualizza altro";
+
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "Altre azioni";
 
@@ -11841,6 +12063,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post revisions list screen title */
 "revisions.title" = "Revisioni";
 
+/* Share extension error dialog dismiss button, which closes the extension. */
+"shareExtension.contentError.dismiss" = "Annulla condivisione";
+
+/* Share extension error dialog message, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.message" = "Si è verificato un errore durante la lettura di ciò che hai condiviso. Riprova.";
+
+/* Share extension error dialog title, shown when nothing could be read from what the user shared. */
+"shareExtension.contentError.title" = "Impossibile caricare i contenuti condivisi";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Ignora";
 
@@ -11849,6 +12080,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Opzioni media";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "OK";
+
+/* Share extension notice message, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.message" = "Impossibile caricare uno o più elementi condivisi: sono stati ignorati.";
+
+/* Share extension notice title, shown when some — but not all — shared items failed to load. */
+"shareExtension.partialError.title" = "Alcuni contenuti sono stati saltati";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Riprova";
@@ -12777,6 +13017,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Trascrizione del bot di Jetpack per dispositivi mobili";
 
+/* Description of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.detail" = "Fai una domanda e lasciati aiutare dal nostro gruppo di volontari.";
+
+/* Title of the row that opens the WordPress.org support forums. */
+"support.root.communityForum.title" = "Forum della community";
+
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Ottieni risposte dal nostro team di supporto, in qualsiasi momento";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Richiedi supporto";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Fai una domanda nel forum della community e lasciati aiutare dal nostro gruppo di volontari.";
 
@@ -12865,6 +13117,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Tag";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Attivazione";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "questi elementi verranno eliminati:";
 
@@ -12949,6 +13204,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Errore";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Si è verificato un errore durante la modifica della password.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Errore";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Informazione biografiche";

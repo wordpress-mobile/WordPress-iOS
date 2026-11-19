@@ -859,8 +859,9 @@ extension ShareExtensionEditorViewController {
 
         optionsViewController = OptionsTableViewController(options: options)
         optionsViewController.cellDeselectedTintColor = ShareColors.aztecFormatBarInactiveColor
-        optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor
-        optionsViewController.cellSelectedBackgroundColor = ShareColors.aztecFormatPickerSelectedCellBackgroundColor
+        optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
+        optionsViewController.cellSelectedBackgroundColor =
+            ShareColors.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsViewController.view.tintColor = ShareColors.aztecFormatBarActiveColor
 
         let selectRow = {
@@ -871,7 +872,7 @@ extension ShareExtensionEditorViewController {
             self.optionsViewController?.selectRow(at: index)
         }
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if traitCollection.userInterfaceIdiom == .pad {
             presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
         } else {
             presentToolbarViewControllerAsInputView(optionsViewController)
@@ -886,10 +887,11 @@ extension ShareExtensionEditorViewController {
         viewController.popoverPresentationController?.permittedArrowDirections = [.down]
         viewController.popoverPresentationController?.sourceView = view
 
-        let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
+        let frame = barItem.superview?.convert(barItem.frame, to: view)
 
-        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
-        optionsViewController.popoverPresentationController?.backgroundColor = ShareColors.aztecFormatPickerBackgroundColor
+        optionsViewController.popoverPresentationController?.sourceRect = frame!
+        optionsViewController.popoverPresentationController?.backgroundColor =
+            ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
         optionsViewController.popoverPresentationController?.delegate = self
 
         present(viewController, animated: true, completion: completion)
@@ -905,7 +907,7 @@ extension ShareExtensionEditorViewController {
     }
 
     private func dismissOptionsViewController() {
-        switch UIDevice.current.userInterfaceIdiom {
+        switch traitCollection.userInterfaceIdiom {
         case .pad:
             dismiss(animated: true)
         default:
@@ -1331,16 +1333,12 @@ fileprivate extension ShareExtensionEditorViewController {
         static let aztecFormatBarInactiveColor = UIColor.secondaryLabel
         static let aztecFormatBarActiveColor = UIAppColor.primary
 
-        static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
-            get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
-            }
+        static func aztecFormatPickerSelectedCellBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+            (traitCollection.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
         }
 
-        static var aztecFormatPickerBackgroundColor: UIColor {
-            get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : .systemGroupedBackground
-            }
+        static func aztecFormatPickerBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+            (traitCollection.userInterfaceIdiom == .pad) ? .white : .systemGroupedBackground
         }
     }
 
