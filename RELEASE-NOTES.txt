@@ -1,6 +1,7 @@
 27.5
 -----
 * [*] Stats: Fix a crash when expanding two years with the same month and views in a post's Months and Years or Avg. Views Per Day details [#26415]
+* [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
 * [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
 * [*] Stats: Roll out New Stats remotely and remove the announcement screen. Your choice to use New Stats or Classic Stats is kept [#26335]
 * [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26388]

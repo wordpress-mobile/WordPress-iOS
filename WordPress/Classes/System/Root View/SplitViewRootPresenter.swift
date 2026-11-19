@@ -120,8 +120,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         // The `main.async` call fixed an issue where sometimes the sidebar doesn't
         // update the displayed selection in the list after switching to a new item
-        DispatchQueue.main.async {
-            self.splitVC.hide(.primary)
+        DispatchQueue.main.async { [weak self] in
+            self?.splitVC.hide(.primary)
         }
 
         trackAnalytics(for: selection)

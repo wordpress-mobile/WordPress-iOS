@@ -65,7 +65,7 @@ class RootViewCoordinator {
     }
     private var windowManager: WindowManager?
     private let app: AppBrand
-    private let isReaderInWordPressAppEnabled: Bool
+    private var isReaderInWordPressAppEnabled: Bool
     private var accountChangeObserver: NSObjectProtocol?
     /// The type the current root view presenter was built for. It differs from
     /// `currentAppUIType` after an account change until `reloadUIIfNeeded` rebuilds the UI.
@@ -87,20 +87,34 @@ class RootViewCoordinator {
         updateJetpackFeaturesRemovalCoordinatorState()
 
         if isReaderInWordPressAppEnabled {
-            // The UI type depends on the WordPress.com account, which can change while the app UI
-            // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
-            // call is the only other refresh. The default-account change is the one event every
-            // sign-in and sign-out path posts; a sign-in whose site sync fails skips
-            // `WPSigninDidFinishNotification`.
-            accountChangeObserver = NotificationCenter.default.addObserver(
-                forName: .wpAccountDefaultWordPressComAccountChanged,
-                object: nil,
-                queue: nil
-            ) { [weak self] _ in
-                guard let self else { return }
-                self.currentAppUIType = self.resolveAppUIType()
-                self.rootViewPresenter?.appUITypeDidChange()
-            }
+            observeAccountChanges()
+        }
+    }
+
+    private func stopObservingAccountChanges() {
+        if let accountChangeObserver {
+            NotificationCenter.default.removeObserver(accountChangeObserver)
+        }
+        accountChangeObserver = nil
+    }
+
+    private func observeAccountChanges() {
+        guard accountChangeObserver == nil else {
+            return
+        }
+        // The UI type depends on the WordPress.com account, which can change while the app UI
+        // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
+        // call is the only other refresh. The default-account change is the one event every
+        // sign-in and sign-out path posts; a sign-in whose site sync fails skips
+        // `WPSigninDidFinishNotification`.
+        accountChangeObserver = NotificationCenter.default.addObserver(
+            forName: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.currentAppUIType = self.resolveAppUIType()
+            self.rootViewPresenter?.appUITypeDidChange()
         }
     }
 
@@ -181,6 +195,39 @@ class RootViewCoordinator {
 
     private func updateJetpackFeaturesRemovalCoordinatorState() {
         JetpackFeaturesRemovalCoordinator.currentAppUIType = currentAppUIType
+    }
+
+    // MARK: Sign-In
+
+    /// Reads `RemoteFeatureFlag.readerInWordPressApp` again for an account that just signed in
+    /// from the signed-out state. Call it before building the app UI.
+    ///
+    /// The value read at launch is stale for someone who signs in for the first time: a fresh
+    /// install has no cached flags until the launch-time fetch answers, and the account's own
+    /// flags arrive only after sign-in. Without this, they would see the Moved-to-Jetpack poster
+    /// on the Reader tab until the next launch. No app UI exists yet, so the Notifications lists
+    /// can't disagree with the new value.
+    func refreshReaderInWordPressAppAfterSignIn(
+        isEnabled: Bool = RemoteFeatureFlag.readerInWordPressApp.enabled()
+    ) {
+        guard app == .wordpress else {
+            return
+        }
+        updateReaderInWordPressApp(isEnabled: isEnabled)
+    }
+
+    private func updateReaderInWordPressApp(isEnabled: Bool) {
+        guard isEnabled != isReaderInWordPressAppEnabled else {
+            return
+        }
+        isReaderInWordPressAppEnabled = isEnabled
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = isEnabled
+        if isEnabled {
+            observeAccountChanges()
+        } else {
+            stopObservingAccountChanges()
+        }
+        currentAppUIType = resolveAppUIType()
     }
 
     // MARK: UI Reload

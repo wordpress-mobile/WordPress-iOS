@@ -63,6 +63,8 @@ class WindowManager: NSObject {
             return
         }
 
+        // Sign-in has waited for the new account's feature flags, which can turn Reader on.
+        RootViewCoordinator.shared.refreshReaderInWordPressAppAfterSignIn()
         showAppUI(for: blogToShow, completion: completion)
     }
 
