@@ -21,6 +21,7 @@ struct BarChartView: View {
     @Environment(\.context) var context
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.showComparison) private var showComparison
+    @Environment(\.isPlaceholder) private var isPlaceholder
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -48,10 +49,12 @@ struct BarChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .animation(.spring, value: ObjectIdentifier(data))
-        .animation(.snappy, value: selectedBarDate)
+        .animation(isPlaceholder ? nil : .spring, value: ObjectIdentifier(data))
+        .animation(isPlaceholder ? nil : .snappy, value: selectedBarDate)
         .chartOverlay { proxy in
-            makeGesturesOverlayView(proxy: proxy)
+            if !isPlaceholder {
+                makeGesturesOverlayView(proxy: proxy)
+            }
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement()
@@ -63,7 +66,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var currentPeriodBars: some ChartContent {
-        ForEach(data.currentData) { point in
+        ForEach(data.currentData, id: \.date) { point in
             let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
@@ -127,7 +130,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var previousPeriodBars: some ChartContent {
-        ForEach(data.mappedPreviousData) { point in
+        ForEach(data.mappedPreviousData, id: \.date) { point in
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),

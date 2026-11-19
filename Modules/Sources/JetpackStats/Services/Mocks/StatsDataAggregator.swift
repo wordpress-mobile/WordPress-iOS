@@ -77,10 +77,14 @@ struct StatsDataAggregator {
     }
 
     /// Generates sequence of dates between start and end with the given component.
-    func generateDateSequence(dateInterval: DateInterval, by component: Calendar.Component, value: Int = 1) -> [Date] {
+    func generateDateSequence(
+        dateInterval: DateInterval,
+        by component: Calendar.Component,
+        value: Int = 1,
+        now: Date = .now
+    ) -> [Date] {
         var dates: [Date] = []
         var currentDate = dateInterval.start
-        let now = Date()
         // DateInterval.end is exclusive
         while currentDate < dateInterval.end && currentDate <= now {
             dates.append(currentDate)

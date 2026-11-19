@@ -64,6 +64,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
     private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
+    /// Completions waiting for the sign-in feature-flag fetch, or `nil` when none is running.
+    private var signInFeatureFlagsCompletions: [() -> Void]?
     private let remoteConfigStore = RemoteConfigStore()
 
     private var mainContext: NSManagedObjectContext {
@@ -637,9 +639,17 @@ extension WordPressAppDelegate {
     /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
-        /// - warning: must be called before the `update(using:then:)`.
-        if remoteFeatureFlagStore.isFreshInstall {
-            FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+        /// New Stats is on for fresh installs regardless of the remote rollout. The guard on
+        /// an existing override matters if `FeatureFlagDeviceId` is ever cleared without the
+        /// rest of the defaults (a partial restore, the debug menu): the pin must not
+        /// overwrite a deliberate opt-out.
+        ///
+        /// - warning: must run before anything reads `remoteFeatureFlagStore.deviceID` —
+        /// including `update(using:then:)` below — because reading it creates it, which makes
+        /// `isFreshInstall` false.
+        let overrideStore = FeatureFlagOverrideStore()
+        if remoteFeatureFlagStore.isFreshInstall, !overrideStore.isOverridden(RemoteFeatureFlag.newStats) {
+            overrideStore.override(RemoteFeatureFlag.newStats, withValue: true)
         }
 
         var api: WordPressComRestApi
@@ -650,6 +660,51 @@ extension WordPressAppDelegate {
         }
         let remote = FeatureFlagRemote(wordPressComRestApi: api)
         remoteFeatureFlagStore.update(using: remote, then: completion)
+    }
+
+    /// Fetches the feature flags for an account that just signed in. `waitForSignInFeatureFlags`
+    /// lets `WordPressDotComAuthenticator` wait for this fetch instead of starting another.
+    private func updateSignInFeatureFlags() {
+        signInFeatureFlagsCompletions = signInFeatureFlagsCompletions ?? []
+        updateFeatureFlags { [weak self] in
+            DispatchQueue.main.async {
+                let completions = self?.signInFeatureFlagsCompletions ?? []
+                self?.signInFeatureFlagsCompletions = nil
+                completions.forEach { $0() }
+            }
+        }
+    }
+
+    /// Waits until the sign-in feature-flag fetch has answered or failed, for at most `timeout`.
+    /// Returns right away if none is running.
+    @MainActor
+    func waitForSignInFeatureFlags(timeout: TimeInterval) async {
+        final class Once {
+            var hasResumed = false
+        }
+        let once = Once()
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            let resume = {
+                guard !once.hasResumed else {
+                    return
+                }
+                once.hasResumed = true
+                continuation.resume()
+            }
+            waitForSignInFeatureFlags(completion: resume)
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: resume)
+        }
+    }
+
+    /// Calls `completion` on the main queue once the sign-in feature-flag fetch has answered or
+    /// failed, or right away if none is running.
+    private func waitForSignInFeatureFlags(completion: @escaping () -> Void) {
+        wpAssert(Thread.isMainThread)
+        if signInFeatureFlagsCompletions == nil {
+            completion()
+        } else {
+            signInFeatureFlagsCompletions?.append(completion)
+        }
     }
 
     func updateRemoteConfig() {
@@ -787,7 +842,7 @@ extension WordPressAppDelegate {
             AccountService.loadDefaultAccountCookies()
             // Flags can target an account. Without this fetch, the new account's flags
             // wait for the next foreground or launch.
-            updateFeatureFlags()
+            updateSignInFeatureFlags()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()

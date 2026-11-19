@@ -84,8 +84,6 @@ struct CommentsTabView: View {
                 )
             }
         }
-        .navigationTitle(Strings.title)
-        .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $reviewSession) { session in
             context.makeReviewView(session: session)
         }

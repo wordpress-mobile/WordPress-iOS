@@ -1,6 +1,7 @@
 import Foundation
 import AsyncImageKit
 import UIKit
+import WordPressCore
 import WordPressData
 
 final class ReaderPostCellViewModel {

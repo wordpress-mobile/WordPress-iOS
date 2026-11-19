@@ -15,10 +15,13 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-    lazy var collectionView: DynamicHeightCollectionView = {
-        let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
+    lazy var collectionView: DashboardCollectionView = {
+        let collectionView = DashboardCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        if !embeddedInScrollView {
+        if embeddedInScrollView {
+            // Build only the cards on screen for the first frame. The rest are built after it appears.
+            collectionView.limitsHeightToWindow = true
+        } else {
             collectionView.refreshControl = refreshControl
         }
         return collectionView
@@ -74,6 +77,8 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        collectionView.limitsHeightToWindow = false
 
         viewModel.loadCards { [weak self] cards in
             guard let trackCardViewed = self?.trackCardViewed else {
@@ -236,7 +241,8 @@ extension BlogDashboardViewController {
     }
 
     private enum Constants {
-        static let estimatedHeight: CGFloat = 44
+        /// Close to a typical card, so laying out the first screen doesn't build cards that end up below it.
+        static let estimatedHeight: CGFloat = 200
         static let horizontalSectionInset: CGFloat = 12
         static let verticalSectionInset: CGFloat = verticalInset
         static let cellSpacing: CGFloat = verticalInset
@@ -272,5 +278,36 @@ extension BlogDashboardViewController: JetpackRemoteInstallDelegate {
 
     func jetpackRemoteInstallWebviewFallback() {
         // No op
+    }
+}
+
+// MARK: - Collection view
+
+/// When embedded in My Site's scroll view, the collection view is as tall as its content, so
+/// every card is built and laid out. `limitsHeightToWindow` caps that height at the window's
+/// height, so only the cards that can be on screen are built.
+final class DashboardCollectionView: DynamicHeightCollectionView {
+    var limitsHeightToWindow = false {
+        didSet {
+            if limitsHeightToWindow != oldValue {
+                invalidateIntrinsicContentSize()
+            }
+        }
+    }
+
+    override var intrinsicContentSize: CGSize {
+        var size = super.intrinsicContentSize
+        if limitsHeightToWindow, let window {
+            size.height = min(size.height, window.bounds.height)
+        }
+        return size
+    }
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+
+        if limitsHeightToWindow {
+            invalidateIntrinsicContentSize()
+        }
     }
 }
