@@ -14,6 +14,7 @@ import UIKit
 import WebKit
 import WordPressData
 import WordPressKit
+import WordPressMediaLibrary
 import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
@@ -225,6 +226,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
+        MediaUploader.sweepOrphanedStagingFiles()
         SiteStorageAccess.removePinnedPostTypes()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         NotificationActivityService.shared.start()
