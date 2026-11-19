@@ -36,6 +36,7 @@ struct TopListScreenView: View {
                 service: service,
                 tracker: context.tracker,
                 fetchLimit: nil, // Get all items
+                loadsMapData: false,
                 filter: filter,
                 initialData: initialData
             )

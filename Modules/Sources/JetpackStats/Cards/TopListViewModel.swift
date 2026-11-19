@@ -39,6 +39,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     private let service: any StatsServiceProtocol
     let tracker: (any StatsTracker)?
     private let fetchLimit: Int?
+    private let loadsMapData: Bool
 
     private var loadingTask: Task<Void, Never>?
     private var loadRequestCount = 0
@@ -74,6 +75,9 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
     private var isFirstAppear = true
 
+    /// - parameter loadsMapData: Whether to load `countriesMapData`. For the
+    ///   Regions and Cities levels this is a separate request, and the whole
+    ///   load fails if it fails. Pass `false` when nothing draws the map.
     init(
         configuration: TopListCardConfiguration,
         options: TopListItemOptions = TopListItemOptions(),
@@ -82,6 +86,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         tracker: (any StatsTracker)? = nil,
         items: [TopListItemType]? = nil,
         fetchLimit: Int? = 100,
+        loadsMapData: Bool = true,
         filter: Filter? = nil,
         initialData: TopListData? = nil
     ) {
@@ -92,6 +97,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.service = service
         self.tracker = tracker
         self.fetchLimit = fetchLimit
+        self.loadsMapData = loadsMapData
         self.filter = filter
         self.data = initialData
         self.isLoading = initialData == nil
@@ -191,7 +197,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
             // Fetch country-level data for map if viewing regions or cities
             var mapData: CountriesMapData?
-            if selection.item == .locations {
+            if loadsMapData && selection.item == .locations {
                 if selection.options.locationLevel == .countries {
                     // Use the main data for countries
                     mapData = createCountriesMapData(from: data)

@@ -63,7 +63,36 @@ struct TopListViewModelTests {
         #expect(viewModel.selection.options.locationLevel == .regions)
         // The first fetch is the list itself; a second country-level fetch
         // follows for the map.
-        #expect(await service.requestedLocationLevels.first == .regions)
+        #expect(await service.requestedLocationLevels == [.regions, .countries])
+    }
+
+    @Test("Show All loads the selected location level without fetching map data")
+    func showAllSkipsMapData() async throws {
+        // A failing map fetch would discard the loaded list, so this also
+        // checks that no map fetch happens.
+        let service = RecordingStatsService(failsCountriesRequests: true)
+        let calendar = Calendar.mock()
+        let dateRange = StatsDateRange(
+            interval: calendar.makeDateInterval(for: .today),
+            component: .day,
+            comparison: .off,
+            calendar: calendar
+        )
+        let viewModel = TopListViewModel(
+            configuration: TopListCardConfiguration(item: .locations, metric: .views),
+            options: TopListItemOptions(locationLevel: .regions),
+            dateRange: dateRange,
+            service: service,
+            fetchLimit: nil,
+            loadsMapData: false
+        )
+
+        viewModel.onAppear()
+        try await waitUntil { !viewModel.isLoading }
+
+        #expect(await service.requestedLocationLevels == [.regions])
+        #expect(viewModel.data != nil)
+        #expect(viewModel.loadingError == nil)
     }
 
     @Test("Screen title names the location level for locations and the item otherwise")
@@ -100,6 +129,11 @@ private actor RecordingStatsService: StatsServiceProtocol {
     nonisolated let supportedItems: [TopListItemType] = [.locations]
 
     private(set) var requestedLocationLevels: [LocationLevel] = []
+    private let failsCountriesRequests: Bool
+
+    init(failsCountriesRequests: Bool = false) {
+        self.failsCountriesRequests = failsCountriesRequests
+    }
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         [.views]
@@ -118,6 +152,9 @@ private actor RecordingStatsService: StatsServiceProtocol {
         options: TopListItemOptions
     ) async throws -> TopListResponse {
         requestedLocationLevels.append(options.locationLevel)
+        if failsCountriesRequests && options.locationLevel == .countries {
+            throw URLError(.timedOut)
+        }
         return TopListResponse(items: [])
     }
 
