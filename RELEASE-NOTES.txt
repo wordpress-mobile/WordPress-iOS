@@ -31,6 +31,7 @@
 * [*] Notifications: Fix a rare crash when opening a notification with images, and GIFs keeping their old size after rotating [#26396]
 * [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
 * [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
+* [*] Reader: Show icons for more sites, and load a site's icon again after a failed attempt [#26393]
 
 
 27.4
