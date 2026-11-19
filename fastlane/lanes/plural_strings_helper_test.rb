@@ -247,7 +247,7 @@ class PluralStringsFoldTest < Minitest::Test # rubocop:disable Metrics/ClassLeng
     assert_equal 1, calls.size, 'stale machine cells must be re-offered to the AI tier'
     assert_equal({ 'one' => '%d wpis' }, calls.first[:anchors], 'a stale machine cell must not anchor the request')
     assert_equal unit('needs_review', '%d wpisy'), cell('few', catalog: cat, locale: 'pl')
-    assert_match(/dropped stale pl machine translation for "#{KEY}" \(few\)/, warnings)
+    assert_match(/dropped stale pl machine \(or fallback\) translation for "#{KEY}" \(few\)/, warnings)
   end
 
   def test_kept_ai_cells_whose_placeholders_no_longer_match_fall_back_to_english_without_ai
