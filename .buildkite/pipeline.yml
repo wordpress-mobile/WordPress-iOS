@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 ---
 
+# Skip whole jobs during upload; even-if-skipped preserves their GitHub checks.
+# The package job keeps catalog coverage when only its Swift tests can skip.
 # Most of the steps need to run on a macOS agent, so let's define it as a root property.
 agents:
   queue: mac
@@ -79,18 +81,22 @@ steps:
       - label: "🛠 :wordpress: Build for Testing"
         key: "build_wordpress"
         command: ".buildkite/commands/build-for-testing.sh wordpress"
+        skip: "$SKIP_BUILD"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "WordPress Build for Testing"
+            even-if-skipped: true
 
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
         command: ".buildkite/commands/build-for-testing.sh jetpack"
+        skip: "$SKIP_BUILD"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"
+            even-if-skipped: true
 
   #################
   # Run Unit Tests
@@ -100,13 +106,16 @@ steps:
     steps:
       - label: "🔬 :swift: Swift Package Tests and String Catalog Coverage"
         command: .buildkite/commands/run-swift-package-tests.sh
+        skip: "$SKIP_VALIDATION"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "Swift Package Tests"
+            even-if-skipped: true
 
       - label: "🔬 :wordpress: Unit Tests"
         command: ".buildkite/commands/run-unit-tests.sh"
+        skip: "$SKIP_VALIDATION"
         depends_on: "build_wordpress"
         plugins:
           - $CI_TOOLKIT_PLUGIN
@@ -124,6 +133,7 @@ steps:
         notify:
           - github_commit_status:
               context: "Unit Tests"
+            even-if-skipped: true
       # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
       # - label: "🔬 Keystone Unit Tests"
       #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
@@ -173,7 +183,12 @@ steps:
 
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
+        skip: "$SKIP_LOCALIZATION"
         plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: buildkite/wordpress-ios/sleuth-or-spy-lint-localized-strings-format
+            even-if-skipped: true
 
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh

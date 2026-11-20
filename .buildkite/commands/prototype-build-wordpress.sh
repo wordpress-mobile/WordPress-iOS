@@ -1,9 +1,5 @@
 #!/bin/bash -eu
 
-if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type build; then
-  exit 0
-fi
-
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up-distribution.sh"
 

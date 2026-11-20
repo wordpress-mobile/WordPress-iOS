@@ -1,9 +1,5 @@
 #!/bin/bash -eu
 
-if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; then
-  exit 0
-fi
-
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products-wordpress.tar
 tar -xf build-products-wordpress.tar
