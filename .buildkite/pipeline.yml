@@ -203,17 +203,6 @@ steps:
     concurrency_group: "wordpress-ios/upload-strings-for-translation"
     concurrency: 1
 
-  # TEMP: dry runs of both lanes on this PR's branch, to check them on CI before they run on trunk.
-  # Remove before merging.
-  - label: ":globe_with_meridians: Upload strings for translation (dry run)"
-    command: ".buildkite/commands/upload-strings-for-translation.sh"
-    if: "build.branch == 'jkmassel/daily-translation-sync'"
-    plugins: [$CI_TOOLKIT_PLUGIN]
-  - label: ":globe_with_meridians: Sync translations (dry run)"
-    command: ".buildkite/commands/sync-translations.sh"
-    if: "build.branch == 'jkmassel/daily-translation-sync'"
-    plugins: [$CI_TOOLKIT_PLUGIN]
-
   #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
