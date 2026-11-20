@@ -43,10 +43,9 @@ final class ReaderTests: JetpackUITestCase {
     }
 
     func testSaved() throws {
-        let saved = try reader()
+        try reader()
             .goTo(.saved)
-
-        try saved.wait(until: "an empty Saved stream") { saved.isEmpty }
+            .waitFor(app.descendants(matching: .any)["reader_saved_posts_empty"].firstMatch)
     }
 
     func testLikes() throws {
