@@ -82,6 +82,24 @@ public extension SearchableItemConvertable {
         return SearchIdentifierGenerator.composeUniqueIdentifier(itemType: searchItemType, domain: searchDomain, identifier: searchIdentifier)
     }
 
+    /// The Spotlight domain the item is indexed under.
+    ///
+    /// Removing a site deletes every item in the site's domain. Reader posts
+    /// use the same site ID as their `searchDomain`, so they get a domain of
+    /// their own and survive the removal. `searchDomain` itself must not
+    /// change: the unique identifier, which tap handling decodes, embeds it.
+    var spotlightDomainIdentifier: String? {
+        guard let searchDomain else {
+            return nil
+        }
+        switch searchItemType {
+        case .readerPost:
+            return "reader.\(searchDomain)"
+        case .abstractPost, .none:
+            return searchDomain
+        }
+    }
+
     func indexableItem() -> CSSearchableItem? {
         guard isSearchable == true,
             let uniqueIdentifier,
@@ -103,7 +121,7 @@ public extension SearchableItemConvertable {
         }
 
         let searchableItem = CSSearchableItem(uniqueIdentifier: uniqueIdentifier,
-                                              domainIdentifier: searchDomain,
+                                              domainIdentifier: spotlightDomainIdentifier,
                                               attributeSet: searchableItemAttributeSet)
 
         if let expirationDate = searchExpirationDate {
