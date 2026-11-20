@@ -152,16 +152,16 @@ class TagsViewModel: ObservableObject {
                 }
 
                 let page = pageIndex ?? 0
-                let remoteTags = try await self.tagsService.getTags(
+                let result = try await self.tagsService.getTags(
                     page: page,
                     recentlyUsed: !self.isBrowseMode
                 )
 
-                let hasMore = remoteTags.count == 100
+                let hasMore = result.hasMore
                 let nextPage = hasMore ? page + 1 : nil
 
                 return TagsPaginatedResponse.Page(
-                    items: remoteTags,
+                    items: result.terms,
                     total: nil,
                     hasMore: hasMore,
                     nextPage: nextPage
