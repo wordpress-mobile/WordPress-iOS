@@ -50,11 +50,14 @@ final class ReaderScreen: ScreenObject {
     @discardableResult
     func toggleEditing() throws -> Self {
         let editButton = app.navigationBars["Reader"].buttons["Edit"]
+        let doneButton = app.navigationBars["Reader"].buttons["checkmark"]
+        // The menu can appear before its navigation bar has either button.
+        try wait(until: "the menu's Edit or Done button") { editButton.exists || doneButton.exists }
         if editButton.exists {
-            editButton.tap()
-            try waitFor(app.navigationBars["Reader"].buttons["checkmark"])
+            try tap(editButton)
+            try waitFor(doneButton)
         } else {
-            try tap(app.navigationBars["Reader"].buttons["checkmark"])
+            try tap(doneButton)
             try waitFor(editButton)
         }
         return self
