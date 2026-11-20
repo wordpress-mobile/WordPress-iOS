@@ -49,8 +49,17 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var notification: WordPressData.Notification?
     private let helper = ReaderCommentsHelper()
 
+    /// Set while the screen shows a copy of the comment built from its notification, because the app couldn't
+    /// load the comment from its site. The site can't act on it, so the screen hides moderation, replies and likes.
+    private var readOnlyComment: ReadOnlyNotificationComment?
+
     private var isNotificationComment: Bool {
         notification != nil
+    }
+
+    /// Whether the screen offers moderation: the status rows, editing and the author's details.
+    var allowsModeration: Bool {
+        readOnlyComment == nil && comment.allowsModeration()
     }
 
     private var viewIsVisible: Bool {
@@ -179,6 +188,10 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     private var parentComment: Comment? {
+        if let readOnlyComment {
+            return readOnlyComment.parentComment
+        }
+
         guard comment.hasParentComment() else {
             return nil
         }
@@ -211,7 +224,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(
-            image: comment.allowsModeration()
+            image: allowsModeration
                 ? UIImage(systemName: "ellipsis")
                 : UIImage(systemName: "square.and.arrow.up"),
             style: .plain,
@@ -265,6 +278,22 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    /// Shows a read-only copy of the notification's comment, for when the app can't load the comment from its site.
+    convenience init(
+        readOnlyComment: ReadOnlyNotificationComment,
+        notification: WordPressData.Notification,
+        notificationDelegate: CommentDetailsNotificationDelegate?,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) {
+        self.init(
+            comment: readOnlyComment.comment,
+            notification: notification,
+            notificationDelegate: notificationDelegate,
+            managedObjectContext: managedObjectContext
+        )
+        self.readOnlyComment = readOnlyComment
+    }
+
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -302,7 +331,16 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     func refreshView(comment: Comment, notification: WordPressData.Notification) {
         hideNoResults()
         self.notification = notification
+        readOnlyComment = nil
         displayComment(comment)
+    }
+
+    /// Shows a read-only copy of the notification's comment, for when the app can't load the comment from its site.
+    func refreshView(readOnlyComment: ReadOnlyNotificationComment, notification: WordPressData.Notification) {
+        hideNoResults()
+        self.notification = notification
+        self.readOnlyComment = readOnlyComment
+        displayComment(readOnlyComment.comment)
     }
 
     // Show an empty view with the given values.
@@ -371,7 +409,7 @@ private extension CommentDetailViewController {
             barItems.append(closeBarButtonItem)
         }
         barItems.append(shareBarButtonItem)
-        if comment.allowsModeration() {
+        if allowsModeration {
             barItems.append(editBarButtonItem)
         }
         navigationItem.setRightBarButtonItems(barItems, animated: false)
@@ -433,7 +471,7 @@ private extension CommentDetailViewController {
         var sections: [SectionType] = []
 
         sections.append(.content(configureContentRows()))
-        if comment.allowsModeration() {
+        if allowsModeration {
             sections.append(.moderation(configureModerationRows()))
         }
         self.sections = sections
@@ -495,7 +533,7 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
 
-        if comment.allowsModeration() {
+        if allowsModeration {
             cell.accessoryButtonType = .info
             cell.accessoryButtonAction = { [weak self] senderView in
                 self?.presentUserInfoSheet(senderView)
@@ -534,7 +572,8 @@ private extension CommentDetailViewController {
     // MARK: Data Sync
 
     func refreshCommentReplyIfNeeded() {
-        guard let siteID = siteID?.intValue else {
+        // A read-only copy's site can't be loaded, and its notification already says whether the user replied.
+        guard readOnlyComment == nil, let siteID = siteID?.intValue else {
             return
         }
 
@@ -589,6 +628,12 @@ private extension CommentDetailViewController {
 
     // Shows the comment thread with the Notification comment highlighted.
     func navigateToNotificationComment() {
+        // The app couldn't load a read-only copy's site, so the comment thread in the app wouldn't load either.
+        if readOnlyComment != nil {
+            openWebView(for: comment.commentURL())
+            return
+        }
+
         if let blog = comment.blog,
             !blog.supports(.wpComRESTAPI)
         {
@@ -632,6 +677,11 @@ private extension CommentDetailViewController {
     }
 
     func navigateToReplyComment() {
+        if let readOnlyComment {
+            openWebView(for: readOnlyComment.replyURL)
+            return
+        }
+
         guard let siteID,
             isCommentReplied
         else {
@@ -763,7 +813,7 @@ private extension CommentDetailViewController {
             urlToDisplay: comment.authorUrlForDisplay(),
             email: comment.author_email,
             ipAddress: comment.author_ip,
-            isAdmin: comment.allowsModeration()
+            isAdmin: allowsModeration
         )
         let viewController = CommentDetailInfoViewController(viewModel: viewModel)
         viewController.title = comment.authorForDisplay()

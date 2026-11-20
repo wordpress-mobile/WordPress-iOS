@@ -1,5 +1,6 @@
 27.6
 -----
+* [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
 
 
 27.5
