@@ -190,6 +190,31 @@ steps:
               context: "Localization Tooling Unit Tests"
 
   #################
+  # Continuous translations: send new English strings to GlotPress after every trunk build
+  #
+  # Keeps one bot PR up to date with the regenerated English strings. The daily download of translations runs
+  # from `.buildkite/translation-sync.yml`. See docs/localization-pipeline.md.
+  #################
+  - label: ":globe_with_meridians: Upload strings for translation"
+    command: ".buildkite/commands/upload-strings-for-translation.sh"
+    if: "build.branch == 'trunk'"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    # One at a time, so two trunk builds can't push the bot branch at once.
+    concurrency_group: "wordpress-ios/upload-strings-for-translation"
+    concurrency: 1
+
+  # TEMP: dry runs of both lanes on this PR's branch, to check them on CI before they run on trunk.
+  # Remove before merging.
+  - label: ":globe_with_meridians: Upload strings for translation (dry run)"
+    command: ".buildkite/commands/upload-strings-for-translation.sh"
+    if: "build.branch == 'jkmassel/daily-translation-sync'"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+  - label: ":globe_with_meridians: Sync translations (dry run)"
+    command: ".buildkite/commands/sync-translations.sh"
+    if: "build.branch == 'jkmassel/daily-translation-sync'"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+  #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
