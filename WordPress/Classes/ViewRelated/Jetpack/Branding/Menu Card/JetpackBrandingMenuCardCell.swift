@@ -12,13 +12,8 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
 
     /// Sets the animation based on the language orientation
     private var animation: LottieAnimation? {
-        traitCollection.layoutDirection == .leftToRight ?
-        LottieAnimation.named(Constants.animationLtr) :
-        LottieAnimation.named(Constants.animationRtl)
-    }
-
-    private var cardType: JetpackBrandingMenuCardPresenter.Config.CardType {
-        config?.type ?? .expanded
+        traitCollection.layoutDirection == .leftToRight
+            ? LottieAnimation.named(Constants.animationLtr) : LottieAnimation.named(Constants.animationRtl)
     }
 
     // MARK: Lazy Loading General Views
@@ -38,7 +33,7 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
         return stackView
     }()
 
-    // MARK: Lazy Loading Expanded Card Views
+    // MARK: Lazy Loading Card Views
 
     private lazy var logosSuperview: UIView = {
         let view = UIView()
@@ -59,7 +54,7 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
         view.animation = animation
 
         // Height Constraint
-        view.heightAnchor.constraint(equalToConstant: Metrics.Expanded.animationsViewHeight).isActive = true
+        view.heightAnchor.constraint(equalToConstant: Metrics.animationsViewHeight).isActive = true
 
         // Width constraint to achieve aspect ratio
         let animationSize = animation?.size ?? .init(width: 1, height: 1)
@@ -105,37 +100,6 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
         return button
     }()
 
-    // MARK: Lazy Loading Compact Card Views
-
-    private lazy var jetpackIconImageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(named: Constants.jetpackIcon)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = image
-        imageView.heightAnchor.constraint(equalToConstant: Metrics.Compact.logoImageViewSize).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: Metrics.Compact.logoImageViewSize).isActive = true
-        return imageView
-    }()
-
-    private lazy var ellipsisButton: UIButton = {
-        let button = UIButton(type: .custom)
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage.gridicon(.ellipsis)
-        configuration.baseForegroundColor = Metrics.Compact.ellipsisButtonColor
-        configuration.contentInsets = Metrics.Compact.ellipsisButtonPadding
-        button.configuration = configuration
-        button.isAccessibilityElement = true
-        button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
-        button.accessibilityTraits = .button
-        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        button.showsMenuAsPrimaryAction = true
-        button.menu = contextMenu
-        button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
-            self?.presenter?.trackContextualMenuAccessed()
-        }
-        return button
-    }()
-
     // MARK: Initializers
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -177,33 +141,27 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
     }
 
     private func setupContent() {
-        containerStackView.addArrangedSubviews(stackViewSubviews)
+        containerStackView.addArrangedSubviews([logosSuperview, label, learnMoreSuperview])
         logosAnimationView.currentProgress = 1.0
         label.text = config?.description
     }
 
     private func applyStyles() {
-        containerStackView.axis = stackViewAxis
-        containerStackView.spacing = stackViewSpacing
-        containerStackView.directionalLayoutMargins = stackViewLayoutMargins
-        label.font = labelFont
-        label.textColor = labelTextColor
-        label.numberOfLines = labelNumberOfLines
+        containerStackView.axis = .vertical
+        containerStackView.spacing = Metrics.spacing
+        containerStackView.directionalLayoutMargins = Metrics.containerMargins
+        label.font = Metrics.labelFont
+        label.textColor = Metrics.labelTextColor
+        label.numberOfLines = 0
     }
 
     private func configureCardFrame() {
-        if cardType == .expanded {
-            cardFrameView.configureButtonContainerStackView()
-            cardFrameView.onEllipsisButtonTap = { [weak self] in
-                self?.presenter?.trackContextualMenuAccessed()
-            }
-            cardFrameView.ellipsisButton.showsMenuAsPrimaryAction = true
-            cardFrameView.ellipsisButton.menu = contextMenu
+        cardFrameView.configureButtonContainerStackView()
+        cardFrameView.onEllipsisButtonTap = { [weak self] in
+            self?.presenter?.trackContextualMenuAccessed()
         }
-        else {
-            cardFrameView.removeButtonContainerStackView()
-            cardFrameView.onEllipsisButtonTap = nil
-        }
+        cardFrameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        cardFrameView.ellipsisButton.menu = contextMenu
     }
 
     // MARK: Actions
@@ -213,9 +171,11 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
             return
         }
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
-                                                                 source: .card,
-                                                                 blog: viewController.blog)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
+            in: viewController,
+            source: .card,
+            blog: viewController.blog
+        )
         presenter?.trackLinkTapped()
     }
 }
@@ -228,7 +188,7 @@ private extension JetpackBrandingMenuCardCell {
 
     // Defines the structure of the contextual menu items.
     private var contextMenuItems: [MenuItem] {
-        return [.remindLater(remindMeLaterTapped), .hide(hideThisTapped)]
+        [.remindLater(remindMeLaterTapped), .hide(hideThisTapped)]
     }
 
     // MARK: Menu Creation
@@ -252,102 +212,19 @@ private extension JetpackBrandingMenuCardCell {
 }
 
 private extension JetpackBrandingMenuCardCell {
-    var stackViewAxis: NSLayoutConstraint.Axis {
-        switch cardType {
-        case .compact:
-            return .horizontal
-        case .expanded:
-            return .vertical
-        }
-    }
-
-    var stackViewSpacing: CGFloat {
-        switch cardType {
-        case .compact:
-            return Metrics.Compact.spacing
-        case .expanded:
-            return Metrics.Expanded.spacing
-        }
-    }
-
-    var stackViewLayoutMargins: NSDirectionalEdgeInsets {
-        switch cardType {
-        case .compact:
-            return Metrics.Compact.containerMargins
-        case .expanded:
-            return Metrics.Expanded.containerMargins
-        }
-    }
-
-    var stackViewSubviews: [UIView] {
-        switch cardType {
-        case .compact:
-            return [jetpackIconImageView, label, ellipsisButton]
-        case .expanded:
-            return [logosSuperview, label, learnMoreSuperview]
-        }
-    }
-
-    var labelFont: UIFont {
-        switch cardType {
-        case .compact:
-            return Metrics.Compact.labelFont
-        case .expanded:
-            return Metrics.Expanded.labelFont
-        }
-    }
-
-    var labelTextColor: UIColor {
-        switch cardType {
-        case .compact:
-            return Metrics.Compact.labelTextColor
-        case .expanded:
-            return Metrics.Expanded.labelTextColor
-        }
-    }
-
-    var labelNumberOfLines: Int {
-        switch cardType {
-        case .compact:
-            return 1
-        case .expanded:
-            return 0
-        }
-    }
-}
-
-private extension JetpackBrandingMenuCardCell {
 
     enum Metrics {
         // General
-        enum Expanded {
-            static let spacing: CGFloat = 10
-            static let containerMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 12, trailing: 20)
-            static let animationsViewHeight: CGFloat = 32
-            static var labelFont: UIFont {
-                let maximumFontPointSize: CGFloat = 16
-                let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-                let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
-                return UIFontMetrics.default.scaledFont(for: font)
-            }
-            static let labelTextColor: UIColor = .label
+        static let spacing: CGFloat = 10
+        static let containerMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 12, trailing: 20)
+        static let animationsViewHeight: CGFloat = 32
+        static var labelFont: UIFont {
+            let maximumFontPointSize: CGFloat = 16
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+            return UIFontMetrics.default.scaledFont(for: font)
         }
-
-        enum Compact {
-            static let spacing: CGFloat = 15
-            static let containerMargins = NSDirectionalEdgeInsets(top: 15, leading: 20, bottom: 7, trailing: 12)
-            static let logoImageViewSize: CGFloat = 24
-            static let ellipsisButtonPadding = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
-            static let ellipsisButtonColor = UIAppColor.gray(.shade20)
-            static var labelFont: UIFont {
-                let maximumFontPointSize: CGFloat = 17
-                let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-                let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
-                return UIFontMetrics.default.scaledFont(for: font)
-            }
-            static let labelTextColor: UIColor = UIAppColor.jetpackGreen(.shade40)
-        }
-
+        static let labelTextColor: UIColor = .label
         static let cardFrameConstraintPriority = UILayoutPriority(999)
 
         // Learn more button
@@ -361,22 +238,24 @@ private extension JetpackBrandingMenuCardCell {
         static let analyticsSource = "jetpack_menu_card"
         static let remindMeLaterSystemImageName = "alarm"
         static let hideThisLaterSystemImageName = "eye.slash"
-        static let jetpackIcon = "icon-jetpack"
     }
 
     enum Strings {
-        static let learnMoreButtonText = NSLocalizedString("jetpack.menuCard.learnMore",
-                                                           value: "Learn more",
-                                                           comment: "Title of a button that displays a blog post in a web view.")
-        static let remindMeLaterMenuItemTitle = NSLocalizedString("jetpack.menuCard.remindLater",
-                                                                  value: "Remind me later",
-                                                                  comment: "Menu item title to hide the card for now and show it later.")
-        static let hideCardMenuItemTitle = NSLocalizedString("jetpack.menuCard.hide",
-                                                                  value: "Hide this",
-                                                                  comment: "Menu item title to hide the card.")
-        static let ellipsisButtonAccessibilityLabel = NSLocalizedString("ellipsisButton.AccessibilityLabel",
-                                                                        value: "More",
-                                                                        comment: "Accessibility label for more button in dashboard quick start card.")
+        static let learnMoreButtonText = NSLocalizedString(
+            "jetpack.menuCard.learnMore",
+            value: "Learn more",
+            comment: "Title of a button that displays a blog post in a web view."
+        )
+        static let remindMeLaterMenuItemTitle = NSLocalizedString(
+            "jetpack.menuCard.remindLater",
+            value: "Remind me later",
+            comment: "Menu item title to hide the card for now and show it later."
+        )
+        static let hideCardMenuItemTitle = NSLocalizedString(
+            "jetpack.menuCard.hide",
+            value: "Hide this",
+            comment: "Menu item title to hide the card."
+        )
     }
 
     enum MenuItem {
@@ -404,7 +283,7 @@ private extension JetpackBrandingMenuCardCell {
         var toAction: UIAction {
             switch self {
             case .remindLater(let handler),
-                 .hide(let handler):
+                .hide(let handler):
                 return UIAction(title: title, image: image, attributes: []) { _ in
                     handler()
                 }
