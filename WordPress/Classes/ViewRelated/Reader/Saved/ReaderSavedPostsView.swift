@@ -191,6 +191,7 @@ struct ReaderSavedPostsView: View {
         } description: {
             Text(Strings.emptyDescription)
         }
+        .accessibilityIdentifier("reader_saved_posts_empty")
     }
 
     private func errorView(_ message: String) -> some View {
