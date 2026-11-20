@@ -164,7 +164,10 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 return makeErrorViewController() // This should never happen
             }
         case .saved:
-            return ReaderStreamViewController.controllerForContentType(.saved)
+            // Saved posts are kept in the WordPress.com account. The sidebar only lists Saved when
+            // there's an account.
+            return MainActor.assumeIsolated { ReaderSavedPostsViewController.makeIfAvailable() }
+                ?? makeErrorViewController()
         case .search:
             return ReaderSearchViewController()
         case .subscrtipions:

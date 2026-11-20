@@ -35,6 +35,7 @@
 * [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
 * [**] Experimental editor: Apply your Media settings to uploaded photos and videos, including image size, quality, video resolution, and location removal [#26367]
 * [*] Reader: Show icons for more sites, and load a site's icon again after a failed attempt [#26393]
+* [**] Reader: Saved posts are now kept in your WordPress.com account and sync across your devices. Posts saved on this device move to your account [#26372]
 
 
 27.4
