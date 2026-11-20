@@ -333,39 +333,6 @@ struct ReaderNotificationKeys {
         dispatchToggleFollowSiteMessage(siteTitle: site.title, siteID: site.siteID, follow: follow, success: success)
     }
 
-    class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool, actionHandler: ((Bool) -> Void)?) {
-        let title: String
-        let message: String?
-        let actionTitle: String?
-        if success {
-            title = subscribing ? NoticeMessages.commentFollowSuccess : NoticeMessages.commentUnfollowSuccess
-            message = subscribing ? NoticeMessages.commentFollowSuccessMessage : nil
-            actionTitle = subscribing ? NoticeMessages.commentFollowActionTitle : nil
-        } else {
-            title = subscribing ? NoticeMessages.commentFollowFail : NoticeMessages.commentUnfollowFail
-            message = nil
-            actionTitle = nil
-        }
-        dispatchNotice(
-            Notice(
-                title: title,
-                message: message,
-                actionTitle: actionTitle,
-                actionHandler: actionHandler
-            )
-        )
-    }
-
-    class func dispatchToggleCommentNotificationMessage(subscribing: Bool, success: Bool) {
-        let action: ReaderHelpers.PostSubscriptionAction = subscribing ? .enableNotification : .disableNotification
-        dispatchNotice(Notice(title: noticeTitle(forAction: action, success: success)))
-    }
-
-    class func dispatchToggleSubscribeCommentErrorMessage(subscribing: Bool) {
-        let title = subscribing ? NoticeMessages.commentFollowError : NoticeMessages.commentUnfollowError
-        dispatchNotice(Notice(title: title))
-    }
-
     class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, follow: Bool, success: Bool) {
         var notice: Notice
 
@@ -517,14 +484,6 @@ struct ReaderNotificationKeys {
             value: "reader.notice.user.block.failed",
             comment: "Notice title when blocking a user fails."
         )
-        static let commentFollowSuccess = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
-        static let commentFollowSuccessMessage = NSLocalizedString("You'll get notifications in the app", comment: "The app successfully subscribed to the comments for the post")
-        static let commentFollowActionTitle = NSLocalizedString("Undo", comment: "Revert enabling notification after successfully subcribing to the comments for the post.")
-        static let commentUnfollowSuccess = NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
-        static let commentFollowFail = NSLocalizedString("Unable to follow conversation", comment: "The app failed to subscribe to the comments for the post")
-        static let commentUnfollowFail = NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
-        static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
-        static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
         static let unknownSiteText = NSLocalizedString(
             "reader.notice.subscribe.blog.unknown",
             value: "this blog",
