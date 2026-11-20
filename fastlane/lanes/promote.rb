@@ -524,7 +524,8 @@ def write_promotion_steps_file(candidates:)
       },
       {
         'label' => ':rocket: Promote selected build to public beta',
-        'command' => '.buildkite/commands/promote-build-to-public.sh',
+        # Temporary: drop RBENV_VERSION once .ruby-version is 3.4.13 (AINFRA-3881); the Linux agents lack it until AINFRA-3889/3890/3891.
+        'command' => 'RBENV_VERSION=3.4.13 .buildkite/commands/promote-build-to-public.sh',
         'plugins' => [CI_TOOLKIT_PLUGIN_REF],
         'agents' => { 'queue' => 'mac' }
       }
