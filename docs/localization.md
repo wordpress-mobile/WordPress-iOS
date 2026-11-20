@@ -9,6 +9,7 @@ Use `NSLocalizedString()` for all user-facing text. During release, strings are 
 3. **Use positional placeholders**: `%1$@`, `%2$d` not just `%@`, `%d`
 4. **No variables in NSLocalizedString**: All parameters must be string literals
 5. **Use String.localizedStringWithFormat**: Don't use string interpolation
+6. **Use `%1$d` for counts, not `%1$ld`**: GlotPress highlights only `%1$l` as the placeholder, so translators drop the `d`
 
 ## Examples
 
