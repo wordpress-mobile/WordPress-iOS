@@ -238,7 +238,9 @@ end
 # here (it's already on, or the PR is already queued) are logged rather than fatal.
 def enable_auto_merge(client:, pull_request:)
   mutation = 'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id }) { clientMutationId } }'
-  response = client.post('/graphql', { query: mutation, variables: { id: pull_request.node_id } })
+  # The body must be a JSON string. Given a Hash, Octokit takes its `query:` key as URL parameters and the
+  # request never reaches GitHub.
+  response = client.post('/graphql', { query: mutation, variables: { id: pull_request.node_id } }.to_json)
   errors = Array(response[:errors])
   if errors.empty?
     UI.success('Auto-merge is on.')
