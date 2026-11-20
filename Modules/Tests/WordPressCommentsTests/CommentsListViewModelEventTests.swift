@@ -508,6 +508,30 @@ struct CommentsListViewModelEventTests {
         #expect(viewModel.items.map(\.id) == [99, 1])
     }
 
+    @Test(arguments: CommentsListFilter.allCases)
+    func replyCreatedWithoutRowReloadsTabsMatchingApproved(filter: CommentsListFilter) async {
+        let service = FakeCommentsService()
+        service.queuedResults = [
+            .success(makePage(items: [makeItem(id: 1)], hasNext: false)),
+            .success(makePage(items: [makeItem(id: 99), makeItem(id: 1)], hasNext: false))
+        ]
+        let viewModel = CommentsListViewModel(filter: filter, service: service)
+        await viewModel.onAppear()
+
+        // A duplicate retry has no row to insert; it is assumed approved.
+        viewModel.apply(.replyCreated(parentID: 1, reply: nil))
+
+        if [CommentsListFilter.approved, .all].contains(filter) {
+            #expect(viewModel.state == .awaitingReload)
+            await waitUntil { viewModel.state == .loaded }
+            #expect(viewModel.items.map(\.id) == [99, 1])
+        } else {
+            #expect(viewModel.state == .loaded)
+            #expect(viewModel.items.map(\.id) == [1])
+            #expect(service.requests.count == 1)
+        }
+    }
+
     @Test func replyCreatedBeforeLoadIsIgnored() async {
         let service = FakeCommentsService()
         let viewModel = CommentsListViewModel(filter: .all, service: service)
