@@ -237,12 +237,7 @@ private extension NotificationCommentDetailViewController {
     /// the app can't load, such as a private site the user isn't a member of.
     /// - Parameter showError: Called instead when the notification doesn't carry the comment.
     private func showReadOnlyComment(otherwise showError: () -> Void) {
-        guard
-            let readOnlyComment = ReadOnlyNotificationComment(
-                notification: notification,
-                mainContext: managedObjectContext
-            )
-        else {
+        guard let readOnlyComment = ReadOnlyNotificationComment(notification: notification) else {
             showError()
             return
         }

@@ -572,7 +572,7 @@ private extension CommentDetailViewController {
     // MARK: Data Sync
 
     func refreshCommentReplyIfNeeded() {
-        // A read-only copy lives in a context that must never be saved, and its site can't be loaded anyway.
+        // A read-only copy's site can't be loaded, and its notification already says whether the user replied.
         guard readOnlyComment == nil, let siteID = siteID?.intValue else {
             return
         }
@@ -677,6 +677,11 @@ private extension CommentDetailViewController {
     }
 
     func navigateToReplyComment() {
+        if let readOnlyComment {
+            openWebView(for: readOnlyComment.replyURL)
+            return
+        }
+
         guard let siteID,
             isCommentReplied
         else {
