@@ -21,7 +21,8 @@ steps:
       # the Reader target archives again.
       - label: ":wordpress: :testflight: Build & Upload WordPress"
         key: testflight_upload_wordpress
-        command: ".buildkite/commands/build-and-upload-testflight.sh wordpress"
+        # Temporary: drop RBENV_VERSION once .ruby-version is 3.4.13 (AINFRA-3881); the Linux agents lack it until AINFRA-3889/3890/3891.
+        command: "RBENV_VERSION=3.4.13 .buildkite/commands/build-and-upload-testflight.sh wordpress"
         plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.branch == 'trunk'"
         notify:
@@ -30,7 +31,7 @@ steps:
 
       - label: ":jetpack: :testflight: Build & Upload Jetpack"
         key: testflight_upload_jetpack
-        command: ".buildkite/commands/build-and-upload-testflight.sh jetpack"
+        command: "RBENV_VERSION=3.4.13 .buildkite/commands/build-and-upload-testflight.sh jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.branch == 'trunk'"
         notify:
@@ -78,7 +79,7 @@ steps:
     steps:
       - label: "🛠 :wordpress: Build for Testing"
         key: "build_wordpress"
-        command: ".buildkite/commands/build-for-testing.sh wordpress"
+        command: "RBENV_VERSION=3.4.13 .buildkite/commands/build-for-testing.sh wordpress"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
@@ -86,7 +87,7 @@ steps:
 
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
-        command: ".buildkite/commands/build-for-testing.sh jetpack"
+        command: "RBENV_VERSION=3.4.13 .buildkite/commands/build-for-testing.sh jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
@@ -99,14 +100,14 @@ steps:
     key: unit_tests_group
     steps:
       - label: "🔬 :swift: Swift Package Tests and String Catalog Coverage"
-        command: .buildkite/commands/run-swift-package-tests.sh
+        command: RBENV_VERSION=3.4.13 .buildkite/commands/run-swift-package-tests.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "Swift Package Tests"
 
       - label: "🔬 :wordpress: Unit Tests"
-        command: ".buildkite/commands/run-unit-tests.sh"
+        command: "RBENV_VERSION=3.4.13 .buildkite/commands/run-unit-tests.sh"
         depends_on: "build_wordpress"
         plugins:
           - $CI_TOOLKIT_PLUGIN
@@ -172,7 +173,7 @@ steps:
               context: "Lint Translations"
 
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
-        command: .buildkite/commands/lint-localized-strings-format.sh
+        command: RBENV_VERSION=3.4.13 .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
 
       - label: ":test_tube: Localization Tooling Unit Tests"
