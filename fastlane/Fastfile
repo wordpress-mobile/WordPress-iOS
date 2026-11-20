@@ -177,6 +177,7 @@ end
 
 import 'lanes/build.rb'
 import 'lanes/codesign.rb'
+import 'lanes/continuous_translations.rb'
 import 'lanes/localization.rb'
 import 'lanes/localization_plurals.rb'
 import 'lanes/localization_catalog.rb'
