@@ -131,6 +131,26 @@ class ReaderWebView: WKWebView {
                     }
                 })
 
+                // Preserve the aspect ratio of embedded videos: video iframes (e.g. YouTube)
+                // carry fixed width/height attributes, and capping the width alone leaves
+                // the height oversized. Skip iframes already wrapped by the Reader CSS
+                // (e.g. wpcom's .embed-youtube), which handle responsive sizing themselves.
+                // See https://github.com/wordpress-mobile/WordPress-iOS/issues/24541
+                document.querySelectorAll('iframe[width][height]').forEach((el) => {
+                    if (el.closest('.embed-youtube')) {
+                        return;
+                    }
+                    const width = el.getAttribute('width');
+                    const height = el.getAttribute('height');
+                    const w = parseFloat(width);
+                    const h = parseFloat(height);
+                    if (w > 0 && h > 0 && !width.includes('%') && !height.includes('%')) {
+                        el.style.aspectRatio = `${w} / ${h}`;
+                        el.style.width = '100%';
+                        el.style.height = 'auto';
+                    }
+                })
+
                 // Only display images after they have fully loaded, to have a native feel.
                 // On iOS 27, a lazy `sizes="auto"` image reports `complete` before it has loaded,
                 // so also require a naturalWidth.
