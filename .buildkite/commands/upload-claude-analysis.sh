@@ -29,7 +29,7 @@ fi
 
 # Non-essential steps whose failure alone should NOT trigger Claude analysis.
 # Add step keys here as needed.
-NON_ESSENTIAL_STEPS=("danger")
+NON_ESSENTIAL_STEPS=("danger" "claude_pr_review")
 
 # Count how many non-essential steps have a "hard_failed" outcome.
 non_essential_failures=0
