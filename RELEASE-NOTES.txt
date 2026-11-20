@@ -4,6 +4,7 @@
 
 27.5
 -----
+* [*] Posts and Pages: Fix a crash, or a menu for the wrong post, when you long-press a post while the list refreshes [#26416]
 * [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
 * [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
 * [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
