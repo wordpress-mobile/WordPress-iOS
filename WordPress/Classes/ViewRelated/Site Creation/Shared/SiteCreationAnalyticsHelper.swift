@@ -24,6 +24,7 @@ class SiteCreationAnalyticsHelper {
     private static let verticalSlugKey = "vertical_slug"
     private static let recommendedKey = "recommended"
     private static let siteCreationFlowKey = "site_creation_flow"
+    private static let sourceKey = "source"
 
     // MARK: - Lifecycle
     static func trackSiteCreationAccessed(source: String, flow: SiteCreationFlow) {
@@ -60,39 +61,73 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Site Design
-    static func trackSiteDesignViewed(previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))
+    static func trackSiteDesignViewed(previewMode: PreviewDevice, source: String) {
+        WPAnalytics.track(
+            .enhancedSiteCreationSiteDesignViewed,
+            withProperties: commonProperties(previewMode, source: source)
+        )
     }
 
     static func trackSiteDesignSkipped() {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSkipped)
     }
 
-    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign, sectionType: SiteDesignSectionType) {
-        var properties = commonProperties(siteDesign)
+    static func trackSiteDesignSelected(
+        _ siteDesign: RemoteSiteDesign,
+        sectionType: SiteDesignSectionType,
+        source: String
+    ) {
+        var properties = commonProperties(siteDesign, source: source)
         properties[recommendedKey] = sectionType == .recommended
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: properties)
     }
 
     // MARK: - Site Design Preview
-    static func trackSiteDesignPreviewViewed(siteDesign: RemoteSiteDesign, previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: commonProperties(siteDesign, previewMode))
+    static func trackSiteDesignPreviewViewed(
+        siteDesign: RemoteSiteDesign,
+        previewMode: PreviewDevice,
+        source: String
+    ) {
+        WPAnalytics.track(
+            .enhancedSiteCreationSiteDesignPreviewViewed,
+            withProperties: commonProperties(siteDesign, previewMode, source: source)
+        )
     }
 
-    static func trackSiteDesignPreviewLoading(siteDesign: RemoteSiteDesign, previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading, withProperties: commonProperties(siteDesign, previewMode))
+    static func trackSiteDesignPreviewLoading(
+        siteDesign: RemoteSiteDesign,
+        previewMode: PreviewDevice,
+        source: String
+    ) {
+        WPAnalytics.track(
+            .enhancedSiteCreationSiteDesignPreviewLoading,
+            withProperties: commonProperties(siteDesign, previewMode, source: source)
+        )
     }
 
-    static func trackSiteDesignPreviewLoaded(siteDesign: RemoteSiteDesign, previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(previewMode, siteDesign))
+    static func trackSiteDesignPreviewLoaded(
+        siteDesign: RemoteSiteDesign,
+        previewMode: PreviewDevice,
+        source: String
+    ) {
+        WPAnalytics.track(
+            .enhancedSiteCreationSiteDesignPreviewLoaded,
+            withProperties: commonProperties(previewMode, siteDesign, source: source)
+        )
     }
 
-    static func trackSiteDesignPreviewModeButtonTapped(_ previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewModeButtonTapped, withProperties: commonProperties(previewMode))
+    static func trackSiteDesignPreviewModeButtonTapped(_ previewMode: PreviewDevice, source: String) {
+        WPAnalytics.track(
+            .enhancedSiteCreationSiteDesignPreviewModeButtonTapped,
+            withProperties: commonProperties(previewMode, source: source)
+        )
     }
 
-    static func trackSiteDesignPreviewModeChanged(_ previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewModeChanged, withProperties: commonProperties(previewMode))
+    static func trackSiteDesignPreviewModeChanged(_ previewMode: PreviewDevice, source: String) {
+        WPAnalytics.track(
+            .enhancedSiteCreationSiteDesignPreviewModeChanged,
+            withProperties: commonProperties(previewMode, source: source)
+        )
     }
 
     // MARK: - Final Assembly
@@ -129,8 +164,11 @@ class SiteCreationAnalyticsHelper {
 
     // MARK: - Common
 
-    private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
+    private static func commonProperties(_ properties: Any?..., source: String? = nil) -> [AnyHashable: Any] {
         var result: [AnyHashable: Any] = [:]
+        if let source {
+            result[sourceKey] = source
+        }
 
         for property: Any? in properties {
             if let siteDesign = property as? RemoteSiteDesign {
