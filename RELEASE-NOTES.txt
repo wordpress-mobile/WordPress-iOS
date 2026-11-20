@@ -4,6 +4,7 @@
 
 27.5
 -----
+* [*] Stats: Fix a crash when expanding two years with the same month and views in a post's Months and Years or Avg. Views Per Day details [#26415]
 * [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
 * [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
 * [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
