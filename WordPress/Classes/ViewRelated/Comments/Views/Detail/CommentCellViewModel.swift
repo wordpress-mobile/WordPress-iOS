@@ -23,7 +23,12 @@ final class CommentCellViewModel: NSObject {
 
         super.init()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(objectDidChange), name: .NSManagedObjectContextObjectsDidChange, object: comment.managedObjectContext)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(objectDidChange),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: comment.managedObjectContext
+        )
     }
 
     // MARK: State
@@ -96,21 +101,30 @@ final class CommentCellViewModel: NSObject {
             return wpAssertionFailure("context missing")
         }
         if comment.isLiked {
-            notification != nil ? WPAppAnalytics.track(.notificationsCommentUnliked, blogID: siteID) : CommentAnalytics.trackCommentUnLiked(comment: comment)
+            notification != nil
+                ? WPAppAnalytics.track(.notificationsCommentUnliked, blogID: siteID)
+                : CommentAnalytics.trackCommentUnLiked(comment: comment)
         } else {
-            notification != nil ? WPAppAnalytics.track(.notificationsCommentLiked, blogID: siteID) : CommentAnalytics.trackCommentLiked(comment: comment)
+            notification != nil
+                ? WPAppAnalytics.track(.notificationsCommentLiked, blogID: siteID)
+                : CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
         let service = CommentService(coreDataStack: coreDataStack)
         if !comment.isLiked {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
-        service.toggleLikeStatus(for: comment, siteID: siteID, success: { [weak self] in
-            self?.didToggleLike()
-        }, failure: { error in
-            Notice(title: Strings.failedToLike, message: error?.localizedDescription).post()
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
-        })
+        service.toggleLikeStatus(
+            for: comment,
+            siteID: siteID,
+            success: { [weak self] in
+                self?.didToggleLike()
+            },
+            failure: { error in
+                Notice(title: Strings.failedToLike, message: error?.localizedDescription).post()
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            }
+        )
     }
 
     private func didToggleLike() {
@@ -135,5 +149,9 @@ final class CommentCellViewModel: NSObject {
 }
 
 private enum Strings {
-    static let failedToLike = NSLocalizedString("comments.failedToLike", value: "Failed to like comment", comment: "Error title")
+    static let failedToLike = NSLocalizedString(
+        "comments.failedToLike",
+        value: "Failed to like comment",
+        comment: "Error title"
+    )
 }
