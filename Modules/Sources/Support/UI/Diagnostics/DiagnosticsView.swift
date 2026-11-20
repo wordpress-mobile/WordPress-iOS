@@ -20,9 +20,8 @@ public struct DiagnosticsView: View {
             .padding()
         }
         .navigationTitle(Localization.diagnosticsTitle)
-        // Reached from Me, so it takes Me's grouped background rather than the plain one.
-        // `.thinMaterial` is what the card is filled with, and it only reads as a card
-        // against the grouped grey.
+        // Grouped, to match the support list this is pushed from. `DiagnosticCard` is filled
+        // with the secondary grouped colour so it stands out against this background.
         .background(Color(.systemGroupedBackground))
         .onAppear {
             dataProvider.userDid(.viewDiagnostics)
