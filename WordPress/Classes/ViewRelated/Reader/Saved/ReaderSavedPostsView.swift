@@ -1,4 +1,5 @@
 import AsyncImageKit
+import CoreData
 import SwiftUI
 import UIKit
 import WordPressAPI
@@ -67,6 +68,15 @@ final class ReaderSavedPostsViewController: UIHostingController<ReaderSavedPosts
             withProperties: ["source": ReaderSaveForLaterOrigin.savedStream.openPostValue]
         )
 
+        // The post on this device opens straight away, offline too. Others are fetched first.
+        if let destination = row.destination,
+            let post = Self.storedPost(for: destination, in: ContextManager.shared.mainContext)
+        {
+            let controller = ReaderDetailViewController.controllerWithPost(post)
+            navigationController?.pushViewController(controller, animated: true)
+            return
+        }
+
         switch row.destination {
         case let .post(postID, siteID):
             let controller = ReaderDetailViewController.controllerWithPostID(
@@ -92,6 +102,42 @@ final class ReaderSavedPostsViewController: UIHostingController<ReaderSavedPosts
             present(UINavigationController(rootViewController: controller), animated: true)
         case nil:
             break
+        }
+    }
+
+    /// The post as a Reader stream or the post screen stored it on this device, with its content.
+    static func storedPost(
+        for destination: ReaderSavedPostRow.Destination,
+        in context: NSManagedObjectContext
+    ) -> WordPressData.ReaderPost? {
+        let predicate: NSPredicate
+        switch destination {
+        case let .post(postID, siteID):
+            predicate = NSPredicate(
+                format: "postID = %@ AND siteID = %@",
+                NSNumber(value: postID),
+                NSNumber(value: siteID)
+            )
+        case let .feedItem(feedItemID, feedID):
+            predicate = NSPredicate(
+                format: "feedItemID = %@ AND feedID = %@",
+                NSNumber(value: feedItemID),
+                NSNumber(value: feedID)
+            )
+        case .url:
+            return nil
+        }
+        let request = NSFetchRequest<WordPressData.ReaderPost>(
+            entityName: WordPressData.ReaderPost.classNameWithoutNamespaces()
+        )
+        request.predicate = predicate
+        request.fetchLimit = 1
+        do {
+            // A post without content, such as one from a notification, needs fetching anyway.
+            return try context.fetch(request).first.flatMap { $0.content?.isEmpty == false ? $0 : nil }
+        } catch {
+            Loggers.app.error("Reader saved posts: reading a stored post failed: \(String(describing: error))")
+            return nil
         }
     }
 }

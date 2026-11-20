@@ -3,6 +3,7 @@ import Foundation
 import Testing
 import WordPressAPI
 import WordPressAPIInternal
+import WordPressData
 
 @testable import WordPress
 
@@ -217,6 +218,46 @@ struct ReaderSavedPostsViewModelTests {
             try await Task.sleep(for: .milliseconds(20))
         }
         #expect(viewModel.rows.map(\.id) == ["post:100:1"])
+    }
+
+    // MARK: - Opening
+
+    @Test("A post stored on this device with its content opens without fetching")
+    func storedPostOpensFromDevice() {
+        let context = ContextManager.forTesting().mainContext
+        let post = context.insertNewObject(ofType: WordPressData.ReaderPost.self)
+        post.postID = 1
+        post.siteID = 100
+        post.content = "<p>Hello</p>"
+        let feedPost = context.insertNewObject(ofType: WordPressData.ReaderPost.self)
+        feedPost.postID = 55
+        feedPost.feedID = 7
+        feedPost.feedItemID = 55
+        feedPost.isExternal = true
+        feedPost.content = "<p>Feed</p>"
+
+        #expect(ReaderSavedPostsViewController.storedPost(for: .post(postID: 1, siteID: 100), in: context) == post)
+        #expect(
+            ReaderSavedPostsViewController.storedPost(for: .feedItem(feedItemID: 55, feedID: 7), in: context)
+                == feedPost
+        )
+        #expect(ReaderSavedPostsViewController.storedPost(for: .post(postID: 2, siteID: 100), in: context) == nil)
+        #expect(
+            ReaderSavedPostsViewController.storedPost(
+                for: .url(URL(string: "https://example.com")!),
+                in: context
+            ) == nil
+        )
+    }
+
+    @Test("A post stored on this device without its content is fetched")
+    func storedPostWithoutContentIsFetched() {
+        let context = ContextManager.forTesting().mainContext
+        let post = context.insertNewObject(ofType: WordPressData.ReaderPost.self)
+        post.postID = 1
+        post.siteID = 100
+
+        #expect(ReaderSavedPostsViewController.storedPost(for: .post(postID: 1, siteID: 100), in: context) == nil)
     }
 
     // MARK: - Unsaving
