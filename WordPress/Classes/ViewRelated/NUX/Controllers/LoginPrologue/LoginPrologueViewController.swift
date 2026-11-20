@@ -203,8 +203,8 @@ final class LoginPrologueViewController: UIViewController {
         return button
     }
 
-    private static func buttonConfiguration(title: String, isPrimary: Bool, highlighted: Bool) -> UIButton.Configuration
-    { // swiftlint:disable:this opening_brace
+    /// Also used by the sign-in gate, whose Sign In button matches the "Continue with WordPress.com" button.
+    static func buttonConfiguration(title: String, isPrimary: Bool, highlighted: Bool) -> UIButton.Configuration {
         var configuration: UIButton.Configuration
         if AppConfiguration.isWordPress {
             configuration =
