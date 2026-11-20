@@ -11,7 +11,26 @@ final class RequestCountTests: JetpackUITestCase {
         try MySiteScreen(app: app)
             .waitForScreen()
 
-        XCTAssertEqual(try requestCount(path: "/rest/v1.1/me"), 1)
+        XCTAssertEqual(try accountRequestCount(), 1)
         XCTAssertEqual(try requestCount(path: "/rest/v1.2/me/sites"), 1)
+    }
+
+    /// Counts the app's requests for the account from `/me`.
+    ///
+    /// The Notifications bell also requests `/me`, for its `has_unseen_notes` field alone, so a
+    /// request that asks for only some `fields` isn't counted.
+    private func accountRequestCount() throws -> Int {
+        guard let requestLog else {
+            throw RequestLogUnavailableError()
+        }
+        return try requestLog.requests()
+            .filter { request in
+                let components = URLComponents(url: request.url, resolvingAgainstBaseURL: false)
+                return request.method == "GET"
+                    && request.url.host() == "public-api.wordpress.com"
+                    && request.url.path() == "/rest/v1.1/me"
+                    && components?.queryItems?.contains { $0.name == "fields" } != true
+            }
+            .count
     }
 }
