@@ -178,11 +178,12 @@ steps:
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh
         # Pure Ruby, so it runs in a Ruby container on the Linux queue instead of booting a Mac VM.
+        # The full image, not the slim one: `continuous_translations_test.rb` needs `git`.
         agents:
           queue: "default"
         plugins:
           - $DOCKER_PLUGIN:
-              image: "$DOCKER_RUBY_IMAGE"
+              image: "$DOCKER_RUBY_FULL_IMAGE"
               # An explicit pull is retried by the plugin; the one implied by `docker run` is not.
               always-pull: true
         notify:
