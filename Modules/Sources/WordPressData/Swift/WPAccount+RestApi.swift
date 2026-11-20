@@ -11,6 +11,7 @@ extension WPAccount {
     /// This used to be defined in the Objective-C layer, but we moved it here in a Swift extension in an attempt to decouple the model code from it.
     /// This was done in the context of https://github.com/wordpress-mobile/WordPress-iOS/pull/24165 .
     @objc public var wordPressComRestApi: WordPressComRestApi? {
+        discardCachedTokenIfWrittenElsewhere()
         if let api = _private_wordPressComRestApi {
             return api
         }
@@ -43,8 +44,11 @@ extension WPAccount {
             // We use a static function here because it's not safe to access `self` in this closure.
             // The `WPAccount` instance can be bound to any context object. There is no guarantee that the thread
             // from which this closure is called is the same as the one in the context object.
+            //
+            // `WordPressComRestApi` calls this handler on the main queue, which must not wait for a busy
+            // background context. `clearAuthToken(ifCurrent:)` keeps a replacement from being erased without it.
             context?.perform {
-                WPAccount.handleInvalidToken(accountID: accountID, context: context)
+                WPAccount.handleInvalidToken(accountID: accountID, rejectedToken: authToken, context: context)
             }
         }
 
@@ -69,28 +73,40 @@ extension WPAccount {
         return account?.wordPressComRestApi
     }
 
-    static func handleInvalidToken(accountID: TaggedManagedObjectID<WPAccount>, context: NSManagedObjectContext?) {
-        let account = try? context?.existingObject(with: accountID)
-        account?.authToken = nil
+    /// Clears the account's token after the server rejected it, and asks for the WordPress.com sign-in.
+    ///
+    /// This does not post `wpAccountDefaultWordPressComAccountChanged`: the account and its sites still exist, and
+    /// observers treat that notification without an object as a logout. It posts
+    /// `wpAccountDefaultWordPressComAccountTokenRejected` for the default account instead.
+    static func handleInvalidToken(
+        accountID: TaggedManagedObjectID<WPAccount>,
+        rejectedToken: String,
+        context: NSManagedObjectContext?
+    ) {
+        guard let account = try? context?.existingObject(with: accountID) else {
+            return
+        }
+
+        // Storing a new token does not cancel requests made with the previous one. A late rejection of the
+        // previous token must not erase its replacement.
+        guard account.clearAuthToken(ifCurrent: rejectedToken) else {
+            WPLogInfo("Ignoring a rejection of a WordPress.com token that is no longer current")
+            return
+        }
 
         NotificationCenter.default.post(
             name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
             object: account
         )
 
-        if account?.isDefaultWordPressComAccount == true {
-            // At the time of writing, there is an implicit assumption on what the object parameter value means.
-            // For example, the WordPressAppDelegate.handleDefaultAccountChangedNotification(_:) subscriber inspects the object parameter to decide whether the notification was sent as a result of a login.
-            // If the object is non-nil, then the method considers the source a login.
-            //
-            // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
-            // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .wpAccountDefaultWordPressComAccountChanged,
-                    object: nil
-                )
+        if account.isDefaultWordPressComAccount {
+            let announce = {
+                NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountTokenRejected, object: nil)
+            }
+            if Thread.isMainThread {
+                announce()
+            } else {
+                DispatchQueue.main.async(execute: announce)
             }
         }
     }
@@ -103,6 +119,12 @@ public extension Foundation.Notification.Name {
     static let wpAccountRequiresShowingSigninForWPComFixingAuthToken = Foundation.Notification.Name("WPAccount.WPComAuthTokenNeedsFixing")
 
     static let wpAccountDefaultWordPressComAccountChanged = Foundation.Notification.Name("WPAccount.DefaultWordPressComAccountChangedNotification")
+
+    /// Posted on the main thread after the server rejected the default account's token and the token was cleared.
+    ///
+    /// The account stays the default, so this is not `wpAccountDefaultWordPressComAccountChanged`: observers that
+    /// hold their own copy of the token drop it, and nothing treats it as a logout. The object is `nil`.
+    static let wpAccountDefaultWordPressComAccountTokenRejected = Foundation.Notification.Name("WPAccount.DefaultWordPressComAccountTokenRejected")
 }
 
 // For Objective-C compatibility

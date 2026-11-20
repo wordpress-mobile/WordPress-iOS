@@ -99,6 +99,9 @@ final class NotificationActivityService: ObservableObject {
         observe(.wpAccountDefaultWordPressComAccountChanged) { [weak self] _ in
             self?.defaultAccountDidChange()
         }
+        observe(.wpAccountDefaultWordPressComAccountTokenRejected) { [weak self] _ in
+            self?.defaultAccountDidChange()
+        }
         observe(UIApplication.didBecomeActiveNotification) { [weak self] _ in
             // Not gated on an account: a failed sign-out clear must still land.
             self?.iconBadge.retryPendingWrite()
@@ -116,10 +119,10 @@ final class NotificationActivityService: ObservableObject {
 
     // MARK: - Account lifecycle
 
-    /// `WPAccount.handleInvalidToken` posts the default-account notification too,
-    /// while the account stays the default. That is a credential change, not an
-    /// account change: keep the session, including a pending seen write, and
-    /// pause or resume network work with the credentials.
+    /// Also handles a rejected token, after which the account stays the default.
+    /// That is a credential change, not an account change: keep the session,
+    /// including a pending seen write, and pause or resume network work with the
+    /// credentials.
     private func defaultAccountDidChange() {
         if let account = resolver.defaultAccount(), let session, account.uuid == session.accountUUID {
             session.remote = account.remote

@@ -112,6 +112,20 @@ public final class ShareExtensionService {
         userDefaults.set(recentSites, forKey: configuration.recentSitesKey)
     }
 
+    /// Removes the OAuth Token, so that the Share Extension asks the user to sign in to the app.
+    ///
+    public func removeToken() {
+        do {
+            try keychain.setPassword(
+                for: configuration.keychainTokenKey,
+                to: nil,
+                serviceName: configuration.keychainServiceName
+            )
+        } catch {
+            print("Error while removing Share Extension OAuth2 bearer token: \(error)")
+        }
+    }
+
     /// Nukes all of the Share Extension Configuration
     ///
     public func removeShareExtensionConfiguration() {

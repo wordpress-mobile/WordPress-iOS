@@ -2,6 +2,7 @@ import BuildSettingsKit
 import CoreData
 import WordPressKit
 import WordPressShared
+import os
 
 @objc(WPAccount)
 public class WPAccount: NSManagedObject {
@@ -29,6 +30,22 @@ public class WPAccount: NSManagedObject {
     @objc public var _private_wordPressComRestApi: WordPressComRestApi?
 
     private var cachedToken: String?
+
+    /// The token version that this instance's cached token and REST API belong to, or `nil` before it first
+    /// reads or writes its token.
+    private var cachedTokenVersion: TokenVersion?
+
+    /// Counts the token writes for each username, through every instance, in every context.
+    ///
+    /// An instance only caches its token and REST API, so a token written through an instance in another context
+    /// would otherwise stay cached here. The lock also makes `clearAuthToken(ifCurrent:)` atomic with respect to
+    /// token writes.
+    private static let tokenWrites = OSAllocatedUnfairLock<[String: UInt64]>(initialState: [:])
+
+    private struct TokenVersion: Equatable {
+        let username: String
+        let writeCount: UInt64
+    }
 
     lazy var keychain: any KeychainAccessible = AppKeychain()
     lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
@@ -104,8 +121,7 @@ public class WPAccount: NSManagedObject {
 
     public override func didTurnIntoFault() {
         super.didTurnIntoFault()
-        _private_wordPressComRestApi = nil
-        cachedToken = nil
+        discardCachedToken()
     }
 
     // MARK: - Auth Token (Keychain)
@@ -117,25 +133,90 @@ public class WPAccount: NSManagedObject {
     }
 
     private func _getAuthToken() -> String? {
+        discardCachedTokenIfWrittenElsewhere()
         if let cachedToken {
             return cachedToken
         }
-        let token = try? Self.token(
+        let token = authTokenInKeychain
+        cachedToken = token
+        return token
+    }
+
+    /// The token stored in the keychain, bypassing `authToken`'s cache.
+    var authTokenInKeychain: String? {
+        readToken(forUsername: username)
+    }
+
+    /// Drops this instance's cached token and REST API, so the next access reads the token from the keychain.
+    func discardCachedToken() {
+        cachedToken = nil
+        _private_wordPressComRestApi = nil
+    }
+
+    /// Drops the cached token and REST API if another instance wrote this account's token since they were cached.
+    func discardCachedTokenIfWrittenElsewhere() {
+        let username = self.username
+        let version = TokenVersion(username: username, writeCount: Self.tokenWrites.withLock { $0[username] ?? 0 })
+        // Without a recorded version, nothing was cached through the token getters. A REST API assigned directly,
+        // as tests do, is kept.
+        if let cachedTokenVersion, cachedTokenVersion != version {
+            discardCachedToken()
+        }
+        cachedTokenVersion = version
+    }
+
+    /// Clears the token if the keychain still holds `token`. Returns whether it cleared the token.
+    ///
+    /// The comparison and the clear are atomic with respect to token writes through any instance, so a
+    /// replacement stored in between can't be erased.
+    func clearAuthToken(ifCurrent token: String) -> Bool {
+        defer {
+            discardCachedToken()
+        }
+        // Read outside the lock: firing a fault must not wait for another thread's token write.
+        let username = self.username
+        let writeCount: UInt64? = Self.tokenWrites.withLock { writeCounts in
+            guard readToken(forUsername: username) == token else {
+                return nil
+            }
+            writeToken(nil, forUsername: username)
+            return Self.countWrite(forUsername: username, in: &writeCounts)
+        }
+        guard let writeCount else {
+            return false
+        }
+        cachedTokenVersion = TokenVersion(username: username, writeCount: writeCount)
+        return true
+    }
+
+    private func _setAuthToken(_ authToken: String?) {
+        // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
+        discardCachedToken()
+
+        let username = self.username
+        let writeCount = Self.tokenWrites.withLock { writeCounts in
+            writeToken(authToken, forUsername: username)
+            return Self.countWrite(forUsername: username, in: &writeCounts)
+        }
+        cachedTokenVersion = TokenVersion(username: username, writeCount: writeCount)
+    }
+
+    private static func countWrite(forUsername username: String, in writeCounts: inout [String: UInt64]) -> UInt64 {
+        let writeCount = (writeCounts[username] ?? 0) + 1
+        writeCounts[username] = writeCount
+        return writeCount
+    }
+
+    private func readToken(forUsername username: String) -> String? {
+        try? Self.token(
             forUsername: username,
             serviceName: keychainServiceName,
             migration: keychainMigration,
             keychain: keychain
         )
-        cachedToken = token
-        return token
     }
 
-    private func _setAuthToken(_ authToken: String?) {
-        cachedToken = nil
-
-        // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
-        _private_wordPressComRestApi = nil
-
+    private func writeToken(_ authToken: String?, forUsername username: String) {
         do {
             try keychain.setPassword(for: username, to: authToken, serviceName: keychainServiceName)
         } catch {

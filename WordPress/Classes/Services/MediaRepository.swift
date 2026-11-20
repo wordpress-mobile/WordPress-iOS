@@ -94,6 +94,10 @@ private extension MediaRepository {
             return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 
+        if blog.isMissingRequiredWordPressComToken {
+            throw MediaRepository.Error.remoteAPIUnavailable
+        }
+
         // We use WordPress.com API for media management instead of WordPress core REST API to ensure
         // compatibility with WordPress.com-specific features such as video upload restrictions
         // and storage limits based on the site's plan.

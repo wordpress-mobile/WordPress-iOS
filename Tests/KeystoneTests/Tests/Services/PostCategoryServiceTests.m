@@ -7,6 +7,12 @@
 @import WordPressKit;
 @import OCMock;
 
+@interface PostCategoryService (RemoteSelection)
+
+- (nullable id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog;
+
+@end
+
 @interface PostCategoryServiceForStubbing : PostCategoryService
 
 @property (nonatomic, strong) TaxonomyServiceRemoteREST *remoteForStubbing;
@@ -224,6 +230,36 @@
     }];
 
     [self waitForExpectations:@[succeeded, failureNotCalled] timeout:1];
+}
+
+#pragma mark - Remote selection
+
+- (void)testRemoteForDotComBlogWithTokenUsesREST
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:@"token" context:self.manager.mainContext];
+    PostCategoryService *service = [[PostCategoryService alloc] initWithCoreDataStack:self.manager];
+    XCTAssertTrue([[service remoteForBlog:blog] isKindOfClass:[TaxonomyServiceRemoteREST class]]);
+}
+
+- (void)testNoRemoteForDotComBlogWithoutToken
+{
+    Blog *blog = [RemoteSelectionBlogFixture dotComBlogWithAuthToken:nil context:self.manager.mainContext];
+    PostCategoryService *service = [[PostCategoryService alloc] initWithCoreDataStack:self.manager];
+    XCTAssertNil([service remoteForBlog:blog]);
+}
+
+- (void)testRemoteForJetpackBlogWithoutTokenUsesStoredXMLRPCCredentials
+{
+    Blog *blog = [RemoteSelectionBlogFixture jetpackBlogWithAuthToken:nil xmlrpcPassword:@"password" context:self.manager.mainContext];
+    PostCategoryService *service = [[PostCategoryService alloc] initWithCoreDataStack:self.manager];
+    XCTAssertTrue([[service remoteForBlog:blog] isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]);
+}
+
+- (void)testRemoteForSelfHostedBlogIsUnaffected
+{
+    Blog *blog = [RemoteSelectionBlogFixture selfHostedBlogWithContext:self.manager.mainContext];
+    PostCategoryService *service = [[PostCategoryService alloc] initWithCoreDataStack:self.manager];
+    XCTAssertTrue([[service remoteForBlog:blog] isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]);
 }
 
 @end
