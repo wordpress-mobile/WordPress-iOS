@@ -1,3 +1,7 @@
+27.6
+-----
+
+
 27.5
 -----
 * [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
