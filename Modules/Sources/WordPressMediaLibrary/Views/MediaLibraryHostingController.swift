@@ -12,9 +12,16 @@ public enum MediaLibraryHostingController {
     @MainActor
     public static func make(
         client: WordPressClient,
-        tracker: any MediaTracker
+        tracker: any MediaTracker,
+        uploader: MediaUploader,
+        externalPickerOptions: [ExternalMediaPickerOption] = []
     ) -> UIViewController {
-        let view = MediaLibraryContainerView(client: client, tracker: tracker)
+        let view = MediaLibraryContainerView(
+            client: client,
+            tracker: tracker,
+            uploader: uploader,
+            externalPickerOptions: externalPickerOptions
+        )
         let host = UIHostingController(rootView: view)
         host.navigationItem.largeTitleDisplayMode = .never
         return host
@@ -30,6 +37,8 @@ public enum MediaLibraryHostingController {
 private struct MediaLibraryContainerView: View {
     let client: WordPressClient
     let tracker: any MediaTracker
+    let uploader: MediaUploader
+    let externalPickerOptions: [ExternalMediaPickerOption]
 
     @State private var resolved: Resolved?
     @State private var error: Error?
@@ -48,7 +57,8 @@ private struct MediaLibraryContainerView: View {
                     viewModel: resolved.viewModel,
                     service: resolved.service,
                     client: client,
-                    tracker: tracker
+                    tracker: tracker,
+                    externalPickerOptions: externalPickerOptions
                 )
             } else if let error {
                 EmptyStateView.failure(error: error) {
@@ -66,7 +76,8 @@ private struct MediaLibraryContainerView: View {
                     viewModel: MediaLibraryViewModel(
                         service: service,
                         client: client,
-                        tracker: tracker
+                        tracker: tracker,
+                        uploader: uploader
                     ),
                     service: service
                 )

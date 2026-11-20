@@ -11,4 +11,6 @@ struct FailedUpload: Identifiable, Sendable {
     /// True when the actor can retry a staged upload or repeat preparation
     /// after a recognized temporary failure. Other failures are remove-only.
     let isRetryable: Bool
+    /// A staged file is available only after preparation succeeds.
+    let localFileURL: URL?
 }

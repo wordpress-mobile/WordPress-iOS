@@ -409,6 +409,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 self?.mergeDuplicateAccountsIfNeeded()
                 MediaCoordinator.shared.refreshMediaStatus()
                 MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
+                // V2 uploads stage into persistent storage; clear anything a
+                // prior crash/force-quit orphaned there (no in-flight uploads
+                // survive process termination).
+                MediaUploader.sweepOrphanedStagingFiles()
             }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
