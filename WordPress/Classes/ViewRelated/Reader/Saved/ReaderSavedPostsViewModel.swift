@@ -107,6 +107,9 @@ final class ReaderSavedPostsViewModel: ObservableObject {
     @Published private(set) var isLoadingMore = false
     /// Why the last refresh failed. Only shown while there are no rows to show.
     @Published private(set) var errorMessage: String?
+    /// Saves kept on this device because the account has reached its save cap. They're sent once
+    /// the user removes enough saved posts to make room.
+    @Published private(set) var waitingForRoomCount = 0
 
     private let collection: any ReaderSavedPostsCollectionProtocol
     private let service: any ReaderSavedServiceProtocol
@@ -209,6 +212,13 @@ final class ReaderSavedPostsViewModel: ObservableObject {
             hasLoaded = true
         } catch {
             Loggers.app.error("Reader saved posts: reading the list failed: \(String(describing: error))")
+        }
+        do {
+            waitingForRoomCount = Int(clamping: try service.savesWaitingForRoom())
+        } catch {
+            Loggers.app.error(
+                "Reader saved posts: reading the saves waiting for room failed: \(String(describing: error))"
+            )
         }
     }
 

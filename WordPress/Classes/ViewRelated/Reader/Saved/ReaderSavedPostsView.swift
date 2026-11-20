@@ -148,6 +148,9 @@ struct ReaderSavedPostsView: View {
 
     var body: some View {
         List {
+            if viewModel.waitingForRoomCount > 0 {
+                ReaderSavedPostsLimitBanner(count: viewModel.waitingForRoomCount)
+            }
             ForEach(viewModel.rows) { row in
                 ReaderSavedPostRowView(row: row, onOpen: onOpen, onUnsave: unsave)
                     .task { await viewModel.loadMoreIfNeeded(after: row) }
@@ -205,6 +208,36 @@ struct ReaderSavedPostsView: View {
 
     private func unsave(_ row: ReaderSavedPostRow) {
         Task { await viewModel.unsave(row) }
+    }
+}
+
+/// Says that some saves are only on this device because the account has reached its save cap.
+private struct ReaderSavedPostsLimitBanner: View {
+    let count: Int
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.limitBannerTitle)
+                    .font(.subheadline.weight(.semibold))
+                Text(
+                    String.localizedStringWithFormat(
+                        count == 1 ? Strings.limitBannerMessageSingular : Strings.limitBannerMessagePlural,
+                        count
+                    )
+                )
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+        .listRowSeparator(.hidden)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -415,6 +448,26 @@ private enum Strings {
         "reader.savedPosts.row.commentCount.plural",
         value: "%1$d comments",
         comment: "Number of comments on a post in Reader's Saved screen (plural). %1$d is the count."
+    )
+    static let limitBannerTitle = NSLocalizedString(
+        "reader.savedPosts.limitBanner.title",
+        value: "Saved posts limit reached",
+        comment:
+            "Title of a banner in Reader's Saved screen when the account already has the most saved posts it can keep."
+    )
+    static let limitBannerMessageSingular = NSLocalizedString(
+        "reader.savedPosts.limitBanner.message.singular",
+        value:
+            "%1$d post is saved only on this device. Your account keeps up to 1,000 saved posts. Remove some to make room for it.",
+        comment:
+            "Banner in Reader's Saved screen when a post couldn't be saved to the account because it has 1,000 saved posts (singular). %1$d is the number of posts."
+    )
+    static let limitBannerMessagePlural = NSLocalizedString(
+        "reader.savedPosts.limitBanner.message.plural",
+        value:
+            "%1$d posts are saved only on this device. Your account keeps up to 1,000 saved posts. Remove some to make room for them.",
+        comment:
+            "Banner in Reader's Saved screen when posts couldn't be saved to the account because it has 1,000 saved posts (plural). %1$d is the number of posts."
     )
     static let settingsAccessibilityLabel = NSLocalizedString(
         "reader.savedPosts.settings.button.accessibilityLabel",

@@ -220,6 +220,21 @@ struct ReaderSavedPostsViewModelTests {
         #expect(viewModel.rows.map(\.id) == ["post:100:1"])
     }
 
+    @Test("Saves waiting for room under the account's save cap are counted for the banner")
+    func countsSavesWaitingForRoom() async {
+        let viewModel = makeViewModel()
+        await viewModel.onAppear()
+        #expect(viewModel.waitingForRoomCount == 0)
+
+        service.waitingKeys = [.post(blogId: 100, postId: 1), .url(url: "https://example.com/page")]
+        await viewModel.refresh()
+        #expect(viewModel.waitingForRoomCount == 2)
+
+        service.waitingKeys = []
+        await viewModel.reloadFromCache()
+        #expect(viewModel.waitingForRoomCount == 0)
+    }
+
     // MARK: - Opening
 
     @Test("A post stored on this device with its content opens without fetching")
