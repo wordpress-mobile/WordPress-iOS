@@ -92,8 +92,10 @@ struct ReaderSavedPostsExporter {
     /// The identity of a post from an export file. It's read like a Core Data post: an RSS item's
     /// post ID is its feed item ID.
     static func identity(for post: ExportedPost) -> ReaderPostSaveIdentity {
-        // A page saved by URL has no IDs. The API takes it as external, with a `0` site and feed.
-        if post.siteID == nil, post.postID == nil, post.feedItemID == nil, !post.url.isEmpty {
+        // A page saved by URL has no site or feed. The API takes it as external, with a `0` site and
+        // feed. Its post ID is ignored: earlier exports wrote the server's ID for the page, which
+        // the API can't save it by.
+        if post.siteID == nil, post.feedID == nil, post.feedItemID == nil, !post.url.isEmpty {
             return ReaderSavedPostsSync.identity(
                 postID: nil,
                 siteID: 0,
@@ -131,8 +133,13 @@ struct ReaderSavedPostsExporter {
         var postID = positive(identity?.id)
         var feedItemID = positive(identity?.feedItemId)
         var isFeed = identity?.isExternal ?? false
-        // A post saved just now has only its key.
-        if identity == nil {
+        if case .url = item.key {
+            // A page saved by URL is saved again by its URL. The server's ID for it can't save it.
+            siteID = nil
+            postID = nil
+            feedItemID = nil
+        } else if identity == nil {
+            // A post saved just now has only its key.
             switch item.key {
             case let .post(blogId, postId):
                 siteID = positive(blogId)

@@ -155,6 +155,41 @@ struct ReaderSavedPostsExporterTests {
         #expect(ReaderSavedPostsExporter.identity(for: post).savedKey == .url(url: "https://example.com/page"))
     }
 
+    @Test("A page saved by URL that the server has sent is exported and imported by its URL")
+    func exportThenImportURLPage() {
+        // How the server sends a page saved by URL: its own ID for the page, with no site or feed.
+        let url = "https://example.com/?saved-posts-review=26372-r2"
+        let identity = ReaderPostSaveIdentity(
+            id: 70576,
+            siteId: 0,
+            feedId: 0,
+            feedItemId: nil,
+            isExternal: true,
+            url: url
+        )
+        let item = ReaderSavedListItem(
+            key: .url(url: url),
+            post: ReaderPostRecord(key: .url(url: url), identity: identity, title: "Saved Posts review page"),
+            isPending: false,
+            isWaitingForRoom: false
+        )
+
+        let exported = ReaderSavedPostsExporter.exportedPost(for: item)
+
+        #expect(exported.postID == nil)
+        #expect(exported.siteID == nil)
+        #expect(exported.url == url)
+        #expect(ReaderSavedPostsExporter.identity(for: exported).savedKey == .url(url: url))
+    }
+
+    @Test("A page saved by URL in an earlier export, with the server's ID for it, is saved by its URL")
+    func importURLPageWithServerID() {
+        // The entry from an export made before the fix.
+        let post = Self.exportedPost(siteID: nil, postID: 70576, isFeed: true, url: "https://example.com/page")
+
+        #expect(ReaderSavedPostsExporter.identity(for: post).savedKey == .url(url: "https://example.com/page"))
+    }
+
     @Test("Import sends the file's posts straight to the account")
     func importSavesToTheAccount() async throws {
         let service = FakeReaderSavedService()
