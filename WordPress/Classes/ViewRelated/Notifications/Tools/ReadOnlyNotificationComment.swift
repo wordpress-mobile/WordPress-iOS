@@ -7,21 +7,23 @@ import WordPressData
 /// Use it when the app can't load the comment from its site, for example because the site is private and
 /// the user isn't a member. The notification still carries the comment, its author and what it replies to.
 ///
-/// Keep this object alive while `comment` and `parentComment` are in use. They live in its private context,
-/// and once that context is gone every property reads back empty.
-final class ReadOnlyNotificationComment {
+/// `comment` and `parentComment` aren't inserted into any Core Data context, so they can't be saved or turn
+/// up in fetches.
+struct ReadOnlyNotificationComment {
     let comment: Comment
 
     /// The comment that `comment` replies to, or `nil` for a reply to a post. Only its author and an
     /// excerpt are known.
     let parentComment: Comment?
 
-    /// Holds `comment` and `parentComment`. It is never saved, so the copies never reach the database.
-    private let context: NSManagedObjectContext
+    /// The web address of the user's reply to `comment`, or `nil` if they haven't replied.
+    let replyURL: URL?
 
     /// Returns `nil` when the notification has no comment to show.
-    init?(notification: WordPressData.Notification, mainContext: NSManagedObjectContext) {
-        guard let group = notification.contentGroup(ofKind: .comment),
+    init?(notification: WordPressData.Notification) {
+        guard
+            let entity = notification.entity.managedObjectModel.entitiesByName[Comment.classNameWithoutNamespaces()],
+            let group = notification.contentGroup(ofKind: .comment),
             let commentBlock: FormattableCommentContent = group.blockOfKind(.comment),
             let commentID = notification.metaCommentID ?? commentBlock.metaCommentID,
             let rawCommentBlock = notification.body(ofType: .comment),
@@ -32,10 +34,7 @@ final class ReadOnlyNotificationComment {
         }
         let author: FormattableUserContent? = group.blockOfKind(.user)
 
-        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = mainContext
-
-        let comment = Comment(context: context)
+        let comment = Comment(entity: entity, insertInto: nil)
         comment.commentID = commentID.int32Value
         comment.postID = notification.metaPostID?.int32Value ?? 0
         comment.parentID = notification.metaParentID?.int32Value ?? 0
@@ -52,16 +51,21 @@ final class ReadOnlyNotificationComment {
         comment.authorAvatarURL = author?.media.first?.mediaURL?.absoluteString ?? ""
         comment.author_url = author?.metaLinksHome?.absoluteString ?? ""
 
+        let replyURL = notification.metaReplyID.flatMap { notification.linkToComment(withID: $0) }
+        if let replyID = notification.metaReplyID, replyURL != nil {
+            comment.replyID = replyID.int32Value
+        }
+
         self.comment = comment
-        self.parentComment = Self.makeParentComment(of: comment, from: notification, in: context)
-        self.context = context
+        self.parentComment = Self.makeParentComment(of: comment, entity: entity, from: notification)
+        self.replyURL = replyURL
     }
 
     /// Builds the parent comment from the notification header, which names its author and quotes its start.
     private static func makeParentComment(
         of comment: Comment,
-        from notification: WordPressData.Notification,
-        in context: NSManagedObjectContext
+        entity: NSEntityDescription,
+        from notification: WordPressData.Notification
     ) -> Comment? {
         guard comment.hasParentComment(), let header = notification.headerContentGroup else {
             return nil
@@ -69,7 +73,7 @@ final class ReadOnlyNotificationComment {
         let authorBlock: NotificationTextContent? = header.blockOfKind(.image)
         let excerptBlock: NotificationTextContent? = header.blockOfKind(.text)
 
-        let parent = Comment(context: context)
+        let parent = Comment(entity: entity, insertInto: nil)
         parent.commentID = comment.parentID
         parent.postID = comment.postID
         parent.author = authorBlock.flatMap { $0.text(ofFirstRange: .user) ?? $0.text } ?? ""
@@ -84,6 +88,16 @@ private extension WordPressData.Notification {
     var linkedPostTitle: String? {
         let blocks = (headerContentGroup?.blocks ?? []) + (subjectContentGroup?.blocks ?? [])
         return blocks.lazy.compactMap { $0.text(ofFirstRange: .post) }.first
+    }
+
+    /// The web address of a comment the notification links to, such as the "You replied to this comment." line.
+    func linkToComment(withID commentID: NSNumber) -> URL? {
+        bodyContentGroups.lazy
+            .flatMap(\.blocks)
+            .flatMap(\.ranges)
+            .compactMap { $0 as? NotificationCommentRange }
+            .first { $0.commentID == commentID }?
+            .url
     }
 }
 

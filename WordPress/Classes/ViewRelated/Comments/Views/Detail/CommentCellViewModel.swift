@@ -23,12 +23,16 @@ final class CommentCellViewModel: NSObject {
 
         super.init()
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(objectDidChange),
-            name: .NSManagedObjectContextObjectsDidChange,
-            object: comment.managedObjectContext
-        )
+        // A comment outside any context never changes. Observing with a `nil` object would instead deliver every
+        // context's changes, from every queue.
+        if let context = comment.managedObjectContext {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(objectDidChange),
+                name: .NSManagedObjectContextObjectsDidChange,
+                object: context
+            )
+        }
     }
 
     // MARK: State
