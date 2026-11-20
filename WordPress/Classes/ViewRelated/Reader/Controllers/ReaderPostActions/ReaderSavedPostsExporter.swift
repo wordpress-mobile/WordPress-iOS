@@ -43,8 +43,10 @@ struct ReaderSavedPostsExporter {
     /// The cache only has the pages the Saved screen has loaded, so the rest are loaded first. A
     /// failure fails the export rather than writing part of the list.
     private static func loadAllPages(of collection: any ReaderSavedPostsCollectionProtocol) async throws {
-        // The account keeps at most 1,000 saves, which is 25 pages.
-        let maxPages = 50
+        // The account keeps at most 1,000 saves. The saved list sends 10 a page, and fewer when
+        // the server skips posts it can't show, so this leaves room. It only stops a server that
+        // never ends the list.
+        let maxPages = 250
         var page = try await collection.refresh()
         var pageCount = 1
         while page.hasMore, pageCount < maxPages {

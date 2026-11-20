@@ -55,6 +55,24 @@ struct ReaderSavedPostsExporterTests {
         #expect(posts.map(\.postID) == [1, 2, 3])
     }
 
+    @Test("Export includes every save of an account at the 1,000-save cap, 10 to a page")
+    func exportLoadsAFullAccount() async throws {
+        let collection = FakeReaderSavedPostsCollection()
+        let pages = (0..<100)
+            .map { page in
+                (1...10).map { ReaderSavedPostsViewModelTests.postItem(postID: UInt64(page * 10 + $0), siteID: 100) }
+            }
+        collection.items = pages[0]
+        collection.info = ReaderSavedListInfo(state: .idle, hasMore: true)
+        collection.nextPages = Array(pages.dropFirst())
+
+        let fileURL = try #require(try await ReaderSavedPostsExporter().export(collection: collection))
+        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+
+        #expect(posts.count == 1000)
+        #expect(posts.last?.postID == 1000)
+    }
+
     @Test("A feed item is exported with its feed identifiers")
     func exportFeedItem() {
         let identity = ReaderPostSaveIdentity(
