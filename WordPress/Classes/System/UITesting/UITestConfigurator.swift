@@ -1,4 +1,6 @@
 import UIKit
+import WordPressApiCache
+import WordPressCore
 import WordPressData
 
 #if UI_TEST_HTTP_FIXTURES
@@ -24,10 +26,30 @@ struct UITestConfigurator {
         // Remove CoreData DB
         ContextManager.shared.resetEverything()
 
+        // Remove the wordpress-rs cache, which keeps a site's posts, media and post types. A sync
+        // only fetches what's changed on the server, so a cache left from an earlier launch would
+        // keep showing what that launch was sent.
+        do {
+            try WordPressApiCache.deleteOnDiskCache()
+        } catch {
+            Loggers.app.error("Failed to delete the WordPress API cache: \(error)")
+        }
+
         // Clear user defaults.
         for key in UserDefaults.standard.dictionaryRepresentation().keys {
             UserDefaults.standard.removeObject(forKey: key)
         }
+    }
+
+    /// Whether the app is taking the App Store screenshots, which leave out what doesn't belong in
+    /// marketing, such as beta badges. Set by the `-ui-test-app-store-screenshots` launch argument,
+    /// which only a build for the UI tests reads.
+    static var isTakingAppStoreScreenshots: Bool {
+        #if UI_TEST_HTTP_FIXTURES
+        UserDefaults.standard.bool(forKey: "ui-test-app-store-screenshots")
+        #else
+        false
+        #endif
     }
 
     #if UI_TEST_HTTP_FIXTURES

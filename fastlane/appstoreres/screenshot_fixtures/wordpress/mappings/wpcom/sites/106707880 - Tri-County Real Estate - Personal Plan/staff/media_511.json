@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/media/511"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 511,
+      "date": "2025-03-04T09:12:00",
+      "date_gmt": "2025-03-04T09:12:00",
+      "guid": {
+        "rendered": "https://tricountyrealestate.files.wordpress.com/2025/03/maya-okafor.png",
+        "raw": "https://tricountyrealestate.files.wordpress.com/2025/03/maya-okafor.png"
+      },
+      "modified": "2025-03-04T09:12:00",
+      "modified_gmt": "2025-03-04T09:12:00",
+      "slug": "maya-okafor",
+      "status": "inherit",
+      "type": "attachment",
+      "link": "https://tricountyrealestate.wordpress.com/staff/maya-okafor/maya-okafor/",
+      "title": {
+        "raw": "Maya Okafor",
+        "rendered": "Maya Okafor"
+      },
+      "author": 742098,
+      "comment_status": "open",
+      "ping_status": "closed",
+      "template": "",
+      "meta": {},
+      "permalink_template": "https://tricountyrealestate.wordpress.com/?attachment_id=511",
+      "generated_slug": "maya-okafor",
+      "description": {
+        "raw": "",
+        "rendered": ""
+      },
+      "caption": {
+        "raw": "",
+        "rendered": ""
+      },
+      "alt_text": "Maya Okafor",
+      "password": "",
+      "media_type": "image",
+      "mime_type": "image/png",
+      "missing_image_sizes": [],
+      "post": 701,
+      "source_url": "https://tricountyrealestate.files.wordpress.com/2025/03/maya-okafor.png",
+      "media_details": {
+        "width": 600,
+        "height": 600,
+        "file": "2025/03/maya-okafor.png",
+        "sizes": {},
+        "image_meta": {}
+      }
+    }
+  }
+}

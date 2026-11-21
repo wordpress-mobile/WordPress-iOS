@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/infocusphotographers\\.files\\.wordpress\\.com)?/2019/05/celebration\\-christmas\\-dark\\-625789\\.jpg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/celebration-christmas-dark-625789.jpg"
+  }
+}

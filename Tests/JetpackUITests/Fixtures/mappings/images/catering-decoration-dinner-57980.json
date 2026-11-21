@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/infocusphotographers\\.files\\.wordpress\\.com)?/2019/05/catering\\-decoration\\-dinner\\-57980\\.jpg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/catering-decoration-dinner-57980.jpg"
+  }
+}
