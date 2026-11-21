@@ -149,16 +149,6 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         isPage ? PostEditorStrings.notReadyPageTitle : PostEditorStrings.notReadyPostTitle
     }
 
-    func feedbackAction() -> UIAction {
-        UIAction(title: PostEditorStrings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
-            self?
-                .present(
-                    SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"),
-                    animated: true
-                )
-        }
-    }
-
     // MARK: - GutenbergKit.EditorViewControllerDelegate
 
     /// Subclasses that override this must call `super`.
