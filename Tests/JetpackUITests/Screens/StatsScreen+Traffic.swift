@@ -31,6 +31,12 @@ extension StatsScreen {
             case .postsAndPages: "Posts & Pages"
             }
         }
+
+        /// The title of the screen that lists all of a card's items. For Locations it's the level
+        /// the card shows, which is Countries until it's changed.
+        var allItemsTitle: String {
+            self == .locations ? LocationLevel.countries.rawValue : title
+        }
     }
 
     enum Metric: String, CaseIterable {
@@ -127,7 +133,7 @@ extension StatsScreen {
 
     func goToAllItems(ofCardListing dataType: DataType) throws -> StatsDetailsScreen {
         try scrollAndTap(card(dataType).buttons["top_list_card_show_all_button"])
-        return try StatsDetailsScreen(title: dataType.title, app: app)
+        return try StatsDetailsScreen(title: dataType.allItemsTitle, app: app)
     }
 
     /// Opens the stats for the first item in a card. Only some data types have item stats, and a
