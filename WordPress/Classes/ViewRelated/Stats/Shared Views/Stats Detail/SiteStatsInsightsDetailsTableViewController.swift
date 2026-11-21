@@ -122,8 +122,8 @@ private extension SiteStatsInsightsDetailsTableViewController {
 
         NSLayoutConstraint.activate([
             tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
-            tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor),
-            tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor),
+            tableHeaderView.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor),
+            tableHeaderView.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor),
             tableHeaderView.heightAnchor.constraint(equalToConstant: 60)
         ])
         tableView.tableHeaderView?.layoutIfNeeded()

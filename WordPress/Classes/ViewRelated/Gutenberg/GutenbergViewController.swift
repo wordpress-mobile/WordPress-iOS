@@ -1111,12 +1111,18 @@ extension GutenbergViewController {
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
         NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            suggestionsController.view.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 0
+            ),
+            suggestionsController.view.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: 0
+            ),
             // The keyboard layout guide sits at the bottom safe area edge while the
             // keyboard is hidden and tracks the keyboard's top while it's shown.
             suggestionsController.view.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
-            suggestionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         suggestionsController.didMove(toParent: self)
     }
