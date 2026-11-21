@@ -100,27 +100,14 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try save(2, "Editor")
         mySite = try relaunch(isPad: isPad)
 
-        // 3. Reader. `ReaderScreen` waits for its menu to be hittable as a whole, which it isn't
-        // beside the iPad's stream, or beside the iPhone Duo's side strip, so this taps the row.
-        if isPad {
-            try openFromSidebar("sidebar_reader", from: mySite)
-        } else {
-            try mySite.tap(app.buttons["tabbar_reader"], until: app.collectionViews["reader_sidebar"])
-        }
-        try mySite.tap(
-            app.collectionViews["reader_sidebar"].staticTexts[Fixture.readerSite],
-            until: app.navigationBars[Fixture.readerSite]
-        )
-        let stream = try ReaderStreamScreen(title: Fixture.readerSite, app: app)
-        let backButton = app.buttons["reader-detail-back-button"]
-        try openReaderPost(in: stream, backButton: backButton)
-        try save(3, "Reader")
+        // 3. Reader.
+        let stream = try captureReader(3, from: mySite, isPad: isPad)
 
         // 4. Notifications. On an iPhone a post hides the tab bar, so go back to the stream first.
         if configuration.innerDisplayRequests != nil {
             mySite = try returnToMySite(from: stream, goingBack: false) ?? mySite
         } else {
-            try stream.tap(backButton)
+            try stream.tap(readerBackButton)
         }
         if isPad {
             try openFromSidebar("sidebar_notifications", from: stream)
@@ -141,7 +128,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try save(4, "Notifications")
     }
 
-    /// The WordPress app's screenshots: the editor, a custom post type, media and pages.
+    /// The WordPress app's screenshots: the editor, a custom post type, media, pages and the Reader.
     ///
     /// The WordPress app's My Site has no quick actions, so it opens everything from the site's
     /// menu, on an iPhone as on an iPad.
@@ -180,6 +167,37 @@ final class AppStoreScreenshots: JetpackUITestCase {
         try mySite.select(tab: pages.buttons["published"].firstMatch)
         try mySite.waitFor(pages.cells.firstMatch)
         try save(4, "Pages")
+        mySite = try returnToMySite(from: mySite, goingBack: false) ?? mySite
+
+        // 5. Reader.
+        try captureReader(5, from: mySite, isPad: isPad)
+    }
+
+    /// Opens the Reader post the screenshot shows, from its site's stream, and saves the screenshot.
+    ///
+    /// `ReaderScreen` waits for its menu to be hittable as a whole, which it isn't beside the iPad's
+    /// stream, or beside the iPhone Duo's side strip, so this taps the site's row instead.
+    ///
+    /// - Returns: The site's stream, under the post.
+    @discardableResult
+    private func captureReader(_ index: Int, from screen: ScreenObject, isPad: Bool) throws -> ReaderStreamScreen {
+        if isPad {
+            try openFromSidebar("sidebar_reader", from: screen)
+        } else {
+            try screen.tap(app.buttons["tabbar_reader"], until: app.collectionViews["reader_sidebar"])
+        }
+        try screen.tap(
+            app.collectionViews["reader_sidebar"].staticTexts[Fixture.readerSite],
+            until: app.navigationBars[Fixture.readerSite]
+        )
+        let stream = try ReaderStreamScreen(title: Fixture.readerSite, app: app)
+        try openReaderPost(in: stream, backButton: readerBackButton)
+        try save(index, "Reader")
+        return stream
+    }
+
+    private var readerBackButton: XCUIElement {
+        app.buttons["reader-detail-back-button"]
     }
 
     /// Opens the draft the editor screenshot shows, from the posts list.

@@ -87,7 +87,7 @@ SCREENSHOT_APPS = {
     logo: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppImages.xcassets', 'icon-wp-filled.imageset', 'icon-wp-filled.pdf'),
     # The fixture site as an Atomic one, whose custom post types the app shows, with a Staff type.
     fixtures: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'screenshot_fixtures', 'wordpress'),
-    strings: screenshot_strings(4)
+    strings: screenshot_strings(5)
   }
 }.freeze
 

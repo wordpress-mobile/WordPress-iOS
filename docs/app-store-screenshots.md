@@ -18,9 +18,9 @@ Both apps use the same test, fixtures, devices and compositor. What differs:
 | Final screenshots | `fastlane/jetpack_promo_screenshots/` | `fastlane/promo_screenshots/` |
 | Title screen logo | WordPress and Jetpack | WordPress |
 
-The WordPress app leaves Stats, the Reader and Notifications to the Jetpack app, and shows a poster about it in their place, so its screenshots show what it does have.
+The WordPress app leaves Stats and Notifications to the Jetpack app, and shows a poster about it in their place, so its screenshots show what it does have. It has the Reader, for WordPress.com accounts, so both apps' screenshots show the same Reader post.
 
-The WordPress screenshots load fixtures of their own over the UI tests' ones, from `fastlane/appstoreres/screenshot_fixtures/wordpress/`. They make the fixture site, Tri-County Real Estate, an Atomic site, since the app only shows custom post types on sites it reaches through the core REST API, and give it a Staff post type with four agents. The UI tests don't see any of it. An app's own fixtures are laid out like `Tests/JetpackUITests/Fixtures/mappings`, and replace any file there at the same path; their images go in the UI tests' `Fixtures/__files`, which is where `bodyFileName` is read from.
+The WordPress screenshots load fixtures of their own over the UI tests' ones, from `fastlane/appstoreres/screenshot_fixtures/wordpress/`. They make the fixture site, Tri-County Real Estate, an Atomic site, since the app only shows custom post types on sites it reaches through the core REST API, and give it a Staff post type with four agents. They also turn on the WordPress app's Reader (`wordpress_ios_reader` in `wpcom/feature_flags.json`). The UI tests don't see any of it. An app's own fixtures are laid out like `Tests/JetpackUITests/Fixtures/mappings`, and replace any file there at the same path; their images go in the UI tests' `Fixtures/__files`, which is where `bodyFileName` is read from.
 
 The agents' headshots are placeholders for now: Gravatar's generated `retro` patterns, in `Fixtures/__files/images/staff/`.
 
@@ -83,7 +83,7 @@ bundle exec fastlane jetpack_screenshots language:de-DE device:"iPhone 18 Pro Ma
 
 ### Temporary translations
 
-For now, every App Store language has headlines and on-screen content translated by Claude, not by translators: the `screenshot_*.txt` files in each `fastlane/appstoreres/jetpack_metadata/<locale>/` and `fastlane/appstoreres/metadata/<locale>/` folder, and every `<locale>.json` in `fastlane/appstoreres/screenshot_content/`. The WordPress title, Editor, Media and My Site headlines reuse the translators' wording of the old WordPress screenshots, where it fits. They're placeholders until both go through the translation pipeline. The headlines are replaced the first time `download_jetpack_promo_strings` or `download_promo_strings` runs after GlotPress has them; the on-screen content has no pipeline yet.
+For now, every App Store language has headlines and on-screen content translated by Claude, not by translators: the `screenshot_*.txt` files in each `fastlane/appstoreres/jetpack_metadata/<locale>/` and `fastlane/appstoreres/metadata/<locale>/` folder, and every `<locale>.json` in `fastlane/appstoreres/screenshot_content/`. The WordPress title, Editor, Media and My Site headlines reuse the translators' wording of the old WordPress screenshots, where it fits, and its Reader headline is the Jetpack one. They're placeholders until both go through the translation pipeline. The headlines are replaced the first time `download_jetpack_promo_strings` or `download_promo_strings` runs after GlotPress has them; the on-screen content has no pipeline yet.
 
 ### Translating what's on screen
 
