@@ -206,13 +206,21 @@ class ScreenObject {
     /// element's hit point and doesn't tap at all, so this taps the middle of its frame instead.
     func tap(_ element: XCUIElement, until destination: XCUIElement) throws {
         try waitFor(element)
-        for _ in 0..<3 {
+        for attempt in 1...3 {
+            if attempt > 1 {
+                logRetry(of: element, attempt: attempt)
+            }
             tapMiddle(of: element)
             if destination.pollForExistence(timeout: 10) {
                 return
             }
         }
         try waitFor(destination)
+    }
+
+    /// Records a retried tap as a step in the test's log, to show how often taps need retrying.
+    func logRetry(of element: XCUIElement, attempt: Int) {
+        XCTContext.runActivity(named: "Tap again, attempt \(attempt): \(element)") { _ in }
     }
 
     /// Taps the middle of `element`'s frame, without asking XCUITest for its hit point.

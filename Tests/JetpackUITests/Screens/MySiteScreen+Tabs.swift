@@ -22,7 +22,10 @@ extension MySiteScreen {
     private func selectTab(_ identifier: String) throws {
         let tab = app.buttons[identifier]
         try waitFor(tab)
-        for _ in 0..<3 {
+        for attempt in 1...3 {
+            if attempt > 1 {
+                logRetry(of: tab, attempt: attempt)
+            }
             tapMiddle(of: tab)
             if tab.poll(timeout: 5, until: { $0.isSelected }) {
                 return
