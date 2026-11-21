@@ -154,31 +154,30 @@ final class AppStoreScreenshots: JetpackUITestCase {
         var mySite = try openMySite(isPad: isPad)
 
         // 1. Editor, with a draft that has a quote and an image.
-        try mySite.tap(app.cells["Blog Post Row"])
         let posts = app.tables["PostsTable"]
-        try mySite.waitFor(posts)
+        try mySite.tap(siteMenuRow("Blog Post Row"), until: posts)
         try openDraft(in: posts, from: mySite)
         _ = try EditorScreen(app: app)
         try save(1, "Editor")
         mySite = try relaunch(isPad: isPad)
 
-        // 2. Staff, a custom post type: its rows have no identifier, so it's found by its name.
-        try mySite.tap(app.cells.containing(.staticText, identifier: staffTypeName).firstMatch)
-        try mySite.waitFor(app.staticTexts[firstStaffMember].firstMatch)
+        // 2. Staff, a custom post type: its row has no identifier of its own, so it's found by its name.
+        try mySite.tap(
+            app.collectionViews["Blog Details Table"].staticTexts[staffTypeName].firstMatch,
+            until: app.staticTexts[firstStaffMember].firstMatch
+        )
         try save(2, "Staff")
         mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
 
         // 3. Media.
-        try mySite.tap(app.cells["Media Row"])
         // The library's grid is a SwiftUI view, whose items are images rather than cells.
-        try mySite.waitFor(app.scrollViews.images.firstMatch)
+        try mySite.tap(siteMenuRow("Media Row"), until: app.scrollViews.images.firstMatch)
         try save(3, "Media")
         mySite = try returnToMySite(from: mySite, goingBack: !isPad) ?? mySite
 
         // 4. Pages: the published ones.
-        try mySite.tap(app.cells["Site Pages Row"])
         let pages = app.tables["PagesTable"]
-        try mySite.waitFor(pages)
+        try mySite.tap(siteMenuRow("Site Pages Row"), until: pages)
         try mySite.select(tab: pages.buttons["published"].firstMatch)
         try mySite.waitFor(pages.cells.firstMatch)
         try save(4, "Pages")
