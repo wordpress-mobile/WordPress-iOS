@@ -292,7 +292,7 @@ class NoticePresenter {
 
         // At regular width, the notice shouldn't be any wider than 1/2 the app's width
         noticeContainerView.noticeWidthConstraint = noticeView.widthAnchor.constraint(
-            equalTo: noticeContainerView.widthAnchor,
+            lessThanOrEqualTo: noticeContainerView.widthAnchor,
             multiplier: 0.5
         )
         let isRegularWidth = noticeContainerView.traitCollection.horizontalSizeClass == .regular
@@ -318,18 +318,27 @@ class NoticePresenter {
         view.mask = MaskView(parent: view, untouchableViewController: window.untouchableViewController)
 
         let offScreenBottomOffset = offScreenNoticeContainerBottomOffset(for: noticeContainerView)
-        let fromState = animator.state(
+        var fromState = animator.state(
             for: noticeContainerView,
             in: view,
             withTransition: .offscreen,
             bottomOffset: offScreenBottomOffset
         )
-        let toState = animator.state(
+        var toState = animator.state(
             for: noticeContainerView,
             in: view,
             withTransition: .onscreen,
             bottomOffset: onScreenNoticeContainerBottomConstraintConstant
         )
+        if UIAccessibility.isReduceMotionEnabled {
+            // Fade in at the final position instead of sliding in.
+            let onscreenState = toState
+            fromState = {
+                onscreenState()
+                noticeView.alpha = 0
+            }
+            toState = { noticeView.alpha = 1 }
+        }
         animator.animatePresentation(
             fromState: fromState,
             toState: toState,
@@ -455,12 +464,15 @@ class NoticePresenter {
             return
         }
         let bottomOffset = offScreenNoticeContainerBottomOffset(for: container)
-        let toState = animator.state(
+        var toState = animator.state(
             for: container,
             in: containerSuperview,
             withTransition: .offscreen,
             bottomOffset: bottomOffset
         )
+        if UIAccessibility.isReduceMotionEnabled {
+            toState = { container.noticeView.alpha = 0 }
+        }
         animator.animatePresentation(
             fromState: {},
             toState: toState,
@@ -535,8 +547,8 @@ class NoticePresenter {
     }
 
     private enum Animations {
-        static let appearanceDuration: TimeInterval = 1.0
-        static let appearanceSpringDamping: CGFloat = 0.7
+        static let appearanceDuration: TimeInterval = 0.5
+        static let appearanceSpringDamping: CGFloat = 0.85
         static let appearanceSpringVelocity: CGFloat = 0.0
         static let dismissDelay: TimeInterval = 5.0
     }
@@ -562,15 +574,21 @@ private extension UIWindow {
 ///
 class NoticeContainerView: UIView {
     /// The space between the Notice and its parent View
-    private let containerMargin = NSDirectionalEdgeInsets(top: 8.0, leading: 8.0, bottom: 15.0, trailing: 8.0)
+    private let containerMargin = NSDirectionalEdgeInsets(top: 8.0, leading: 16.0, bottom: 12.0, trailing: 16.0)
     var bottomConstraint: NSLayoutConstraint?
     var topConstraint: NSLayoutConstraint?
     var noticeWidthConstraint: NSLayoutConstraint?
+
+    /// Shrinks the notice to fit its content, so short notices stay compact and centered.
+    /// Off at accessibility sizes, where the text wraps and the notice should use the full width.
+    private let compactWidthConstraint: NSLayoutConstraint
 
     let noticeView: NoticeView
 
     init(noticeView: NoticeView) {
         self.noticeView = noticeView
+        compactWidthConstraint = noticeView.widthAnchor.constraint(equalToConstant: 0)
+        compactWidthConstraint.priority = .lowButABigHigher + 10
 
         super.init(frame: .zero)
 
@@ -602,10 +620,17 @@ class NoticeContainerView: UIView {
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
+        updateCompactWidthConstraint()
 
-        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _: UITraitCollection) in
+        registerForTraitChanges(
+            [UITraitHorizontalSizeClass.self, UITraitPreferredContentSizeCategory.self]
+        ) { (self: Self, _: UITraitCollection) in
             self.updateNoticeWidthConstraint()
         }
+    }
+
+    private func updateCompactWidthConstraint() {
+        compactWidthConstraint.isActive = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -615,6 +640,7 @@ class NoticeContainerView: UIView {
     private func updateNoticeWidthConstraint() {
         let isRegularWidth = traitCollection.horizontalSizeClass == .regular
         noticeWidthConstraint?.isActive = isRegularWidth
+        updateCompactWidthConstraint()
 
         layoutIfNeeded()
     }

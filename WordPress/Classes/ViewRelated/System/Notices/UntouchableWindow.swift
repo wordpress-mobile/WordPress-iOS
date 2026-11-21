@@ -40,7 +40,32 @@ class UntouchableViewController: UIViewController {
             return 0
         }
 
-        return tabBarController.tabBar.frame.height
+        let tabBarOffset = tabBarController.tabBar.frame.height
+
+        // Keep the notice clear of the floating create button, so it doesn't half-cover it.
+        guard tabBarController.presentedViewController == nil,
+            let window = tabBarController.view.window,
+            let button = Self.visibleCreateButton(in: window)
+        else {
+            return tabBarOffset
+        }
+        let buttonFrame = button.convert(button.bounds, to: window)
+        return max(tabBarOffset, window.bounds.maxY - buttonFrame.minY + Constants.createButtonSpacing)
+    }
+
+    private static func visibleCreateButton(in view: UIView) -> UIView? {
+        guard !view.isHidden, view.alpha > 0.01 else {
+            return nil
+        }
+        if view.accessibilityIdentifier == CreateButtonCoordinator.buttonAccessibilityIdentifier {
+            return view
+        }
+        for subview in view.subviews {
+            if let button = visibleCreateButton(in: subview) {
+                return button
+            }
+        }
+        return nil
     }
 
     var offsetOffscreen: CGFloat {
@@ -86,6 +111,7 @@ class UntouchableViewController: UIViewController {
 
     enum Constants {
         static let offsetWithoutTabbar: CGFloat = 50.0
+        static let createButtonSpacing: CGFloat = 4.0
     }
 }
 
