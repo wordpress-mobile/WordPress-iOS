@@ -3,6 +3,7 @@ import SwiftUI
 import Support
 import UIKit
 import WordPressAPIInternal
+import WordPressData
 import WordPressShared
 import WordPressUI
 import WebKit
@@ -27,8 +28,21 @@ struct RootSupportView: View {
     @EnvironmentObject
     var dataProvider: SupportDataProvider
 
+    /// Closes the screen. Set when the screen is presented rather than pushed, where it has no back button.
+    var close: (() -> Void)?
+
+    /// Starts logging out of WordPress.com. Set where the app's own Log Out button can't be reached.
+    var logOut: (() -> Void)?
+
     @State
     private var state: ViewState = .loading
+
+    @State
+    private var isExtraDebugEnabled = UserPersistentStoreFactory.instance()
+        .bool(forKey: RootSupportView.extraDebugKey)
+
+    /// The saved setting that makes the app's logs more detailed. `WPLogger` reads it.
+    private static let extraDebugKey = "extra_debug"
 
     var body: some View {
         VStack {
@@ -46,6 +60,13 @@ struct RootSupportView: View {
         .task(self.loadIdentity)
         .refreshable(action: self.reloadIdentity)
         .navigationTitle(Strings.title)
+        .toolbar {
+            if let close {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button.make(role: .close, action: close)
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -69,6 +90,13 @@ struct RootSupportView: View {
             Section(Strings.diagnosticsHeader) {
                 applicationLogLink
                 diagnosticsLink
+                extraDebugToggle
+            }
+
+            if let logOut {
+                Section(Strings.accountHeader) {
+                    Button(Strings.logOut, role: .destructive, action: logOut)
+                }
             }
         }
         .listStyle(.insetGrouped)
@@ -178,6 +206,21 @@ struct RootSupportView: View {
         }
     }
 
+    @ViewBuilder
+    private var extraDebugToggle: some View {
+        Toggle(isOn: $isExtraDebugEnabled) {
+            SupportAreaRow(
+                imageName: "ladybug",
+                title: Strings.debugTitle,
+                detail: Strings.debugDetail
+            )
+        }
+        .onChange(of: isExtraDebugEnabled) { _, isEnabled in
+            UserPersistentStoreFactory.instance().set(isEnabled, forKey: Self.extraDebugKey)
+            WPLogger.configureLoggerLevelWithExtraDebug()
+        }
+    }
+
     @Sendable private func loadIdentity() async {
 
         do {
@@ -232,19 +275,51 @@ struct SupportAreaRow: View {
     }
 }
 
-class RootSupportViewController: UIHostingController<AnyView> {
+class RootSupportViewController: UIHostingController<AnyView>, SearchableActivityConvertable {
 
     private let dataProvider: SupportDataProvider
 
-    @MainActor
-    init(dataProvider: SupportDataProvider) {
+    /// - Parameters:
+    ///   - showsCloseButton: Adds a button that dismisses the screen. Pass `true` when presenting the screen
+    ///     rather than pushing it.
+    ///   - showsLogOutButton: Adds a button that logs out of WordPress.com. Pass `true` where the Me screen,
+    ///     which has the app's own Log Out button, can't be reached.
+    init(
+        dataProvider: SupportDataProvider = .shared,
+        showsCloseButton: Bool = false,
+        showsLogOutButton: Bool = false
+    ) {
         self.dataProvider = dataProvider
-        let type = RootSupportView().environmentObject(self.dataProvider)
-        super.init(rootView: AnyView(erasing: type))
+        super.init(rootView: AnyView(EmptyView()))
+
+        let view = RootSupportView(
+            close: showsCloseButton ? { [weak self] in self?.dismiss(animated: true) } : nil,
+            logOut: showsLogOutButton ? { [weak self] in self?.logOut() } : nil
+        )
+        rootView = AnyView(view.environmentObject(dataProvider))
     }
 
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    /// Presents the support screen in its own navigation stack, with a button to close it.
+    static func present(from presentingViewController: UIViewController, showsLogOutButton: Bool = false) {
+        let supportViewController = RootSupportViewController(
+            showsCloseButton: true,
+            showsLogOutButton: showsLogOutButton
+        )
+        let navigationController = UINavigationController(rootViewController: supportViewController)
+        navigationController.modalPresentationStyle = .formSheet
+        presentingViewController.present(navigationController, animated: true)
+    }
+
+    /// Presents the support screen on top of whatever the app is showing.
+    static func presentFromLeafViewController() {
+        guard let leafViewController = UIApplication.shared.leafViewController else {
+            return wpAssertionFailure("support requires a presenting view controller")
+        }
+        present(from: leafViewController)
     }
 
     override func viewDidLoad() {
@@ -255,6 +330,43 @@ class RootSupportViewController: UIHostingController<AnyView> {
         // That is the shade the screen visibly changes from as it pushes in from Me. Match the
         // grouped background the list and every other Me screen use.
         view.backgroundColor = .systemGroupedBackground
+
+        WPAnalytics.track(.openedSupport)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        registerUserActivity()
+    }
+
+    private func logOut() {
+        LogOutActionHandler().logOut(with: self)
+    }
+
+    // MARK: - SearchableActivityConvertable
+
+    // Declared here rather than in an extension: `@objc` members aren't allowed in extensions of a class
+    // that inherits from a generic class.
+
+    var activityType: String {
+        WPActivityType.support.rawValue
+    }
+
+    var activityTitle: String {
+        NSLocalizedString(
+            "Help & Support",
+            comment: "Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS."
+        )
+    }
+
+    var activityKeywords: Set<String>? {
+        let keywords = NSLocalizedString(
+            "wordpress, help, support, faq, questions, debug, logs, help center, contact",
+            comment:
+                "This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab"
+        )
+        .arrayOfTags()
+        return keywords.isEmpty ? nil : Set(keywords)
     }
 }
 
@@ -354,5 +466,25 @@ private enum Strings {
         "support.root.systemStatus.detail",
         value: "Tools to help diagnose issues",
         comment: "Description of the row that opens the app's diagnostic tools."
+    )
+    static let debugTitle = NSLocalizedString(
+        "support.row.debug.title",
+        value: "Debug",
+        comment: "Title of the switch on the support screen that makes the app's logs more detailed."
+    )
+    static let debugDetail = NSLocalizedString(
+        "support.root.debug.detail",
+        value: "Add more detail to the logs to help troubleshoot issues.",
+        comment: "Description of the switch on the support screen that makes the app's logs more detailed."
+    )
+    static let accountHeader = NSLocalizedString(
+        "support.sectionHeader.account.title",
+        value: "WordPress.com Account",
+        comment: "WordPress.com sign-out section header title"
+    )
+    static let logOut = NSLocalizedString(
+        "support.button.logOut.title",
+        value: "Log Out",
+        comment: "Button for confirming logging out from WordPress.com account"
     )
 }
