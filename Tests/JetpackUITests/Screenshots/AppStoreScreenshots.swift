@@ -143,9 +143,8 @@ final class AppStoreScreenshots: JetpackUITestCase {
 
     /// The WordPress app's screenshots: the editor, a custom post type, media and pages.
     ///
-    /// The WordPress app leaves Stats, the Reader and Notifications to the Jetpack app, and shows a
-    /// poster about it in their place, so its screenshots show what it has instead. Its My Site has
-    /// no quick actions, so it opens everything from the site's menu, on an iPhone as on an iPad.
+    /// The WordPress app's My Site has no quick actions, so it opens everything from the site's
+    /// menu, on an iPhone as on an iPad.
     ///
     /// The custom post type, Staff, is in the WordPress screenshots' own fixtures, which also make the
     /// site an Atomic one: the app only shows custom post types on sites it reaches with the core
