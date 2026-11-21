@@ -179,9 +179,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, blog: blog)
 
-        let supportViewController = SupportTableViewController()
-        supportViewController.sourceTag = .deleteSite
-        supportViewController.showFromTabBar()
+        RootSupportViewController.presentFromLeafViewController()
     }
 
     // MARK: - Delete Site Helpers

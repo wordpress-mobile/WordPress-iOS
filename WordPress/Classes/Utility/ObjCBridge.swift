@@ -10,8 +10,8 @@ import WordPressData
         WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
     }
 
-    @objc public class func showSupportTableViewController() {
-        SupportTableViewController().showFromTabBar()
+    @objc public class func showSupport() {
+        RootSupportViewController.presentFromLeafViewController()
     }
 
     @objc public class var isWordPress: Bool {

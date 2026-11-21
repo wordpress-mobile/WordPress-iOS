@@ -82,8 +82,9 @@ struct MigrationViewControllerFactory {
 
     private func makeSupportViewControllerRouter(with presenter: UIViewController) -> () -> Void {
         return { [weak presenter] in
-            let destination = SupportTableViewController(configuration: .currentAccountConfiguration(), style: .insetGrouped)
-            presenter?.present(UINavigationController(rootViewController: destination), animated: true)
+            guard let presenter else { return }
+            // The migration screens replace the whole app, so this is the only place to log out from.
+            RootSupportViewController.present(from: presenter, showsLogOutButton: true)
         }
     }
 

@@ -9,7 +9,7 @@ struct AppLogFile: Hashable, Sendable {
 
 /// Lists the app's log files, newest first.
 ///
-/// Code that reads the log files (support screens, Zendesk, encrypted log upload, crash reports) goes through this
+/// Code that reads the log files (support screens, encrypted log upload, crash reports) goes through this
 /// type, so it doesn't depend on the logging library that writes them.
 struct LogFileStore {
     static let shared = LogFileStore(fileLogger: WPLogger.shared().fileLogger)

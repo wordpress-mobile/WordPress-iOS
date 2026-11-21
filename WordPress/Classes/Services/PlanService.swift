@@ -10,20 +10,6 @@ open class PlanService: NSObject {
         self.coreDataStack = coreDataStack
     }
 
-    public func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount,
-                                                                  success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void,
-                                                                  failure: @escaping (Error?) -> Void) {
-        guard let api = account.wordPressComRestApi else {
-            success([Int: RemotePlanSimpleDescription]())
-            return
-        }
-
-        let remote = PlanServiceRemote(wordPressComRestApi: api)
-        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { result in
-            success(result)
-        }, failure: failure)
-    }
-
     @objc public func getWpcomPlans(_ account: WPAccount,
                                     success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {

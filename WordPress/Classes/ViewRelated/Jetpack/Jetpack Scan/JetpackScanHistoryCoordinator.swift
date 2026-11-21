@@ -79,8 +79,7 @@ class JetpackScanHistoryCoordinator {
     }
 
     private func openSupport() {
-        let supportVC = SupportTableViewController()
-        supportVC.showFromTabBar()
+        RootSupportViewController.presentFromLeafViewController()
     }
 
     // MARK: - Private: Handling

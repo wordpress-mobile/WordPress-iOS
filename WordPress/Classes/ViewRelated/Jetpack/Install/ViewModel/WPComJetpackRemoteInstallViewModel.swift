@@ -22,8 +22,6 @@ class WPComJetpackRemoteInstallViewModel {
     // The flow should always complete after the plugin is installed.
     let shouldConnectToJetpack = false
 
-    let supportSourceTag: SupportSourceTag? = .jetpackFullPluginInstallErrorSourceTag
-
     var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)? = nil
 
     private(set) var state: JetpackRemoteInstallState = .install {
@@ -135,12 +133,6 @@ private extension WPComJetpackRemoteInstallViewModel {
             descriptionText: (state == .success ? Constants.successDescriptionText : state.message),
             buttonTitleText: (state == .success ? Constants.successButtonTitleText : state.buttonTitle)
         )
-    }
-}
-
-extension SupportSourceTag {
-    static var jetpackFullPluginInstallErrorSourceTag: SupportSourceTag {
-        .init(name: "jetpackInstallFullPluginError", origin: "origin:jp-install-full-plugin-error")
     }
 }
 
