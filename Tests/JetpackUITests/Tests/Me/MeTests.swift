@@ -69,7 +69,7 @@ final class MeTests: JetpackUITestCase {
             .goToHelp()
             .waitForScreen()
 
-        for row in [help.contactSupportRow, help.ticketsRow, help.contactEmailRow, help.versionRow] {
+        for row in help.supportRows + [help.versionRow] {
             XCTAssertTrue(row.pollForExistence(timeout: 10), "\(row) is missing")
         }
 
