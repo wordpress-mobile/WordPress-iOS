@@ -38,34 +38,37 @@ final class MySiteScreen: ScreenObject {
     }
 
     func goToSitePicker() throws -> SitePickerScreen {
-        try tap(switchSiteButton)
+        try tap(switchSiteButton, until: app.navigationBars["My Sites"])
         return try SitePickerScreen(app: app)
     }
 
     // MARK: - Quick Actions
 
+    // My Site is often the first screen a test taps after a launch, so each of these taps until
+    // its screen appears. See `tap(_:until:)`.
+
     func goToStats() throws -> StatsScreen {
-        try tap(app.cells["quick_actions_stats"])
+        try tap(app.cells["quick_actions_stats"], until: app.otherElements["stats-dashboard"])
         return try StatsScreen(app: app)
     }
 
     func goToPosts() throws -> PostsScreen {
-        try tap(app.cells["quick_actions_posts"])
+        try tap(app.cells["quick_actions_posts"], until: app.tables["PostsTable"])
         return try PostsScreen(app: app)
     }
 
     func goToPages() throws -> PagesScreen {
-        try tap(app.cells["quick_actions_pages"])
+        try tap(app.cells["quick_actions_pages"], until: app.tables["PagesTable"])
         return try PagesScreen(app: app)
     }
 
     func goToMedia() throws -> MediaScreen {
-        try tap(app.cells["quick_actions_media"])
+        try tap(app.cells["quick_actions_media"], until: app.navigationBars.staticTexts["Media"])
         return try MediaScreen(app: app)
     }
 
     func goToSiteMenu() throws -> SiteMenuScreen {
-        try tap(app.cells["quick_actions_more"])
+        try tap(app.cells["quick_actions_more"], until: app.collectionViews["Blog Details Table"])
         return try SiteMenuScreen(app: app)
     }
 }
