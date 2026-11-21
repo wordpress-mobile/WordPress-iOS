@@ -57,16 +57,18 @@ final class AppStoreScreenshots: JetpackUITestCase {
         var mySite = try openMySite(isPad: isPad)
 
         // 1. Stats
-        try mySite.tap(isPad ? siteMenuRow("Stats Row") : app.cells["quick_actions_stats"])
+        try mySite.tap(
+            isPad ? siteMenuRow("Stats Row") : app.cells["quick_actions_stats"],
+            until: app.otherElements["stats-dashboard"]
+        )
         let stats = try StatsScreen(app: app)
         try stats.waitFor(stats.chartCard)
         try save(1, "Stats")
         mySite = try returnToMySite(from: stats, goingBack: !isPad) ?? mySite
 
         // 2. Editor, with a draft that has a quote and an image.
-        try mySite.tap(isPad ? siteMenuRow("Blog Post Row") : app.cells["quick_actions_posts"])
         let posts = app.tables["PostsTable"]
-        try mySite.waitFor(posts)
+        try mySite.tap(isPad ? siteMenuRow("Blog Post Row") : app.cells["quick_actions_posts"], until: posts)
         try mySite.select(tab: posts.buttons["drafts"].firstMatch)
         try mySite.tap(posts.staticTexts[draftTitle].firstMatch)
         let editor = try EditorScreen(app: app)
@@ -81,9 +83,12 @@ final class AppStoreScreenshots: JetpackUITestCase {
         if isPad {
             try openFromSidebar("sidebar_reader", from: mySite)
         } else {
-            try mySite.tap(app.buttons["tabbar_reader"])
+            try mySite.tap(app.buttons["tabbar_reader"], until: app.collectionViews["reader_sidebar"])
         }
-        try mySite.tap(app.collectionViews["reader_sidebar"].staticTexts[Fixture.readerSite])
+        try mySite.tap(
+            app.collectionViews["reader_sidebar"].staticTexts[Fixture.readerSite],
+            until: app.navigationBars[Fixture.readerSite]
+        )
         let stream = try ReaderStreamScreen(title: Fixture.readerSite, app: app)
         let backButton = app.buttons["reader-detail-back-button"]
         try openReaderPost(in: stream, backButton: backButton)
@@ -98,7 +103,7 @@ final class AppStoreScreenshots: JetpackUITestCase {
         if isPad {
             try openFromSidebar("sidebar_notifications", from: stream)
         } else {
-            try stream.tap(app.buttons["tabbar_notifications"])
+            try stream.tap(app.buttons["tabbar_notifications"], until: app.tables["notifications-table"])
         }
         let notifications = try NotificationsScreen(app: app)
         try notifications.waitFor(notifications.notifications.firstMatch)
