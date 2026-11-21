@@ -1,5 +1,6 @@
 27.6
 -----
+* [**] Help & Support: Get help from the AI Assistant and our support team in one place, in both the WordPress and Jetpack apps. This replaces the old support tickets and the in-app feedback form [#26434]
 
 
 27.5
