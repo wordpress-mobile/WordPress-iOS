@@ -193,7 +193,10 @@ final class AppStoreScreenshots: JetpackUITestCase {
         for _ in 0..<3 {
             try screen.select(tab: posts.buttons["drafts"].firstMatch)
             if draft.pollForExistence(timeout: 15) {
-                try screen.tap(draft)
+                // The list can redraw the draft's row as its thumbnail loads, and a tap then is
+                // dropped, so this taps until the editor opens. Its close button is there even
+                // while an autosave alert covers the editor.
+                try screen.tap(draft, until: app.buttons["editor-close-button"])
                 return
             }
             try screen.select(tab: posts.buttons["published"].firstMatch)
