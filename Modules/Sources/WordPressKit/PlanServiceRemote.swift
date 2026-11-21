@@ -44,75 +44,7 @@ open class PlanServiceRemote: ServiceRemoteWordPressComREST {
         })
     }
 
-    /// Fetch the plan ID and name for each of the user's sites.
-    /// Accepts locale as a parameter in order to override automatic localization
-    /// and return non-localized results when needed.
-    ///
-    public func getPlanDescriptionsForAllSitesForLocale(_ locale: String, success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void, failure: @escaping (Error) -> Void) {
-        let endpoint = "me/sites"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-        let parameters: [String: String] = [
-            "fields": "ID, plan",
-            "locale": locale
-        ]
-
-        wordPressComRESTAPI.get(path,
-                                parameters: parameters as [String: AnyObject],
-                                success: {
-                                    response, _ in
-
-                                    guard let response = response as? EndpointResponse else {
-                                        failure(PlanServiceRemote.ResponseError.decodingFailure)
-                                        return
-                                    }
-
-                                    let result = self.parsePlanDescriptionsForSites(response)
-                                    success(result)
-        },
-                                failure: {
-                                    error, _ in
-                                    failure(error)
-        })
-    }
-
     // MARK: - Non-public methods
-
-    func parsePlanDescriptionsForSites(_ response: EndpointResponse) -> [Int: RemotePlanSimpleDescription] {
-        var result = [Int: RemotePlanSimpleDescription]()
-
-        guard let sites = response["sites"] as? [EndpointResponse] else {
-            return result
-        }
-
-        for site in sites {
-            guard
-                let tpl = parsePlanDescriptionForSite(site)
-            else {
-                continue
-            }
-            result[tpl.siteID] = tpl.plan
-        }
-
-        return result
-    }
-
-    func parsePlanDescriptionForSite(_ site: EndpointResponse) -> (siteID: Int, plan: RemotePlanSimpleDescription)? {
-        guard
-            let siteID = site["ID"] as? Int,
-            let plan = site["plan"] as? EndpointResponse,
-            let planID = plan["product_id"] as? Int,
-            let planName = plan["product_name_short"] as? String,
-            let planSlug = plan["product_slug"] as? String else {
-                return nil
-        }
-
-        var name = planName
-        if planSlug.contains("jetpack") {
-            name = name + " (Jetpack)"
-        }
-
-        return (siteID, RemotePlanSimpleDescription(planID: planID, name: name))
-    }
 
     func parseWpcomPlans(_ response: EndpointResponse) -> [RemoteWpcomPlan] {
         guard let json = response["plans"] as? [EndpointResponse] else {
@@ -189,24 +121,5 @@ open class PlanServiceRemote: ServiceRemoteWordPressComREST {
                 return nil
         }
         return RemotePlanFeature(slug: slug, title: title, description: description, iconURL: nil)
-    }
-
-    /// Retrieves Zendesk meta data: plan and Jetpack addons, if available
-    open func getZendeskMetadata(siteID: Int, completion: @escaping (Result<ZendeskMetadata, Error>) -> Void) {
-        let endpoint = "me/sites"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-        let parameters = ["fields": "ID, zendesk_site_meta"] as [String: AnyObject]
-
-        Task { @MainActor [wordPressComRestApi] in
-            await wordPressComRestApi.perform(.get, URLString: path, parameters: parameters, type: ZendeskSiteContainer.self)
-                .eraseToError()
-                .flatMap { container in
-                    guard let metadata = container.body.sites.first(where: { $0.ID == siteID })?.zendeskMetadata else {
-                        return .failure(PlanServiceRemoteError.noMetadata)
-                    }
-                    return .success(metadata)
-                }
-                .execute(completion)
-        }
     }
 }

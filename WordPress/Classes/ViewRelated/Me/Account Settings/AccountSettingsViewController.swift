@@ -445,25 +445,8 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        { [weak self] _ in
-            if ZendeskUtils.zendeskEnabled {
-                guard let leafViewController = UIApplication.shared.leafViewController else {
-                    return
-                }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(
-                    from: leafViewController,
-                    with: .closeAccount
-                ) { identityUpdated in
-                    if identityUpdated {
-                        self?.refreshModel()
-                    }
-                }
-            } else {
-                guard let url = Constants.forumsURL else {
-                    return
-                }
-                UIApplication.shared.open(url)
-            }
+        { _ in
+            RootSupportViewController.presentFromLeafViewController()
         }
     }
 
@@ -522,6 +505,5 @@ private class AccountSettingsController: SettingsController {
             comment:
                 "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username."
         )
-        static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
     }
 }

@@ -46,7 +46,7 @@ extension SiteSettingsViewController {
 
         WPAppAnalytics.track(.siteSettingsStartOverAccessed, blog: blog)
 
-        if SupportConfiguration.isStartOverSupportEnabled && blog.hasPaidPlan {
+        if AppConfiguration.isJetpack && blog.hasPaidPlan {
             let startOverVC = StartOverViewController(blog: blog)
             navigationController?.pushViewController(startOverVC, animated: true)
         } else {

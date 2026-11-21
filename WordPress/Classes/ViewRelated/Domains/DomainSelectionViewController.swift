@@ -856,9 +856,7 @@ private extension DomainSelectionViewController {
     }
 
     @objc func handleSupportButtonTapped(sender: UIBarButtonItem) {
-        let supportVC = SupportTableViewController()
-        let navigationController = UINavigationController(rootViewController: supportVC)
-        topmostPresentedViewController.show(navigationController, sender: nil)
+        RootSupportViewController.present(from: topmostPresentedViewController)
     }
 }
 

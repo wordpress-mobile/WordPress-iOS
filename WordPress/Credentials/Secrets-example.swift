@@ -7,11 +7,6 @@ class ApiCredentials: NSObject {
     static let client = "0"
     static let secret = "your-secret-here"
 
-    // ZenDesk
-    static let zendeskAppId = ""
-    static let zendeskUrl = ""
-    static let zendeskClientId = ""
-
     // Other Services
     static let encryptedLogKey = ""
     static let debuggingKey = ""

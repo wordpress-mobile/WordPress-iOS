@@ -114,7 +114,7 @@
         if (showSupport) {
             NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull __unused action) {
-                [ObjCBridge showSupportTableViewController];
+                [ObjCBridge showSupport];
                 [WPError internalInstance].alertShowing = NO;
             }];
             [alertController addAction:action];

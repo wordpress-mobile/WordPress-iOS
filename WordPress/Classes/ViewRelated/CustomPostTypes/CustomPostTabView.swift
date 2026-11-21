@@ -23,7 +23,6 @@ struct CustomPostTabView: View {
     @State private var scheduledViewModel: CustomPostListViewModel
     @State private var trashViewModel: CustomPostListViewModel
     @State private var editorPresentation: EditorPresentation?
-    @State private var isShowingFeedback = false
 
     @SiteStorage private var authorFilter: CustomPostAuthorFilter
 
@@ -166,18 +165,6 @@ struct CustomPostTabView: View {
                     )
                 }
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Button(action: { isShowingFeedback = true }) {
-                        Label(Strings.sendFeedback, systemImage: "envelope")
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")
-                }
-            }
-        }
-        .sheet(isPresented: $isShowingFeedback) {
-            SubmitFeedbackViewRepresentable()
         }
         .fullScreenCover(item: $editorPresentation) { presentation in
             CustomPostEditor(
@@ -373,14 +360,6 @@ private struct AdaptiveTabBarRepresentable: UIViewRepresentable {
     }
 }
 
-private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> SubmitFeedbackViewController {
-        SubmitFeedbackViewController(source: "custom_post_types", feedbackPrefix: "CustomPostTypes")
-    }
-
-    func updateUIViewController(_ uiViewController: SubmitFeedbackViewController, context: Context) {}
-}
-
 private enum EditorPresentation: Identifiable {
     case newPost
     case editPost(AnyPostWithEditContext)
@@ -437,11 +416,6 @@ private enum Strings {
         "customPostTab.trash",
         value: "Trash",
         comment: "Tab title for trashed posts"
-    )
-    static let sendFeedback = NSLocalizedString(
-        "customPostTab.sendFeedback",
-        value: "Send Feedback",
-        comment: "Menu item title for sending feedback on the custom post types screen"
     )
     static let betaBadge = NSLocalizedString(
         "customPostType.navigation.betaBadge",

@@ -44,6 +44,14 @@ struct PushNotificationsManagerTests {
         #expect(results == [.newData])
     }
 
+    @Test func zendeskTicketReplyNotificationIsHandled() {
+        var results: [UIBackgroundFetchResult] = []
+
+        PushNotificationsManager.shared.handleNotification(["type": "zendesk"]) { results.append($0) }
+
+        #expect(results == [.newData])
+    }
+
     @Test func notificationsAllowNilCompletion() {
         let manager = PushNotificationsManager.shared
         manager.handleNotification([:], completionHandler: nil)

@@ -17,7 +17,6 @@ import WordPressKit
 import WordPressMediaLibrary
 import WordPressShared
 import WordPressUI
-import ZendeskCoreSDK
 import Support
 import WordPressAPIInternal
 import WordPressSharedUI
@@ -382,17 +381,12 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureAppRatingUtility()
 
         WordPressAppDelegate.restoreExtraDebugSetting()
+        WordPressAppDelegate.removeZendeskUserDefaults()
         printDebugLaunchInfo()
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
-
-        // Zendesk Logging
-        CoreLogger.enabled = true
-        CoreLogger.logLevel = .debug
         #endif
-
-        ZendeskUtils.setup()
 
         WPUserAgent.useWordPressInWebViews()
 
@@ -789,6 +783,15 @@ extension WordPressAppDelegate {
         store.set((savedValue as NSString).boolValue, forKey: "extra_debug")
         store.removeObject(forKey: "orig_extra_debug")
         WPLogger.configureLoggerLevelWithExtraDebug()
+    }
+
+    /// Removes the support name, email and unread count that the Zendesk SDK integration saved.
+    /// Nothing reads them now that the app no longer includes the SDK.
+    static func removeZendeskUserDefaults(
+        from store: UserPersistentRepository = UserPersistentStoreFactory.instance()
+    ) {
+        store.removeObject(forKey: "wp_zendesk_profile")
+        store.removeObject(forKey: "wp_zendesk_unread_notifications")
     }
 
     /// Sets up swift-log. Every `main.swift` MUST call this before it creates the app delegate.

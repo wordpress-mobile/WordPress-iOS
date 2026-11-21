@@ -9,7 +9,6 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.intelligence,
         RemoteFeatureFlag.newStats,
         RemoteFeatureFlag.newGutenberg,
-        FeatureFlag.newSupport,
     ]
 
     private let flagStore = FeatureFlagOverrideStore()
@@ -39,19 +38,6 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
             "feature": feature.name,
             "enabled": newValue
         ])
-
-        if feature.key == RemoteFeatureFlag.newGutenberg.key && !newValue {
-            let alert = UIAlertController(title: Strings.editorFeedbackTitle, message: Strings.editorFeedbackMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.editorFeedbackDecline, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: Strings.editorFeedbackAccept, style: .default, handler: { _ in
-                let feedbackViewController = SubmitFeedbackViewController(source: "experimental_features", feedbackPrefix: "Editor")
-                self.presentViewController(feedbackViewController)
-            }))
-
-            self.presentViewController(alert)
-
-            return
-        }
     }
 
     private func flag(for feature: WordPressUI.Feature) -> OverridableFlag {
@@ -62,20 +48,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         return flag
     }
 
-    private func presentViewController(_ viewController: UIViewController) {
-        DispatchQueue.main.async {
-            if let windowScene = UIViewController.topViewController?.view.window?.windowScene,
-               let topController = windowScene.windows.first?.rootViewController {
-                topController.present(viewController, animated: true, completion: nil)
-            }
-        }
-    }
-
     enum Strings {
-        static let editorFeedbackTitle = NSLocalizedString("experimentalFeatures.editorFeedbackTitle", value: "Share Feedback", comment: "Title for the alert asking for feedback")
-        static let editorFeedbackMessage = NSLocalizedString("experimentalFeatures.editorFeedbackMessage", value: "Are you willing to share feedback on the experimental editor?", comment: "Message for the alert asking for feedback on the experimental editor")
-        static let editorFeedbackDecline = NSLocalizedString("experimentalFeatures.editorFeedbackDecline", value: "Not now", comment: "Dismiss button title for the alert asking for feedback")
-        static let editorFeedbackAccept = NSLocalizedString("experimentalFeatures.editorFeedbackAccept", value: "Send feedback", comment: "Accept button title for the alert asking for feedback")
         static let editorNote = NSLocalizedString("experimentalFeatures.editorNote", value: "Experimental Block Editor will become the default in a future release and the ability to disable it will be removed.", comment: "Communicates the future removal of the option to disable the experimental editor, displayed beneath the experimental features list")
     }
 }
