@@ -929,6 +929,7 @@ private extension BlogDetailsTableViewModel.Row {
         Row(
             kind: .comments,
             title: Strings.comments,
+            accessibilityIdentifier: "Comments Row",
             image: (UIImage(named: "site-menu-comments"))?.imageFlippedForRightToLeftLayoutDirection(),
             action: { [weak viewController] userInfo in
                 // When called from showDetailView, use .link as source (matching Objective-C behavior)
@@ -1044,6 +1045,7 @@ private extension BlogDetailsTableViewModel.Row {
         Row(
             kind: .themes,
             title: Strings.themes,
+            accessibilityIdentifier: "Themes Row",
             image: UIImage(named: "site-menu-themes"),
             action: { [weak viewController] _ in
                 viewController?.showThemes()
@@ -1055,6 +1057,7 @@ private extension BlogDetailsTableViewModel.Row {
         Row(
             kind: .menu,
             title: Strings.menus,
+            accessibilityIdentifier: "Menus Row",
             image: UIImage.gridicon(.menus).imageFlippedForRightToLeftLayoutDirection(),
             action: { [weak viewController] _ in
                 viewController?.showMenus()
@@ -1113,6 +1116,7 @@ private extension BlogDetailsTableViewModel.Row {
         Row(
             kind: .subscribers,
             title: Strings.subscribers,
+            accessibilityIdentifier: "Subscribers Row",
             image: UIImage(named: "wpl-mail"),
             action: { [weak viewController] _ in
                 MainActor.assumeIsolated {
@@ -1214,6 +1218,7 @@ private extension BlogDetailsTableViewModel.Row {
         Row(
             kind: .sharing,
             title: Strings.socialRowTitle,
+            accessibilityIdentifier: "Social Row",
             image: UIImage(named: "site-menu-social"),
             action: { [weak viewController] userInfo in
                 // When called from showDetailView, use .link as source (matching Objective-C behavior)

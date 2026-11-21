@@ -1,0 +1,19 @@
+{
+  "scenarioName": "auth",
+  "newScenarioState": "signed-up",
+  "request": {
+    "urlPattern": "/rest/v1.1/auth/send-signup-email.*",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "success": true
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

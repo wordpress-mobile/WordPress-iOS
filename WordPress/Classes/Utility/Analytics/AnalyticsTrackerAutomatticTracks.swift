@@ -31,6 +31,14 @@ import BuildSettingsKit
         tracksService.eventNamePrefix = eventNamePrefix
         tracksService.platform = platform
         self.appURLScheme = appURLScheme
+
+        #if UI_TEST_HTTP_FIXTURES
+        // A UI test reads the app's events out of the requests that send them, so don't make it
+        // wait the usual 15 seconds for each batch.
+        if UITestConfigurator.isServingHTTPFixtures {
+            tracksService.queueSendInterval = 1
+        }
+        #endif
     }
 
     // MARK: - WPAnalyticsTracker

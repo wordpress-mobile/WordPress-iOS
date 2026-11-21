@@ -1,0 +1,66 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/top-authors/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "authors": [
+          {
+            "name": "Leah Elaine Rand",
+            "avatar": "https://0.gravatar.com/avatar/62937c26a2a79bae5921ca9e85be8040?s=64",
+            "views": 1956,
+            "posts": [
+              {
+                "id": 1,
+                "title": "Home",
+                "url": "http://infocusphotographers.com/about/",
+                "views": 846,
+                "video": false
+              },
+              {
+                "id": 90,
+                "title": "Martin and Amy's Wedding",
+                "url": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+                "views": 612,
+                "video": false
+              },
+              {
+                "id": 24,
+                "title": "Portfolio",
+                "url": "http://infocusphotographers.com/portfolio/",
+                "views": 498,
+                "video": false
+              }
+            ]
+          },
+          {
+            "name": "Andrea Zoellner",
+            "avatar": "https://0.gravatar.com/avatar/9c9aa771f98b781c3fea988f6d925c9f?s=64",
+            "views": 565,
+            "posts": [
+              {
+                "id": 106,
+                "title": "Some News to Share",
+                "url": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+                "views": 301,
+                "video": false
+              },
+              {
+                "id": 22,
+                "title": "Our Story",
+                "url": "http://infocusphotographers.com/our-story/",
+                "views": 264,
+                "video": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

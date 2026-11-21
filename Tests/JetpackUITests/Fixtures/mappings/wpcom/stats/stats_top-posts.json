@@ -1,0 +1,64 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/top-posts/*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "{{request.query.date}}",
+      "period": "{{request.query.period}}",
+      "summary": {
+        "postviews": [
+          {
+            "id": 1,
+            "href": "http://infocusphotographers.com/about/",
+            "date": "2016-02-09 16:07:34",
+            "title": "Home",
+            "type": "page",
+            "views": 846,
+            "video_play": false
+          },
+          {
+            "id": 90,
+            "href": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+            "date": "2016-03-07 11:22:10",
+            "title": "Martin and Amy's Wedding",
+            "type": "post",
+            "views": 612,
+            "video_play": false
+          },
+          {
+            "id": 24,
+            "href": "http://infocusphotographers.com/portfolio/",
+            "date": "2016-02-09 16:12:02",
+            "title": "Portfolio",
+            "type": "page",
+            "views": 498,
+            "video_play": false
+          },
+          {
+            "id": 106,
+            "href": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+            "date": "2016-04-19 21:28:27",
+            "title": "Some News to Share",
+            "type": "post",
+            "views": 301,
+            "video_play": false
+          },
+          {
+            "id": 22,
+            "href": "http://infocusphotographers.com/our-story/",
+            "date": "2016-02-09 16:10:45",
+            "title": "Our Story",
+            "type": "page",
+            "views": 264,
+            "video_play": false
+          }
+        ],
+        "total_views": 3012,
+        "other_views": 491
+      }
+    }
+  }
+}
