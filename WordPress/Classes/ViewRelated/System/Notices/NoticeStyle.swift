@@ -20,13 +20,13 @@ public protocol NoticeStyle {
 
     // Fonts
     var titleLabelFont: UIFont { get }
+    var messageLabelFont: UIFont { get }
     var actionButtonFont: UIFont? { get }
     var cancelButtonFont: UIFont? { get }
 
     // Colors
     var titleColor: UIColor { get }
     var messageColor: UIColor { get }
-    var backgroundColor: UIColor { get }
 
     /// The space between the border of the Notice and the contents (title, label, and buttons).
     var directionalLayoutMargins: NSDirectionalEdgeInsets { get }
@@ -38,31 +38,40 @@ public protocol NoticeStyle {
 
     // Show an arrow (>) after the action button.
     var showNextArrow: Bool { get }
+
+    /// An icon shown before the title. When `nil`, the icon is based on the notice's feedback type.
+    var icon: UIImage? { get }
 }
 
 extension NoticeStyle {
-    public var backgroundColor: UIColor {
-        .invertedSystem5
-    }
-
     public var titleColor: UIColor {
-        .invertedLabel
+        .label
     }
 
     public var messageColor: UIColor {
-        .invertedSecondaryLabel
+        .secondaryLabel
     }
+
+    // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
+    public var messageLabelFont: UIFont { WPStyleGuide.fontForTextStyle(.footnote) }
+
+    public var icon: UIImage? { nil }
 }
 
 public struct NormalNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString? = nil
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
-    public var titleLabelFont: UIFont { return UIFont.boldSystemFont(ofSize: 14.0) }
-    public var actionButtonFont: UIFont? { return UIFont.systemFont(ofSize: 14.0, weight: .medium) }
+    public var titleLabelFont: UIFont { WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
+    public var actionButtonFont: UIFont? { WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
     public let cancelButtonFont: UIFont? = nil
 
-    public let directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10.0, leading: 16.0, bottom: 10.0, trailing: 16.0)
+    public let directionalLayoutMargins = NSDirectionalEdgeInsets(
+        top: 12.0,
+        leading: 20.0,
+        bottom: 12.0,
+        trailing: 20.0
+    )
 
     public let isDismissable = true
     public var showNextArrow = false
@@ -80,14 +89,21 @@ public struct InAppUpdateNoticeStyle: NoticeStyle {
     }
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
-    public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
-    public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
-    public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
+    public var titleLabelFont: UIFont { WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
+    public var actionButtonFont: UIFont? { WPStyleGuide.fontForTextStyle(.headline) }
+    public var cancelButtonFont: UIFont? { WPStyleGuide.fontForTextStyle(.body) }
 
-    public let directionalLayoutMargins = NSDirectionalEdgeInsets(top: 13.0, leading: 16.0, bottom: 13.0, trailing: 16.0)
+    public let directionalLayoutMargins = NSDirectionalEdgeInsets(
+        top: 16.0,
+        leading: 20.0,
+        bottom: 12.0,
+        trailing: 20.0
+    )
 
     public var isDismissable = false
     public let showNextArrow = false
+
+    public var icon: UIImage? { UIImage(systemName: "arrow.down.circle.dotted") }
 
     public let animationStyle = NoticeAnimationStyle.moveIn
 

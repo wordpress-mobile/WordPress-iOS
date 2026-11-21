@@ -1,19 +1,24 @@
 import UIKit
 import WordPressUI
+import DesignSystem
 
 class NoticeView: UIView {
     internal let contentStackView = UIStackView()
 
-    internal let backgroundContainerView = UIView()
-    internal let backgroundView = UIVisualEffectView(effect: Constants.visualEffect)
+    /// Liquid Glass on iOS 26 and later, a system material on earlier versions.
+    internal let backgroundView = UIVisualEffectView(effect: Appearance.makeBackgroundEffect())
     internal let actionBackgroundView = UIView()
     private let shadowLayer = CAShapeLayer()
     private let shadowMaskLayer = CAShapeLayer()
+
+    /// Container for the icon and the labels
+    private let headerStackView = UIStackView()
 
     /// Container for the title and content labels
     private let labelStackView = UIStackView()
     internal let titleLabel = UILabel()
     internal let messageLabel = UILabel()
+    private let iconView = UIImageView()
 
     private let actionButton = UIButton(type: .system)
     private let cancelButton = UIButton(type: .system)
@@ -59,7 +64,7 @@ class NoticeView: UIView {
         configureShadow()
         configureContentStackView()
         configureGestureRecognizer()
-        configureLabels()
+        configureHeader()
         configureForNotice()
 
         if notice.actionTitle != nil && notice.cancelTitle != nil {
@@ -71,41 +76,30 @@ class NoticeView: UIView {
         }
 
         if notice.style.isDismissable {
-            configureDismissRecognizer()
+            configureDismissRecognizers()
         }
 
         configureForAccessibility()
+
+        // The trait change handler only runs on a change, so apply the current text size once here.
+        preferredContentSizeDidChange()
     }
 
     private func configureBackgroundViews() {
-        if notice.style.backgroundColor != .clear {
-            let backgroundColorView = UIView()
-            backgroundColorView.backgroundColor = notice.style.backgroundColor
-            backgroundView.contentView.addSubview(backgroundColorView)
-            backgroundColorView.layer.cornerRadius = Metrics.cornerRadius
-            backgroundColorView.translatesAutoresizingMaskIntoConstraints = false
-            backgroundView.contentView.pinSubviewToAllEdges(backgroundColorView)
-        }
-
-        addSubview(backgroundContainerView)
-        backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(backgroundContainerView)
-
-        backgroundContainerView.addSubview(backgroundView)
+        addSubview(backgroundView)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(backgroundView)
 
-        backgroundContainerView.layer.cornerRadius = Metrics.cornerRadius
-        backgroundContainerView.layer.masksToBounds = true
-    }
-
-    func configureArrow() {
-        let arrowView = addArrow(color: notice.style.backgroundColor, size: Metrics.arrowSize)
-        arrowView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Metrics.arrowPosition).isActive = true
+        backgroundView.layer.cornerCurve = .continuous
+        backgroundView.clipsToBounds = true
     }
 
     internal func configureShadow() {
-        shadowLayer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: Metrics.cornerRadius).cgPath
+        // Liquid Glass draws its own shadow.
+        guard !Appearance.usesGlass else {
+            return
+        }
+
         shadowLayer.shadowColor = Appearance.shadowColor.cgColor
         shadowLayer.shadowOpacity = Appearance.shadowOpacity
         shadowLayer.shadowRadius = Appearance.shadowRadius
@@ -119,7 +113,7 @@ class NoticeView: UIView {
     }
 
     private func updateShadowPath() {
-        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: Metrics.cornerRadius).cgPath
+        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
         shadowLayer.shadowPath = shadowPath
 
         // Construct a mask path with the notice's roundrect cut out of a larger padding rect.
@@ -127,11 +121,22 @@ class NoticeView: UIView {
         // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
         // and obscure the blur visual effect view.
         let maskPath = CGMutablePath()
-        let leftInset = notice.style.directionalLayoutMargins.leading * 2
-        let topInset = notice.style.directionalLayoutMargins.top * 2
-        maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
+        let inset = Appearance.shadowRadius * 3
+        maskPath.addRect(bounds.insetBy(dx: -inset, dy: -inset))
         maskPath.addPath(shadowPath)
         shadowMaskLayer.path = maskPath
+    }
+
+    /// Capsule-shaped while the notice is short, with continuous rounded corners once it grows taller.
+    private var cornerRadius: CGFloat {
+        min(bounds.height / 2, Metrics.maximumCornerRadius)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        backgroundView.layer.cornerRadius = cornerRadius
+        updateShadowPath()
     }
 
     internal func configureContentStackView() {
@@ -141,23 +146,36 @@ class NoticeView: UIView {
         backgroundView.contentView.pinSubviewToAllEdges(contentStackView)
     }
 
-    private func configureLabels() {
-        labelStackView.translatesAutoresizingMaskIntoConstraints = false
+    private func configureHeader() {
+        headerStackView.axis = .horizontal
+        headerStackView.alignment = headerAlignment
+        headerStackView.spacing = Metrics.iconSpacing
+        headerStackView.isLayoutMarginsRelativeArrangement = true
+        headerStackView.directionalLayoutMargins = notice.style.directionalLayoutMargins
+
+        if let icon = Appearance.icon(for: notice) {
+            iconView.image = icon.image
+            iconView.tintColor = icon.color
+            iconView.preferredSymbolConfiguration = iconSymbolConfiguration
+            iconView.setContentHuggingPriority(.required, for: .horizontal)
+            iconView.setContentCompressionResistancePriority(.required, for: .horizontal)
+            headerStackView.addArrangedSubview(iconView)
+        }
+
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
         labelStackView.spacing = Metrics.labelLineSpacing
-        labelStackView.isLayoutMarginsRelativeArrangement = true
-        labelStackView.directionalLayoutMargins = notice.style.directionalLayoutMargins
 
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(messageLabel)
 
-        contentStackView.addArrangedSubview(labelStackView)
+        headerStackView.addArrangedSubview(labelStackView)
+        contentStackView.addArrangedSubview(headerStackView)
 
-        labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor).isActive = true
+        titleLabel.font = notice.style.titleLabelFont
+        messageLabel.font = notice.style.messageLabelFont
         titleLabel.adjustsFontForContentSizeCategory = true
         messageLabel.adjustsFontForContentSizeCategory = true
-        messageLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         titleLabel.textColor = notice.style.titleColor
         messageLabel.textColor = notice.style.messageColor
@@ -166,7 +184,8 @@ class NoticeView: UIView {
         messageLabel.numberOfLines = 0
 
         if notice.cancelTitle != nil {
-            messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive = true
+            messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive =
+                true
         }
     }
 
@@ -180,29 +199,38 @@ class NoticeView: UIView {
 
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-
-        actionBackgroundView.directionalLayoutMargins = notice.style.directionalLayoutMargins
-        actionBackgroundView.backgroundColor = notice.style.backgroundColor
+        actionBackgroundView.directionalLayoutMargins = actionLayoutMargins
 
         actionBackgroundView.addSubview(actionButton)
         actionButton.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            actionBackgroundView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
-            actionBackgroundView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor),
-        ])
-
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.invertedLink, for: .normal)
+        actionButton.setTitleColor(Appearance.actionColor, for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
+    /// The labels already have a trailing margin, so the action button doesn't need a leading one.
+    private var actionLayoutMargins: NSDirectionalEdgeInsets {
+        var margins = notice.style.directionalLayoutMargins
+        margins.leading = 0
+        return margins
+    }
+
+    /// Below the labels, the action button lines up with them and doesn't need a top margin.
+    private var stackedActionLayoutMargins: NSDirectionalEdgeInsets {
+        var margins = notice.style.directionalLayoutMargins
+        margins.top = 0
+        return margins
+    }
+
     private func configureDualButtons() {
         guard let actionTitle = notice.actionTitle,
-            let cancelTitle = notice.cancelTitle else {
+            let cancelTitle = notice.cancelTitle
+        else {
             actionBackgroundView.isHidden = true
             return
         }
@@ -226,6 +254,8 @@ class NoticeView: UIView {
         cancelButton.titleLabel?.lineBreakMode = .byWordWrapping
         actionButton.titleLabel?.numberOfLines = 0
         cancelButton.titleLabel?.numberOfLines = 0
+        actionButton.titleLabel?.textAlignment = .center
+        cancelButton.titleLabel?.textAlignment = .center
         if let label = actionButton.titleLabel {
             actionButton.pinSubviewToAllEdgeMargins(label)
         }
@@ -249,15 +279,17 @@ class NoticeView: UIView {
         cancelBackgroundView.addTopBorder()
         cancelBackgroundView.addTrailingBorder()
 
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(notice.style.titleColor, for: .normal)
+        actionButton.setTitleColor(Appearance.actionColor, for: .normal)
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
         actionButton.setContentCompressionResistancePriority(.required, for: .vertical)
 
+        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
         cancelButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        cancelButton.setTitleColor(notice.style.messageColor, for: .normal)
+        cancelButton.setTitleColor(notice.style.titleColor, for: .normal)
         cancelButton.on(.touchUpInside) { [weak self] _ in
             self?.cancelButtonTapped()
         }
@@ -266,25 +298,22 @@ class NoticeView: UIView {
 
     private func configureActionButtonWithArrow() {
         guard let actionTitle = notice.actionTitle,
-              notice.style.showNextArrow else {
-                  actionBackgroundView.isHidden = true
-                  return
-              }
+            notice.style.showNextArrow
+        else {
+            actionBackgroundView.isHidden = true
+            return
+        }
 
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        actionBackgroundView.directionalLayoutMargins = notice.style.directionalLayoutMargins
-        actionBackgroundView.backgroundColor = notice.style.backgroundColor
-
-        NSLayoutConstraint.activate([
-            actionBackgroundView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
-            actionBackgroundView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
-        ])
+        actionBackgroundView.directionalLayoutMargins = actionLayoutMargins
 
         actionButton.setTitle(actionTitle, for: .normal)
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.invertedLink, for: .normal)
+        actionButton.setTitleColor(Appearance.actionColor, for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         actionBackgroundView.addSubviews([actionButton, nextArrowImageView])
 
@@ -293,50 +322,70 @@ class NoticeView: UIView {
 
         NSLayoutConstraint.activate([
             actionButton.centerYAnchor.constraint(equalTo: actionBackgroundView.centerYAnchor),
-            actionButton.leadingAnchor.constraint(greaterThanOrEqualTo: actionBackgroundView.leadingAnchor)
+            actionButton.leadingAnchor.constraint(equalTo: actionBackgroundView.layoutMarginsGuide.leadingAnchor),
+            actionButton.topAnchor.constraint(greaterThanOrEqualTo: actionBackgroundView.topAnchor),
+            actionButton.bottomAnchor.constraint(lessThanOrEqualTo: actionBackgroundView.bottomAnchor)
         ])
 
         NSLayoutConstraint.activate([
             nextArrowImageView.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor),
-            nextArrowImageView.leadingAnchor.constraint(equalTo: actionButton.trailingAnchor, constant: 5),
-            nextArrowImageView.trailingAnchor.constraint(equalTo: actionBackgroundView.trailingAnchor, constant: -16)
+            nextArrowImageView.leadingAnchor.constraint(equalTo: actionButton.trailingAnchor, constant: 4),
+            nextArrowImageView.trailingAnchor.constraint(
+                equalTo: actionBackgroundView.layoutMarginsGuide.trailingAnchor
+            )
         ])
     }
 
     private func configureNextArrow() -> UIImageView {
-        guard let image = UIImage(systemName: "chevron.forward")?.withTintColor(.invertedLink) else {
-            return UIImageView()
-        }
-
-        let arrowImageView = UIImageView(image: image)
-        arrowImageView.backgroundColor = notice.style.backgroundColor
-
-        NSLayoutConstraint.activate([
-            arrowImageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 13.0)
-        ])
-
+        let arrowImageView = UIImageView(image: UIImage(systemName: "chevron.forward"))
+        arrowImageView.tintColor = Appearance.actionColor
+        arrowImageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(
+            textStyle: .footnote,
+            scale: .medium
+        )
+        arrowImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return arrowImageView
     }
 
-    private func preferredContentSizeDidChange() {
-        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
-        actionButton.titleLabel?.font = notice.style.actionButtonFont
-        titleLabel.font = notice.style.titleLabelFont
+    private var iconSymbolConfiguration: UIImage.SymbolConfiguration {
+        UIImage.SymbolConfiguration(font: notice.style.titleLabelFont, scale: .large)
+    }
 
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-            dualButtonsStackView?.axis = .vertical
-            actionButton.titleLabel?.textAlignment = .center
-            cancelButton.titleLabel?.textAlignment = .center
-        } else {
-            dualButtonsStackView?.axis = .horizontal
-            actionButton.titleLabel?.textAlignment = .natural
-            cancelButton.titleLabel?.textAlignment = .natural
+    /// SF Symbols carry a text baseline, so `.firstBaseline` lines the icon up with the title's first line.
+    /// At accessibility sizes the text wraps over many lines, and the icon reads better centered on all of it.
+    private var headerAlignment: UIStackView.Alignment {
+        traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .center : .firstBaseline
+    }
+
+    private func preferredContentSizeDidChange() {
+        iconView.preferredSymbolConfiguration = iconSymbolConfiguration
+        headerStackView.alignment = headerAlignment
+
+        let isAccessibilityCategory = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        dualButtonsStackView?.axis = isAccessibilityCategory ? .vertical : .horizontal
+
+        // At accessibility sizes a single action moves below the labels, so they keep the full width.
+        if dualButtonsStackView == nil && notice.actionTitle != nil {
+            contentStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
+            actionBackgroundView.directionalLayoutMargins =
+                isAccessibilityCategory ? stackedActionLayoutMargins : actionLayoutMargins
+            if notice.style.showNextArrow {
+                actionButton.contentHorizontalAlignment = isAccessibilityCategory ? .trailing : .center
+            } else {
+                actionButton.contentHorizontalAlignment = isAccessibilityCategory ? .leading : .center
+            }
+            // Beside the labels the button keeps to its title's width; below them it spans the notice.
+            actionButton.setContentHuggingPriority(isAccessibilityCategory ? .defaultLow : .required, for: .horizontal)
         }
     }
 
-    private func configureDismissRecognizer() {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
-        addGestureRecognizer(recognizer)
+    private func configureDismissRecognizers() {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        addGestureRecognizer(tapRecognizer)
+
+        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(viewTapped))
+        swipeRecognizer.direction = .down
+        addGestureRecognizer(swipeRecognizer)
     }
 
     private func configureForNotice() {
@@ -347,12 +396,8 @@ class NoticeView: UIView {
             titleLabel.isHidden = true
         } else if let message = notice.message {
             messageLabel.text = message
-        }
-    }
-
-    override var bounds: CGRect {
-        didSet {
-            updateShadowPath()
+        } else {
+            messageLabel.isHidden = true
         }
     }
 
@@ -373,18 +418,49 @@ class NoticeView: UIView {
     }
 
     private enum Metrics {
-        static let cornerRadius: CGFloat = 4.0
+        static let maximumCornerRadius: CGFloat = 26.0
         static let dualLayoutMargins = NSDirectionalEdgeInsets(top: 6.0, leading: 6.0, bottom: 6.0, trailing: 6.0)
-        static let labelLineSpacing: CGFloat = 3.0
-        static let arrowSize = CGSize(width: 20, height: 10)
-        static let arrowPosition: CGFloat = -24 /// Arrow is positioned along the right hand side by default.
+        static let labelLineSpacing: CGFloat = 2.0
+        static let iconSpacing: CGFloat = 10.0
     }
 
     fileprivate enum Appearance {
+        static var usesGlass: Bool {
+            if #available(iOS 26, *) {
+                return true
+            }
+            return false
+        }
+
+        static func makeBackgroundEffect() -> UIVisualEffect {
+            if #available(iOS 26, *) {
+                return UIGlassEffect()
+            }
+            return UIBlurEffect(style: .systemThickMaterial)
+        }
+
+        static func icon(for notice: Notice) -> (image: UIImage?, color: UIColor)? {
+            if let icon = notice.style.icon {
+                return (icon, actionColor)
+            }
+            switch notice.feedbackType {
+            case .success:
+                return (UIImage(systemName: "checkmark.circle.fill"), .systemGreen)
+            case .error:
+                return (UIImage(systemName: "exclamationmark.circle.fill"), .systemRed)
+            case .warning, .none:
+                return nil
+            @unknown default:
+                return nil
+            }
+        }
+
+        static var actionColor: UIColor { UIAppColor.primary }
+
         static let shadowColor: UIColor = .black
-        static let shadowOpacity: Float = 0.25
-        static let shadowRadius: CGFloat = 2.0
-        static let shadowOffset = CGSize(width: 0.0, height: 2.0)
+        static let shadowOpacity: Float = 0.12
+        static let shadowRadius: CGFloat = 12.0
+        static let shadowOffset = CGSize(width: 0.0, height: 4.0)
         static let minMessageHeight: CGFloat = 18.0
     }
 }
@@ -414,80 +490,11 @@ fileprivate extension UIView {
 
     func makeBorderView() -> UIView {
         let borderView = UIView()
-        borderView.backgroundColor = .invertedSeparator
+        borderView.backgroundColor = .separator
         borderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(borderView)
 
         return borderView
-    }
-
-    struct Constants {
-        static let visualEffect = UIBlurEffect(style: .extraLight)
-    }
-}
-
-// MARK: - Arrow
-
-fileprivate extension UIView {
-
-    func addArrow(color: UIColor, size: CGSize) -> UIView {
-        let arrowView = makeArrowView(color: color)
-
-        NSLayoutConstraint.activate([
-            arrowView.heightAnchor.constraint(equalToConstant: size.height),
-            arrowView.widthAnchor.constraint(equalToConstant: size.width),
-            arrowView.topAnchor.constraint(equalTo: bottomAnchor)
-        ])
-
-        return arrowView
-    }
-
-    func makeArrowView(color: UIColor) -> UIView {
-        let arrowView = ArrowView()
-        arrowView.backgroundColor = color
-        arrowView.translatesAutoresizingMaskIntoConstraints = false
-
-        let visualEffectView = ArrowEffectView(effect: Constants.visualEffect)
-        visualEffectView.backgroundColor = .clear
-        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        visualEffectView.contentView.addSubview(arrowView)
-        visualEffectView.pinSubviewToAllEdges(arrowView)
-
-        addSubview(visualEffectView)
-        return visualEffectView
-    }
-}
-
-/// A Downward pointing triangle shaped view
-private class ArrowView: UIView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        let trianglePath = UIBezierPath()
-        trianglePath.move(to: .zero)
-        trianglePath.addLine(to: CGPoint(x: bounds.size.width / 2, y: bounds.size.height))
-        trianglePath.addLine(to: CGPoint(x: bounds.size.width, y: 0))
-        trianglePath.close()
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = trianglePath.cgPath
-        layer.mask = shapeLayer
-    }
-}
-
-private class ArrowEffectView: UIVisualEffectView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        let trianglePath = UIBezierPath()
-        trianglePath.move(to: .zero)
-        trianglePath.addLine(to: CGPoint(x: bounds.size.width / 2, y: bounds.size.height))
-        trianglePath.addLine(to: CGPoint(x: bounds.size.width, y: 0))
-        trianglePath.close()
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = trianglePath.cgPath
-        layer.mask = shapeLayer
     }
 }
 
@@ -495,9 +502,10 @@ private class ArrowEffectView: UIVisualEffectView {
 
 private extension NoticeView {
     func configureForAccessibility() {
-        labelStackView.accessibilityLabel = [titleLabel, messageLabel].compactMap {
-            return $0.isHidden ? "" : $0.text
-        }.joined(separator: ". ")
+        labelStackView.accessibilityLabel = [titleLabel, messageLabel]
+            .filter { !$0.isHidden }
+            .compactMap(\.text)
+            .joined(separator: ". ")
 
         labelStackView.isAccessibilityElement = true
         labelStackView.accessibilityIdentifier = "notice_title_and_message"
