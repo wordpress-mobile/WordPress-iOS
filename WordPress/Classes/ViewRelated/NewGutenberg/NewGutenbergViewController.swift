@@ -581,7 +581,6 @@ extension NewGutenbergViewController {
         )
 
         actions.append(helpAction())
-        actions.append(feedbackAction())
         return actions
     }
 

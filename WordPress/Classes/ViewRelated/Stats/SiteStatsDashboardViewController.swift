@@ -250,15 +250,6 @@ public class SiteStatsDashboardViewController: UIViewController {
             }
             mainActions.append(switchToClassicAction)
 
-            // Add "Send Feedback" option
-            let sendFeedbackAction = UIAction(
-                title: Strings.sendFeedback,
-                image: UIImage(systemName: "envelope")
-            ) { [weak self] _ in
-                self?.showFeedbackView()
-            }
-            mainActions.append(sendFeedbackAction)
-
             menuElements.append(contentsOf: mainActions)
 
             // Debug section (only in debug builds)
@@ -331,10 +322,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         // Show notice indicating the change
         let message = isUsingMockData ? "Using mock data" : "Using real data"
         Notice(title: message).post()
-    }
-
-    private func showFeedbackView() {
-        present(SubmitFeedbackViewController(source: "new_stats", feedbackPrefix: "Stats"), animated: true)
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
@@ -574,12 +561,6 @@ struct SiteStatsDashboardPreferences {
 // MARK: - Strings
 
 private enum Strings {
-    static let sendFeedback = NSLocalizedString(
-        "stats.menu.sendFeedback",
-        value: "Send Feedback",
-        comment: "Menu item to send feedback about new stats experience"
-    )
-
     static let switchToClassic = NSLocalizedString(
         "stats.menu.disableNewStats",
         value: "Disable New Stats",

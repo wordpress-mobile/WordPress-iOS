@@ -86,8 +86,7 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
             preferredStyle: .alert
         )
         let yes = UIAlertAction(title: Strings.NegativeFeedbackAlert.yes, style: .default) { _ in
-            let destination = UINavigationController(rootViewController: SubmitFeedbackViewController(source: "in_app_feedback"))
-            controller.present(destination, animated: true)
+            RootSupportViewController.present(from: controller)
         }
         let no = UIAlertAction(title: Strings.NegativeFeedbackAlert.no, style: .default) { _ in
             WPAnalytics.track(.appReviewsDeclinedToRateApp)
