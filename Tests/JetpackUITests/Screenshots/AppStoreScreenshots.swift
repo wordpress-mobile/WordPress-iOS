@@ -57,14 +57,14 @@ final class AppStoreScreenshots: JetpackUITestCase {
         var mySite = try openMySite(isPad: isPad)
 
         // 1. Stats
-        try mySite.tap(app.cells[isPad ? "Stats Row" : "quick_actions_stats"])
+        try mySite.tap(isPad ? siteMenuRow("Stats Row") : app.cells["quick_actions_stats"])
         let stats = try StatsScreen(app: app)
         try stats.waitFor(stats.chartCard)
         try save(1, "Stats")
         mySite = try returnToMySite(from: stats, goingBack: !isPad) ?? mySite
 
         // 2. Editor, with a draft that has a quote and an image.
-        try mySite.tap(app.cells[isPad ? "Blog Post Row" : "quick_actions_posts"])
+        try mySite.tap(isPad ? siteMenuRow("Blog Post Row") : app.cells["quick_actions_posts"])
         let posts = app.tables["PostsTable"]
         try mySite.waitFor(posts)
         try mySite.select(tab: posts.buttons["drafts"].firstMatch)
@@ -132,13 +132,19 @@ final class AppStoreScreenshots: JetpackUITestCase {
         return try MySiteScreen(app: app)
     }
 
+    /// A row of the site's menu. Its identifier is on a button inside the row's cell, or on an
+    /// iPad, where the menu is a sidebar, on a static text.
+    private func siteMenuRow(_ identifier: String) -> XCUIElement {
+        app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+    }
+
     /// Waits for My Site after a launch.
     ///
     /// An iPad can reopen on the site menu item it last showed, such as Stats, even after a reset,
     /// so this selects Home first.
     private func openMySite(isPad: Bool) throws -> MySiteScreen {
         if isPad {
-            let home = app.cells["Home Row"]
+            let home = siteMenuRow("Home Row")
             if home.pollForExistence(timeout: 60), !app.otherElements["my_site"].exists {
                 home.tap()
             }
