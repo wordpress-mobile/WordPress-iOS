@@ -2,14 +2,19 @@ import XCTest
 
 /// The full site menu, opened from My Site's "More" row.
 final class SiteMenuScreen: ScreenObject {
-    private let tableGetter: ElementGetter = {
-        $0.tables["Blog Details Table"]
+    private let listGetter: ElementGetter = {
+        $0.collectionViews["Blog Details Table"]
     }
 
-    var table: XCUIElement { tableGetter(app) }
+    /// On an iPad the list isn't hittable itself, though its rows are, so the screen waits for one.
+    private let firstRowGetter: ElementGetter = {
+        $0.collectionViews["Blog Details Table"].buttons.firstMatch
+    }
+
+    var list: XCUIElement { listGetter(app) }
 
     init(app: XCUIApplication) throws {
-        try super.init(expectedElementGetters: [tableGetter], app: app)
+        try super.init(expectedElementGetters: [firstRowGetter], app: app)
     }
 
     func goToPosts() throws -> PostsScreen {
@@ -82,9 +87,13 @@ final class SiteMenuScreen: ScreenObject {
         return try SiteSettingsScreen(app: app)
     }
 
+    /// Each row's identifier is on a button inside its cell, or on a static text in an iPad's
+    /// sidebar list. The list only creates the rows near the screen, so a row further down doesn't
+    /// exist until it's scrolled to.
     private func open(row identifier: String) throws {
-        let row = table.cells[identifier]
-        try scroll(to: row, in: table)
+        try waitForScreen()
+        let row = list.descendants(matching: .any).matching(identifier: identifier).firstMatch
+        try scroll(to: row, in: list, waitsForExistence: false)
         row.tap()
     }
 }
