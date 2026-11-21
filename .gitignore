@@ -77,6 +77,8 @@ fastlane/jetpack_screenshots
 fastlane/promo_screenshots
 fastlane/jetpack_promo_screenshots
 fastlane/jetpack_screenshots_overview
+fastlane/wordpress_screenshots
+fastlane/wordpress_screenshots_overview
 fastlane/metadata/review_information
 default.profraw
 derived-data/

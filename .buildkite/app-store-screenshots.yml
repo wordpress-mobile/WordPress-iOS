@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 ---
 
-# Takes the Jetpack App Store screenshots: one job per device and language, then one that composes
-# them. Start it with `bundle exec fastlane trigger_jetpack_screenshots`. See docs/app-store-screenshots.md.
+# Takes an app's App Store screenshots: one job per device and language, then one that composes
+# them. The app is SCREENSHOTS_APP, `jetpack` or `wordpress`. Start it with
+# `bundle exec fastlane trigger_app_store_screenshots app:<app>`. See docs/app-store-screenshots.md.
 
 # Below everything else's default of 0, so that its 50-odd jobs only take Mac agents nothing else
 # is waiting for, and never hold up a PR or trunk build. (The release pipelines are at 1.)
@@ -15,7 +16,11 @@ env:
   # the app runs letterboxed on the Duo's outer display.
   IMAGE_ID: xcode-27.1
 
-# The App Store languages the screenshots are taken in: the folders in fastlane/appstoreres/jetpack_metadata.
+# The app, SCREENSHOTS_APP, is passed to each command as an argument. Buildkite fills it in when it
+# uploads the pipeline; an environment variable set here wouldn't reach the jobs, which run in a VM.
+
+# The App Store languages the screenshots are taken in: the ones with headlines in
+# fastlane/appstoreres/jetpack_metadata and fastlane/appstoreres/metadata.
 x-locales: &locales
   - "ar-SA"
   - "de-DE"
@@ -38,43 +43,44 @@ x-locales: &locales
 # A step per device, because a matrix can make at most 50 jobs and three devices in 17 languages
 # would be 51.
 x-screenshots: &screenshots
-  depends_on: "build_jetpack"
+  depends_on: "build"
   plugins: [$CI_TOOLKIT_PLUGIN]
   timeout_in_minutes: 30
   artifact_paths:
-    - "fastlane/jetpack_screenshots/**/*.png"
+    - "fastlane/${SCREENSHOTS_APP:-jetpack}_screenshots/**/*.png"
     - "build/results/screenshots/*.log"
+    - "build/results/screenshots/*.xcresult.zip"
   retry:
     automatic:
       - exit_status: "*"
         limit: 1
 
 steps:
-  - label: "🛠 :jetpack: Build for Screenshots"
-    key: "build_jetpack"
-    command: ".buildkite/commands/build-for-testing.sh jetpack http_fixtures:true"
+  - label: "🛠 Build ${SCREENSHOTS_APP:-jetpack} for Screenshots"
+    key: "build"
+    command: ".buildkite/commands/build-for-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack}"
     plugins: [$CI_TOOLKIT_PLUGIN]
 
   - label: "📸 iPhone 18 Pro Max {{matrix}}"
     key: "screenshots_iphone"
-    command: ".buildkite/commands/take-app-store-screenshots.sh 'iPhone 18 Pro Max' '{{matrix}}'"
+    command: ".buildkite/commands/take-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack} 'iPhone 18 Pro Max' '{{matrix}}'"
     matrix: *locales
     <<: *screenshots
 
   - label: "📸 iPad Pro 13-inch (M5) {{matrix}}"
     key: "screenshots_ipad"
-    command: ".buildkite/commands/take-app-store-screenshots.sh 'iPad Pro 13-inch (M5)' '{{matrix}}'"
+    command: ".buildkite/commands/take-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack} 'iPad Pro 13-inch (M5)' '{{matrix}}'"
     matrix: *locales
     <<: *screenshots
 
   - label: "📸 iPhone Duo {{matrix}}"
     key: "screenshots_duo"
-    command: ".buildkite/commands/take-app-store-screenshots.sh 'iPhone Duo' '{{matrix}}'"
+    command: ".buildkite/commands/take-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack} 'iPhone Duo' '{{matrix}}'"
     matrix: *locales
     <<: *screenshots
 
   - label: "🖼️ Compose Screenshots"
-    command: ".buildkite/commands/compose-app-store-screenshots.sh"
+    command: ".buildkite/commands/compose-app-store-screenshots.sh ${SCREENSHOTS_APP:-jetpack}"
     # Compose whatever was taken, so that one failed job doesn't hide all the others' screenshots.
     depends_on:
       - step: "screenshots_iphone"
@@ -85,5 +91,5 @@ steps:
         allow_failure: true
     plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
-      - "fastlane/jetpack_promo_screenshots.zip"
-      - "fastlane/jetpack_screenshots_overview/*.png"
+      - "fastlane/${SCREENSHOTS_APP:-jetpack}_promo_screenshots.zip"
+      - "fastlane/${SCREENSHOTS_APP:-jetpack}_screenshots_overview/*.png"

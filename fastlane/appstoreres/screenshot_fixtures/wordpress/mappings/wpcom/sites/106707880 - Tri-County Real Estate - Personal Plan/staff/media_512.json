@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/wp/v2/sites/106707880|/wp-json/wp/v2)/media/512"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": 512,
+      "date": "2025-03-11T14:30:00",
+      "date_gmt": "2025-03-11T14:30:00",
+      "guid": {
+        "rendered": "https://tricountyrealestate.files.wordpress.com/2025/03/tomas-lindqvist.png",
+        "raw": "https://tricountyrealestate.files.wordpress.com/2025/03/tomas-lindqvist.png"
+      },
+      "modified": "2025-03-11T14:30:00",
+      "modified_gmt": "2025-03-11T14:30:00",
+      "slug": "tomas-lindqvist",
+      "status": "inherit",
+      "type": "attachment",
+      "link": "https://tricountyrealestate.wordpress.com/staff/tomas-lindqvist/tomas-lindqvist/",
+      "title": {
+        "raw": "Tomás Lindqvist",
+        "rendered": "Tomás Lindqvist"
+      },
+      "author": 742098,
+      "comment_status": "open",
+      "ping_status": "closed",
+      "template": "",
+      "meta": {},
+      "permalink_template": "https://tricountyrealestate.wordpress.com/?attachment_id=512",
+      "generated_slug": "tomas-lindqvist",
+      "description": {
+        "raw": "",
+        "rendered": ""
+      },
+      "caption": {
+        "raw": "",
+        "rendered": ""
+      },
+      "alt_text": "Tomás Lindqvist",
+      "password": "",
+      "media_type": "image",
+      "mime_type": "image/png",
+      "missing_image_sizes": [],
+      "post": 702,
+      "source_url": "https://tricountyrealestate.files.wordpress.com/2025/03/tomas-lindqvist.png",
+      "media_details": {
+        "width": 600,
+        "height": 600,
+        "file": "2025/03/tomas-lindqvist.png",
+        "sizes": {},
+        "image_meta": {}
+      }
+    }
+  }
+}

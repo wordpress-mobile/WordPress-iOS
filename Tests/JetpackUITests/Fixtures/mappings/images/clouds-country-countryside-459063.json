@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/infocusphotographers\\.files\\.wordpress\\.com)?/2019/05/clouds\\-country\\-countryside\\-459063\\.jpg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/clouds-country-countryside-459063.jpg"
+  }
+}

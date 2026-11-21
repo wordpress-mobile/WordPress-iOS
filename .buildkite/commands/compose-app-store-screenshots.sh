@@ -1,16 +1,32 @@
 #!/bin/bash -eu
 
-# Composes the App Store screenshots from the raw ones every screenshot job uploaded.
+# Composes an app's App Store screenshots, `jetpack` or `wordpress`, from the raw ones every
+# screenshot job uploaded.
+# Usage: compose-app-store-screenshots.sh APP
+
+APP=${1:?Usage $0 APP}
+if [[ "$APP" == "jetpack" ]]; then
+  LANE=create_jetpack_promo_screenshots
+  PROMO=jetpack_promo_screenshots
+else
+  LANE=create_promo_screenshots
+  PROMO=promo_screenshots
+fi
 
 echo "--- 📦 Downloading the raw screenshots"
-buildkite-agent artifact download "fastlane/jetpack_screenshots/**/*.png" .
+buildkite-agent artifact download "fastlane/${APP}_screenshots/**/*.png" .
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 🖼️ Composing"
-bundle exec fastlane create_jetpack_promo_screenshots
+# The compositor fails when it has left out screenshots it couldn't use, after composing the rest,
+# so the rest are still zipped below, and the job still fails.
+STATUS=0
+bundle exec fastlane "$LANE" || STATUS=$?
 
 echo "--- 📦 Zipping the screenshots"
-# In the folder layout `update_jetpack_metadata_on_app_store_connect` uploads from.
-(cd fastlane && zip -rq jetpack_promo_screenshots.zip jetpack_promo_screenshots)
+# In the folder layout `update_${APP}_metadata_on_app_store_connect` uploads from.
+(cd fastlane && zip -rq "${APP}_promo_screenshots.zip" "$PROMO")
+
+exit $STATUS

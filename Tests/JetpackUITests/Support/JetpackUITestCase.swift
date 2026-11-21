@@ -28,6 +28,10 @@ class JetpackUITestCase: XCTestCase {
     /// Launch arguments the suite adds to the ones every test launches the app with.
     var additionalLaunchArguments: [String] { [] }
 
+    /// The app the suite tests, by its bundle identifier, or nil for the Jetpack app, the test
+    /// target's own. Any other app has to be installed on the Simulator already.
+    var appBundleIdentifier: String? { nil }
+
     /// Whether the next test has to start from a reset app even if its suite shares a sign-in:
     /// the first test of the run, and the test after one from a suite that resets, since such a
     /// suite is free to leave the app changed.
@@ -40,7 +44,12 @@ class JetpackUITestCase: XCTestCase {
     /// Whether the app has yet to be launched in this run.
     private static var isFirstLaunch = true
 
-    private(set) var app = XCUIApplication()
+    private(set) lazy var app: XCUIApplication = {
+        guard let appBundleIdentifier else {
+            return XCUIApplication()
+        }
+        return XCUIApplication(bundleIdentifier: appBundleIdentifier)
+    }()
 
     /// What the app has sent in this test, when it runs against the fixtures.
     private(set) var requestLog: RequestLog?

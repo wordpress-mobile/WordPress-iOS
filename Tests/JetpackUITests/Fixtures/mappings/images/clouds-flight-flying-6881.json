@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "(/infocusphotographers\\.files\\.wordpress\\.com)?/2019/05/clouds\\-flight\\-flying\\-6881\\.jpg"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "images/clouds-flight-flying-6881.jpg"
+  }
+}
