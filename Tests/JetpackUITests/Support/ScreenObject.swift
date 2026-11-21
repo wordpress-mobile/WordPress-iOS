@@ -200,6 +200,26 @@ class ScreenObject {
         list.cells.containing(.button, identifier: nil).firstMatch
     }
 
+    /// Taps `element` until `destination` appears, up to three times.
+    ///
+    /// On CI's iOS 27.0 simulators, soon after a launch, XCUITest sometimes can't compute an
+    /// element's hit point and doesn't tap at all, so this taps the middle of its frame instead.
+    func tap(_ element: XCUIElement, until destination: XCUIElement) throws {
+        try waitFor(element)
+        for _ in 0..<3 {
+            tapMiddle(of: element)
+            if destination.pollForExistence(timeout: 10) {
+                return
+            }
+        }
+        try waitFor(destination)
+    }
+
+    /// Taps the middle of `element`'s frame, without asking XCUITest for its hit point.
+    func tapMiddle(of element: XCUIElement) {
+        element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+    }
+
     /// Taps a filter tab and waits for it to become selected.
     func select(tab: XCUIElement) throws {
         tab.tap()
