@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/avatar/11bcf6345930a9fbde5e6f0985c3f24a"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "avatars/amechie-ajimobi.png"
+  }
+}

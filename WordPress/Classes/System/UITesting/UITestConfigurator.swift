@@ -39,7 +39,9 @@ struct UITestConfigurator {
     /// Answers the app's network requests from the fixtures in the directory passed as the
     /// `-ui-test-http-fixtures` launch argument, so UI tests run against data that doesn't change.
     ///
-    /// The `-ui-test-http-log` launch argument names a file to log every request to.
+    /// The `-ui-test-http-log` launch argument names a file to log every request to, and the
+    /// `-ui-test-http-fixtures-overlay` launch argument a directory of fixtures that replace some of
+    /// the others: the App Store screenshots use one to show translated content.
     ///
     /// This has to run before the app creates a `URLSession`. See `FixtureURLProtocol`.
     ///
@@ -52,7 +54,8 @@ struct UITestConfigurator {
         }
 
         do {
-            let fixtures = try FixtureSet(directory: URL(filePath: directory))
+            let overlay = defaults.string(forKey: "ui-test-http-fixtures-overlay").map { URL(filePath: $0) }
+            let fixtures = try FixtureSet(directory: URL(filePath: directory), overlay: overlay)
             let requestLog = defaults.string(forKey: "ui-test-http-log").map { URL(filePath: $0) }
             FixtureURLProtocol.install(fixtures: fixtures, requestLog: requestLog)
         } catch {

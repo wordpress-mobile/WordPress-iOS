@@ -37,6 +37,7 @@ The tests only run on a Simulator, because the token file is read from the Mac's
 ```
 Tests/JetpackUITests
 ├── JetpackUITests.xctestplan
+├── Screenshots  # The App Store screenshots: see app-store-screenshots.md
 ├── Screens   # One screen object per screen or component
 ├── Support   # The test case and screen object base classes, credentials
 └── Tests     # The test cases, in a folder per area of the app
@@ -113,6 +114,8 @@ final class FixtureAccountTests: JetpackUITestCase {
 ```
 
 The app then answers every request it makes from the files in `Tests/JetpackUITests/Fixtures`, and nothing reaches WordPress.com. Such a suite needs no token, can assert on content, and has no account to leave as it found it.
+
+A mapping can answer with a file instead of a body, by naming it in `bodyFileName`: the file is read from `Fixtures/__files` and sent as it is. That's how the images the app shows are served. Its avatars are generated placeholders, not anyone's Gravatar, and any Gravatar without a mapping of its own gets a plain silhouette.
 
 The fixtures describe one account, `e2eflowtestingmobile`, with three sites: Tri-County Real Estate (the primary site, on the Personal plan), Four Paws Dog Grooming (Free) and Weekend Bakes (Pro). They're the WireMock mappings that the UI tests removed in #25399 ran against, restored from before #25673 deleted them, so they predate some of what the app requests today. See [Finding what's missing](#finding-whats-missing).
 
