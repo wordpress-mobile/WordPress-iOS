@@ -95,7 +95,7 @@ public final class PushNotificationsManager: NSObject {
 
     /// Registers the Device Token agains WordPress.com backend, if there's a default account.
     ///
-    /// - Note: Support will also be initialized. The token will be persisted across App Sessions.
+    /// - Note: The token will be persisted across App Sessions.
     ///
     @objc public func registerDeviceToken(_ tokenData: Data) {
 
@@ -106,9 +106,6 @@ public final class PushNotificationsManager: NSObject {
 
         // Token Cleanup
         let newToken = tokenData.hexString
-
-        // Register device with Zendesk
-        ZendeskUtils.setNeedToRegisterDevice(newToken)
 
         if deviceToken != newToken {
             Loggers.app.info("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
@@ -156,8 +153,6 @@ public final class PushNotificationsManager: NSObject {
         guard let knownDeviceId = deviceId else {
             return
         }
-
-        ZendeskUtils.unregisterDevice()
 
         /// - warning: It's important to use a separate WordPressComRestApi not
         /// managed by `WPAccount` to ensure it can complete its tasks without
@@ -278,10 +273,10 @@ public final class PushNotificationsManager: NSObject {
 //
 extension PushNotificationsManager {
 
-    /// Handles a Support Remote Notification
+    /// Handles a reply to a support ticket filed through the Zendesk SDK.
     ///
-    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
-    ///         we'll temporarily keep it as public. Sorry.
+    /// The app no longer includes the SDK, but a device that an earlier version registered with Zendesk still
+    /// gets these notifications. Opening one shows Help & Support, where the support conversations are.
     ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
@@ -295,23 +290,17 @@ extension PushNotificationsManager {
         completionHandler: ((UIBackgroundFetchResult) -> Void)?
     ) -> Bool {
 
-        guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-            type == ZendeskUtils.PushNotificationIdentifiers.type
-        else {
+        guard userInfo.string(forKey: Notification.typeKey) == Notification.zendeskTicketReplyValue else {
             return false
-        }
-        DispatchQueue.main.async {
-            ZendeskUtils.pushNotificationReceived()
         }
 
         WPAnalytics.track(.supportReceivedResponseFromSupport)
 
-        // Pre-build the Me screen so it's ready when the user opens the app. Skip it
-        // when the UI was never built (a background launch). Keyed on the UI flag, not
-        // window presence: the windowManager emergency fallback can create a window
-        // while no scene has ever connected.
-        if applicationState == .background, WordPressAppDelegate.shared?.hasConfiguredInitialUI == true {
-            RootViewCoordinator.sharedPresenter.showMeScreen()
+        // Skip the navigation when the UI was never built (a background launch). Keyed on
+        // the UI flag, not window presence: the windowManager emergency fallback can create
+        // a window while no scene has ever connected.
+        if userInteraction, WordPressAppDelegate.shared?.hasConfiguredInitialUI == true {
+            RootViewCoordinator.sharedPresenter.navigateToSupport()
         }
 
         completionHandler?(.newData)
@@ -489,6 +478,7 @@ extension PushNotificationsManager {
         static let typeKey = "type"
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
+        static let zendeskTicketReplyValue = "zendesk"
         static let local = "qs-local-notification"
     }
 

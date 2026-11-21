@@ -180,8 +180,7 @@ extension PluginListViewController {
 
 extension PluginListViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        let supportVC = SupportTableViewController()
-        supportVC.showFromTabBar()
+        RootSupportViewController.presentFromLeafViewController()
     }
 }
 

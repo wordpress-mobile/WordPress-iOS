@@ -122,8 +122,7 @@ class PluginViewController: UITableViewController {
 
 extension PluginViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        let supportVC = SupportTableViewController()
-        supportVC.showFromTabBar()
+        RootSupportViewController.presentFromLeafViewController()
     }
 }
 

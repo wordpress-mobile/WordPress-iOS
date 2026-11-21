@@ -5,7 +5,6 @@ import WordPressShared
 import AutomatticAbout
 import GravatarUI
 import WordPressAPI
-import Support
 
 public class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
@@ -23,9 +22,6 @@ public class MeViewController: UITableViewController {
 
     public required convenience init() {
         self.init(style: .insetGrouped)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -45,7 +41,6 @@ public class MeViewController: UITableViewController {
         ImmuTable.registerRows([
             VerifyEmailRow.self,
             NavigationItemRow.self,
-            IndicatorNavigationItemRow.self,
             ButtonRow.self,
             DestructiveButtonRow.self
         ], tableView: self.tableView)
@@ -160,11 +155,10 @@ public class MeViewController: UITableViewController {
             accessibilityIdentifier: "myDomains"
         )
 
-        let helpAndSupportIndicator = IndicatorNavigationItemRow(
+        let helpAndSupport = NavigationItemRow(
             title: RowTitles.support,
             icon: UIImage(named: "wpl-help")?.withRenderingMode(.alwaysTemplate),
             tintColor: .label,
-            showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
 
@@ -203,7 +197,7 @@ public class MeViewController: UITableViewController {
                 }
                 return rows
             }()),
-            ImmuTableSection(rows: [helpAndSupportIndicator]),
+            ImmuTableSection(rows: [helpAndSupport]),
         ])
 
         sections.append(
@@ -301,13 +295,7 @@ public class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] _ in
-            if FeatureFlag.newSupport.enabled == true {
-                let controller = RootSupportViewController(dataProvider: SupportDataProvider.shared)
-                self.showOrPushController(controller)
-            } else {
-                let controller = SupportTableViewController(style: .insetGrouped)
-                self.showOrPushController(controller)
-            }
+            self.showOrPushController(RootSupportViewController())
         }
     }
 
@@ -382,13 +370,11 @@ public class MeViewController: UITableViewController {
     }
 
     fileprivate func navigateToTarget(for rowTitle: String) {
+        // The rows don't exist until the view loads, and this can run before the Me screen is first shown.
+        loadViewIfNeeded()
+
         let matchRow: ((ImmuTableRow) -> Bool) = { row in
-            if let row = row as? NavigationItemRow {
-                return row.title == rowTitle
-            } else if let row = row as? IndicatorNavigationItemRow {
-                return row.title == rowTitle
-            }
-            return false
+            (row as? NavigationItemRow)?.title == rowTitle
         }
 
         if let sections = handler?.viewModel.sections,
@@ -407,12 +393,7 @@ public class MeViewController: UITableViewController {
 
     private func indexPathForRowTitle(_ rowTitle: String) -> IndexPath? {
         let matchRow: ((ImmuTableRow) -> Bool) = { row in
-            if let row = row as? NavigationItemRow {
-                return row.title == rowTitle
-            } else if let row = row as? IndicatorNavigationItemRow {
-                return row.title == rowTitle
-            }
-            return false
+            (row as? NavigationItemRow)?.title == rowTitle
         }
 
         guard let sections = handler?.viewModel.sections,
@@ -601,15 +582,6 @@ extension MeViewController {
     }
 }
 
-// MARK: - Private Extension for Notification handling
-
-private extension MeViewController {
-
-    @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
-        reloadViewModel()
-    }
-}
-
 // MARK: - ShareAppContentPresenterDelegate
 
 extension MeViewController: ShareAppContentPresenterDelegate {
@@ -644,8 +616,4 @@ extension MeViewController: MeHeaderViewDelegate {
     func meHeaderViewDidTapOnIconView(_ view: MeHeaderView) {
         presentGravatarQuickEditor(initialPage: .avatarPicker)
     }
-}
-
-private enum Strings {
-    static let submitFeedback = NSLocalizedString("meMenu.submitFeedback", value: "Send Feedback", comment: "Me tab menu items")
 }

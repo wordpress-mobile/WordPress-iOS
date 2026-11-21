@@ -549,18 +549,7 @@ import WordPressShared
     case removeStaticPosterButtonTapped
     case removeStaticPosterLinkTapped
 
-    // Help & Support
-    case supportOpenMobileForumTapped
-    case supportMigrationFAQButtonTapped
-    case supportMigrationFAQCardViewed
-
     // Chatbot Support
-    case supportChatbotStarted
-    case supportChatbotWebViewError
-    case supportChatbotTicketSuccess
-    case supportChatbotTicketFailure
-    case supportChatbotEnded
-
     case supportChatbot
 
     // Support Tickets
@@ -1673,12 +1662,6 @@ import WordPressShared
             return "remove_static_poster_link_tapped"
 
         // Help & Support
-        case .supportOpenMobileForumTapped:
-            return "support_open_mobile_forum_tapped"
-        case .supportMigrationFAQButtonTapped:
-            return "support_migration_faq_tapped"
-        case .supportMigrationFAQCardViewed:
-            return "support_migration_faq_viewed"
         case .supportTickets:
             return "jetpack_mobile_support_tickets"
         case .applicationLog:
@@ -1687,16 +1670,6 @@ import WordPressShared
             return "jetpack_mobile_diagnostics"
 
         // Chatbot Support
-        case .supportChatbotStarted:
-            return "support_chatbot_started"
-        case .supportChatbotWebViewError:
-            return "support_chatbot_webview_error"
-        case .supportChatbotTicketSuccess:
-            return "support_chatbot_ticket_success"
-        case .supportChatbotTicketFailure:
-            return "support_chatbot_ticket_failure"
-        case .supportChatbotEnded:
-            return "support_chatbot_ended"
         case .supportChatbot:
             return "jetpack_mobile_support_chatbot"
 

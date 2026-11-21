@@ -41,7 +41,7 @@ struct LogFileStoreTests {
         #expect(LogFileStore(fileLogger: makeFileLogger()).logFiles().isEmpty)
     }
 
-    /// Events sent now (Zendesk, non-fatal errors) attach the file the app is writing to, which is the newest one.
+    /// Events sent now (non-fatal errors) attach the file the app is writing to, which is the newest one.
     @Test func eventLoggingAttachesTheNewestFile() {
         let newest = AppLogFile(url: URL(fileURLWithPath: "/tmp/logs/today.log"), creationDate: Date())
         let older = AppLogFile(

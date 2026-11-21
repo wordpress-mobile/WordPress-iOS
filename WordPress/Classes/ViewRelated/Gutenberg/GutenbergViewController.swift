@@ -49,10 +49,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }()
 
-    private lazy var coordinator: SupportCoordinator = {
-        SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
-    }()
-
     // MARK: - Aztec
 
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -1029,13 +1025,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestContactCustomerSupport() {
-        coordinator.showSupport()
+        RootSupportViewController.present(from: topmostPresentedViewController)
     }
 
     func gutenbergDidRequestGotoCustomerSupportOptions() {
-        let controller = SupportTableViewController()
-        let navController = UINavigationController(rootViewController: controller)
-        self.topmostPresentedViewController.present(navController, animated: true)
+        RootSupportViewController.present(from: topmostPresentedViewController)
     }
 
     func gutenbergDidRequestConnectionStatus() -> Bool {

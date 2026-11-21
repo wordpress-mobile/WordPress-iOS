@@ -171,9 +171,7 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
     }
 
     func customerSupportButtonDidTouch() {
-        let supportViewController = SupportTableViewController()
-        supportViewController.sourceTag = viewModel.supportSourceTag
-        navigationController?.pushViewController(supportViewController, animated: true)
+        navigationController?.pushViewController(RootSupportViewController(), animated: true)
     }
 }
 

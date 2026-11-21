@@ -14,15 +14,12 @@ class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
     let getPlansEmptyFailureMockFilename_ApiVersion1_3   = "site-plans-v3-empty-failure.json"
     let getPlansBadJsonFailureMockFilename_ApiVersion1_3 = "site-plans-v3-bad-json-failure.json"
     let getWpcomPlansSuccessMockFilename                 = "plans-mobile-success.json"
-    let getPlansMeSitesSuccessMockFilename               = "plans-me-sites-success.json"
-    let getZendeskMetadataSuccessMockFilename            = "site-zendesk-metadata-success.json"
     // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 
     var sitePlansEndpoint: String { return "sites/\(siteID)/plans" }
     var plansMobileEndpoint = "plans/mobile"
-    var meSitesEndpoint = "me/sites"
 
     var remote: PlanServiceRemote!
     var remoteV3: PlanServiceRemote_ApiVersion1_3!
@@ -222,114 +219,5 @@ class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
         XCTAssertNil(remote.parseWpcomPlan(json))
         XCTAssertNil(remote.parsePlanGroup(json))
         XCTAssertNil(remote.parsePlanFeature(json))
-    }
-
-    // MARK: - Test Plan Descriptions
-
-    func testPlanDescriptionsForAllSitesForLocale() {
-        let expect = expectation(description: "Get plan descriptions success")
-        stubRemoteResponse(meSitesEndpoint, filename: getPlansMeSitesSuccessMockFilename, contentType: .ApplicationJSON)
-
-        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { response in
-            XCTAssertEqual(response.count, 5)
-            expect.fulfill()
-        }) { _ in
-            XCTFail("This callback shouldn't get called")
-            expect.fulfill()
-        }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func testPlanDescriptionsForAllSitesFailure() {
-        let expect = expectation(description: "Get plan descriptions failure")
-        stubRemoteResponse(meSitesEndpoint, data: Data(), contentType: .NoContentType, status: 500)
-
-        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { _ in
-            XCTFail("This callback shouldn't get called")
-            expect.fulfill()
-        }) { error in
-            let error = error as NSError
-            XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError", "The error domain should be WordPressComRestApiError")
-            XCTAssertEqual(error.code, WordPressComRestApiErrorCode.unknown.rawValue, "The error code should be 7 - unknown")
-            expect.fulfill()
-        }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func testParsePlanDescriptions() {
-        let jetpackFlag = " (Jetpack)"
-
-        let str1 = """
-        {
-            "ID": 1,
-            "plan": {
-                "product_id": 2002,
-                "product_slug": "jetpack_free",
-                "product_name_short": "Free"
-            }
-        }
-        """
-        let data1 = str1.data(using: .utf8)!
-        let json1 = (try? JSONSerialization.jsonObject(with: data1, options: [])) as! [String: AnyObject]
-
-        let result = remote.parsePlanDescriptionForSite(json1)!
-
-        XCTAssertEqual(result.siteID, 1)
-        XCTAssertTrue(result.plan.name.contains(jetpackFlag))
-
-        let str2 = """
-        {
-            "ID": 2,
-            "plan": {
-                "product_id": 1,
-                "product_slug": "free",
-                "product_name_short": "Free"
-            }
-        }
-        """
-        let data2 = str2.data(using: .utf8)!
-        let json2 = (try? JSONSerialization.jsonObject(with: data2, options: [])) as! [String: AnyObject]
-
-        let result2 = remote.parsePlanDescriptionForSite(json2)!
-
-        XCTAssertEqual(result2.siteID, 2)
-        XCTAssertFalse(result2.plan.name.contains(jetpackFlag))
-    }
-
-    // MARK: - Zendesk
-
-    func testZendeskMetadata() throws {
-        stubRemoteResponse("rest/v1.1/me/sites?fields=ID%2C%20zendesk_site_meta", filename: getZendeskMetadataSuccessMockFilename, contentType: .ApplicationJSON, status: 200)
-
-        var result: Result<ZendeskMetadata, Error>? = nil
-        let completed = expectation(description: "API call completed")
-        remote.getZendeskMetadata(siteID: 123, completion: {
-            result = $0
-            completed.fulfill()
-        })
-        wait(for: [completed], timeout: 0.3)
-
-        try XCTAssertEqual(XCTUnwrap(result).get().plan, "free")
-    }
-
-    func testZendeskMetadataSiteNotFound() throws {
-        stubRemoteResponse("rest/v1.1/me/sites?fields=ID%2C%20zendesk_site_meta", filename: getZendeskMetadataSuccessMockFilename, contentType: .ApplicationJSON, status: 200)
-
-        var result: Result<ZendeskMetadata, Error>? = nil
-        let completed = expectation(description: "API call completed")
-        remote.getZendeskMetadata(siteID: 9999, completion: {
-            result = $0
-            completed.fulfill()
-        })
-        wait(for: [completed], timeout: 0.3)
-
-        switch try XCTUnwrap(result) {
-        case .failure(PlanServiceRemoteError.noMetadata):
-            XCTAssertTrue(true)
-        default:
-            XCTFail("Unexpected result: \(String(describing: result))")
-        }
     }
 }
