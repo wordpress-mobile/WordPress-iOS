@@ -11,8 +11,11 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @class MySitesCoordinator;
 @class NotificationsViewController;
 @class ReaderPresenter;
+@class AppSidebarCoordinator;
 
 @interface WPTabBarController : UITabBarController
+
+@property (nonatomic, strong, nullable) AppSidebarCoordinator *appSidebarCoordinator;
 
 @property (nonatomic, strong, readonly, nullable) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) UINavigationController *notificationsNavigationController;

@@ -66,6 +66,7 @@ public class MySitesCoordinator: NSObject {
     private(set) var adaptiveContent: AdaptiveListDetailViewController?
     private var siteMenu: SiteMenuViewController?
     private var isPushingDestination = false
+    var onSiteChanged: ((Blog?) -> Void)?
 
     private func configureAdaptiveContent(for blog: Blog?) {
         if let previous = adaptiveContent {
@@ -116,6 +117,7 @@ public class MySitesCoordinator: NSObject {
         ])
         content.didMove(toParent: containerViewController)
         siteMenu?.loadViewIfNeeded()
+        onSiteChanged?(blog)
     }
 
     func selectSite(_ blog: Blog?) {

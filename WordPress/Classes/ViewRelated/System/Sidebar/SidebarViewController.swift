@@ -14,7 +14,7 @@ final class SidebarViewController: UIHostingController<AnyView> {
         self.viewModel = viewModel
         self.viewModel.blogListViewModel.sidebarViewModel = viewModel
         super.init(rootView: AnyView(SidebarView(viewModel: viewModel, blogListViewModel: viewModel.blogListViewModel)))
-        self.title = Strings.sectionMySites
+        self.title = AppSidebarStrings.sectionMySites
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
@@ -43,7 +43,7 @@ struct SidebarView: View {
                 Section {
                     siteListSectionContent
                 }
-                Section(Strings.moreSection) {
+                Section(AppSidebarStrings.moreSection) {
                     more
                 }
             }
@@ -76,7 +76,7 @@ struct SidebarView: View {
     private var siteListSectionContent: some View {
         let topSites = blogListViewModel.topSites
         if topSites.isEmpty {
-            Label(Strings.createSite, systemImage: "plus.circle")
+            Label(AppSidebarStrings.createSite, systemImage: "plus.circle")
                 .tag(SidebarSelection.welcome)
         } else {
             makeSiteList(with: topSites)
@@ -85,7 +85,7 @@ struct SidebarView: View {
                     Button {
                         viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
                     } label: {
-                        Label(Strings.allSites, systemImage: "rectangle.stack")
+                        Label(AppSidebarStrings.allSites, systemImage: "rectangle.stack")
                     }
                     .tint(Color.primary)
                 }
@@ -109,7 +109,7 @@ struct SidebarView: View {
         let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
             viewModel?.navigate(.addSite(selection: $0))
         })
-        let label = SidebarAddButtonLabel(title: Strings.addSite)
+        let label = SidebarAddButtonLabel(title: AppSidebarStrings.addSite)
         switch viewModel.actions.count {
         case 0:
             EmptyView()
@@ -138,7 +138,7 @@ struct SidebarView: View {
             }
 
             Button(action: { viewModel.navigate(.help) }) {
-                Label(Strings.help, systemImage: "questionmark.circle")
+                Label(AppSidebarStrings.help, systemImage: "questionmark.circle")
             }
             .accessibilityIdentifier("sidebar_help")
         case .jetpack:
@@ -148,14 +148,14 @@ struct SidebarView: View {
 
                 if RemoteFeatureFlag.domainManagement.enabled() {
                     Button(action: { viewModel.navigate(.domains) }) {
-                        Label(Strings.domains, systemImage: "network")
+                        Label(AppSidebarStrings.domains, systemImage: "network")
                     }
                     .accessibilityIdentifier("sidebar_domains")
                 }
             }
 
             Button(action: { viewModel.navigate(.help) }) {
-                Label(Strings.help, systemImage: "questionmark.circle")
+                Label(AppSidebarStrings.help, systemImage: "questionmark.circle")
             }
             .accessibilityIdentifier("sidebar_help")
         case .reader:
@@ -166,7 +166,7 @@ struct SidebarView: View {
 
     private var notifications: some View {
         Label {
-            Text(Strings.notifications)
+            Text(AppSidebarStrings.notifications)
         } icon: {
             NotificationsBellImage(hasNewActivity: notificationsButtonViewModel.hasNewActivity)
         }
@@ -175,7 +175,7 @@ struct SidebarView: View {
     }
 
     private var reader: some View {
-        Label(Strings.reader, systemImage: "eyeglasses")
+        Label(AppSidebarStrings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
             .accessibilityIdentifier("sidebar_reader")
     }
@@ -281,17 +281,4 @@ struct SidebarAddButtonLabel: View {
                 .font(.title2)
         }
     }
-}
-
-private enum Strings {
-    static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "Sites", comment: "Sidebar section title on iPad")
-    static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
-    static let allSites = NSLocalizedString("sidebar.allSites", value: "All Sites", comment: "Sidebar button title on iPad")
-    static let addSite = NSLocalizedString("sidebar.addSite", value: "Add Site", comment: "Sidebar button title on iPad")
-    static let createSite = NSLocalizedString("sidebar.createSite", value: "Create Site", comment: "Sidebar button title on iPad")
-    static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
-    static let reader = SharedStrings.Reader.title
-    static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
-    static let help = NSLocalizedString("sidebar.help", value: "Help & Support", comment: "Sidebar item on iPad")
-    static let me = NSLocalizedString("sidebar.me", value: "Me", comment: "Sidebar item on iPad")
 }
