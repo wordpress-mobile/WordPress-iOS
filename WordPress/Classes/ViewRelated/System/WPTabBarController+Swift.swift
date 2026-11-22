@@ -160,52 +160,9 @@ extension WPTabBarController {
         return selectedViewController.supportedInterfaceOrientations
     }
 
-    @objc public func animateSelectedItem(_ item: UITabBarItem, for tabBar: UITabBar) {
-
-        // Order of subviews may not be guaranteed, so filter and sort them
-        let tabBarButtons = tabBar.subviews
-            .filter { $0 is UIControl }
-            .sorted { $0.frame.minX < $1.frame.minX }
-
-        // The number of buttons should be the same as the number of tab bar items
-        guard tabBarButtons.count == tabBar.items?.count else {
-            return
-        }
-
-        // Get the button that corresponds to the selected tab bar item
-        guard let index = tabBar.items?.firstIndex(of: item),
-            let button = tabBarButtons[safe: index]
-        else {
-            return
-        }
-
-        guard let imageView = button.getImageView() else {
-            return
-        }
-
-        let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        bounceAnimation.values = [0.8, 1.02, 1.0]
-        bounceAnimation.duration = TimeInterval(0.2)
-        bounceAnimation.calculationMode = CAAnimationCalculationMode.cubic
-        imageView.layer.add(bounceAnimation, forKey: nil)
-    }
-
     @objc public func switchNotificationsTabToNotificationSettings() {
         showNotificationsTab()
         resetNotificationsNavigation()
         notificationsViewController?.showNotificationSettings()
-    }
-}
-
-private extension UIView {
-    func getImageView() -> UIImageView? {
-        var views = self.subviews
-        while let view = views.popLast() {
-            if let imageView = view as? UIImageView {
-                return imageView
-            }
-            views += view.subviews
-        }
-        return nil
     }
 }
