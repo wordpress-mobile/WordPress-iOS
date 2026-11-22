@@ -10,6 +10,10 @@ import WordPressShared
 struct WPTabBarControllerTests {
     @Test func nativeTabsKeepTheExistingDestinations() throws {
         try withController { controller in
+            // Me is a compact tab; regular-width account routes present a sheet.
+            controller.traitOverrides.horizontalSizeClass = .compact
+            let window = show(controller)
+            defer { window.isHidden = true }
             #expect(controller.tabs.map(\.identifier) == ["mysites", "reader", "notifications", "me"])
             #expect(controller.tabs.allSatisfy { $0.preferredPlacement == .fixed })
             #expect(
