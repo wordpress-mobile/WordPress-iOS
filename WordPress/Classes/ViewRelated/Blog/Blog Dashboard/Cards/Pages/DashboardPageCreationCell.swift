@@ -99,7 +99,10 @@ class DashboardPageCreationCell: UITableViewCell {
         imageView.backgroundColor = Colors.promoImageBackgroundColor
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Metrics.promoImageCornerRadius
-        NSLayoutConstraint.activate(imageView.constrain(size: Metrics.promoImageSize))
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: Metrics.promoImageSize.width),
+            imageView.heightAnchor.constraint(equalToConstant: Metrics.promoImageSize.height)
+        ])
         return imageView
     }()
 
