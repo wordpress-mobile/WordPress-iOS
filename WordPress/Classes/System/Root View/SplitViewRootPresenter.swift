@@ -1,4 +1,5 @@
 import Combine
+import Support
 import SwiftUI
 import UIKit
 import WordPressData
@@ -146,7 +147,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .help:
-            let supportVC = SupportTableViewController()
+            let supportVC: UIViewController =
+                RemoteFeatureFlag.newSupport.enabled()
+                ? MainActor.assumeIsolated { RootSupportViewController(dataProvider: SupportDataProvider.shared) }
+                : SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
