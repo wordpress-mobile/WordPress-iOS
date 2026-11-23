@@ -14,6 +14,8 @@ final class CreateButtonCoordinator: NSObject {
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
     }
 
+    static let buttonAccessibilityIdentifier = "floatingCreateButton"
+
     var button: UIButton = {
         let button: UIButton
         if #available(iOS 26, *) {
@@ -32,7 +34,7 @@ final class CreateButtonCoordinator: NSObject {
             "Create",
             comment: "Accessibility label for create floating action button"
         )
-        button.accessibilityIdentifier = "floatingCreateButton"
+        button.accessibilityIdentifier = CreateButtonCoordinator.buttonAccessibilityIdentifier
         return button
     }()
 
