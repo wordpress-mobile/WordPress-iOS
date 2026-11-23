@@ -130,6 +130,8 @@ class StaticTokenProvider: ApplicationTokenListDataProvider {
     func loadApplicationTokens() async throws -> [ApplicationTokenItem] {
         try result.get()
     }
+
+    func deleteApplicationToken(uuid: UUID) async throws {}
 }
 
 #Preview {
