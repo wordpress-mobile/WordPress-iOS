@@ -1,5 +1,6 @@
 27.6
 -----
+* [*] Application Passwords: Revoke passwords for other apps from the password details screen.
 
 
 27.5
