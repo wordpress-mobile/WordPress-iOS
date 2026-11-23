@@ -44,6 +44,7 @@ final class AdaptiveListDetailViewController: UISplitViewController {
         }
         let split = contentSplitViewController
         split.delegate = self
+        split.displayModeButtonVisibility = .never
         split.setViewController(list, for: .primary)
         split.setViewController(detail, for: .secondary)
         if usesDetailForCompactWidth {
@@ -63,6 +64,10 @@ final class AdaptiveListDetailViewController: UISplitViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        // iOS 18 resets this preference while the child controllers appear.
+        if displayModeButtonVisibility != .never {
+            displayModeButtonVisibility = .never
+        }
         updateListVisibility()
         updateTabBarSafeArea()
     }
@@ -127,6 +132,7 @@ extension AdaptiveListDetailViewController: UISplitViewControllerDelegate {
     }
 
     func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+        displayModeButtonVisibility = .never
         updateListVisibility()
     }
 

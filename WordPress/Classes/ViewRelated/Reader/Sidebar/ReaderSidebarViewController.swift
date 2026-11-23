@@ -119,6 +119,7 @@ private struct ReaderSidebarView: View {
                     }
                 }
             }
+            .toolbar(removing: .sidebarToggle)
             .tint(AppColor.tint)
             .accessibilityIdentifier("reader_sidebar")
     }

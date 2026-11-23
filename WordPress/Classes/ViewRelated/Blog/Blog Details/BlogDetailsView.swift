@@ -19,6 +19,7 @@ struct BlogDetailsView: View {
                 menu(headerWidth: geometry.size.width).listStyle(.insetGrouped)
             }
         }
+        .toolbar(removing: .sidebarToggle)
         .refreshable { await refresh() }
         .accessibilityIdentifier("Blog Details Table")
         .onChange(of: viewModel.blog.objectID) { _, _ in
