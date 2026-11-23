@@ -47,7 +47,7 @@ extension WPTabBarController {
         let controllers = [
             mySitesCoordinator.rootViewController,
             readerRoot,
-            notificationsNavigationController,
+            notificationsRootViewController,
             meNavigationController
         ]
         let updatedTabs = zip(WPTab.allCases, controllers)

@@ -25,7 +25,7 @@ struct WPTabBarControllerTests {
             controller.showReaderTab()
             #expect(controller.selectedTab?.viewController === controller.readerNavigationController)
             controller.showNotificationsTab()
-            #expect(controller.selectedTab?.viewController === controller.notificationsNavigationController)
+            #expect(controller.selectedTab?.viewController === controller.notificationsRootViewController)
             controller.showMeTab()
             #expect(controller.selectedTab?.viewController === controller.meNavigationController)
             controller.showMySitesTab()
@@ -85,11 +85,13 @@ struct WPTabBarControllerTests {
 
             #expect(controller.selectedAppTab == .notifications)
             #expect(controller.tabs[2] !== originalTabs[2])
+            #expect(controller.tab(forAppTab: .notifications) === controller.tabs[2])
+            #expect(controller.tabs[2].viewController === controller.notificationsRootViewController)
             for index in [0, 1, 3] {
                 #expect(controller.tabs[index] === originalTabs[index])
             }
             #expect(controller.readerNavigationController.topViewController === detail)
-            #expect(controller.selectedTab?.viewController === controller.notificationsNavigationController)
+            #expect(controller.selectedTab?.viewController === controller.notificationsRootViewController)
             #expect(controller.notificationsViewController != nil)
         }
     }

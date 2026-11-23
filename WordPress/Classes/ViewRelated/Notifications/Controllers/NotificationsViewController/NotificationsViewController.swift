@@ -113,6 +113,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     }()
 
     var isSidebarModeEnabled = false
+    var showAdaptiveDetail: ((UIViewController) -> Void)?
+    var isAdaptiveDetailVisible: (() -> Bool)?
     var isReaderAppModeEnabled = false
 
     /// The account whose notifications the list shows. Passed with every
@@ -139,6 +141,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     /// instance in the compact layout's tab bar becomes regular when the split view expands
     /// (as does a large iPhone in landscape) without having a detail column of its own.
     private var isShowingAlongsideDetailColumn: Bool {
+        if let isAdaptiveDetailVisible { return isAdaptiveDetailVisible() }
         guard let splitViewController, !splitViewController.isCollapsed else {
             return false
         }
@@ -199,25 +202,32 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         // whether a row stays selected. `viewWillAppear` covers the list returning to the
         // screen; this covers it staying on screen while the layout changes around it.
         registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
-            self.tableView.reloadData()
-
-            if !self.isShowingAlongsideDetailColumn {
-                self.tableView.deselectSelectedRowWithAnimation(true)
-            } else if let selectedNotification = self.selectedNotification {
-                self.selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
-            } else {
-                self.selectFirstNotificationIfAppropriate()
-            }
-
-            DispatchQueue.main.async {
-                self.showNoResultsViewIfNeeded()
-            }
+            self.updateSelectionForLayout()
         }
 
         // The filter header resizes with the text size.
         registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
             self.tableView.tableHeaderView = self.tableHeaderView
         }
+    }
+
+    func updateSelectionForLayout() {
+        guard isViewLoaded else { return }
+        tableView.reloadData()
+        if !isShowingAlongsideDetailColumn {
+            tableView.deselectSelectedRowWithAnimation(true)
+        } else if let selectedNotification {
+            selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
+        } else {
+            selectFirstNotificationIfAppropriate()
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.showNoResultsViewIfNeeded()
+        }
+    }
+
+    func didReturnToAdaptiveList() {
+        selectedNotification = nil
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -233,7 +243,9 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
 
-            selectedNotification = nil
+            if showAdaptiveDetail == nil {
+                selectedNotification = nil
+            }
         }
 
         // While we're onscreen, please, update rows with animations
@@ -972,7 +984,9 @@ extension NotificationsViewController {
     }
 
     private func displayViewController(_ controller: UIViewController) {
-        if isShowingAlongsideDetailColumn, let splitViewController {
+        if let showAdaptiveDetail {
+            showAdaptiveDetail(controller)
+        } else if isShowingAlongsideDetailColumn, let splitViewController {
             splitViewController.setViewController(controller, for: .secondary)
         } else {
             navigationController?.pushViewController(controller, animated: true)

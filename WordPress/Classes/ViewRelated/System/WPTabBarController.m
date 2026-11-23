@@ -20,6 +20,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
+@property (nonatomic, strong) UIViewController *notificationsRootViewController;
 
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
@@ -153,6 +154,14 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     return _notificationsNavigationController;
 }
 
+- (UIViewController *)notificationsRootViewController
+{
+    if (!_notificationsRootViewController) {
+        _notificationsRootViewController = [self makeNotificationsRootViewController];
+    }
+    return _notificationsRootViewController;
+}
+
 - (void)setShouldUseStaticNotifications:(BOOL)shouldUseStaticNotifications
 {
     if (_shouldUseStaticNotifications == shouldUseStaticNotifications) {
@@ -161,6 +170,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _shouldUseStaticNotifications = shouldUseStaticNotifications;
 
     _notificationsNavigationController = nil;
+    _notificationsRootViewController = nil;
     [self updateTabsSelecting:self.selectedAppTab];
     [self updateNotificationBadgeVisibility];
 }
@@ -190,6 +200,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _readerPresenter = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
+    _notificationsRootViewController = nil;
     _meNavigationController = nil;
 
     [self updateTabsSelecting:WPTabMySites];
@@ -247,7 +258,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)popNotificationsTabToRoot
 {
-    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+    [self resetNotificationsNavigation];
 }
 
 - (NSString *)currentlySelectedScreen
@@ -317,7 +328,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _readerNavigationController = nil;
 
     if (notification.object == nil) {
-        [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+        [self resetNotificationsNavigation];
         // Reinstall the tabs. The app UI stays up after logging out when a
         // self-hosted site remains, so the rebuilt Reader tab has to replace the
         // stale one here. The other tabs are the same instances, which keeps the
