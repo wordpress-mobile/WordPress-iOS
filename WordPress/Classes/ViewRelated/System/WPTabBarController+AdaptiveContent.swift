@@ -37,14 +37,20 @@ extension WPTabBarController {
         notificationsNavigationController.popToRootViewController(animated: false)
     }
 
-    @objc(updateAdaptiveTabBarVisibilityAnimated:) func updateAdaptiveTabBarVisibility(animated: Bool) {
-        // Resizing does not push the retained detail again, so UIKit does not reapply its preference.
-        let content =
-            selectedAppTab == .mySites
+    @objc func updateAdaptiveContentSafeArea() {
+        selectedAdaptiveContent?.updateTabBarSafeArea()
+    }
+
+    private var selectedAdaptiveContent: AdaptiveListDetailViewController? {
+        selectedAppTab == .mySites
             ? mySitesCoordinator.adaptiveContent
             : selectedViewController as? AdaptiveListDetailViewController
+    }
+
+    @objc(updateAdaptiveTabBarVisibilityAnimated:) func updateAdaptiveTabBarVisibility(animated: Bool) {
+        // Resizing does not push the retained detail again, so UIKit does not reapply its preference.
         let requestsHiddenBar =
-            content?.requestsHiddenBottomBar
+            selectedAdaptiveContent?.requestsHiddenBottomBar
             ?? (selectedViewController as? UINavigationController)?.requestsHiddenBottomBar
             ?? false
         let isHidden = !isAppSidebarAvailable && requestsHiddenBar

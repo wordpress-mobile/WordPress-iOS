@@ -42,7 +42,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         secondary = UINavigationController()
         sidebar = ReaderSidebarViewController(viewModel: sidebarViewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
-        supplementary = UINavigationController(rootViewController: sidebar)
+        supplementary = AdaptiveColumnNavigationController(rootViewController: sidebar)
         supplementary.navigationBar.prefersLargeTitles = true
 
         super.init()

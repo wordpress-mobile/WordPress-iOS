@@ -2,6 +2,7 @@ import Testing
 import UIKit
 
 @testable import WordPress
+@testable import WordPressData
 
 @MainActor
 @Suite(.serialized)
@@ -11,7 +12,9 @@ struct AdaptiveNavigationTests {
         let feed = UIViewController()
         let article = UIViewController()
         article.hidesBottomBarWhenPushed = true
-        let content = AdaptiveListDetailViewController(list: UINavigationController(rootViewController: list))
+        let content = AdaptiveListDetailViewController(
+            list: AdaptiveColumnNavigationController(rootViewController: list)
+        )
         var collapseStates: [Bool] = []
         content.onCollapseStateChanged = { collapseStates.append($0) }
         content.showDetail(feed)
@@ -42,7 +45,9 @@ struct AdaptiveNavigationTests {
         let feed = UIViewController()
         let article = UIViewController()
         article.hidesBottomBarWhenPushed = true
-        let content = AdaptiveListDetailViewController(list: UINavigationController(rootViewController: list))
+        let content = AdaptiveListDetailViewController(
+            list: AdaptiveColumnNavigationController(rootViewController: list)
+        )
         // iOS 18 needs a scene-backed window to complete the collapsed navigation lifecycle.
         let scene = try #require(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = UIWindow(windowScene: scene)
@@ -76,9 +81,9 @@ struct AdaptiveNavigationTests {
         let menu = UIViewController()
         let dashboard = UIViewController()
         let stats = UIViewController()
-        let navigation = UINavigationController(rootViewController: dashboard)
+        let navigation = AdaptiveColumnNavigationController(rootViewController: dashboard)
         let content = AdaptiveListDetailViewController(
-            list: UINavigationController(rootViewController: menu),
+            list: AdaptiveColumnNavigationController(rootViewController: menu),
             detail: navigation,
             usesDetailForCompactWidth: true
         )
@@ -100,9 +105,9 @@ struct AdaptiveNavigationTests {
     }
 
     @Test func mySiteCompactColumnKeepsTheDestinationNavigationBar() async throws {
-        let navigation = UINavigationController(rootViewController: UIViewController())
+        let navigation = AdaptiveColumnNavigationController(rootViewController: UIViewController())
         let content = AdaptiveListDetailViewController(
-            list: UINavigationController(rootViewController: UIViewController()),
+            list: AdaptiveColumnNavigationController(rootViewController: UIViewController()),
             detail: navigation,
             usesDetailForCompactWidth: true
         )
@@ -136,8 +141,8 @@ struct AdaptiveNavigationTests {
         let editor = UIViewController()
         let pages = UIViewController()
         let content = AdaptiveListDetailViewController(
-            list: UINavigationController(rootViewController: UIViewController()),
-            detail: UINavigationController(rootViewController: dashboard),
+            list: AdaptiveColumnNavigationController(rootViewController: UIViewController()),
+            detail: AdaptiveColumnNavigationController(rootViewController: dashboard),
             usesDetailForCompactWidth: true
         )
         content.showDetail(posts, keeping: dashboard)
@@ -149,7 +154,7 @@ struct AdaptiveNavigationTests {
 
     @Test func anUnselectedNotificationListStaysTheCompactLandingScreen() {
         let list = UIViewController()
-        let navigation = UINavigationController(rootViewController: list)
+        let navigation = AdaptiveColumnNavigationController(rootViewController: list)
         let content = AdaptiveListDetailViewController(list: navigation)
         let window = show(content, sizeClass: .regular)
         defer { window.isHidden = true }
@@ -163,7 +168,7 @@ struct AdaptiveNavigationTests {
         let list = UIViewController()
         let detail = UIViewController()
         detail.hidesBottomBarWhenPushed = true
-        let navigation = UINavigationController(rootViewController: list)
+        let navigation = AdaptiveColumnNavigationController(rootViewController: list)
         let content = AdaptiveListDetailViewController(list: navigation)
         content.showDetail(detail)
         let window = show(content, sizeClass: .regular)
@@ -184,7 +189,9 @@ struct AdaptiveNavigationTests {
     @Test func offscreenContentRetainsItsDetailWhenTheSelectedTabResizes() {
         let list = UIViewController()
         let article = UIViewController()
-        let content = AdaptiveListDetailViewController(list: UINavigationController(rootViewController: list))
+        let content = AdaptiveListDetailViewController(
+            list: AdaptiveColumnNavigationController(rootViewController: list)
+        )
         content.showDetail(article)
         let tabs = UITabBarController()
         tabs.mode = .tabSidebar
@@ -207,10 +214,10 @@ struct AdaptiveNavigationTests {
 
     @Test func navigationBarsKeepTheirPositionAfterInactiveResizing() async throws {
         let notifications = AdaptiveListDetailViewController(
-            list: UINavigationController(rootViewController: UIViewController())
+            list: AdaptiveColumnNavigationController(rootViewController: UIViewController())
         )
         let reader = AdaptiveListDetailViewController(
-            list: UINavigationController(rootViewController: UIViewController())
+            list: AdaptiveColumnNavigationController(rootViewController: UIViewController())
         )
         for content in [notifications, reader] {
             let article = UIViewController()
@@ -275,6 +282,62 @@ struct AdaptiveNavigationTests {
         #expect(before.y > 0)
         #expect(after.y == before.y)
         #expect(returnsToList == 1)
+    }
+
+    @Test func columnsStayBelowTopTabsAfterSidebarAndWidthChanges() async throws {
+        guard #available(iOS 26, *) else { return }
+        let article = UIViewController()
+        let reader = AdaptiveListDetailViewController(
+            list: AdaptiveColumnNavigationController(rootViewController: UIViewController())
+        )
+        reader.showDetail(article)
+        let notifications = AdaptiveListDetailViewController(
+            list: AdaptiveColumnNavigationController(rootViewController: UIViewController())
+        )
+        let originalContext = ContextManager.overrideInstance
+        let context = ContextManager.forTesting()
+        ContextManager.overrideInstance = context
+        defer {
+            context.mainContext.reset()
+            ContextManager.overrideInstance = originalContext
+        }
+        // Sidebar completion must run through the app's tab controller too.
+        let tabs = WPTabBarController(staticReader: true, staticNotifications: true)
+        let readerTab = UITab(title: "Reader", image: nil, identifier: "reader") { _ in reader }
+        let notificationsTab = UITab(title: "Notifications", image: nil, identifier: "notifications") { _ in
+            notifications
+        }
+        tabs.tabs = [readerTab, notificationsTab]
+        let scene = try #require(UIApplication.shared.connectedScenes.first as? UIWindowScene)
+        let window = UIWindow(windowScene: scene)
+        window.traitOverrides.horizontalSizeClass = .regular
+        window.rootViewController = tabs
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+        reader.detailNavigationController.additionalSafeAreaInsets.bottom = 17
+
+        for _ in 0..<2 {
+            for tab in [readerTab, notificationsTab] {
+                tabs.selectedTab = tab
+                for sidebarHidden in [false, true] {
+                    tabs.sidebar.isHidden = sidebarHidden
+                    try await Task.sleep(for: .milliseconds(300))
+                    window.layoutIfNeeded()
+                    let content = try #require(tab.viewController as? AdaptiveListDetailViewController)
+                    for navigation in [content.listNavigationController, content.detailNavigationController] {
+                        guard navigation.viewIfLoaded?.window != nil else { continue }
+                        let bar = navigation.navigationBar
+                        let frame = bar.convert(bar.bounds, to: tabs.view)
+                        #expect(frame.minY >= tabs.contentLayoutGuide.layoutFrame.minY - 1)
+                    }
+                }
+            }
+            resize(window, to: .compact)
+            try await Task.sleep(for: .milliseconds(200))
+            resize(window, to: .regular)
+        }
+        #expect(reader.detailNavigationController.topViewController === article)
+        #expect(reader.detailNavigationController.additionalSafeAreaInsets.bottom == 17)
     }
 
     private func show(_ controller: UIViewController, sizeClass: UIUserInterfaceSizeClass) -> UIWindow {

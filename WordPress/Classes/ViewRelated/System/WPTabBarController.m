@@ -143,7 +143,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         self.notificationsViewController = [NotificationsViewController makeForAppNavigation];
         rootViewController = self.notificationsViewController;
     }
-    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    _notificationsNavigationController = [[AdaptiveColumnNavigationController alloc] initWithRootViewController:rootViewController];
     self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
     self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
@@ -311,6 +311,14 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     [self updateAdaptiveTabBarVisibilityAnimated:NO];
 }
 
+- (void)tabBarController:(UITabBarController *)tabBarController sidebarVisibilityWillChange:(UITabBarControllerSidebar *)sidebar animator:(id<UITabBarControllerSidebarAnimating>)animator
+{
+    __weak WPTabBarController *weakSelf = self;
+    [animator addCompletion:^{
+        [weakSelf updateAdaptiveContentSafeArea];
+    }];
+}
+
 #pragma mark - Notification Activity
 
 - (void)updateIconIndicators:(NSNotification *)notification
@@ -467,6 +475,12 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     self.view.accessibilityIdentifier = @"root_vc";
     [self startObserversForTabAccessTracking];
     [self observeAdaptiveTabBarTraits];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateAdaptiveContentSafeArea];
 }
 
 - (void)viewDidAppear:(BOOL)animated

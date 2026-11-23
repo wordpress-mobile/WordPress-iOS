@@ -39,7 +39,7 @@ public class MySitesCoordinator: NSObject {
 
     @objc
     public lazy var navigationController: UINavigationController = {
-        let navigationController = UINavigationController(rootViewController: rootContentViewController)
+        let navigationController = AdaptiveColumnNavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.tabBarItem.image = UIImage(named: "tab-bar-home")
@@ -84,7 +84,7 @@ public class MySitesCoordinator: NSObject {
             menu.delegate = self
             siteMenu = menu
             content = AdaptiveListDetailViewController(
-                list: UINavigationController(rootViewController: menu),
+                list: AdaptiveColumnNavigationController(rootViewController: menu),
                 detail: navigationController,
                 usesDetailForCompactWidth: true
             )

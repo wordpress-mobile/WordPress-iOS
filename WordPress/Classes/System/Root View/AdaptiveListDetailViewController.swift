@@ -28,7 +28,7 @@ final class AdaptiveListDetailViewController: UISplitViewController {
 
     init(
         list: UINavigationController,
-        detail: UINavigationController = UINavigationController(),
+        detail: UINavigationController = AdaptiveColumnNavigationController(),
         usesDetailForCompactWidth: Bool = false
     ) {
         listNavigationController = list
@@ -64,6 +64,13 @@ final class AdaptiveListDetailViewController: UISplitViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateListVisibility()
+        updateTabBarSafeArea()
+    }
+
+    func updateTabBarSafeArea() {
+        for navigation in [listNavigationController, detailNavigationController] {
+            (navigation as? AdaptiveColumnNavigationController)?.updateTabBarSafeArea()
+        }
     }
 
     func showDetail(_ controller: UIViewController, keeping root: UIViewController? = nil) {
@@ -175,6 +182,29 @@ extension UINavigationController {
         // UIKit can nest the secondary navigation controller inside the primary during collapse.
         viewControllers.contains {
             $0.hidesBottomBarWhenPushed || ($0 as? UINavigationController)?.requestsHiddenBottomBar == true
+        }
+    }
+}
+
+/// Reserves the tab bar's uncovered region without changing split-view column geometry.
+@objc(AdaptiveColumnNavigationController)
+final class AdaptiveColumnNavigationController: UINavigationController {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Split layout can finish before the columns move during sidebar transitions on iOS 26.
+        updateTabBarSafeArea()
+    }
+
+    func updateTabBarSafeArea() {
+        guard #available(iOS 26, *), splitViewController is AdaptiveListDetailViewController,
+            let tabs = tabBarController, isViewLoaded, view.window != nil
+        else { return }
+        let guide = tabs.view.convert(tabs.contentLayoutGuide.layoutFrame, to: view)
+        // The split may already reserve some or all of the top inset. Do not count it twice.
+        let inheritedTop = max(0, view.safeAreaInsets.top - additionalSafeAreaInsets.top)
+        let top = max(0, guide.minY - inheritedTop)
+        if abs(additionalSafeAreaInsets.top - top) > 0.1 {
+            additionalSafeAreaInsets.top = top
         }
     }
 }
