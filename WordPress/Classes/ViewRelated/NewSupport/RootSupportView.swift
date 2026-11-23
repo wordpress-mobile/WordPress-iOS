@@ -255,6 +255,10 @@ class RootSupportViewController: UIHostingController<AnyView> {
         // That is the shade the screen visibly changes from as it pushes in from Me. Match the
         // grouped background the list and every other Me screen use.
         view.backgroundColor = .systemGroupedBackground
+
+        // Tracked here, matching `SupportTableViewController`, so `support_opened` stays
+        // continuous as the rollout moves users from the old flow to this one.
+        WPAnalytics.track(.openedSupport)
     }
 }
 

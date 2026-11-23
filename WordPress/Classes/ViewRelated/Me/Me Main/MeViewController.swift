@@ -164,6 +164,8 @@ public class MeViewController: UITableViewController {
             title: RowTitles.support,
             icon: UIImage(named: "wpl-help")?.withRenderingMode(.alwaysTemplate),
             tintColor: .label,
+            // The indicator is driven by the legacy Zendesk unread count, which no longer
+            // applies. Only the old support flow clears it, so the new flow leaves it alone.
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
@@ -301,7 +303,7 @@ public class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] _ in
-            if FeatureFlag.newSupport.enabled == true {
+            if RemoteFeatureFlag.newSupport.enabled() {
                 let controller = RootSupportViewController(dataProvider: SupportDataProvider.shared)
                 self.showOrPushController(controller)
             } else {
