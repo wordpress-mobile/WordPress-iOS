@@ -196,25 +196,10 @@ enum Localization {
         value: "Share Activity Log",
         comment: "Navigation title for sharing activity log"
     )
-    static let sharingWithSupport = NSLocalizedString(
-        "com.jetpack.support.sharingWithSupport",
-        value: "Sharing with support!",
-        comment: "Message shown when sharing log with support"
-    )
-    static let newSupportTicket = NSLocalizedString(
-        "com.jetpack.support.newSupportTicket",
-        value: "New Support Ticket",
-        comment: "Option to create a new support ticket"
-    )
     static let exportAsFile = NSLocalizedString(
         "com.jetpack.support.exportAsFile",
         value: "Export as File",
         comment: "Option to export log as a file"
-    )
-    static let sendLogsToSupport = NSLocalizedString(
-        "com.jetpack.support.sendLogsToSupport",
-        value: "Send logs directly to support team",
-        comment: "Description for sending logs to support"
     )
     static let saveAsFile = NSLocalizedString(
         "com.jetpack.support.saveAsFile",

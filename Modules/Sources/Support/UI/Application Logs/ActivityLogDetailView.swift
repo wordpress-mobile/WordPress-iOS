@@ -60,10 +60,8 @@ struct ActivityLogDetailView: View {
 
             self.state = .loaded(lines, isSharing: false)
         }, content: {
-            ActivityLogSharingView(applicationLog: applicationLog) {
-                AnyView(erasing: Text("TODO: A new support request with the application log attached"))
-            }
-            .presentationDetents([.medium])
+            ActivityLogSharingView(applicationLog: applicationLog)
+                .presentationDetents([.medium])
         })
         .onAppear {
             self.dataProvider.userDid(.viewApplicationLog(self.applicationLog.id))
