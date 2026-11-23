@@ -184,29 +184,6 @@ enum Localization {
         comment: "Progress message while loading application log content"
     )
 
-    // MARK: - ActivityLogSharingView.swift
-
-    static let share = NSLocalizedString(
-        "com.jetpack.support.share",
-        value: "Share",
-        comment: "Button to share content"
-    )
-    static let shareActivityLog = NSLocalizedString(
-        "com.jetpack.support.shareActivityLog",
-        value: "Share Activity Log",
-        comment: "Navigation title for sharing activity log"
-    )
-    static let exportAsFile = NSLocalizedString(
-        "com.jetpack.support.exportAsFile",
-        value: "Export as File",
-        comment: "Option to export log as a file"
-    )
-    static let saveAsFile = NSLocalizedString(
-        "com.jetpack.support.saveAsFile",
-        value: "Save as a file to share or store",
-        comment: "Description for saving log as a file"
-    )
-
     // MARK: - ConversationListView.swift
 
     static let conversations = NSLocalizedString(
