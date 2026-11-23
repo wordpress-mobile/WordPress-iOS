@@ -24,6 +24,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case statsAds
     case readerInWordPressApp
     case newStats
+    case newSupport
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
@@ -70,6 +71,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .readerInWordPressApp:
             return false
         case .newStats:
+            return false
+        case .newSupport:
             return false
         }
     }
@@ -119,6 +122,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "wordpress_ios_reader"
         case .newStats:
             return "ios_new_stats"
+        case .newSupport:
+            return "ios_new_mobile_support_flow"
         }
     }
 
@@ -171,6 +176,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             // so changing it silently re-enrols everyone who had turned New Stats on or off.
             // `NewStatsFeatureFlagTests` pins it.
             return "New Stats"
+        case .newSupport:
+            return "New Support Flow"
         }
     }
 
