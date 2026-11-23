@@ -20,7 +20,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
     case intelligence
-    case newSupport
     case nativeBlockInserter
     case statsAds
     case mediaLibraryV2
@@ -70,8 +69,6 @@ public enum FeatureFlag: Int, CaseIterable {
                 return false
             }
             return SystemLanguageModel.default.supportsLocale()
-        case .newSupport:
-            return false
         case .nativeBlockInserter:
             return true
         case .statsAds:
@@ -116,7 +113,6 @@ extension FeatureFlag {
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         case .intelligence: "Intelligence"
-        case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
         case .mediaLibraryV2: "Media Library v2"
