@@ -24,8 +24,10 @@ extension WPTabBarController {
     }
 
     @objc func rememberSelectedAppTab() {
-        guard UIDevice.isPad(), selectedTab != nil else { return }
-        UserDefaults.standard.isReaderSelected = selectedAppTab == .reader
+        guard selectedTab != nil else { return }
+        if UIDevice.isPad() {
+            UserDefaults.standard.isReaderSelected = selectedAppTab == .reader
+        }
         appSidebarCoordinator?.selectionDidChange()
     }
 
@@ -42,7 +44,7 @@ extension WPTabBarController {
     }
 
     @objc(updateTabsSelecting:) func updateTabs(selecting selection: WPTab) {
-        if UIDevice.isPad(), appSidebarCoordinator == nil {
+        if appSidebarCoordinator == nil {
             appSidebarCoordinator = AppSidebarCoordinator(tabBarController: self)
         }
         let readerNavigation = readerNavigationController

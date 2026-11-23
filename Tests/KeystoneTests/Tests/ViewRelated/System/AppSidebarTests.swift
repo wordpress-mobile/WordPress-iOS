@@ -6,7 +6,7 @@ import Support
 @testable import WordPressData
 
 @MainActor
-@Suite(.serialized, .enabled(if: UIDevice.isPad()))
+@Suite(.serialized)
 struct AppSidebarTests {
     @Test func accountToolsAreActionsRatherThanContentTabs() throws {
         try withContext { _ in
@@ -48,10 +48,10 @@ struct AppSidebarTests {
         }
     }
 
-    @Test func accountRoutesUseASheetInRegularWidthAndTheTabInCompactWidth() throws {
+    @Test func accountRoutesFollowSidebarAvailability() throws {
         try withContext { _ in
             let regular = RecordingSidebarTabController(staticReader: true, staticNotifications: true)
-            regular.traitOverrides.horizontalSizeClass = .regular
+            regular.sidebarAvailable = true
             regular.showReaderTab()
             var presentedAccount: MeViewController?
             regular.showMeScreen { presentedAccount = $0 }
@@ -66,12 +66,13 @@ struct AppSidebarTests {
             #expect(sheet.viewControllers.count == 1)
             #expect(regular.presentationCount == 1)
 
-            let compact = RecordingSidebarTabController(staticReader: true, staticNotifications: true)
-            compact.traitOverrides.horizontalSizeClass = .compact
-            compact.showMeScreen { presentedAccount = $0 }
-            #expect(compact.recordedPresentation == nil)
-            #expect(compact.selectedAppTab == .me)
-            #expect(presentedAccount === compact.meViewController)
+            let tabOnly = RecordingSidebarTabController(staticReader: true, staticNotifications: true)
+            // Regular width alone does not make a sidebar available on iPhone.
+            tabOnly.traitOverrides.horizontalSizeClass = .regular
+            tabOnly.showMeScreen { presentedAccount = $0 }
+            #expect(tabOnly.recordedPresentation == nil)
+            #expect(tabOnly.selectedAppTab == .me)
+            #expect(presentedAccount === tabOnly.meViewController)
         }
     }
 
@@ -123,6 +124,9 @@ struct AppSidebarTests {
 private final class RecordingSidebarTabController: WPTabBarController {
     private(set) var recordedPresentation: UIViewController?
     private(set) var presentationCount = 0
+    var sidebarAvailable = false
+
+    override var isAppSidebarAvailable: Bool { sidebarAvailable }
 
     override var presentedViewController: UIViewController? { recordedPresentation }
 

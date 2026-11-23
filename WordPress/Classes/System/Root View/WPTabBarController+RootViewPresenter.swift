@@ -37,8 +37,15 @@ extension WPTabBarController: RootViewPresenter {
 
     // MARK: Me
 
+    @objc var isAppSidebarAvailable: Bool {
+        if #available(iOS 27, *) {
+            return sidebar.isAvailable
+        }
+        return UIDevice.isPad() && traitCollection.horizontalSizeClass != .compact
+    }
+
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
-        if UIDevice.isPad(), traitCollection.horizontalSizeClass != .compact, let appSidebarCoordinator {
+        if isAppSidebarAvailable, let appSidebarCoordinator {
             appSidebarCoordinator.showAccount(completion: completion)
             return
         }
