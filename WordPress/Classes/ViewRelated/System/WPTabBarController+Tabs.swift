@@ -41,9 +41,12 @@ extension WPTabBarController {
     }
 
     @objc(updateTabsSelecting:) func updateTabs(selecting selection: WPTab) {
+        let readerNavigation = readerNavigationController
+        let readerRoot = readerPresenter?.adaptiveContent ?? readerNavigation
+        readerRoot.tabBarItem = readerNavigation.tabBarItem
         let controllers = [
             mySitesCoordinator.rootViewController,
-            readerNavigationController,
+            readerRoot,
             notificationsNavigationController,
             meNavigationController
         ]

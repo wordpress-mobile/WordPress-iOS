@@ -44,7 +44,8 @@ struct ReaderSidebarSavedTests {
     }
 }
 
-private struct EmptyReaderMenuStore: ReaderMenuStoreProtocol {
+private final class EmptyReaderMenuStore: ReaderMenuStoreProtocol {
+    var onCompletion: (() -> Void)?
     func refreshMenu() {}
 }
 

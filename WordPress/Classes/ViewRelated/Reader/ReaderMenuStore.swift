@@ -1,7 +1,8 @@
 import Foundation
 import WordPressData
 
-protocol ReaderMenuStoreProtocol {
+protocol ReaderMenuStoreProtocol: AnyObject {
+    var onCompletion: (() -> Void)? { get set }
     func refreshMenu()
 }
 

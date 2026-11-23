@@ -112,7 +112,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         } else {
             _readerPresenter = [[ReaderPresenter alloc] init];
-            _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
+            _readerNavigationController = [_readerPresenter prepareForAdaptiveTabBarPresentation];
         }
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
