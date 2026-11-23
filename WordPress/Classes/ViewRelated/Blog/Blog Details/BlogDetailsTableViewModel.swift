@@ -169,6 +169,12 @@ extension BlogDetailsTableViewModel {
         return .stats
     }
 
+    /// Updates the highlight after Back without opening another destination.
+    func restoreSelection(to subsection: BlogDetailsRowKind) {
+        pendingDefaultSubsection = nil
+        selectedRowID = .row(subsection)
+    }
+
     func clearSelection() {
         pendingDefaultSubsection = nil
         selectedRowID = nil

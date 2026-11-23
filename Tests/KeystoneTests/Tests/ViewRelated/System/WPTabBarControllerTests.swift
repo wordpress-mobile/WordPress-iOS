@@ -17,7 +17,10 @@ struct WPTabBarControllerTests {
                     "tabbar_mysites", "tabbar_reader", "tabbar_notifications", "tabbar_me"
                 ]
             )
-            #expect(controller.mode == .tabBar)
+            #expect(controller.mode == .tabSidebar)
+            if #available(iOS 27, *) {
+                #expect(controller.sidebar.preferredPlacement == .sidebar)
+            }
 
             controller.showReaderTab()
             #expect(controller.selectedTab?.viewController === controller.readerNavigationController)
@@ -27,6 +30,14 @@ struct WPTabBarControllerTests {
             #expect(controller.selectedTab?.viewController === controller.meNavigationController)
             controller.showMySitesTab()
             #expect(controller.selectedTab?.viewController === controller.mySitesCoordinator.rootViewController)
+        }
+    }
+
+    @Test func remembersReaderAtLaunchOnlyOnIPad() throws {
+        try withController(staticReader: false) { controller in
+            controller.showReaderTab()
+            let reopened = WPTabBarController(staticReader: false, staticNotifications: true)
+            #expect(reopened.selectedAppTab == (UIDevice.isPad() ? .reader : .mySites))
         }
     }
 
@@ -41,6 +52,25 @@ struct WPTabBarControllerTests {
             #expect(controller.tabBarMinimizeBehavior == .onScrollDown)
             controller.showMeTab()
             #expect(controller.tabBarMinimizeBehavior == .never)
+        }
+    }
+
+    @Test(.enabled(if: !UIDevice.isPad()))
+    func regularWidthPhoneHidesBottomTabsForDetail() throws {
+        try withController { controller in
+            controller.mode = .tabBar
+            controller.traitOverrides.horizontalSizeClass = .regular
+            controller.showReaderTab()
+            let detail = UIViewController()
+            detail.hidesBottomBarWhenPushed = true
+            controller.readerNavigationController.pushViewController(detail, animated: false)
+
+            controller.updateAdaptiveTabBarVisibility(animated: false)
+            #expect(controller.isTabBarHidden)
+
+            controller.readerNavigationController.popViewController(animated: false)
+            controller.updateAdaptiveTabBarVisibility(animated: false)
+            #expect(!controller.isTabBarHidden)
         }
     }
 
@@ -185,11 +215,14 @@ struct WPTabBarControllerTests {
         _ body: (WPTabBarController) throws -> Void
     ) throws {
         let original = ContextManager.overrideInstance
+        let wasReaderSelected = UserDefaults.standard.isReaderSelected
+        UserDefaults.standard.isReaderSelected = false
         let context = ContextManager.forTesting()
         ContextManager.overrideInstance = context
         defer {
             context.mainContext.reset()
             ContextManager.overrideInstance = original
+            UserDefaults.standard.isReaderSelected = wasReaderSelected
         }
         try body(WPTabBarController(staticReader: staticReader, staticNotifications: true))
     }

@@ -20,6 +20,7 @@ public class BlogDetailsViewController: UIViewController {
     public private(set) var tableViewModel: BlogDetailsTableViewModel?
     public weak var presentationDelegate: BlogDetailsPresentationDelegate?
     public var isSidebarModeEnabled = false
+    var usesAdaptiveNavigation = false
     public weak var presentedSiteSettingsViewController: UIViewController?
 
     var headerViewController: UIViewController? {

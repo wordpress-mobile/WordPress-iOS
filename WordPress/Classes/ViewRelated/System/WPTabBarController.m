@@ -14,7 +14,7 @@ NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications"
 NSNotificationName const WPTabBarHeightChangedNotification = @"WPTabBarHeightChangedNotification";
 static NSString * const WPTabBarFrameKeyPath = @"frame";
 
-@interface WPTabBarController () <UITabBarControllerDelegate>
+@interface WPTabBarController () <UITabBarControllerDelegate, UITabBarControllerSidebarDelegate>
 
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
@@ -61,8 +61,12 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [WPStyleGuide configureTabBar:[self tabBar]];
 
-        self.mode = UITabBarControllerModeTabBar;
-        [self updateTabsSelecting:WPTabMySites];
+        self.mode = UITabBarControllerModeTabSidebar;
+        if (@available(iOS 27.0, *)) {
+            self.sidebar.preferredPlacement = UITabBarControllerSidebarPlacementSidebar;
+        }
+        [self updateTabsSelecting:self.initialAppTab];
+        self.sidebar.delegate = self;
         [self observeAccountAvatar];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -217,6 +221,8 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     [super setSelectedTab:selectedTab];
     [self updateTabBarMinimizeBehavior];
     [self updateAccountAvatarForSelection];
+    [self updateAdaptiveTabBarVisibilityAnimated:NO];
+    [self rememberSelectedAppTab];
 }
 
 - (void)showMySitesTab
@@ -280,18 +286,18 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectTab:(UITab *)selectedTab previousTab:(UITab *)previousTab
 {
-    [self updateTabBarMinimizeBehavior];
-    [self updateAccountAvatarForSelection];
-}
-
-#pragma mark - UITabBarDelegate
-
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
-{
     UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleSoft];
     [generator impactOccurred];
 
-    [self animateSelectedItem:item for:tabBar];
+    [self updateTabBarMinimizeBehavior];
+    [self updateAccountAvatarForSelection];
+    [self updateAdaptiveTabBarVisibilityAnimated:NO];
+    [self rememberSelectedAppTab];
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController sidebarAvailabilityDidChange:(UITabBarControllerSidebar *)sidebar
+{
+    [self updateAdaptiveTabBarVisibilityAnimated:NO];
 }
 
 #pragma mark - Notification Activity
@@ -449,6 +455,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
     self.view.accessibilityIdentifier = @"root_vc";
     [self startObserversForTabAccessTracking];
+    [self observeAdaptiveTabBarTraits];
 }
 
 - (void)viewDidAppear:(BOOL)animated
