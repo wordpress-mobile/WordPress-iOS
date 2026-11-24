@@ -1,10 +1,20 @@
-Har du hört? Vi har gjort fliken Aviseringar och klockan mer exakta, även när systemaviseringar eller ikonmärken är inaktiverade. Nu har du alltid full koll.
+Spara ett inlägg i Läsaren på din iPhone och öppna det sedan på din iPad. Ditt konto på WordPress.com synkroniserar nu upp till 1 000 sparade inlägg på olika enheter, inklusive inlägg som du redan har sparat.
 
-Anpassade inläggstyper visas nu direkt i webbplatsmenyn efter Kommentarer, sorterade efter namn för extra smidighet – du behöver inte längre anpassade nålar.
+Vi har gjort några ytterligare ändringar i Läsaren.
 
-Vi har slutligen tagit hand om flertalet buggar, bara för att göra din appupplevelse lite enklare.
+- Nyfiken på vem som fick ett omnämnande i ett inlägg? Tryck på deras namn för att se deras profil.
+- När du lämnar en kommentar visar listan din nya kommentar. När du byter läsutseende stämmer nu kommentartexten och bakgrundsfärgen bakom ”Visa mer” överens.
+- När du trycker på ”Visa hela inlägget” eller ”Visa i webbläsare” på ett inlägg från en privat webbplats öppnar Jetpack det inuti appen med ditt konto på WordPress.com.
 
-Inbäddade bilder försvinner inte i läsaren på enheter som kör iOS 27.
-- Uppladdningar misslyckas inte längre om filnamnet innehåller mellanslag. (good-news-everyone.jpg)
-- Vi har åtgärdat en krasch som orsakades av att dela vissa typer av textfiler.
-- Glädjande nyheter för alla iPad-användare – appen fastnar inte längre i den kompakta flikfältslayouten när du ändrar skärmstorlek eller byter app.
+På iPhone Plus- och Pro Max-modellerna används nu förhandsgranskningar av inlägg i fullskärm i liggande format. På iPad kan du begränsa fönstret medan du redigerar ett inlägg eller konfigurerar en webbplats och fortsätta där du slutade. Till och med listan över webbplatsdesigner behåller din plats.
+
+Om du använder den experimentella blockredigeraren följer fotouppladdningar nu dina mediainställningar för storlek, kvalitet och platsdata. Redigeraren arbetar också i låst läge och frågar innan du sparar ett inlägg medan media fortfarande laddas upp.
+
+Du hittar också några korrigeringar utanför Läsaren och redigeraren.
+
+I Statistik stannar fliken Trafik kvar när du bläddrar ner till ”Lägg till kort”. Bakåtknappen är tillbaka på iPhone Duo och på Plus och Pro Max iPhones i liggande format.
+- På webbplatser som drivs på egen server följer nya inlägg din webbplats diskussionsinställningar. Om din server blockerar inloggning med ett applikationslösenord berättar appen nu vad som gick fel.
+- Tilläggsbeskrivningar är läsbara i mörkt läge, och du kan titta på videoklippen direkt i appen eller trycka på ”Titta på YouTube”.
+- Vi har åtgärdat en krasch som kunde inträffa när ett foto delades till Jetpack.
+
+Du behöver iOS 18 eller senare för denna uppdatering. Enheter som kör iOS 17 kommer inte längre att få appuppdateringar.
