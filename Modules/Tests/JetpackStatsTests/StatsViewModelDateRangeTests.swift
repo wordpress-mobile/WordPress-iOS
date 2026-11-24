@@ -190,6 +190,10 @@ private final class GatedStatsService: StatsServiceProtocol, @unchecked Sendable
         throw TestError.unused
     }
 
+    func getFeaturedImageURLs(forPostIDs postIDs: [Int]) async throws -> [Int: URL] {
+        throw TestError.unused
+    }
+
     func invalidateTopListData(for item: TopListItemType) async {
         // Nothing is cached.
     }
