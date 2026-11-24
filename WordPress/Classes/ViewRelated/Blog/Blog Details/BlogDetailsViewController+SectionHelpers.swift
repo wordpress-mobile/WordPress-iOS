@@ -67,7 +67,7 @@ extension BlogDetailsViewController {
         let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "User Management", comment: "Feature name for managing users in the app")
         let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, source: "user_management", presentingViewController: self) { client in
             let service = UserService(client: client)
-            let applicationPasswordService = ApplicationPasswordService(api: client, currentUserId: userId)
+            let applicationPasswordService = ApplicationPasswordService(api: client, blog: self.blog, currentUserId: userId)
             return UserListView(currentUserId: Int32(userId), userService: service, applicationTokenListDataProvider: applicationPasswordService)
         }
         presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))

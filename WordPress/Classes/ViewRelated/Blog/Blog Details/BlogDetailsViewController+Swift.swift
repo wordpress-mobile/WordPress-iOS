@@ -417,7 +417,7 @@ extension BlogDetailsViewController {
             source: "application_passwords",
             presentingViewController: self
         ) {
-            ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
+            ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0, blog: self.blog))
         }
         presentationDelegate?.presentBlogDetailsViewController(UIHostingController(rootView: view))
     }
