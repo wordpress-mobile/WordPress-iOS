@@ -19,7 +19,7 @@ import WordPressData
                 let site = try ContextManager.shared.performQuery { context in
                     try WordPressSite(blog: context.existingObject(with: blogID))
                 }
-                return try WordPressClient.applicationPasswordAPI(for: site)
+                return try Self.makeRevocationAPI(for: site)
             }
         )
     }

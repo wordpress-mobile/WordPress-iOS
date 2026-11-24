@@ -243,7 +243,7 @@ private final class ServiceFixture {
                 .init(apiRootURL: .parse(input: "https://\(host)/wp-json"), username: "demo", token: password)
             )
         )
-        return try WordPressClient.applicationPasswordAPI(for: site)
+        return try ApplicationPasswordService.makeRevocationAPI(for: site)
     }
 
     func close() {

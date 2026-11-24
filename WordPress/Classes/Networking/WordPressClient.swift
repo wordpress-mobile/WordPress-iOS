@@ -105,20 +105,6 @@ extension WordPressClient {
         self.init(api: api, siteURL: site.siteURL)
     }
 
-    /// Introspection and deletion must use one credential, without authentication refresh or replay.
-    static func applicationPasswordAPI(for site: WordPressSite) throws -> WordPressAPI {
-        guard let credentials = site.applicationPasswordCredentials else {
-            throw ApplicationPasswordDeletionError.unknownCurrentPassword
-        }
-        return WordPressAPI(
-            urlSession: URLSession(configuration: .ephemeral),
-            notifyingDelegate: PulseNetworkLogger.shared,
-            siteInfo: .selfHosted(siteUrl: try ParsedUrl.from(url: site.siteURL), apiRoot: credentials.apiRootURL),
-            authentication: .init(username: credentials.username, password: credentials.token),
-            appNotifier: AppNotifier(site: site, coreDataStack: ContextManager.shared)
-        )
-    }
-
     func installJetpack() async throws -> PluginWithEditContext {
         try await self.api.plugins
             .create(
@@ -206,7 +192,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
     }
 }
 
-private class AppNotifier: @unchecked Sendable, WpAppNotifier {
+class AppNotifier: @unchecked Sendable, WpAppNotifier {
     let site: WordPressSite
     let coreDataStack: CoreDataStack
 
