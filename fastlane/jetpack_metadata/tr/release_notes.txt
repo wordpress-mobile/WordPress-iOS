@@ -1,10 +1,20 @@
-Duydun mu? Sistem bildirimleri veya simge rozetleri devre dışı bırakılmış olsa bile Bildirimler sekmesini ve zilini daha doğru hale getirdik. Artık her zaman biliniyorsunuz.
+iPhone'unuzda Okuyucu'da bir gönderiyi kaydedin, ardından iPad'inizde açın. WordPress.com hesabınız artık cihazlarda halihazırda kaydettiğiniz gönderiler de dahil olmak üzere 1.000'e kadar kayıtlı gönderiyi senkronize ediyor.
 
-Özel gönderi türleri artık doğrudan site menüsünde Yorumlar'dan sonra görünür, ekstra kolaylık için ada göre sıralanır, artık özel pinlere gerek kalmaz.
+Okuyucu'da birkaç değişiklik daha yaptık.
 
-Son olarak, uygulama deneyiminizi biraz kolaylaştırmak için birkaç hatayı hallettik.
+- Gönderinin kime ait olduğunu merak ediyor musunuz? Profillerini görmek için adlarına dokunun.
+- Bir yorum bıraktığınızda, liste yeni yorumunuzu görünümde tutar. Okuma temaları, yorum metni ve "Daha Fazla Göster" seçeneğinin arkasındaki gölgeleme artık eşleşiyor.
+- Özel bir sitedeki gönderide "Tüm gönderiyi görüntüle" veya "Tarayıcıda Görüntüle" seçeneğine tıkladığınızda, Jetpack WordPress.com hesabınızı kullanarak uygulamanın içinde açar.
 
-- Okuyucu'da, iOS 27 çalıştıran cihazlarda satır içi görseller kaybolmaz.
-- Dosya adı boşluk içeriyorsa yüklemeler artık başarısız olmaz. (haberler-herkes.jpg)
-- Belirli türde metin dosyalarının paylaşılmasıyla oluşan bir çökme sorununu düzelttik.
-- iPad kullanıcıları sevinecekler; ekranı yeniden boyutlandırdığınızda veya uygulamaları değiştirdiğinizde uygulama kompakt sekme çubuğu düzeninde takılmayacaktır.
+iPhone Plus ve Pro Max modellerinde artık gönderi önizlemeleri tam ekranı yatay olarak kullanıyor. iPad'de bir gönderiyi düzenlerken veya bir site kurarken pencereyi daraltabilir ve kaldığınız yerden devam edebilirsiniz. Site tasarımları listesi bile size yer sağlıyor.
+
+Deneysel blok düzenleyiciyi kullanıyorsanız, fotoğraf yüklemeleri artık boyut, kalite ve konum verileri için Ortam ayarlarınızı takip eder. Düzenleyici aynı zamanda Kilitlenme Modunda çalışır ve ortam hala yüklenirken bir yazıyı kaydetmeden önce sizi sorar.
+
+Ayrıca Okuyucu ve düzenleyici dışında da birkaç düzeltme bulacaksınız.
+
+- İstatistikler'de "Kart Ekle" seçeneğine aşağı kaydırdığınızda Trafik sekmesi beklemede kalır. Geri düğmesi iPhone Duo ve Plus ve Pro Max iPhone'larda tekrar göründü.
+- Kullanıcı tarafından barındırılan sitelerde yeni gönderiler sitenizin tartışma ayarlarını takip eder. Sunucunuz bir uygulama parolasıyla oturum açmayı engelliyorsa, uygulama artık neyin yanlış gittiğini size söylüyor.
+- Eklenti açıklamaları karanlık modda okunabilir ve videolarını uygulamada izleyebilir veya "YouTube'da İzle"ye dokunabilirsiniz.
+- Jetpack'te fotoğraf paylaşırken meydana gelebilecek bir kilitlenme sorunu düzeltildi.
+
+Bu güncelleme için iOS 18 veya daha yeni bir sürüme ihtiyacınız olacak. iOS 17 çalıştıran cihazlarda artık uygulama güncellemeleri alınmayacak.

@@ -1,10 +1,20 @@
-Você ficou sabendo? Tornamos o ícone de sino e a guia Notificações mais precisos, mesmo quando as notificações do sistema ou os selos de ícones estão desativados. Agora você está sempre por dentro.
+Salve um post no Leitor no seu iPhone e abra-o no iPad. Sua conta do WordPress.com agora sincroniza até mil posts salvos entre dispositivos, incluindo os que você já salvou.
 
-Os tipos de post personalizados agora aparecem diretamente no menu do site depois de Comentários, classificados por nome para maior conveniência: não é mais necessário ter pins personalizados.
+Fizemos mais algumas alterações no Leitor.
 
-Por fim, consertamos vários bugs para facilitar a experiência no seu aplicativo.
+- Quer saber quem foi mencionado em um post? Toque no nome da pessoa para ver o perfil dela.
+- Quando você faz um comentário, a lista o mantém em destaque. Ajuste nos temas de leitura: o texto do comentário e o sombreamento atrás de "Mostrar mais" agora estão alinhados.
+- Quando você clica em "Ver post completo" ou "Ver no navegador" em um post de um site privado, o Jetpack o abre no aplicativo usando sua conta do WordPress.com.
 
-– No Leitor, imagens embutidas não desaparecerão em dispositivos com iOS 27.
-– Os uploads não apresentarão mais falhas se o nome do arquivo contiver espaços.
-– Corrigimos uma falha causada pelo compartilhamento de determinados tipos de arquivos de texto.
-– Os usuários do iPad já podem comemorar: o aplicativo não travará no layout compacto da barra de guias ao redimensionar a tela ou trocar de aplicativos.
+Nos modelos de iPhone Plus e Pro Max, as visualizações de posts agora usam a tela inteira em paisagem. No iPad, você pode estreitar a janela enquanto edita um post ou configura um site e continuar de onde parou. Você continua no mesmo ponto até na lista de designs de sites.
+
+Se você usa o editor de blocos experimental, os uploads de fotos agora seguem suas configurações de tamanho, qualidade e dados de localização para mídias. O editor também funciona no modo de bloqueio e pede confirmação antes de salvar um post enquanto a mídia ainda está sendo enviada.
+
+Você também encontrará algumas correções fora do Leitor e do editor.
+
+- Em "Estatísticas", a guia "Tráfego" continua aparecendo quando você rola até "Adicionar cartão". O botão de voltar está de volta no iPhone Duo e na exibição em paisagem no Plus e Pro Max.
+- Em sites auto-hospedados, novos posts seguem as configurações de discussão do seu site. Se o seu servidor bloquear o login com uma senha de aplicativo, o app agora informará o que deu errado.
+- As descrições de plugins são legíveis no modo escuro, e você pode assistir a seus vídeos no app ou tocar em "Assistir no YouTube".
+- Corrigimos uma falha que pode ocorrer ao compartilhar uma foto no Jetpack.
+
+Você precisará do iOS 18 ou posterior para esta atualização. O aplicativo em dispositivos com o iOS 17 não receberá mais atualizações.

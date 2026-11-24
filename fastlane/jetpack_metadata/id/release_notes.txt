@@ -1,10 +1,20 @@
-Tahukah Anda? Kami meningkatkan keakuratan tab dan lonceng Notifikasi, bahkan saat notifikasi sistem atau lencana ikon dinonaktifkan. Kini Anda tidak akan ketinggalan informasi.
+Simpan pos di Pembaca di iPhone Anda, lalu buka di iPad. Akun WordPress.com Anda kini menyinkronkan hingga 1.000 pos yang disimpan di semua perangkat, termasuk pos yang telah Anda simpan.
 
-Tipe pos khusus sekarang muncul langsung di menu situs setelah Komentar, diurutkan berdasarkan nama agar lebih praktis—tidak perlu lagi menggunakan pin khusus.
+Kami membuat beberapa perubahan pada Pembaca.
 
-Terakhir, kami telah memperbaiki beberapa bug, agar pengalaman Anda menggunakan aplikasi makin mudah.
+- Penasaran siapa yang disebutkan di sebuah pos? Ketuk namanya untuk melihat profilnya.
+- Saat Anda meninggalkan komentar, daftar akan tetap menampilkan komentar baru Anda di layar. Jika tema membaca diganti, warna teks komentar dan bayangan di belakang "Tampilkan Lebih Banyak" akan mengikuti dengan selaras.
+- Saat Anda mengetuk "Lihat pos lengkap" atau "Lihat di Browser" pada pos dari situs privat, Jetpack akan membukanya di dalam aplikasi menggunakan akun WordPress.com Anda.
 
-- Di Pembaca, gambar sebaris tidak akan menghilang pada perangkat yang menjalankan iOS 27.
-- Proses pengunggahan tidak akan gagal lagi jika nama file mengandung spasi. (good-news-everyone.jpg)
-- Kami telah memperbaiki crash yang disebabkan oleh pembagian jenis file teks tertentu.
-- Kabar gembira bagi para pengguna iPad—aplikasi tidak akan tertahan pada tata letak bilah tab yang ringkas saat Anda mengubah ukuran layar atau beralih aplikasi.
+Pada iPhone Plus dan Pro Max, pratinjau pos sekarang ditampilkan di layar penuh dengan orientasi lanskap. Di iPad, Anda bisa menyempitkan jendela sambil mengedit pos atau mengatur situs, lalu langsung melanjutkan pekerjaan sebelumnya tanpa kehilangan progres. Bahkan daftar desain situs pun tetap mengingat posisi gulir terakhir Anda.
+
+Jika Anda menggunakan editor blok eksperimental, kini unggahan foto akan mengikuti ukuran, kualitas, dan lokasi dari pengaturan Media Anda. Editor juga berfungsi di Mode Lockdown dan akan meminta konfirmasi sebelum Anda menyimpan pos saat proses pengunggahan media masih berlangsung.
+
+Anda juga akan menemukan beberapa perbaikan selain di Pembaca dan editor.
+
+- Di Statistik, tab Lalu Lintas akan tetap terlihat saat Anda menggulir turun ke bagian “Tambahkan Kartu”. Tombol kembali hadir lagi di iPhone Duo, juga di seri Plus dan Pro Max, dalam posisi lanskap.
+- Di situs yang dihosting sendiri, pos baru akan mengikuti pengaturan diskusi situs Anda. Jika server Anda memblokir login dengan kata sandi aplikasi, kini aplikasi akan memberi tahu Anda penyebabnya.
+- Deskripsi plugin dapat dibaca dalam mode gelap, dan Anda dapat menonton videonya di aplikasi atau ketuk “Tonton di YouTube.”
+- Kami memperbaiki crash yang mungkin terjadi saat membagikan foto ke Jetpack.
+
+Anda memerlukan iOS 18 atau yang lebih baru untuk pembaruan ini. Perangkat dengan iOS 17 tidak akan menerima pembaruan aplikasi lagi.
