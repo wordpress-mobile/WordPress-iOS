@@ -19,6 +19,9 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         }
     }
 
+    /// Set when `comment` is the notification's own copy, because the comment couldn't be loaded from its site.
+    private var readOnlyComment: ReadOnlyNotificationComment?
+
     private var commentID: NSNumber? {
         notification.metaCommentID
     }
@@ -141,7 +144,7 @@ private extension NotificationCommentDetailViewController {
             barButtonItems.append(contentsOf: [previousButton, nextButton])
         }
 
-        if let comment, comment.allowsModeration(), let detailsVC {
+        if let detailsVC, detailsVC.allowsModeration {
             barButtonItems.append(detailsVC.editBarButtonItem)
         }
 
@@ -162,14 +165,28 @@ private extension NotificationCommentDetailViewController {
         }
 
         if let detailsVC {
-            detailsVC.refreshView(comment: comment, notification: notification)
+            if let readOnlyComment {
+                detailsVC.refreshView(readOnlyComment: readOnlyComment, notification: notification)
+            } else {
+                detailsVC.refreshView(comment: comment, notification: notification)
+            }
         } else {
-            let detailsVC = CommentDetailViewController(
-                comment: comment,
-                notification: notification,
-                notificationDelegate: notificationDelegate,
-                managedObjectContext: managedObjectContext
-            )
+            let detailsVC =
+                if let readOnlyComment {
+                    CommentDetailViewController(
+                        readOnlyComment: readOnlyComment,
+                        notification: notification,
+                        notificationDelegate: notificationDelegate,
+                        managedObjectContext: managedObjectContext
+                    )
+                } else {
+                    CommentDetailViewController(
+                        comment: comment,
+                        notification: notification,
+                        notificationDelegate: notificationDelegate,
+                        managedObjectContext: managedObjectContext
+                    )
+                }
             detailsVC.willMove(toParent: self)
             addChild(detailsVC)
             view.addSubview(detailsVC.view)
@@ -196,21 +213,36 @@ private extension NotificationCommentDetailViewController {
                         self.commentID,
                         completion: { comment in
                             guard let comment else {
-                                self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
+                                self.showReadOnlyComment {
+                                    self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
+                                }
                                 return
                             }
+                            self.readOnlyComment = nil
                             self.comment = comment
                         },
                         failure: { error in
-                            self.showErrorView(error: error)
+                            self.showReadOnlyComment { self.showErrorView(error: error) }
                         }
                     )
                 },
                 failure: { error in
-                    self.showErrorView(error: error)
+                    self.showReadOnlyComment { self.showErrorView(error: error) }
                 }
             )
         })
+    }
+
+    /// Shows the notification's own copy of the comment, which needs nothing from the site. This covers sites
+    /// the app can't load, such as a private site the user isn't a member of.
+    /// - Parameter showError: Called instead when the notification doesn't carry the comment.
+    private func showReadOnlyComment(otherwise showError: () -> Void) {
+        guard let readOnlyComment = ReadOnlyNotificationComment(notification: notification) else {
+            showError()
+            return
+        }
+        self.readOnlyComment = readOnlyComment
+        comment = readOnlyComment.comment
     }
 
     private func showErrorView(error: Error?) {

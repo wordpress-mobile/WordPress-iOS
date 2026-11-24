@@ -16,7 +16,7 @@ public class GutenbergSuggestionsViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor.separator
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(light: UIColor.colorFromHex("e9eff3"), dark: UIColor.colorFromHex("2e2e2e"))
+        view.backgroundColor = UIColor(light: UIColor(fromHex: 0xE9EFF3), dark: UIColor(fromHex: 0x2E2E2E))
         return view
     }()
 
@@ -66,7 +66,7 @@ public class GutenbergSuggestionsViewController: UIViewController {
         NSLayoutConstraint.activate([
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             backgroundView.heightAnchor.constraint(equalToConstant: toolbarSize)
         ])
 
@@ -74,16 +74,16 @@ public class GutenbergSuggestionsViewController: UIViewController {
         view.addSubview(searchView)
         searchView.becomeFirstResponder()
         NSLayoutConstraint.activate([
-            searchView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: margin),
-            searchView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -margin),
-            searchView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            searchView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: margin),
+            searchView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -margin),
+            searchView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             searchView.heightAnchor.constraint(equalToConstant: toolbarSize)
         ])
 
         view.addSubview(suggestionsView)
         NSLayoutConstraint.activate([
-            suggestionsView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            suggestionsView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            suggestionsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            suggestionsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
             suggestionsView.bottomAnchor.constraint(equalTo: searchView.topAnchor),
             suggestionsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
         ])
