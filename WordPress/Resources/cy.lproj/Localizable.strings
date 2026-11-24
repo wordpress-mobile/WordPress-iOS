@@ -264,7 +264,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -509,8 +508,7 @@
 /* User's Display Name */
 "Display Name" = "Enw Dangos";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -976,8 +974,7 @@
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Gosodiadau Hysbysu";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -1193,8 +1190,7 @@
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Mae Hysbysiadau Gwthio wedi eu diffodd yn Ap Gosodiadau iOS. Toglwch \"Allow Notifications\" i'w cychwyn eto.";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Darllennydd";
 
@@ -1909,9 +1905,6 @@
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
-
-/* Later today */
-"later today" = "yn hwyrach heddiw";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Cofnodion";
