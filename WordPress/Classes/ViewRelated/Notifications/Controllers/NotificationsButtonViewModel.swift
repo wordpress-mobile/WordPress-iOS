@@ -5,7 +5,7 @@ import SwiftUI
 
 /// Drives the Notifications bell across SwiftUI and UIKit surfaces from the
 /// account-scoped ``NotificationActivityService``. No longer reads the
-/// deprecated `applicationIconBadgeNumber` or the Zendesk unread count.
+/// deprecated `applicationIconBadgeNumber`.
 @MainActor
 final class NotificationsButtonViewModel: ObservableObject {
     @Published private(set) var hasNewActivity = false

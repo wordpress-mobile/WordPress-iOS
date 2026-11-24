@@ -27,11 +27,6 @@ enum PostEditorStrings {
         value: "Post Settings",
         comment: "Post Editor / Button in the 'More' menu"
     )
-    static let sendFeedback = NSLocalizedString(
-        "postEditor.moreMenu.sendFeedback",
-        value: "Send Feedback",
-        comment: "Post Editor / Button in the 'More' menu"
-    )
     static let saveDraft = NSLocalizedString(
         "postEditor.moreMenu.saveDraft",
         value: "Save Draft",

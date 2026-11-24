@@ -78,8 +78,7 @@ final class MigrationDeleteWordPressViewController: UIViewController {
 
     private func secondaryButtonTapped() {
         self.tracker.track(.pleaseDeleteWordPressScreenHelpTapped)
-        let destination = SupportTableViewController()
-        self.present(UINavigationController(rootViewController: destination), animated: true)
+        RootSupportViewController.present(from: self)
     }
 }
 

@@ -262,8 +262,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 private extension SiteAssemblyWizardContent {
     func contactSupportTapped() {
         // TODO : capture analytics event via #10335
-        let supportVC = SupportTableViewController()
-        supportVC.show(from: self)
+        RootSupportViewController.present(from: self)
     }
 
     func dismissTapped(viaDone: Bool = false, completion: (() -> Void)? = nil) {

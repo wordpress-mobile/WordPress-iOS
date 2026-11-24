@@ -23,10 +23,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }()
 
-    private lazy var coordinator: SupportCoordinator = {
-        SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
-    }()
-
     let navigationBarManager: PostEditorNavigationBarManager
 
     lazy var featuredImageHelper = NewGutenbergFeaturedImageHelper(post: post)
@@ -581,7 +577,6 @@ extension NewGutenbergViewController {
         )
 
         actions.append(helpAction())
-        actions.append(feedbackAction())
         return actions
     }
 

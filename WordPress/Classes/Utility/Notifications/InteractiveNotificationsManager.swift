@@ -663,8 +663,14 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     ) {
         let userInfo = notification.request.content.userInfo as NSDictionary
 
-        // If the app is open, and a Zendesk view is being shown, Zendesk will display an alert allowing the user to view the updated ticket.
-        handleZendeskNotification(userInfo: userInfo)
+        // A reply to a support ticket filed through the Zendesk SDK, which earlier versions of the app
+        // included. Nothing in the app marks it as unread, so show the banner even though the app is open.
+        if userInfo.string(forKey: PushNotificationsManager.Notification.typeKey)
+            == PushNotificationsManager.Notification.zendeskTicketReplyValue
+        {
+            completionHandler([.banner, .list, .sound])
+            return
+        }
 
         // Otherwise see if it's an auth notification
         if PushNotificationsManager.shared.handleAuthenticationNotification(
@@ -699,14 +705,6 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         // If the notification originated from the share extension, disregard this current notification and resend a new one.
         ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
         completionHandler([])
-    }
-
-    private func handleZendeskNotification(userInfo: NSDictionary) {
-        if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-            type == ZendeskUtils.PushNotificationIdentifiers.type
-        {
-            ZendeskUtils.handlePushNotification(userInfo)
-        }
     }
 
     func userNotificationCenter(

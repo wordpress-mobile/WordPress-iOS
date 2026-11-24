@@ -213,8 +213,7 @@ class JetpackScanCoordinator {
     }
 
     public func openSupport() {
-        let supportVC = SupportTableViewController()
-        supportVC.showFromTabBar()
+        RootSupportViewController.presentFromLeafViewController()
     }
 
     public func openJetpackSettings() {

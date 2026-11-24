@@ -10,7 +10,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case activityLogDashboardCard
     case bloggingPromptsSocial
     case siteEditorMVP
-    case contactSupportChatbot
     case domainManagement
     case dynamicDashboardCards
     case plansInSiteCreation
@@ -43,8 +42,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .siteEditorMVP:
             return true
-        case .contactSupportChatbot:
-            return false
         case .domainManagement:
             return false
         case .dynamicDashboardCards:
@@ -91,8 +88,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "blogging_prompts_social_enabled"
         case .siteEditorMVP:
             return "site_editor_mvp"
-        case .contactSupportChatbot:
-            return "contact_support_chatbot"
         case .domainManagement:
             return "domain_management"
         case .dynamicDashboardCards:
@@ -138,8 +133,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Blogging Prompts Social"
         case .siteEditorMVP:
             return "Site Editor MVP"
-        case .contactSupportChatbot:
-            return "Contact Support via DocsBot"
         case .domainManagement:
             return "Domain Management"
         case .dynamicDashboardCards:

@@ -1,5 +1,5 @@
 {
-  "originHash" : "2cc16bc1ea6ce8b477acc310d2fb40035d6bfdd6af9152b91b29e866352133c3",
+  "originHash" : "0fabfb46d89f27fef75ec77f394aede0b608018b617bc2001a053268b0aec571",
   "pins" : [
     {
       "identity" : "automattic-tracks-ios",
@@ -52,24 +52,6 @@
       "location" : "https://github.com/Automattic/color-studio",
       "state" : {
         "revision" : "bf141adc75e2769eb469a3e095bdc93dc30be8de"
-      }
-    },
-    {
-      "identity" : "commonui_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/commonui_sdk_ios",
-      "state" : {
-        "revision" : "8c1ab48a4a04637c42afc46d6b45b57c26ac05aa",
-        "version" : "9.0.2"
-      }
-    },
-    {
-      "identity" : "core_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/core_sdk_ios",
-      "state" : {
-        "revision" : "4d676f214e48017d102cd499d5f453c5cf6d9ef2",
-        "version" : "5.0.4"
       }
     },
     {
@@ -145,24 +127,6 @@
       }
     },
     {
-      "identity" : "messaging_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/messaging_sdk_ios",
-      "state" : {
-        "revision" : "0f81007fe9c9467bc583040f3343b205311cebfd",
-        "version" : "6.0.2"
-      }
-    },
-    {
-      "identity" : "messagingapi_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/messagingapi_sdk_ios",
-      "state" : {
-        "revision" : "f86020a681e28a7bfae9e2445eb027d37dc5d5f5",
-        "version" : "6.0.1"
-      }
-    },
-    {
       "identity" : "nsobject-safeexpectations",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/NSObject-SafeExpectations",
@@ -206,15 +170,6 @@
       }
     },
     {
-      "identity" : "sdkconfigurations_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/sdkconfigurations_sdk_ios",
-      "state" : {
-        "revision" : "fec7b8bf3d85cb895a0820a2f9d102f9d6ba3070",
-        "version" : "4.0.0"
-      }
-    },
-    {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
@@ -230,24 +185,6 @@
       "state" : {
         "revision" : "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
         "version" : "4.0.8"
-      }
-    },
-    {
-      "identity" : "support_providers_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/support_providers_sdk_ios",
-      "state" : {
-        "revision" : "b8194243297eaab61a92138a1dc5872bce358346",
-        "version" : "8.0.4"
-      }
-    },
-    {
-      "identity" : "support_sdk_ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/zendesk/support_sdk_ios",
-      "state" : {
-        "revision" : "6b5f6d2ffc92c10d38cb9c716ae37b2832230c89",
-        "version" : "8.0.4"
       }
     },
     {

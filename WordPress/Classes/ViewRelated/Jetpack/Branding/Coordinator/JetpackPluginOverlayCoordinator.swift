@@ -30,9 +30,7 @@ final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
             return
         }
 
-        let supportViewController = SupportTableViewController()
-        supportViewController.sourceTag = Constants.supportSourceTag
-        navigationController.pushViewController(supportViewController, animated: true)
+        navigationController.pushViewController(RootSupportViewController(), animated: true)
     }
 
     func navigateToLinkRoute(url: URL, source: String) {
@@ -40,14 +38,5 @@ final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
         let navigationController = UINavigationController(rootViewController: webViewController)
         let presentingViewController = viewController.navigationController ?? viewController
         presentingViewController.present(navigationController, animated: true)
-    }
-}
-
-private extension JetpackPluginOverlayCoordinator {
-    enum Constants {
-        static let supportSourceTag = SupportSourceTag(
-            name: "jetpackInstallFullPluginOverlay",
-            origin: "origin:jp-install-full-plugin-overlay"
-        )
     }
 }

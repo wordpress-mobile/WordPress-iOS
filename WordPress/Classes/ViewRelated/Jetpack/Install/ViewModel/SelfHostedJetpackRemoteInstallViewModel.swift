@@ -10,8 +10,6 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     /// Always proceed to the Jetpack Connection flow after successfully installing Jetpack.
     let shouldConnectToJetpack = true
 
-    let supportSourceTag: SupportSourceTag? = nil
-
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
             onChangeState?(state, .init(state: state))

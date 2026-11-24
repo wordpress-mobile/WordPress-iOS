@@ -2,6 +2,7 @@
 -----
 * [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
 * [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
+* [**] Help & Support: Get help from the AI Assistant and our support team in one place, in both the WordPress and Jetpack apps. This replaces the old support tickets and the in-app feedback form [#26434]
 
 
 27.5

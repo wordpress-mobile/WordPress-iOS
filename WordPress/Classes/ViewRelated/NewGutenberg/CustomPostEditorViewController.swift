@@ -231,7 +231,7 @@ private extension CustomPostEditorViewController {
         let editorModeToggle = UIDeferredMenuElement.uncached { [weak self] resolve in
             resolve(self.map { [$0.editorModeToggle()] } ?? [])
         }
-        var children: [UIMenuElement] = [editorModeToggle, settingsAction(), helpAction(), feedbackAction()]
+        var children: [UIMenuElement] = [editorModeToggle, settingsAction(), helpAction()]
 
         if post?.status ?? .draft == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in

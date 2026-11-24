@@ -36,13 +36,7 @@ actor AcknowledgementsService: AcknowledgementsListViewModel.DataProvider {
         }
 
         var firstLineOfLicense: String? {
-            // Zendesk doesn't use a named license or a good format, so we'll special-case their stuff
-            guard name.range(of: "zendesk", options: .caseInsensitive) == nil else {
-                return "Zendesk SDK License" // Doesn't need to be translated because all languages are English
-            }
-
-            return
-                license
+            license
                 .trimmingCharacters(in: .whitespacesAndNewlines)
                 .components(separatedBy: .newlines).first
         }
