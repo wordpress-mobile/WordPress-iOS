@@ -8,6 +8,7 @@ struct ApplicationLogDataProviderTests {
 
     /// The minimum conformance needed to reach the default `readFiles(in:)`.
     private actor TestLogDataProvider: ApplicationLogDataProvider {
+        nonisolated var canShareApplicationLogs: Bool { true }
         func fetchApplicationLogs() async throws -> [ApplicationLog] { [] }
         func deleteApplicationLogs(in logs: [ApplicationLog]) async throws {}
         func deleteAllApplicationLogs() async throws {}
