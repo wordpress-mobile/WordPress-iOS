@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "efc338866c7d58da87b6064d1c41b97003de5259",
-        "version" : "0.20.0-alpha.2"
+        "revision" : "ba24def9eff370a08349766cc12296107826b3dd",
+        "version" : "0.20.0"
       }
     },
     {
@@ -327,8 +327,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/automattic/wordpress-rs",
       "state" : {
-        "revision" : "68a8ab594578f2b3e058460e5a944176af20399b",
-        "version" : "0.9.1"
+        "revision" : "9bce9f96372db4b6b0c8e7b2ef4713026cfe2fb5",
+        "version" : "0.11.1"
       }
     },
     {

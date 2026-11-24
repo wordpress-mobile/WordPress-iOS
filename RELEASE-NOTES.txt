@@ -1,5 +1,14 @@
+27.6
+-----
+* [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
+
+
 27.5
 -----
+* [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
+* [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
+* [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
+* [*] Stats: Roll out New Stats remotely and remove the announcement screen. Your choice to use New Stats or Classic Stats is kept [#26335]
 * [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26388]
 * [*] Reader: Fix the comments list jumping to the top and hiding your new comment after posting it [#26357]
 * [*] Self-hosted sites: Fix new posts having comments closed instead of following the site's discussion settings [#26356]
@@ -12,6 +21,7 @@
 * [*] Reader: Fix the fade behind Show More on long comments not matching the background, and comment text keeping the old colors after changing the reading theme [#26369]
 * [*] Reader: Load related post thumbnails and other images whose address redirects [#26296]
 * [*] Reader: Show a name for every subscription, including sites the app cannot load [#26274]
+* [*] Site Creation: Offer the free WordPress.com address on its own card, and dismiss the keyboard on Search and when scrolling domain results [#26141]
 * [*] Share Extension: Fix a crash when sharing a photo [#26251]
 * [*] Site Creation: Keep the design list's place when the iPad window is resized [#26224]
 * [*] iPad: Fix an open editor or Site Creation closing the first time the window is narrowed [#26223]
@@ -27,6 +37,10 @@
 * [*] Notifications: Fix a rare crash when opening a notification with images, and GIFs keeping their old size after rotating [#26396]
 * [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
 * [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
+* [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
+* [**] Experimental editor: Apply your Media settings to uploaded photos and videos, including image size, quality, video resolution, and location removal [#26367]
+* [*] Reader: Show icons for more sites, and load a site's icon again after a failed attempt [#26393]
+* [**] Reader: Saved posts are now kept in your WordPress.com account and sync across your devices. Posts saved on this device move to your account [#26372]
 
 
 27.4

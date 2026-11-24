@@ -577,7 +577,7 @@ private extension BloggingRemindersFlowSettingsViewController {
         bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
         bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         self.stackViewBottomConstraint = stackViewBottomConstraint
 
         NSLayoutConstraint.activate([

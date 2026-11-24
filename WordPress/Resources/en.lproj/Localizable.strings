@@ -574,6 +574,9 @@
 /* No comment provided by engineer. */
 "Address Settings" = "Address Settings";
 
+/* Error message when a self-hosted site's server blocks application password authentication by not passing the HTTP Authorization header to WordPress. */
+"addSite.selfHosted.authorizationHeaderBlocked" = "Your server is blocking sign-in with application passwords. Contact your hosting provider for help.";
+
 /* Error message when user cancels login */
 "addSite.selfHosted.cancelled" = "Login has been cancelled";
 
@@ -606,6 +609,15 @@
 
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "After %@";
+
+/* Message shown after age restriction enforcement signs a person out and removes their sites */
+"ageRequirement.restrictionAlert.signedOutMessage" = "This app requires users to be 13 or older. Your Apple Account reports an age under 13, so you've been signed out and your sites have been removed from this device.";
+
+/* Message shown when an age-restricted person tries to sign in */
+"ageRequirement.restrictionAlert.signedOutUserMessage" = "This app requires users to be 13 or older. Your Apple Account reports an age under 13, so you can't sign in.";
+
+/* Title of an alert explaining that the person does not meet the app's minimum age requirement */
+"ageRequirement.restrictionAlert.title" = "Age requirement not met";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -1442,7 +1454,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1796,9 +1807,6 @@
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Log files by created date";
 
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "The following log files will be uploaded:";
-
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Up to seven days worth of logs are saved.";
 
@@ -2078,6 +2086,9 @@ Example: Comment on \n My First Post */
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reply to %1$@";
 
+/* VoiceOver announcement made when changes to an edited comment start saving */
+"commentComposer.accessibility.saving" = "Saving changes";
+
 /* VoiceOver announcement made when a reply starts sending */
 "commentComposer.accessibility.sending" = "Sending reply";
 
@@ -2087,8 +2098,14 @@ Example: Reply to Pamela Nguyen */
 /* Button label to delete a saved draft */
 "commentComposer.action.deleteDraft" = "Delete Draft";
 
+/* Button label to discard unsaved changes to a comment */
+"commentComposer.action.discardChanges" = "Discard Changes";
+
 /* Button label to continue editing instead of discarding changes */
 "commentComposer.action.keepEditing" = "Keep Editing";
+
+/* Button label to save changes to an edited comment */
+"commentComposer.action.save" = "Save";
 
 /* Button label to save the current text as a draft */
 "commentComposer.action.saveDraft" = "Save Draft";
@@ -2101,6 +2118,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message shown when comments are disabled for the post */
 "commentComposer.error.closed" = "Comments are closed for this post.";
+
+/* Error message shown when editing a comment fails */
+"commentComposer.error.editFailed" = "Failed to save changes.";
 
 /* Error message shown when sending a reply fails */
 "commentComposer.error.replyFailed" = "Failed to send reply.";
@@ -2116,6 +2136,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder text in the composer text input field */
 "commentComposer.placeholder" = "Leave a reply…";
+
+/* Title of the compose screen for editing a comment */
+"commentComposer.title.edit" = "Edit Comment";
 
 /* Title of the compose screen for replying to a comment */
 "commentComposer.title.reply" = "Reply";
@@ -2155,6 +2178,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation toolbar button that permanently deletes a comment */
 "commentDetail.action.deletePermanently" = "Delete Permanently";
+
+/* Button label to edit a comment on the detail screen */
+"commentDetail.action.edit" = "Edit";
 
 /* Accessibility label for the overflow menu button on the comment detail screen */
 "commentDetail.action.moreActions" = "More";
@@ -2272,6 +2298,45 @@ Example: Reply to Pamela Nguyen */
 /* Error title */
 "comments.failedToLike" = "Failed to like comment";
 
+/* Accessibility label for the Review button */
+"comments.review.accessibility" = "Review pending comments";
+
+/* Button to review loaded pending comments */
+"comments.review.button" = "Review";
+
+/* Heading after all captured comments have been reviewed */
+"comments.review.complete" = "Review complete";
+
+/* Review result for multiple confirmed moderations; %1$d is the count */
+"comments.review.moderated.many" = "%1$d comments moderated.";
+
+/* Review result for one confirmed moderation; %1$d is the count */
+"comments.review.moderated.one" = "%1$d comment moderated.";
+
+/* Result when all captured comments were already handled or missing */
+"comments.review.none" = "No comments moderated in this session.";
+
+/* Review position. %1$d is the one-based position; %2$d is the fixed batch size */
+"comments.review.position" = "%1$d of %2$d";
+
+/* Leave this comment pending and advance */
+"comments.review.skip" = "Skip";
+
+/* Skipped count following a moderated count; %1$d is the count */
+"comments.review.skipped.clause" = "%1$d skipped.";
+
+/* Review result when only comments were skipped; %1$d is the count */
+"comments.review.skipped.many" = "%1$d comments skipped.";
+
+/* Review result when only one comment was skipped; %1$d is the count */
+"comments.review.skipped.one" = "%1$d comment skipped.";
+
+/* Combined review result; %1$@ is the moderated sentence, %2$@ is the skipped sentence */
+"comments.review.summary.both" = "%1$@ %2$@";
+
+/* Pending comment review screen title */
+"comments.review.title" = "Review Pending";
+
 /* Title for the error notice shown when trashing a comment fails. */
 "comments.trash.error.title" = "Error trashing comment";
 
@@ -2322,6 +2387,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title showing trashed comments */
 "commentsList.tab.trash" = "Trash";
+
+/* Shown after a comments search returns no matches */
+"commentsSearch.noResults" = "No results";
+
+/* Comments search field placeholder and initial empty prompt */
+"commentsSearch.prompt" = "Search comments";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
@@ -2416,9 +2487,6 @@ Example: Reply to Pamela Nguyen */
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
-
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Copy Link to Comment";
 
 /* No comment provided by engineer. */
 "Copy post text" = "Copy post text";
@@ -3263,8 +3331,7 @@ Example: Reply to Pamela Nguyen */
 /* Search domain - Title for the Suggested domains screen */
 "domainSelection.search.title" = "Search domains";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3507,29 +3574,38 @@ Example: Reply to Pamela Nguyen */
 /* Button title to expand and show more blocks */
 "editor.blockInserter.showMore" = "Show More";
 
+/* Message shown over the editor after it crashes, above a button to reload it */
+"editor.crashed.description" = "Reload the editor to continue editing.";
+
+/* Button title to reload the editor after it crashes */
+"editor.crashed.reload" = "Reload Editor";
+
+/* Title shown over the editor after it crashes */
+"editor.crashed.title" = "The editor stopped working";
+
 /* Title shown when the editor encounters an error */
 "editor.error.title" = "Editor Error";
 
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Loading Editor";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "Dismiss";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "You can exclude this app from Lockdown Mode in Settings, then re-open the editor to restore full functionality.";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "Learn More";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "Lockdown Mode Detected";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "Lockdown Mode is enabled. The editor may not work correctly.";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Failed to insert media";
+
+/* Error message when media picked in the block inserter cannot be loaded, e.g. an iCloud photo */
+"editor.media.failedToLoadSelected" = "The selected media could not be loaded. It may not be fully downloaded to this device.";
+
+/* Error message when a photo or video taken with the camera from the block inserter cannot be processed */
+"editor.media.failedToProcessCaptured" = "The captured media could not be processed.";
+
+/* Error message when some, but not all, of the media picked in the block inserter fails to insert */
+"editor.media.someFailedToInsert" = "Some media could not be inserted";
+
+/* Error message when some of the media items picked in the block inserter cannot be loaded, e.g. iCloud photos. %1$d is a placeholder for the number of items. */
+"editor.media.someSelectedFailedToLoad.plural" = "%1$d items could not be loaded and were skipped. They may not be fully downloaded to this device.";
+
+/* Error message when one of several media items picked in the block inserter cannot be loaded, e.g. an iCloud photo */
+"editor.media.someSelectedFailedToLoad.singular" = "1 item could not be loaded and was skipped. It may not be fully downloaded to this device.";
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "All";
@@ -4678,23 +4754,8 @@ Example: Reply to Pamela Nguyen */
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site.";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ are moving in %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ is moving soon";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack powered";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Get the Jetpack app";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Try the new Jetpack app";
@@ -4742,64 +4803,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Connect to your WordPress.com account";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Switch to the new Jetpack app";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Switch to the Jetpack app";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Learn more at jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Get notifications for new comments, likes, views, and more.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Find and follow your favorite sites and communities, and share you content.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Watch your traffic grow with helpful insights and comprehensive stats.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Stats & Insights";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack lets you do more with your WordPress site. Switching is free and only takes a minute.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Give WordPress a boost with Jetpack";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Continue to Notifications";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Do this later";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack features have moved.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Switch to the Jetpack app to keep receiving real-time notifications on your device.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Get your notifications with the Jetpack app";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Switch to the Jetpack app to find, follow, and like all your favorite sites and posts with Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Subscribe to any site with the Jetpack app";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Switch to the Jetpack app to watch your site’s traffic grow with stats and insights.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Get your stats using the new Jetpack app";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Switching is free and only takes a minute.";
@@ -4807,26 +4817,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Continue without Jetpack";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack features are moving soon.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.\n\nThe WordPress app no longer supports creating a new site.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app soon.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Notifications are moving to Jetpack";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader is moving to the Jetpack app";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Stats are moving to the Jetpack app";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app on %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Continue to Reader";
@@ -4836,9 +4828,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Your site has the Jetpack plugin";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continue without Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Try the new Jetpack app";
@@ -4870,9 +4859,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "To use stats on your site, you'll need to connect the Jetpack plugin to your user account.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Hide this";
 
@@ -4881,9 +4867,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Switch to Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Remind me later";
@@ -5193,9 +5176,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Previous period";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Current visitors online";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Double tap to retry loading statistics";
 
@@ -5222,12 +5202,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Double tap to view more details";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d visitor online now";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d visitors online now";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Visualize trends over time";
@@ -5743,17 +5717,11 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Visitors";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Visitors Now";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Ads";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Insights";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "Realtime";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Subscribers";
@@ -5899,9 +5867,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
 "Last week you had %@ views." = "Last week you had %@ views.";
-
-/* Later today */
-"later today" = "later today";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Latest Post Summary";
@@ -6790,6 +6755,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.";
 
+/* Description for the static screen prompting users to switch to the Jetpack app, used while the WordPress app shows Reader. */
+"movedToJetpack.descriptionWithoutReader" = "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Notifications and more.";
+
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Switching is free and only takes a minute.";
 
@@ -7069,42 +7037,6 @@ If you don't add your own text here, we'll use the post's title as the message."
    Title of a button that displays the WordPress.org blog */
 "News" = "News";
 
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Get Started";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "Not ready to switch? You can turn off New Stats from the More menu in the Stats tab.";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "Navigation and date picker are now at the bottom of the screen - right where your thumb is.";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "Easier to Reach";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Pick from common presets or set a custom date range with a comparison period - all in one tap.";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "Any Period, Any Range";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "Devices, UTM, locations, WordAds - the same data you get on WordPress.com.";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "On Par with the Web";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Every metric shows how it's trending compared to the previous period, so you always know if you're growing.";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "Trends at a Glance";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "A better way to understand your site's performance - now on by default.";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "New Stats";
-
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen. */
 "Next" = "Next";
@@ -7346,8 +7278,7 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "You don't have permission to view this private blog.";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -8141,6 +8072,30 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Visual Editor";
 
+/* Button to save, publish or preview anyway in an alert shown while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.continue" = "Continue";
+
+/* Button to close the editor in an alert shown while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leave" = "Leave";
+
+/* Message of an alert shown when closing the editor for a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leavePageMessage" = "If you leave now, anything still in progress, like a media upload, stops and won't be added to your page.";
+
+/* Message of an alert shown when closing the editor for a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leavePostMessage" = "If you leave now, anything still in progress, like a media upload, stops and won't be added to your post.";
+
+/* Title of an alert shown when saving or closing the editor for a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.pageTitle" = "Your page isn't ready yet";
+
+/* Title of an alert shown when saving or closing the editor for a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.postTitle" = "Your post isn't ready yet";
+
+/* Message of an alert shown when saving, publishing or previewing a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.savePageMessage" = "Something in the editor, like a media upload, is still in progress. If you continue, it may be missing or broken in your page.";
+
+/* Message of an alert shown when saving, publishing or previewing a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.savePostMessage" = "Something in the editor, like a media upload, is still in progress. If you continue, it may be missing or broken in your post.";
+
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "View";
 
@@ -8797,9 +8752,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Schedule";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Write a brief message to share on social media alognside the post";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tags";
 
@@ -9006,8 +8958,7 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Read the source post";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Reader";
 
@@ -9070,9 +9021,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Navigation title */
 "reader.comments.title" = "Comments";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d likes_";
@@ -9231,6 +9179,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* Accessibility label for the bell button in Reader that opens the Notifications list */
+"reader.notificationsBell.accessibilityLabel" = "Notifications";
 
 /* Button accessibility label */
 "reader.post.buttonBookmark.accessibilityLabel" = "Bookmark";
@@ -9409,11 +9360,35 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Saved";
 
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Saved post removed";
+/* Hint shown in Reader's Saved screen when the user hasn't saved any posts. */
+"reader.savedPosts.empty.description" = "Tap the bookmark icon on a post to save it to your list.";
+
+/* Title shown in Reader's Saved screen when the user hasn't saved any posts. */
+"reader.savedPosts.empty.title" = "No saved posts";
+
+/* Title shown in Reader's Saved screen when the saved posts couldn't be loaded. */
+"reader.savedPosts.error.title" = "Couldn't load your saved posts";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "The selected file is not a valid saved posts export.";
+
+/* Banner in Reader's Saved screen when posts couldn't be saved to the account because it has 1,000 saved posts (plural). %1$d is the number of posts. */
+"reader.savedPosts.limitBanner.message.plural" = "%1$d posts are saved only on this device. Your account keeps up to 1,000 saved posts. Remove some to make room for them.";
+
+/* Banner in Reader's Saved screen when a post couldn't be saved to the account because it has 1,000 saved posts (singular). %1$d is the number of posts. */
+"reader.savedPosts.limitBanner.message.singular" = "%1$d post is saved only on this device. Your account keeps up to 1,000 saved posts. Remove some to make room for it.";
+
+/* Title of a banner in Reader's Saved screen when the account already has the most saved posts it can keep. */
+"reader.savedPosts.limitBanner.title" = "Saved posts limit reached";
+
+/* Number of comments on a post in Reader's Saved screen (plural). %1$d is the count. */
+"reader.savedPosts.row.commentCount.plural" = "%1$d comments";
+
+/* Number of comments on a post in Reader's Saved screen (singular). %1$d is the count. */
+"reader.savedPosts.row.commentCount.singular" = "%1$d comment";
+
+/* When a post was saved, in Reader's Saved screen. %1$@ is a date, such as 'Nov 9' or 'Nov 9, 2025'. */
+"reader.savedPosts.row.savedDate" = "Saved %1$@";
 
 /* Accessibility label for the button that opens saved Reader posts import and export settings */
 "reader.savedPosts.settings.button.accessibilityLabel" = "Saved posts settings";
@@ -9445,8 +9420,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "Could not import the selected file. Please try again.";
 
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "Fetching post %1$d of %2$d…";
+/* Status text shown while the posts in an imported file are saved to the WordPress.com account */
+"reader.savedPosts.settings.importingStatus" = "Saving posts to your account…";
 
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "%1$d imported, %2$d skipped, %3$d failed.";
@@ -9454,11 +9429,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Navigates to saved Reader posts export and import screen */
 "reader.savedPosts.settings.row" = "Saved Posts";
 
+/* Error shown in saved posts settings when there's no WordPress.com account */
+"reader.savedPosts.settings.signInRequired" = "Sign in to WordPress.com to import or export saved posts.";
+
 /* Title for the saved Reader posts settings screen */
 "reader.savedPosts.settings.title" = "Saved Posts";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.";
+/* Button that removes a post from Reader's Saved screen. */
+"reader.savedPosts.unsave.button" = "Remove";
+
+/* Shown in Reader's Saved screen when removing a saved post fails. */
+"reader.savedPosts.unsave.error" = "Could not remove the post from your saved posts.";
+
+/* Shown in Reader when saving a post fails because the WordPress.com account already has the most saved posts it can keep. */
+"reader.saveForLater.error.tooManySaves" = "You've reached the limit of 1,000 saved posts. Remove some to save more.";
+
+/* Body text of alert informing users about the Reader Save for Later feature, when saved posts sync with their WordPress.com account. */
+"reader.saveForLaterAlert.description.synced" = "Save this post, and come back to read it whenever you'd like. Saved posts sync across your devices signed in to the same WordPress.com account.";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Save Posts for Later";
@@ -9592,6 +9579,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Unfollow %@";
+
+/* Title of the field that shows a user's bio in the Reader profile sheet */
+"reader.userProfile.about" = "About";
 
 /* Field title */
 "reader.userProfile.site" = "Site";
@@ -10579,6 +10569,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Select domain";
 
+/* Body of the card offering the free WordPress.com address in Site Creation. The address is the card's title. */
+"siteCreation.domains.freeAddressCard.body" = "Start free and upgrade to a custom domain name anytime.";
+
+/* Button on the card offering the free WordPress.com address in Site Creation. Choosing it moves to the next step. */
+"siteCreation.domains.freeAddressCard.button" = "Start free";
+
+/* Accessibility label of the button on the card offering the free WordPress.com address in Site Creation. %1$@ is the free address, for example example.wordpress.com. */
+"siteCreation.domains.freeAddressCard.buttonAccessibilityLabel" = "Start free with %1$@";
+
 /* Default text for adding a new item when no label is provided */
 "siteCustomTaxonomies.defaultAddNew" = "Add";
 
@@ -11081,11 +11080,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Subscribers";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "The latest post %1$@ has received %2$@ likes.";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "The latest post %1$@ has received %2$@ like.";
+/* A hint shown in site stats with the number of likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes, which can be any number including 0 and 1. Keep %2$@ on its own, not next to a word that would have to change with the number. */
+"stats.insights.totalLikes.guideText.latestPostCount" = "Likes on the latest post %1$@: %2$@";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total WordPress.com Subscribers: %@";
@@ -11377,10 +11373,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Current";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Are you sure you want to delete all activity logs?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Delete Logs";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -11388,6 +11384,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Footer text explaining the log retention policy in the Activity Logs screen. */
 "support.activityLogs.sectionFooter" = "Up to seven days worth of logs are saved.";
+
+/* Fixed line at the top of the AI support chat telling the user they are chatting with AI. %1$@ is the name of the organization the AI acts for, such as WordPress.com. */
+"support.aiDisclosure.message" = "You're chatting with AI from %1$@ Support.";
 
 /* Button title to enable extensive logging. */
 "support.alert.enable" = "Enable";
@@ -11479,17 +11478,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot transcript";
 
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "Ask a question and get help from our group of volunteers.";
+/* Description of the row that opens the app's logs. */
+"support.root.applicationLogs.detail" = "Find out what the app is doing under the hood.";
 
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "Community Forums";
+/* Title of the row that opens the app's logs. */
+"support.root.applicationLogs.title" = "Application Logs";
+
+/* Header of the section listing the app's diagnostic tools. */
+"support.root.diagnostics.header" = "Diagnostics";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "Get answers from our support team, anytime";
 
 /* Title of the row that opens the support conversations with the AI Assistant and support team. */
 "support.root.getHelp.title" = "Get help";
+
+/* Header of the section listing the ways to get help. */
+"support.root.help.header" = "How can we help?";
+
+/* Description of the row that opens the mobile apps support documentation. */
+"support.root.helpCenter.detail" = "Documentation and tutorials to help you get started.";
+
+/* Title of the row that opens the mobile apps support documentation. */
+"support.root.helpCenter.title" = "Help Center";
+
+/* Shown while the support screen loads the signed-in user's profile. */
+"support.root.loading" = "Loading Support Profile";
+
+/* Header of the section showing the signed-in user's support profile. */
+"support.root.profile.header" = "Support Profile";
+
+/* Explains why signing in to WordPress.com is needed to reach the support conversations. */
+"support.root.signIn.detail" = "Log into WordPress.com to access support chat.";
+
+/* Title of the button that starts WordPress.com sign-in from the support screen. */
+"support.root.signIn.title" = "Log into WordPress.com";
+
+/* Description of the row that opens the app's diagnostic tools. */
+"support.root.systemStatus.detail" = "Tools to help diagnose issues";
+
+/* Title of the row that opens the app's diagnostic tools. */
+"support.root.systemStatus.title" = "System Status Report";
+
+/* Title of the support screen. */
+"support.root.title" = "Support";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ask a question in the community forum and get help from our group of volunteers.";
@@ -11738,9 +11770,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tap to view your site";
-
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Tap to visit the Gravatar website in an external browser";
 
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Taxonomies";
@@ -12446,9 +12475,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Updating label title */
 "Updating" = "Updating";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgrade your plan to upload audio";
 
@@ -12892,9 +12918,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* No comment provided by engineer. */
 "What is alt text?" = "What is alt text?";
-
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "What is Gravatar?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "What was the problem?";
@@ -13410,9 +13433,6 @@ from anywhere.";
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Your website credentials will not be stored and are used only for the purpose of installing Jetpack.";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Your WordPress.com profile is powered by Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.";

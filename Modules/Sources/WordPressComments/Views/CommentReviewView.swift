@@ -108,6 +108,8 @@ private struct CommentReviewEntryView: View {
                 session.perform(action, id: id)
             }
         }
+        // Review is read-only; search can retain a keyboard inset after rotation.
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .task { await session.loadCurrent(id: id) }
     }
 }

@@ -69,7 +69,8 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     static var currentAppUIType: RootViewCoordinator.AppUIType?
 
     /// `RemoteFeatureFlag.readerInWordPressApp`, read once per launch: a fetch that changes the
-    /// flag applies on the next launch.
+    /// flag applies on the next launch. The exception is a sign-in from the signed-out state,
+    /// which reads it again before building the app UI (see `RootViewCoordinator`).
     ///
     /// The flag decides both the app UI type and the scope of the Notifications lists. Reading it
     /// live could make them disagree: a list created after a fetch would get the new scope while

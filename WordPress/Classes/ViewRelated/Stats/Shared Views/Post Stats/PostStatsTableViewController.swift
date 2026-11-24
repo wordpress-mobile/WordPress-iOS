@@ -133,7 +133,7 @@ private extension PostStatsTableViewController {
             properties["post_id"] = postIdentifier
         }
 
-        if FeatureFlag.newStats.enabled {
+        if RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
 

@@ -614,7 +614,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             nrv.widthAnchor.constraint(equalTo: view.widthAnchor),
             nrv.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nrv.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+            nrv.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         noSitesViewController.didMove(toParent: self)

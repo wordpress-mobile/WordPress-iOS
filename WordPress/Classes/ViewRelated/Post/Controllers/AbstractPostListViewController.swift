@@ -729,7 +729,7 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        if FeatureFlag.newStats.enabled {
+        if RemoteFeatureFlag.newStats.enabled() {
             // Create the view controller
             let statsViewController = PostStatsViewController(post: post)
 

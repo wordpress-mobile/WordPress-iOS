@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import SafariServices
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
