@@ -990,7 +990,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1361,9 +1360,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Блокът е копиран";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Копиране на връзка към коментара";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Копирайте адреса от междинната памет, %s";
 
@@ -1708,8 +1704,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Собствениците на домейни трябва да споделят информация за контакт в публична база данни. Със защита на поверителността, ние ще публикуваме наша информация, вместо вашата, и ще ви препращаме комуникацията към вас.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3569,8 +3564,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Известието ще включва нещо за вдъхновяване";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4155,8 +4149,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Вижте източника на публикацията";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Четец";
 
@@ -5130,9 +5123,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Докоснете, за да видите сайта";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Докоснете за да посетите Gravatar във външен браузър";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Категоризации";
 
@@ -5795,9 +5785,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Обновяване";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Обновяването на аватара, името и личната информация ще ги обнови във всички сайтове, ползващи Gravatar.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Ъпгрейднете плана си за да качвате аудио";
 
@@ -6115,9 +6102,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Какво искате да направите с този файл: да го качите и да добавите връзка в публикацията или да добавите съдържанието му директно в публикацията?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Какво е Gravatar?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Какво е блок?";
 
@@ -6379,9 +6363,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Вашите сайтове";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Профилът в WordPress.com използва Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Вашият WordPress.com сайт поддържа AMP, инициатива на Google за ускоряване на зареждането на сайтове от мобилни устройства.";
@@ -6960,9 +6941,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Дневници, подредени по дата на създаване";
-
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "Следните дневници ще бъдат качени:";
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Запомнени са до седем дни с дневници.";
@@ -7766,23 +7744,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ се местят в %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ се мести в %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ се местят скоро";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ се мести скоро";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Задвижвано от Jetapack";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Изтеглете Jetpack приложение";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Опитайте приложението Jetpack";
@@ -7830,64 +7793,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Създаване на WordPress.com профил";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Преминете към Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Преминете към Jetpack";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Научете повече на jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Получаване на известия за коментари, харесвания, прегледи и други.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Намерете и следвайте любимите сайтове и общества. Споделете своето съдържание.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Наблюдавайте как трафика ви нараства с полезни съвети и статистики.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Статистика и обобщения";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack ви позволява вършите повече с вашия WordPress сайт. Смяната е безплатна и отнема минута.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Дайте на WordPress подкрепа с Jetpack";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Към известията";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "По-късно";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Статистиките, известията, Reader и другите функции от Jetpack са премахнати от WordPress приложението.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack функциите се преместиха.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Преминете към Jetpack, за да продължите да получавате известия в реално време.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Вземете известия с Jetpack приложението";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Преминете към Jetpack, за да търсите, следвате и харесвате любимите си сайтове и публикации.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Абонирайте се за всеки сайт с Jetpack";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack осигурява статистики, известия и още, за да ви помогне да изградите WordPress сайта на мечтите си.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Преминете към Jetpack, за да наблюдавате как трафикът ви расте със статистики и обобщения.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Вземете статистики с новото приложение Jetpack";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Смяната е безплатна и ще отнеме минутка.";
@@ -7895,26 +7807,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Продължаване без Jetpack";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Функциите от Jetpack се местят скоро.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack предоставя статистики, известия и още, за да ви помогне да развиете WordPress сайта си.\n\nПриложението WordPress вече не поддържа създаването на нов сайт.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Статистиките, известията, Reader и другите функции от Jetpack ще бъдат премахнати от WordPress приложението.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Известията се местят в Jetpack";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader се мести в приложението Jetpack";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Статистиките се местят в приложението Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Статистиките, известията, Reader и другите функции от Jetpack ще бъдат премахнати от WordPress приложението на %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Продължаване към Reader";
@@ -7924,9 +7818,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Сайтът ви има Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Продължаване без Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Опитайте приложението Jetpack";
@@ -7958,9 +7849,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "За да ползвате статистики е нужно да свържете разширението Jetpack с вашия профил.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Статистиките, известията, Reader и други функции ще се преместят в Jetpack приложението.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Скриване";
 
@@ -7969,9 +7857,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Отключете пълния потенциал на сайта. В Jetpack има статистики, известия и Reader.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Преминете към Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Напомняне по-късно";
@@ -8099,9 +7984,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Предишен период";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Посетители онлайн в момента";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Докоснете два пъти за повторен опит за зареждане";
 
@@ -8128,12 +8010,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Двойно тапване за повече информация";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d посетител онлайн сега";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d посетители онлайн сега";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Показване на трендове";
@@ -8592,14 +8468,8 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Посетители";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Посетители сега";
-
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Анализи";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "Реално време";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Абонати";
@@ -8684,9 +8554,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Този сайт ползва индивидуални Jetpack разширения, които не поддържат всички функции на приложението. Моля, инсталирайте пълния Jetpack.";
-
-/* Later today */
-"later today" = "по-късно днес";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "харесване";
@@ -10011,9 +9878,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Планиране";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Добавете кратко съобщение за споделяне в социалните медии към публикацията";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Етикети";
 
@@ -10151,9 +10015,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Коментари";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Вижте публикациите от сайта";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d харесвания_";
@@ -10462,9 +10323,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Записано";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Запомнената публикация е отписана";
 
 /* Reader Search */
 "reader.search.clearHistory" = "Изчистване на историята";
@@ -11508,10 +11366,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Текущ";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Сигурни ли сте, че искате да изтриете всички записи в дневника?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Изтриване на дневника";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */

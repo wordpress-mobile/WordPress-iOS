@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-21 08:04:36+0000 */
+/* Translation-Revision-Date: 2026-11-20 13:04:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.1.0 */
 /* Language: ro */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1370,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Bloc copiat";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Copiază legătura în comentariu";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Plasează URL-ul din clipbord, %s";
 
@@ -1723,8 +1719,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Proprietarii de domenii trebuie să partajeze informațiile de contact într-o bază de date publică a tuturor domeniilor. Cu protecția de confidențialitate, publicăm propriile informații în loc de ale tale și îți trimitem privat toate comunicările.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3587,8 +3582,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Notificarea va include un cuvânt sau o frază scurtă pentru inspirație";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4173,8 +4167,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Citește articolul sursă";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Cititor";
 
@@ -5151,9 +5144,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Atinge pentru a-ți vedea site-ul";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Atinge pentru a vizita site-ul Gravatar într-un navigator extern";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Taxonomii";
 
@@ -5816,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Actualizez";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Actualizarea aici a avatarului, numelui și informațiilor despre tine, va face actualizarea lor și pe toate site-urile care folosesc profiluri Gravatar.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Pentru a încărca fișiere audio, actualizează-ți planul";
 
@@ -6142,9 +6129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ce vrei să faci cu acest fișier: îl încarci și adaugi o legătură la fișier în articolul tău sau adaugi conținutul fișierului direct în articol?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Ce este Gravatar?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Ce este un bloc?";
 
@@ -6407,9 +6391,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Site-urile tale";
 
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Profilul tău WordPress.com este propulsat de Gravatar.";
-
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Site-ul tău WordPress.com suportă folosirea Paginilor accelerate pentru mobil, o inițiativă condusă de Google care accelerează dramatic timpii de încărcare pe dispozitivele mobile.";
 
@@ -6558,6 +6539,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility identifier for an 'Add Comment' button */
 "addCommentButton.accessibilityIdentifity" = "Adaugă un comentariu";
 
+/* Error message when a self-hosted site's server blocks application password authentication by not passing the HTTP Authorization header to WordPress. */
+"addSite.selfHosted.authorizationHeaderBlocked" = "Serverul tău blochează autentificarea cu parole pentru aplicație. Contactează furnizorul de găzduire pentru ajutor.";
+
 /* Error message when user cancels login */
 "addSite.selfHosted.cancelled" = "Autentificarea a fost anulată";
 
@@ -6584,6 +6568,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
 "addSite.selfHosted.xmlrpcEndpointNotFound" = "Nu am putut să determin punctul-final XML-RPC pentru site";
+
+/* Message shown after age restriction enforcement signs a person out and removes their sites */
+"ageRequirement.restrictionAlert.signedOutMessage" = "Această aplicație are nevoie de utilizatori care să aibă 13 ani sau mai mult. Contul tău Apple raportează o vârstă sub 13 ani, deci ai fost dezautentificat și site-urile tale au fost înlăturate de pe acest dispozitiv.";
+
+/* Message shown when an age-restricted person tries to sign in */
+"ageRequirement.restrictionAlert.signedOutUserMessage" = "Această aplicație are nevoie de utilizatori care să aibă cel puțin 13 ani. Contul tău Apple indică o vârstă sub 13 ani, deci nu te poți autentifica.";
+
+/* Title of an alert explaining that the person does not meet the app's minimum age requirement */
+"ageRequirement.restrictionAlert.title" = "Cerința pentru vârstă nu este îndeplinită";
 
 /* Age between dates equaling one hour. */
 "an hour" = "o oră";
@@ -7054,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Fișiere jurnal după data creării";
 
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "Vor fi încărcate următoarele fișiere jurnal:";
-
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Jurnalele sunt salvate pentru o perioadă de până la șapte zile.";
 
@@ -7297,6 +7287,9 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Răspunde-i lui %1$@";
 
+/* VoiceOver announcement made when changes to an edited comment start saving */
+"commentComposer.accessibility.saving" = "Salvez modificările";
+
 /* VoiceOver announcement made when a reply starts sending */
 "commentComposer.accessibility.sending" = "Trimit răspunsul";
 
@@ -7306,8 +7299,14 @@ Example: Reply to Pamela Nguyen */
 /* Button label to delete a saved draft */
 "commentComposer.action.deleteDraft" = "Șterge ciorna";
 
+/* Button label to discard unsaved changes to a comment */
+"commentComposer.action.discardChanges" = "Renunță la modificări";
+
 /* Button label to continue editing instead of discarding changes */
 "commentComposer.action.keepEditing" = "Continuă editarea";
+
+/* Button label to save changes to an edited comment */
+"commentComposer.action.save" = "Salvează";
 
 /* Button label to save the current text as a draft */
 "commentComposer.action.saveDraft" = "Salvează ciorna";
@@ -7320,6 +7319,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message shown when comments are disabled for the post */
 "commentComposer.error.closed" = "Comentariile la acest articol sunt închise.";
+
+/* Error message shown when editing a comment fails */
+"commentComposer.error.editFailed" = "Salvarea modificărilor a eșuat.";
 
 /* Error message shown when sending a reply fails */
 "commentComposer.error.replyFailed" = "Trimiterea răspunsului a eșuat.";
@@ -7335,6 +7337,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder text in the composer text input field */
 "commentComposer.placeholder" = "Lasă un răspuns...";
+
+/* Title of the compose screen for editing a comment */
+"commentComposer.title.edit" = "Editează comentariul";
 
 /* Title of the compose screen for replying to a comment */
 "commentComposer.title.reply" = "Răspuns";
@@ -7374,6 +7379,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation toolbar button that permanently deletes a comment */
 "commentDetail.action.deletePermanently" = "Șterge definitiv";
+
+/* Button label to edit a comment on the detail screen */
+"commentDetail.action.edit" = "Editează";
 
 /* Accessibility label for the overflow menu button on the comment detail screen */
 "commentDetail.action.moreActions" = "Mai multe";
@@ -7462,6 +7470,45 @@ Example: Reply to Pamela Nguyen */
 /* Error title */
 "comments.failedToLike" = "Aprecierea comentariului a eșuat";
 
+/* Accessibility label for the Review button */
+"comments.review.accessibility" = "Verifică comentariile în așteptare";
+
+/* Button to review loaded pending comments */
+"comments.review.button" = "Verifică";
+
+/* Heading after all captured comments have been reviewed */
+"comments.review.complete" = "Verificarea este finalizată";
+
+/* Review result for multiple confirmed moderations; %1$d is the count */
+"comments.review.moderated.many" = "Am moderat %1$d comentarii.";
+
+/* Review result for one confirmed moderation; %1$d is the count */
+"comments.review.moderated.one" = "Am moderat %1$d comentariu.";
+
+/* Result when all captured comments were already handled or missing */
+"comments.review.none" = "Nu există comentarii moderate în această sesiune.";
+
+/* Review position. %1$d is the one-based position; %2$d is the fixed batch size */
+"comments.review.position" = "%1$d din %2$d";
+
+/* Leave this comment pending and advance */
+"comments.review.skip" = "Omite";
+
+/* Skipped count following a moderated count; %1$d is the count */
+"comments.review.skipped.clause" = "Am omis %1$d.";
+
+/* Review result when only comments were skipped; %1$d is the count */
+"comments.review.skipped.many" = "Am omis %1$d comentarii.";
+
+/* Review result when only one comment was skipped; %1$d is the count */
+"comments.review.skipped.one" = "Am omis %1$d comentariu.";
+
+/* Combined review result; %1$@ is the moderated sentence, %2$@ is the skipped sentence */
+"comments.review.summary.both" = "%1$@ %2$@";
+
+/* Pending comment review screen title */
+"comments.review.title" = "În așteptare pentru verificare";
+
 /* Title for the error notice shown when trashing a comment fails. */
 "comments.trash.error.title" = "Eroare la aruncarea la gunoi a comentariului";
 
@@ -7512,6 +7559,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title showing trashed comments */
 "commentsList.tab.trash" = "Aruncate la gunoi";
+
+/* Shown after a comments search returns no matches */
+"commentsSearch.noResults" = "Niciun rezultat";
+
+/* Comments search field placeholder and initial empty prompt */
+"commentsSearch.prompt" = "Caută comentarii";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Numele de utilizator sau parola stocate în aplicație pot fi învechite. Te rog reintrodu parola ta în setări și încearcă din nou.";
@@ -8069,29 +8122,38 @@ Example: Reply to Pamela Nguyen */
 /* Button title to expand and show more blocks */
 "editor.blockInserter.showMore" = "Arată mai multe";
 
+/* Message shown over the editor after it crashes, above a button to reload it */
+"editor.crashed.description" = "Reîncarcă editorul pentru a continua editarea.";
+
+/* Button title to reload the editor after it crashes */
+"editor.crashed.reload" = "Reîncarcă editorul";
+
+/* Title shown over the editor after it crashes */
+"editor.crashed.title" = "Editorul a încetat să funcționeze";
+
 /* Title shown when the editor encounters an error */
 "editor.error.title" = "Eroare la editor";
 
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Încarc editorul";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "Închide";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "Poți să excluzi această aplicație din Modul blocare în Setări, apoi redeschide editorul pentru a restaura funcționalitatea completă.";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "Învață mai multe";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "Am detectat Modul blocare";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "Modul blocare este activat. Probabil editorul nu o să funcționeze corect.";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Inserarea elementului media a eșuat";
+
+/* Error message when media picked in the block inserter cannot be loaded, e.g. an iCloud photo */
+"editor.media.failedToLoadSelected" = "Elementul Media selectat nu a putut fi încărcat. Probabil nu a fost descărcat complet pe acest dispozitiv.";
+
+/* Error message when a photo or video taken with the camera from the block inserter cannot be processed */
+"editor.media.failedToProcessCaptured" = "Elementul Media capturat nu a putut fi procesat.";
+
+/* Error message when some, but not all, of the media picked in the block inserter fails to insert */
+"editor.media.someFailedToInsert" = "Unele elemente Media nu au putut fi inserate";
+
+/* Error message when some of the media items picked in the block inserter cannot be loaded, e.g. iCloud photos. %1$d is a placeholder for the number of items. */
+"editor.media.someSelectedFailedToLoad.plural" = "%1$d elemente nu au putut fi încărcate și au fost omise. Probabil nu au fost descărcate complet pe acest dispozitiv.";
+
+/* Error message when one of several media items picked in the block inserter cannot be loaded, e.g. an iCloud photo */
+"editor.media.someSelectedFailedToLoad.singular" = "Un element nu a putut fi încărcat și a fost omis. Probabil nu a fost descărcat complet pe acest dispozitiv.";
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Toate";
@@ -8411,23 +8473,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Selectează site-ul";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ se mută în %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ se mută în %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ se mută în curând";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ se mută în curând";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Propulsat de Jetpack";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Ia aplicația Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Încearcă noua aplicație Jetpack";
@@ -8475,64 +8522,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Conectează-ți contul WordPress.com";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Comută la noua aplicație Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Comută la aplicația Jetpack";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Află mai multe la jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Primești notificări pentru comentarii noi, aprecieri, vizualizări și multe altele.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Găsește, urmărește site-urile și comunitățile preferate și partajează conținutul tău.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Urmărești creșterea traficului cu informații generale utile și statistici comprehensive.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistici și privire generală";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack îți permite să realizezi mai multe cu site-ul tău WordPress. Este gratuit și instalarea durează numai un minut.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Îmbunătățește WordPress cu Jetpack";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Continuă cu Notificări";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Fă asta mai târziu";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistici, Cititor, Notificări și alte funcționalități propulsate de Jetpack au fost înlăturate din aplicația WordPress.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Funcționalitățile Jetpack s-au mutat.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Comută la aplicația Jetpack pentru a continua să primești notificări în timp real pe dispozitivul tău.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Cu aplicația Jetpack, primești notificări";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Comută la aplicația Jetpack pentru a găsi, urmări și aprecia toate site-urile și articolele tale preferate din Cititor.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Cu aplicația Jetpack, te abonezi la orice site";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack oferă statistici, notificări și multe altele pentru a te ajuta să construiești și să dezvolți site-ul WordPress la care visezi.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Comută la aplicația Jetpack pentru a urmări creșterea traficului de pe site cu statistici și informații generale.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Cu aplicația Jetpack, îți vezi statisticile";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Comutarea este gratuită și durează numai un minut.";
@@ -8540,26 +8536,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Continuă fără Jetpack";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Funcționalitățile Jetpack se mută în curând.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack oferă statistici, notificări și multe altele pentru a te ajuta să construiești și să dezvolți site-ul WordPress la care visezi.\nAplicația WordPress nu mai permite crearea unui site nou.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "În curând, Statistici, Cititor, Notificări și alte funcționalități propulsate de Jetpack vor fi înlăturate din aplicația WordPress.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Notificările au fost mutate în Jetpack";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Cititorul a fost mutat în aplicația Jetpack";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statisticile au fost mutate în aplicația Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistici, Cititor, Notificări și alte funcționalități propulsate de Jetpack vor fi înlăturate din aplicația WordPress pe %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Continuă cu Cititor";
@@ -8569,9 +8547,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Site-ul tău are modulul Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continuă fără Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Încearcă noua aplicație Jetpack";
@@ -8603,9 +8578,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "Ca să folosești statisticile pe site-ul tău, trebuie să conectezi modulul Jetpack la contul tău de utilizator.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "În curând, Statistici, Cititor, Notificări și alte funcționalități se vor muta în aplicația Jetpack pentru mobil.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Ascunde asta";
 
@@ -8614,9 +8586,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Deblochează întregul potențial al site-ului tău. Cu Jetpack, ai Statistici, Cititor, Notificări și multe altele.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Comută la Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Amintește-mi mai târziu";
@@ -8897,9 +8866,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Perioada anterioară";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Vizitatori online acum";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Atinge de două ori pentru a reîncerca încărcarea statisticilor";
 
@@ -8926,12 +8892,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Atinge de două ori pentru a vedea mai multe detalii.";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d vizitator online acum";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d vizitatori online acum";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Vizualizează tendințele în cursul timpului";
@@ -9447,17 +9407,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Vizitatori";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Vizitatori acum";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Reclame";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Privire generală";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "În timp real";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Abonați";
@@ -9569,9 +9523,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Acest site folosește module Jetpack individuale, care încă nu suportă toate funcționalitățile aplicației. Te rog instalează modulul complet Jetpack.";
-
-/* Later today */
-"later today" = "azi, mai târziu";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "aprecieri";
@@ -10047,6 +9998,9 @@ Example: Reply to Pamela Nguyen */
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Aplicația Jetpack are toate funcționalitățile aplicației WordPress, cu acces exclusiv la Statistici, Cititor, Notificări și altele.";
 
+/* Description for the static screen prompting users to switch to the Jetpack app, used while the WordPress app shows Reader. */
+"movedToJetpack.descriptionWithoutReader" = "Aplicația Jetpack are toate funcționalitățile aplicației WordPress, cu acces exclusiv la Statistici, Notificări și altele.";
+
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Comutarea este gratuită și durează numai un minut.";
 
@@ -10226,42 +10180,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Vizitează site-ul";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Începe";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "Nu ești gata să le vezi? Poți să dezactivezi Statistici noi în meniul Mai multe din fila Statistici.";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "Navigarea și selectorul de date sunt acum în partea de jos a ecranului - exact acolo unde ai degetul.";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "Mai ușor de accesat";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Alegi dintre presetările comune sau setezi un interval de date personalizat cu o perioadă de comparație - totul cu o singură atingere.";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "Orice perioadă, orice interval";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "Dispozitive, UTM, locații, WordAds - aceleași date de care beneficiezi pe WordPress.com.";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "La egalitate cu web-ul";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Fiecare valoare metrică arată tendința în comparație cu perioada anterioară, astfel știi întotdeauna dacă te dezvolți.";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "Tendințe dintr-o privire";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "O modalitate mai bună de a înțelege performanța pe site-ul tău - acum activată implicit.";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "Statistici noi";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Nu există intrări în jurnal în această perioadă de timp";
@@ -10657,6 +10575,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Editor vizual";
+
+/* Button to save, publish or preview anyway in an alert shown while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.continue" = "Continuă";
+
+/* Button to close the editor in an alert shown while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leave" = "Părăsește";
+
+/* Message of an alert shown when closing the editor for a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leavePageMessage" = "Dacă părăsești acum, orice este încă în desfășurare, cum ar fi o încărcare media, se oprește și este posibil să nu fie adăugată în pagina ta.";
+
+/* Message of an alert shown when closing the editor for a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leavePostMessage" = "Dacă părăsești acum, orice este încă în desfășurare, cum ar fi o încărcare media, se oprește și este posibil să nu fie adăugată în articolul tău.";
+
+/* Title of an alert shown when saving or closing the editor for a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.pageTitle" = "Pagina ta nu este încă gata";
+
+/* Title of an alert shown when saving or closing the editor for a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.postTitle" = "Articolul tău nu este încă gata";
+
+/* Message of an alert shown when saving, publishing or previewing a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.savePageMessage" = "Ceva în editor, cum ar fi o încărcare media, este încă în desfășurare. Dacă continui, este posibil să lipsească sau să fie deteriorată în pagina ta.";
+
+/* Message of an alert shown when saving, publishing or previewing a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.savePostMessage" = "Ceva în editor, cum ar fi o încărcare media, este încă în desfășurare. Dacă continui, este posibil să lipsească sau să fie deteriorată în articolul tău.";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Vezi";
@@ -11277,9 +11219,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Programează";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Scrie un mesaj scurt pe care să-l partajezi pe media socială împreună cu articolul";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etichete";
 
@@ -11420,9 +11359,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Comentarii";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Vezi articolele de pe site";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d aprecieri_";
@@ -11581,6 +11517,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* Accessibility label for the bell button in Reader that opens the Notifications list */
+"reader.notificationsBell.accessibilityLabel" = "Notificări";
 
 /* Button accessibility label */
 "reader.post.buttonBookmark.accessibilityLabel" = "Pune un semn de carte";
@@ -11756,8 +11695,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Recente";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Salvează acest articol și te poți întoarce să-l citești oricând vrei. El va fi disponibil numai pe acest dispozitiv - articolele salvate nu sunt sincronizate pe alte dispozitive.";
+/* Shown in Reader when saving a post fails because the WordPress.com account already has the most saved posts it can keep. */
+"reader.saveForLater.error.tooManySaves" = "Ai ajuns limita maximă de 1.000 de articole salvate. Înlătură câteva ca să salvezi altele.";
+
+/* Body text of alert informing users about the Reader Save for Later feature, when saved posts sync with their WordPress.com account. */
+"reader.saveForLaterAlert.description.synced" = "Salvează acest articol și te întorci oricând vrei să îl citești. Articolele salvate se sincronizează cu dispozitivele tale înregistrate în același cont WordPress.com.";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Salvează articole pentru mai târziu";
@@ -11765,11 +11707,35 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Salvate";
 
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Am înlăturat articolul salvat";
+/* Hint shown in Reader's Saved screen when the user hasn't saved any posts. */
+"reader.savedPosts.empty.description" = "Atinge iconul semn de carte într-un articol ca să îl salvezi în lista ta.";
+
+/* Title shown in Reader's Saved screen when the user hasn't saved any posts. */
+"reader.savedPosts.empty.title" = "Nu ai salvat niciun articol";
+
+/* Title shown in Reader's Saved screen when the saved posts couldn't be loaded. */
+"reader.savedPosts.error.title" = "Nu am putut să încarc articolele salvate";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "Fișierul selectat nu este un export valid de articole salvate.";
+
+/* Banner in Reader's Saved screen when posts couldn't be saved to the account because it has 1,000 saved posts (plural). %1$d is the number of posts. */
+"reader.savedPosts.limitBanner.message.plural" = "%1$d articole sunt salvat numai pe acest dispozitiv. Contul tău păstrează până la 1.000 de articole salvate. Înlătură câteva pentru a face loc.";
+
+/* Banner in Reader's Saved screen when a post couldn't be saved to the account because it has 1,000 saved posts (singular). %1$d is the number of posts. */
+"reader.savedPosts.limitBanner.message.singular" = "Articolul %1$d este salvat numai pe acest dispozitiv. Contul tău păstrează până la 1.000 de articole salvate. Înlătură câteva pentru a face loc.";
+
+/* Title of a banner in Reader's Saved screen when the account already has the most saved posts it can keep. */
+"reader.savedPosts.limitBanner.title" = "Ai ajuns limita maximă de articole salvate";
+
+/* Number of comments on a post in Reader's Saved screen (plural). %1$d is the count. */
+"reader.savedPosts.row.commentCount.plural" = "%1$d comentarii";
+
+/* Number of comments on a post in Reader's Saved screen (singular). %1$d is the count. */
+"reader.savedPosts.row.commentCount.singular" = "%1$d comentariu";
+
+/* When a post was saved, in Reader's Saved screen. %1$@ is a date, such as 'Nov 9' or 'Nov 9, 2025'. */
+"reader.savedPosts.row.savedDate" = "Salvate pe %1$@";
 
 /* Accessibility label for the button that opens saved Reader posts import and export settings */
 "reader.savedPosts.settings.button.accessibilityLabel" = "Setări pentru articole salvate";
@@ -11801,17 +11767,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "Nu am putut să import fișierul selectat. Te rog să încerci din nou.";
 
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "Preiau %1$d articole din %2$d…";
-
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "Am importat %1$d, am omis %2$d, %3$d au eșuat.";
+
+/* Status text shown while the posts in an imported file are saved to the WordPress.com account */
+"reader.savedPosts.settings.importingStatus" = "Salvez articolele în contul tău...";
 
 /* Navigates to saved Reader posts export and import screen */
 "reader.savedPosts.settings.row" = "Articole salvate";
 
+/* Error shown in saved posts settings when there's no WordPress.com account */
+"reader.savedPosts.settings.signInRequired" = "Autentifică-te în WordPress.com pentru a importa sau exporta articole salvate.";
+
 /* Title for the saved Reader posts settings screen */
 "reader.savedPosts.settings.title" = "Articole salvate";
+
+/* Button that removes a post from Reader's Saved screen. */
+"reader.savedPosts.unsave.button" = "Înlătură";
+
+/* Shown in Reader's Saved screen when removing a saved post fails. */
+"reader.savedPosts.unsave.error" = "Nu am putut să înlătur articolul din articole salvate.";
 
 /* Reader Search */
 "reader.search.clearHistory" = "Șterge istoricul";
@@ -11943,6 +11918,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Anulează urmărirea %@";
 
+/* Title of the field that shows a user's bio in the Reader profile sheet */
+"reader.userProfile.about" = "Despre";
+
 /* Field title */
 "reader.userProfile.site" = "Site";
 
@@ -11998,7 +11976,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "relatedPostsSettings.preview1.details" = "în „dispozitive mobile”";
 
 /* Text for related post cell preview */
-"relatedPostsSettings.preview1.title" = "Este disponibilă o importantă actualizare pentru iPhone\/iPad";
+"relatedPostsSettings.preview1.title" = "Acum este disponibilă o actualizare importantă pentru iPhone\/iPad";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview2.details" = "în „Aplicații”";
@@ -12311,6 +12289,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Selectează domeniul";
+
+/* Body of the card offering the free WordPress.com address in Site Creation. The address is the card's title. */
+"siteCreation.domains.freeAddressCard.body" = "Începe cu gratuit și actualizezi oricând la un nume de domeniu personalizat.";
+
+/* Button on the card offering the free WordPress.com address in Site Creation. Choosing it moves to the next step. */
+"siteCreation.domains.freeAddressCard.button" = "Începe cu gratuit";
+
+/* Accessibility label of the button on the card offering the free WordPress.com address in Site Creation. %1$@ is the free address, for example example.wordpress.com. */
+"siteCreation.domains.freeAddressCard.buttonAccessibilityLabel" = "Începe gratuit cu %1$@";
 
 /* Default text for adding a new item when no label is provided */
 "siteCustomTaxonomies.defaultAddNew" = "Adaugă";
@@ -12666,11 +12653,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Abonați";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "Ultimul articol %1$@ a avut %2$@ aprecieri.";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "Ultimul articol %1$@ a avut %2$@ apreciere.";
+/* A hint shown in site stats with the number of likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes, which can be any number including 0 and 1. Keep %2$@ on its own, not next to a word that would have to change with the number. */
+"stats.insights.totalLikes.guideText.latestPostCount" = "Aprecieri la ultimul articol %1$@: %2$@";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total abonați WordPress.com: %@";
@@ -12915,10 +12899,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Actual";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Sigur vrei să ștergi toate jurnalele de activități?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Șterge jurnalele";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -12926,6 +12910,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Footer text explaining the log retention policy in the Activity Logs screen. */
 "support.activityLogs.sectionFooter" = "Jurnalele sunt salvate pentru o perioadă de până la șapte zile.";
+
+/* Fixed line at the top of the AI support chat telling the user they are chatting with AI. %1$@ is the name of the organization the AI acts for, such as WordPress.com. */
+"support.aiDisclosure.message" = "Discuți cu o AI de la serviciul pentru suport %1$@.";
 
 /* Button title to enable extensive logging. */
 "support.alert.enable" = "Activează";
@@ -13017,17 +13004,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transcriere bot Jetpack Mobile";
 
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "Pune o întrebare și primește ajutor de la grupul nostru de voluntari.";
+/* Description of the row that opens the app's logs. */
+"support.root.applicationLogs.detail" = "Află ce face aplicația sub capotă.";
 
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "Forumuri pentru comunitate";
+/* Title of the row that opens the app's logs. */
+"support.root.applicationLogs.title" = "Jurnale aplicație";
+
+/* Header of the section listing the app's diagnostic tools. */
+"support.root.diagnostics.header" = "Diagnosticare";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "Primești răspunsuri de la echipa noastră pentru suport, oricând";
 
 /* Title of the row that opens the support conversations with the AI Assistant and support team. */
 "support.root.getHelp.title" = "Primești ajutor";
+
+/* Header of the section listing the ways to get help. */
+"support.root.help.header" = "Cum te putem ajuta?";
+
+/* Description of the row that opens the mobile apps support documentation. */
+"support.root.helpCenter.detail" = "Documentație și tutoriale care te ajută să începi.";
+
+/* Title of the row that opens the mobile apps support documentation. */
+"support.root.helpCenter.title" = "Centru pentru ajutor";
+
+/* Shown while the support screen loads the signed-in user's profile. */
+"support.root.loading" = "Încarc profilul pentru suport";
+
+/* Header of the section showing the signed-in user's support profile. */
+"support.root.profile.header" = "Profil pentru suport";
+
+/* Explains why signing in to WordPress.com is needed to reach the support conversations. */
+"support.root.signIn.detail" = "Autentifică-te în WordPress.com pentru a accesa discuțiile pentru suport.";
+
+/* Title of the button that starts WordPress.com sign-in from the support screen. */
+"support.root.signIn.title" = "Autentifică-te în WordPress.com";
+
+/* Description of the row that opens the app's diagnostic tools. */
+"support.root.systemStatus.detail" = "Unelte care ajută la diagnosticarea problemelor";
+
+/* Title of the row that opens the app's diagnostic tools. */
+"support.root.systemStatus.title" = "Raport stare sistem";
+
+/* Title of the support screen. */
+"support.root.title" = "Suport";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Pune o întrebare pe forumul comunității și obține ajutor de la grupul nostru de voluntari.";
