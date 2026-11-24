@@ -1,7 +1,7 @@
 import SwiftUI
 import WordPressUI
 
-/// The "Get help" screen, listing the user's AI Assistant conversations and support tickets.
+/// The "Get Help" screen, listing the user's AI Assistant conversations and support tickets.
 public struct UnifiedSupportListView: View {
 
     @StateObject private var viewModel: UnifiedSupportListViewModel
