@@ -38,16 +38,6 @@ struct ApplicationTokenItemView: View {
                 }
             } header: {
                 Text(Self.security)
-            } footer: {
-                if token.isCurrent {
-                    HStack(alignment: .firstTextBaseline) {
-                        Circle()
-                            .fill(Color.accentColor)
-                            .frame(width: 8, height: 8)
-
-                        Text(Self.currentlyInUse)
-                    }
-                }
             }
             Section {
                 Button(role: .destructive) {
@@ -69,7 +59,17 @@ struct ApplicationTokenItemView: View {
                 }
             } footer: {
                 if !token.canDelete {
-                    Text(token.deletionBlocker.localizedDescription)
+                    if token.isCurrent {
+                        HStack(alignment: .firstTextBaseline) {
+                            Circle()
+                                .fill(Color.accentColor)
+                                .frame(width: 8, height: 8)
+
+                            Text(token.deletionBlocker.localizedDescription)
+                        }
+                    } else {
+                        Text(token.deletionBlocker.localizedDescription)
+                    }
                     if let error = viewModel.errorMessage { Text(error) }
                 }
             }
@@ -195,15 +195,6 @@ private extension ApplicationTokenItemView {
             "applicationPassword.item.lastUsedIp",
             value: "Last IP Address",
             comment: "Title of row for displaying an application password's last used IP address"
-        )
-    }
-
-    static var currentlyInUse: String {
-        NSLocalizedString(
-            "applicationPassword.item.currentlyInUse",
-            value: "This application password is currently being used by the app.",
-            comment:
-                "Footer message indicating that this application password is currently active and being used by the app"
         )
     }
 }
