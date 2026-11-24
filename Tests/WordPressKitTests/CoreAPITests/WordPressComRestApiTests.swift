@@ -553,4 +553,80 @@ class WordPressComRestApiTests: XCTestCase {
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
         XCTAssertEqual(request.httpBodyText, #"{"arg1":"value1"}"#)
     }
+
+    /// Requests that start together on a new instance have to share one session.
+    ///
+    /// If the session is created lazily, each of them can create one and store it. Those stores
+    /// race, and can free a session while a request is still using it, which crashes in `URLSession`.
+    func testRequestsStartedTogetherOnANewInstanceShareOneSession() async {
+        stub(condition: isHost("public-api.wordpress.com")) { _ in
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
+        }
+        let request = HTTPRequestBuilder(url: URL(string: "https://public-api.wordpress.com/rest/v1/foo")!)
+
+        await assertRequestsStartedTogetherShareOneSession { api, taskCreated in
+            _ = await api.perform(request: request, decoder: { $0 }, taskCreated: taskCreated)
+        }
+    }
+
+    /// Uploads are sent on a session of their own, which they have to share in the same way.
+    func testUploadsStartedTogetherOnANewInstanceShareOneSession() async throws {
+        stub(condition: isRestAPIMediaNewRequest()) { _ in
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
+        }
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).txt")
+        try Data("upload".utf8).write(to: fileURL)
+        addTeardownBlock { try? FileManager.default.removeItem(at: fileURL) }
+        let filePart = FilePart(parameterName: "media[]", url: fileURL, fileName: "upload.txt", mimeType: "text/plain")
+        let path = wordPressMediaNewEndpointPath
+
+        await assertRequestsStartedTogetherShareOneSession { api, taskCreated in
+            _ = await api.upload(
+                URLString: path,
+                fileParts: [filePart],
+                requestEnqueued: { taskCreated($0.intValue) }
+            )
+        }
+    }
+
+    /// Starts eight requests at once on each of 50 new instances, and checks that each instance ran
+    /// its requests on one session.
+    ///
+    /// - Parameter start: Sends one request on the instance, and passes on its task's identifier.
+    private func assertRequestsStartedTogetherShareOneSession(
+        _ start: @escaping (WordPressComRestApi, @escaping (Int) -> Void) async -> Void,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        let requestCount = 8
+
+        for _ in 0..<50 {
+            let api = WordPressComRestApi()
+            let lock = NSLock()
+            var taskIdentifiers: [Int] = []
+
+            await withTaskGroup(of: Void.self) { group in
+                for _ in 0..<requestCount {
+                    group.addTask {
+                        await start(api) { identifier in lock.withLock { taskIdentifiers.append(identifier) } }
+                    }
+                }
+            }
+            // `upload` reports its task on the main queue, so wait for what has been queued there.
+            await withCheckedContinuation { continuation in
+                DispatchQueue.main.async { continuation.resume() }
+            }
+
+            XCTAssertEqual(taskIdentifiers.count, requestCount, "Not every request started", file: file, line: line)
+            // A session numbers its tasks from one, so two tasks with the same identifier came from
+            // two sessions.
+            XCTAssertEqual(
+                Set(taskIdentifiers).count,
+                taskIdentifiers.count,
+                "The requests ran on more than one session",
+                file: file,
+                line: line
+            )
+        }
+    }
 }

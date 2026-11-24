@@ -357,7 +357,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
                     self?.gutenberg.updateCapabilities()
                 },
                 failure: { error in
-                    DDLogError("Error syncing JETPACK: \(String(describing: error))")
+                    Loggers.app.error("Error syncing JETPACK: \(String(describing: error))")
                 }
             )
 
@@ -944,15 +944,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:
-            DDLogDebug("\(message)")
+            Loggers.app.debug("\(message)")
         case .info:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         case .warn:
-            DDLogWarn("\(message)")
+            Loggers.app.warning("\(message)")
         case .error, .fatal:
-            DDLogError("\(message)")
+            Loggers.app.error("\(message)")
         @unknown default:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         }
     }
 
@@ -967,7 +967,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             let controller = try GutenbergWebNavigationController(with: post, block: block)
             showGutenbergWeb(controller)
         } catch {
-            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
+            Loggers.app.error("Error loading Gutenberg Web with unsupported block: \(error)")
             return showUnsupportedBlockUnexpectedErrorAlert()
         }
     }
@@ -1111,12 +1111,18 @@ extension GutenbergViewController {
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
         NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            suggestionsController.view.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 0
+            ),
+            suggestionsController.view.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: 0
+            ),
             // The keyboard layout guide sits at the bottom safe area edge while the
             // keyboard is hidden and tracks the keyboard's top while it's shown.
             suggestionsController.view.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
-            suggestionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         suggestionsController.didMove(toParent: self)
     }
@@ -1399,7 +1405,7 @@ extension GutenbergViewController {
                         self.gutenberg.updateEditorSettings(response.blockEditorSettings)
                     }
                 case .failure(let err):
-                    DDLogError("Error fetching settings: \(err)")
+                    Loggers.app.error("Error fetching settings: \(err)")
                 }
             })
     }

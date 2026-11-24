@@ -85,7 +85,7 @@ class JetpackScanCoordinator {
         service.getScanWithFixableThreatsStatus(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
-            DDLogError("Error fetching scan object: \(String(describing: error?.localizedDescription))")
+            Loggers.app.error("Error fetching scan object: \(String(describing: error?.localizedDescription))")
 
             self?.refreshDidFail(with: error)
         }
@@ -109,7 +109,7 @@ class JetpackScanCoordinator {
 
         service.startScan(for: blog) { [weak self] success in
             if success == false {
-                DDLogError("Error starting scan: Scan response returned false")
+                Loggers.app.error("Error starting scan: Scan response returned false")
 
                 WPAnalytics.track(.jetpackScanError, properties: ["action": "scan",
                                                                   "cause": "scan response returned false"])
@@ -118,7 +118,7 @@ class JetpackScanCoordinator {
                 self?.view.showScanStartError()
             }
         } failure: { [weak self] error in
-            DDLogError("Error starting scan: \(String(describing: error?.localizedDescription))")
+            Loggers.app.error("Error starting scan: \(String(describing: error?.localizedDescription))")
 
             WPAnalytics.track(.jetpackScanError, properties: ["action": "scan",
                                                               "cause": error?.localizedDescription ?? "remote"])
@@ -177,14 +177,14 @@ class JetpackScanCoordinator {
 
         service.fixThreats(threats, blog: blog) { [weak self] response in
             if response.success == false {
-                DDLogError("Error starting scan: Scan response returned false")
+                Loggers.app.error("Error starting scan: Scan response returned false")
                 self?.stopPolling()
                 self?.view.showScanStartError()
             } else {
                 self?.refreshData()
             }
         } failure: { [weak self] error in
-            DDLogError("Error fixing threats: \(String(describing: error.localizedDescription))")
+            Loggers.app.error("Error fixing threats: \(String(describing: error.localizedDescription))")
 
             self?.refreshDidFail(with: error)
         }
@@ -203,7 +203,7 @@ class JetpackScanCoordinator {
         service.ignoreThreat(threat, blog: blog, success: { [weak self] in
             self?.view.showIgnoreThreatSuccess(for: threat)
         }, failure: { [weak self] error in
-            DDLogError("Error ignoring threat: \(error.localizedDescription)")
+            Loggers.app.error("Error ignoring threat: \(error.localizedDescription)")
 
             WPAnalytics.track(.jetpackScanError, properties: ["action": "ignore",
                                                               "cause": error.localizedDescription])

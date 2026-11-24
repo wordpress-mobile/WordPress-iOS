@@ -12,11 +12,11 @@ private class TestableEditorSettingsService: EditorSettingsService {
     }
 
     override func api(for blog: Blog) -> WordPressComRestApi? {
-        return mockApi
+        mockApi
     }
 
     override var apiForDefaultAccount: WordPressComRestApi? {
-        return mockApi
+        mockApi
     }
 }
 
@@ -98,8 +98,13 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         let blogs = addBlogsToAccount(count: numberOfBlogs)
         let response = bulkResponse(with: .gutenberg, count: numberOfBlogs)
 
-        service.migrateGlobalSettingToRemote(isGutenbergEnabled: true)
-        remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        blogs.forEach { $0.mobileEditor = .aztec }
+        contextManager.saveContextAndWait(mainContext)
+
+        waitForEditorUpdate(to: .gutenberg, blogs: blogs) {
+            service.migrateGlobalSettingToRemote(isGutenbergEnabled: true)
+            remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        }
 
         blogs.forEach {
             XCTAssertTrue($0.isGutenbergEnabled)
@@ -118,22 +123,11 @@ class EditorSettingsServiceTest: CoreDataTestCase {
 
         contextManager.saveContextAndWait(mainContext)
 
-        let editorsUpdated = expectation(description: "Editors updated to Aztec")
-        let observer = NotificationCenter.default.addObserver(
-            forName: .NSManagedObjectContextObjectsDidChange,
-            object: mainContext,
-            queue: nil
-        ) { _ in
-            if blogs.allSatisfy({ $0.editor == .aztec && !$0.isGutenbergEnabled }) {
-                editorsUpdated.fulfill()
-            }
+        waitForEditorUpdate(to: .aztec, blogs: blogs) {
+            service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
+            remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         }
 
-        service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
-        remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
-
-        wait(for: [editorsUpdated], timeout: 2)
-        NotificationCenter.default.removeObserver(observer)
         blogs.forEach { blog in
             XCTAssertFalse(blog.isGutenbergEnabled)
             XCTAssertEqual(blog.editor, .aztec)
@@ -142,6 +136,26 @@ class EditorSettingsServiceTest: CoreDataTestCase {
 }
 
 extension EditorSettingsServiceTest {
+    private func waitForEditorUpdate(to editor: MobileEditor, blogs: [Blog], update: () -> Void) {
+        let editorsUpdated = expectation(description: "Editors updated to \(editor.rawValue.capitalized)")
+        var didFulfill = false
+        let observer = NotificationCenter.default.addObserver(
+            forName: .NSManagedObjectContextObjectsDidChange,
+            object: mainContext,
+            queue: nil
+        ) { _ in
+            guard !didFulfill, blogs.allSatisfy({ $0.editor == editor }) else {
+                return
+            }
+            didFulfill = true
+            editorsUpdated.fulfill()
+        }
+        defer { NotificationCenter.default.removeObserver(observer) }
+
+        update()
+        wait(for: [editorsUpdated], timeout: 2)
+    }
+
     func addBlogsToAccount(count: Int) -> [Blog] {
         let blogs = makeTestBlogs(count: count)
         account.addBlogs(Set(blogs))
@@ -149,7 +163,7 @@ extension EditorSettingsServiceTest {
     }
 
     func makeTestBlogs(count: Int) -> [Blog] {
-        return (1...count).map(makeTestBlog)
+        (1...count).map(makeTestBlog)
     }
 
     func makeTestBlog(withID id: Int = 1) -> Blog {
@@ -160,15 +174,16 @@ extension EditorSettingsServiceTest {
     }
 
     func bulkResponse(with editor: MobileEditor, count: Int) -> [String: String] {
-        return (1...count).reduce(into: [String: String]()) {
-            $0["\($1)"] = editor.rawValue
-        }
+        (1...count)
+            .reduce(into: [String: String]()) {
+                $0["\($1)"] = editor.rawValue
+            }
     }
 
     func responseWith(mobileEditor: String) -> AnyObject {
-        return [
+        [
             "editor_mobile": mobileEditor,
-            "editor_web": "classic",
+            "editor_web": "classic"
         ] as AnyObject
     }
 
@@ -176,9 +191,12 @@ extension EditorSettingsServiceTest {
         let expec = expectation(description: "success")
         expec.assertForOverFulfill = true
 
-        service.syncEditorSettings(for: blog, success: {
-            expec.fulfill()
-        }) { error in
+        service.syncEditorSettings(
+            for: blog,
+            success: {
+                expec.fulfill()
+            }
+        ) { error in
             XCTFail("This call should succeed. Error: \(error)")
             expec.fulfill()
         }

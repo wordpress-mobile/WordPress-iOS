@@ -53,6 +53,7 @@ struct WordPressDotComAuthenticator {
         case mismatchedEmail(expectedEmail: String)
         case alreadySignedIn(signedInAccountEmail: String)
         case loadingSites(Error)
+        case ageRestricted
     }
 
     private static let callbackNotification = Foundation.Notification.Name(
@@ -76,21 +77,33 @@ struct WordPressDotComAuthenticator {
     private let coreDataStack: CoreDataStack
     private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
+    private let waitForFeatureFlags: @MainActor () async -> Void
+    private let ageRequirementController: AgeRequirementAccessControlling?
 
     private let clientId: String
     private let clientSecret: String
+
+    @MainActor
+    private var ageRequirement: AgeRequirementAccessControlling {
+        ageRequirementController ?? AgeRequirementCoordinator.shared
+    }
 
     init(
         coreDataStack: CoreDataStack = ContextManager.shared,
         showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
+        ageRequirementController: AgeRequirementAccessControlling? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
         clientId: String = BuildSettings.current.secrets.oauth.client,
-        clientSecret: String = BuildSettings.current.secrets.oauth.secret
+        clientSecret: String = BuildSettings.current.secrets.oauth.secret,
+        waitForFeatureFlags: @escaping @MainActor () async -> Void = WordPressDotComAuthenticator
+            .waitForSignInFeatureFlags
     ) {
         self.coreDataStack = coreDataStack
         self.showProgressHUD = showProgressHUD
         self.authenticator = authenticator
+        self.waitForFeatureFlags = waitForFeatureFlags
+        self.ageRequirementController = ageRequirementController
         self.redirectURIScheme = redirectURIScheme
         self.clientId = clientId
         self.clientSecret = clientSecret
@@ -105,6 +118,9 @@ struct WordPressDotComAuthenticator {
         from viewController: UIViewController,
         context: SignInContext
     ) async -> TaggedManagedObjectID<WPAccount>? {
+        guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
+            return nil
+        }
         WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
         do {
             let account = try await attemptSignIn(from: viewController, context: context)
@@ -183,6 +199,11 @@ struct WordPressDotComAuthenticator {
             throw .alreadySignedIn(signedInAccountEmail: defaultAccountEmail)
         }
 
+        // Re-check right before persisting: the restriction can arrive while the sign-in flow is in progress.
+        guard !ageRequirement.refuseSignInIfRestricted(from: viewController) else {
+            throw .ageRestricted
+        }
+
         // Save the signed-in account details (and sites) into Core Data.
         let accountID: TaggedManagedObjectID<WPAccount>
         do {
@@ -196,9 +217,13 @@ struct WordPressDotComAuthenticator {
             let service = WordPressComSyncService(coreDataStack: coreDataStack)
             accountID = try await service.syncWPCom(remoteUser: user, authToken: token, isJetpackLogin: isJetpackLogin)
         } catch {
-            DDLogError("Failed to syncing WP.com account: \(error)")
+            Loggers.app.error("Failed to syncing WP.com account: \(error)")
             throw .loadingSites(error)
         }
+
+        // Saving the account starts a fetch of its feature flags, which can target an account.
+        // Wait for it, so the app UI built after sign-in doesn't use the signed-out values.
+        await waitForFeatureFlags()
 
         // Post a notification if the current signed-in account is set as the default account.
         // Several parts of the app (My Sites, widgets, shortcuts, sidebar) observe this
@@ -212,6 +237,16 @@ struct WordPressDotComAuthenticator {
         }
 
         return accountID
+    }
+
+    /// How long a sign-in waits for the new account's feature flags.
+    static let featureFlagsTimeout: TimeInterval = 2
+
+    /// Waits for the feature-flag fetch that saving the account started (`WordPressAppDelegate`),
+    /// rather than starting another.
+    @MainActor
+    static func waitForSignInFeatureFlags() async {
+        await WordPressAppDelegate.shared?.waitForSignInFeatureFlags(timeout: featureFlagsTimeout)
     }
 
     func present(_ error: SignInError, from viewController: UIViewController) {
@@ -330,7 +365,7 @@ struct WordPressDotComAuthenticator {
                 callbackURLViaWebAuthenticationSession.send(url)
                 callbackURLViaWebAuthenticationSession.send(completion: .finished)
             } else {
-                DDLogWarn("Error from authentication session: \(String(describing: error))")
+                Loggers.app.warning("Error from authentication session: \(String(describing: error))")
                 callbackURLViaWebAuthenticationSession.send(completion: .failure(.cancelled))
             }
         }
@@ -427,7 +462,7 @@ struct WordPressDotComAuthenticator {
         } catch let error as DecodingError {
             throw .parsing(error)
         } catch {
-            DDLogError("Failed to parse token request response: \(error)")
+            Loggers.app.error("Failed to parse token request response: \(error)")
             throw .unknown(error)
         }
     }
@@ -485,6 +520,8 @@ private extension WordPressDotComAuthenticator.SignInError {
             return Strings.alreadySignedIn(signedInAccountEmail)
         case .loadingSites:
             return Strings.loadingSitesError
+        case .ageRestricted:
+            return nil
         }
     }
 }

@@ -74,7 +74,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 
         // Define failure block
         let failureBlock = { [weak self] (error: Error?) in
-            DDLogError("Reader Comments: error toggling subscription status: \(String(describing: error))")
+            Loggers.app.error("Reader Comments: error toggling subscription status: \(String(describing: error))")
 
             DispatchQueue.main.async {
                 generator.notificationOccurred(.error)
@@ -142,7 +142,7 @@ private extension ReaderCommentsFollowPresenter {
                 self.handleNotificationsButtonTapped(canUndo: false)
             })
         }, failure: { [weak self] error in
-            DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
+            Loggers.app.error("Reader Comments: error toggling notification status: \(String(describing: error)))")
             let title = ReaderHelpers.noticeTitle(forAction: action, success: false)
             self?.presentingViewController?.displayNotice(title: title)
             completion?(false)

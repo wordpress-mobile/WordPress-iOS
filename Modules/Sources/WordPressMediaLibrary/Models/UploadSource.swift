@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// source-of-origin needed for analytics — `MediaLibraryViewModel` reads
 /// the case to fire `.mediaLibraryAdded(source:kind:)` *before* enqueueing,
 /// so the actor never has to derive analytics from picker shape.
-enum UploadSource: @unchecked Sendable {
+public enum UploadSource: @unchecked Sendable {
     /// `PHPickerResult.itemProvider` plus its `suggestedName` (typically
     /// "IMG_1234" or nil) and a UTType hint from the picker selection.
     case photoLibrary(itemProvider: NSItemProvider, suggestedName: String?, hint: UTType)
@@ -22,6 +22,11 @@ enum UploadSource: @unchecked Sendable {
     /// `startAccessingSecurityScopedResource()`.
     case file(URL)
 
+    /// A file in the app's sandbox whose type the caller already resolved,
+    /// e.g. one the block editor staged from a web view. The type wins over
+    /// the file's extension, which may be missing.
+    case localFile(URL, contentType: UTType)
+
     /// Remote-URL source for external pickers (Stock Photos). The
     /// materializer downloads bytes via `RemoteDownloader` before dispatching
     /// to the image / GIF / disallowed branches.
@@ -34,10 +39,10 @@ enum UploadSource: @unchecked Sendable {
 }
 
 extension UploadSource {
-    /// Internal carrier for `.remoteURL`. The public boundary type
+    /// Carrier for `.remoteURL`. The public boundary type
     /// `ExternalRemoteMedia` is converted to this in the view model before
-    /// enqueueing — keeps `UploadSource` module-internal.
-    struct RemoteURL: Sendable {
+    /// enqueueing. Its members stay internal, so only the module creates one.
+    public struct RemoteURL: Sendable {
         let url: URL
         let suggestedName: String
         let contentType: UTType
@@ -51,7 +56,7 @@ extension UploadSource {
     /// relative to the upload itself.
     var materializationProgressWeight: Double {
         switch self {
-        case .photoLibrary, .cameraImage, .cameraVideo, .file, .imagePlayground:
+        case .photoLibrary, .cameraImage, .cameraVideo, .file, .localFile, .imagePlayground:
             return 0.05
         case .remoteURL:
             // Remote sources download the full file during materialization, then
@@ -76,6 +81,8 @@ extension UploadSource {
             return .video
         case .file(let url):
             return url.resolvedContentType.map { MediaKind(estimating: $0) } ?? .document
+        case .localFile(_, let contentType):
+            return MediaKind(estimating: contentType)
         case .remoteURL(let remote):
             return MediaKind(estimating: remote.contentType)
         case .imagePlayground:

@@ -131,7 +131,7 @@ struct DebugMenuView: View {
             showSuccessNotice()
         }
         Button(Strings.sendTestCrash) {
-            DDLogInfo("Initiating user-requested crash")
+            Loggers.app.info("Initiating user-requested crash")
             WordPressAppDelegate.crashLogging?.crash()
         }
         if let eventLogging = WordPressAppDelegate.eventLogging {
@@ -160,7 +160,7 @@ struct DebugMenuView: View {
                 .foregroundStyle(.secondary)
             Button {
                 Task {
-                    await ImageDownloader.shared.clearURLSessionCache()
+                    await ImageDownloader.shared.clearDiskCache()
                     await ImageDownloader.shared.clearMemoryCache()
                     await refreshImageCacheSize()
                     showSuccessNotice()

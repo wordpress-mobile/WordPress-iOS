@@ -258,11 +258,11 @@ private actor ControllableStatsService: StatsServiceProtocol {
         throw TestError.unused
     }
 
-    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListResponse {
+    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
         throw TestError.unused
     }
 
-    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
+    func getFeaturedImageURLs(forPostIDs postIDs: [Int]) async throws -> [Int: URL] {
         throw TestError.unused
     }
 

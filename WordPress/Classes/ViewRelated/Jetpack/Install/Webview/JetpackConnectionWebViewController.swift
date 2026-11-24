@@ -242,7 +242,7 @@ private extension JetpackConnectionWebViewController {
             self?.delegate?.jetpackConnectionCompleted()
         }
         let failure: (Error) -> Void = { error in
-            DDLogError("\(error)")
+            Loggers.app.error("\(error)")
             success()
         }
         service.syncBlog(
@@ -292,7 +292,7 @@ private extension JetpackConnectionWebViewController {
         decisionHandler(.cancel)
 
         authenticator.request(url: redirect, cookieJar: webView.configuration.websiteDataStore.httpCookieStore, completion: { request in
-            DDLogDebug("Performing site login to \(String(describing: request.url))")
+            Loggers.app.debug("Performing site login to \(String(describing: request.url))")
             self.pendingSiteRedirect = redirect
             self.webView.load(request)
         })
@@ -311,7 +311,7 @@ private extension JetpackConnectionWebViewController {
         let authenticator = RequestAuthenticator(credentials: .dotCom(username: username, authToken: token, authenticationType: .regular))
 
         authenticator.request(url: redirect, cookieJar: webView.configuration.websiteDataStore.httpCookieStore, completion: { request in
-            DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")
+            Loggers.app.debug("Performing WordPress.com login to \(String(describing: request.url))")
             self.webView.load(request)
         })
     }
@@ -341,7 +341,7 @@ private extension JetpackConnectionWebViewController {
             guard enabled else {
                 return
             }
-            DDLogDebug("\(message)")
+            Loggers.app.debug("\(message)")
         }
     }
 }
@@ -354,7 +354,7 @@ private extension JetpackConnectionWebViewController {
 private extension JetpackConnectionWebViewController {
     func startNativeConnectionFlow() {
         guard let api = blog.selfHostedSiteRestApi else {
-            DDLogInfo("WordPressOrgRestAPI not loaded to perform native Jetpack connection")
+            Loggers.app.info("WordPressOrgRestAPI not loaded to perform native Jetpack connection")
             startConnectionFlow()
             return
         }
@@ -380,7 +380,7 @@ private extension JetpackConnectionWebViewController {
                 let request = URLRequest(url: url)
                 self.webView.load(request)
             case .failure(let error):
-                DDLogError("Failed fetching Jetpack connection URL: \(error.localizedDescription)")
+                Loggers.app.error("Failed fetching Jetpack connection URL: \(error.localizedDescription)")
                 self.delegate?.jetpackConnectionCanceled()
 
                 WPAnalytics.track(.jetpackPluginConnectUserAccountFailed)
@@ -398,16 +398,16 @@ private extension JetpackConnectionWebViewController {
                     switch result {
                     case .success(let user):
                         if user.isConnected {
-                            DDLogInfo("Jetpack user is connected after native connection flow is completed")
+                            Loggers.app.info("Jetpack user is connected after native connection flow is completed")
 
                             WPAnalytics.track(.jetpackPluginConnectUserAccountCompleted)
                         } else {
-                            DDLogError("Jetpack user is not connected after native connection flow is completed")
+                            Loggers.app.error("Jetpack user is not connected after native connection flow is completed")
 
                             WPAnalytics.track(.jetpackPluginConnectUserAccountFailed)
                         }
                     case .failure(let error):
-                        DDLogError("Failed fetching Jetpack user: \(error.localizedDescription)")
+                        Loggers.app.error("Failed fetching Jetpack user: \(error.localizedDescription)")
 
                         WPAnalytics.track(.jetpackPluginConnectUserAccountFailed)
                     }

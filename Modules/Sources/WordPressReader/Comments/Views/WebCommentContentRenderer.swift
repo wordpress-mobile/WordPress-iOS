@@ -21,9 +21,15 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         }()
     )
 
-    /// It can't be changed at the moment, but this capability was included from the
-    /// start, and this implementation continues supporting it.
-    public var displaySettings = ReaderDisplaySettings.standard
+    /// The reading theme and text size. A change takes effect on the next
+    /// `render(comment:)`.
+    public var displaySettings = ReaderDisplaySettings.standard {
+        didSet {
+            if displaySettings != oldValue {
+                cachedHead = nil
+            }
+        }
+    }
 
     /// - warning: This has to be configured _before_ you render.
     public var tintColor: UIColor {
@@ -201,9 +207,13 @@ private extension WebCommentContentRenderer {
     }
 
     static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
+}
 
+// MARK: - Head
+
+extension WebCommentContentRenderer {
     /// Returns HTML page <head> with the preconfigured styles and scripts.
-    private func makeHead() -> String {
+    func makeHead() -> String {
         if let cachedHead {
             return cachedHead
         }

@@ -347,8 +347,6 @@ extension TracksMappedEvent {
             name = "me_gravatar_cropped"
         case .gravatarTapped:
             name = "me_gravatar_tapped"
-        case .gravatarUploaded:
-            name = "me_gravatar_uploaded"
         case .gutenbergWarningConfirmDialogShown:
             name = "gutenberg_warning_confirm_dialog_shown"
         case .gutenbergWarningConfirmDialogYesTapped:

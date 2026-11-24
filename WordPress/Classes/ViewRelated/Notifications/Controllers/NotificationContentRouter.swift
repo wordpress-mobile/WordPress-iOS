@@ -117,7 +117,7 @@ struct NotificationContentRouter {
 
     private func trackStatsRoute() {
         var properties: [AnyHashable: Any] = [WPAppAnalyticsKeyTapSource: "notification"]
-        if FeatureFlag.newStats.enabled {
+        if RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
         WPAppAnalytics.track(.statsAccessed, withProperties: properties)

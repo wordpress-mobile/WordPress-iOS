@@ -102,13 +102,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                                 success:(void (^ _Nullable)(BOOL hasMore, NSNumber * _Nullable totalComments))success
                                 failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
-// Sync a list of comments sorted by hierarchy, restricted by the specified number of _top level_ comments.
-// This method is intended to get a small number of comments.
-// Therefore it is restricted to page 1 only.
-- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
-                       topLevelComments:(NSUInteger)number
-                                success:(void (^ _Nullable)(BOOL hasMore, NSNumber * _Nullable totalComments))success
-                                failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
+// Sync the first top-level comments of a post, with their replies, for the comments snippet.
+// Unlike the paged sync, it keeps cached comments outside the threads it fetched.
+- (void)syncCommentsSnippetForPost:(ReaderPost *)post
+                  topLevelComments:(NSUInteger)number
+                           success:(void (^ _Nullable)(NSNumber * _Nullable totalComments))success
+                           failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Get the specified number of top level comments for the specified post.
 // This method is intended to get a small number of comments.

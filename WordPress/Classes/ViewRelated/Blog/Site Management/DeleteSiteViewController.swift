@@ -234,7 +234,7 @@ open class DeleteSiteViewController: UITableViewController {
                                                                                                  failure: { _ in })
             }
         }, failure: { error in
-            DDLogError("Error deleting site: \(error.localizedDescription)")
+            Loggers.app.error("Error deleting site: \(error.localizedDescription)")
             WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, blog: trackedBlog)
 
             SVProgressHUD.dismiss()

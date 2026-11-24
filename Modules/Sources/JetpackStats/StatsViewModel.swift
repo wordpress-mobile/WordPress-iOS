@@ -8,6 +8,8 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
     @Published var dateRange: StatsDateRangeSelection {
         didSet {
+            // The cards restart their loads on every assignment, so only pass on a real change.
+            guard dateRange != oldValue else { return }
             updateViewModelsSelection()
             if dateRange.range != oldValue.range {
                 saveSelectedDateRangePreset()

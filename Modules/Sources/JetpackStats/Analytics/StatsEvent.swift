@@ -23,9 +23,6 @@ public enum StatsEvent {
     /// Traffic tab shown
     case trafficTabShown
 
-    /// Realtime tab shown
-    case realtimeTabShown
-
     /// Subscribers tab shown
     case subscribersTabShown
 

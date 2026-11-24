@@ -489,7 +489,7 @@ private extension DashboardPromptsCardCell {
     func fetchPrompt() {
         guard let bloggingPromptsService else {
             didFailLoadingPrompt = true
-            DDLogError("Failed creating BloggingPromptsService instance.")
+            Loggers.app.error("Failed creating BloggingPromptsService instance.")
             return
         }
 
@@ -501,7 +501,7 @@ private extension DashboardPromptsCardCell {
             failure: { [weak self] error in
                 self?.prompt = nil
                 self?.didFailLoadingPrompt = true
-                DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
+                Loggers.app.error("Failed fetching blogging prompt: \(String(describing: error))")
             }
         )
     }
@@ -533,7 +533,7 @@ private extension DashboardPromptsCardCell {
         guard let blog,
             let presenterViewController
         else {
-            DDLogError("Failed showing Blogging Prompts from Dashboard card. Missing blog or controller.")
+            Loggers.app.error("Failed showing Blogging Prompts from Dashboard card. Missing blog or controller.")
             return
         }
 

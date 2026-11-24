@@ -2,8 +2,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WPTextFieldTableViewCell;
-
 @interface WPStyleGuide : NSObject
 
 // Fonts

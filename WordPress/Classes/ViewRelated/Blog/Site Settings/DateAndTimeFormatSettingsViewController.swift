@@ -229,7 +229,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                                success: { SiteStatsInformation.sharedInstance.updateTimeZone() },
                                failure: { [weak self] (error: Error) -> Void in
                                     self?.refreshSettings()
-                                    DDLogError("Error while persisting settings: \(error)")
+                                    Loggers.app.error("Error while persisting settings: \(error)")
                                })
     }
 
@@ -238,10 +238,10 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
         service.syncSettings(for: blog,
                              success: { [weak self] in
                                 self?.reloadViewModel()
-                                DDLogInfo("Reloaded Settings")
+                                Loggers.app.info("Reloaded Settings")
                              },
                              failure: { (error: Error) in
-                                DDLogError("Error while sync'ing blog settings: \(error)")
+                                Loggers.app.error("Error while sync'ing blog settings: \(error)")
                              })
     }
 }

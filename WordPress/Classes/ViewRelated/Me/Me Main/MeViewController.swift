@@ -458,7 +458,7 @@ public class MeViewController: UITableViewController {
                 let _ = try await [refreshDetails, refreshSettings]
                 self.reloadViewModel()
             } catch {
-                DDLogError("\(error.localizedDescription)")
+                Loggers.app.error("\(error.localizedDescription)")
             }
         }
     }

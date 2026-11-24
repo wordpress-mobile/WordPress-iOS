@@ -29,7 +29,7 @@ struct DiagnosticCard<Content: View>: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(.thinMaterial)
+                .fill(Color(.secondarySystemGroupedBackground))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 14, style: .continuous)

@@ -52,7 +52,7 @@ class JetpackRestoreWarningCoordinator {
 
             self?.view.showRestoreStarted()
         }, failure: { [weak self] error in
-            DDLogError("Error restoring site: \(error.localizedDescription)")
+            Loggers.app.error("Error restoring site: \(error.localizedDescription)")
 
             self?.view.showRestoreRequestFailed()
         })

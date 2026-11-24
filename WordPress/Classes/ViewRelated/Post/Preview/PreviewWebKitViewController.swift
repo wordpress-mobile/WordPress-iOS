@@ -224,8 +224,8 @@ class PreviewWebKitViewController: WebKitViewController {
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         view.addConstraints([
-            deviceLabel.rightAnchor.constraint(equalTo: view.safeRightAnchor, constant: Constants.deviceLabelPadding),
-            deviceLabel.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Constants.deviceLabelPadding)
+            deviceLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: Constants.deviceLabelPadding),
+            deviceLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.deviceLabelPadding)
         ])
         showLabel(device: selectedDevice)
     }

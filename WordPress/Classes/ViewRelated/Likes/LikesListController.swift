@@ -374,7 +374,7 @@ private extension LikesListController {
     func headerCell() -> NoteBlockHeaderTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockHeaderTableViewCell.reuseIdentifier()) as? NoteBlockHeaderTableViewCell,
               let group = notification?.headerAndBodyContentGroups[Constants.headerRowIndex] else {
-            DDLogError("Error: couldn't get a header cell or FormattableContentGroup.")
+            Loggers.app.error("Error: couldn't get a header cell or FormattableContentGroup.")
             return NoteBlockHeaderTableViewCell()
         }
 
@@ -409,7 +409,7 @@ private extension LikesListController {
     func userCell(for indexPath: IndexPath) -> UITableViewCell {
         guard let user = likingUsers[safe: indexPath.row],
               let cell = tableView.dequeueReusableCell(withIdentifier: LikeUserTableViewCell.defaultReuseID) as? LikeUserTableViewCell else {
-            DDLogError("Failed dequeueing LikeUserTableViewCell")
+            Loggers.app.error("Failed dequeueing LikeUserTableViewCell")
             return UITableViewCell()
         }
 

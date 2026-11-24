@@ -137,8 +137,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             parentViewController.show(statsVC, sender: nil)
         case .more:
             let viewController = BlogDetailsViewController(blog: blog)
-            viewController.isScrollEnabled = true
-            viewController.tableView?.isScrollEnabled = true
             viewController.presentationDelegate = self
             self.blogDetailsViewController = viewController
             self.parentViewController?.show(viewController, sender: nil)
@@ -150,7 +148,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             WPAppAnalyticsKeyTabSource: "dashboard",
             WPAppAnalyticsKeyTapSource: "quick_actions"
         ]
-        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+        if event == .statsAccessed, RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
         WPAppAnalytics.track(event, properties: properties, blog: blog)
