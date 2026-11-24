@@ -22,7 +22,7 @@ export TEST_COLLECTOR="test-collector#v$TEST_COLLECTOR_PLUGIN_VERSION"
 export CLAUDE_PLUGIN="iangmaia/claude-summarize#ce99c67dd57cdf236c3daca82b86a335fd5e9cc2"
 
 # false (or an empty result after an error) runs the job. The pipeline uses these as skip values.
-SKIP_BUILD=$(.buildkite/commands/should-skip-job.sh --job-type build || true)
-SKIP_VALIDATION=$(.buildkite/commands/should-skip-job.sh --job-type validation || true)
-SKIP_LOCALIZATION=$(.buildkite/commands/should-skip-job.sh --job-type localization || true)
+SKIP_BUILD=$(.buildkite/commands/should-skip-job.sh build || true)
+SKIP_VALIDATION=$(.buildkite/commands/should-skip-job.sh validation || true)
+SKIP_LOCALIZATION=$(.buildkite/commands/should-skip-job.sh localization || true)
 export SKIP_BUILD SKIP_VALIDATION SKIP_LOCALIZATION

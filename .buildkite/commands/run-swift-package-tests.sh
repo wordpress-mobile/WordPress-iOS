@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
 SWIFT_TEST_EXIT_STATUS=0
-if ! skip_reason=$("$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type swift-packages) ||
+if ! skip_reason=$("$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" swift-packages) ||
    [[ -z "$skip_reason" || "$skip_reason" == false ]]; then
   echo "--- :swift: Restoring Swift Packages cache"
   restore_swiftpm_cache --package-resolved Package.resolved --artifacts .build
