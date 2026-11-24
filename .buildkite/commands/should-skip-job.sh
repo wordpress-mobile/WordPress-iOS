@@ -32,11 +32,6 @@ case "$job" in
     ;;
 esac
 
-# Include both paths of renames on toolkit versions before #243.
-config_index=${GIT_CONFIG_COUNT:-0}
-export GIT_CONFIG_COUNT=$((config_index + 1))
-export "GIT_CONFIG_KEY_${config_index}=diff.renames" "GIT_CONFIG_VALUE_${config_index}=false"
-
 if [[ "$job" == localization ]]; then
   # A failed or empty diff must not look like "no localization changes".
   pr_changed_files || run_job
