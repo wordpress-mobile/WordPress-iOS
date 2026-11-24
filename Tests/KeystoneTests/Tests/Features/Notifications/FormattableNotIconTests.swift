@@ -46,7 +46,7 @@ final class FormattableNotIconTests: XCTestCase {
         let baseText = "Hello World"
         let string = NSMutableAttributedString(string: baseText)
 
-        let styles = SnippetsContentStyles(rangeStylesMap: [
+        let styles = SnippetsContentStyles(horizontalSizeClass: .compact, rangeStylesMap: [
             .noticon: [.foregroundColor: UIColor.red]
         ])
 

@@ -92,7 +92,7 @@ public final class SocialOAuthWebViewController: UIViewController, WKNavigationD
                 for: self.startURL,
                 into: cookieStore
             )
-            await MainActor.run { [weak web] in web?.load(request) }
+            await MainActor.run { [weak web] in _ = web?.load(request) }
         }
     }
 

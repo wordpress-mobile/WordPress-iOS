@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 extension MySiteViewController {
     /// Make a create button coordinator with
@@ -68,15 +69,11 @@ extension MySiteViewController {
         let view = VoiceToContentView(viewModel: viewModel)
         let host = UIHostingController(rootView: view)
 
-        if UIDevice.isPad() {
-            host.modalPresentationStyle = .formSheet
-            host.preferredContentSize = CGSize(width: 380, height: 480)
-        } else {
-            if let sheetController = host.sheetPresentationController {
-                sheetController.detents = [.medium()]
-                sheetController.preferredCornerRadius = 16
-            }
-        }
-        present(host, animated: true)
+        presentAdaptiveSheet(
+            host,
+            formSheetSize: CGSize(width: 380, height: 480),
+            compactDetents: [.medium()],
+            compactCornerRadius: 16
+        )
     }
 }

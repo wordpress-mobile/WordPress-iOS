@@ -83,7 +83,7 @@ class JetpackBackupStatusCoordinator {
 
             self.view.render(backup)
         }, failure: { [weak self] error in
-            DDLogError("Error fetching backup object: \(error.localizedDescription)")
+            Loggers.app.error("Error fetching backup object: \(error.localizedDescription)")
 
             guard let self else {
                 return

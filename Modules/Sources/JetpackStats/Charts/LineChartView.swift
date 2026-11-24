@@ -10,6 +10,7 @@ struct LineChartView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.context) var context
     @Environment(\.showComparison) private var showComparison
+    @Environment(\.isPlaceholder) private var isPlaceholder
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -36,8 +37,8 @@ struct LineChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .chartXSelection(value: $selectedDate)
-        .animation(.spring, value: ObjectIdentifier(data))
+        .chartXSelection(value: isPlaceholder ? .constant(nil) : $selectedDate)
+        .animation(isPlaceholder ? nil : .spring, value: ObjectIdentifier(data))
         .onChange(of: selectedDate) {
             selectedDataPoints = SelectedDataPoints.compute(for: $1, data: data)
         }
@@ -53,7 +54,7 @@ struct LineChartView: View {
     @ChartContentBuilder
     private var currentPeriodMarks: some ChartContent {
         // Solid line and area for complete data points
-        ForEach(completeDataPoints) { point in
+        ForEach(completeDataPoints, id: \.date) { point in
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
@@ -86,7 +87,7 @@ struct LineChartView: View {
         }
 
         // Dashed line segment connecting the last complete point to today's incomplete point
-        ForEach(incompleteSegmentPoints) { point in
+        ForEach(incompleteSegmentPoints, id: \.date) { point in
             LineMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
@@ -125,7 +126,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var previousPeriodMarks: some ChartContent {
-        ForEach(data.mappedPreviousData) { point in
+        ForEach(data.mappedPreviousData, id: \.date) { point in
             // Important: AreaMark is needed for smooth animation
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),

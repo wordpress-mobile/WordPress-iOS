@@ -21,7 +21,14 @@ struct TrafficTabView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(spacing: Constants.step3) {
+                // The stack has to be eager. A `LazyVStack` only measures the cards it has
+                // built and extrapolates the rest, and these cards differ in height by
+                // hundreds of points, so the scroll view's content height kept changing
+                // mid-scroll and moved the bottom of the list — and the "Add Card" button
+                // with it — out from under the user's finger. `CountriesMapView` defers its
+                // own web view instead, which is where the cost of building every card up
+                // front actually came from.
+                VStack(spacing: Constants.step3) {
                     cards
                     buttonAddChart
                     timeZoneInfo

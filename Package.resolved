@@ -1,15 +1,6 @@
 {
-  "originHash" : "1bbbb11e671a32eda51b479a3e29fd18839bb400ff80395fba2ed7a8553e9baa",
+  "originHash" : "282782587a189a0c176fae64461a4f16fe6ae74f6c301b39b7f8c29472ed660c",
   "pins" : [
-    {
-      "identity" : "alamofire",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Alamofire/Alamofire",
-      "state" : {
-        "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
-        "version" : "5.12.0"
-      }
-    },
     {
       "identity" : "automattic-tracks-ios",
       "kind" : "remoteSourceControl",
@@ -131,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "b6604e26792725b2e8125b3b715e1d4a298441b6",
-        "version" : "0.19.0"
+        "revision" : "ba24def9eff370a08349766cc12296107826b3dd",
+        "version" : "0.20.0"
       }
     },
     {
@@ -334,10 +325,10 @@
     {
       "identity" : "wordpress-rs",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/wordpress-rs",
+      "location" : "https://github.com/automattic/wordpress-rs",
       "state" : {
-        "revision" : "a9cf67e4895c0bcfad75c6f1e07206c22bfaf1bb",
-        "version" : "0.8.0"
+        "revision" : "9bce9f96372db4b6b0c8e7b2ef4713026cfe2fb5",
+        "version" : "0.11.1"
       }
     },
     {

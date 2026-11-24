@@ -131,7 +131,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
 
-        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post, traitCollection: traitCollection)
 
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.editingAlreadyPublishedImage = true
@@ -252,7 +252,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
-        GutenbergImageLoader(post: post)
+        let loader = GutenbergImageLoader(post: post, traitCollection: traitCollection)
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: GutenbergViewController, _) in
+            self.gutenbergImageLoader.traitCollection = self.traitCollection
+        }
+        return loader
     }()
 
     private lazy var gutenberg: Gutenberg = {
@@ -328,7 +332,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     }
 
     deinit {
-        tearDownKeyboardObservers()
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
@@ -337,7 +340,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: false)
         setupGutenbergView()
@@ -355,7 +357,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
                     self?.gutenberg.updateCapabilities()
                 },
                 failure: { error in
-                    DDLogError("Error syncing JETPACK: \(String(describing: error))")
+                    Loggers.app.error("Error syncing JETPACK: \(String(describing: error))")
                 }
             )
 
@@ -383,11 +385,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         ghostView.frame = view.frame
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        ghostView.frame = view.frame
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
@@ -412,50 +409,14 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     // MARK: - Functions
 
-    private var keyboardShowObserver: Any?
-    private var keyboardHideObserver: Any?
-    private var keyboardFrame = CGRect.zero
-    private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var previousFirstResponder: UIView?
-
-    private func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(
-            forName: UIResponder.keyboardDidShowNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                self.keyboardFrame = keyboardRect
-                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
-            }
-        }
-        keyboardHideObserver = NotificationCenter.default.addObserver(
-            forName: UIResponder.keyboardDidHideNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                self.keyboardFrame = keyboardRect
-                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
-            }
-        }
-    }
-
-    private func tearDownKeyboardObservers() {
-        if let keyboardShowObserver {
-            NotificationCenter.default.removeObserver(keyboardShowObserver)
-        }
-        if let keyboardHideObserver {
-            NotificationCenter.default.removeObserver(keyboardHideObserver)
-        }
-    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 
         // Add bottom border line
-        let screenScale = UIScreen.main.scale
+        let screenScale = traitCollection.displayScale
         let borderWidth: CGFloat = 1.0 / screenScale
         let borderColor = UIColor(red: 60 / 255, green: 60 / 255, blue: 67 / 255, alpha: 0.36).cgColor
 
@@ -469,6 +430,16 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         )
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: GutenbergViewController, _) in
+            // Keep the border one pixel thick, anchored to the bottom edge
+            let borderWidth: CGFloat = 1.0 / self.traitCollection.displayScale
+            borderBottom.frame = CGRect(
+                x: borderBottom.frame.minX,
+                y: borderBottom.frame.maxY - borderWidth,
+                width: borderBottom.frame.width,
+                height: borderWidth
+            )
+        }
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
@@ -973,15 +944,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:
-            DDLogDebug("\(message)")
+            Loggers.app.debug("\(message)")
         case .info:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         case .warn:
-            DDLogWarn("\(message)")
+            Loggers.app.warning("\(message)")
         case .error, .fatal:
-            DDLogError("\(message)")
+            Loggers.app.error("\(message)")
         @unknown default:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         }
     }
 
@@ -996,7 +967,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             let controller = try GutenbergWebNavigationController(with: post, block: block)
             showGutenbergWeb(controller)
         } catch {
-            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
+            Loggers.app.error("Error loading Gutenberg Web with unsupported block: \(error)")
             return showUnsupportedBlockUnexpectedErrorAlert()
         }
     }
@@ -1014,22 +985,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             message: NSLocalizedString("There has been an unexpected error.", comment: "Generic error alert message"),
             withSupportButton: false
         )
-    }
-
-    func updateConstraintsToAvoidKeyboard(frame: CGRect) {
-        keyboardFrame = frame
-        let minimumKeyboardHeight = CGFloat(50)
-        guard let suggestionViewBottomConstraint else {
-            return
-        }
-
-        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
-        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
-        if keyboardFrame.height < minimumKeyboardHeight {
-            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
-        } else {
-            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
-        }
     }
 
     func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
@@ -1155,18 +1110,20 @@ extension GutenbergViewController {
         }
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
-        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
-            constant: 0
-        )
         NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
-            suggestionsBottomConstraint,
-            suggestionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+            suggestionsController.view.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 0
+            ),
+            suggestionsController.view.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: 0
+            ),
+            // The keyboard layout guide sits at the bottom safe area edge while the
+            // keyboard is hidden and tracks the keyboard's top while it's shown.
+            suggestionsController.view.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
-        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
-        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
         suggestionsController.didMove(toParent: self)
     }
 }
@@ -1448,7 +1405,7 @@ extension GutenbergViewController {
                         self.gutenberg.updateEditorSettings(response.blockEditorSettings)
                     }
                 case .failure(let err):
-                    DDLogError("Error fetching settings: \(err)")
+                    Loggers.app.error("Error fetching settings: \(err)")
                 }
             })
     }

@@ -102,11 +102,21 @@ class PreviewWebKitViewController: WebKitViewController {
             showNoResults(withTitle: Constants.noPreviewTitle)
         }
         setupDeviceLabel()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, _) in
+            self.updatePresentedPopoverIfNeeded()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setWidth(selectedDevice.width, viewWidth: size.width)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // A sheet resized along with its window gets no size transition, so fit the width to the new size here.
+        setWidth(selectedDevice.width, viewWidth: view.bounds.width)
     }
 
     // MARK: Toolbar Items
@@ -214,8 +224,8 @@ class PreviewWebKitViewController: WebKitViewController {
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         view.addConstraints([
-            deviceLabel.rightAnchor.constraint(equalTo: view.safeRightAnchor, constant: Constants.deviceLabelPadding),
-            deviceLabel.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Constants.deviceLabelPadding)
+            deviceLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: Constants.deviceLabelPadding),
+            deviceLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.deviceLabelPadding)
         ])
         showLabel(device: selectedDevice)
     }
@@ -256,11 +266,9 @@ extension PreviewWebKitViewController {
         return .none
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func updatePresentedPopoverIfNeeded() {
         guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
-                return
+            return
         }
 
         prepareForPopoverPresentation(popoverPresentationController)

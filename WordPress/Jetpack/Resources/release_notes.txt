@@ -1,8 +1,20 @@
-Some custom post types are now available. You can manage them under My Site if your site is built with WP.com, or on the home screen if your site is self-hosted. We know, we’re amazing. (But very humble about it.)
+Save a post in the Reader on your iPhone, then open it on your iPad. Your WordPress.com account now syncs up to 1,000 saved posts across devices, including posts you’ve already saved.
 
-While we were making your day better, we also squashed several bugs and made some small, yet ever-so-important fixes.
+We made a few more changes in the Reader.
 
-- Canceling the media picker in the experimental block editor will no longer remove images from galleries. Phew.
-- We fixed the forever-loading indicator on the Stats screen for self-hosted sites that aren’t connected to Jetpack.
-- Subscriber email stats are now sorted by post date so your most recent posts will appear at the top of the list.
-- Backup logs will stay in their lane and won’t show up in Personal plan sites by mistake.
+- Curious who got a mention in a post? Tap their name to see their profile.
+- When you leave a comment, the list keeps your new comment in view. Switch reading themes and the comment text and shading behind “Show More” now match.
+- When you tap “View full post” or “View in Browser” on a post from a private site, Jetpack opens it inside the app using your WordPress.com account.
+
+On iPhone Plus and Pro Max models, post previews now use the full screen in landscape. On iPad, you can narrow the window while editing a post or setting up a site and pick up right where you left off. Even the list of site designs keeps your place.
+
+If you use the experimental block editor, photo uploads now follow your Media settings for size, quality, and location data. The editor also works in Lockdown Mode and asks before you save a post while media is still uploading.
+
+You’ll also find a few fixes outside the Reader and editor.
+
+- In Stats, the Traffic tab stays put when you scroll down to “Add Card.” The back button is back on iPhone Duo and on Plus and Pro Max iPhones in landscape.
+- On self-hosted sites, new posts follow your site’s discussion settings. If your server blocks sign-in with an application password, the app now tells you what went wrong.
+- Plugin descriptions are readable in dark mode, and you can watch their videos in the app or tap “Watch on YouTube.”
+- We fixed a crash that could happen when sharing a photo to Jetpack.
+
+You’ll need iOS 18 or later for this update. Devices running iOS 17 will no longer receive app updates.

@@ -34,3 +34,7 @@ public extension MenusViewController {
         return fetchAllPagesTask.cancel
     }
 }
+
+/// `MenusService` holds a single read-only managed object context and no other
+/// state, so passing it into the context's `perform` block is safe.
+extension MenusService: @unchecked Sendable {}

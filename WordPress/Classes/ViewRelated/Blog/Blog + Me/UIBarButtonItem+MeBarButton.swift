@@ -1,19 +1,16 @@
+import Combine
 import Gridicons
 import UIKit
 
 extension UIBarButtonItem {
     typealias TapAction = () -> Void
 
-    /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
-     convenience init(
-        email: String?,
-        style: UIBarButtonItem.Style = .plain,
-        action: TapAction? = nil) {
-
+    /// Assign the gravatar CircularImageView, showing the account avatar, to the customView property and attach the passed action.
+    convenience init(accountAvatarAction action: @escaping TapAction) {
         self.init()
         makeMeButtonAccessible()
-        customView = makeGravatarTappableView(with: email, action: action)
-     }
+        customView = makeGravatarTappableView(action: action)
+    }
 }
 
 /// Methods to set the gravatar image on the me button
@@ -28,9 +25,9 @@ fileprivate extension UIBarButtonItem {
         static let fallBackImage = UIImage.gridicon(.userCircle)
     }
 
-    /// Create the gravatar CircluarImageView with a fade animation on tap if an action is provided.
-    /// If no valid email is provided, fall back to the circled user icon
-    func makeGravatarTappableView(with email: String?, action: TapAction? = nil) -> UIView {
+    /// Create the gravatar CircluarImageView with a fade animation on tap.
+    /// Without an account avatar, fall back to the circled user icon
+    func makeGravatarTappableView(action: @escaping TapAction) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
         gravatarImageView.adjustView = { [weak self] view in
@@ -46,19 +43,14 @@ fileprivate extension UIBarButtonItem {
             }
         }
 
-        gravatarImageView.isUserInteractionEnabled = action != nil
+        gravatarImageView.isUserInteractionEnabled = true
         gravatarImageView.contentMode = .scaleAspectFill
 
-        if let email {
-            gravatarImageView.downloadGravatar(for: email, placeholderImage: GravatarConfiguration.fallBackImage)
-        } else {
-            gravatarImageView.image = GravatarConfiguration.fallBackImage
+        gravatarImageView.avatarSubscription = AccountAvatar.shared.$image.sink { [weak gravatarImageView] avatar in
+            gravatarImageView?.image = avatar ?? GravatarConfiguration.fallBackImage
         }
 
-        if let action {
-            let tapRecognizer = BindableTapGestureRecognizer(action: { _ in action() })
-            gravatarImageView.addGestureRecognizer(tapRecognizer)
-        }
+        gravatarImageView.addGestureRecognizer(BindableTapGestureRecognizer(action: { _ in action() }))
 
         return embedInView(gravatarImageView)
     }

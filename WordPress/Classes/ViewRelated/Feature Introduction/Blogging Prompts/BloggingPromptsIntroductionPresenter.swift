@@ -99,15 +99,19 @@ private extension BloggingPromptsIntroductionPresenter {
                 .dismiss(
                     animated: true,
                     completion: { [weak self] in
-                        PostEditorRouter.showNewPost(
-                            for: blog,
-                            from: presentingViewController,
-                            context: NewPostEditorContext(
-                                prompt: prompt,
-                                entryPoint: .bloggingPromptsFeatureIntroduction
+                        // UIKit runs the dismissal completion on the main thread but
+                        // doesn't declare it, so state the isolation explicitly.
+                        MainActor.assumeIsolated {
+                            PostEditorRouter.showNewPost(
+                                for: blog,
+                                from: presentingViewController,
+                                context: NewPostEditorContext(
+                                    prompt: prompt,
+                                    entryPoint: .bloggingPromptsFeatureIntroduction
+                                )
                             )
-                        )
-                        self?.trackPostEditorShown(blog)
+                            self?.trackPostEditorShown(blog)
+                        }
                     }
                 )
         })
@@ -154,7 +158,7 @@ private extension BloggingPromptsIntroductionPresenter {
         // TODO: check for cached prompt first.
 
         guard let bloggingPromptsService else {
-            DDLogError("Feature Introduction: failed creating BloggingPromptsService instance.")
+            Loggers.app.error("Feature Introduction: failed creating BloggingPromptsService instance.")
             return
         }
 
@@ -164,7 +168,7 @@ private extension BloggingPromptsIntroductionPresenter {
             },
             failure: { error in
                 completion(nil)
-                DDLogError("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
+                Loggers.app.error("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
             }
         )
     }

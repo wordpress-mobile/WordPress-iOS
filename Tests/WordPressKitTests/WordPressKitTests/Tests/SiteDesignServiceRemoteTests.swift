@@ -13,7 +13,7 @@ class SiteDesignServiceRemoteTests: RemoteTestCase, RESTTestable {
     let endpoint = "/wpcom/v2/common-starter-site-designs"
 
     var restAPI: WordPressComRestApi!
-    let request = SiteDesignRequest(withThumbnailSize: CGSize(width: 400, height: 800))
+    let request = SiteDesignRequest(withThumbnailSize: CGSize(width: 400, height: 800), scale: 2)
 
     // MARK: - Overridden Methods
     override func setUp() {

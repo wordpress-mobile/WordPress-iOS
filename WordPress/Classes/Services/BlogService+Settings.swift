@@ -184,14 +184,12 @@ extension BlogService {
         _ remoteSettings: RemoteBlogSettings,
         for blogID: TaggedManagedObjectID<Blog>
     ) async {
-        // The throwing `performAndSave` lives on `CoreDataStackSwift`, but `coreDataStack` here
-        // is the base `CoreDataStack`. Rather than downcast to propagate the error (and handle a
-        // cast failure that can't realistically happen), we ignore the unlikely blog-resolution failure.
-        await coreDataStack.performAndSave { context in
-            if let blog = try? context.existingObject(with: blogID), let settings = blog.settings {
-                self.update(settings, withRemoteSettings: remoteSettings)
+        try? await coreDataStack
+            .performAndSave { context in
+                if let blog = try? context.existingObject(with: blogID), let settings = blog.settings {
+                    self.update(settings, withRemoteSettings: remoteSettings)
+                }
             }
-        }
     }
 }
 
@@ -296,12 +294,10 @@ extension BlogService {
             throw BlogSettingsServiceError.noAvailableTransport
         }
 
-        // Persist the acknowledged changes on a background context. The cast is
-        // safe: ContextManager is the app's only CoreDataStack and conforms to
-        // CoreDataStackSwift (see EditorSettingsService for the same pattern).
+        // Persist the acknowledged changes on a background context.
         // Failure is best-effort: the server write already succeeded, so a local
         // save failure must not turn this save into a failure callback.
-        try? await (coreDataStack as! CoreDataStackSwift)
+        try? await coreDataStack
             .performAndSave { context in
                 if let blog = try? context.existingObject(with: blogID), let settings = blog.settings {
                     changes.apply(to: settings)

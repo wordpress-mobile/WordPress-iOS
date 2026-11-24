@@ -162,7 +162,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
  */
 - (void)fetchTopicServiceWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
-    DDLogInfo(@"Fetch and store followed topic");
+    WPLogInfo(@"Fetch and store followed topic");
     ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
     [service siteTopicForSiteWithID:@(siteID)
                              isFeed:false
@@ -205,7 +205,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
         }
     } failure:^(NSError * __unused error) {
-        DDLogInfo(@"Could not find site at URL: %@", siteURL);
+        WPLogInfo(@"Could not find site at URL: %@", siteURL);
         [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
     }];
 }
@@ -224,7 +224,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
     NSArray *results = [context executeFetchRequest:request error:&error];
     if (error) {
-        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        WPLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
         return;
     }
 

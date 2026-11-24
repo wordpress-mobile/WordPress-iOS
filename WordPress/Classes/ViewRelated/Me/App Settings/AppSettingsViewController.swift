@@ -421,7 +421,7 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
     typealias CellType = MediaSizeSliderCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(MediaSizeSliderCell.defaultNib, CellType.self)
+        return ImmuTableCell.class(CellType.self)
     }()
 
     let title: String
@@ -568,7 +568,12 @@ private extension AppSettingsViewController {
             action: pushSavedPostsSettings()
         )
 
-        var rows: [ImmuTableRow] = [experimentalFeaturesRow, savedPostsRow, settingsRow]
+        var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
+
+        // Saved posts are kept in the WordPress.com account, so importing and exporting them needs one.
+        if ReaderHelpers.isLoggedIn() {
+            rows.insert(savedPostsRow, at: 1)
+        }
 
         if UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
@@ -611,7 +616,7 @@ extension AppSettingsViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.appSettings)
+        let textProvider = JetpackBrandingTextProvider()
         let jetpackButton = JetpackButton.makeBadgeView(title: textProvider.brandingText(),
                                                         target: self,
                                                         selector: #selector(jetpackButtonTapped))

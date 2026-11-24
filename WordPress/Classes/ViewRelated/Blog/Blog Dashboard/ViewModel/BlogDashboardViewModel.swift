@@ -216,9 +216,9 @@ private extension BlogDashboardViewModel {
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
-        let isShowingQuickActions: Bool = {
-            viewController?.traitCollection.horizontalSizeClass == .compact
-        }()
+        // In an expanded split view the site menu is shown next to the dashboard.
+        // Everywhere else these quick actions are the only way to reach it.
+        let isShowingQuickActions = viewController?.splitViewController?.isCollapsed ?? true
 
         let items = cards.map { DashboardItem.cards($0) }
         let dotComID = blog.dotComID?.intValue ?? 0

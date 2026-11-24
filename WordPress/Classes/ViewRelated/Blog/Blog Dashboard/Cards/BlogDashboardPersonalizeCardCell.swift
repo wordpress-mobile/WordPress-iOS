@@ -36,7 +36,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         contents.isUserInteractionEnabled = false
 
         personalizeButton.accessibilityLabel = Strings.buttonTitle
-        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill), for: .normal)
+        refreshButtonBackgroundImage()
         personalizeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
         let container = UIView()
@@ -50,12 +50,23 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         container.pinEdges(.horizontal, relation: .lessThanOrEqual)
         container.pinEdges(.vertical)
         container.pinCenter()
+
+        registerForTraitChanges(
+            UITraitCollection.systemTraitsAffectingColorAppearance + [UITraitDisplayScale.self]
+        ) { (self: Self, _: UITraitCollection) in
+            self.refreshButtonBackgroundImage()
+        }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill, cornerRadius: DesignConstants.radius(.large)), for: .normal)
+    private func refreshButtonBackgroundImage() {
+        personalizeButton.setBackgroundImage(
+            .renderBackgroundImage(
+                fill: .tertiarySystemFill,
+                cornerRadius: DesignConstants.radius(.large),
+                traitCollection: traitCollection
+            ),
+            for: .normal
+        )
     }
 
     // MARK: - BlogDashboardCardConfigurable
@@ -69,7 +80,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
 
     @objc private func buttonTapped() {
         guard let blog, let siteID = blog.dotComID?.intValue else {
-            return DDLogError("Failed to show dashboard personalization screen: siteID is missing")
+            return Loggers.app.error("Failed to show dashboard personalization screen: siteID is missing")
         }
         WPAnalytics.track(.dashboardCardItemTapped, properties: ["type": DashboardCard.personalize.rawValue], blog: blog)
         let viewController = UIHostingController(rootView: NavigationView {

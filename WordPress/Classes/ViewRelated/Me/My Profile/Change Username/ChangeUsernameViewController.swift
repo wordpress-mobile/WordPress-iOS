@@ -228,6 +228,11 @@ private extension ChangeUsernameViewController {
         }
         viewModel.reachabilityListener = reloadSaveButton
         viewModel.selectedUsernameListener = reloadSaveButton
+        // TODO: Replace the keyboard listener with `view.keyboardLayoutGuide`: constrain
+        // the table view's bottom to `keyboardLayoutGuide.topAnchor` instead of converting
+        // the keyboard frame into a content inset in `adjustForKeyboard`. Not done here
+        // because the observer lives in the view model and this is a `UITableViewController`,
+        // whose table view is the root view and has no bottom constraint to re-anchor.
         viewModel.keyboardListener = { [weak self] notification in
             self?.adjustForKeyboard(notification: notification)
         }
@@ -362,7 +367,7 @@ private extension ChangeUsernameViewController {
         alertController.addCancelActionWithTitle(
             Constants.Alert.cancel,
             handler: { _ in
-                DDLogInfo("User cancelled alert")
+                Loggers.app.info("User cancelled alert")
             }
         )
         let action = alertController.addDefaultActionWithTitle(
@@ -372,10 +377,10 @@ private extension ChangeUsernameViewController {
                 guard let textField = alertController.textFields?.first,
                     textField.text == self.viewModel.selectedUsername
                 else {
-                    DDLogInfo("Username confirmation failed")
+                    Loggers.app.info("Username confirmation failed")
                     return
                 }
-                DDLogInfo("User changes username")
+                Loggers.app.info("User changes username")
                 self.changeUsername()
             }
         )
@@ -383,7 +388,7 @@ private extension ChangeUsernameViewController {
         alertController.addTextField { textField in
             textField.placeholder = Constants.Alert.confirm
         }
-        DDLogInfo("Prompting user for confirmation of change username")
+        Loggers.app.info("Prompting user for confirmation of change username")
         return alertController
     }
 
@@ -413,7 +418,7 @@ private extension ChangeUsernameViewController {
             let confirmationController,
             let textField = notification.object as? UITextField
         else {
-            DDLogInfo("The notification is not sent from the text field within the change username confirmation prompt")
+            Loggers.app.info("The notification is not sent from the text field within the change username confirmation prompt")
             return
         }
 

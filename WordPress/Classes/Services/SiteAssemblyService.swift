@@ -36,16 +36,17 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
     /// The most recently created blog corresponding to the site creation request; `nil` otherwise.
     private(set) var createdBlog: Blog?
 
-    private var coreDataStack: CoreDataStackSwift
+    private var coreDataStack: CoreDataStack
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
         self.accountService = AccountService(coreDataStack: coreDataStack)
         self.blogService = BlogService(coreDataStack: coreDataStack)
 
-        let api: WordPressComRestApi = coreDataStack.performQuery { context in
-            (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi
-        } ?? WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
+        let api: WordPressComRestApi =
+            coreDataStack.performQuery { context in
+                (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi
+            } ?? WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
     }
 
@@ -116,22 +117,26 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
                 // A successful response includes a separate success field advising of the outcome of the call.
                 // In my testing, this has never been `false`, but we will be cautious.
                 guard response.success == true else {
-                    DDLogError("The service response indicates that it failed.")
+                    Loggers.app.error("The service response indicates that it failed.")
                     self.endFailedAssembly()
 
                     return
                 }
-                self.coreDataStack.performAndSave({ context in
-                    self.createSite(for: response.createdSite, in: context)
-                }, completion: { [weak self] blogID in
-                    guard let blogID else {
-                        self?.endFailedAssembly()
-                        return
-                    }
-                    self?.syncBlogAndAccount(createdBlogID: blogID)
-                }, on: .main)
+                self.coreDataStack.performAndSave(
+                    { context in
+                        self.createSite(for: response.createdSite, in: context)
+                    },
+                    completion: { blogID in
+                        guard let blogID else {
+                            self.endFailedAssembly()
+                            return
+                        }
+                        self.syncBlogAndAccount(createdBlogID: blogID)
+                    },
+                    on: .main
+                )
             case .failure(let creationError):
-                DDLogError("\(creationError)")
+                Loggers.app.error("\(creationError)")
                 self.endFailedAssembly()
             }
         }
@@ -145,7 +150,11 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
         let xmlRpcUrlString = createdSite.xmlrpcString
 
         let blog: Blog
-        if let existingBlog = Blog.lookup(xmlrpc: xmlRpcUrlString, andRemoveDuplicateBlogsOf: defaultAccount, in: context) {
+        if let existingBlog = Blog.lookup(
+            xmlrpc: xmlRpcUrlString,
+            andRemoveDuplicateBlogsOf: defaultAccount,
+            in: context
+        ) {
             blog = existingBlog
         } else {
             blog = Blog.createBlankBlog(with: defaultAccount)
@@ -178,22 +187,29 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
             return
         }
 
-        blogService.syncBlogAndAllMetadata(blog, completionHandler: {
-            assert(Thread.isMainThread, "must be called from the main thread")
-            guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: self.coreDataStack.mainContext) else {
-                self.endFailedAssembly()
-                return
-            }
+        blogService.syncBlogAndAllMetadata(
+            blog,
+            completionHandler: {
+                assert(Thread.isMainThread, "must be called from the main thread")
+                guard
+                    let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(
+                        in: self.coreDataStack.mainContext
+                    )
+                else {
+                    self.endFailedAssembly()
+                    return
+                }
 
-            self.accountService.updateUserDetails(
-                for: defaultAccount,
-                success: {
-                    self.createdBlog = blog
-                    self.endSuccessfulAssembly()
-                },
-                failure: { _ in self.endFailedAssembly() }
-            )
-        })
+                self.accountService.updateUserDetails(
+                    for: defaultAccount,
+                    success: {
+                        self.createdBlog = blog
+                        self.endSuccessfulAssembly()
+                    },
+                    failure: { _ in self.endFailedAssembly() }
+                )
+            }
+        )
     }
 
     private func validatePendingRequest() {
@@ -207,7 +223,7 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
             case .success:
                 self.performRemoteSiteCreation()
             case .failure(let validationError):
-                DDLogError("\(validationError)")
+                Loggers.app.error("\(validationError)")
                 self.endFailedAssembly()
             }
         }

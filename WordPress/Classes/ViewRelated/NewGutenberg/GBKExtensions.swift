@@ -65,6 +65,47 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Failed to insert media",
             comment: "Error message when media insertion fails"
         )
+    case .someMediaFailedToInsert:
+        NSLocalizedString(
+            "editor.media.someFailedToInsert",
+            value: "Some media could not be inserted",
+            comment: "Error message when some, but not all, of the media picked in the block inserter fails to insert"
+        )
+    case .failedToLoadSelectedMedia:
+        NSLocalizedString(
+            "editor.media.failedToLoadSelected",
+            value: "The selected media could not be loaded. It may not be fully downloaded to this device.",
+            comment: "Error message when media picked in the block inserter cannot be loaded, e.g. an iCloud photo"
+        )
+    case .someSelectedMediaFailedToLoad(let count):
+        if count == 1 {
+            NSLocalizedString(
+                "editor.media.someSelectedFailedToLoad.singular",
+                value: "1 item could not be loaded and was skipped. It may not be fully downloaded to this device.",
+                comment:
+                    "Error message when one of several media items picked in the block inserter cannot be loaded, e.g. an iCloud photo"
+            )
+        } else {
+            String(
+                format: NSLocalizedString(
+                    "editor.media.someSelectedFailedToLoad.plural",
+                    value:
+                        "%1$d items could not be loaded and were skipped. They may not be fully downloaded to this device.",
+                    comment:
+                        "Error message when some of the media items picked in the block inserter cannot be loaded, e.g. iCloud photos. %1$d is a placeholder for the number of items."
+                ),
+                count
+            )
+        }
+    case .failedToProcessCapturedMedia:
+        NSLocalizedString(
+            "editor.media.failedToProcessCaptured",
+            value: "The captured media could not be processed.",
+            comment:
+                "Error message when a photo or video taken with the camera from the block inserter cannot be processed"
+        )
+    case .ok:
+        SharedStrings.Button.ok
     case .patterns:
         NSLocalizedString("editor.patterns.title", value: "Patterns", comment: "Navigation title for patterns view")
     case .noPatternsFound:
@@ -121,36 +162,23 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Editor Error",
             comment: "Title shown when the editor encounters an error"
         )
-    case .lockdownModeTitle:
+    case .editorCrashedTitle:
         NSLocalizedString(
-            "editor.lockdownMode.title",
-            value: "Lockdown Mode Detected",
-            comment: "Title shown when Lockdown Mode may affect the editor"
+            "editor.crashed.title",
+            value: "The editor stopped working",
+            comment: "Title shown over the editor after it crashes"
         )
-    case .lockdownModeWarning:
+    case .editorCrashedDescription:
         NSLocalizedString(
-            "editor.lockdownMode.warning",
-            value: "Lockdown Mode is enabled. The editor may not work correctly.",
-            comment: "Warning shown when Lockdown Mode may affect the editor"
+            "editor.crashed.description",
+            value: "Reload the editor to continue editing.",
+            comment: "Message shown over the editor after it crashes, above a button to reload it"
         )
-    case .lockdownModeExcludeHint:
+    case .editorCrashedReload:
         NSLocalizedString(
-            "editor.lockdownMode.excludeHint",
-            value:
-                "You can exclude this app from Lockdown Mode in Settings, then re-open the editor to restore full functionality.",
-            comment: "Instructions for excluding the app from Lockdown Mode"
-        )
-    case .lockdownModeLearnMore:
-        NSLocalizedString(
-            "editor.lockdownMode.learnMore",
-            value: "Learn More",
-            comment: "Button title to learn more about Lockdown Mode"
-        )
-    case .lockdownModeDismiss:
-        NSLocalizedString(
-            "editor.lockdownMode.dismiss",
-            value: "Dismiss",
-            comment: "Button title to dismiss the Lockdown Mode warning"
+            "editor.crashed.reload",
+            value: "Reload Editor",
+            comment: "Button title to reload the editor after it crashes"
         )
     // Declining a key lets the editor render its own string, so strings added
     // by a newer GutenbergKit appear in English rather than breaking this build.

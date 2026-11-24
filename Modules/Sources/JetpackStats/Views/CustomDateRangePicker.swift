@@ -16,7 +16,7 @@ struct CustomDateRangePicker: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 contents
             }

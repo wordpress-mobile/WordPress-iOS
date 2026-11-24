@@ -21,9 +21,15 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         }()
     )
 
-    /// It can't be changed at the moment, but this capability was included from the
-    /// start, and this implementation continues supporting it.
-    public var displaySettings = ReaderDisplaySettings.standard
+    /// The reading theme and text size. A change takes effect on the next
+    /// `render(comment:)`.
+    public var displaySettings = ReaderDisplaySettings.standard {
+        didSet {
+            if displaySettings != oldValue {
+                cachedHead = nil
+            }
+        }
+    }
 
     /// - warning: This has to be configured _before_ you render.
     public var tintColor: UIColor {
@@ -126,16 +132,15 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
         }
         // Wait until the HTML document finished loading.
         // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
-        webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil, navigation === self.currentNavigation else {
+        webView.evaluateJavaScript("document.readyState") { [weak self] complete, _ in
+            guard let self, complete != nil, navigation === self.currentNavigation else {
                 return
             }
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
-            webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
-                guard let self,
-                    let height = height as? CGFloat,
+            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
+                guard let height = height as? CGFloat,
                     navigation === self.currentNavigation
                 else {
                     return
@@ -202,9 +207,13 @@ private extension WebCommentContentRenderer {
     }
 
     static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
+}
 
+// MARK: - Head
+
+extension WebCommentContentRenderer {
     /// Returns HTML page <head> with the preconfigured styles and scripts.
-    private func makeHead() -> String {
+    func makeHead() -> String {
         if let cachedHead {
             return cachedHead
         }
@@ -226,7 +235,7 @@ private extension WebCommentContentRenderer {
 
     private static let headTemplate: String = {
         guard let fileURL = Bundle.module.url(forResource: "gutenbergCommentHeadTemplate", withExtension: "html"),
-            let string = try? String(contentsOf: fileURL)
+            let string = try? String(contentsOf: fileURL, encoding: .utf8)
         else {
             assertionFailure("template missing")
             return ""

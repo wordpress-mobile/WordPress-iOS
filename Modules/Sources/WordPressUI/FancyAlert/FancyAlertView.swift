@@ -204,11 +204,13 @@ open class FancyAlertView: UIView {
         }
     }
 
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        // At the beginning of your implementation, call super to ensure that interface elements higher in the view hierarchy have an opportunity to adjust their layout first
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
+    override open func awakeFromNib() {
+        super.awakeFromNib()
+
+        preferredContentSizeDidChange()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.preferredContentSizeDidChange()
         }
     }
 

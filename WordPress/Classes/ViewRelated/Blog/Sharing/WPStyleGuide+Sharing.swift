@@ -23,8 +23,6 @@ extension WPStyleGuide {
             return .gridicon(.print)
         case "email":
             return .gridicon(.mail)
-        case "google-plus-1":
-            iconName = "social-google-plus"
         case "press-this":
             iconName = "social-wordpress"
         default:

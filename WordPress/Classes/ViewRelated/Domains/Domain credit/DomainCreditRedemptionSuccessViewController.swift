@@ -107,14 +107,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Hide the illustration if we only have compact height, or if the user has
-        // dynamic content set to accessibility sizes.
-        illustration.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -124,6 +116,17 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         setupViewHierarchy()
         configureConstraints()
+
+        registerForTraitChanges([UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.updateIllustrationVisibility()
+        }
+        updateIllustrationVisibility()
+    }
+
+    /// Hides the illustration if we only have compact height, or if the user has
+    /// dynamic content set to accessibility sizes.
+    private func updateIllustrationVisibility() {
+        illustration.isHidden = traitCollection.verticalSizeClass == .compact || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     private func setupViewHierarchy() {
@@ -143,28 +146,28 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: stackViewContainer.bottomAnchor),
             stackView.centerYAnchor.constraint(equalTo: stackViewContainer.centerYAnchor),
 
-            scrollView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Metrics.edgePadding),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Metrics.edgePadding),
-            scrollView.topAnchor.constraint(equalTo: view.safeTopAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Metrics.edgePadding),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.edgePadding),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: doneButtonContainer.topAnchor),
 
             stackViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackViewContainer.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Metrics.edgePadding),
-            stackViewContainer.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Metrics.edgePadding),
+            stackViewContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Metrics.edgePadding),
+            stackViewContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.edgePadding),
             stackViewContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackViewContainer.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
 
-            doneButtonContainer.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
-            doneButtonContainer.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
-            doneButtonContainer.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            doneButtonContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            doneButtonContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            doneButtonContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             doneButtonContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonControllerMinHeight),
 
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             divider.bottomAnchor.constraint(equalTo: doneButtonContainer.topAnchor),
-            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            divider.makeHairlineConstraint(for: divider.heightAnchor)
         ])
     }
 

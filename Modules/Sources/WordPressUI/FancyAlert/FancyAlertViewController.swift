@@ -220,6 +220,14 @@ open class FancyAlertViewController: UIViewController {
         alertView.wrapperView.layer.cornerRadius = Constants.cornerRadius
 
         updateViewConfiguration()
+        updateHeaderVisibilityAndButtonLayout()
+
+        registerForTraitChanges([
+            UITraitVerticalSizeClass.self,
+            UITraitPreferredContentSizeCategory.self
+        ]) { (self: Self, _: UITraitCollection) in
+            self.updateHeaderVisibilityAndButtonLayout()
+        }
     }
 
     override open func viewDidAppear(_ animated: Bool) {
@@ -230,10 +238,8 @@ open class FancyAlertViewController: UIViewController {
         self.configuration?.appearAction?()
     }
 
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) {
+    private func updateHeaderVisibilityAndButtonLayout() {
+        if traitCollection.verticalSizeClass == .compact {
             alertView.headerImageWrapperView.isHiddenInStackView = true
         } else if let _ = configuration?.headerImage {
             alertView.headerImageWrapperView.isHiddenInStackView = false

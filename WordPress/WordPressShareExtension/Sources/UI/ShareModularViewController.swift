@@ -144,7 +144,13 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         }
 
         ShareExtractor(extensionContext: extensionContext)
-            .loadShare { share in
+            .loadShare { outcome in
+                guard !outcome.extractionDidFail else {
+                    self.presentContentExtractionFailure()
+                    return
+                }
+
+                let share = outcome.share
                 self.shareData.title = share.title
                 self.shareData.contentBody = share.combinedContentHTML
 
@@ -164,6 +170,10 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
                 // Clear out the extension context after loading it once. We don't need it anymore.
                 self.context = nil
                 self.refreshModulesTable()
+
+                if !outcome.failures.isEmpty {
+                    self.presentSkippedAttachmentsNotice()
+                }
             }
     }
 

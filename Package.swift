@@ -10,7 +10,7 @@ let package = Package(
     name: "WordPressCrossPlatformModules",
     platforms: [
         .macOS(.v14),
-        .iOS(.v17)
+        .iOS(.v18)
     ],
     dependencies: [
         .package(path: "Modules"),
@@ -56,6 +56,11 @@ let package = Package(
             ],
             path: "Modules/Tests/GutenbergProcessorsTests",
             swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .testTarget(
+            name: "TextBundleTests",
+            dependencies: [.product(name: "TextBundle", package: "Modules")],
+            path: "Modules/Tests/TextBundleTests"
         )
     ]
 )

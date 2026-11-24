@@ -40,15 +40,16 @@
                 </stackView>
             </subviews>
             <constraints>
-                <constraint firstItem="CFR-ud-8f3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="3so-VZ-i5C"/>
+                <constraint firstItem="CFR-ud-8f3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" placeholder="YES" id="3so-VZ-i5C"/>
                 <constraint firstAttribute="bottom" secondItem="CFR-ud-8f3" secondAttribute="bottom" id="f7P-LI-TqF"/>
                 <constraint firstItem="CFR-ud-8f3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="22" id="rV3-1d-NiO"/>
-                <constraint firstItem="CFR-ud-8f3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="x0O-9p-s37"/>
+                <constraint firstItem="CFR-ud-8f3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" placeholder="YES" id="x0O-9p-s37"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="countLabel" destination="Z9S-3G-ceG" id="Lbe-ZD-YUo"/>
                 <outlet property="descriptionLabel" destination="XAL-lB-lIg" id="skM-I5-oty"/>
+                <outlet property="stackView" destination="CFR-ud-8f3" id="q7d-Kh-2Ws"/>
             </connections>
             <point key="canvasLocation" x="25.5" y="44"/>
         </view>

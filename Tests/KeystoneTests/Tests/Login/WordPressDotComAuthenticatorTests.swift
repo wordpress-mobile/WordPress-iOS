@@ -17,16 +17,25 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
     func testAuthenticateSuccess() async {
         stubTokenExchange()
 
-        let authenticator = WordPressDotComAuthenticator(authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp"
+        )
         do {
-            let _ = try await authenticator.authenticate(from: UIViewController(), prefersEphemeralWebBrowserSession: false)
+            let _ = try await authenticator.authenticate(
+                from: UIViewController(),
+                prefersEphemeralWebBrowserSession: false
+            )
         } catch {
             XCTFail("Unexpected error: \(error)")
         }
     }
 
     func testAuthenticateWithInvalidCallbackURL() async {
-        let authenticator = WordPressDotComAuthenticator(authenticator: fakeAuthenticator(callback: ["empty": "yes"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            authenticator: fakeAuthenticator(callback: ["empty": "yes"]),
+            redirectURIScheme: "testapp"
+        )
         do {
             let _ = try await authenticator.authenticate(from: .init(), prefersEphemeralWebBrowserSession: false)
             XCTFail("Unexpected successful result")
@@ -38,15 +47,64 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
     }
 
     func testAuthenticateWithAccessDenied() async {
-        let authenticator = WordPressDotComAuthenticator(authenticator: fakeAuthenticator(callback: ["error": "access_denied"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            authenticator: fakeAuthenticator(callback: ["error": "access_denied"]),
+            redirectURIScheme: "testapp"
+        )
         do {
-            let _ = try await authenticator.authenticate(from: .init(), prefersEphemeralWebBrowserSession: false, recoverDenyAccess: false)
+            let _ = try await authenticator.authenticate(
+                from: .init(),
+                prefersEphemeralWebBrowserSession: false,
+                recoverDenyAccess: false
+            )
             XCTFail("Unexpected successful result")
         } catch .loginDenied {
             // Do nothing
         } catch {
             XCTFail("Unexpected error: \(error)")
         }
+    }
+
+    func testRequestsEncodeParameters() async throws {
+        var tokenRequest: URLRequest?
+        stub(condition: isPath("/oauth2/token")) { request in
+            tokenRequest = request
+            return HTTPStubsResponse(
+                data: #"{"access_token": "token"}"#.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        var authorizeURL: URL?
+        let callback = fakeAuthenticator(callback: ["code": "random"])
+        let authenticator = WordPressDotComAuthenticator(
+            authenticator: { url throws(WordPressDotComAuthenticator.AuthenticationError) in
+                authorizeURL = url
+                return try callback(url)
+            },
+            redirectURIScheme: "testapp",
+            clientId: "123",
+            clientSecret: "secret"
+        )
+        _ = try await authenticator.authenticate(
+            from: UIViewController(),
+            prefersEphemeralWebBrowserSession: false,
+            accountEmail: "foo+bar@example.com"
+        )
+
+        XCTAssertEqual(
+            authorizeURL?.absoluteString,
+            "https://public-api.wordpress.com/oauth2/authorize?client_id=123&redirect_uri=testapp%3A//oauth2-callback&response_type=code&scope=global&user_email=foo%2Bbar%40example.com"
+        )
+        XCTAssertEqual(
+            tokenRequest?.value(forHTTPHeaderField: "Content-Type"),
+            "application/x-www-form-urlencoded; charset=utf-8"
+        )
+        XCTAssertEqual(
+            tokenRequest?.ohhttpStubs_httpBody.flatMap { String(data: $0, encoding: .utf8) },
+            "client_id=123&client_secret=secret&code=random&grant_type=authorization_code&redirect_uri=testapp%3A//oauth2-callback"
+        )
     }
 
     @MainActor
@@ -59,13 +117,78 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         try XCTAssertNil(WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
 
         // When signing in with a WP.com account
-        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp"
+        )
         let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
         XCTAssertNotNil(accountID)
 
         // The new WP.com acount should be set as the default account.
         let isDefaultAccount = try mainContext.existingObject(with: XCTUnwrap(accountID)).isDefaultWordPressComAccount
         XCTAssertTrue(isDefaultAccount)
+    }
+
+    @MainActor
+    func testSignInWaitsForFeatureFlagsAfterSavingTheAccount() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        stubGetSites()
+
+        // Given
+        var defaultAccountWhileWaiting: [String?] = []
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp",
+            waitForFeatureFlags: { [mainContext] in
+                let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
+                defaultAccountWhileWaiting.append(account?.username)
+            }
+        )
+
+        // When
+        let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+
+        // Then the wait ran once, after the account was saved, which is what starts the flag fetch
+        XCTAssertNotNil(accountID)
+        XCTAssertEqual(defaultAccountWhileWaiting, ["jimthetester"])
+    }
+
+    @MainActor
+    func testFailedSignInDoesNotWaitForFeatureFlags() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+
+        // Given the app is signed in with another account
+        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account")
+            .with(authToken: "token").build()
+        try mainContext.save()
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
+        var didWait = false
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp",
+            waitForFeatureFlags: { didWait = true }
+        )
+
+        // When re-authentication returns a different account
+        do {
+            _ = try await authenticator.attemptSignIn(
+                from: UIViewController(),
+                context: .reauthentication(accountEmail: account.email)
+            )
+            XCTFail("Unexpected successful result")
+        } catch .mismatchedEmail {
+            // Expected
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        // Then
+        XCTAssertFalse(didWait)
     }
 
     @MainActor
@@ -85,7 +208,10 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         // - the app posts a notification.
         Task.detached { @MainActor in
             try await Task.sleep(for: .milliseconds(100))
-            let handled = WordPressDotComAuthenticator.handleAppOpeningURL(URL(string: "testapp://oauth2-callback?code=random")!, appURLScheme: "testapp")
+            let handled = WordPressDotComAuthenticator.handleAppOpeningURL(
+                URL(string: "testapp://oauth2-callback?code=random")!,
+                appURLScheme: "testapp"
+            )
             XCTAssertTrue(handled)
         }
 
@@ -104,14 +230,22 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         stubGetSites()
 
         // Given the app is already signed in with a WP.com account.
-        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account").with(authToken: "token").build()
+        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account")
+            .with(authToken: "token").build()
         try mainContext.save()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
 
         // When signing in with another WP.com account.
-        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp"
+        )
         do {
-            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .jetpackSite(accountEmail: nil))
+            let _ = try await authenticator.attemptSignIn(
+                from: UIViewController(),
+                context: .jetpackSite(accountEmail: nil)
+            )
             XCTFail("Unexpected successful result")
         } catch .alreadySignedIn {
             // Do nothing
@@ -125,7 +259,11 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         stubGetAccountDetails()
         stubGetSitesError()
 
-        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp"
+        )
         do {
             let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .default)
             XCTFail("Unexpected successful result")
@@ -138,7 +276,8 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
 
     func testReAuthenticationWithUnexpectedAccount() async throws {
         // Given the app is already signed in with a WP.com account.
-        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account").with(authToken: "token").build()
+        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account")
+            .with(authToken: "token").build()
         try mainContext.save()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
 
@@ -147,9 +286,16 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         stubGetAccountDetails()
 
         // Then `mismatchedEmail` error should be returned
-        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]), redirectURIScheme: "testapp")
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            redirectURIScheme: "testapp"
+        )
         do {
-            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .reauthentication(accountEmail: account.email))
+            let _ = try await authenticator.attemptSignIn(
+                from: UIViewController(),
+                context: .reauthentication(accountEmail: account.email)
+            )
             XCTFail("Unexpected successful result")
         } catch let .mismatchedEmail(expectedEmail) {
             XCTAssertEqual(expectedEmail, "test@example.com")
@@ -157,10 +303,55 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
             XCTFail("Unexpected error: \(error)")
         }
     }
+
+    @MainActor
+    func testAgeRestrictedSignInStopsBeforeAuthentication() async throws {
+        let accessController = AgeRequirementAccessControllerFake(refusalResponses: [true])
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            ageRequirementController: accessController,
+            redirectURIScheme: "testapp"
+        )
+
+        let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+
+        XCTAssertNil(accountID)
+        XCTAssertEqual(accessController.refusalCount, 1)
+        try XCTAssertNil(WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
+    }
+
+    @MainActor
+    func testRestrictionDuringSignInPreventsPersistenceAndCompletionNotification() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        stubGetSites()
+        let accessController = AgeRequirementAccessControllerFake(refusalResponses: [false, true])
+        let authenticator = WordPressDotComAuthenticator(
+            coreDataStack: contextManager,
+            authenticator: fakeAuthenticator(callback: ["code": "random"]),
+            ageRequirementController: accessController,
+            redirectURIScheme: "testapp"
+        )
+        let completion = expectation(
+            forNotification: .init(WordPressAuthenticationManager.WPSigninDidFinishNotification),
+            object: nil
+        )
+        completion.isInverted = true
+
+        let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+
+        XCTAssertNil(accountID)
+        XCTAssertEqual(accessController.refusalCount, 2)
+        try XCTAssertNil(WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
+        await fulfillment(of: [completion], timeout: 0.1)
+    }
 }
 
 private extension WordPressDotComAuthenticatorTests {
-    func fakeAuthenticator(callback: [String: String]) -> (URL) throws(WordPressDotComAuthenticator.AuthenticationError) -> URL {
+    func fakeAuthenticator(
+        callback: [String: String]
+    ) -> (URL) throws(WordPressDotComAuthenticator.AuthenticationError) -> URL {
         var url = URL(string: "x-wordpress-app://oauth2-callback")!
         url.append(queryItems: callback.map { URLQueryItem(name: $0, value: $1) })
 
@@ -173,7 +364,11 @@ private extension WordPressDotComAuthenticatorTests {
 
     func stubTokenExchange() {
         stub(condition: isPath("/oauth2/token")) { _ in
-            HTTPStubsResponse(data: #"{"access_token": "token"}"#.data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
+            HTTPStubsResponse(
+                data: #"{"access_token": "token"}"#.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
         }
     }
 
@@ -215,21 +410,33 @@ private extension WordPressDotComAuthenticatorTests {
                     "is_new_reader": false
                 }
                 """#
-            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
+            return HTTPStubsResponse(
+                data: json.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
         }
     }
 
     func stubGetSites() {
         stub(condition: isPath("/rest/v1.2/me/sites")) { _ in
             let json = #"{"sites":[]}"#
-            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
+            return HTTPStubsResponse(
+                data: json.data(using: .utf8)!,
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
         }
     }
 
     func stubGetSitesError() {
         stub(condition: isPath("/rest/v1.2/me/sites")) { _ in
             let json = #"{"error_code":"internal_server_error"}"#
-            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 500, headers: ["Content-Type": "application/json"])
+            return HTTPStubsResponse(
+                data: json.data(using: .utf8)!,
+                statusCode: 500,
+                headers: ["Content-Type": "application/json"]
+            )
         }
     }
 }

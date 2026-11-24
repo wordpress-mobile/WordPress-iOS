@@ -11,12 +11,10 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
     // swiftlint:disable operator_usage_whitespace
     let notificationsEndpoint       = "notifications/"
     let notificationsReadEndpoint   = "notifications/read"
-    let notificationsSeenEndpoint   = "notifications/seen"
 
     let notificationServiceLoadAllMockFilename      = "notifications-load-all.json"
     let notificationServiceLoadHashMockFilename     = "notifications-load-hash.json"
     let notificationServiceMarkReadMockFilename     = "notifications-mark-as-read.json"
-    let notificationServiceLastSeenMockFilename     = "notifications-last-seen.json"
     // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
@@ -158,19 +156,6 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
                 )
                 expect.fulfill()
             }
-        }
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    /// Verifies that Update Last Seen successfully parses the backend's response
-    ///
-    func testUpdateLastSeen() {
-        let expect = expectation(description: "Update last seen notification success")
-        stubRemoteResponse(notificationsSeenEndpoint, filename: notificationServiceLastSeenMockFilename, contentType: .ApplicationJSON)
-        remote.updateLastSeen("1234") { error in
-            XCTAssertNil(error)
-            expect.fulfill()
         }
 
         waitForExpectations(timeout: timeout, handler: nil)

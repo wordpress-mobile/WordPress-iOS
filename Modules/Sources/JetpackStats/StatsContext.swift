@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import AsyncImageKit
 @preconcurrency import WordPressKit
 
 public struct StatsContext: Sendable {
@@ -15,6 +16,13 @@ public struct StatsContext: Sendable {
     public var tracker: (any StatsTracker)?
     /// URL to upgrade the site's plan
     public var upgradeURL: URL?
+    /// Authenticates requests for the site's own media. A private, Atomic or P2 site
+    /// serves a featured image only to a signed request.
+    public var mediaHost: (any MediaHostProtocol)?
+    /// Whether the site is an Automattic P2. WordPress.com serves a P2's media from the
+    /// site's own domain, so an image resizes from query parameters and the public image
+    /// proxy can't fetch it.
+    public var isAutomatticP2: Bool
 
     public init(
         timeZone: TimeZone,
@@ -42,6 +50,8 @@ public struct StatsContext: Sendable {
         self.preprocessAvatar = nil
         self.tracker = nil
         self.upgradeURL = nil
+        self.mediaHost = nil
+        self.isAutomatticP2 = false
     }
 
     public static let demo: StatsContext = {

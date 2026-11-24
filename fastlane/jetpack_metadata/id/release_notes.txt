@@ -1,0 +1,10 @@
+Tahukah Anda? Kami meningkatkan keakuratan tab dan lonceng Notifikasi, bahkan saat notifikasi sistem atau lencana ikon dinonaktifkan. Kini Anda tidak akan ketinggalan informasi.
+
+Tipe pos khusus sekarang muncul langsung di menu situs setelah Komentar, diurutkan berdasarkan nama agar lebih praktis—tidak perlu lagi menggunakan pin khusus.
+
+Terakhir, kami telah memperbaiki beberapa bug, agar pengalaman Anda menggunakan aplikasi makin mudah.
+
+- Di Pembaca, gambar sebaris tidak akan menghilang pada perangkat yang menjalankan iOS 27.
+- Proses pengunggahan tidak akan gagal lagi jika nama file mengandung spasi. (good-news-everyone.jpg)
+- Kami telah memperbaiki crash yang disebabkan oleh pembagian jenis file teks tertentu.
+- Kabar gembira bagi para pengguna iPad—aplikasi tidak akan tertahan pada tata letak bilah tab yang ringkas saat Anda mengubah ukuran layar atau beralih aplikasi.

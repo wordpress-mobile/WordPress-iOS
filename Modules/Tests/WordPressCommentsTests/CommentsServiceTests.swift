@@ -1,10 +1,11 @@
 import Testing
 import WordPressAPI
+import WordPressAPIInternal
 @testable import WordPressComments
 
 struct CommentsServiceTests {
     @Test func firstPageParamsUseDesignDefaults() {
-        let params = CommentsListFilter.approved.firstPageParams
+        let params = CommentsListFilter.approved.firstPageParams()
         #expect(params.perPage == 20)
         #expect(params.order == .desc)
         #expect(params.orderby == .dateGmt)
@@ -13,7 +14,7 @@ struct CommentsServiceTests {
 
     @Test func firstPageParamsCarryEachFilterStatus() {
         for filter in CommentsListFilter.allCases {
-            #expect(filter.firstPageParams.status?.description == filter.queryStatus.description)
+            #expect(filter.firstPageParams().status?.description == filter.queryStatus.description)
         }
     }
 }

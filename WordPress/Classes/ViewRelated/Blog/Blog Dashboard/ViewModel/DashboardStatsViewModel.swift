@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class DashboardStatsViewModel {
 
@@ -14,16 +15,16 @@ class DashboardStatsViewModel {
 
     // MARK: Public Variables
 
-    var todaysViews: String {
-        apiResponse.todaysStats?.value?.views?.abbreviatedString(forHeroNumber: true) ?? "0"
+    var todaysViews: AbbreviatedNumber {
+        (apiResponse.todaysStats?.value?.views ?? 0).abbreviated(forHeroNumber: true)
     }
 
-    var todaysVisitors: String {
-        apiResponse.todaysStats?.value?.visitors?.abbreviatedString(forHeroNumber: true) ?? "0"
+    var todaysVisitors: AbbreviatedNumber {
+        (apiResponse.todaysStats?.value?.visitors ?? 0).abbreviated(forHeroNumber: true)
     }
 
-    var todaysLikes: String {
-        apiResponse.todaysStats?.value?.likes?.abbreviatedString(forHeroNumber: true) ?? "0"
+    var todaysLikes: AbbreviatedNumber {
+        (apiResponse.todaysStats?.value?.likes ?? 0).abbreviated(forHeroNumber: true)
     }
 
     var shouldDisplayNudge: Bool {

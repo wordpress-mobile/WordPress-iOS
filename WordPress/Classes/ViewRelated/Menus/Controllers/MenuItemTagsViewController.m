@@ -1,6 +1,7 @@
 #import "MenuItemTagsViewController.h"
 #import "PostTagService.h"
 @import WordPressData;
+@import WordPressSharedObjC;
 
 static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
@@ -176,10 +177,10 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     if (searchText.length) {
         self.defersFooterViewMessageUpdates = YES;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, searchPredicate]];
-        DDLogDebug(@"MenuItemSourceTagView: Updating fetch request with search predicate matching: %@", searchText);
+        WPLogDebug(@"MenuItemSourceTagView: Updating fetch request with search predicate matching: %@", searchText);
     } else {
         self.defersFooterViewMessageUpdates = NO;
-        DDLogDebug(@"MenuItemSourceTagView: Updating fetch request with default predicate");
+        WPLogDebug(@"MenuItemSourceTagView: Updating fetch request with default predicate");
         predicate = defaultPredicate;
     }
 
@@ -210,7 +211,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     if (!self.searchTagService) {
         self.searchTagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     }
-    DDLogDebug(@"MenuItemSourceTagView: Searching tags PostTagService");
+    WPLogDebug(@"MenuItemSourceTagView: Searching tags PostTagService");
     [self.searchTagService searchTagsWithName:searchText
                                          blog:[self blog]
                                       success:^(NSArray<PostTag *> * __unused tags) {

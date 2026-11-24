@@ -19,10 +19,10 @@ final class PostRepository {
         }
     }
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let remoteFactory: PostServiceRemoteFactory
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
          remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
@@ -670,7 +670,7 @@ extension PostRepository {
             return updatedPosts.compactMap { aPost -> TaggedManagedObjectID<P>? in
                 guard let post = aPost as? P else {
                     // FIXME: This issue is tracked in https://github.com/wordpress-mobile/WordPress-iOS/issues/22255
-                    DDLogWarn("Expecting a \(postType) as \(type), but got \(aPost)")
+                    Loggers.app.warning("Expecting a \(postType) as \(type), but got \(aPost)")
                     return nil
                 }
                 return TaggedManagedObjectID(post)

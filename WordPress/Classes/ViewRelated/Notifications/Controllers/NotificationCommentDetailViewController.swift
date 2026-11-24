@@ -136,7 +136,8 @@ private extension NotificationCommentDetailViewController {
     func configureNavBarButtons() {
         var barButtonItems: [UIBarButtonItem] = []
 
-        if splitViewControllerIsHorizontallyCompact {
+        // The list isn't visible next to the details, so show the arrows instead.
+        if splitViewController?.isCollapsed ?? true {
             barButtonItems.append(contentsOf: [previousButton, nextButton])
         }
 
@@ -259,7 +260,7 @@ private extension NotificationCommentDetailViewController {
 
     func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
         guard let commentID else {
-            DDLogError("Notification Comment: unable to load comment due to missing commentID.")
+            Loggers.app.error("Notification Comment: unable to load comment due to missing commentID.")
             return nil
         }
 
@@ -280,7 +281,7 @@ private extension NotificationCommentDetailViewController {
         failure: @escaping (Error?) -> Void
     ) {
         guard let commentID else {
-            DDLogError("Notification Comment: unable to fetch comment due to missing commentID.")
+            Loggers.app.error("Notification Comment: unable to fetch comment due to missing commentID.")
             failure(nil)
             return
         }

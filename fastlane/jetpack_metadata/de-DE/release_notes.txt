@@ -1,0 +1,10 @@
+Schon gehört? Der Tab „Benachrichtigungen“ und die Glocke wurden verbessert und liefern nun auch dann genaue Informationen, wenn Systembenachrichtigungen oder Icon-Badges deaktiviert sind. Jetzt bist du immer auf dem Laufenden.
+
+Individuelle Inhaltstypen werden jetzt direkt im Website-Menü nach Kommentaren angezeigt und zur einfachen Orientierung nach Namen sortiert – keine Pins mehr erforderlich!
+
+Schließlich haben wir uns um mehrere Fehler gekümmert, um dein App-Erlebnis zu verbessern.
+
+- Im Reader verschwinden Inline-Bilder auf Geräten mit iOS 27 nicht mehr.
+- Uploads schlagen nicht mehr fehl, wenn der Dateiname Leerzeichen enthält. (gute-neuigkeiten.jpg)
+- Wir haben Abstürze behoben, die durch das Teilen bestimmter Arten von Textdateien verursacht wurden.
+- iPad-Benutzer dürfen sich freuen – die App bleibt nicht mehr im kompakten Tab-Leisten-Layout hängen, wenn die Größe des Bildschirms geändert oder die Apps gewechselt werden.

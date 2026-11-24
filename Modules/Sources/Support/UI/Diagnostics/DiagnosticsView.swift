@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import WordPressCoreProtocols
 
 public struct DiagnosticsView: View {
@@ -19,7 +20,9 @@ public struct DiagnosticsView: View {
             .padding()
         }
         .navigationTitle(Localization.diagnosticsTitle)
-        .background(.background)
+        // Grouped, to match the support list this is pushed from. `DiagnosticCard` is filled
+        // with the secondary grouped colour so it stands out against this background.
+        .background(Color(.systemGroupedBackground))
         .onAppear {
             dataProvider.userDid(.viewDiagnostics)
         }

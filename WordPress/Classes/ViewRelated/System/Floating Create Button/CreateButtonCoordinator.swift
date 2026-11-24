@@ -158,10 +158,8 @@ final class CreateButtonCoordinator: NSObject {
             }
         ]
 
-        if #available(iOS 18.0, *) {
-            viewController.preferredTransition = .zoom { [weak self] _ in
-                self?.button
-            }
+        viewController.preferredTransition = .zoom { [weak self] _ in
+            self?.button
         }
     }
 
@@ -200,7 +198,7 @@ private extension CreateButtonCoordinator {
         // TODO: check for cached prompt first.
 
         guard let bloggingPromptsService else {
-            DDLogError("FAB: failed creating BloggingPromptsService instance.")
+            Loggers.app.error("FAB: failed creating BloggingPromptsService instance.")
             prompt = nil
             return
         }
@@ -211,7 +209,7 @@ private extension CreateButtonCoordinator {
             },
             failure: { [weak self] error in
                 self?.prompt = nil
-                DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
+                Loggers.app.error("FAB: failed fetching blogging prompt: \(String(describing: error))")
             }
         )
     }
@@ -234,15 +232,19 @@ private extension CreateButtonCoordinator {
             WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?
                 .dismiss(animated: true) {
-                    guard let viewController = self?.viewController else { return }
-                    PostEditorRouter.showNewPost(
-                        for: blog,
-                        from: viewController,
-                        context: NewPostEditorContext(
-                            prompt: prompt,
-                            entryPoint: .bloggingPromptsActionSheetHeader
+                    // UIKit runs the dismissal completion on the main thread but
+                    // doesn't declare it, so state the isolation explicitly.
+                    MainActor.assumeIsolated {
+                        guard let viewController = self?.viewController else { return }
+                        PostEditorRouter.showNewPost(
+                            for: blog,
+                            from: viewController,
+                            context: NewPostEditorContext(
+                                prompt: prompt,
+                                entryPoint: .bloggingPromptsActionSheetHeader
+                            )
                         )
-                    )
+                    }
                 }
         }
 

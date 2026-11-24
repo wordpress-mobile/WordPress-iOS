@@ -136,7 +136,7 @@ final class InteractiveNotificationsManager: NSObject {
                 legacyAnalyticsEvent = .notificationsCommentRepliedTo
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
-                DDLogError("Tried to reply to a comment notification with no text")
+                Loggers.app.error("Tried to reply to a comment notification with no text")
             }
         default:
             break
@@ -238,7 +238,7 @@ final class InteractiveNotificationsManager: NSObject {
 
                 if identifier == UNNotificationDefaultActionIdentifier {
                     guard let targetBlog else {
-                        DDLogError("Could not obtain the blog from the Weekly Notification thread ID.")
+                        Loggers.app.error("Could not obtain the blog from the Weekly Notification thread ID.")
                         break
                     }
 
@@ -341,10 +341,10 @@ private extension InteractiveNotificationsManager {
             siteID: siteID,
             success: {
                 self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-                DDLogInfo("Liked comment from push notification")
+                Loggers.app.info("Liked comment from push notification")
             },
             failure: { _ in
-                DDLogInfo("Couldn't like comment from push notification")
+                Loggers.app.info("Couldn't like comment from push notification")
             }
         )
     }
@@ -361,10 +361,10 @@ private extension InteractiveNotificationsManager {
             siteID: siteID,
             success: {
                 self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-                DDLogInfo("Successfully moderated comment from push notification")
+                Loggers.app.info("Successfully moderated comment from push notification")
             },
             failure: { _ in
-                DDLogInfo("Couldn't moderate comment from push notification")
+                Loggers.app.info("Couldn't moderate comment from push notification")
             }
         )
     }
@@ -391,10 +391,10 @@ private extension InteractiveNotificationsManager {
             content: content,
             success: {
                 self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-                DDLogInfo("Successfully replied comment from push notification")
+                Loggers.app.info("Successfully replied comment from push notification")
             },
             failure: { _ in
-                DDLogInfo("Couldn't reply to comment from push notification")
+                Loggers.app.info("Couldn't reply to comment from push notification")
             }
         )
     }

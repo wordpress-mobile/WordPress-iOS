@@ -78,7 +78,7 @@ private struct SubscribersListView: View {
             }
         }
         .sheet(isPresented: $isShowingInviteView) {
-            NavigationView {
+            NavigationStack {
                 SubscriberInviteView(blog: viewModel.blog)
             }
         }

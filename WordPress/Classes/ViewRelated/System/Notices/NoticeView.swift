@@ -33,6 +33,10 @@ class NoticeView: UIView {
         super.init(frame: .zero)
 
         configure()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.preferredContentSizeDidChange()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -314,13 +318,6 @@ class NoticeView: UIView {
         return arrowImageView
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
-    }
-
     private func preferredContentSizeDidChange() {
         cancelButton.titleLabel?.font = notice.style.cancelButtonFont
         actionButton.titleLabel?.font = notice.style.actionButtonFont
@@ -397,7 +394,7 @@ fileprivate extension UIView {
         let borderView = makeBorderView()
 
         NSLayoutConstraint.activate([
-            borderView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            makeHairlineConstraint(for: borderView.heightAnchor),
             borderView.topAnchor.constraint(equalTo: topAnchor),
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
@@ -411,7 +408,7 @@ fileprivate extension UIView {
             borderView.heightAnchor.constraint(equalTo: heightAnchor),
             borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
             borderView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            borderView.widthAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            makeHairlineConstraint(for: borderView.widthAnchor)
         ])
     }
 

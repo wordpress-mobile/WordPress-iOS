@@ -11,7 +11,7 @@ import WordPressCore
 /// changes between requests the window shifts, so a page can re-serve an item
 /// (deduplicated by the view model) or skip one (inherent to offset paging;
 /// pull-to-refresh is the recovery).
-struct CommentsPageToken: Sendable {
+struct CommentsPageToken: Equatable, Sendable {
     let params: CommentListParams
 }
 
@@ -26,6 +26,9 @@ protocol CommentsServiceProtocol: Sendable {
     /// end of the list. Post titles are not part of this call; they resolve
     /// asynchronously through `PostTitleResolver`.
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage
+
+    /// Searches Approved and Pending comments using the server continuation unchanged.
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage
 
     /// Fetches full comment detail. When `allowsEditContext` is true, tries
     /// edit context first (adds author email/IP) and falls back to view
@@ -56,6 +59,13 @@ protocol CommentsServiceProtocol: Sendable {
     /// Total number of replies to `id`, read from the list response's
     /// `X-WP-Total` header rather than the (unused) page of results.
     func numberOfReplies(for id: Int64) async throws -> Int
+
+    /// Creates a reply to `parentID` on `postID` and returns the created
+    /// comment's detail.
+    func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail
+
+    /// Updates the comment's content and returns the updated detail.
+    func updateContent(id: Int64, content: String) async throws -> CommentDetail
 }
 
 /// Errors raised by `CommentsService` that don't originate from wordpress-rs.
@@ -73,7 +83,14 @@ final class CommentsService: CommentsServiceProtocol {
     }
 
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
-        let params = nextPage?.params ?? filter.firstPageParams
+        try await listComments(params: nextPage?.params ?? filter.firstPageParams())
+    }
+
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage {
+        try await listComments(params: nextPage?.params ?? CommentsListFilter.all.firstPageParams(search: query))
+    }
+
+    private func listComments(params: CommentListParams) async throws -> CommentsPage {
         let response = try await client.api.comments.listWithViewContext(params: params)
         return CommentsPage(
             items: response.data.map(CommentListItem.init),
@@ -166,6 +183,26 @@ final class CommentsService: CommentsServiceProtocol {
         )
         return Int(response.headerMap.wpTotal() ?? 0)
     }
+
+    func createReply(postID: Int64, parentID: Int64, content: String) async throws -> CommentDetail {
+        // Core returns the create response in view context unless the caller
+        // has moderate_comments (create_item overrides any requested
+        // ?context=), and wordpress-rs decodes it as such, so the result never
+        // carries edit-only fields (`contentRaw`, email, IP). The reply chain
+        // only reads its status.
+        let response = try await client.api.comments.create(
+            params: CommentCreateParams(post: postID, content: content, parent: parentID)
+        )
+        return CommentDetail(comment: response.data)
+    }
+
+    func updateContent(id: Int64, content: String) async throws -> CommentDetail {
+        let response = try await client.api.comments.update(
+            commentId: id,
+            params: CommentUpdateParams(content: content)
+        )
+        return CommentDetail(comment: response.data)
+    }
 }
 
 extension WpApiError {
@@ -190,9 +227,11 @@ extension WpApiError {
 extension CommentsListFilter {
     static let pageSize: UInt32 = 20
 
-    var firstPageParams: CommentListParams {
+    /// Page-one params; `search` narrows the results to matching comments.
+    func firstPageParams(search: String? = nil) -> CommentListParams {
         CommentListParams(
             perPage: Self.pageSize,
+            search: search,
             order: .desc,
             orderby: .dateGmt,
             status: queryStatus

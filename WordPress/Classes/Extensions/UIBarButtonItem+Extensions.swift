@@ -1,6 +1,12 @@
 import UIKit
 
 extension UIBarButtonItem {
+    static func makeCloseButton(target: Any?, action: Selector) -> UIBarButtonItem {
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: target, action: action)
+        closeButton.accessibilityIdentifier = "close-button"
+        return closeButton
+    }
+
     /// Returns a bar button item with a spinner activity indicator.
     @objc public class var activityIndicator: UIBarButtonItem {
         let activityIndicator = UIActivityIndicatorView(style: .medium)

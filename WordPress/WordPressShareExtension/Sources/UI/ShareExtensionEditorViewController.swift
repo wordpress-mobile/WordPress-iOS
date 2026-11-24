@@ -133,15 +133,24 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     /// Title's Height Constraint
     ///
-    fileprivate var titleHeightConstraint: NSLayoutConstraint!
+    fileprivate lazy var titleHeightConstraint: NSLayoutConstraint = {
+        titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
+    }()
 
     /// Title's Top Constraint
     ///
-    fileprivate var titleTopConstraint: NSLayoutConstraint!
+    fileprivate lazy var titleTopConstraint: NSLayoutConstraint = {
+        titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
+    }()
 
     /// Placeholder's Top Constraint
     ///
-    fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
+    fileprivate lazy var textPlaceholderTopConstraint: NSLayoutConstraint = {
+        placeholderLabel.topAnchor.constraint(
+            equalTo: richTextView.topAnchor,
+            constant: richTextView.textContainerInset.top + richTextView.contentInset.top
+        )
+    }()
 
     /// Current keyboard rect used to help size things
     ///
@@ -193,8 +202,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         configureView()
         configureSubviews()
 
-        // Setup Autolayout
-        view.setNeedsUpdateConstraints()
+        // The constraints must exist before `loadContent()`, which can set the title right away.
+        configureConstraints()
 
         // Load everything into the editor from the host app
         loadContent()
@@ -254,10 +263,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     // MARK: - Title and Title placeholder position methods
 
     func refreshTitlePosition() {
-        guard titleTopConstraint != nil && textPlaceholderTopConstraint != nil else {
-            return
-        }
-
         let referenceView: UITextView = richTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y + referenceView.contentInset.top)
 
@@ -378,12 +383,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         view.addSubview(placeholderLabel)
     }
 
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-
-        titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
-        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
-        textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
+    func configureConstraints() {
         updateTitleHeight()
         let layoutGuide = view.layoutMarginsGuide
 
@@ -859,8 +859,9 @@ extension ShareExtensionEditorViewController {
 
         optionsViewController = OptionsTableViewController(options: options)
         optionsViewController.cellDeselectedTintColor = ShareColors.aztecFormatBarInactiveColor
-        optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor
-        optionsViewController.cellSelectedBackgroundColor = ShareColors.aztecFormatPickerSelectedCellBackgroundColor
+        optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
+        optionsViewController.cellSelectedBackgroundColor =
+            ShareColors.aztecFormatPickerSelectedCellBackgroundColor(for: traitCollection)
         optionsViewController.view.tintColor = ShareColors.aztecFormatBarActiveColor
 
         let selectRow = {
@@ -871,7 +872,7 @@ extension ShareExtensionEditorViewController {
             self.optionsViewController?.selectRow(at: index)
         }
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if traitCollection.userInterfaceIdiom == .pad {
             presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
         } else {
             presentToolbarViewControllerAsInputView(optionsViewController)
@@ -886,10 +887,11 @@ extension ShareExtensionEditorViewController {
         viewController.popoverPresentationController?.permittedArrowDirections = [.down]
         viewController.popoverPresentationController?.sourceView = view
 
-        let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
+        let frame = barItem.superview?.convert(barItem.frame, to: view)
 
-        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
-        optionsViewController.popoverPresentationController?.backgroundColor = ShareColors.aztecFormatPickerBackgroundColor
+        optionsViewController.popoverPresentationController?.sourceRect = frame!
+        optionsViewController.popoverPresentationController?.backgroundColor =
+            ShareColors.aztecFormatPickerBackgroundColor(for: traitCollection)
         optionsViewController.popoverPresentationController?.delegate = self
 
         present(viewController, animated: true, completion: completion)
@@ -905,7 +907,7 @@ extension ShareExtensionEditorViewController {
     }
 
     private func dismissOptionsViewController() {
-        switch UIDevice.current.userInterfaceIdiom {
+        switch traitCollection.userInterfaceIdiom {
         case .pad:
             dismiss(animated: true)
         default:
@@ -1263,25 +1265,38 @@ private extension ShareExtensionEditorViewController {
         }
 
         ShareExtractor(extensionContext: extensionContext)
-            .loadShare { [weak self] share in
-                self?.setTitleText(share.title)
-                self?.richTextView.setHTML(share.combinedContentHTML)
+            .loadShare { [weak self] outcome in
+                guard let self else {
+                    return
+                }
+
+                guard !outcome.extractionDidFail else {
+                    self.presentContentExtractionFailure()
+                    return
+                }
+
+                let share = outcome.share
+                self.setTitleText(share.title)
+                self.richTextView.setHTML(share.combinedContentHTML)
 
                 share.images.forEach({ extractedImage in
                     if extractedImage.insertionState == .requiresInsertion {
-                        self?.insertImageAttachment(with: extractedImage.url)
+                        self.insertImageAttachment(with: extractedImage.url)
                     } else {
-                        self?.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: extractedImage.url)
+                        self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: extractedImage.url)
                     }
                 })
 
                 // Lets an extra <p> at the bottom to make editing a little easier
-                if let currentHTML = self?.richTextView.getHTML() {
-                    self?.richTextView.setHTML(currentHTML + "<p></p>")
-                }
+                let currentHTML = self.richTextView.getHTML()
+                self.richTextView.setHTML(currentHTML + "<p></p>")
 
                 // Clear out the extension context after loading it once. We don't need it anymore.
-                self?.context = nil
+                self.context = nil
+
+                if !outcome.failures.isEmpty {
+                    self.presentSkippedAttachmentsNotice()
+                }
         }
     }
 }
@@ -1318,16 +1333,12 @@ fileprivate extension ShareExtensionEditorViewController {
         static let aztecFormatBarInactiveColor = UIColor.secondaryLabel
         static let aztecFormatBarActiveColor = UIAppColor.primary
 
-        static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
-            get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
-            }
+        static func aztecFormatPickerSelectedCellBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+            (traitCollection.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
         }
 
-        static var aztecFormatPickerBackgroundColor: UIColor {
-            get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : .systemGroupedBackground
-            }
+        static func aztecFormatPickerBackgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+            (traitCollection.userInterfaceIdiom == .pad) ? .white : .systemGroupedBackground
         }
     }
 

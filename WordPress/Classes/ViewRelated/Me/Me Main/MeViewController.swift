@@ -81,13 +81,6 @@ public class MeViewController: UITableViewController {
         registerUserActivity()
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Required to update the tableview cell disclosure indicators
-        reloadViewModel()
-    }
-
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
     }
@@ -465,7 +458,7 @@ public class MeViewController: UITableViewController {
                 let _ = try await [refreshDetails, refreshSettings]
                 self.reloadViewModel()
             } catch {
-                DDLogError("\(error.localizedDescription)")
+                Loggers.app.error("\(error.localizedDescription)")
             }
         }
     }
@@ -633,7 +626,7 @@ extension MeViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.me)
+        let textProvider = JetpackBrandingTextProvider()
         return JetpackButton.makeBadgeView(title: textProvider.brandingText(),
                                            target: self,
                                            selector: #selector(jetpackButtonTapped))

@@ -7,7 +7,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
 
     let flags: [OverridableFlag] = [
         FeatureFlag.intelligence,
-        FeatureFlag.newStats,
+        RemoteFeatureFlag.newStats,
         RemoteFeatureFlag.newGutenberg,
         FeatureFlag.newSupport,
     ]

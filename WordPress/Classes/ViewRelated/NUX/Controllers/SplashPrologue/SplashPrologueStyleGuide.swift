@@ -3,15 +3,15 @@ import SwiftUI
 import WordPressUI
 
 struct SplashPrologueStyleGuide {
-    static let backgroundColor = UIColor(light: .colorFromHex("F6F7F7"), dark: .colorFromHex("2C3338"))
+    static let backgroundColor = UIColor(light: UIColor(fromHex: 0xF6F7F7), dark: UIColor(fromHex: 0x2C3338))
 
     struct Title {
         static let font = Font.system(size: 25, weight: .regular, design: .serif)
-        static let textColor = UIColor(light: .colorFromHex("101517"), dark: .white)
+        static let textColor = UIColor(light: UIColor(fromHex: 0x101517), dark: .white)
     }
 
     struct BrushStroke {
-        static let color = UIColor(light: .colorFromHex("BBE0FA"), dark: .colorFromHex("101517"))
+        static let color = UIColor(light: UIColor(fromHex: 0xBBE0FA), dark: UIColor(fromHex: 0x101517))
             .withAlphaComponent(0.3)
     }
 

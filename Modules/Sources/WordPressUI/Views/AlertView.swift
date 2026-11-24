@@ -6,6 +6,10 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
     @ViewBuilder let content: () -> Content
     @ViewBuilder var actions: () -> Actions
 
+    @State private var horizontalSafeArea: CGFloat = 0
+    /// Read before `body` caps the size at `xxLarge`.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     public init(
         @ViewBuilder header: @escaping () -> Header,
         @ViewBuilder content: @escaping () -> Content,
@@ -18,17 +22,33 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            content()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // The content is an illustration. At accessibility text sizes, leave it out and give the text
+            // its room. The sheet then fits the text and buttons (see `alertView(hostedBy:)`).
+            if !dynamicTypeSize.isAccessibilitySize {
+                content()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
             header()
                 .padding(.horizontal, 8)
                 .padding(.bottom, 32)
+                // Give the text the height it needs before the image takes the rest. Otherwise
+                // the two split the spare height, and the text is cut off on a short screen.
+                .layoutPriority(1)
             VStack(spacing: 16) {
                 actions()
             }
             .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(24)
+        // The sheet covers a side inset such as the strip on the iPhone Duo's outer screen, so keep only
+        // the part of the horizontal safe area that both sides share, and center the content in the sheet.
+        .padding(.horizontal, horizontalSafeArea)
+        .ignoresSafeArea(.container, edges: .horizontal)
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            min(proxy.safeAreaInsets.leading, proxy.safeAreaInsets.trailing)
+        } action: {
+            horizontalSafeArea = $0
+        }
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 }
@@ -36,8 +56,56 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
 extension AlertView {
     public func present(in presentingViewController: UIViewController) {
         let hostVC = UIHostingController(rootView: self)
-        hostVC.sheetPresentationController?.detents = [.medium()]
+        hostVC.sheetPresentationController?.detents = [.alertView(hostedBy: hostVC)]
         presentingViewController.present(hostVC, animated: true)
+    }
+}
+
+extension UISheetPresentationController.Detent {
+    /// The height for a sheet that shows an ``AlertView``: half the screen, or taller when the
+    /// alert needs more room, such as on the iPhone Duo's outer screen or with a large text size.
+    /// At accessibility text sizes the alert has no illustration, so the sheet fits its text and buttons.
+    @MainActor
+    public static func alertView<Content: View>(
+        hostedBy hostVC: UIHostingController<Content>
+    ) -> UISheetPresentationController.Detent {
+        let cache = AlertViewHeightCache()
+        return .custom(identifier: .medium) { [weak hostVC] context in
+            let halfHeight = context.maximumDetentValue / 2
+            let medium = UISheetPresentationController.Detent.medium().resolvedValue(in: context) ?? halfHeight
+            guard let hostVC else { return medium }
+            // The sheet's width is only known once it has been laid out.
+            // Match the content's width: the sheet keeps only the horizontal inset both sides share (see `body`).
+            let safeArea = hostVC.view.safeAreaInsets
+            let width = hostVC.view.bounds.width - 2 * min(safeArea.left, safeArea.right)
+            guard width > 0 else { return medium }
+            let sizeCategory = context.containerTraitCollection.preferredContentSizeCategory
+            let height = cache.height(width: width, sizeCategory: sizeCategory) {
+                // Measure with a separate controller, because one on screen adds its safe area to the result.
+                UIHostingController(rootView: hostVC.rootView)
+                    .sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
+                    .height
+            }
+            let minimum = sizeCategory.isAccessibilityCategory ? 0 : medium
+            return min(max(minimum, height), context.maximumDetentValue)
+        }
+    }
+}
+
+/// UIKit resolves a custom detent on every frame while the sheet is dragged, so keep the last
+/// measurement and measure again only when the width or the text size changes.
+@MainActor
+private final class AlertViewHeightCache {
+    private var key: (width: CGFloat, sizeCategory: UIContentSizeCategory)?
+    private var height: CGFloat = 0
+
+    func height(width: CGFloat, sizeCategory: UIContentSizeCategory, measure: () -> CGFloat) -> CGFloat {
+        if let key, key.width == width, key.sizeCategory == sizeCategory {
+            return height
+        }
+        height = measure()
+        key = (width, sizeCategory)
+        return height
     }
 }
 
@@ -97,9 +165,15 @@ public struct AlertDismissButton: View {
             dismiss()
             onDismiss?()
         } label: {
-            Text(AppLocalizedString("shared.button.ok", value: "OK", comment: "A shared button title used in different contexts"))
-                .font(.headline)
-                .frame(maxWidth: .infinity)
+            Text(
+                AppLocalizedString(
+                    "shared.button.ok",
+                    value: "OK",
+                    comment: "A shared button title used in different contexts"
+                )
+            )
+            .font(.headline)
+            .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.roundedRectangle(radius: 8))
@@ -115,16 +189,22 @@ private final class PreviewAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let button = UIButton(primaryAction: UIAction(title: "Show") { [weak self] _ in
-            self?.showAlertView()
-        })
+        let button = UIButton(
+            primaryAction: UIAction(title: "Show") { [weak self] _ in
+                self?.showAlertView()
+            }
+        )
         view.addSubview(button)
         button.pinCenter()
     }
 
     private func showAlertView() {
         let alert = AlertView {
-            AlertHeaderView(title: "Post Saved", description: "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.")
+            AlertHeaderView(
+                title: "Post Saved",
+                description:
+                    "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices."
+            )
         } content: {
             ScaledImage("icon-bookmark", bundle: .module, height: 78)
                 .foregroundStyle(.secondary)

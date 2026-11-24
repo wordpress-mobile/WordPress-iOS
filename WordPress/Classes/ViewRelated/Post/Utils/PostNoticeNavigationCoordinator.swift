@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 /// This class simply exists to coordinate the display of various sections of
 /// the app in response to actions taken by the user from Post notifications.
@@ -29,12 +30,7 @@ class PostNoticeNavigationCoordinator {
         let controller = PreviewWebKitViewController(post: page, source: "post_notice_preview")
         controller.trackOpenEvent()
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-
-        let navigationController = UINavigationController(rootViewController: controller)
-        if presenter.traitCollection.userInterfaceIdiom == .pad {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-        presenter.present(navigationController, animated: true)
+        presenter.presentCoveringWindow(controller)
     }
 
     private static func presentPostEpilogue(for post: Post) {
@@ -47,16 +43,12 @@ class PostNoticeNavigationCoordinator {
             presenter.dismiss(animated: true)
         }
         let viewController = UIHostingController(rootView: view)
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            if let sheetController = viewController.sheetPresentationController {
-                sheetController.detents = [.custom { _ in 420 }]
-                sheetController.preferredCornerRadius = 20
-            }
-        } else {
-            viewController.modalPresentationStyle = .formSheet
-            viewController.preferredContentSize = CGSize(width: 460, height: 460)
-        }
-        presenter.present(viewController, animated: true)
+        presenter.presentAdaptiveSheet(
+            viewController,
+            formSheetSize: CGSize(width: 460, height: 460),
+            compactDetents: [.custom { _ in 420 }],
+            compactCornerRadius: 20
+        )
         context.viewController = viewController
     }
 

@@ -1,69 +1,96 @@
+import Combine
 import Foundation
 import WordPressCore
 import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
 
-class CustomPostTypeService {
-    let blog: TaggedManagedObjectID<Blog>
-    let client: WordPressClient
+/// The part of ``CustomPostTypeService`` the site menu depends on.
+protocol CustomPostTypeServiceProtocol {
+    func refresh() async throws
+    /// Emits whenever the cache records a change that may affect ``customTypes()``.
+    func customTypesUpdates() async throws -> AnyPublisher<Void, Never>
+    func customTypes() async throws -> [PostTypeDetailsWithEditContext]
+}
 
-    private(set) var wpService: WpService?
-    private var collection: PostTypeCollectionWithEditContext?
+class CustomPostTypeService: CustomPostTypeServiceProtocol {
+    /// Identifies a site's record in the wordpress-rs cache. The cache keeps one record per way of
+    /// reaching the site, so a sync over one transport does not update the record of another.
+    enum CacheIdentity: Hashable {
+        case dotComProxy(siteId: Int)
+        case direct(siteURL: URL, apiRootURL: String)
 
-    init(client: WordPressClient, blog: Blog) {
-        self.client = client
-        self.blog = TaggedManagedObjectID(blog)
+        init(site: WordPressSite) {
+            switch site.transport {
+            case let .direct(credentials):
+                self = .direct(siteURL: site.siteURL, apiRootURL: credentials.apiRootURL.url())
+            case let .dotComProxy(siteId, _):
+                self = .dotComProxy(siteId: siteId)
+            }
+        }
     }
 
-    init?(blog: Blog) {
-        guard blog.supportsCoreRESTAPI, let site = try? WordPressSite(blog: blog) else { return nil }
-        self.blog = TaggedManagedObjectID(blog)
-        self.client = WordPressClientFactory.shared.instance(for: site)
+    let client: WordPressClient
+
+    private var wpService: WpService?
+    private var collection: PostTypeCollectionWithEditContext?
+
+    init(client: WordPressClient) {
+        self.client = client
+    }
+
+    convenience init?(blog: Blog) {
+        guard let site = Self.site(for: blog) else { return nil }
+        self.init(site: site)
+    }
+
+    private convenience init(site: WordPressSite) {
+        self.init(client: WordPressClientFactory.shared.instance(for: site))
+    }
+
+    /// A service for the site menu, along with the cache record that the service reads.
+    typealias SiteMenuService = (cacheIdentity: CacheIdentity, service: any CustomPostTypeServiceProtocol)
+
+    static func makeForSiteMenu(blog: Blog) -> SiteMenuService? {
+        guard let site = site(for: blog) else { return nil }
+        return (CacheIdentity(site: site), CustomPostTypeService(site: site))
+    }
+
+    private static func site(for blog: Blog) -> WordPressSite? {
+        guard blog.supportsCoreRESTAPI else { return nil }
+        return try? WordPressSite(blog: blog)
     }
 
     func refresh() async throws {
         let service = try await resolveService()
         _ = try await service.postTypes().syncPostTypes()
+    }
 
-        // If the user has not manually pinned any post types (typically right after first fetching post types),
-        // we automatically pin 3 post types, so that the user can see their content straight from the top-level screens.
-        if !SiteStorageAccess.pinnedPostTypesUpdated(for: blog) {
-            let pinned = try await customTypes()
-                .prefix(3)
-                .map { PinnedPostType(slug: $0.slug, name: $0.name, icon: $0.icon) }
-            SiteStorageAccess.writePinnedPostTypes(pinned, for: blog)
-        }
+    func customTypesUpdates() async throws -> AnyPublisher<Void, Never> {
+        let collection = try await resolveCollection()
+        return await client.cache.databaseUpdatesPublisher()
+            .filter { collection.isRelevantUpdate(hook: $0) }
+            .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
+            .map { _ in }
+            .eraseToAnyPublisher()
+    }
+
+    /// Every cached post type, including ones the app does not list. Reads the cache only.
+    func allPostTypes() async throws -> [PostTypeDetailsWithEditContext] {
+        let service = try await resolveService()
+        return try await service.postTypes()
+            .createPostTypeCollectionWithEditContextFiltered(
+                filter: PostTypeFilter(viewable: nil, showUi: nil, hierarchical: nil)
+            )
+            .loadData()
+            .map(\.data)
     }
 
     func customTypes() async throws -> [PostTypeDetailsWithEditContext] {
         let collection = try await resolveCollection()
         return try await collection.loadData()
-            .compactMap { entry -> PostTypeDetailsWithEditContext? in
-                let details = entry.data
-
-                // TODO: Determine if we should support post types without "editor"
-                // (title-only posts, e.g. GiveWP's `give_forms`).
-                //
-                // Currently wordpress-rs requires the `content` field in API responses,
-                // which is absent for post types that don't support "editor".
-                //
-                // For these post types, the app also needs to hide "open in editor"
-                // options since there is no content body to edit.
-                //
-                // Most plugins that set `show_in_rest = true` do so for block editor
-                // support, which requires "editor". Plugins with data-only post types
-                // (e.g. WooCommerce orders) typically keep `show_in_rest = false` and
-                // use custom REST routes instead. So this may not be worth supporting.
-                guard details.supports.supports(feature: .editor) else {
-                    return nil
-                }
-
-                if case .custom = details.toPostEndpointType(), details.slug != "attachment" {
-                    return details
-                }
-                return nil
-            }
+            .map(\.data)
+            .filter(\.isCustomPostType)
             .sorted(using: KeyPathComparator(\.name))
     }
 
@@ -97,5 +124,36 @@ class CustomPostTypeService {
         let collection = service.postTypes().createPostTypeCollectionWithEditContext()
         self.collection = collection
         return collection
+    }
+}
+
+extension PostTypeDetailsWithEditContext {
+    /// Whether the app lists this post type as a custom post type.
+    var isCustomPostType: Bool {
+        guard viewable, visibility.showUi else {
+            return false
+        }
+
+        // TODO: Determine if we should support post types without "editor"
+        // (title-only posts, e.g. GiveWP's `give_forms`).
+        //
+        // Currently wordpress-rs requires the `content` field in API responses,
+        // which is absent for post types that don't support "editor".
+        //
+        // For these post types, the app also needs to hide "open in editor"
+        // options since there is no content body to edit.
+        //
+        // Most plugins that set `show_in_rest = true` do so for block editor
+        // support, which requires "editor". Plugins with data-only post types
+        // (e.g. WooCommerce orders) typically keep `show_in_rest = false` and
+        // use custom REST routes instead. So this may not be worth supporting.
+        guard supports.supports(feature: .editor) else {
+            return false
+        }
+
+        guard case .custom = toPostEndpointType() else {
+            return false
+        }
+        return slug != "attachment"
     }
 }

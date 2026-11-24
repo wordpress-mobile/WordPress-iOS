@@ -4,14 +4,12 @@ struct ActionSheetButton {
     let title: String
     let image: UIImage
     let identifier: String
-    let badge: UIView?
     let action: () -> Void
 
-    init(title: String, image: UIImage, identifier: String, badge: UIView? = nil, action: @escaping () -> Void) {
+    init(title: String, image: UIImage, identifier: String, action: @escaping () -> Void) {
         self.title = title
         self.image = image
         self.identifier = identifier
-        self.badge = badge
         self.action = action
     }
 }
@@ -38,7 +36,6 @@ class ActionSheetViewController: UIViewController {
             static let imageTintColor: UIColor = .label
             static let font: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .medium)
             static let textColor: UIColor = .label
-            static let badgeHorizontalPadding: CGFloat = 10
         }
 
         enum Stack {
@@ -97,10 +94,13 @@ class ActionSheetViewController: UIViewController {
             return button(buttonInfo)
         })
 
+        // The buttons set the width of the scroll view's content, so match the scroll view, which
+        // stays inside the safe area. Otherwise the content is wider than the scroll view on the
+        // iPhone Duo's outer screen, and the header is cut off.
         let buttonConstraints = buttonViews.flatMap { button in
             [
                 button.heightAnchor.constraint(equalToConstant: Constants.Button.height),
-                button.widthAnchor.constraint(equalTo: view.widthAnchor),
+                button.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             ]
         }
 
@@ -145,6 +145,24 @@ class ActionSheetViewController: UIViewController {
         refreshForTraits()
         updateScrollViewHeight()
         updatePreferredContentSize()
+
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self, UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.refreshForTraits()
+            self.updatePreferredContentSize()
+        }
+    }
+
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+
+        // viewDidLoad runs before presentation, so presentingViewController and the
+        // final traits are only valid here. This replaces the first post-presentation
+        // trait callback the old override relied on. viewIsAppearing fires once per
+        // appearance transition and the popover reframe does not re-enter it, so it
+        // cannot restart the CMM-2111 recursion (that loop ran through
+        // viewDidLayoutSubviews, which never calls updatePreferredContentSize()).
+        refreshForTraits()
+        updatePreferredContentSize()
     }
 
     private func button(_ info: ActionSheetButton) -> UIButton {
@@ -174,21 +192,7 @@ class ActionSheetViewController: UIViewController {
         button.accessibilityIdentifier = info.identifier
         button.translatesAutoresizingMaskIntoConstraints = false
 
-        if let badge = info.badge {
-            button.addSubview(badge)
-            button.addConstraints([
-                badge.constrain(attribute: .left, toAttribute: .right, ofView: button.titleLabel!, relatedBy: .equal, constant: Constants.Button.badgeHorizontalPadding),
-                badge.constrainToSuperview(attribute: .centerY, relatedBy: .equal, constant: 0)
-            ])
-        }
-
         return button
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshForTraits()
-        updatePreferredContentSize()
     }
 
     private func refreshForTraits() {
@@ -209,11 +213,15 @@ class ActionSheetViewController: UIViewController {
         updateScrollViewHeight()
     }
 
-    /// Computes `preferredContentSize` off the layout pass. Assigning it while
-    /// presented in a popover synchronously reframes the popover and re-enters
-    /// `viewDidLayoutSubviews`; doing that from within the layout pass recursed until
-    /// the stack overflowed (CMM-2111). Driving it from `viewDidLoad` and trait
-    /// changes instead breaks that feedback loop.
+    /// Sets `preferredContentSize`. Assigning it while presented in a popover
+    /// synchronously reframes the popover and re-enters `viewDidLayoutSubviews`;
+    /// driving this assignment from a repeating, layout-driven caller recursed
+    /// until the stack overflowed (CMM-2111). The invariant that prevents the loop:
+    /// the popover reframe this triggers must not re-enter the caller, so never
+    /// call this from a layout callback such as `viewDidLayoutSubviews`. Its actual
+    /// callers (`viewDidLoad`, the trait-change registration, and `viewIsAppearing`)
+    /// each run per presentation or per discrete trait change, so the reframe does
+    /// not re-enter them.
     private func updatePreferredContentSize() {
         view.layoutIfNeeded()
         let compressedSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)

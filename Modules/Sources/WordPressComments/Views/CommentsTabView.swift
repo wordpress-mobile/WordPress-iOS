@@ -4,26 +4,21 @@ import WordPressUI
 
 struct CommentsTabView: View {
     @State private var selectedFilter: CommentsListFilter = .all
-    @State private var viewModels: [CommentsListFilter: CommentsListViewModel]
-    @State private var titleResolver: PostTitleResolver
+    @State private var reviewSession: CommentReviewViewModel?
+    private let viewModels: [CommentsListFilter: CommentsListViewModel]
 
-    /// A tapped row (and, recursively, a parent comment) pushes a detail screen
-    /// through it.
-    private let router: CommentsDetailRouter
+    private let context: CommentDetailContext
 
     init(
         viewModels: [CommentsListFilter: CommentsListViewModel],
-        titleResolver: PostTitleResolver,
-        router: CommentsDetailRouter
+        context: CommentDetailContext
     ) {
-        self.router = router
-        _titleResolver = State(initialValue: titleResolver)
-        _viewModels = State(initialValue: viewModels)
+        self.context = context
+        self.viewModels = viewModels
     }
 
     /// Builds one view model per filter tab, all alive for the screen's
-    /// lifetime. The hosting controller keeps the same instances so it can
-    /// retry stale reloads on appearance.
+    /// lifetime, including stale retries when returning from detail.
     ///
     /// The All view model is built first so Pending and Approved can seed
     /// their first appearance from its loaded items. All is a strict
@@ -80,13 +75,29 @@ struct CommentsTabView: View {
             if let viewModel = viewModels[selectedFilter] {
                 CommentsListView(
                     viewModel: viewModel,
-                    titleResolver: titleResolver,
-                    openComment: { router.open(id: $0, seed: $1) }
+                    titleResolver: context.titleResolver,
+                    context: context,
+                    review: { batch in
+                        guard reviewSession == nil else { return }
+                        reviewSession = context.makeReviewSession(batch: batch)
+                    }
                 )
             }
         }
-        .navigationTitle(Strings.title)
-        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $reviewSession) { session in
+            context.makeReviewView(session: session)
+        }
+        .task {
+            await reloadStaleTabs()
+        }
+    }
+
+    func reloadStaleTabs() async {
+        await withTaskGroup(of: Void.self) { group in
+            for viewModel in viewModels.values {
+                group.addTask { await viewModel.reloadIfStale() }
+            }
+        }
     }
 
     private var tabBar: some View {
@@ -136,7 +147,7 @@ private struct AdaptiveTabBarRepresentable: UIViewRepresentable {
             _selection = selection
         }
 
-        @objc func tabChanged(_ tabBar: AdaptiveTabBar) {
+        @MainActor @objc func tabChanged(_ tabBar: AdaptiveTabBar) {
             if items.indices.contains(tabBar.selectedIndex) {
                 selection = items[tabBar.selectedIndex]
             }

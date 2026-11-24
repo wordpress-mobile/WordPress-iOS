@@ -1,3 +1,15 @@
-Some custom post types are now available. You can manage them under My Site if your site is built with WP.com, or on the home screen if your site is self-hosted. We know, we’re amazing. (But very humble about it.)
+Picked a size and quality for your photos in Media settings? The experimental block editor now uses those choices when you upload a photo. It also honors your setting for removing location data. You can use the editor in Lockdown Mode, and it asks before you save a post while media is still uploading.
 
-While we were making your day better, we fixed an issue where canceling the media picker in the experimental block editor would remove images from galleries. Backup logs will also stay in their lane and won’t show up in Personal plan sites by mistake.
+Save a post in the Reader on your iPhone, then open it on your iPad. Your WordPress.com account now syncs up to 1,000 saved posts across devices, including posts you’ve already saved. You can also tap a mention in a post to see that person’s profile. And when you leave a comment, it stays in view.
+
+On iPhone Plus and Pro Max models, post previews now use the full screen in landscape. On iPad, you can narrow the window while editing a post or setting up a site and pick up right where you left off. Even the list of site designs keeps your place.
+
+A few more changes you might notice along the way.
+
+- On self-hosted sites, new posts follow your site’s discussion settings. If you allow comments by default, the conversation is open.
+- If your server blocks sign-in with an application password, the app now tells you what went wrong.
+- When you open a self-hosted post from Spotlight, the preview stays open.
+- Plugin descriptions are readable in dark mode, and you can watch their videos in the app or tap “Watch on YouTube.”
+- We fixed a crash that could happen when sharing a photo to the app.
+
+You’ll need iOS 18 or later for this update. Devices running iOS 17 will no longer receive app updates.

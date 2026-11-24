@@ -63,6 +63,11 @@ class DonutChartView: UIView {
         configureTitleViews()
         configureLegend()
         configureConstraints()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.updateLegendAxis()
+        }
+        updateLegendAxis()
     }
 
     required init?(coder: NSCoder) {
@@ -133,7 +138,7 @@ class DonutChartView: UIView {
     ///     - segments: Used for color, legend titles, and segment size
     func configure(title: String?, totalCount: CGFloat, segments: [Segment]) {
         if segments.reduce(0.0, { $0 + $1.value }) > totalCount {
-            DDLogInfo("DonutChartView: Segment values should not total greater than 100%.")
+            Loggers.app.info("DonutChartView: Segment values should not total greater than 100%.")
         }
 
         self.title = title
@@ -170,7 +175,7 @@ class DonutChartView: UIView {
 
         guard totalCount > 0 else {
             // We must have a total count greater than 0, as we use it to calculate percentages
-            DDLogInfo("DonutChartView: TotalCount must be greater than 0 for chart initialization.")
+            Loggers.app.info("DonutChartView: TotalCount must be greater than 0 for chart initialization.")
             return
         }
 
@@ -258,9 +263,7 @@ class DonutChartView: UIView {
 
     // MARK: - Dynamic Type
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
+    private func updateLegendAxis() {
         if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
             legendStackView.axis = .vertical
             legendStackView.alignment = .leading

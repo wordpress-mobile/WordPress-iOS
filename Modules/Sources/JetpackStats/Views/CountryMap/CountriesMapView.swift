@@ -7,16 +7,33 @@ struct CountriesMapView: View {
     private let mapHeight: CGFloat = 240
     @State private var selectedCountryCode: String?
 
+    /// The map renders in a `WKWebView`, and building one spawns a WebContent process.
+    /// Opening Stats paid for that even though this card sits well below the fold, so the
+    /// web view is built the first time the map scrolls into view and kept from then on.
+    /// The placeholder reserves the map's exact height, so the card lays out the same
+    /// either way.
+    ///
+    /// This relies on the view being inside a `ScrollView`; outside one the map never
+    /// becomes visible to SwiftUI and so is never built.
+    @State private var isMapBuilt = false
+
     var body: some View {
         VStack(spacing: 12) {
             // Map View with tooltip overlay
             ZStack(alignment: .top) {
-                InteractiveMapView(
-                    data: data.mapData,
-                    configuration: .init(tintColor: primaryColor),
-                    selectedCountryCode: $selectedCountryCode
-                )
-                .frame(height: mapHeight)
+                if isMapBuilt {
+                    InteractiveMapView(
+                        data: data.mapData,
+                        configuration: .init(tintColor: primaryColor),
+                        selectedCountryCode: $selectedCountryCode
+                    )
+                }
+            }
+            .frame(height: mapHeight)
+            .onScrollVisibilityChange(threshold: 0.01) { isVisible in
+                if isVisible {
+                    isMapBuilt = true
+                }
             }
 
             // Gradient Legend
@@ -64,61 +81,64 @@ struct CountriesMapView: View {
 }
 
 #Preview {
-    CountriesMapView(
-        data: CountriesMapData(metric: .views, locations: [
-            TopListItem.Location(
-                name: "United States",
-                flag: "🇺🇸",
-                countryCode: "US",
-                metrics: SiteMetricsSet(views: 10000)
-            ),
-            TopListItem.Location(
-                name: "United Kingdom",
-                flag: "🇬🇧",
-                countryCode: "GB",
-                metrics: SiteMetricsSet(views: 4000)
-            ),
-            TopListItem.Location(
-                name: "Canada",
-                flag: "🇨🇦",
-                countryCode: "CA",
-                metrics: SiteMetricsSet(views: 2800)
-            ),
-            TopListItem.Location(
-                name: "Germany",
-                flag: "🇩🇪",
-                countryCode: "DE",
-                metrics: SiteMetricsSet(views: 2000)
-            ),
-            TopListItem.Location(
-                name: "Australia",
-                flag: "🇦🇺",
-                countryCode: "AU",
-                metrics: SiteMetricsSet(views: 1600)
-            ),
-            TopListItem.Location(
-                name: "France",
-                flag: "🇫🇷",
-                countryCode: "FR",
-                metrics: SiteMetricsSet(views: 1400)
-            ),
-            TopListItem.Location(
-                name: "Japan",
-                flag: "🇯🇵",
-                countryCode: "JP",
-                metrics: SiteMetricsSet(views: 1100)
-            ),
-            TopListItem.Location(
-                name: "Netherlands",
-                flag: "🇳🇱",
-                countryCode: "NL",
-                metrics: SiteMetricsSet(views: 800)
-            )
-        ]),
-        primaryColor: Constants.Colors.uiColorBlue
-    )
-    .padding()
-    .cardStyle()
+    // The map is only built once it scrolls into view, so the preview needs a scroll view.
+    ScrollView {
+        CountriesMapView(
+            data: CountriesMapData(metric: .views, locations: [
+                TopListItem.Location(
+                    name: "United States",
+                    flag: "🇺🇸",
+                    countryCode: "US",
+                    metrics: SiteMetricsSet(views: 10000)
+                ),
+                TopListItem.Location(
+                    name: "United Kingdom",
+                    flag: "🇬🇧",
+                    countryCode: "GB",
+                    metrics: SiteMetricsSet(views: 4000)
+                ),
+                TopListItem.Location(
+                    name: "Canada",
+                    flag: "🇨🇦",
+                    countryCode: "CA",
+                    metrics: SiteMetricsSet(views: 2800)
+                ),
+                TopListItem.Location(
+                    name: "Germany",
+                    flag: "🇩🇪",
+                    countryCode: "DE",
+                    metrics: SiteMetricsSet(views: 2000)
+                ),
+                TopListItem.Location(
+                    name: "Australia",
+                    flag: "🇦🇺",
+                    countryCode: "AU",
+                    metrics: SiteMetricsSet(views: 1600)
+                ),
+                TopListItem.Location(
+                    name: "France",
+                    flag: "🇫🇷",
+                    countryCode: "FR",
+                    metrics: SiteMetricsSet(views: 1400)
+                ),
+                TopListItem.Location(
+                    name: "Japan",
+                    flag: "🇯🇵",
+                    countryCode: "JP",
+                    metrics: SiteMetricsSet(views: 1100)
+                ),
+                TopListItem.Location(
+                    name: "Netherlands",
+                    flag: "🇳🇱",
+                    countryCode: "NL",
+                    metrics: SiteMetricsSet(views: 800)
+                )
+            ]),
+            primaryColor: Constants.Colors.uiColorBlue
+        )
+        .padding()
+        .cardStyle()
+    }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(UIColor(light: .secondarySystemBackground, dark: .systemBackground)))
 }

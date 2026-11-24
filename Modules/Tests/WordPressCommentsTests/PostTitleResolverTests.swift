@@ -99,6 +99,76 @@ struct PostTitleResolverTests {
         #expect(await log.batches == [[1, 2], [2]])
     }
 
+    @Test func cacheHitSkipsNetworkLookup() async throws {
+        let cacheLog = FetchLog()
+        let networkLog = FetchLog()
+        let fetcher = PostTitleResolver.cacheFirstFetcher(
+            cache: { ids in
+                await cacheLog.record(ids)
+                return .init(titles: [1: "Cached title"])
+            },
+            network: { ids in
+                await networkLog.record(ids)
+                return .init(titles: [:])
+            }
+        )
+
+        let result = try await fetcher([1])
+
+        #expect(result.titles == [1: "Cached title"])
+        #expect(await cacheLog.batches == [[1]])
+        #expect(await networkLog.batches.isEmpty)
+    }
+
+    @Test func cacheMissFetchesOnlyUnresolvedIDs() async throws {
+        let networkLog = FetchLog()
+        let fetcher = PostTitleResolver.cacheFirstFetcher(
+            cache: { _ in .init(titles: [1: "Cached title"]) },
+            network: { ids in
+                await networkLog.record(ids)
+                return .init(titles: [2: "Network title"])
+            }
+        )
+
+        let result = try await fetcher([1, 2])
+
+        #expect(result.titles == [1: "Cached title", 2: "Network title"])
+        #expect(await networkLog.batches == [[2]])
+    }
+
+    @Test func cacheFailureFallsBackToNetwork() async throws {
+        let networkLog = FetchLog()
+        let fetcher = PostTitleResolver.cacheFirstFetcher(
+            cache: { _ in throw FakeServiceError() },
+            network: { ids in
+                await networkLog.record(ids)
+                return .init(titles: [1: "Network title"])
+            }
+        )
+
+        let result = try await fetcher([1])
+
+        #expect(result.titles == [1: "Network title"])
+        #expect(await networkLog.batches == [[1]])
+    }
+
+    @Test func networkFailureKeepsCachedTitlesAndRetriesOnlyUnresolvedIDs() async throws {
+        let fetcher = PostTitleResolver.cacheFirstFetcher(
+            cache: { _ in .init(titles: [1: "Cached title"]) },
+            network: { _ in throw FakeServiceError() }
+        )
+
+        let result = try await fetcher([1, 2])
+
+        #expect(result.titles == [1: "Cached title"])
+        #expect(result.retryable == [2])
+    }
+
+    @Test func normalizesRenderedTitles() {
+        #expect(PostTitleResolver.normalizedTitle(" <p>Post <strong>title</strong></p> ") == "Post title")
+        #expect(PostTitleResolver.normalizedTitle("<p> </p>") == nil)
+    }
+
     @Test func unknownIDReportsLoading() {
         let resolver = PostTitleResolver { _ in PostTitleResolver.FetchResult(titles: [:]) }
         #expect(resolver.titleState(for: 99) == .loading)

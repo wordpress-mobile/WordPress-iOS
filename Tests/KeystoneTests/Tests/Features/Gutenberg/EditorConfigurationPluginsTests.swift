@@ -12,6 +12,7 @@ import WordPressShared
 // Core Data object ID. Newly inserted blogs have temporary IDs that can repeat across parallel
 // tests, letting one test's `setSupports` write land on another test's blog.
 @Suite("Third-party blocks capability resolution", .serialized)
+@MainActor
 final class EditorConfigurationPluginsTests {
     private let contextManager = ContextManager.forTesting()
     private let database = EphemeralKeyValueDatabase()

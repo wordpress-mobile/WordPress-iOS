@@ -14,7 +14,7 @@ struct DeleteUserConfirmationSheet: View {
     private var dismissAction: DismissAction
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section {
                     Picker(Strings.attributeContentToUserLabel, selection: $deleteUserViewModel.selectedUser) {

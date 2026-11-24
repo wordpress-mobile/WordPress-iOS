@@ -17,10 +17,12 @@ extension RichContentFormatter {
     /// - Parameters:
     ///     - string: The content string to format.
     ///     - isPrivate: Whether the content is from a private blog.
+    ///     - bounds: The bounds of the view that will display the content, used to size gallery images.
+    ///     - traitCollection: The trait collection of the view that will display the content.
     ///
     /// - Returns: The formatted string.
     ///
-    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool, bounds: CGRect, traitCollection: UITraitCollection) -> String {
         guard !string.isEmpty else {
             return string
         }
@@ -31,7 +33,7 @@ extension RichContentFormatter {
         content = removeInlineStyles(content)
         content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
         content = formatGutenbergGallery(content)
-        content = resizeGalleryImageURL(content, isPrivateSite: isPrivate)
+        content = resizeGalleryImageURL(content, isPrivateSite: isPrivate, bounds: bounds, traitCollection: traitCollection)
         content = formatVideoTags(content)
         return content
     }
@@ -41,16 +43,18 @@ extension RichContentFormatter {
     /// - Parameters:
     ///     - string: The content string to format.
     ///     - isPrivate: Whether the content is from a private blog.
+    ///     - bounds: The bounds of the view that will display the content, used to size gallery images.
+    ///     - traitCollection: The trait collection of the view that will display the content.
     ///
     /// - Returns: The formatted string.
     ///
-    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool, bounds: CGRect, traitCollection: UITraitCollection) -> String {
         guard !string.isEmpty else {
             return string
         }
 
-        let imageSize = UIScreen.main.bounds.size
-        let scale = UIScreen.main.scale
+        let imageSize = bounds.size
+        let scale = traitCollection.displayScale
         let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
 
         let mContent = NSMutableString(string: string)
@@ -74,7 +78,7 @@ extension RichContentFormatter {
             if isPrivate {
                 modifiedURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: originalURL)
             } else {
-                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL)
+                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL, traitCollection: traitCollection)
             }
 
             guard modifiedURL.absoluteString.isEmpty() == false else {

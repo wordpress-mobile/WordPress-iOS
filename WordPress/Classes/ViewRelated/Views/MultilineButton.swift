@@ -6,6 +6,11 @@ import UIKit
 ///
 class MultilineButton: UIButton {
 
+    /// Vertical padding kept around a title that wraps. It mirrors the vertical
+    /// content insets set in Interface Builder, which `UIButton` only exposes
+    /// through a deprecated property.
+    var verticalTitlePadding: CGFloat = 0
+
     override var intrinsicContentSize: CGSize {
 
         guard let labelSize = titleLabel?.sizeThatFits(CGSize(width: frame.size.width, height: CGFloat.greatestFiniteMagnitude)),
@@ -13,7 +18,7 @@ class MultilineButton: UIButton {
             return super.intrinsicContentSize
         }
 
-        let desiredHeight = labelSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom
+        let desiredHeight = labelSize.height + verticalTitlePadding
 
         return CGSize(width: frame.size.width, height: desiredHeight)
     }

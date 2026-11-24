@@ -16,6 +16,10 @@ protocol RootViewPresenter: AnyObject {
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?)
 
     func showMeScreen(completion: ((MeViewController) -> Void)?)
+
+    /// Called when an account change re-resolves the app UI type while this presenter stays
+    /// in place, until a UI reload replaces it.
+    func appUITypeDidChange()
 }
 
 // MARK: - RootViewPresenter (Extensions)
@@ -90,6 +94,10 @@ extension RootViewPresenter {
     }
 
     // MARK: Misc
+
+    func appUITypeDidChange() {
+        // Most presenters wait for the UI reload that replaces them.
+    }
 
     func showJetpackOverlayForDisabledEntryPoint() {
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(

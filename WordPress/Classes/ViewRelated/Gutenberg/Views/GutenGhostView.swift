@@ -73,17 +73,14 @@ class GutenGhostView: UIView {
 
         addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate(
-            contentView.constrainToSuperViewEdges()
-        )
+        pinSubviewToAllEdges(contentView)
 
         backgroundColor = .background
     }
 }
 
 private extension UIColor {
-    static let ghostToolbarBackground = UIColor(light: .clear, dark: UIColor.colorFromHex("2e2e2e"))
+    static let ghostToolbarBackground = UIColor(light: .clear, dark: UIColor(fromHex: 0x2E2E2E))
 
     static let ghostBlockBackground = UIColor(light: .clear, dark: .systemGray5)
 

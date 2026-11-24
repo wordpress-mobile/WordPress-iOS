@@ -69,6 +69,8 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         warningButton.setTitleColor(.label, for: .normal)
         warningButton.titleLabel?.numberOfLines = 0
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
+        // Matches the bottom content inset the button carries in Interface Builder.
+        warningButton.verticalTitlePadding = 10
 
         warningButton.isHidden = false
     }

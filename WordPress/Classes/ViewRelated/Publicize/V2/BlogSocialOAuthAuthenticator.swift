@@ -11,7 +11,11 @@ import WordPressData
 /// `WKHTTPCookieStore` already conforms to `CookieJar` via the extension
 /// in `WordPress/Classes/Utility/WebViewController/CookieJar.swift`, so
 /// we can hand it to `RequestAuthenticator.request` as-is.
-struct BlogSocialOAuthAuthenticator: SocialOAuthAuthenticator {
+/// `CoreDataStack` can't be made `Sendable` itself: its only conformer,
+/// `ContextManager`, is a non-final class, so the conformance would trade this
+/// warning for several. `ContextManager` is thread-safe, and this struct only
+/// reads through it.
+struct BlogSocialOAuthAuthenticator: SocialOAuthAuthenticator, @unchecked Sendable {
     private let blogID: TaggedManagedObjectID<Blog>
     private let coreDataStack: CoreDataStack
 
