@@ -55,7 +55,7 @@ private extension ReferrerDetailsCell {
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
+            referrerLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
             referrerLabel.topAnchor.constraint(equalTo: topAnchor, constant: Style.ReferrerDetails.standardCellVerticalPadding),
             referrerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Style.ReferrerDetails.standardCellVerticalPadding)
         ])
@@ -69,7 +69,7 @@ private extension ReferrerDetailsCell {
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
             viewsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: referrerLabel.trailingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
-            viewsLabel.trailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
+            viewsLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -78,11 +78,17 @@ private extension ReferrerDetailsCell {
         separatorView.backgroundColor = Style.separatorColor
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(separatorView)
+        let separatorHeightConstraint = separatorView.heightAnchor.constraint(
+            equalToConstant: Style.separatorHeight(traitCollection: traitCollection)
+        )
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: Style.separatorHeight)
+            separatorHeightConstraint
         ])
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: ReferrerDetailsCell, _) in
+            separatorHeightConstraint.constant = Style.separatorHeight(traitCollection: self.traitCollection)
+        }
     }
 }

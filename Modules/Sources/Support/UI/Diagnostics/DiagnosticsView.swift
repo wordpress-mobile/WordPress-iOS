@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import WordPressCoreProtocols
 
 public struct DiagnosticsView: View {
@@ -19,7 +20,10 @@ public struct DiagnosticsView: View {
             .padding()
         }
         .navigationTitle(Localization.diagnosticsTitle)
-        .background(.background)
+        // Reached from Me, so it takes Me's grouped background rather than the plain one.
+        // `.thinMaterial` is what the card is filled with, and it only reads as a card
+        // against the grouped grey.
+        .background(Color(.systemGroupedBackground))
         .onAppear {
             dataProvider.userDid(.viewDiagnostics)
         }

@@ -122,6 +122,13 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     var activityService = NotificationActivityService.shared
 
+    /// Set by the code that creates the list, before its view loads.
+    var scope: NotificationsListScope = .all
+
+    /// Decides whether the push notification permission primers may appear.
+    var notificationMigrationService: any JetpackNotificationMigrationServiceProtocol =
+        JetpackNotificationMigrationService.shared
+
     private var isNavigationItemsConfigured = false
 
     /// Whether the list is the supplementary column of an expanded split view, so it owns
@@ -140,11 +147,19 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: - View Lifecycle
 
+    /// Creates the list shown by the app's navigation: the tab bar, the iPad sidebar, the popover,
+    /// and the Reader bell.
+    @objc static func makeForAppNavigation() -> NotificationsViewController {
+        let notificationsVC = Notifications.instantiateInitialViewController()
+        notificationsVC.scope = .forAppNavigation()
+        return notificationsVC
+    }
+
     static func showInPopover(
         from presentingVC: UIViewController,
         sourceItem: UIPopoverPresentationControllerSourceItem
     ) {
-        let notificationsVC = Notifications.instantiateInitialViewController()
+        let notificationsVC = makeForAppNavigation()
         notificationsVC.isSidebarModeEnabled = true
 
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
@@ -231,7 +246,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Notifications
         startListeningToNotifications()
-        resetApplicationBadge()
         notificationsBecameVisible()
 
         // Refresh the UI
@@ -263,7 +277,11 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
-        registerUserActivity()
+        // The searchable "Notifications" activity opens the account-level list, which a
+        // Reader notifications list is not.
+        if scope == .all {
+            registerUserActivity()
+        }
 
         markWelcomeNotificationAsSeenIfNeeded()
 
@@ -271,16 +289,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             userDefaults.notificationsTabAccessCount += 1
         }
 
-        // Don't show the notification primers if we already asked during onboarding
-        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
-            return
-        }
-
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
-        }
-        showNotificationPrimerAlertIfNeeded()
-        showSecondNotificationsAlertIfNeeded()
+        showNotificationPrimersIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -517,7 +526,8 @@ private extension NotificationsViewController {
 
     func setupNavigationBar() {
         if !isReaderAppModeEnabled {
-            navigationController?.navigationBar.prefersLargeTitles = false
+            // Only the list's own item: the Reader bell pushes the list onto Reader's stack,
+            // and turning off the bar's large titles would remove them from Reader's screens too.
             navigationItem.largeTitleDisplayMode = .never
         }
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
@@ -545,7 +555,9 @@ private extension NotificationsViewController {
             return button
         }()
     }
+}
 
+extension NotificationsViewController {
     func makeMoreMenuElements() -> [UIAction] {
         // Mark All As Read
         let markAllAsRead: UIAction? = { () -> UIAction? in
@@ -566,7 +578,7 @@ private extension NotificationsViewController {
 
         // Notifications Settings
         let settings: UIAction? = { () -> UIAction? in
-            guard shouldDisplaySettingsButton else {
+            guard shouldDisplaySettingsButton, scope == .all else {
                 return nil
             }
             return UIAction(
@@ -580,7 +592,9 @@ private extension NotificationsViewController {
         // Return
         return [markAllAsRead, settings].compactMap { $0 }
     }
+}
 
+private extension NotificationsViewController {
     @objc func closeNotificationSettings() {
         dismiss(animated: true, completion: nil)
     }
@@ -590,8 +604,12 @@ private extension NotificationsViewController {
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
         filterTabBar.tabBarHeightConstraintPriority = 999
 
-        let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
-        let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+        let leading = tableHeaderView.safeAreaLayoutGuide.leadingAnchor.constraint(
+            equalTo: tableView.safeAreaLayoutGuide.leadingAnchor
+        )
+        let trailing = tableHeaderView.safeAreaLayoutGuide.trailingAnchor.constraint(
+            equalTo: tableView.safeAreaLayoutGuide.trailingAnchor
+        )
 
         leading.priority = UILayoutPriority(999)
         trailing.priority = UILayoutPriority(999)
@@ -652,7 +670,7 @@ private extension NotificationsViewController {
         filterTabBar.superview?.backgroundColor = .systemBackground
         filterTabBar.backgroundColor = .systemBackground
 
-        filterTabBar.items = Filter.allCases
+        filterTabBar.items = filters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
@@ -667,7 +685,7 @@ extension NotificationsViewController {
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.notifications)
+        let textProvider = JetpackBrandingTextProvider()
         jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
@@ -764,19 +782,17 @@ private extension NotificationsViewController {
             return
         }
 
-        resetApplicationBadge()
         notificationsBecameVisible()
         reloadResultsControllerIfNeeded()
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
-        // The account-scoped bell state is owned by NotificationActivityService,
-        // which observes the same notification. It keeps a visible list's
-        // visibility, so rebinding here is enough for the new account's content
-        // to be marked seen, whichever observer runs first.
+        // The account-scoped bell state and icon clear are owned by
+        // NotificationActivityService, which observes the same notification. It
+        // keeps a visible list's visibility, so rebinding here is enough for the
+        // new account's content to be marked seen, whichever observer runs first.
         resetNotifications()
         bindToCurrentAccount()
-        resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
             return
@@ -829,7 +845,7 @@ extension NotificationsViewController {
     /// Pushes the details for a given Notification Instance.
     ///
     private func showDetails(for note: WordPressData.Notification) {
-        DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
+        Loggers.app.info("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Before trying to show the details of a notification, we need to make sure the view is loaded.
         //
@@ -931,7 +947,7 @@ extension NotificationsViewController {
         guard
             let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note)
         else {
-            DDLogError("Notifications: failed creating Comment Detail view.")
+            Loggers.app.error("Notifications: failed creating Comment Detail view.")
             return nil
         }
 
@@ -1190,7 +1206,9 @@ private extension NotificationsViewController {
 
         NotificationSyncMediator()?.markAsRead(note)
     }
+}
 
+extension NotificationsViewController {
     /// Marks all messages as read under the selected filter.
     ///
     @objc func markAllAsRead() {
@@ -1216,7 +1234,9 @@ private extension NotificationsViewController {
                 }
             )
     }
+}
 
+private extension NotificationsViewController {
     /// Presents a confirmation action sheet for mark all as read action.
     @objc func showMarkAllAsReadConfirmation() {
         let title: String
@@ -1264,7 +1284,7 @@ private extension NotificationsViewController {
         let welcomeNotificationSeenKey = userDefaults.welcomeNotificationSeenKey
         if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
-            resetApplicationBadge()
+            activityService.requestIconClear()
             // The tab-bar unread state also depends on this flag, so re-render it.
             activityService.refreshIndicators()
         }
@@ -1348,7 +1368,7 @@ private extension NotificationsViewController {
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
         } catch {
-            DDLogError("Error refreshing Notification Row \(error)")
+            Loggers.app.error("Error refreshing Notification Row \(error)")
         }
     }
 
@@ -1369,7 +1389,7 @@ private extension NotificationsViewController {
             return
         }
 
-        DDLogInfo(
+        Loggers.app.info(
             "\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")"
         )
         tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
@@ -1492,7 +1512,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     @objc func predicateForFetchRequest() -> NSPredicate {
         let deletedIdsPredicate = NSPredicate(format: "NOT (SELF IN %@)", Array(notificationIdsBeingDeleted))
         let selectedFilterPredicate = predicateForSelectedFilters()
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate])
+        return NSCompoundPredicate(
+            andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate, scope.predicate]
+        )
     }
 
     @objc func predicateForSelectedFilters() -> NSPredicate {
@@ -1509,24 +1531,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard
-            let note = tableViewHandler?.resultsController?.managedObject(atUnsafe: indexPath)
-                as? WordPressData.Notification,
-            let cell = cell as? ListTableViewCell
-        else {
-            return
-        }
-
-        cell.configureWithNotification(note)
-
-        // handle undo overlays
-        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
-        cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
-            self?.cancelDeletionRequestForNoteWithID(note.objectID)
-        }
-
-        // additional configurations
-        cell.accessibilityHint = Self.accessibilityHint(for: note)
+        // Required by `WPTableViewHandlerDelegate`. The cells are configured in `tableView(_:cellForRowAt:)`.
     }
 
     func sectionNameKeyPath() -> String {
@@ -1840,21 +1845,21 @@ private extension NotificationsViewController {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
-        DDLogInfo("Sync'ing Notification [\(noteId)]")
+        Loggers.app.info("Sync'ing Notification [\(noteId)]")
 
         mediator?
             .syncNote(with: noteId) { _, note in
                 guard abs(startDate.timeIntervalSinceNow) <= timeout else {
-                    DDLogError("Error: Timeout while trying to load Notification [\(noteId)]")
+                    Loggers.app.error("Error: Timeout while trying to load Notification [\(noteId)]")
                     return
                 }
 
                 guard let note else {
-                    DDLogError("Error: Couldn't load Notification [\(noteId)]")
+                    Loggers.app.error("Error: Couldn't load Notification [\(noteId)]")
                     return
                 }
 
-                DDLogInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
+                Loggers.app.info("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
                 success(note)
             }
     }
@@ -1862,6 +1867,9 @@ private extension NotificationsViewController {
     /// Notifications became visible: hand the newest observed timestamp to the
     /// activity service, which clears the bell, clears the icon, and submits seen.
     func notificationsBecameVisible() {
+        guard scope.tracksAccountActivity else {
+            return
+        }
         activityService.notificationsBecameVisible(
             self,
             accountUUID: boundAccountUUID,
@@ -1873,7 +1881,7 @@ private extension NotificationsViewController {
     /// service to submit as seen. The context observer that calls this exists
     /// only while the list is on screen.
     func notificationsListDidUpdate() {
-        guard UIApplication.shared.applicationState == .active else {
+        guard scope.tracksAccountActivity, UIApplication.shared.applicationState == .active else {
             return
         }
         activityService.notificationsListDidUpdate(
@@ -1930,14 +1938,8 @@ private extension NotificationsViewController {
             mainContext.deleteAllObjects(ofType: Notification.self)
             try mainContext.save()
         } catch {
-            DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
+            Loggers.app.error("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetApplicationBadge() {
-        // These notifications are cleared, so we just need to take Zendesk unread notifications
-        // into account when setting the app icon count.
-        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 
@@ -1994,13 +1996,24 @@ private extension NotificationsViewController {
         UserPersistentStoreFactory.instance()
     }
 
+    /// The filters installed in the filter bar. The bar's selected index is an index into this
+    /// array, not a `Filter` raw value.
+    var filters: [Filter] {
+        switch scope {
+        case .all: Filter.allCases
+        case .reader: [.none, .unread]
+        }
+    }
+
     var filter: Filter {
         get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
-            return Filter(rawValue: selectedIndex) ?? .none
+            guard let selectedIndex = filterTabBar?.selectedIndex, filters.indices.contains(selectedIndex) else {
+                return .none
+            }
+            return filters[selectedIndex]
         }
         set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
+            filterTabBar?.setSelectedIndex(filters.firstIndex(of: newValue) ?? 0)
             reloadResultsController()
         }
     }
@@ -2186,6 +2199,23 @@ private extension NotificationsViewController {
 
 // MARK: - Push Notifications Permission Alert
 extension NotificationsViewController {
+    func showNotificationPrimersIfNeeded() {
+        // Don't show the notification primers if we already asked during onboarding
+        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
+            return
+        }
+
+        guard canShowNotificationPrimers else {
+            return
+        }
+
+        if shouldShowPrimeForPush {
+            setupNotificationPrompt()
+        }
+        showNotificationPrimerAlertIfNeeded()
+        showSecondNotificationsAlertIfNeeded()
+    }
+
     private func showNotificationPrimerAlertIfNeeded() {
         guard shouldShowPrimeForPush, !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
@@ -2235,8 +2265,16 @@ extension NotificationsViewController {
         }
     }
 
+    /// False while the app doesn't present push notifications, as in the WordPress app, so that the
+    /// primers don't ask for a permission the app won't use.
+    private var canShowNotificationPrimers: Bool {
+        notificationMigrationService.shouldPresentNotifications()
+    }
+
     private func showSecondNotificationsAlertIfNeeded() {
-        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold else {
+        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold,
+            canShowNotificationPrimers
+        else {
             return
         }
         showSecondNotificationAlert()

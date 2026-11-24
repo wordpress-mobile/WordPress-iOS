@@ -1,0 +1,10 @@
+Você ficou sabendo? Tornamos o ícone de sino e a guia Notificações mais precisos, mesmo quando as notificações do sistema ou os selos de ícones estão desativados. Agora você está sempre por dentro.
+
+Os tipos de post personalizados agora aparecem diretamente no menu do site depois de Comentários, classificados por nome para maior conveniência: não é mais necessário ter pins personalizados.
+
+Por fim, consertamos vários bugs para facilitar a experiência no seu aplicativo.
+
+– No Leitor, imagens embutidas não desaparecerão em dispositivos com iOS 27.
+– Os uploads não apresentarão mais falhas se o nome do arquivo contiver espaços.
+– Corrigimos uma falha causada pelo compartilhamento de determinados tipos de arquivos de texto.
+– Os usuários do iPad já podem comemorar: o aplicativo não travará no layout compacto da barra de guias ao redimensionar a tela ou trocar de aplicativos.

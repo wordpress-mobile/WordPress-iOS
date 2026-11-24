@@ -4,14 +4,12 @@ struct ActionSheetButton {
     let title: String
     let image: UIImage
     let identifier: String
-    let badge: UIView?
     let action: () -> Void
 
-    init(title: String, image: UIImage, identifier: String, badge: UIView? = nil, action: @escaping () -> Void) {
+    init(title: String, image: UIImage, identifier: String, action: @escaping () -> Void) {
         self.title = title
         self.image = image
         self.identifier = identifier
-        self.badge = badge
         self.action = action
     }
 }
@@ -38,7 +36,6 @@ class ActionSheetViewController: UIViewController {
             static let imageTintColor: UIColor = .label
             static let font: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .medium)
             static let textColor: UIColor = .label
-            static let badgeHorizontalPadding: CGFloat = 10
         }
 
         enum Stack {
@@ -97,10 +94,13 @@ class ActionSheetViewController: UIViewController {
             return button(buttonInfo)
         })
 
+        // The buttons set the width of the scroll view's content, so match the scroll view, which
+        // stays inside the safe area. Otherwise the content is wider than the scroll view on the
+        // iPhone Duo's outer screen, and the header is cut off.
         let buttonConstraints = buttonViews.flatMap { button in
             [
                 button.heightAnchor.constraint(equalToConstant: Constants.Button.height),
-                button.widthAnchor.constraint(equalTo: view.widthAnchor),
+                button.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             ]
         }
 
@@ -191,14 +191,6 @@ class ActionSheetViewController: UIViewController {
         button.contentHorizontalAlignment = .leading
         button.accessibilityIdentifier = info.identifier
         button.translatesAutoresizingMaskIntoConstraints = false
-
-        if let badge = info.badge {
-            button.addSubview(badge)
-            button.addConstraints([
-                badge.constrain(attribute: .left, toAttribute: .right, ofView: button.titleLabel!, relatedBy: .equal, constant: Constants.Button.badgeHorizontalPadding),
-                badge.constrainToSuperview(attribute: .centerY, relatedBy: .equal, constant: 0)
-            ])
-        }
 
         return button
     }

@@ -80,8 +80,7 @@ import AutomatticTracks
     private var didSetupView = false
     private var didBumpStats = false
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
-    private let notificationsButtonViewModel = NotificationsButtonViewModel()
-    private var notificationsButtonCancellable: AnyCancellable?
+    private let notificationsBarButton = ReaderNotificationsBarButton()
 
     /// Content management
     let content = ReaderTableContent()
@@ -92,10 +91,11 @@ import AutomatticTracks
 
     private let prefetcher = ImagePrefetcher()
 
-    enum NavigationItemTag: Int {
-        case notifications
+    /// Tags start at 1 because 0 is every bar button's default tag: removing the items tagged 0
+    /// would also remove untagged items that subclasses add.
+    enum NavigationItemTag: Int, CaseIterable {
+        case notifications = 1
         case share
-        case savedPostsSettings
     }
 
     private var siteID: NSNumber? {
@@ -282,13 +282,6 @@ import AutomatticTracks
         return controller
     }
 
-    /// Convenience method to create an instance for saved posts
-    class func controllerForContentType(_ contentType: ReaderContentType) -> ReaderStreamViewController {
-        let controller = ReaderStreamViewController()
-        controller.contentType = contentType
-        return controller
-    }
-
     // MARK: - LifeCycle Methods
 
     deinit {
@@ -331,9 +324,14 @@ import AutomatticTracks
             name: .ReaderPostSeenToggled,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(savedPostsChanged(_:)),
+            name: .readerSavedPostsDidChange,
+            object: nil
+        )
 
         configureCloseButtonIfNeeded()
-        setupSavedPostsSettingsBarButtonItemIfNeeded()
         setupTableView()
         setupFooterView()
         setupContentHandler()
@@ -406,37 +404,39 @@ import AutomatticTracks
         tableView.reloadData()
     }
 
-    private func setupNotificationsBarButtonItem() {
-        notificationsButtonCancellable = nil
-        if isNotificationsBarButtonEnabled && traitCollection.horizontalSizeClass == .regular {
-            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
-                guard let self else { return }
-                let button = UIBarButtonItem(
-                    image: $0,
-                    style: .plain,
-                    target: self,
-                    action: #selector(buttonShowNotificationsTapped)
-                )
-                button.tag = NavigationItemTag.notifications.rawValue
-                addRightBarButtonItem(button, after: .share)
-            }
+    /// The bell for the current layout. The tap reads it too, so it acts on the layout the
+    /// bell is shown in.
+    ///
+    /// Known issue: a followed site's header also shows a bell, for the site's post
+    /// notification settings, and both bells read as "Notifications". The header bell has no
+    /// accessibility label of its own. This predates the compact-width bell: the Jetpack app
+    /// shows both bells on site streams in regular width.
+    private var notificationsBell: ReaderNotificationsBell {
+        guard !isEmbeddedInDiscover else {
+            return .hidden // Discover shows its own bell
         }
+        return ReaderNotificationsBell(
+            showsPopoverInRegularWidth: isNotificationsBarButtonEnabled,
+            horizontalSizeClass: traitCollection.horizontalSizeClass
+        )
+    }
+
+    private func setupNotificationsBarButtonItem() {
+        removeRightBarButtonItem(withTag: .notifications)
+        let item = notificationsBarButton.makeItem(
+            for: notificationsBell,
+            target: self,
+            action: #selector(buttonShowNotificationsTapped)
+        )
+        guard let item else {
+            return
+        }
+        item.tag = NavigationItemTag.notifications.rawValue
+        addRightBarButtonItem(item, after: .share)
     }
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
-        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
-    }
-
-    private func setupSavedPostsSettingsBarButtonItemIfNeeded() {
-        guard contentType == .saved else { return }
-        let action = UIAction { [weak self] _ in
-            let settingsVC = UIHostingController(rootView: ReaderSavedPostsSettingsView())
-            self?.navigationController?.pushViewController(settingsVC, animated: true)
-        }
-        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), primaryAction: action)
-        button.tag = NavigationItemTag.savedPostsSettings.rawValue
-        button.accessibilityLabel = Strings.savedPostsSettingsAccessibilityLabel
-        addRightBarButtonItem(button)
+        notificationsBell.open(from: self, sourceItem: sender)
     }
 
     // MARK: - Topic acquisition
@@ -445,7 +445,7 @@ import AutomatticTracks
     ///
     private func fetchSiteTopic() {
         guard let siteID else {
-            DDLogError("A siteID is required before fetching a site topic")
+            Loggers.app.error("A siteID is required before fetching a site topic")
             return
         }
 
@@ -463,7 +463,7 @@ import AutomatticTracks
                 guard let objectID,
                     let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic
                 else {
-                    DDLogError("Reader: Error retriving an existing site topic by its objectID")
+                    Loggers.app.error("Reader: Error retriving an existing site topic by its objectID")
                     if self?.isLoadingDiscover ?? false {
                         self?.updateContent(synchronize: false)
                     }
@@ -496,7 +496,7 @@ import AutomatticTracks
                 let context = ContextManager.shared.mainContext
                 guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic
                 else {
-                    DDLogError("Reader: Error retriving an existing tag topic by its objectID")
+                    Loggers.app.error("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
                 }
@@ -808,16 +808,6 @@ import AutomatticTracks
         WPAnalytics.trackReader(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
     }
 
-    func removePost(_ post: ReaderPost) {
-        togglePostSave(post)
-        let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) {
-            [weak self] accepted in
-            guard accepted else { return }
-            self?.togglePostSave(post)
-        }
-        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
-    }
-
     func togglePostSave(_ post: ReaderPost) {
         let origin: ReaderSaveForLaterOrigin = contentType == .saved ? .savedStream : .otherStream
 
@@ -894,7 +884,7 @@ import AutomatticTracks
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogError("Failed to retrieve an existing topic when updating last sync date.")
+            Loggers.app.error("Failed to retrieve an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -1022,7 +1012,7 @@ import AutomatticTracks
 
     private func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
-            DDLogError("Error: Reader tried to sync items when the topic was nil.")
+            Loggers.app.error("Error: Reader tried to sync items when the topic was nil.")
             return
         }
 
@@ -1060,7 +1050,7 @@ import AutomatticTracks
     ) {
         coreDataStack.performAndSave { context in
             guard let topic = (try? context.existingObject(with: originalTopic.objectID)) as? ReaderAbstractTopic else {
-                DDLogError("Error: Could not retrieve an existing topic via its objectID")
+                Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1089,12 +1079,12 @@ import AutomatticTracks
         }
 
         guard let indexPath = indexPathForGapMarker else {
-            DDLogError("Error: Tried to sync a gap when the index path for the gap was nil.")
+            Loggers.app.error("Error: Tried to sync a gap when the index path for the gap was nil.")
             return
         }
 
         guard let post: ReaderGapMarker = content.object(at: indexPath) else {
-            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
+            Loggers.app.error("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
@@ -1106,7 +1096,7 @@ import AutomatticTracks
         coreDataStack.performAndSave { [weak self] context in
             guard let topicInContext = (try? context.existingObject(with: topic.objectID)) as? ReaderAbstractTopic
             else {
-                DDLogError("Error: Could not retrieve an existing topic via its objectID")
+                Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1197,13 +1187,13 @@ import AutomatticTracks
             let post = posts.last as? ReaderPost,
             let sortDate = post.sortDate
         else {
-            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
+            Loggers.app.error("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
         coreDataStack.performAndSave { context in
             guard let topic = (try? context.existingObject(with: originalTopic.objectID)) as? ReaderAbstractTopic else {
-                DDLogError("Error: Could not retrieve an existing topic via its objectID")
+                Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1248,6 +1238,15 @@ import AutomatticTracks
 
     // MARK: - Notifications
 
+    /// Saved posts kept in the account change outside Core Data, so the bookmarks on screen are
+    /// updated here.
+    @objc private func savedPostsChanged(_ notification: Foundation.Notification) {
+        guard isViewLoaded, let indexPaths = tableView.indexPathsForVisibleRows, !indexPaths.isEmpty else {
+            return
+        }
+        tableView.reconfigureRows(at: indexPaths)
+    }
+
     @objc private func postSeenToggled(_ notification: Foundation.Notification) {
 
         // When a post's seen status is toggled outside the stream (ex: post details),
@@ -1284,7 +1283,7 @@ import AutomatticTracks
 
         guard let topicInContext = (try? viewContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic
         else {
-            DDLogError("Error: Could not retrieve an existing topic via its objectID")
+            Loggers.app.error("Error: Could not retrieve an existing topic via its objectID")
             return predicateForNilTopic
         }
 
@@ -1535,7 +1534,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        let viewModel = ReaderPostCellViewModel(post: post, topic: readerTopic)
+        let viewModel = ReaderPostCellViewModel(
+            post: post,
+            topic: readerTopic,
+            traitCollection: tableView.traitCollection
+        )
         viewModel.viewController = self
 
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
@@ -1556,7 +1559,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
-        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+        if traitCollection.horizontalSizeClass == .regular {
             cell.selectionStyle = .none
         }
 
@@ -1611,7 +1614,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
             if !(content.content is [ReaderTagTopic]) {
-                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+                Loggers.app.error("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             }
             return
         }
@@ -1648,13 +1651,13 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             controller.trackingContext.source = source
         }
 
-        if post.isSavedForLater || contentType == .saved {
+        if post.isSavedForDisplay || contentType == .saved {
             trackSavedPostNavigation()
         } else {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
-        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+        if traitCollection.horizontalSizeClass == .regular {
             controller.preferredTransition = .zoom { [weak self] _ in
                 guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
                     return nil
@@ -1881,17 +1884,4 @@ extension ReaderStreamViewController: ContentIdentifiable {
 
         return nil
     }
-}
-
-private enum Strings {
-    static let postRemoved = NSLocalizedString(
-        "reader.savedPostRemovedNotificationTitle",
-        value: "Saved post removed",
-        comment: "Notification title for when saved post is removed"
-    )
-    static let savedPostsSettingsAccessibilityLabel = NSLocalizedString(
-        "reader.savedPosts.settings.button.accessibilityLabel",
-        value: "Saved posts settings",
-        comment: "Accessibility label for the button that opens saved Reader posts import and export settings"
-    )
 }

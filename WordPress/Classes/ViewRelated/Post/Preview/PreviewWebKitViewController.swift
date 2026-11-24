@@ -113,6 +113,12 @@ class PreviewWebKitViewController: WebKitViewController {
         setWidth(selectedDevice.width, viewWidth: size.width)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // A sheet resized along with its window gets no size transition, so fit the width to the new size here.
+        setWidth(selectedDevice.width, viewWidth: view.bounds.width)
+    }
+
     // MARK: Toolbar Items
 
     override func configureToolbarButtons() {
@@ -218,8 +224,8 @@ class PreviewWebKitViewController: WebKitViewController {
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         view.addConstraints([
-            deviceLabel.rightAnchor.constraint(equalTo: view.safeRightAnchor, constant: Constants.deviceLabelPadding),
-            deviceLabel.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Constants.deviceLabelPadding)
+            deviceLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: Constants.deviceLabelPadding),
+            deviceLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.deviceLabelPadding)
         ])
         showLabel(device: selectedDevice)
     }

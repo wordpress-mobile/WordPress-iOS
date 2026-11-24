@@ -13,7 +13,16 @@ extension SiteIconViewModel {
         self.firstLetter = blog.title?.first
 
         if let icon = blog.iconURL {
-            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size, isP2: blog.isAutomatticP2)
+            let isP2 = blog.isAutomatticP2
+            self.imageURL = icon
+            self.sizeImageURL = { url, displayScale in
+                SiteIconViewModel.optimizedURL(
+                    for: url,
+                    imageSize: size.size,
+                    isP2: isP2,
+                    traitCollection: UITraitCollection(displayScale: displayScale)
+                )
+            }
             self.host = MediaHost(blog)
         }
     }
@@ -24,9 +33,17 @@ extension SiteIconViewModel {
         self.firstLetter = readerSiteTopic.title.first
         self.imageURL = SiteIconViewModel.makeReaderSiteIconURL(
             iconURL: readerSiteTopic.siteBlavatar,
-            siteID: readerSiteTopic.siteID.intValue,
-            size: size.size
+            siteID: readerSiteTopic.siteID.intValue
         )
+        if imageURL != nil {
+            self.sizeImageURL = { url, displayScale in
+                SiteIconViewModel.sizeReaderSiteIconURL(
+                    url,
+                    size: size.size,
+                    traitCollection: UITraitCollection(displayScale: displayScale)
+                )
+            }
+        }
     }
 }
 
@@ -34,34 +51,48 @@ extension SiteIconViewModel {
 
 extension SiteIconViewModel {
     /// Returns the size-optimized URL for a given URL.
+    /// - parameter traitCollection: The trait collection of the view that displays the icon.
     static func optimizedURL(
         for url: URL,
         imageSize: CGSize = SiteIconViewModel.Size.regular.size,
-        isP2: Bool = false
+        isP2: Bool = false,
+        traitCollection: UITraitCollection
     ) -> URL? {
         if url.isWordPressComHost || isP2 {
-            return optimizedDotcomURL(from: url, imageSize: imageSize)
+            return optimizedDotcomURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
         }
         if isBlavatarURL(url) {
-            return optimizedBlavatarURL(from: url, imageSize: imageSize)
+            return optimizedBlavatarURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
         }
-        return optimizedPhotonURL(from: url, imageSize: imageSize)
+        return optimizedPhotonURL(from: url, imageSize: imageSize, traitCollection: traitCollection)
     }
 
-    private static func optimizedDotcomURL(from url: URL, imageSize: CGSize) -> URL? {
-        let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
+    private static func optimizedDotcomURL(
+        from url: URL,
+        imageSize: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        let size = imageSize.scaled(by: traitCollection.displayScale)
         let query = String(format: "w=%d&h=%d", Int(size.width), Int(size.height))
         return parseURL(url: url, query: query)
     }
 
-    static func optimizedBlavatarURL(from url: URL, imageSize: CGSize) -> URL? {
-        let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
+    private static func optimizedBlavatarURL(
+        from url: URL,
+        imageSize: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        let size = imageSize.scaled(by: traitCollection.displayScale)
         let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
         return parseURL(url: url, query: query)
     }
 
-    private static func optimizedPhotonURL(from url: URL, imageSize: CGSize) -> URL? {
-        PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
+    private static func optimizedPhotonURL(
+        from url: URL,
+        imageSize: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url, traitCollection: traitCollection)
     }
 
     /// Indicates if the received URL is a Gravatar blavatar. Matches the host exactly or as
@@ -92,22 +123,42 @@ extension SiteIconViewModel {
 // MARK: - SiteIconViewModel (Reader)
 
 extension SiteIconViewModel {
-    /// - parameter isBlavatar: A hint to skip the "is icon blavatar" check.
-    /// - parameter size: Size in points.
-    static func makeReaderSiteIconURL(iconURL: String?, isBlavatar: Bool = false, siteID: Int?, size: CGSize) -> URL? {
+    /// - parameters:
+    ///   - size: Size in points.
+    ///   - traitCollection: The trait collection of the view that displays the icon.
+    static func makeReaderSiteIconURL(
+        iconURL: String?,
+        siteID: Int?,
+        size: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        guard let url = makeReaderSiteIconURL(iconURL: iconURL, siteID: siteID) else {
+            return nil
+        }
+        return sizeReaderSiteIconURL(url, size: size, traitCollection: traitCollection)
+    }
+
+    /// Returns the URL of the site icon before it's sized for a display.
+    private static func makeReaderSiteIconURL(iconURL: String?, siteID: Int?) -> URL? {
         guard let iconURL, !iconURL.isEmpty else {
             if let siteID {
                 return getHardcodedSiteIconURL(siteID: siteID)
             }
             return nil
         }
-        guard let url = URL(string: iconURL) else {
-            return nil
+        return URL(string: iconURL)
+    }
+
+    /// Sizes Gravatar blavatars for the display. Other URLs are returned as is.
+    private static func sizeReaderSiteIconURL(
+        _ url: URL,
+        size: CGSize,
+        traitCollection: UITraitCollection
+    ) -> URL? {
+        guard isBlavatarURL(url) else {
+            return url
         }
-        if isBlavatarURL(url) {
-            return optimizedBlavatarURL(from: url, imageSize: size)
-        }
-        return url
+        return optimizedBlavatarURL(from: url, imageSize: size, traitCollection: traitCollection)
     }
 
     private static func getHardcodedSiteIconURL(siteID: Int) -> URL? {

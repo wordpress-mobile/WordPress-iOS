@@ -119,7 +119,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
                 self?.state = .ready(announcements)
             case .failure(let error):
                 self?.state = .error(error)
-                DDLogError(
+                Loggers.app.error(
                     "Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)"
                 )
             }
@@ -174,7 +174,7 @@ private extension CachedAnnouncementsStore {
                         self?.cache.announcements = announcements
                         self?.cacheState = .ready([])
                     case .failure(let error):
-                        DDLogError(
+                        Loggers.app.error(
                             "Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)"
                         )
                         self?.cacheState = .error(error)

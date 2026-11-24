@@ -3,6 +3,7 @@
 @import WordPressData;
 @import WordPressLegacy;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 @class Comment;
 
@@ -359,7 +360,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service approveComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"Error approving comment: %@", error);
+        WPLogError(@"Error approving comment: %@", error);
         [weakSelf showApproveCommentErrorNotice:error];
     }];
 }
@@ -372,7 +373,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service unapproveComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"Error unapproving comment: %@", error);
+        WPLogError(@"Error unapproving comment: %@", error);
         [weakSelf showUnapproveCommentErrorNotice:error];
     }];
 }
@@ -385,7 +386,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service deleteComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"Error deleting comment: %@", error);
+        WPLogError(@"Error deleting comment: %@", error);
         [weakSelf showTrashCommentErrorNotice:error];
     }];
 }

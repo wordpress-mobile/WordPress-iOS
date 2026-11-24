@@ -1,37 +1,29 @@
 import SwiftUI
 
-/// The "In reply to" strip shown above the content when the comment has a
-/// parent. Tapping it pushes the parent comment via the recursive
-/// `openComment` closure.
+/// Parent context, optionally used as a navigation-link label.
 struct CommentParentStrip: View {
     let parent: CommentListItem
-    let onTap: () -> Void
+    var showsDisclosureIndicator = false
 
     var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 8) {
-                Text(text)
+        HStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(String.localizedStringWithFormat(Strings.inReplyToFormat, parent.authorName))
+                    .font(.footnote.weight(.semibold))
+                Text(parent.snippet)
                     .font(.footnote)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                Spacer(minLength: 0)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(3)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            if showsDisclosureIndicator {
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
             }
-            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
-    }
-
-    private var text: AttributedString {
-        var result = AttributedString(String(format: Strings.inReplyToFormat, parent.authorName))
-        if let range = result.range(of: parent.authorName) {
-            result[range].font = .footnote.weight(.semibold)
-        }
-        var snippet = AttributedString(": \(parent.snippet)")
-        snippet.foregroundColor = .secondary
-        result.append(snippet)
-        return result
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
     }
 }

@@ -14,7 +14,8 @@ struct CommentDetail: Equatable, Sendable {
     let authorIP: String? // edit context only
     let postID: Int64
     let parentID: Int64? // nil when the wire value is 0 (top-level)
-    let contentHTML: String
+    var contentHTML: String
+    var contentRaw: String? // edit context only
     let link: URL?
     let date: Date?
     var status: CommentListItem.Status
@@ -26,13 +27,14 @@ struct CommentDetail: Equatable, Sendable {
         self.init(
             id: comment.id,
             authorName: comment.authorName,
-            avatarURL: comment.authorAvatarUrls.avatarURL,
+            avatarURL: comment.authorAvatarUrls?.avatarURL,
             authorURL: comment.authorUrl,
             authorEmail: nil,
             authorIP: nil,
             postID: comment.post,
             parentID: comment.parent,
             contentHTML: comment.content.rendered,
+            contentRaw: nil,
             link: comment.link,
             date: comment.dateGmt,
             status: CommentListItem.Status(comment.status),
@@ -44,13 +46,14 @@ struct CommentDetail: Equatable, Sendable {
         self.init(
             id: comment.id,
             authorName: comment.authorName,
-            avatarURL: comment.authorAvatarUrls.avatarURL,
+            avatarURL: comment.authorAvatarUrls?.avatarURL,
             authorURL: comment.authorUrl,
             authorEmail: comment.authorEmail,
             authorIP: comment.authorIp,
             postID: comment.post,
             parentID: comment.parent,
             contentHTML: comment.content.rendered,
+            contentRaw: comment.content.raw,
             link: comment.link,
             date: comment.dateGmt,
             status: CommentListItem.Status(comment.status),
@@ -68,6 +71,7 @@ struct CommentDetail: Equatable, Sendable {
         postID: Int64,
         parentID: Int64,
         contentHTML: String,
+        contentRaw: String?,
         link: String,
         date: Date?,
         status: CommentListItem.Status,
@@ -84,6 +88,7 @@ struct CommentDetail: Equatable, Sendable {
         self.postID = postID
         self.parentID = parentID == 0 ? nil : parentID
         self.contentHTML = contentHTML
+        self.contentRaw = contentRaw
         self.link = link.nonEmptyString().flatMap { URL(string: $0) }
         self.date = date
         self.status = status
@@ -102,6 +107,7 @@ extension CommentDetail {
         parentID: Int64 = 0,
         contentHTML: String =
             "<p>Really appreciate the detailed writeup. This is exactly the kind of review I was hoping to find before committing to the upgrade.</p>",
+        contentRaw: String? = "preview raw",
         hasEditContext: Bool = true
     ) -> CommentDetail {
         CommentDetail(
@@ -114,6 +120,7 @@ extension CommentDetail {
             postID: 10,
             parentID: parentID,
             contentHTML: contentHTML,
+            contentRaw: contentRaw,
             link: "https://example.com/?p=10#comment-\(id)",
             date: Date(timeIntervalSince1970: 1_700_000_000),
             status: status,

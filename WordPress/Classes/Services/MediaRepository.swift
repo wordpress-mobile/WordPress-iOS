@@ -10,10 +10,10 @@ final class MediaRepository {
         case unknown
     }
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: CoreDataStack
     private let remoteFactory: MediaServiceRemoteFactory
 
-    init(coreDataStack: CoreDataStackSwift, remoteFactory: MediaServiceRemoteFactory = .init()) {
+    init(coreDataStack: CoreDataStack, remoteFactory: MediaServiceRemoteFactory = .init()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
     }

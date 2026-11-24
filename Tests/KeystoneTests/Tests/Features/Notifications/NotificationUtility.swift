@@ -47,6 +47,18 @@ class NotificationUtility {
         return try .fixture(fromFile: "notifications-pingback.json", insertInto: context)
     }
 
+    func loadNewPostNotification() throws -> WordPressData.Notification {
+        return try .fixture(fromFile: "notifications-new-post.json", insertInto: context)
+    }
+
+    func loadMentionMatchNotification() throws -> WordPressData.Notification {
+        return try .fixture(fromFile: "notifications-automattcher.json", insertInto: context)
+    }
+
+    func loadCommentLikeNotification() throws -> WordPressData.Notification {
+        return try .fixture(fromFile: "notifications-comment-like.json", insertInto: context)
+    }
+
     func mockCommentContent() throws -> FormattableCommentContent {
         let dictionary = try JSONObject(fromFileNamed: "notifications-replied-comment.json")
         let body = dictionary["body"]

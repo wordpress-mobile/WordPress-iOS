@@ -2,7 +2,7 @@ import UIKit
 import DesignSystem
 import WordPressUI
 
-final class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable {
+final class StatsGhostTopCell: StatsGhostBaseCell {
     private let titleHeader: UIView = {
         let header = UIView()
         header.translatesAutoresizingMaskIntoConstraints = false

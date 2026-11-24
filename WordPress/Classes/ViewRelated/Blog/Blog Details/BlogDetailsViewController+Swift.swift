@@ -6,6 +6,7 @@ import WordPressData
 import WordPressShared
 import WordPressAPI
 import WordPressCore
+import WordPressUI
 
 // MARK: - BlogDetailsViewController (Misc)
 
@@ -165,7 +166,7 @@ extension BlogDetailsViewController {
             settingsVC.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 systemItem: .done,
                 primaryAction: UIAction { [weak self] _ in
-                    self?.tableView?.deselectSelectedRowWithAnimation(true)
+                    self?.tableViewModel?.clearSelection()
                     self?.dismiss(animated: true, completion: nil)
                 }
             )
@@ -241,12 +242,7 @@ extension BlogDetailsViewController {
 
     public func showComments(from source: BlogDetailsNavigationSource) {
         if let v2 = CommentsRouting.makeViewController(for: blog) {
-            let properties: [String: Any] = [
-                WPAppAnalyticsKeyTapSource: source.string,
-                WPAppAnalyticsKeyTabSource: "site_menu",
-                "is_v2": "1"
-            ]
-            WPAppAnalytics.track(.openedComments, properties: properties, blog: blog)
+            trackCommentsV2Opened(from: source)
             presentationDelegate?.presentBlogDetailsViewController(v2)
             return
         }
@@ -280,6 +276,15 @@ extension BlogDetailsViewController {
         } else {
             presentationDelegate?.presentBlogDetailsViewController(commentsVC)
         }
+    }
+
+    func trackCommentsV2Opened(from source: BlogDetailsNavigationSource) {
+        let properties: [String: Any] = [
+            WPAppAnalyticsKeyTapSource: source.string,
+            WPAppAnalyticsKeyTabSource: "site_menu",
+            "is_v2": "1"
+        ]
+        WPAppAnalytics.track(.openedComments, properties: properties, blog: blog)
     }
 
     public func showPlugins() {
@@ -373,11 +378,7 @@ extension BlogDetailsViewController {
             onClose: nil
         )
 
-        let navigationController = UINavigationController(rootViewController: webViewController)
-        if traitCollection.userInterfaceIdiom == .pad {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-        present(navigationController, animated: true, completion: nil)
+        presentCoveringWindow(webViewController)
     }
 
     public func showViewAdmin() {
@@ -430,7 +431,7 @@ extension BlogDetailsViewController {
             WPAppAnalyticsKeyTapSource: source.string,
             WPAppAnalyticsKeyTabSource: "site_menu"
         ]
-        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+        if event == .statsAccessed, RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
         WPAppAnalytics.track(event, properties: properties, blog: blog)

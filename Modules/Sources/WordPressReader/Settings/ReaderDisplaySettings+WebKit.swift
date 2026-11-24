@@ -13,7 +13,7 @@ extension ReaderDisplaySettings {
 
     private static let baseStylesheet: String = {
         guard let fileURL = Bundle.module.url(forResource: "gutenbergContentStyles", withExtension: "css"),
-              let string = try? String(contentsOf: fileURL) else {
+              let string = try? String(contentsOf: fileURL, encoding: .utf8) else {
             assertionFailure("css missing")
             return ""
         }

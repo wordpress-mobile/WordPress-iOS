@@ -549,7 +549,7 @@ class SharingButtonsViewController: UITableViewController {
             },
             failure: { [weak self] (error: Error) in
                 let error = error as NSError
-                DDLogError("\(error.description)")
+                Loggers.app.error("\(error.description)")
                 self?.showErrorSyncingMessage(error)
             })
     }
@@ -564,7 +564,7 @@ class SharingButtonsViewController: UITableViewController {
                 self?.reloadButtons()
             },
             failure: { (error: NSError?) in
-                DDLogError("\(String(describing: error))")
+                Loggers.app.error("\(String(describing: error))")
         })
     }
 
@@ -578,7 +578,7 @@ class SharingButtonsViewController: UITableViewController {
             },
             failure: { (error: Error) in
                 let error = error as NSError
-                DDLogError("\(error.description)")
+                Loggers.app.error("\(error.description)")
         })
     }
 
@@ -664,7 +664,7 @@ class SharingButtonsViewController: UITableViewController {
                 }
             },
             failure: { [weak self] (error: NSError?) in
-                DDLogError("\(String(describing: error))")
+                Loggers.app.error("\(String(describing: error))")
                 self?.showErrorSyncingMessage(error)
         })
     }

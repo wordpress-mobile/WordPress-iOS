@@ -14,7 +14,7 @@ class MediaThumbnailExporterTests: XCTestCase {
         let expect = self.expectation(description: "thumbnail image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
 
-        let exporter = MediaThumbnailExporter()
+        let exporter = MediaThumbnailExporter(traitCollection: UITraitCollection(displayScale: 2))
         exporter.options.preferredSize = CGSize(width: 200, height: 200)
         exporter.exportThumbnail(forFile: url,
                                  onCompletion: { identifier, export in
@@ -39,7 +39,7 @@ class MediaThumbnailExporterTests: XCTestCase {
         }
         let expect = self.expectation(description: "video thumbnail export by URL")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaThumbnailExporter()
+        let exporter = MediaThumbnailExporter(traitCollection: UITraitCollection(displayScale: 2))
         exporter.options.preferredSize = CGSize(width: 200, height: 200)
         exporter.exportThumbnail(forFile: url,
                                  onCompletion: { identifier, export in

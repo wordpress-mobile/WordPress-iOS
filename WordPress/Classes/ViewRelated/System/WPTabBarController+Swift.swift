@@ -10,22 +10,18 @@ import WordPressUI
     case reader
     case notifications
     case me
-
-    var hasStaticScreen: Bool {
-        switch self {
-        case .reader:
-            return true
-        case .notifications:
-            return true
-        case .mySites:
-            return false
-        case .me:
-            return false
-        }
-    }
 }
 
 extension WPTabBarController {
+    /// Whether `tab` shows the Moved-to-Jetpack poster instead of its live screen.
+    func showsPoster(in tab: WPTab) -> Bool {
+        switch tab {
+        case .reader: shouldUseStaticReader
+        case .notifications: shouldUseStaticNotifications
+        case .mySites, .me: false
+        }
+    }
+
     /// Keeps ``tabBarMinimizeBehavior`` in sync with the selected tab.
     ///
     /// This is driven from the selection itself rather than from `UITabBarControllerDelegate`.
@@ -148,7 +144,7 @@ extension WPTabBarController {
             return false
         }
 
-        if tabType.hasStaticScreen && shouldUseStaticScreens {
+        if showsPoster(in: tabType) {
             return false
         }
 

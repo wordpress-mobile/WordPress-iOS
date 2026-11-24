@@ -23,16 +23,6 @@ class JetpackBrandingCoordinator {
     }
 
     static func shouldShowBannerForJetpackDependentFeatures() -> Bool {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
-        switch phase {
-        case .two:
-            fallthrough
-        case .three:
-            fallthrough
-        case .staticScreens:
-            return true
-        default:
-            return false
-        }
+        JetpackFeaturesRemovalCoordinator.generalPhase() == .staticScreens
     }
 }

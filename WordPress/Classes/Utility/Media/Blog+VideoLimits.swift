@@ -15,12 +15,17 @@ extension Blog {
     }
 
     /// Returns `true` if the blog is allowed to upload the video at the given URL.
-    func canUploadVideo(from videoURL: URL) -> Bool {
+    ///
+    /// Runs on the caller's actor, so the blog is read on the caller's thread,
+    /// as with any other access to its properties.
+    nonisolated(nonsending) func canUploadVideo(from videoURL: URL) async -> Bool {
         guard let limit = videoDurationLimit else {
             return true
         }
-        let asset = AVAsset(url: videoURL)
-        let duration = CMTimeGetSeconds(asset.duration)
-        return duration <= limit
+        let asset = AVURLAsset(url: videoURL)
+        guard let duration = try? await asset.load(.duration) else {
+            return true
+        }
+        return CMTimeGetSeconds(duration) <= limit
     }
 }

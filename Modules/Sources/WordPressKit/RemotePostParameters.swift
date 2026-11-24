@@ -24,7 +24,20 @@ public struct RemotePostCreateParameters: Equatable {
     public var otherTerms: [String: [String]] = [:]
     public var categoryIDs: [Int] = []
     public var metadata: Set<RemotePostMetadataItem> = []
-    public var discussion: RemotePostDiscussionSettings = .default
+    public var commentStatus: RemotePostDiscussionState?
+    public var pingStatus: RemotePostDiscussionState?
+
+    // TODO: Refactor RemotePostDiscussionSettings to preserve optional statuses
+    // through diffing and updates. Keep the legacy WordPress.com fallback
+    // in its encoder.
+    /// Legacy view for the WordPress.com REST encoder and change detection.
+    /// An unknown status reads as open. XML-RPC creates encode the optional statuses directly.
+    public var discussion: RemotePostDiscussionSettings {
+        RemotePostDiscussionSettings(
+            allowComments: commentStatus != .closed,
+            allowPings: pingStatus != .closed
+        )
+    }
 
     public init(type: String, status: String) {
         self.type = type
@@ -203,7 +216,13 @@ extension RemotePostCreateParameters {
             self.categoryIDs = categoryIDs
         }
         if let discussion = changes.discussion {
-            self.discussion = discussion
+            // Unknown reads as open, so a status whose effective value is unchanged stays unknown.
+            if discussion.allowComments != self.discussion.allowComments {
+                commentStatus = RemotePostDiscussionState(isOpen: discussion.allowComments)
+            }
+            if discussion.allowPings != self.discussion.allowPings {
+                pingStatus = RemotePostDiscussionState(isOpen: discussion.allowPings)
+            }
         }
         if let metadata = changes.metadata {
             self.metadata = metadata
@@ -445,10 +464,9 @@ struct RemotePostCreateParametersXMLRPCEncoder: Encodable {
         if parameters.isSticky {
             try container.encode(parameters.isSticky, forKey: .isSticky)
         }
-        if parameters.discussion != .default {
-            try container.encode(RemotePostDiscussionState(isOpen: parameters.discussion.allowComments).rawValue, forKey: .commentStatus)
-            try container.encode(RemotePostDiscussionState(isOpen: parameters.discussion.allowPings).rawValue, forKey: .pingStatus)
-        }
+        // wp.newPost closes comments when comment_status is omitted, even on an open-default site.
+        try container.encodeIfPresent(parameters.commentStatus?.rawValue, forKey: .commentStatus)
+        try container.encodeIfPresent(parameters.pingStatus?.rawValue, forKey: .pingStatus)
     }
 }
 

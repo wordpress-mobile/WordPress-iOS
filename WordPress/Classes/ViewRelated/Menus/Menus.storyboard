@@ -82,10 +82,10 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jeR-f3-QEg" firstAttribute="height" secondItem="cls-wf-pzE" secondAttribute="height" id="0Yx-TU-qvd"/>
-                            <constraint firstAttribute="trailing" secondItem="jeR-f3-QEg" secondAttribute="trailing" id="Bgp-Yp-UQK"/>
+                            <constraint firstAttribute="trailing" secondItem="jeR-f3-QEg" secondAttribute="trailing" placeholder="YES" id="Bgp-Yp-UQK"/>
                             <constraint firstAttribute="bottom" secondItem="jeR-f3-QEg" secondAttribute="bottom" id="NJn-tH-STF"/>
-                            <constraint firstItem="jeR-f3-QEg" firstAttribute="leading" secondItem="cls-wf-pzE" secondAttribute="leading" id="Nvy-Ye-Gmg"/>
-                            <constraint firstItem="jeR-f3-QEg" firstAttribute="width" secondItem="cls-wf-pzE" secondAttribute="width" id="YET-iK-f1R"/>
+                            <constraint firstItem="jeR-f3-QEg" firstAttribute="leading" secondItem="cls-wf-pzE" secondAttribute="leading" placeholder="YES" id="Nvy-Ye-Gmg"/>
+                            <constraint firstItem="jeR-f3-QEg" firstAttribute="width" secondItem="cls-wf-pzE" secondAttribute="width" placeholder="YES" id="YET-iK-f1R"/>
                             <constraint firstItem="jeR-f3-QEg" firstAttribute="top" secondItem="cls-wf-pzE" secondAttribute="top" id="uNp-3z-QS6"/>
                         </constraints>
                     </view>

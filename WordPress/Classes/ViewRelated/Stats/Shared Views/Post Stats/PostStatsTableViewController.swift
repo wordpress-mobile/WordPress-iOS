@@ -65,9 +65,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = Bundle.keystone.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
-            return nil
-        }
+        let cell = SiteStatsTableHeaderView()
 
         let lastTwoWeeks = store.getPostStats(for: postID)?.lastTwoWeeks ?? []
 
@@ -135,7 +133,7 @@ private extension PostStatsTableViewController {
             properties["post_id"] = postIdentifier
         }
 
-        if FeatureFlag.newStats.enabled {
+        if RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
 

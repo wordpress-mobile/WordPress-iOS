@@ -43,6 +43,7 @@ final class ReaderSearchViewController: UIViewController {
     private var previousSearchTopic: ReaderAbstractTopic?
     private let contextManager = ContextManager.shared
     private var isFirstAppearance = true
+    private let notificationsBarButton = ReaderNotificationsBarButton()
 
     var isStandaloneAppModeEnabled = false
 
@@ -109,7 +110,33 @@ final class ReaderSearchViewController: UIViewController {
 
         if isModal() {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonPressed))
+        } else {
+            setupNotificationsBarButtonItem()
+            registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+                self.setupNotificationsBarButtonItem()
+            }
         }
+    }
+
+    /// The bell for the current layout. The tap reads it too, so it acts on the layout the
+    /// bell is shown in.
+    private var notificationsBell: ReaderNotificationsBell {
+        ReaderNotificationsBell(
+            showsPopoverInRegularWidth: false,
+            horizontalSizeClass: traitCollection.horizontalSizeClass
+        )
+    }
+
+    private func setupNotificationsBarButtonItem() {
+        navigationItem.rightBarButtonItem = notificationsBarButton.makeItem(
+            for: notificationsBell,
+            target: self,
+            action: #selector(buttonShowNotificationsTapped)
+        )
+    }
+
+    @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
+        notificationsBell.open(from: self, sourceItem: sender)
     }
 
     // MARK: Actions

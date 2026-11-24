@@ -3,14 +3,6 @@ import BuildSettingsKit
 
 @objc
 public enum RemoteFeatureFlag: Int, CaseIterable {
-    case jetpackFeaturesRemovalPhaseOne
-    case jetpackFeaturesRemovalPhaseTwo
-    case jetpackFeaturesRemovalPhaseThree
-    case jetpackFeaturesRemovalPhaseFour
-    case jetpackFeaturesRemovalPhaseNewUsers
-    case jetpackFeaturesRemovalPhaseSelfHosted
-    case jetpackFeaturesRemovalStaticPosters
-    case jetpackMigrationPreventDuplicateNotifications
     case blaze
     case blazeManageCampaigns
     case wordPressIndividualPluginSupport
@@ -30,27 +22,13 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case newGutenberg
     case newGutenbergPlugins
     case statsAds
+    case readerInWordPressApp
+    case newStats
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
 
         switch self {
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return true
-        case .jetpackFeaturesRemovalPhaseOne:
-            return false
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return false
-        case .jetpackFeaturesRemovalPhaseThree:
-            return false
-        case .jetpackFeaturesRemovalPhaseFour:
-            return false
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return false
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return false
-        case .jetpackFeaturesRemovalStaticPosters:
-            return true
         case .blaze:
             return false
         case .blazeManageCampaigns:
@@ -89,28 +67,16 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .statsAds:
             return false
+        case .readerInWordPressApp:
+            return false
+        case .newStats:
+            return false
         }
     }
 
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String {
         switch self {
-        case .jetpackFeaturesRemovalPhaseOne:
-            return "jp_removal_one"
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return "jp_removal_two"
-        case .jetpackFeaturesRemovalPhaseThree:
-            return "jp_removal_three"
-        case .jetpackFeaturesRemovalPhaseFour:
-            return "jp_removal_four"
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return "jp_removal_new_users"
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return "jp_removal_self_hosted"
-        case .jetpackFeaturesRemovalStaticPosters:
-            return "jp_removal_static_posters"
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return "prevent_duplicate_notifs_remote_field"
         case .blaze:
             return "blaze"
         case .blazeManageCampaigns:
@@ -149,27 +115,15 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "gutenberg_kit_plugins"
         case .statsAds:
             return "stats_ads"
+        case .readerInWordPressApp:
+            return "wordpress_ios_reader"
+        case .newStats:
+            return "ios_new_stats"
         }
     }
 
     public var description: String {
         switch self {
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
-        case .jetpackFeaturesRemovalPhaseOne:
-            return "Jetpack Features Removal Phase One"
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return "Jetpack Features Removal Phase Two"
-        case .jetpackFeaturesRemovalPhaseThree:
-            return "Jetpack Features Removal Phase Three"
-        case .jetpackFeaturesRemovalPhaseFour:
-            return "Jetpack Features Removal Phase Four"
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return "Jetpack Features Removal Phase For New Users"
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return "Jetpack Features Removal Phase For Self-Hosted Sites"
-        case .jetpackFeaturesRemovalStaticPosters:
-            return "Jetpack Features Removal Static Screens Phase"
         case .blaze:
             return "Blaze"
         case .blazeManageCampaigns:
@@ -208,6 +162,15 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Experimental Block Editor Plugins"
         case .statsAds:
             return "Stats Ads Tab"
+        case .readerInWordPressApp:
+            return "Reader in WordPress App"
+        case .newStats:
+            // - warning: This string is also the override's storage key: `key` builds it
+            // with `String(describing:)`, which resolves through `CustomStringConvertible`.
+            // It carries every pre-existing opt-in across the move from `FeatureFlag.newStats`,
+            // so changing it silently re-enrols everyone who had turned New Stats on or off.
+            // `NewStatsFeatureFlagTests` pins it.
+            return "New Stats"
         }
     }
 
@@ -224,7 +187,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         if let remoteValue = remoteStore.value(for: remoteKey) { // The value may not be in the cache if this is the first run
             return remoteValue
         }
-        DDLogInfo("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
+        Loggers.app.info("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
         return defaultValue
     }
 }
@@ -240,6 +203,12 @@ extension RemoteFeatureFlag: OverridableFlag {
 
     var canOverride: Bool {
         true
+    }
+
+    /// New Stats is rolled out remotely, but an explicit choice by the user always wins:
+    /// opting out keeps the classic experience even once the rollout reaches them.
+    var isStickyOverride: Bool {
+        self == .newStats
     }
 }
 

@@ -131,7 +131,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
 
-        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post, traitCollection: traitCollection)
 
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.editingAlreadyPublishedImage = true
@@ -252,7 +252,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
-        GutenbergImageLoader(post: post)
+        let loader = GutenbergImageLoader(post: post, traitCollection: traitCollection)
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: GutenbergViewController, _) in
+            self.gutenbergImageLoader.traitCollection = self.traitCollection
+        }
+        return loader
     }()
 
     private lazy var gutenberg: Gutenberg = {
@@ -353,7 +357,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
                     self?.gutenberg.updateCapabilities()
                 },
                 failure: { error in
-                    DDLogError("Error syncing JETPACK: \(String(describing: error))")
+                    Loggers.app.error("Error syncing JETPACK: \(String(describing: error))")
                 }
             )
 
@@ -412,7 +416,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 
         // Add bottom border line
-        let screenScale = UIScreen.main.scale
+        let screenScale = traitCollection.displayScale
         let borderWidth: CGFloat = 1.0 / screenScale
         let borderColor = UIColor(red: 60 / 255, green: 60 / 255, blue: 67 / 255, alpha: 0.36).cgColor
 
@@ -426,6 +430,16 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         )
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: GutenbergViewController, _) in
+            // Keep the border one pixel thick, anchored to the bottom edge
+            let borderWidth: CGFloat = 1.0 / self.traitCollection.displayScale
+            borderBottom.frame = CGRect(
+                x: borderBottom.frame.minX,
+                y: borderBottom.frame.maxY - borderWidth,
+                width: borderBottom.frame.width,
+                height: borderWidth
+            )
+        }
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
@@ -930,15 +944,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:
-            DDLogDebug("\(message)")
+            Loggers.app.debug("\(message)")
         case .info:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         case .warn:
-            DDLogWarn("\(message)")
+            Loggers.app.warning("\(message)")
         case .error, .fatal:
-            DDLogError("\(message)")
+            Loggers.app.error("\(message)")
         @unknown default:
-            DDLogInfo("\(message)")
+            Loggers.app.info("\(message)")
         }
     }
 
@@ -953,7 +967,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             let controller = try GutenbergWebNavigationController(with: post, block: block)
             showGutenbergWeb(controller)
         } catch {
-            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
+            Loggers.app.error("Error loading Gutenberg Web with unsupported block: \(error)")
             return showUnsupportedBlockUnexpectedErrorAlert()
         }
     }
@@ -1097,12 +1111,18 @@ extension GutenbergViewController {
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
         NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            suggestionsController.view.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 0
+            ),
+            suggestionsController.view.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: 0
+            ),
             // The keyboard layout guide sits at the bottom safe area edge while the
             // keyboard is hidden and tracks the keyboard's top while it's shown.
             suggestionsController.view.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
-            suggestionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         suggestionsController.didMove(toParent: self)
     }
@@ -1385,7 +1405,7 @@ extension GutenbergViewController {
                         self.gutenberg.updateEditorSettings(response.blockEditorSettings)
                     }
                 case .failure(let err):
-                    DDLogError("Error fetching settings: \(err)")
+                    Loggers.app.error("Error fetching settings: \(err)")
                 }
             })
     }

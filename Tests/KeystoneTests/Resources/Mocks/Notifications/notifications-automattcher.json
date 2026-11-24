@@ -1,0 +1,38 @@
+{
+    "notificationId": "55552",
+    "type": "automattcher",
+    "read": 1,
+    "noticon": "\uf814",
+    "timestamp": "2015-03-31T11:00:00+00:00",
+    "icon": "https://2.gravatar.com/avatar/33333333",
+    "url": "https://somethingthatmightnotexist.wordpress.com/2015/03/26/something/",
+    "subject": [
+        {
+            "text": "You were mentioned in Something",
+            "ranges": [
+                {
+                    "type": "post",
+                    "indices": [
+                        22,
+                        31
+                    ],
+                    "url": "https://somethingthatmightnotexist.wordpress.com/2015/03/26/something/",
+                    "site_id": 444444,
+                    "id": 44
+                }
+            ]
+        }
+    ],
+    "body": [],
+    "meta": {
+        "ids": {
+            "site": 444444,
+            "post": 45
+        },
+        "links": {
+            "site": "https://public-api.wordpress.com/rest/v1/sites/444444",
+            "post": "https://public-api.wordpress.com/rest/v1/posts/45"
+        }
+    },
+    "title": "Mention"
+}

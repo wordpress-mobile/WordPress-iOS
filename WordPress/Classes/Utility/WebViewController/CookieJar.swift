@@ -4,140 +4,66 @@ import WebKit
 /// Provides a common interface to look for a logged-in WordPress cookie in different
 /// cookie storage systems.
 ///
-protocol CookieJar: AnyObject {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
+/// `HTTPCookieStorage` and `WKHTTPCookieStore` satisfy `setCookie(_:)` and `deleteCookie(_:)`
+/// with their own methods.
+protocol CookieJar: Sendable {
+    func getCookies() async -> [HTTPCookie]
+    func setCookie(_ cookie: HTTPCookie) async
+    func deleteCookie(_ cookie: HTTPCookie) async
 }
 
 extension CookieJar {
-    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+    func hasWordPressComAuthCookie(username: String, atomicSite: Bool) async -> Bool {
         let url = URL(string: "https://wordpress.com/")!
 
-        return hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+        return await hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite)
     }
 
-    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
-        hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
+    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String) async -> Bool {
+        await hasWordPressAuthCookie(for: url, username: username, atomicSite: false)
     }
 
-    private func hasWordPressAuthCookie(
-        for url: URL,
-        username: String,
-        atomicSite: Bool,
-        completion: @escaping (Bool) -> Void
-    ) {
-        getCookies(url: url) { cookies in
-            let cookie =
-                cookies
-                .contains(where: { cookie in
-                    cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
-                })
+    private func hasWordPressAuthCookie(for url: URL, username: String, atomicSite: Bool) async -> Bool {
+        await getCookies()
+            .contains { cookie in
+                cookie.matches(url: url) && cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
+            }
+    }
 
-            completion(cookie)
+    func removeWordPressComCookies() async {
+        for cookie in await getCookies() where cookie.isWordPressComCookie {
+            await deleteCookie(cookie)
         }
     }
 
-    func removeWordPressComCookies(completion: @escaping () -> Void) {
-        getCookies { [unowned self] cookies in
-            self.removeCookies(cookies.filter({ $0.domain.hasSuffix(".wordpress.com") }), completion: completion)
+    func setCookies(_ cookies: [HTTPCookie]) async {
+        for cookie in cookies {
+            await setCookie(cookie)
         }
     }
 }
 
 extension HTTPCookieStorage: CookieJar {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
-        completion(cookies(for: url) ?? [])
-    }
-
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
-        completion(cookies ?? [])
-    }
-
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        cookies.forEach(deleteCookie(_:))
-        completion()
-    }
-
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        for cookie in cookies {
-            setCookie(cookie)
-        }
-
-        completion()
+    func getCookies() async -> [HTTPCookie] {
+        cookies ?? []
     }
 }
 
 extension WKHTTPCookieStore: CookieJar {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
-
-        // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
-        // - adds timeout so the above failure will eventually return
-        // - waits for the cookies on a background thread so that:
-        //   1. we are not blocking the main thread for UI reasons
-        //   2. cookies seem to never load when main thread is blocked (perhaps they dispatch to the main thread later on)
-
-        DispatchQueue.global(qos: .userInitiated)
-            .async {
-                let group = DispatchGroup()
-                group.enter()
-
-                var urlCookies: [HTTPCookie] = []
-
-                DispatchQueue.main.async {
-                    self.getAllCookies { cookies in
-                        urlCookies = cookies.filter({ cookie in
-                            cookie.matches(url: url)
-                        })
-                        group.leave()
-                    }
-                }
-
-                let result = group.wait(timeout: .now() + .seconds(2))
-                if result == .timedOut {
-                    DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
-                }
-
-                DispatchQueue.main.async {
-                    completion(urlCookies)
-                }
-            }
+    func getCookies() async -> [HTTPCookie] {
+        // `allCookies()` can report no cookies while WebKit's network process is not running for
+        // this data store, and does not start it. Reading the cookie policy does.
+        //
+        // Neither call has a timeout, deliberately. A slow reply reported as "no cookies" would
+        // make `removeWordPressComCookies` remove nothing.
+        _ = await cookiePolicy
+        return await allCookies()
     }
+}
 
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
-        getAllCookies(completion)
-    }
-
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        let group = DispatchGroup()
-        cookies
-            .forEach({ [unowned self] cookie in
-                group.enter()
-                self.delete(
-                    cookie,
-                    completionHandler: {
-                        group.leave()
-                    }
-                )
-            })
-        let result = group.wait(timeout: .now() + .seconds(2))
-        if result == .timedOut {
-            DDLogWarn("Time out waiting for WKHTTPCookieStore to remove cookies")
-        }
-        completion()
-    }
-
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        guard let cookie = cookies.last else {
-            return completion()
-        }
-
-        DispatchQueue.main.async {
-            self.setCookie(cookie) {
-                self.setCookies(cookies.dropLast(), completion: completion)
-            }
-        }
+extension HTTPCookie {
+    var isWordPressComCookie: Bool {
+        domain.hasSuffix(".wordpress.com")
     }
 }
 
@@ -176,11 +102,18 @@ private extension HTTPCookie {
             && value.components(separatedBy: "|").first == username
     }
 
+    /// Matches the way `HTTPCookieStorage.cookies(for:)` does: expired cookies never match, hosts are
+    /// compared case-insensitively, and a cookie path only matches whole path segments.
     func matches(url: URL) -> Bool {
-        guard let host = url.host else {
+        guard let host = url.host?.lowercased() else {
             return false
         }
 
+        if let expiresDate, expiresDate <= Date() {
+            return false
+        }
+
+        let domain = domain.lowercased()
         let matchesDomain: Bool
         if domain.hasPrefix(".") {
             matchesDomain =
@@ -189,8 +122,16 @@ private extension HTTPCookie {
         } else {
             matchesDomain = host == domain
         }
+
+        let urlPath = url.path(percentEncoded: false)
+        let requestPath = urlPath.isEmpty ? "/" : urlPath
+        let matchesPath =
+            requestPath == path
+            || (requestPath.hasPrefix(path)
+                && (path.hasSuffix("/") || requestPath.dropFirst(path.count).hasPrefix("/")))
+
         return matchesDomain
-            && url.path.hasPrefix(path)
+            && matchesPath
             && (!isSecure || (url.scheme == "https"))
     }
 }

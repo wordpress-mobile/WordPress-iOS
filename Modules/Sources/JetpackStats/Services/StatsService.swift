@@ -12,8 +12,6 @@ actor StatsService: StatsServiceProtocol {
     private let api: WordPressComRestApi
     private let service: StatsServiceRemoteV2
     private let siteTimeZone: TimeZone
-    // Temporary
-    private var mocks: MockStatsService
     private let postLikesStore: (any PostLikesStore)?
 
     // Cache
@@ -56,7 +54,6 @@ actor StatsService: StatsServiceProtocol {
             siteTimezone: timeZone
         )
         self.siteTimeZone = timeZone
-        self.mocks = MockStatsService(timeZone: timeZone)
         self.postLikesStore = postLikesStore
     }
 
@@ -452,12 +449,55 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListResponse {
-        try await mocks.getRealtimeTopListData(item)
-    }
-
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
         try await service.getDetails(forPostID: postID)
+    }
+
+    func getFeaturedImageURLs(forPostIDs postIDs: [Int]) async throws -> [Int: URL] {
+        guard !postIDs.isEmpty else { return [:] }
+
+        let path = "rest/v1.1/sites/\(siteID)/posts/"
+        let parameters: [String: Any] = [
+            "include": postIDs,
+            "fields": "ID,featured_image",
+            // `number` defaults to 20, which would silently truncate a larger batch.
+            "number": postIDs.count,
+            // Both default to posts that are published, but the list mixes in pages,
+            // and stats can report a view of something that has since been unpublished.
+            "type": "any",
+            "status": "any"
+        ]
+        let result = await api.perform(
+            .get,
+            URLString: path,
+            parameters: parameters,
+            type: FeaturedImagesResponse.self
+        )
+        let response = try result.get().body
+
+        return response.posts.reduce(into: [:]) { urls, post in
+            // The endpoint reports a post with no featured image as an empty string.
+            guard let featuredImage = post.featuredImage, !featuredImage.isEmpty,
+                  let url = URL(string: featuredImage) else {
+                return
+            }
+            urls[post.id] = url
+        }
+    }
+
+    /// The slice of the posts endpoint's response that carries featured images.
+    private struct FeaturedImagesResponse: Decodable {
+        let posts: [Post]
+
+        struct Post: Decodable {
+            let id: Int
+            let featuredImage: String?
+
+            enum CodingKeys: String, CodingKey {
+                case id = "ID"
+                case featuredImage = "featured_image"
+            }
+        }
     }
 
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {

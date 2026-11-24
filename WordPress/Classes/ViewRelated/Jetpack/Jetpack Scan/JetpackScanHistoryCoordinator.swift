@@ -38,7 +38,7 @@ class JetpackScanHistoryCoordinator {
     init(blog: Blog,
          view: JetpackScanHistoryView,
          service: JetpackScanService? = nil,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+         coreDataStack: CoreDataStack = ContextManager.shared) {
 
         self.service = service ?? JetpackScanService(coreDataStack: coreDataStack)
         self.blog = blog
@@ -57,7 +57,7 @@ class JetpackScanHistoryCoordinator {
         service.getHistory(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
-            DDLogError("Error fetching scan object: \(String(describing: error.localizedDescription))")
+            Loggers.app.error("Error fetching scan object: \(String(describing: error.localizedDescription))")
 
             WPAnalytics.track(.jetpackScanError, properties: ["action": "fetch_scan_history",
                                                               "cause": error.localizedDescription])

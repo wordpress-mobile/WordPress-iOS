@@ -34,33 +34,26 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
     }
 
     func configure(for post: RemoteReaderSimplePost) {
-        configureFeaturedImage(for: post)
-        configureLabels(for: post)
-    }
+        let featuredImageURL = post.featuredImageURL
+        featuredImageView.isHidden = featuredImageURL == nil
+        featuredImageView.downloadImage(from: featuredImageURL)
 
-    private func configureFeaturedImage(for post: RemoteReaderSimplePost) {
-        var featuredImageUrlString: String? = nil
-        if let urlString = post.featuredImageUrl, !urlString.isEmpty {
-            featuredImageUrlString = urlString
-        } else if let uriString = post.featuredMedia?.uri, !uriString.isEmpty {
-            featuredImageUrlString = uriString
-        }
-
-        guard let urlString = featuredImageUrlString,
-              let featuredImageUrl = URL(string: urlString) else {
-            featuredImageView.isHidden = true
-            return
-        }
-
-        featuredImageView.downloadImage(from: featuredImageUrl)
-    }
-
-    private func configureLabels(for post: RemoteReaderSimplePost) {
         titleLabel.text = post.title.makePlainText()
-        excerptLabel.text = post.excerpt.makePlainText()
+
+        let excerpt = post.excerpt.makePlainText()
+        excerptLabel.text = excerpt
+        excerptLabel.isHidden = excerpt.isEmpty
     }
 
     private enum Constants {
         static let cornerRadius: CGFloat = 6
+    }
+}
+
+extension RemoteReaderSimplePost {
+    /// A card with only a title reads as a stray heading next to cards with an image and an
+    /// excerpt, so such posts are left out of the related posts section.
+    var hasContentForRelatedPostCard: Bool {
+        featuredImageURL != nil || !excerpt.makePlainText().isEmpty
     }
 }

@@ -5,31 +5,31 @@ class RichTextContentStyles: FormattableContentStyles {
 
     let key: String
 
-    init(key: String) {
-        self.key = key
-    }
+    private let horizontalSizeClass: UIUserInterfaceSizeClass
 
-    init() {
-        self.key = "RichTextContentStyles"
+    /// - Parameter horizontalSizeClass: The horizontal size class of the window that displays the text.
+    init(horizontalSizeClass: UIUserInterfaceSizeClass, key: String = "RichTextContentStyles") {
+        self.horizontalSizeClass = horizontalSizeClass
+        self.key = WPStyleGuide.Notifications.cacheKey(key, for: horizontalSizeClass)
     }
 
     var attributes: [NSAttributedString.Key: Any] {
-        return WPStyleGuide.Notifications.contentBlockRegularStyle
+        WPStyleGuide.Notifications.contentBlockRegularStyle(for: horizontalSizeClass)
     }
 
     var quoteStyles: [NSAttributedString.Key: Any]? {
-        return WPStyleGuide.Notifications.contentBlockBoldStyle
+        WPStyleGuide.Notifications.contentBlockBoldStyle(for: horizontalSizeClass)
     }
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
-        return [
-            .blockquote: WPStyleGuide.Notifications.contentBlockQuotedStyle,
-            .noticon: WPStyleGuide.Notifications.blockNoticonStyle,
-            .match: WPStyleGuide.Notifications.contentBlockMatchStyle
+        [
+            .blockquote: WPStyleGuide.Notifications.contentBlockQuotedStyle(for: horizontalSizeClass),
+            .noticon: WPStyleGuide.Notifications.blockNoticonStyle(for: horizontalSizeClass),
+            .match: WPStyleGuide.Notifications.contentBlockMatchStyle(for: horizontalSizeClass)
         ]
     }
 
     var linksColor: UIColor? {
-        return WPStyleGuide.Notifications.blockLinkColor
+        WPStyleGuide.Notifications.blockLinkColor
     }
 }

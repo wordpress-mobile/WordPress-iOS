@@ -21,4 +21,4 @@ if [ "${ACTION}" == "install" ]; then
   exit 0
 fi
 
-rake lint
+"$(dirname "$0")/../swiftlint.sh"

@@ -1,5 +1,7 @@
 import Foundation
 import AsyncImageKit
+import UIKit
+import WordPressCore
 import WordPressData
 
 final class ReaderPostCellViewModel {
@@ -28,7 +30,8 @@ final class ReaderPostCellViewModel {
         faviconTask?.cancel()
     }
 
-    init(post: ReaderPost, topic: ReaderAbstractTopic?) {
+    /// - parameter traitCollection: The trait collection of the view that displays the post.
+    init(post: ReaderPost, topic: ReaderAbstractTopic?, traitCollection: UITraitCollection) {
         self.post = post
 
         let isP2 = (topic as? ReaderSiteTopic)?.isP2Type == true
@@ -51,7 +54,10 @@ final class ReaderPostCellViewModel {
 
         if isP2 {
             self.avatarURL = post.authorAvatarURL.flatMap(URL.init)
-        } else if let avatarURL = post.getSiteIconURL(size: Int(ReaderPostCell.avatarSize)) {
+        } else if let avatarURL = post.getSiteIconURL(
+            size: Int(ReaderPostCell.avatarSize),
+            traitCollection: traitCollection
+        ) {
             self.avatarURL = avatarURL
         } else if let blogURL = post.blogURL.flatMap(URL.init), post.isExternal {
             if let faviconURL = FaviconService.shared.cachedFavicon(forURL: blogURL) {
@@ -75,6 +81,7 @@ final class ReaderPostCellViewModel {
         self.details = "Lorem ipsum dolor sit amet. Non omnis quia et natus voluptatum et eligendi voluptate vel iusto fuga sit repellendus molestiae aut voluptatem blanditiis ad neque sapiente. Id galisum distinctio quo enim aperiam non veritatis vitae et ducimus rerum."
         self.imageURL = URL(string: "https://picsum.photos/1260/630.jpg")
         self.toolbar = ReaderPostToolbarViewModel(
+            isBookmarkEnabled: true,
             isBookmarked: false,
             isCommentsEnabled: true,
             commentCount: 9000,
@@ -133,6 +140,8 @@ final class ReaderPostCellViewModel {
 }
 
 struct ReaderPostToolbarViewModel {
+    /// Saving needs a WordPress.com account, so the bookmark is hidden without one.
+    let isBookmarkEnabled: Bool
     let isBookmarked: Bool
     let isCommentsEnabled: Bool
     let commentCount: Int
@@ -140,9 +149,10 @@ struct ReaderPostToolbarViewModel {
     var likeCount: Int
     var isLiked: Bool
 
-    static func make(post: ReaderPost) -> ReaderPostToolbarViewModel {
+    static func make(post: ReaderPost, isLoggedIn: Bool = ReaderHelpers.isLoggedIn()) -> ReaderPostToolbarViewModel {
         ReaderPostToolbarViewModel(
-            isBookmarked: post.isSavedForLater,
+            isBookmarkEnabled: isLoggedIn,
+            isBookmarked: post.isSavedForDisplay,
             isCommentsEnabled: post.isCommentsEnabled,
             commentCount: post.commentCount?.intValue ?? 0,
             isLikesEnabled: post.isLikesEnabled,

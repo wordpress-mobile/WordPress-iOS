@@ -6,6 +6,7 @@ enum MockFeatureFlag: OverridableFlag {
     case enabledFeature
     case disabledFeature
     case nonOverrideableFeature
+    case stickyFeature
 
     case remotelyEnabledLocallyEnabledFeature
     case remotelyEnabledLocallyDisabledFeature
@@ -33,6 +34,8 @@ enum MockFeatureFlag: OverridableFlag {
             return false
         case .nonOverrideableFeature:
             return true
+        case .stickyFeature:
+            return false
         case .remotelyEnabledLocallyEnabledFeature,
              .remotelyDisabledLocallyEnabledFeature,
              .remotelyUndefinedLocallyEnabledFeature:
@@ -48,6 +51,10 @@ enum MockFeatureFlag: OverridableFlag {
         return self != .nonOverrideableFeature
     }
 
+    var isStickyOverride: Bool {
+        return self == .stickyFeature
+    }
+
     var originalValue: Bool {
         return enabled
     }
@@ -60,6 +67,8 @@ enum MockFeatureFlag: OverridableFlag {
             return "Disabled feature"
         case .nonOverrideableFeature:
             return "Non overrideable feature"
+        case .stickyFeature:
+            return "Sticky feature"
         case .remotelyEnabledLocallyEnabledFeature:
             return "Remotely Enabled, Locally Enabled Feature"
         case .remotelyEnabledLocallyDisabledFeature:
@@ -174,6 +183,42 @@ class FeatureFlagTests: XCTestCase {
         XCTAssertTrue(store.isOverridden(flag))
 
         store.override(flag, withValue: false)
+        XCTAssertFalse(store.isOverridden(flag))
+    }
+
+    // MARK: - Sticky overrides
+
+    func testStickyFeatureFlagValueRemainsOverriddenWhenResetToNormalState() {
+        let flag = MockFeatureFlag.stickyFeature
+
+        XCTAssertFalse(store.isOverridden(flag))
+
+        store.override(flag, withValue: true)
+        XCTAssertTrue(store.isOverridden(flag))
+
+        // A non-sticky flag would drop the override here, making an explicit choice
+        // indistinguishable from never having made one.
+        store.override(flag, withValue: false)
+        XCTAssertTrue(store.isOverridden(flag))
+        XCTAssertEqual(store.overriddenValue(for: flag), false)
+    }
+
+    func testStickyFeatureFlagValueMatchingTheDefaultIsStillPersisted() {
+        let flag = MockFeatureFlag.stickyFeature
+
+        store.override(flag, withValue: flag.originalValue)
+
+        XCTAssertTrue(store.isOverridden(flag))
+        XCTAssertEqual(store.overriddenValue(for: flag), flag.originalValue)
+    }
+
+    func testStickyFeatureFlagOverrideCanStillBeRemoved() {
+        let flag = MockFeatureFlag.stickyFeature
+
+        store.override(flag, withValue: false)
+        XCTAssertTrue(store.isOverridden(flag))
+
+        store.removeOverride(for: flag)
         XCTAssertFalse(store.isOverridden(flag))
     }
 }

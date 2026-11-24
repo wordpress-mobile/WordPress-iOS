@@ -412,7 +412,7 @@ MagicLinkFlow const MagicLinkFlowSignup = @"signup";
     remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
-    remoteUser.dateCreated = [NSDate wpkit_dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
+    remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
     remoteUser.emailVerified = [[dictionary numberForKey:UserDictionaryEmailVerifiedKey] boolValue];
 
     return remoteUser;

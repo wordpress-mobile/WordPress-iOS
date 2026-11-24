@@ -44,7 +44,7 @@ extension NotificationsViewController {
         AppRatingUtility.shared.ratedCurrentVersion()
         DispatchQueue.main.async { [weak self] in
             guard let windowScene = self?.view.window?.windowScene else { return }
-            SKStoreReviewController.requestReview(in: windowScene)
+            AppStore.requestReview(in: windowScene)
         }
     }
 

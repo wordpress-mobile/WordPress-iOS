@@ -68,8 +68,8 @@ private extension ReferrerDetailsSpamActionCell {
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(actionLabel)
         NSLayoutConstraint.activate([
-            actionLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
-            actionLabel.trailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
+            actionLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
+            actionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             actionLabel.topAnchor.constraint(equalTo: topAnchor, constant: Style.ReferrerDetails.standardCellVerticalPadding),
             actionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Style.ReferrerDetails.standardCellVerticalPadding)
         ])
@@ -88,11 +88,17 @@ private extension ReferrerDetailsSpamActionCell {
         separatorView.backgroundColor = Style.separatorColor
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(separatorView)
+        let separatorHeightConstraint = separatorView.heightAnchor.constraint(
+            equalToConstant: Style.separatorHeight(traitCollection: traitCollection)
+        )
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: topAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: Style.separatorHeight)
+            separatorHeightConstraint
         ])
+        registerForTraitChanges([UITraitDisplayScale.self]) { (self: ReferrerDetailsSpamActionCell, _) in
+            separatorHeightConstraint.constant = Style.separatorHeight(traitCollection: self.traitCollection)
+        }
     }
 }

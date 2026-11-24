@@ -6,12 +6,11 @@ AllCops:
   NewCops: enable
 
 Metrics/BlockLength:
-  # "xfiles" is a standin for `Fast-`, `Pod-`, and `Rake-file`
+  # "xfiles" is a standin for `Fast-` and `Pod-file`
   Exclude: &xfiles
     - fastlane/Fastfile
     - fastlane/lanes/*.rb
     - Podfile
-    - Rakefile
 
 Metrics/MethodLength:
   Max: 30

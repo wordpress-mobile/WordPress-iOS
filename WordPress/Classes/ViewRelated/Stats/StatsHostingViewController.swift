@@ -80,6 +80,10 @@ extension StatsContext {
             return avatarURL.replacing(options: options)?.url ?? url
         }
 
+        // A private, Atomic or P2 site serves a featured image only to a signed request.
+        self.mediaHost = MediaHost(blog)
+        self.isAutomatticP2 = blog.isAutomatticP2
+
         self.tracker = WPAnalyticsStatsTracker(blogProperties: blog.analyticsProperties)
 
         self.upgradeURL = Self.makeUpgradeURL(for: blog)

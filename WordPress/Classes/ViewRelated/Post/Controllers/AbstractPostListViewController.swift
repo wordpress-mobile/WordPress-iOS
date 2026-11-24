@@ -342,7 +342,7 @@ class AbstractPostListViewController: UIViewController,
         do {
             try fetchResultsController.performFetch()
         } catch {
-            DDLogError("Error fetching posts after updating the fetch request predicate: \(error)")
+            Loggers.app.error("Error fetching posts after updating the fetch request predicate: \(error)")
         }
     }
 
@@ -657,11 +657,7 @@ class AbstractPostListViewController: UIViewController,
         // NOTE: We'll set the title to match the title of the View action button.
         // If the button title changes we should also update the title here.
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-        let navWrapper = UINavigationController(rootViewController: controller)
-        if navigationController?.traitCollection.userInterfaceIdiom == .pad {
-            navWrapper.modalPresentationStyle = .fullScreen
-        }
-        navigationController?.present(navWrapper, animated: true)
+        navigationController?.presentCoveringWindow(controller)
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
@@ -733,7 +729,7 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        if FeatureFlag.newStats.enabled {
+        if RemoteFeatureFlag.newStats.enabled() {
             // Create the view controller
             let statsViewController = PostStatsViewController(post: post)
 
@@ -884,7 +880,7 @@ extension AbstractPostListViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         // Only automatically refresh if the view is loaded and visible on the screen
         if !isViewLoaded || view.window == nil {
-            DDLogVerbose("View is not visible and will not check for auto refresh.")
+            Loggers.app.trace("View is not visible and will not check for auto refresh.")
             return
         }
         automaticallySyncIfAppropriate()
