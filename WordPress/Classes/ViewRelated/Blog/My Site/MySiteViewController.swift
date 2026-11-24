@@ -137,7 +137,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private var noSitesScrollView: UIScrollView?
     private var noSitesRefreshControl: UIRefreshControl?
 
-    private lazy var noSitesViewController: UIHostingController = {
+    private lazy var noSitesViewController: NoSitesHostingController = {
         let addSiteViewModel = AddSiteMenuViewModel { [weak self] in
             switch $0 {
             case .dotCom:
@@ -152,7 +152,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             account: self.viewModel.defaultAccount
         )
         let noSiteView = NoSitesView(addSiteViewModel: addSiteViewModel, viewModel: noSitesViewModel)
-        let hostingVC = UIHostingController(rootView: noSiteView)
+        let hostingVC = NoSitesHostingController(rootView: noSiteView)
         hostingVC.view.backgroundColor = .clear
         return hostingVC
     }()
@@ -614,7 +614,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             nrv.widthAnchor.constraint(equalTo: view.widthAnchor),
             nrv.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nrv.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+            nrv.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         noSitesViewController.didMove(toParent: self)
