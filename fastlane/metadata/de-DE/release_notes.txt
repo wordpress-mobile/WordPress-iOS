@@ -1,7 +1,15 @@
-Individuelle Inhaltstypen werden jetzt direkt im Website-Menü nach „Kommentare“ angezeigt, für zusätzlichen Komfort nach Namen sortiert – individuelle Pins sind nicht mehr nötig.
+Du hast in den Medieneinstellungen eine Größe und Qualität für deine Fotos festgelegt? Der experimentelle Block-Editor übernimmt diese Auswahl jetzt beim Upload eines Fotos. Auch deine Einstellung für die Entfernung von Standortdaten wird berücksichtigt. Du kannst den Editor außerdem im Blockierungsmodus verwenden und er fragt nach, bevor du einen Beitrag speicherst, während noch Medien hochgeladen werden.
 
-Wir haben außerdem einige Fehler behoben, um dein App-Erlebnis noch angenehmer zu gestalten.
+Speichere einen Beitrag im Reader auf deinem iPhone und öffne ihn anschließend auf deinem iPad. Dein WordPress.com-Konto synchronisiert jetzt bis zu 1.000 gespeicherte Beiträge geräteübergreifend – einschließlich der Beiträge, die du bereits gespeichert hast. Außerdem kannst du in einem Beitrag auf eine Erwähnung tippen, um das Profil der jeweiligen Person anzuzeigen. Und wenn du einen Kommentar hinterlässt, bleibt dieser direkt im Blick.
 
-- Uploads schlagen nicht mehr fehl, wenn der Dateiname Leerzeichen enthält. (good-news-everyone.jpg)
-- Wir haben einen Absturz behoben, der durch das Teilen bestimmter Arten von Textdateien verursacht wurde.
-- iPad-Nutzer können sich freuen – die App bleibt nicht mehr im kompakten Tableisten-Layout hängen, wenn du die Bildschirmgröße änderst oder zwischen Apps wechselst.
+Auf iPhone-Plus- und Pro-Max-Modellen nutzen Beitragsvorschauen im Querformat jetzt den gesamten Bildschirm. Auf dem iPad kannst du das Fenster verkleinern, während du einen Beitrag bearbeitest oder eine Website einrichtest, und genau dort weitermachen, wo du aufgehört hast. Selbst die Liste der Website-Designs merkt sich deine Position.
+
+Ein paar weitere Änderungen, die dir vielleicht auffallen:
+
+- Auf selbst gehosteten Websites übernehmen neue Beiträge die Diskussionseinstellungen deiner Website. Wenn du Kommentare standardmäßig erlaubst, ist die Diskussion direkt geöffnet.
+- Wenn dein Server die Anmeldung mit einem Anwendungspasswort blockiert, teilt dir die App jetzt mit, was schiefgelaufen ist.
+- Wenn du einen Beitrag einer selbst gehosteten Website über Spotlight öffnest, bleibt die Vorschau geöffnet.
+- Plugin-Beschreibungen sind im Dunkelmodus gut lesbar und du kannst zugehörige Videos direkt in der App ansehen oder auf „Auf YouTube ansehen“ tippen.
+- Wir haben einen Absturz behoben, der beim Teilen eines Fotos mit der App auftreten konnte.
+
+Für diese Aktualisierung ist iOS 18 oder neuer erforderlich. Geräte mit iOS 17 erhalten keine App-Aktualisierungen mehr.

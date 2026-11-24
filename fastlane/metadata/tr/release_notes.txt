@@ -1,7 +1,15 @@
-Özel yazı türleri artık site menüsünde “Yorumlar”ın hemen altında, daha fazla kolaylık sağlamak amacıyla ada göre sıralanmış olarak görünüyor — artık özel sabitlemeye gerek yok.
+Ortam ayarlarında fotoğraflarınız için bir boyut ve kalite seçtiniz mi? Deneysel blok düzenleyici artık bir fotoğraf yüklediğinizde bu seçimleri kullanır. Ayrıca konum verilerini kaldırma ayarınızı da dikkate alır. Düzenleyiciyi Kilit Modunda kullanabilirsiniz ve ortam hâlâ yüklenirken bir gönderiyi kaydetmeden önce sorar.
 
-Ayrıca, uygulama deneyiminizi biraz daha kolaylaştırmak için birkaç hatayı da giderdik.
+iPhone'unuzdaki Okuyucu'da bir gönderiyi kaydedin, ardından iPad'inizde açın. WordPress.com hesabınız artık daha önce kaydettiğiniz gönderiler de dâhil olmak üzere 1.000 adede kadar kaydedilmiş yazıyı cihazlar arasında senkronize eder. Ayrıca o kişinin profilini görmek için bir gönderideki bahsetmeye dokunabilirsiniz. Bir yorum yaptığınızda ise görünümde kalır.
 
-- Dosya adında boşluk olsa bile yüklemeler artık başarısız olmayacak. (good-news-everyone.jpg)
-- Belirli türdeki metin dosyalarının paylaşılması nedeniyle meydana gelen bir çökme sorunu giderildi.
-- iPad kullanıcıları sevinebilir: Ekran boyutunu değiştirdiğinizde veya uygulamalar arasında geçiş yaptığınızda uygulama artık kompakt sekme çubuğu düzeninde takılmayacak.
+iPhone Plus ve Pro Max modellerinde, gönderi ön izlemeleri artık yatay modda tam ekranı kullanır. iPad'de, bir gönderiyi düzenlerken veya bir site kurarken pencereyi daraltabilir ve tam kaldığınız yerden devam edebilirsiniz. Site tasarımları listesi bile yerinizi korur.
+
+Yol boyunca fark edebileceğiniz birkaç değişiklik daha:
+
+- Kendi sunucunuzda barındırılan sitelerde, yeni yazılar sitenizin tartışma ayarlarını takip eder. Varsayılan olarak yorumlara izin verirseniz sohbet açıktır.
+- Sunucunuz bir uygulama parolasıyla girişi engellerse, uygulama artık neyin ters gittiğini bildirir.
+- Spotlight'tan kendi barındırdığınız bir gönderiyi açtığınızda ön izleme açık kalır.
+- Eklenti açıklamaları koyu modda okunabilir ve videolarını uygulamada izleyebilir veya "YouTube'da İzle" seçeneğine dokunabilirsiniz.
+- Uygulamayla fotoğraf paylaşırken meydana gelebilecek bir çökme düzeltildi.
+
+Bu güncelleme için iOS 18 veya sonraki bir sürüme ihtiyacınız olacak. iOS 17 çalıştıran cihazlar artık uygulama güncellemeleri almayacak.
