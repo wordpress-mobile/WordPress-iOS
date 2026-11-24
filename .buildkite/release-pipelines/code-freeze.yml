@@ -13,9 +13,7 @@ steps:
   - label: Code Freeze
     plugins:
       - $CI_TOOLKIT_PLUGIN
-    # Temporary: drop RBENV_VERSION once .ruby-version is 3.4.13 (AINFRA-3881); the Linux agents lack it until AINFRA-3889/3890/3891.
     command: |
-      export RBENV_VERSION=3.4.13
       echo '--- :robot_face: Use bot for Git operations'
       source use-bot-for-git
 

@@ -9,12 +9,11 @@ env:
 steps:
   - label: "🛠 :jetpack: Build for Testing"
     key: "build_jetpack"
-    # Temporary: drop RBENV_VERSION once .ruby-version is 3.4.13 (AINFRA-3881); the Linux agents lack it until AINFRA-3889/3890/3891.
-    command: "RBENV_VERSION=3.4.13 .buildkite/commands/build-for-testing.sh jetpack"
+    command: ".buildkite/commands/build-for-testing.sh jetpack"
     plugins: [$CI_TOOLKIT_PLUGIN]
 
   - label: "🤖 AI E2E Tests"
-    command: RBENV_VERSION=3.4.13 .buildkite/commands/run-ai-e2e-tests.sh
+    command: .buildkite/commands/run-ai-e2e-tests.sh
     depends_on: "build_jetpack"
     timeout_in_minutes: 60
     plugins: [$CI_TOOLKIT_PLUGIN]
