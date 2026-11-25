@@ -88,7 +88,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -170,8 +169,7 @@
 /* No comment provided by engineer. */
 "Dismiss" = "Odbaci";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -335,8 +333,7 @@
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Nisu pronađene prijetnje";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -414,8 +411,7 @@
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Objavljeno";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Čitač";
 

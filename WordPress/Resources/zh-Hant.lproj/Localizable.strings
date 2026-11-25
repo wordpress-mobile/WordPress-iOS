@@ -993,7 +993,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1367,9 +1366,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "複製的區塊";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "將連結複製到留言";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "從剪貼簿複製 URL，%s";
 
@@ -1720,8 +1716,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "網域擁有者必須在所有網域的公共資料庫中分享自己的聯絡資訊。基於隱私權保護，我們只會發佈自己的資訊而非你的資訊，並會將所有通訊內容私密轉寄給你。";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3581,8 +3576,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "通知會包含可啟發靈感的字詞或短語";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4164,8 +4158,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "參閱原始文章";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "閱覽";
 
@@ -5142,9 +5135,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "點選即可檢視你的網站";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "點選即可透過外部瀏覽器造訪 Gravatar 網站";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "分類法";
 
@@ -5807,9 +5797,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "正在更新";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "若在此更新你的大頭貼、姓名和相關資訊，也會在所有使用 Gravatar 個人檔案的網站中一同更新。";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "升級方案即可上傳音訊";
 
@@ -6130,9 +6117,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "你想要對這個檔案執行什麼動作：上傳檔案，並將該檔案的連結加入你的文章之中；或是將檔案內容直接新增至你的文章之中？";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "什麼是 Gravatar？";
-
 /* No comment provided by engineer. */
 "What is a block?" = "什麼是區塊？";
 
@@ -6394,9 +6378,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "你的網站";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "你的 WordPress.com 個人檔案由 Gravatar 提供技術支援。";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "你的 WordPress.com 網站支援使用加速行動網頁，這是 Google 主導的方案，能大幅加快行動裝置的載入速度。";
@@ -7035,9 +7016,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "依建立日期排列記錄檔案";
-
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "將會上傳下列記錄檔：";
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "可儲存最多七天的記錄。";
@@ -8054,21 +8032,6 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "正在載入編輯器";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "移除";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "你可以在「設定」中將此應用程式從「鎖定模式」排除，然後重新開啟編輯器以還原完整功能。";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "深入了解";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "偵測到鎖定模式";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "鎖定模式已啟用。 編輯器可能無法正常運作。";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "無法插入媒體檔";
 
@@ -8390,23 +8353,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "選取網站";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "「%1$@」將在 %2$@後搬遷";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "「%1$@」將在 %2$@後搬遷";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "「%@」即將搬遷了";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "「%@」即將搬遷了";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "採用 Jetpack 技術";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "取得 Jetpack 應用程式";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "體驗全新 Jetpack 應用程式";
@@ -8454,64 +8402,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "連結你的 WordPress.com 帳號";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "切換至全新 Jetpack 應用程式";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "切換至 Jetpack 應用程式";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "瞭解更多：jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "接收新留言、按讚、瀏覽次數等內容的通知。";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "尋找並追蹤你喜愛的網站和社群，並分享你的內容。";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "透過實用的洞察報告和全面的統計觀察你的流量成長。";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "統計與洞察報告";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack 可讓你對 WordPress 網站進行更多操作。切換完全免費，只需要一分鐘。";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "使用 Jetpack 加強 WordPress";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "繼續前往「通知」功能";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "稍後進行";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "WordPress 應用程式已移除「統計資料」、「閱讀器」、「通知」和其他 Jetpack 提供的功能。";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 功能已經搬遷。";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切換至 Jetpack 應用程式，以繼續在你的裝置上接收即時通知。";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "透過 Jetpack 應用程式接收通知";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "切換至 Jetpack 應用程式，以便透過閱讀器搜尋、追蹤並按讚所有喜愛的網站及文章。";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "透過 Jetpack 應用程式訂閱任何網站";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack 提供統計資料、通知等其他功能，可協助你建置和發展夢想中的 WordPress 網站。";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "切換至 Jetpack 應用程式，以便透過統計資料和洞察報告，查看網站流量成長。";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "使用全新 Jetpack 應用程式取得統計資料";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "切換完全免費，只要 1 分鐘就能完成。";
@@ -8519,26 +8416,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "繼續但不使用 Jetpack";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack 功能即將搬遷了。";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack 提供統計資料、通知等其他功能，可協助你建置和發展夢想中的 WordPress 網站。\n\nWordPress 應用程式不再支援建立新網站。";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "WordPress 應用程式即將移除「統計資料」、「閱讀器」、「通知」和 Jetpack 提供的其他功能。";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "「通知」將轉移至 Jetpack 應用程式";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "「閱讀器」將轉移至 Jetpack 應用程式";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "「統計資料」將轉移至 Jetpack 應用程式";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "WordPress 應用程式將於 %@ 移除「統計資料」、「閱讀器」、「通知」和 Jetpack 提供的其他功能。";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "繼續前往「閱讀器」";
@@ -8548,9 +8427,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "你的網站有 Jetpack 外掛程式";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "繼續但不使用 Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "體驗全新 Jetpack 應用程式";
@@ -8582,9 +8458,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "若要使用網站的「統計」功能，必須將 Jetpack 外掛程式連結至你的使用者帳號。";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "「統計資料」、「閱讀器」、「通知」及其他功能即將搬遷至 Jetpack 行動應用程式。";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "隱藏此項目";
 
@@ -8593,9 +8466,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "發揮網站的完全潛能。使用 Jetpack 取得統計、閱讀器、通知等。";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "切換至 Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "稍後再提醒我";
@@ -8876,9 +8746,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "上個期間";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "目前線上訪客人數";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "點兩下，重新嘗試載入統計資料";
 
@@ -8905,12 +8772,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "點兩下檢視更多詳細資料";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d 位訪客目前在線上";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d 位訪客目前在線上";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "將長期趨勢視覺化";
@@ -9426,17 +9287,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "訪客數";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "目前訪客數";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "廣告";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "洞察報告";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "即時";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "訂閱者";
@@ -9548,9 +9403,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "此網站正在使用個別 Jetpack 外掛程式，這些外掛程式目前尚未支援應用程式的所有功能。 請安裝完整 Jetpack 外掛程式。";
-
-/* Later today */
-"later today" = "今日稍晚";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "喜歡";
@@ -10193,42 +10045,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "造訪網站";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "開始使用";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "不想改用最新版本嗎？ 你可以從「統計」分頁的「更多」選單中，關閉「新的統計功能」。";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "導覽和日期挑選器現在位於畫面底部，也就是大拇指的位置。";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "更易於使用";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "從常見預設值中挑選，或設定具有比較週期的自訂日期範圍，只要點選一次就能完成。";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "任何週期、不限範圍";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "裝置、UTM、位置、WordAds，全都與 WordPress.com 上的資料相同。";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "駕馭網路趨勢";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "每項指標都會顯示與上個週期的對比走勢，讓你隨時掌握成長狀況。";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "趨勢概觀";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "掌握網站效能的更佳方式，系統預設啟用中。";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "新的統計功能";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "沒有此時間範圍內的記錄條目";
@@ -11232,9 +11048,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "排程";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "撰寫簡短訊息，連同文章一併分享至社群媒體";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "標籤";
 
@@ -11375,9 +11188,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "留言";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "檢視網站的文章";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d 個讚_";
@@ -11711,17 +11521,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "近期";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "儲存這篇文章，即可隨時返回閱讀。 儲存的文章不會同步至其他裝置，因此你只能在這部裝置上存取文章。";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "儲存文章以供稍後使用";
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "已儲存";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "儲存的文章已移除";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "所選的檔案不是有效的已儲存文章匯出檔。";
@@ -11755,9 +11559,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "無法匯入所選的檔案， 請再試一次。";
-
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "正在擷取第 %1$d\/%2$d 篇文章...";
 
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "%1$d 篇已匯入、%2$d 篇已略過、%3$d 篇失敗。";
@@ -12615,12 +12416,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "訂閱者";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "最新文章「%1$@」已獲得 %2$@ 個讚。";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "最新文章「%1$@」已獲得 %2$@ 個讚。";
-
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "WordPress.com 訂閱者總人數：%@";
 
@@ -12861,10 +12656,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "目前";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "你確定要刪除所有活動記錄嗎？";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "刪除記錄";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -12962,12 +12757,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack 行動版 Bot 文字稿";
-
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "提問並讓我們的志工團隊提供協助。";
-
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "社群論壇";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "隨時取得支援團隊的解答";

@@ -424,7 +424,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -606,9 +605,6 @@
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Prispieť";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Skopírovať odkaz do komentáru";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Tému nie je možné sledovať";
 
@@ -765,8 +761,7 @@
 /* User's Display Name */
 "Display Name" = "Zobraziť meno";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -1640,8 +1635,7 @@
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Nastavenia upozornení";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -1962,8 +1956,7 @@
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Prečítajte si zdrojový príspevok";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Čítačka";
 
@@ -3137,9 +3130,6 @@
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
-
-/* Later today */
-"later today" = "neskôr dnes";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "nasledujúce položky budú zmazané:";

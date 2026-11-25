@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1370,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Zkopírovaný blok";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Zkopírovat odkaz na komentář";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Zkopírujte URL adresu ze schránky, %s";
 
@@ -1723,8 +1719,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Vlastníci domén musí sdílet kontaktní informace ve veřejné databázi všech domén. Díky ochraně soukromí zveřejňujeme namísto vašich vlastních vlastních informací a soukromě vám předáváme veškerou komunikaci.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3587,8 +3582,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Oznámení bude obsahovat slovo nebo krátkou frázi pro inspiraci";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4173,8 +4167,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Přečíst zdrojový příspěvek";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Čtenář";
 
@@ -5151,9 +5144,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Klepnutím zobrazíte svůj web";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Klepnutím navštívíte web Gravatar v externím prohlížeči";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Taxonomie";
 
@@ -5816,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Aktualizace";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Aktualizace avatara, jména a informací o sobě zde se projeví i na všech webech, které používají profily Gravatar.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgradujte svůj plán na nahrávání zvuku";
 
@@ -6142,9 +6129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Co chcete s tímto souborem udělat: nahrát jej a přidat odkaz na soubor do vašeho příspěvku, nebo přidat obsah souboru přímo do příspěvku?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Co je Gravatar?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Co je to blok?";
 
@@ -6406,9 +6390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Vaše weby";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Váš profil WordPress.com je provozován Gravatarem.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Váš web WordPress.com podporuje použití Accelerated Mobile Pages, iniciativy vedené společností Google, která dramaticky zrychluje časy načítání na mobilních zařízeních.";
@@ -7053,9 +7034,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Soubory záznamů podle data vytvoření";
-
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "Následující soubory záznamů budou nahrány:";
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Jsou uloženy záznamy až za sedm dní.";
@@ -8075,21 +8053,6 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Načítání editoru";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "Zavřít";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "V nastavení můžete tuto aplikaci vyloučit z režimu uzamčení a poté editor znovu otevřít, čímž obnovíte plnou funkčnost.";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "Další informace";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "Zjištěn režim uzamčení";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "Je zapnutý režim uzamčení. Editor nemusí fungovat správně.";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Vložení média se nezdařilo";
 
@@ -8411,23 +8374,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Vybrat web";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ se přesunou za %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ se přesune za %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ se brzy přesunou";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ se brzy přesune";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Poháněno Jetpackem";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Získejte aplikaci Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Vyzkoušejte novou aplikaci Jetpack";
@@ -8475,64 +8423,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Připojit se ke svému účtu WordPress.com";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Přepněte na novou aplikaci Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Přepněte do aplikace Jetpack";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Více se dozvíte na jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Získávejte oznámení pro nové komentáře, to se mi líbí, zobrazení a další.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Najděte a sledujte své oblíbené weby a komunity a sdílejte svůj obsah.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Sledujte, jak vaše návštěvnost roste, pomocí užitečných statistik a komplexních statistik.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistiky a postřehy";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack vám umožní udělat více s vaším webem WordPress. Přepínání je zdarma a trvá jen minutu.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Dejte WordPressu podporu s Jetpackem";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Pokračujte do oznámení";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Odložit na později";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistiky, čtečka, upozornění a další funkce poháněné Jetpack byly z aplikace WordPress odstraněny.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Funkce Jetpacku se přesunuly";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Přepněte na aplikaci Jetpack, abyste do svého zařízení i nadále dostávali upozornění v reálném čase.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Získejte oznámení pomocí aplikace Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Přepněte do aplikace Jetpack a najděte, sledujte a lajkujte všechny své oblíbené stránky a příspěvky pomocí aplikace Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Přihlaste se k odběru libovolného webu pomocí aplikace Jetpack";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack poskytuje statistiky, upozornění a další, které vám pomohou vytvořit a rozšířit web WordPress vašich snů.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Přepněte do aplikace Jetpack a sledujte, jak návštěvnost vašeho webu roste pomocí statistik a statistik.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Získejte své statistiky pomocí nové aplikace Jetpack";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Přepínání je zdarma a trvá jen minutu.";
@@ -8540,26 +8437,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Pokračovat bez Jetpacku";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Funkce jetpacku se brzy přesunou.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack poskytuje statistiky, upozornění a další, které vám pomohou vytvořit a rozšířit web WordPress vašich snů.\n\nAplikace WordPress již nepodporuje vytváření nového webu.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistiky, čtečka, upozornění a další funkce poháněné Jetpack budou z aplikace WordPress brzy odstraněny.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Oznámení se přesouvají do Jetpacku";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader se přesouvá do aplikace Jetpack";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statistiky se přesouvají do aplikace Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistiky, čtečka, upozornění a další funkce poháněné Jetpack budou z aplikace WordPress odstraněny na %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Pokračovat do čtečky";
@@ -8569,9 +8448,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Vaše stránky mají plugin Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Pokračujte bez Jetpacku";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Vyzkoušejte novou aplikaci Jetpack";
@@ -8603,9 +8479,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "Pro používání statistik na vašem webu musíte připojit zásuvný modul Jetpack ke svému uživatelskému účtu.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Statistiky, čtečka, upozornění a další funkce se brzy přesunou do mobilní aplikace Jetpack.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Skrýt";
 
@@ -8614,9 +8487,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Odemkněte plný potenciál svého webu. Získejte statistiky, čtečku, upozornění a další s Jetpack.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Přejděte na Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Připomenout později";
@@ -8897,9 +8767,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Předchozí období";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Aktuální návštěvníci online";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Dvojitým klepnutím zkusíte znovu načíst statistiky";
 
@@ -8926,12 +8793,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Dvojitým klepnutím zobrazíte více podrobností";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d návštěvník online nyní";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d návštěvníků online nyní";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Vizualizovat trendy v čase";
@@ -9447,17 +9308,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Návštěvníci";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Návštěvníci nyní";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Reklamy";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Přehledy";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "V reálném čase";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Odběratelé";
@@ -9569,9 +9424,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Tento web používá individuální zásuvné moduly Jetpack, které zatím nepodporují všechny funkce aplikace. Nainstalujte prosím plný zásuvný modul Jetpack.";
-
-/* Later today */
-"later today" = "Dnes později";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "líbí se";
@@ -10226,42 +10078,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Navštívit web";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Začít";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "Ještě nejste připraveni na změnu? Funkci „Nové statistiky“ můžete deaktivovat v nabídce „Více“ na záložce „Statistiky“.";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "Navigační prvky a výběr data se nyní nacházejí ve spodní části obrazovky – přesně tam, kde máte palec.";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "Snadnější dostupnost";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Vyberte si z běžných předvoleb nebo nastavte vlastní časové rozmezí s porovnávacím obdobím – vše jediným klepnutím.";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "Jakékoli období, jakýkoli rozsah";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "Zařízení, UTM, lokality, WordAds – stejná data, jaká získáváte na WordPress.com.";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "Na stejné úrovni jako web";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Každý ukazatel zobrazuje, jak se vyvíjí ve srovnání s předchozím obdobím, takže vždy víte, zda rostete.";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "Přehled trendů";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "Lepší způsob, jak porozumět výkonu vašeho webu – nyní zapnutý ve výchozím nastavení.";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "Nové statistiky";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Žádné záznamy v tomto časovém rozsahu";
@@ -11277,9 +11093,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Plánovat";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Napište krátkou zprávu ke sdílení na sociálních sítích spolu s příspěvkem";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Štítky";
 
@@ -11420,9 +11233,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Komentáře";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Zobrazuje příspěvky z webu";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d to se mi líbí_";
@@ -11756,17 +11566,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Nedávné";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Uložte tento příspěvek a přečtěte si ho, kdy se vám zachce. Bude dostupný pouze v tomto zařízení – uložené příspěvky se nesynchronizují s jinými zařízeními.";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Uložit příspěvky na později";
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Uloženo";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Uložený příspěvek odstraněn";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "Vybraný soubor není platným exportem uložených příspěvků.";
@@ -11800,9 +11604,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "Vybraný soubor se nepodařilo importovat. Zkuste to prosím znovu.";
-
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "Načítání příspěvku %1$d z %2$d…";
 
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "%1$d importováno, %2$d přeskočeno, %3$d se nezdařilo.";
@@ -12666,12 +12467,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Odběratelé";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "Nejnovější příspěvek %1$@ získal %2$@ lajků.";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "Nejnovější příspěvek %1$@ získal %2$@ lajků.";
-
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Celkem odběratelů WordPress.com: %@";
 
@@ -12915,10 +12710,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Aktuální";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Opravdu chcete smazat všechny záznamy aktivit?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Smazat záznamy";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -13016,12 +12811,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Přepis bota Jetpack Mobile";
-
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "Zeptejte se a nechte si poradit od naší skupiny dobrovolníků.";
-
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "Komunitní fóra";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "Získejte odpovědi od našeho týmu podpory, kdykoli budete potřebovat";
