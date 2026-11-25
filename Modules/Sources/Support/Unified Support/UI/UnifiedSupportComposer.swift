@@ -39,8 +39,9 @@ struct UnifiedSupportComposer: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .focused($isFocused)
-            .submitLabel(.send)
-            .onSubmit(sendIfPossible)
+            // A vertical field inserts a new line instead of submitting, so it keeps the standard return key.
+            // A `.send` label would draw the same arrow as the send button and promise a send the key doesn't do.
+            .submitLabel(.return)
 
         // A rounded rectangle rather than the default capsule: its corners would eat into the text once the
         // message takes more than one line.
