@@ -8,17 +8,12 @@ struct UnifiedSupportTicketContentView: View {
     /// Whether the subject is still on screen, which is what tells the navigation bar to leave it alone.
     @Binding var isTitleVisible: Bool
 
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             header
-
-            if !viewModel.title.isEmpty {
-                Text(viewModel.title)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .accessibilityAddTraits(.isHeader)
-                    .onScrollVisibilityChange { isTitleVisible = $0 }
-            }
 
             ForEach(viewModel.messages) { message in
                 if message.authorRole == .system {
@@ -32,11 +27,36 @@ struct UnifiedSupportTicketContentView: View {
         .padding(.bottom, 16)
     }
 
+    /// The subject, with the status and the time of the last update read underneath it: the ticket is named
+    /// first, and what's said about it follows.
     private var header: some View {
-        HStack(alignment: .firstTextBaseline) {
+        VStack(alignment: .leading, spacing: 6) {
+            if !viewModel.title.isEmpty {
+                Text(viewModel.title)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .accessibilityAddTraits(.isHeader)
+                    .onScrollVisibilityChange { isTitleVisible = $0 }
+            }
+
+            statusAndLastUpdate
+        }
+    }
+
+    private var statusAndLastUpdate: some View {
+        // At accessibility sizes the two lines no longer fit side by side, so they stack instead of shrinking
+        // to fit, the way a row of the conversations list does.
+        let layout =
+            dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
+            : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 8))
+
+        return layout {
             UnifiedSupportStatusLabel(status: viewModel.status)
 
-            Spacer(minLength: 8)
+            if !dynamicTypeSize.isAccessibilitySize {
+                Spacer(minLength: 0)
+            }
 
             Text(
                 String.localizedStringWithFormat(
@@ -44,7 +64,7 @@ struct UnifiedSupportTicketContentView: View {
                     UnifiedSupportRelativeTime.format(viewModel.lastActivityAt)
                 )
             )
-            .font(.subheadline)
+            .font(.footnote)
             .foregroundStyle(.secondary)
         }
     }
