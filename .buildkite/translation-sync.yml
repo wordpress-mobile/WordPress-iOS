@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# Daily translation sync — run by a Buildkite schedule on trunk (see docs/localization-pipeline.md).
+
+agents:
+  queue: mac
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: ":globe_with_meridians: Sync translations"
+    command: ".buildkite/commands/sync-translations.sh"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+notify:
+  - slack: "#build-and-ship"
+    if: build.state == "failed"

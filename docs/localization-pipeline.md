@@ -27,6 +27,17 @@ Translators then do their work in GlotPress.
 
 Step 3 runs via `run_plural_step`, which logs and continues on failure — the AI tier can never break a release.
 
+### Continuously, between releases
+
+Two CI jobs run the same trips without waiting for a code freeze (`fastlane/lanes/continuous_translations.rb`). Each keeps one bot PR up to date on a long-lived branch, labels it `i18n`, and turns on auto-merge, so it merges through the merge queue as soon as someone approves it. Neither job ships machine translations.
+
+- **Forward, after every `trunk` build** (`upload_strings_for_translation`, step in `.buildkite/pipeline.yml`): runs `generate_strings_file_for_glotpress` and puts the result on the **"Update strings for localization"** PR (branch `bot/strings-for-translation`). GlotPress picks up the new English strings once that PR merges.
+- **Reverse, daily** (`sync_translations`, `.buildkite/translation-sync.yml` on a Buildkite schedule): runs `download_localized_strings` and `lint_localizations`, and puts the result on the **"Update translations"** PR (branch `bot/translation-sync`). It brings in human translations only. The plural fold still stages AI plurals in `Plurals.xcstrings`, which the app doesn't read yet.
+
+**An existing key can't change its format arguments.** Before the forward job publishes, it compares the regenerated English strings with the previous ones (`PlaceholderChanges`). If a key that already existed gained, lost, or retyped a format argument, the job fails: translations of the old text still carry the old arguments, and formatting them with the new ones crashes or shows the wrong value. Give the changed text a new key instead. Reordering positional arguments is fine.
+
+Both jobs publish only when CI runs them on `trunk`. Anywhere else, including locally, they do the same work, print what they would publish, and stop. They also skip the push when the bot branch already has the same changes, and the forward job skips it when `trunk` has moved on (the newer build updates the PR instead).
+
 ## The AI tier
 
 The machine-translation rung of the floor. It is **injected and gated**, never mandatory:

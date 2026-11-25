@@ -178,16 +178,31 @@ steps:
       - label: ":test_tube: Localization Tooling Unit Tests"
         command: .buildkite/commands/test-localization-tooling.sh
         # Pure Ruby, so it runs in a Ruby container on the Linux queue instead of booting a Mac VM.
+        # The full image, not the slim one: `continuous_translations_test.rb` needs `git`.
         agents:
           queue: "default"
         plugins:
           - $DOCKER_PLUGIN:
-              image: "$DOCKER_RUBY_IMAGE"
+              image: "$DOCKER_RUBY_FULL_IMAGE"
               # An explicit pull is retried by the plugin; the one implied by `docker run` is not.
               always-pull: true
         notify:
           - github_commit_status:
               context: "Localization Tooling Unit Tests"
+
+  #################
+  # Continuous translations: send new English strings to GlotPress after every trunk build
+  #
+  # Keeps one bot PR up to date with the regenerated English strings. The daily download of translations runs
+  # from `.buildkite/translation-sync.yml`. See docs/localization-pipeline.md.
+  #################
+  - label: ":globe_with_meridians: Upload strings for translation"
+    command: ".buildkite/commands/upload-strings-for-translation.sh"
+    if: "build.branch == 'trunk'"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    # One at a time, so two trunk builds can't push the bot branch at once.
+    concurrency_group: "wordpress-ios/upload-strings-for-translation"
+    concurrency: 1
 
   #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
