@@ -36,7 +36,8 @@ extension UITableView {
         guard let tableHeaderView else {
             return
         }
-        let fittingSize = CGSize(width: bounds.width - (safeAreaInsets.left + safeAreaInsets.right), height: 0)
+        // UITableView gives the header its full width; the header handles its own safe area.
+        let fittingSize = CGSize(width: bounds.width, height: 0)
         let size = tableHeaderView.systemLayoutSizeFitting(
             fittingSize,
             withHorizontalFittingPriority: .required,
