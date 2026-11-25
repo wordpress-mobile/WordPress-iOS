@@ -796,9 +796,6 @@
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Creation Date";
 
-/* Footer message indicating that this application password is currently active and being used by the app */
-"applicationPassword.item.currentlyInUse" = "This application password is currently being used by the app.";
-
 /* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Last Used";
 
@@ -822,6 +819,27 @@
 
 /* Title of application passwords list */
 "applicationPassword.list.title" = "Application Passwords";
+
+/* Confirmation button for revoking an application password */
+"applicationPassword.revoke.button" = "Revoke";
+
+/* Explanation for protecting the current application password */
+"applicationPassword.revoke.current" = "This application password is currently being used by the app and cannot be revoked here.";
+
+/* Title of application password revocation error */
+"applicationPassword.revoke.errorTitle" = "Could Not Revoke Application Password";
+
+/* Revocation confirmation. %1$@ is the application password name. */
+"applicationPassword.revoke.message" = "Revoke “%1$@”? Apps using this password will lose access to your site.";
+
+/* Error when a site does not confirm revocation */
+"applicationPassword.revoke.notConfirmed" = "The site did not confirm that the application password was revoked. Please try again.";
+
+/* Button and confirmation title for revoking an application password */
+"applicationPassword.revoke.title" = "Revoke Application Password";
+
+/* Explanation when the app cannot safely revoke an application password */
+"applicationPassword.revoke.unknownCurrent" = "The app could not verify which application password it is using. Retry before revoking a password.";
 
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Cannot find the current site's url";
@@ -1762,9 +1780,6 @@
 /* Error title when logs fail to load */
 "com.jetpack.support.errorLoadingLogs" = "Error loading logs";
 
-/* Option to export log as a file */
-"com.jetpack.support.exportAsFile" = "Export as File";
-
 /* Toggle title for enabling extensive logging */
 "com.jetpack.support.extensiveLogging" = "Extensive Logging";
 
@@ -1813,9 +1828,6 @@
 /* The title of a new bot chat in the support area of the app */
 "com.jetpack.support.new-bot-chat" = "New Bot Chat";
 
-/* Option to create a new support ticket */
-"com.jetpack.support.newSupportTicket" = "New Support Ticket";
-
 /* Label shown when there are no bot conversations */
 "com.jetpack.support.noConversations" = "No Conversations";
 
@@ -1824,21 +1836,6 @@
 
 /* Label shown when no log files are available */
 "com.jetpack.support.noLogsFound" = "No Logs Found";
-
-/* Description for saving log as a file */
-"com.jetpack.support.saveAsFile" = "Save as a file to share or store";
-
-/* Description for sending logs to support */
-"com.jetpack.support.sendLogsToSupport" = "Send logs directly to support team";
-
-/* Button to share content */
-"com.jetpack.support.share" = "Share";
-
-/* Navigation title for sharing activity log */
-"com.jetpack.support.shareActivityLog" = "Share Activity Log";
-
-/* Message shown when sharing log with support */
-"com.jetpack.support.sharingWithSupport" = "Sharing with support!";
 
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Start a new conversation using the button above";
@@ -1910,7 +1907,7 @@
 "com.jetpack.support.unified.conversations.loading" = "Loading conversations…";
 
 /* Title of the screen listing the user's support conversations. */
-"com.jetpack.support.unified.conversations.title" = "Get help";
+"com.jetpack.support.unified.conversations.title" = "Get Help";
 
 /* Message shown when a support request fails. */
 "com.jetpack.support.unified.error.message" = "Something went wrong. Please try again later.";
@@ -11491,7 +11488,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.root.getHelp.detail" = "Get answers from our support team, anytime";
 
 /* Title of the row that opens the support conversations with the AI Assistant and support team. */
-"support.root.getHelp.title" = "Get help";
+"support.root.getHelp.title" = "Get Help";
 
 /* Header of the section listing the ways to get help. */
 "support.root.help.header" = "How can we help?";
@@ -11536,7 +11533,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.row.contactEmail.title" = "Email";
 
 /* Option in Support view to contact the support team. */
-"support.row.contactUs.title" = "Contact support";
+"support.row.contactUs.title" = "Contact Support";
 
 /* Option in Support view to enable/disable adding debug information to support ticket. */
 "support.row.debug.title" = "Debug";
