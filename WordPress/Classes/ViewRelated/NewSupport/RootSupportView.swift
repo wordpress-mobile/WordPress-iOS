@@ -321,7 +321,7 @@ private enum Strings {
     )
     static let getHelpTitle = NSLocalizedString(
         "support.root.getHelp.title",
-        value: "Get help",
+        value: "Get Help",
         comment: "Title of the row that opens the support conversations with the AI Assistant and support team."
     )
     static let getHelpDetail = NSLocalizedString(
