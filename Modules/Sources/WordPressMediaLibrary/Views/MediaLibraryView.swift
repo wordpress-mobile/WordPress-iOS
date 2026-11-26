@@ -25,6 +25,11 @@ struct MediaLibraryView: View {
         ZStack {
             if searchText.isEmpty {
                 MediaGridView(items: viewModel.displayItems, isAspectRatioMode: isAspectRatioMode)
+                    // A new identity per filter crossfades the grid. Animating
+                    // the same grid slid the remaining tiles diagonally across
+                    // each other. The new grid starts at the top.
+                    .id(viewModel.kind)
+                    .transition(.opacity)
                     .refreshable { await viewModel.refresh() }
                     .overlay { libraryOverlay }
             } else {
