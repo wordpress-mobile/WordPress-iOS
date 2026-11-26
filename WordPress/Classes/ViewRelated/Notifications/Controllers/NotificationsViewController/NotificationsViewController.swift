@@ -604,8 +604,12 @@ private extension NotificationsViewController {
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
         filterTabBar.tabBarHeightConstraintPriority = 999
 
-        let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
-        let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+        let leading = tableHeaderView.safeAreaLayoutGuide.leadingAnchor.constraint(
+            equalTo: tableView.safeAreaLayoutGuide.leadingAnchor
+        )
+        let trailing = tableHeaderView.safeAreaLayoutGuide.trailingAnchor.constraint(
+            equalTo: tableView.safeAreaLayoutGuide.trailingAnchor
+        )
 
         leading.priority = UILayoutPriority(999)
         trailing.priority = UILayoutPriority(999)

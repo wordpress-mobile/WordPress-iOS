@@ -14,6 +14,7 @@ public struct ApplicationTokenItem: Identifiable {
     public let lastIpAddress: String?
 
     public var isCurrent: Bool = false
+    public var canDelete: Bool = false
 
     public init(name: String, uuid: UUID, appId: String, createdAt: Date, lastUsed: Date?, lastIpAddress: String?) {
         self.name = name

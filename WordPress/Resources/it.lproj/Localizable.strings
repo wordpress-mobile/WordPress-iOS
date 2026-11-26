@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-23 11:38:45+0000 */
+/* Translation-Revision-Date: 2026-11-04 18:07:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: it */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1370,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Blocco copiato";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Copia il link per commentare";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Copia l'URL dagli appunti, %s";
 
@@ -1723,8 +1719,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "I proprietari del dominio devono condividere le informazioni di contatto in un database pubblico di tutti i domini. Con la Protezione della privacy, pubblichiamo le nostre informazioni al posto delle tue e ti inoltriamo privatamente qualsiasi comunicazione.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3587,8 +3582,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "La notifica includerà una parola o una breve frase da cui trarre ispirazione";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4173,8 +4167,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Leggi l'articolo sorgente";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Reader";
 
@@ -5151,9 +5144,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tocca per visualizzare il tuo sito";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Tocca per visitare il sito web di Gravatar in un browser esterno";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Tassonomie";
 
@@ -5816,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Aggiornamento in corso";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Aggiornando il tuo avatar, il nome e le informazioni personali qui, verranno aggiornati anche su tutti i siti che utilizzano i profili Gravatar.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Aggiorna il piano per caricare audio";
 
@@ -6142,9 +6129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Cosa desideri fare con questo file: caricarlo e aggiungere un link al file nel tuo articolo o aggiungere i contenuti del file direttamente nell'articolo?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Cos'è Gravatar?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Che cos'è un blocco?";
 
@@ -6406,9 +6390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "I tuoi siti";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Il tuo profilo WordPress.com è gestito da Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Il sito WordPress.com supporta l'utilizzo di Accelerated Mobile Pages, un'iniziativa introdotta da Google che migliora sensibilmente la velocità di caricamento su dispositivi mobili.";
@@ -7053,9 +7034,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "File di log per data di creazione";
-
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "Verranno caricati i seguenti file di log:";
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "I file di log vengono salvati per massimo sette giorni.";
@@ -8075,21 +8053,6 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Caricamento dell'Editor";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "Ignora";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "Puoi escludere questa app dalla modalità di blocco nelle Impostazioni, quindi riaprire l'editor per ripristinare tutte le funzionalità.";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "Scopri di più";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "Modalità di blocco rilevata";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "La modalità di blocco è attivata. L'editor potrebbe non funzionare correttamente.";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Inserimento file multimediali non riuscito";
 
@@ -8411,23 +8374,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Seleziona sito";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ si stanno trasferendo in %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ si sta trasferendo in %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ si trasferiranno presto";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ si trasferirà presto";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Con tecnologia Jetpack";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Ottieni l'app di Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Prova la nuova app Jetpack";
@@ -8475,64 +8423,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Connettiti al tuo account WordPress.com";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Passa alla nuova app Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Passa alla app Jetpack";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Maggiori informazioni su jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Ricevi notifiche per nuovi commenti, Mi piace, visualizzazioni e altro ancora.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Trova e segui i tuoi siti e le community preferiti e condividi i tuoi contenuti.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Osserva la crescita del tuo traffico con informazioni utili e statistiche complete.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistiche e panoramica";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack ti permette di fare di più con il tuo sito WordPress. Il passaggio è gratuito e richiede solo un minuto.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Dai una spinta a WordPress con Jetpack";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Continua in Notifiche";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Fallo più tardi";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistiche, Reader, Notifiche e altre funzionalità basate su Jetpack sono state rimosse dall'app WordPress.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Le funzionalità di Jetpack sono state trasferite.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Passa all'app Jetpack per continuare a ricevere notifiche in tempo reale sul tuo dispositivo.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Ricevi le tue notifiche con l'app Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Passa all'app Jetpack per trovare, seguire e mettere mi piace a tutti i tuoi siti e post preferiti con Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Abbonati a qualsiasi sito con l'app Jetpack";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack fornisce statistiche, notifiche e altro per aiutarti a costruire e far crescere il sito WordPress dei tuoi sogni.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Passa all'app Jetpack per vedere crescere il traffico del tuo sito con statistiche e approfondimenti.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Ottieni le statistiche usando la nuova app di Jetpack";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Il passaggio è gratuito e richiede solo un minuto.";
@@ -8540,26 +8437,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Continua senza Jetpack";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Le funzionalità di Jetpack si trasferiranno presto.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack fornisce statistiche, notifiche e altro per aiutarti a costruire e far crescere il sito WordPress dei tuoi sogni.\n\nL'app WordPress non supporta più la creazione di un nuovo sito.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistiche, Reader, Notifiche e altre funzionalità collegate a Jetpack saranno presto rimosse dall'app WordPress.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Le notifiche passano all'app Jetpack";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader passa all'app Jetpack";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Le Statistiche passano all'app Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistiche, Reader, Notifiche e altre funzionalità collegate a Jetpack saranno presto rimosse dall'app WordPress su %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Continua in Reader";
@@ -8569,9 +8448,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Il tuo sito ha il plugin Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continua senza Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Prova la nuova app Jetpack";
@@ -8603,9 +8479,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "Per utilizzare le statistiche sul tuo sito, dovrai collegare il plugin Jetpack al tuo account utente.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Statistiche, Reader, Notifiche e altre funzionalità passeranno presto all'app mobile Jetpack.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Nascondi";
 
@@ -8614,9 +8487,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Sblocca tutto il potenziale del tuo sito web. Ottieni Statistiche, Reader, Notifiche e altro con Jetpack.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Passa a Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Ricordamelo più tardi";
@@ -8897,9 +8767,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Periodo precedente";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Visitatori attualmente online";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Tocca due volte per ricaricare le statistiche";
 
@@ -8926,12 +8793,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Tocca due volte per mostrare più dettagli";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d visitatore online ora";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d visitatori online ora";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Visualizza l'andamento nel tempo";
@@ -9310,7 +9171,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.postDetails.dailyAverage" = "Media giornaliera";
 
 /* Title for email metrics card */
-"jetpackStats.postDetails.emailMetrics" = "E-mail";
+"jetpackStats.postDetails.emailMetrics" = "Email";
 
 /* Must be short!Label for emails sent metric */
 "jetpackStats.postDetails.emailsSent" = "E-mail inviate";
@@ -9447,17 +9308,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Visitatori";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Visitatori attuali";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Annunci";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Panoramica";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "In tempo reale";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Abbonati";
@@ -9569,9 +9424,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Questo sito utilizza singoli plugin Jetpack, che non supportano ancora tutte le funzionalità dell'app. Installa il plugin Jetpack completo.";
-
-/* Later today */
-"later today" = "Più tardi";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "mi piace";
@@ -10226,42 +10078,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Visualizza il sito";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Inizia";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "Non è il momento di cambiare? Puoi disattivare le Nuove statistiche dal menu Altro nella scheda Statistiche.";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "Navigazione e selezione data ora sono nella parte inferiore dello schermo, proprio dove si trova il tuo pollice.";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "Più facile da raggiungere";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Scegli tra i valori predefiniti comuni o imposta un intervallo di date personalizzato con un periodo di confronto: tutto in un tocco.";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "Qualsiasi periodo, qualsiasi intervallo";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "Dispositivi, UTM, posizioni, WordAds: gli stessi dati che ottieni su WordPress.com.";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "Alla pari con il web";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Ogni indicatore mostra l'andamento rispetto al periodo precedente, così saprai sempre se stai crescendo.";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "Le tendenze in un colpo d'occhio";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "Un modo migliore per comprendere le prestazioni del tuo sito: ora attivo per impostazione predefinita.";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "Nuove statistiche";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Non ci sono voci di registro in questo intervallo di tempo";
@@ -11277,9 +11093,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Pianifica";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Scrivi un breve messaggio da condividere sui social media insieme all'articolo";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tag";
 
@@ -11420,9 +11233,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Commenti";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Visualizza articoli dal sito";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d Mi piace_";
@@ -11756,17 +11566,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Recente";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Salva questo articolo e torna a leggerlo quando vorrai. Sarà disponibile solo su questo dispositivo: gli articoli salvati non vengono sincronizzati su altri dispositivi.";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Salva articoli per dopo";
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Salvato";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Articolo salvato eliminato";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "Il file selezionato non è un file di esportazione valido degli articoli salvati.";
@@ -11800,9 +11604,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "Impossibile importare il file selezionato. Riprova.";
-
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "Recupero dell'articolo %1$d di %2$d…";
 
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "%1$d importati, %2$d saltati, %3$d falliti.";
@@ -12666,12 +12467,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Iscritti";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "L'ultimo articolo %1$@ ha ricevuto %2$@ mi piace.";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "L'ultimo articolo %1$@ ha ricevuto %2$@ mi piace.";
-
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Abbonati totali di WordPress.com: %@";
 
@@ -12715,7 +12510,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.subscribers.emailsSummary.column.title" = "Ultime e-mail";
 
 /* Stats 'Emails' card header */
-"stats.subscribers.emailsSummaryCard.title" = "E-mail";
+"stats.subscribers.emailsSummaryCard.title" = "Email";
 
 /* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
 "stats.subscribers.growthChart.title" = "Crescita abbonati";
@@ -12826,7 +12621,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "subscriberDetails.fieldName.statsClickedEmails" = "Clic effettuato";
 
 /* Form field name (has to be short!) */
-"subscriberDetails.fieldName.statsEmailCount" = "E-mail";
+"subscriberDetails.fieldName.statsEmailCount" = "Email";
 
 /* Form field name (has to be short!) */
 "subscriberDetails.fieldName.statsOpenedEmails" = "Aperta";
@@ -12915,10 +12710,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Attuale";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Desideri eliminare tutti i log attività?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Elimina log";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -13016,12 +12811,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Trascrizione del bot di Jetpack per dispositivi mobili";
-
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "Fai una domanda e lasciati aiutare dal nostro gruppo di volontari.";
-
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "Forum della community";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "Ottieni risposte dal nostro team di supporto, in qualsiasi momento";

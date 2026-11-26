@@ -1,6 +1,6 @@
 # Localization
 
-Use `NSLocalizedString()` for all user-facing text. During release, strings are automatically extracted and uploaded to GlotPress for translation. The developes do not need to edit `Localizable.strings`.
+Use `NSLocalizedString()` for all user-facing text. After every `trunk` build, strings are automatically extracted and sent to GlotPress for translation through a bot PR (see [localization-pipeline.md](./localization-pipeline.md)). Developers do not need to edit `Localizable.strings`.
 
 ## Key Rules
 

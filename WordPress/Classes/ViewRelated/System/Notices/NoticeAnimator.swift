@@ -25,7 +25,7 @@ public struct NoticeAnimator {
         view.addSubview(noticeContainerView)
 
         let bottomConstraint = noticeContainerView.bottomAnchor.constraint(equalTo: sourceView.topAnchor)
-        let leadingConstraint = noticeContainerView.constrain(attribute: .leading, toView: view, relatedBy: .greaterThanOrEqual, constant: 0)
+        let leadingConstraint = noticeContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
         let trailingConstraint = noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         trailingConstraint.priority = .defaultHigh // During rotation this may need to break
 

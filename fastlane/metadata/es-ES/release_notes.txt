@@ -1,7 +1,15 @@
-Los tipos de entradas personalizados ahora aparecen directamente en el menú del sitio después de «Comentarios», ordenados por nombre para mayor comodidad; ya no hace falta fijarlos manualmente.
+¿Has elegido el tamaño y la calidad de tus fotos en los ajustes de medios? El editor de bloques experimental ahora utiliza esas opciones cuando subes una foto. También respeta tus ajustes para eliminar los datos de ubicación. Puedes usar el editor en modo de bloqueo, y te preguntará antes de guardar una entrada mientras los archivos aún se están subiendo a medios.
 
-También hemos solucionado varios errores, para que te resulte un poco más fácil usar la app.
+Guarda una entrada en el Lector de tu iPhone y luego ábrela en tu iPad. Tu cuenta de WordPress.com ahora sincroniza hasta 1.000 entradas guardadas entre dispositivos, incluidas las que ya tenías guardadas. También puedes tocar una mención en una entrada para ver el perfil de esa persona. Y cuando dejas un comentario, este permanece visible.
 
-- Las subidas ya no fallarán si el nombre del archivo contiene espacios. (good-news-everyone.jpg)
-- Hemos solucionado un fallo que se producía al compartir ciertos tipos de archivos de texto.
-- Usuarios de iPad, ¡alegraos! La app ya no se quedará atascada en el diseño compacto de la barra de pestañas cuando cambies el tamaño de la pantalla o cambies de app.
+En los modelos iPhone Plus y Pro Max, las vistas previas de las entradas ahora ocupan toda la pantalla en modo horizontal. En el iPad, puedes reducir el tamaño de la ventana mientras editas una entrada o cambias ajustes en un sitio y retomar justo donde lo dejaste. Incluso la lista de diseños del sitio guarda tu posición.
+
+Algunos cambios más que quizá notes por el camino.
+
+- En los sitios autohospedados, las nuevas entradas siguen los ajustes de comentarios de tu sitio. Si permites los comentarios por defecto, la conversación está abierta.
+- Si tu servidor bloquea el inicio de sesión con una contraseña de aplicación, la app ahora te indica qué ha fallado.
+- Cuando abres una entrada de un sitio autohospedado desde Spotlight, la vista previa permanece abierta.
+- Las descripciones de los plugins se pueden leer en modo oscuro, y puedes ver sus vídeos en la app o pulsar «Ver en YouTube».
+- Hemos solucionado un fallo que podía producirse al compartir una foto en la app.
+
+Necesitarás iOS 18 o posterior para esta actualización. Los dispositivos con iOS 17 ya no recibirán actualizaciones de la app.

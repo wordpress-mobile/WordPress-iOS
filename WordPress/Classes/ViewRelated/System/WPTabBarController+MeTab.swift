@@ -25,9 +25,34 @@ extension WPTabBarController {
     /// Shows the account avatar on the Me tab item.
     @objc public func observeAccountAvatar() {
         meTabAvatarSubscription = AccountAvatar.shared.$image.sink { [weak self] avatar in
-            self?.performTabBarItemUpdate {
-                self?.meNavigationController.tabBarItem.configureAccountAvatar(avatar)
+            guard let self else { return }
+            self.performTabBarItemUpdate { [weak self] in
+                guard let self, let tab = self.tab(forAppTab: .me) else { return }
+                tab.configureAccountAvatar(avatar, isSelected: self.selectedAppTab == .me)
             }
+        }
+    }
+
+    @objc func updateAccountAvatarForSelection() {
+        // Before iOS 26, the inactive Me tab uses a dimmed avatar.
+        guard #unavailable(iOS 26) else { return }
+        performTabBarItemUpdate { [weak self] in
+            guard let self, let tab = self.tab(forAppTab: .me) else { return }
+            tab.configureAccountAvatar(AccountAvatar.shared.image, isSelected: self.selectedAppTab == .me)
+        }
+    }
+}
+
+extension UITab {
+    func configureAccountAvatar(_ avatar: UIImage?, isSelected: Bool) {
+        guard let icon = avatar?.gravatarIcon(size: 26) else {
+            image = UIImage(named: "tab-bar-me")
+            return
+        }
+        if #available(iOS 26, *) {
+            image = icon
+        } else {
+            image = isSelected ? icon : icon.blackAndWhite?.withAlpha(0.36)
         }
     }
 }

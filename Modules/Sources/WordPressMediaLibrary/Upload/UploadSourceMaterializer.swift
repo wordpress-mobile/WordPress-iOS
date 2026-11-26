@@ -6,8 +6,8 @@ import UniformTypeIdentifiers
 import WordPressAPI
 import os
 
-struct MaterializedUpload: Sendable {
-    let tempFileURL: URL
+public struct MaterializedUpload: Sendable {
+    public let tempFileURL: URL
     let params: MediaCreateParams
     let kind: MediaKind
 
@@ -26,7 +26,7 @@ struct MaterializedUpload: Sendable {
     }
 }
 
-final class UploadSourceMaterializer: Sendable {
+public final class UploadSourceMaterializer: Sendable {
     private let policy: MediaUploadPolicy
     private let temporaryRoot: URL
     private let filenames = UploadFilenameAllocator()
@@ -93,7 +93,13 @@ final class UploadSourceMaterializer: Sendable {
         self.temporaryRoot = temporaryRoot
     }
 
-    func materialize(
+    /// For callers outside the module. Uploads are staged under the default
+    /// root, which `sweepOrphanedStagingFiles()` clears at launch.
+    public convenience init(policy: MediaUploadPolicy) {
+        self.init(policy: policy, temporaryRoot: Self.defaultStagingDirectory)
+    }
+
+    public func materialize(
         source: UploadSource,
         into stageProgress: Progress
     ) async throws -> MaterializedUpload {
@@ -129,6 +135,13 @@ final class UploadSourceMaterializer: Sendable {
                 result = try await materializeFile(
                     parentDir: parentDir,
                     sourceURL: url,
+                    stageProgress: stageProgress
+                )
+            case .localFile(let url, let contentType):
+                result = try await materializeLocalFile(
+                    parentDir: parentDir,
+                    sourceURL: url,
+                    contentType: contentType,
                     stageProgress: stageProgress
                 )
             case .remoteURL(let remote):
@@ -389,7 +402,20 @@ final class UploadSourceMaterializer: Sendable {
         }
         defer { sourceURL.stopAccessingSecurityScopedResource() }
 
-        let contentType = try resolveContentType(of: sourceURL)
+        return try await materializeLocalFile(
+            parentDir: parentDir,
+            sourceURL: sourceURL,
+            contentType: try resolveContentType(of: sourceURL),
+            stageProgress: stageProgress
+        )
+    }
+
+    private func materializeLocalFile(
+        parentDir: URL,
+        sourceURL: URL,
+        contentType: UTType,
+        stageProgress: Progress
+    ) async throws -> MaterializedUpload {
         let stem = filenames.stem(
             preferred: sourceURL.deletingPathExtension().lastPathComponent,
             fallbackPrefix: "File",
@@ -411,6 +437,7 @@ final class UploadSourceMaterializer: Sendable {
             return try await materializeFileVideo(
                 parentDir: parentDir,
                 sourceURL: sourceURL,
+                contentType: contentType,
                 stem: stem,
                 stageProgress: stageProgress
             )
@@ -461,11 +488,15 @@ final class UploadSourceMaterializer: Sendable {
     private func materializeFileVideo(
         parentDir: URL,
         sourceURL: URL,
+        contentType: UTType,
         stem: String,
         stageProgress: Progress
     ) async throws -> MaterializedUpload {
-        try await finalizeVideo(
-            asset: AVURLAsset(url: sourceURL),
+        // AVFoundation otherwise identifies the container by its extension
+        // alone, which a file staged by a web view may lack.
+        let options = contentType.preferredMIMEType.map { [AVURLAssetOverrideMIMETypeKey: $0] }
+        return try await finalizeVideo(
+            asset: AVURLAsset(url: sourceURL, options: options),
             stem: stem,
             parentDir: parentDir,
             stageProgress: stageProgress
@@ -636,15 +667,19 @@ final class UploadSourceMaterializer: Sendable {
 
         var transforms: ImageTransforms = []
         var effectiveType = actualType
-        if !Self.webSafeImageTypes.contains(actualType), policy.convertHEICToJPEG {
-            effectiveType = .jpeg
-            transforms.insert(.convert)
-        }
-        if let cap = policy.imageMaxDimension, cap > 0, max(width, height) > cap {
-            transforms.insert(.resize)
-        }
-        if policy.stripGPSLocation, props[kCGImagePropertyGPSDictionary] != nil {
-            transforms.insert(.stripGPS)
+        // A mislabeled GIF must not be re-encoded either, which would flatten
+        // its animation, so its bytes are written unchanged.
+        if !Self.rawPassthroughImageTypes.contains(actualType) {
+            if !Self.webSafeImageTypes.contains(actualType), policy.convertHEICToJPEG {
+                effectiveType = .jpeg
+                transforms.insert(.convert)
+            }
+            if let cap = policy.imageMaxDimension, cap > 0, max(width, height) > cap {
+                transforms.insert(.resize)
+            }
+            if policy.stripGPSLocation, props[kCGImagePropertyGPSDictionary] != nil {
+                transforms.insert(.stripGPS)
+            }
         }
         // A transform re-encodes, and the re-encode target must be
         // web-renderable and ImageIO-writable (e.g. an oversized DNG with
@@ -895,7 +930,8 @@ final class UploadSourceMaterializer: Sendable {
 
     /// Image types that must never round-trip through ImageIO: re-encoding
     /// would flatten GIF animation and rasterize SVG vectors. Every source
-    /// branch routes these to a raw byte copy instead of the image tail.
+    /// branch routes these to a raw byte copy, and the image tail copies one
+    /// that arrives mislabeled.
     /// (Animated WebP and APNG are not exempt: WebP converts to a JPEG still
     /// and an oversized APNG resizes to a single frame, matching V1.)
     private static let rawPassthroughImageTypes: Set<UTType> = [.gif, .svg]

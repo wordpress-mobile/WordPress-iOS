@@ -138,7 +138,7 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     }
 
     private func isFeatureFlagsSection(_ key: String) -> Bool {
-        key.isEqual(to: Strings.featureFlagSectionKey)
+        key == Strings.featureFlagSectionKey
     }
 
     // MARK: - Types

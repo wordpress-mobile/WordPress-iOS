@@ -1,0 +1,643 @@
+import Foundation
+import CoreData
+import UIKit
+import WordPressAPI
+import WordPressAPIInternal
+import WordPressApiCache
+import WordPressCore
+import WordPressData
+import WordPressShared
+
+extension Foundation.Notification.Name {
+    /// Posted on the main queue when which Reader posts are saved may have changed.
+    static let readerSavedPostsDidChange = Foundation.Notification.Name("ReaderSavedPostsDidChange")
+}
+
+/// The Reader's saved posts, kept in the WordPress.com account.
+///
+/// `ReaderSavedService` from wordpress-rs keeps what's saved, and the saved list, in
+/// `WordPressApiCache` under the account. It answers whether a post is saved from disk after a
+/// relaunch, and the Saved screen reads its list from there. Core Data is only read once per account,
+/// to hand this device's saves over to the account, and `UserDefaults` remembers that it has been.
+/// Saving needs a WordPress.com account.
+///
+/// The Core Data `isSavedForLater` flags stay after the import, as a way back if this has to be
+/// rolled back. Nothing writes them any more, and signing out still clears them.
+///
+/// A save or unsave is kept in the cache straight away and sent to the server in the order it was
+/// made. One that can't be sent yet, such as offline, goes with the next sync: at launch, when the
+/// app comes to the foreground, and when the device comes back online.
+///
+/// There's one service per account, shared by every screen, because it sends one request at a time
+/// and a second instance would send alongside it.
+@MainActor
+final class ReaderSavedPostsStore {
+    static let shared = ReaderSavedPostsStore()
+
+    /// The account's saved posts service, and the account it belongs to.
+    struct Session {
+        let userID: Int64
+        let service: any ReaderSavedServiceProtocol
+        /// The saved list, as the Saved screen shows it.
+        let savedPosts: any ReaderSavedPostsCollectionProtocol
+        /// Kept alive for as long as the service, which uses its delegate.
+        let client: AnyObject?
+
+        init(
+            userID: Int64,
+            service: any ReaderSavedServiceProtocol,
+            savedPosts: (any ReaderSavedPostsCollectionProtocol)? = nil,
+            client: AnyObject?
+        ) {
+            self.userID = userID
+            self.service = service
+            self.savedPosts = savedPosts ?? service.savedPosts()
+            self.client = client
+        }
+    }
+
+    enum StoreError: Error {
+        case notActive
+    }
+
+    private let coreDataStack: CoreDataStack
+    private let track: @MainActor (WPAnalyticsEvent, [AnyHashable: Any]) -> Void
+    private let makeSession: @MainActor (CoreDataStack) -> Session?
+    private let removeAccountData: @MainActor (Int64) throws -> Void
+    private let defaults: UserDefaults
+    /// Where the store hears about the app and the account, and says when saved posts change.
+    private let notificationCenter: NotificationCenter
+    private let observer: ChangeObserver
+
+    private var session: Session?
+    /// The launch import and the syncs after it, in order. Visible so tests can wait for them.
+    private(set) var startTask: Task<Void, Never>?
+    /// Set from signing out until the account change notification. The Core Data account is deleted
+    /// just after `removeAccount(userID:)`, and a session made for it in between, such as by a
+    /// bookmark on screen asking whether its post is saved, would put back what was just deleted.
+    private var isRemovingAccount = false
+    private var accountObserver: NSObjectProtocol?
+    private var syncObservers: [NSObjectProtocol] = []
+
+    init(
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        track: @escaping @MainActor (WPAnalyticsEvent, [AnyHashable: Any]) -> Void = {
+            WPAnalytics.track($0, properties: $1)
+        },
+        makeSession: @escaping @MainActor (CoreDataStack) -> Session? = ReaderSavedPostsStore.makeDefaultSession,
+        removeAccountData: @escaping @MainActor (Int64) throws -> Void = ReaderSavedPostsStore.removeCachedAccount,
+        defaults: UserDefaults = .standard,
+        notificationCenter: NotificationCenter = .default,
+        observesAccountChanges: Bool = true
+    ) {
+        self.coreDataStack = coreDataStack
+        self.track = track
+        self.makeSession = makeSession
+        self.removeAccountData = removeAccountData
+        self.defaults = defaults
+        self.notificationCenter = notificationCenter
+        self.observer = ChangeObserver(notificationCenter: notificationCenter)
+
+        if observesAccountChanges {
+            accountObserver = notificationCenter.addObserver(
+                forName: .wpAccountDefaultWordPressComAccountChanged,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                MainActor.assumeIsolated {
+                    self?.accountChanged()
+                }
+            }
+            syncObservers = [
+                notificationCenter.addObserver(
+                    forName: UIApplication.willEnterForegroundNotification,
+                    object: nil,
+                    queue: .main
+                ) { [weak self] _ in
+                    MainActor.assumeIsolated {
+                        self?.sync()
+                    }
+                },
+                notificationCenter.addObserver(
+                    forName: .reachabilityUpdated,
+                    object: nil,
+                    queue: .main
+                ) { [weak self] notification in
+                    guard notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true else {
+                        return
+                    }
+                    MainActor.assumeIsolated {
+                        self?.sync()
+                    }
+                }
+            ]
+        }
+    }
+
+    deinit {
+        for observer in [accountObserver].compactMap({ $0 }) + syncObservers {
+            notificationCenter.removeObserver(observer)
+        }
+    }
+
+    /// Whether there's a WordPress.com account to save to. Without one, posts can't be saved.
+    var isActive: Bool {
+        loadSessionIfNeeded()
+        return session != nil
+    }
+
+    /// The account's service, or `nil` without a WordPress.com account.
+    var service: (any ReaderSavedServiceProtocol)? {
+        isActive ? session?.service : nil
+    }
+
+    /// The account's saved list, or `nil` without a WordPress.com account.
+    var savedPosts: (any ReaderSavedPostsCollectionProtocol)? {
+        isActive ? session?.savedPosts : nil
+    }
+
+    /// Hands this device's saves over to the account if it hasn't had them yet, then reloads which
+    /// posts are saved. Call at launch.
+    ///
+    /// This also happens on its own whenever the store first finds the account, such as after
+    /// signing in, so it doesn't depend on the account being ready when the app launches.
+    ///
+    /// - Returns: A task that finishes when both are done, or `nil` when the store isn't active.
+    @discardableResult
+    func start() -> Task<Void, Never>? {
+        if session == nil {
+            loadSessionIfNeeded()
+            return session == nil ? nil : startTask
+        }
+        guard let session else { return nil }
+        startTask = importAndRefresh(session)
+        return startTask
+    }
+
+    private func importAndRefresh(_ session: Session) -> Task<Void, Never> {
+        let importedKey = Self.importedKey(userID: session.userID)
+        let previous = startTask
+        return Task { @MainActor [coreDataStack, track, defaults] in
+            // After any earlier run, which may be importing.
+            await previous?.value
+            var didSend = false
+            if !defaults.bool(forKey: importedKey) {
+                let outcome = await Self.importLocalSaves(from: coreDataStack, to: session.service, track: track)
+                if let outcome {
+                    // The service imports whenever it's asked, so a post unsaved since would come back.
+                    defaults.set(true, forKey: importedKey)
+                    didSend = outcome
+                }
+            }
+            do {
+                if didSend {
+                    // Fetches the imported posts' details for the saved list. It syncs first.
+                    _ = try await session.savedPosts.refresh()
+                } else {
+                    try await session.service.sync()
+                }
+            } catch {
+                Self.logSyncError(error, session: session)
+            }
+        }
+    }
+
+    /// Sends the saves and unsaves the server doesn't have yet, then reloads which posts are saved.
+    /// Waits for the launch import if it's still running.
+    func sync() {
+        guard let session, !isRemovingAccount else { return }
+        let previous = startTask
+        startTask = Task { @MainActor in
+            await previous?.value
+            do {
+                try await session.service.sync()
+            } catch {
+                Self.logSyncError(error, session: session)
+            }
+        }
+    }
+
+    /// A sync that sent everything it could still fails while saves wait for room under the
+    /// account's save cap, which isn't something to fix.
+    private static func logSyncError(_ error: Error, session: Session) {
+        if case ReaderSavedError.TooManySaves = error {
+            let waiting = (try? session.service.savesWaitingForRoom()).map(String.init) ?? "unknown"
+            Loggers.app.info("Reader saved posts: \(waiting) saves wait for room under the save cap")
+        } else {
+            Loggers.app.warning("Reader saved posts: sync failed: \(String(describing: error))")
+        }
+    }
+
+    // MARK: - Status
+
+    /// Whether the post is saved in the account, or `nil` when the store isn't active or doesn't know.
+    func isSaved(_ post: WordPressData.ReaderPost) -> Bool? {
+        guard let service else { return nil }
+        do {
+            switch try service.status(post: ReaderSavedPostsSync.identity(for: post)) {
+            case .saved: return true
+            case .notSaved: return false
+            case .unknown: return nil
+            }
+        } catch {
+            Loggers.app.error("Reader saved posts: reading a post's status failed: \(String(describing: error))")
+            return nil
+        }
+    }
+
+    /// Whether to show the post as saved: the account's answer when there is one, and otherwise what
+    /// this device has.
+    func isSavedForDisplay(_ post: WordPressData.ReaderPost) -> Bool {
+        isSaved(post) ?? post.isSavedForLater
+    }
+
+    // MARK: - Saving
+
+    /// Saves or unsaves the post in the account. The service shows the change straight away, and
+    /// takes it back if the server refuses it. Offline, it's sent with a later sync.
+    ///
+    /// - Returns: Whether the post is now saved.
+    @discardableResult
+    func toggleSaved(_ post: WordPressData.ReaderPost) async throws -> Bool {
+        guard let service else {
+            throw StoreError.notActive
+        }
+        let identity = ReaderSavedPostsSync.identity(for: post)
+        let willSave = !isSavedForDisplay(post)
+        if willSave {
+            // With the post's details, so the Saved list shows it in full before the next refresh.
+            _ = try await service.saveWithDetails(post: ReaderSavedPostsSync.details(for: post))
+        } else {
+            _ = try await service.unsave(post: identity)
+        }
+        return willSave
+    }
+
+    /// Saves the given posts in the account, such as the ones in an imported file. Unlike the
+    /// one-time import of this device's saves, this runs every time it's called. Posts the account
+    /// already has aren't sent again.
+    ///
+    /// The saves must be newest first. A save that can't be sent yet still counts as saved: it shows
+    /// in the list, and a later sync sends it. So does one past the account's save cap, which is sent
+    /// once there's room.
+    func save(_ saves: [ReaderLocalSave]) async throws -> ReaderSavedPostsSync.SaveResult {
+        guard let service, let savedPosts = session?.savedPosts else {
+            throw StoreError.notActive
+        }
+        let newSaves = saves.filter { (try? service.status(post: $0.identity)) != .saved }
+        var result = ReaderSavedPostsSync.SaveResult(alreadySaved: saves.count - newSaves.count)
+        guard !newSaves.isEmpty else { return result }
+
+        let report = try await service.importSaves(saves: newSaves)
+        Loggers.app.info(
+            "Reader saved posts: saved \(report.imported), refused \(report.rejected.count), pending \(report.pending), waiting for room \(report.waitingForRoom), unsaveable \(report.unsaveable)"
+        )
+        result.saved = Int(report.imported + report.pending + report.waitingForRoom)
+        result.failed = report.rejected.count
+        result.unsaveable = Int(report.unsaveable)
+
+        if result.saved > 0 {
+            // The saves are in the list already, with what the file had. This fetches the posts.
+            do {
+                _ = try await savedPosts.refresh()
+            } catch {
+                Loggers.app.error("Reader saved posts: refreshing the list failed: \(String(describing: error))")
+            }
+        }
+        return result
+    }
+
+    // MARK: - Importing local saves
+
+    /// Hands the posts saved on this device to the account.
+    ///
+    /// - Returns: Whether the import sent any posts, so the saved list has new posts to show, or
+    ///   `nil` if it failed and should be tried again.
+    private static func importLocalSaves(
+        from coreDataStack: CoreDataStack,
+        to service: any ReaderSavedServiceProtocol,
+        track: @MainActor (WPAnalyticsEvent, [AnyHashable: Any]) -> Void
+    ) async -> Bool? {
+        var saveCount = 0
+        do {
+            let saves = try await coreDataStack.performQuery { context in
+                try ReaderSavedPostsSync.fetchLocalSaves(in: context)
+            }
+            saveCount = saves.count
+            let report = try await service.importSaves(saves: saves)
+            Loggers.app.info(
+                "Reader saved posts: imported \(report.imported), refused \(report.rejected.count), pending \(report.pending), waiting for room \(report.waitingForRoom), unsaveable \(report.unsaveable)"
+            )
+            track(
+                .readerSavedPostsAccountImport,
+                ReaderSavedPostsSync.importProperties(for: report, saveCount: saveCount)
+            )
+            return report.imported > 0 || report.pending > 0 || report.waitingForRoom > 0 || !report.rejected.isEmpty
+        } catch {
+            // It's tried again at the next launch.
+            Loggers.app.error("Reader saved posts: import failed: \(String(describing: error))")
+            track(
+                .readerSavedPostsAccountImport,
+                ReaderSavedPostsSync.importProperties(for: error, saveCount: saveCount)
+            )
+            return nil
+        }
+    }
+
+    /// The `UserDefaults` key that records the account has had this device's saves.
+    static func importedKey(userID: Int64) -> String {
+        "reader-saved-posts-imported-\(userID)"
+    }
+
+    // MARK: - Account
+
+    /// Deletes everything kept for the account. Call on sign-out, before the account is deleted.
+    func removeAccount(userID: Int64) {
+        isRemovingAccount = true
+        if session?.userID == userID {
+            dropSession()
+        }
+        guard userID > 0 else { return }
+        defaults.removeObject(forKey: Self.importedKey(userID: userID))
+        do {
+            try removeAccountData(userID)
+        } catch {
+            Loggers.app.error("Reader saved posts: removing the account failed: \(String(describing: error))")
+        }
+    }
+
+    private func loadSessionIfNeeded() {
+        guard session == nil, !isRemovingAccount, let session = makeSession(coreDataStack) else { return }
+        session.service.setObserver(observer: observer)
+        self.session = session
+        startTask = importAndRefresh(session)
+    }
+
+    private func dropSession() {
+        startTask?.cancel()
+        startTask = nil
+        session?.service.setObserver(observer: nil)
+        session = nil
+        notificationCenter.post(name: .readerSavedPostsDidChange, object: nil)
+    }
+
+    private func accountChanged() {
+        isRemovingAccount = false
+        dropSession()
+        start()
+    }
+
+    private static func makeDefaultSession(coreDataStack: CoreDataStack) -> Session? {
+        let userID = coreDataStack.performQuery { context in
+            (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.userID?.int64Value
+        }
+        guard let userID, userID > 0 else { return nil }
+
+        let client = WordPressDotComClient(coreDataStack: coreDataStack)
+        do {
+            let service = try client.api.makeReaderSavedService(
+                source: .ios,
+                cache: WordPressApiCache.shared,
+                userID: UInt64(userID)
+            )
+            return Session(userID: userID, service: service, client: client)
+        } catch {
+            Loggers.app.error("Reader saved posts: couldn't create the service: \(String(describing: error))")
+            return nil
+        }
+    }
+
+    private static func removeCachedAccount(userID: Int64) throws {
+        try WordPressApiCache.shared.removeWordpressComAccount(userId: UInt64(userID))
+    }
+}
+
+extension WordPressData.ReaderPost {
+    /// Whether to show the post as saved, such as its bookmark icon. With saved posts kept in the
+    /// account it's the account's answer, falling back to this device's when that's unknown.
+    var isSavedForDisplay: Bool {
+        // UI code reads it on the main thread. Anything else gets this device's answer.
+        guard Thread.isMainThread else { return isSavedForLater }
+        return MainActor.assumeIsolated {
+            ReaderSavedPostsStore.shared.isSavedForDisplay(self)
+        }
+    }
+}
+
+/// Turns the service's change callbacks, which come on any thread, into one notification on the main
+/// queue per run loop turn.
+private final class ChangeObserver: ReaderSavedObserver, @unchecked Sendable {
+    private let notificationCenter: NotificationCenter
+    private let lock = NSLock()
+    private var isScheduled = false
+
+    init(notificationCenter: NotificationCenter) {
+        self.notificationCenter = notificationCenter
+    }
+
+    func savedPostsChanged() {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !isScheduled else { return }
+        isScheduled = true
+
+        DispatchQueue.main.async { [self] in
+            lock.lock()
+            isScheduled = false
+            lock.unlock()
+            notificationCenter.post(name: .readerSavedPostsDidChange, object: nil)
+        }
+    }
+}
+
+// MARK: - Mapping
+
+/// The parts of saved posts that don't need the network.
+enum ReaderSavedPostsSync {
+
+    /// What happened to posts sent with ``ReaderSavedPostsStore/save(_:)``.
+    struct SaveResult: Equatable {
+        /// Posts the account had saved already, which weren't sent again.
+        var alreadySaved = 0
+        var saved = 0
+        /// Posts the server refused, or that failed to send.
+        var failed = 0
+        /// Posts missing the IDs the API needs.
+        var unsaveable = 0
+    }
+
+    /// The fields of a post that decide which key it's saved under. They mirror the raw REST fields
+    /// (`ID`, `site_ID`, `feed_ID`, `feed_item_ID`, `is_external`, `URL`) that `RemoteReaderPost` reads.
+    static func identity(for post: WordPressData.ReaderPost) -> ReaderPostSaveIdentity {
+        identity(
+            postID: post.postID,
+            siteID: post.siteID,
+            feedID: post.feedID,
+            feedItemID: post.feedItemID,
+            isExternal: post.isExternal,
+            permaLink: post.permaLink
+        )
+    }
+
+    /// A negative or missing number becomes `nil`. `BasePost.postID` defaults to -1. A `0` is kept,
+    /// because the API treats a post with a `0` site and feed as a page saved by URL.
+    static func identity(
+        postID: NSNumber?,
+        siteID: NSNumber?,
+        feedID: NSNumber?,
+        feedItemID: NSNumber?,
+        isExternal: Bool,
+        permaLink: String?
+    ) -> ReaderPostSaveIdentity {
+        ReaderPostSaveIdentity(
+            id: nonNegative(postID) ?? 0,
+            siteId: nonNegative(siteID),
+            feedId: nonNegative(feedID),
+            feedItemId: nonNegative(feedItemID),
+            isExternal: isExternal,
+            url: permaLink.flatMap { $0.isEmpty ? nil : $0 }
+        )
+    }
+
+    private static func nonNegative(_ number: NSNumber?) -> UInt64? {
+        // `int64Value`, so -1 isn't read as `UInt64.max`.
+        guard let value = number?.int64Value, value >= 0 else { return nil }
+        return UInt64(value)
+    }
+
+    /// The post as the app has it, stored with a save so the Saved list can show it straight away.
+    /// Fields the app doesn't have are left out; the saved list fills them in on the next refresh.
+    static func details(for post: WordPressData.ReaderPost) -> WordPressAPIInternal.ReaderPost {
+        let authorName = (post.authorDisplayName?.nonEmptyString() ?? post.author?.nonEmptyString())
+        let author: ReaderPostAuthor? =
+            authorName != nil || post.authorAvatarURL?.nonEmptyString() != nil
+            ? ReaderPostAuthor(name: authorName, avatarUrl: post.authorAvatarURL?.nonEmptyString())
+            : nil
+        return WordPressAPIInternal.ReaderPost(
+            identity: identity(for: post),
+            title: post.postTitle?.nonEmptyString(),
+            excerpt: post.summary?.nonEmptyString(),
+            date: post.date_created_gmt,
+            author: author,
+            siteName: post.blogName?.nonEmptyString(),
+            siteUrl: post.blogURL?.nonEmptyString(),
+            siteIconUrl: post.siteIconURL?.nonEmptyString(),
+            featuredImage: post.featuredImage?.nonEmptyString(),
+            // The image Reader cards fall back to when a post has no featured image.
+            featuredMedia: post.pathForDisplayImage?.nonEmptyString()
+                .map {
+                    ReaderFeaturedMedia(uri: $0, mediaType: "image")
+                },
+            // The image the post's Reader card shows, so Saved shows the same one.
+            displayImageUrl: post.featuredImage?.nonEmptyString() ?? post.pathForDisplayImage?.nonEmptyString(),
+            // Core Data can't tell a post without tags from one whose tags it doesn't have.
+            tags: tags(from: post.tags).nonEmpty,
+            likeCount: post.likeCount?.uint64Value,
+            commentCount: post.commentCount?.uint64Value
+        )
+    }
+
+    /// `RemoteReaderPost` keeps a post's tags as their slugs, joined with ", ". The slug stands in
+    /// for the name until the saved list sends the post.
+    static func tags(from string: String?) -> [ReaderPostTag] {
+        (string ?? "")
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+            .map { ReaderPostTag(slug: $0, name: $0) }
+    }
+
+    /// What the account needs to know about a post saved on this device. The details besides the
+    /// identity are shown until the server sends the post.
+    static func localSave(for post: WordPressData.ReaderPost) -> ReaderLocalSave {
+        ReaderLocalSave(
+            identity: identity(for: post),
+            dateSaved: nil,
+            title: post.postTitle?.nonEmptyString(),
+            excerpt: post.summary?.nonEmptyString(),
+            featuredImage: post.featuredImage?.nonEmptyString(),
+            siteName: post.blogName?.nonEmptyString(),
+            siteUrl: post.blogURL?.nonEmptyString()
+        )
+    }
+
+    /// A stable string for a key, such as to identify a row.
+    static func storageKey(for key: ReaderSavedKey) -> String {
+        switch key.normalized {
+        case let .post(blogId, postId):
+            "post:\(blogId):\(postId)"
+        case let .feedItem(feedItemId):
+            "feed-item:\(feedItemId)"
+        case let .url(url):
+            "url:\(url)"
+        }
+    }
+
+    // MARK: Analytics
+
+    /// The properties of the event for an import that finished. Counts only: no URLs or titles.
+    static func importProperties(for report: ReaderSavedImportReport, saveCount: Int) -> [AnyHashable: Any] {
+        [
+            "result": "imported",
+            "local_saves": saveCount,
+            "imported": Int(report.imported),
+            "refused": report.rejected.count,
+            "pending": Int(report.pending),
+            "waiting_for_room": Int(report.waitingForRoom),
+            "unsaveable": Int(report.unsaveable)
+        ]
+    }
+
+    /// The properties of the event for an import that failed.
+    static func importProperties(for error: Error, saveCount: Int) -> [AnyHashable: Any] {
+        var properties: [AnyHashable: Any] = [
+            "result": "failed",
+            "local_saves": saveCount,
+            "error_kind": errorKind(for: error)
+        ]
+        if case let ReaderSavedError.Api(apiError) = error {
+            properties["api_error"] = caseName(of: apiError)
+        }
+        return properties
+    }
+
+    static func errorKind(for error: Error) -> String {
+        switch error {
+        case let error as ReaderSavedError:
+            switch error {
+            case .Api: "api"
+            case .PostCannotBeSaved: "post_cannot_be_saved"
+            case .TooManySaves: "too_many_saves"
+            case .UnexpectedImportResults: "unexpected_import_results"
+            case .UnmatchedImportResults: "unmatched_import_results"
+            case .Database: "database"
+            }
+        case is URLError: "network"
+        case is CocoaError: "core_data"
+        default: "other"
+        }
+    }
+
+    /// The name of an enum case without its values, which can hold URLs or server messages.
+    private static func caseName(of value: Any) -> String {
+        Mirror(reflecting: value).children.first?.label ?? String(describing: value)
+    }
+
+    // MARK: Core Data
+
+    /// The posts saved on this device, in the order the old Saved screen showed them: by
+    /// `sortRank`, newest first. The account keeps that order, so the list looks the same after the
+    /// import.
+    static func fetchLocalSaves(in context: NSManagedObjectContext) throws -> [ReaderLocalSave] {
+        let request = NSFetchRequest<WordPressData.ReaderPost>(
+            entityName: WordPressData.ReaderPost.classNameWithoutNamespaces()
+        )
+        request.predicate = NSPredicate(format: "isSavedForLater == YES")
+        request.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: false)]
+        return try context.fetch(request).map(localSave(for:))
+    }
+}
+
+private extension Array {
+    var nonEmpty: Self? { isEmpty ? nil : self }
+}

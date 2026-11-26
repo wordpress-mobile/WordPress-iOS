@@ -1,0 +1,216 @@
+{
+    "notificationId": "55555",
+    "type": "comment",
+    "read": 1,
+    "noticon": "",
+    "timestamp": "2026-11-20T14:59:50+00:00",
+    "icon": "https://gravatar.example.com/avatar/sam",
+    "url": "https://private-site.example.com/2026/11/18/remote-flags-rollout/#comment-1912",
+    "title": "Reply",
+    "subject": [
+        {
+            "text": "Sam Sample replied to your comment The library lives apart from the endpoint …\n",
+            "ranges": [
+                {
+                    "type": "user",
+                    "indices": [
+                        0,
+                        10
+                    ],
+                    "id": 2002,
+                    "site_id": 3003,
+                    "url": "http://samsample.example.com"
+                },
+                {
+                    "type": "comment",
+                    "indices": [
+                        35,
+                        78
+                    ],
+                    "id": 1910,
+                    "post_id": 6987,
+                    "site_id": 4004,
+                    "url": "https://private-site.example.com/2026/11/18/remote-flags-rollout/#comment-1910"
+                }
+            ]
+        },
+        {
+            "text": "Caching happens on each calling site, so the API isn’t hit on every request. 😅 \n\nThe apps only ask when they launch. 🙂",
+            "ranges": [
+                {
+                    "type": "comment",
+                    "indices": [
+                        0,
+                        120
+                    ],
+                    "id": 1912,
+                    "post_id": 6987,
+                    "site_id": 4004,
+                    "url": "https://private-site.example.com/2026/11/18/remote-flags-rollout/#comment-1912"
+                }
+            ]
+        }
+    ],
+    "header": [
+        {
+            "text": "Pat Example on Remote flags rollout",
+            "ranges": [
+                {
+                    "type": "user",
+                    "indices": [
+                        0,
+                        11
+                    ],
+                    "id": 1001,
+                    "parent": null,
+                    "url": "http://patexample.example.com",
+                    "site_id": 1002
+                },
+                {
+                    "type": "post",
+                    "indices": [
+                        15,
+                        35
+                    ],
+                    "id": 6987,
+                    "parent": null,
+                    "url": "https://private-site.example.com/2026/11/18/remote-flags-rollout/",
+                    "site_id": 4004
+                }
+            ],
+            "media": [
+                {
+                    "type": "image",
+                    "indices": [
+                        0,
+                        0
+                    ],
+                    "height": "256",
+                    "width": "256",
+                    "url": "https://gravatar.example.com/avatar/pat"
+                }
+            ]
+        },
+        {
+            "text": "\nThe library lives apart from the endpoint, so reuse is easy ..."
+        }
+    ],
+    "body": [
+        {
+            "text": "Sam Sample",
+            "type": "user",
+            "ranges": [
+                {
+                    "type": "user",
+                    "indices": [
+                        0,
+                        10
+                    ],
+                    "id": 2002,
+                    "site_id": 3003,
+                    "url": "http://samsample.example.com"
+                }
+            ],
+            "media": [
+                {
+                    "type": "image",
+                    "indices": [
+                        0,
+                        0
+                    ],
+                    "height": "256",
+                    "width": "256",
+                    "url": "https://gravatar.example.com/avatar/sam"
+                }
+            ],
+            "actions": {
+                "follow": false
+            },
+            "meta": {
+                "links": {
+                    "home": "http://samsample.example.com"
+                },
+                "ids": {
+                    "user": 2002,
+                    "site": 3003
+                },
+                "titles": {
+                    "home": "Sam's Sandbox"
+                }
+            }
+        },
+        {
+            "text": "Caching happens on each calling site, so the API isn’t hit on every request. 😅 \n\nThe apps only ask when they launch. 🙂",
+            "type": "comment",
+            "ranges": [
+                {
+                    "type": "p",
+                    "indices": [
+                        0,
+                        80
+                    ],
+                    "id": "25",
+                    "parent": null,
+                    "class": "wp-block-paragraph"
+                },
+                {
+                    "type": "a",
+                    "indices": [
+                        110,
+                        116
+                    ],
+                    "id": "29",
+                    "parent": "28",
+                    "url": "https://example.com/launch"
+                },
+                {
+                    "type": "p",
+                    "indices": [
+                        82,
+                        120
+                    ],
+                    "id": "28",
+                    "parent": null,
+                    "class": "wp-block-paragraph"
+                }
+            ],
+            "actions": {
+                "spam-comment": false,
+                "trash-comment": false,
+                "approve-comment": true,
+                "edit-comment": true,
+                "replyto-comment": true,
+                "like-comment": false
+            },
+            "meta": {
+                "ids": {
+                    "comment": 1912,
+                    "user": 2002,
+                    "post": 6987,
+                    "site": 4004
+                },
+                "links": {
+                    "comment": "https://public-api.wordpress.com/rest/v1/comments/1912",
+                    "post": "https://public-api.wordpress.com/rest/v1/posts/6987",
+                    "site": "https://public-api.wordpress.com/rest/v1/sites/4004"
+                }
+            },
+            "nest_level": 1
+        }
+    ],
+    "meta": {
+        "ids": {
+            "parent_comment": 1910,
+            "user": 2002,
+            "comment": 1912,
+            "post": 6987,
+            "site": 4004
+        },
+        "links": {
+            "parent_comment": "https://public-api.wordpress.com/rest/v1/comments/1910",
+            "comment": "https://public-api.wordpress.com/rest/v1/comments/1912",
+            "post": "https://public-api.wordpress.com/rest/v1/posts/6987",
+            "site": "https://public-api.wordpress.com/rest/v1/sites/4004"
+        }
+    }
+}

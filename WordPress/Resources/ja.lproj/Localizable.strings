@@ -993,7 +993,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1367,9 +1366,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "コピーしたブロック";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "コメントへのリンクをコピー";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "クリップボードから URL (%s) をコピーします";
 
@@ -1720,8 +1716,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "ドメイン所有者は、すべてのドメインのパブリックデータベースで連絡先情報を共有する必要があります。プライバシー保護では、お客様に関する情報の代わりに弊社に関する情報を公開し、お客様にはプライベートにコミュニケーションを転送します。";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3584,8 +3579,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "通知にはヒントになる言葉や短いフレーズが記載されます";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4167,8 +4161,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "元の投稿を読む";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "購読ブログ";
 
@@ -5145,9 +5138,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "タップしてサイトを表示";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "タップして外部ブラウザーで Gravatar のサイトにアクセス";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "タクソノミー";
 
@@ -5810,9 +5800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "更新";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "自分のアバター、名前、概要情報をこちらで更新すると、Gravatar プロフィールを使用するすべてのサイトにも更新が反映されます。";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "プランをアップグレードして音声をアップロードする";
 
@@ -6130,9 +6117,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "このファイルで行う操作:アップロードし、そのファイルへのリンクを投稿に追加するか、ファイルのコンテンツを直接投稿を追加しますか ?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Gravatar とは";
-
 /* No comment provided by engineer. */
 "What is a block?" = "ブロックとは";
 
@@ -6394,9 +6378,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "自分のサイト";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "WordPress.com のプロフィールでは Gravatar を活用できます。";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "ご利用の WordPress.com サイトでは Accelerated Mobile Pages の使用がサポートされています。これは、モバイル機器でのロード時間を劇的に短縮する Google の取り組みです。";
@@ -7035,9 +7016,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "ログファイル (作成日順)";
-
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "次のログファイルがアップロードされます:";
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "最大7日間分のログが保存されます。";
@@ -8054,21 +8032,6 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "エディターの読み込み中";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "閉じる";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "「設定」でこのアプリを「ロックダウンモード」から除外し、エディターを再度開くと、すべての機能を復元できます。";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "さらに詳しく";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "ロックダウンモードを検出しました";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "ロックダウンモードが有効になっています。 エディターが正しく動作しない可能性があります。";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "メディアの挿入に失敗しました";
 
@@ -8390,23 +8353,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "サイトを選択";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@が%2$@で移動します";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@が%2$@で移動します";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@がまもなく移動します";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@がまもなく移動します";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack 提供";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Jetpack アプリを入手";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "新しい Jetpack アプリを試す";
@@ -8454,64 +8402,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "WordPress.com アカウントに連携";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "新しい Jetpack アプリに切り替える";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Jetpack アプリに切り替える";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "詳細は jetpack.com をご覧ください";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "新しいコメントや「いいね」、表示数などの通知を受信できます。";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "お気に入りのサイトやコミュニティを見つけてフォローし、コンテンツを共有できます。";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "便利な統計概要と包括的な統計情報で、トラフィックの成長を確認できます。";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "統計情報と統計概要";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack を使用すれば、WordPress でさらなる機能を利用できます。 切り替えは無料で、数分で終わります。";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Jetpack で WordPress をレベルアップ";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "通知に進む";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "後で実行する";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "統計、Reader、通知などの Jetpack 機能は、WordPress アプリから削除されました。";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 機能が移動しました。";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "お使いの端末でリアルタイムの通知を引き続き受信するには、Jetpack アプリに移行してください。";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Jetpack アプリで通知を受け取る";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Jetpack アプリに切り替えると、Reader を使用してお気に入りのサイトや投稿をすべて検索、フォロー、「いいね」できます。";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack アプリで任意のサイトを購読";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack は統計、通知などの機能を提供し、理想の WordPress サイトの構築と成長をサポートします。";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Jetpack アプリに切り替えて、統計と統計概要を使用してサイトのトラフィックの増加を確認してください。";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "新しい Jetpack アプリを使用して統計を入手する";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "切り替えは無料で、数分で終わります。";
@@ -8519,26 +8416,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Jetpack なしで連携";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack 機能はまもなく移動します。";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack は統計、通知などの機能を提供し、理想の WordPress サイトの構築と成長をサポートします。\n\nWordPress アプリは現在、新しいサイトの作成をサポートしていません。";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "統計、Reader、通知などの Jetpack 機能は、まもなく WordPress アプリから削除されます。";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "通知は Jetpack アプリに移動しています";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader は Jetpack アプリに移動しています";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "統計は Jetpack アプリに移動しています";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "統計、Reader、通知などの Jetpack 機能は、%@に WordPress アプリから削除されます。";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Reader に進む";
@@ -8548,9 +8427,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "ご利用のサイトには Jetpack プラグインが設定されています";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Jetpack なしで続行";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "新しい Jetpack アプリを試す";
@@ -8582,9 +8458,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "サイトで統計情報を使用するには、Jetpack プラグインをユーザーアカウントに連携する必要があります。";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "統計、Reader、通知などの機能は、まもなく Jetpack モバイルアプリに移動します。";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "非表示";
 
@@ -8593,9 +8466,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "サイトの可能性を十分に引き出すことができます。 Jetpack で統計、Reader、通知などを利用できます。";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Jetpack に切り替える";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "後で再通知";
@@ -8873,9 +8743,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "前の期間";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "現在のオンライン訪問者数";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "ダブルタップして統計情報の読み込みを再試行します";
 
@@ -8902,12 +8769,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "ダブルタップして詳細を表示します";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "現在%1$d人の訪問者がオンライン";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "現在%1$d人の訪問者がオンライン";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "トレンドの推移を可視化";
@@ -9414,17 +9275,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "訪問者";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "現在の訪問者";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "広告";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "統計概要";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "リアルタイム";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "購読者";
@@ -9536,9 +9391,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "このサイトが使用している個々の Jetpack プラグインは、まだアプリのすべての機能をサポートしていません。 完全な Jetpack プラグインをインストールしてください。";
-
-/* Later today */
-"later today" = "今日あとで";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "いいね";
@@ -10169,42 +10021,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "サイトを表示";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "開始する";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "切り替える準備がまだですか ? 「統計情報」タブの「その他」メニューで新しい統計をオフにできます。";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "ナビゲーションと日付ピッカーが画面の一番下に表示されるようになり、親指で操作しやすくなりました。";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "より操作しやすく";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "共通のプリセットから選択することも、比較期間でカスタムの日付範囲を設定することも、すべて1回のタップで可能です。";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "どんな期間も、どんな範囲も";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "WordPress.com で取得するのと同じデータを端末、UTM、位置情報、WordAds で利用できます。";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "ウェブ版と同等のデータを";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "すべての指標が前の期間と比較した傾向を表示するため、成長の程度をいつでも把握できます。";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "傾向を瞬時に把握";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "サイトのパフォーマンスを把握する優れた方法です。現在はデフォルトでオンになっています。";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "新しい統計";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "この時間範囲にはログエントリーはありません";
@@ -11208,9 +11024,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "予約";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "投稿に添える短いメッセージを書いてソーシャルメディアで共有します";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "タグ";
 
@@ -11351,9 +11164,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "コメント";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "サイトからの投稿を表示します";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d件の「いいね」_";
@@ -11687,17 +11497,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "最近";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "この投稿を保存し、後で時間のあるときに読むことができます。 保存した投稿はこの端末でのみ利用できます。他の端末とは同期されません。";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "後で読むために投稿を保存";
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "保存済み";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "保存済みの投稿が削除されました";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "選択したファイルは、有効な保存済みの投稿エクスポートではありません。";
@@ -11731,9 +11535,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "選択したファイルをインポートできませんでした。 もう一度お試しください。";
-
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "%1$d\/%2$d件の投稿を取得しています…";
 
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "インポート済み%1$d件、スキップ済み%2$d件、失敗%3$d件。";
@@ -12822,10 +12623,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "現在";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "すべてのアクティビティログを削除してもよいですか ?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "ログを削除";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -12923,12 +12724,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack モバイルのボットのトランスクリプト";
-
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "質問してボランティアグループからサポートを受けましょう。";
-
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "コミュニティフォーラム";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "いつでもサポートチームから回答を得られます";

@@ -192,7 +192,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
     }
 }
 
-private class AppNotifier: @unchecked Sendable, WpAppNotifier {
+class AppNotifier: @unchecked Sendable, WpAppNotifier {
     let site: WordPressSite
     let coreDataStack: CoreDataStack
 

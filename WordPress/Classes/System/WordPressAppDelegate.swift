@@ -14,6 +14,7 @@ import UIKit
 import WebKit
 import WordPressData
 import WordPressKit
+import WordPressMediaLibrary
 import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
@@ -210,6 +211,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         windowManager.showUI()
         restoreAppState()
 
+        // Hands this device's saved Reader posts to the account once, then refreshes which are saved.
+        if !UIApplication.shared.isRunningTestSuite() {
+            ReaderSavedPostsStore.shared.start()
+        }
+
         DebugMenuViewController.configure(in: window)
     }
 
@@ -225,6 +231,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
+        MediaUploader.sweepOrphanedStagingFiles()
         SiteStorageAccess.removePinnedPostTypes()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         NotificationActivityService.shared.start()

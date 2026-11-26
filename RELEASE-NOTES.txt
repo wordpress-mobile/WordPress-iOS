@@ -1,6 +1,15 @@
+27.6
+-----
+* [*] Application Passwords: Revoke passwords for other apps from the password details screen.
+* [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
+* [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
+* [*] Support: The chat keyboard's return key no longer looks like a send button [#26451]
+
+
 27.5
 -----
 * [*] Stats: Fix a crash when expanding two years with the same month and views in a post's Months and Years or Avg. Views Per Day details [#26415]
+* [*] Posts and Pages: Fix a crash, or a menu for the wrong post, when you long-press a post while the list refreshes [#26416]
 * [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
 * [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
 * [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
@@ -34,7 +43,9 @@
 * [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
 * [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
 * [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
+* [**] Experimental editor: Apply your Media settings to uploaded photos and videos, including image size, quality, video resolution, and location removal [#26367]
 * [*] Reader: Show icons for more sites, and load a site's icon again after a failed attempt [#26393]
+* [**] Reader: Saved posts are now kept in your WordPress.com account and sync across your devices. Posts saved on this device move to your account [#26372]
 
 
 27.4

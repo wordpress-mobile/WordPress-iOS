@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-05-14 08:38:40+0000 */
+/* Translation-Revision-Date: 2026-11-01 16:32:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: sq_AL */
@@ -23,6 +23,9 @@
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ është pika e përzgjedhur për të krijuar një kopjeruajtje të shkarkueshme.";
+
+/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
+"%1$@ of %2$@ used" = "Të përdorur %1$@ nga %2$@ gjithsej";
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ te %2$@";
@@ -993,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1367,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Blloku u kopjua";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Kopjo Lidhjen për te Komenti";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Kopjoje URL-në prej të papastre, %s";
 
@@ -1711,8 +1710,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Të zotëve të përkatësive u duhet të japin hollësi kontakti te një bazë publike të dhënash e krejt përkatësive. Me Mbrojtjen e Privatësisë, ne publikojmë të dhënat tona, në vend se tuajat, dhe ju përcjellim privatisht çfarëdo komunikimi për ju.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3572,8 +3570,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Njoftimi do të përfshijë një fjalë, ose togfjalësh të shkurtër, për frymëzim";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4155,8 +4152,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Lexoni postimin burim";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Lexues";
 
@@ -5130,9 +5126,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Prekeni që të shihni sajtin tuaj";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Prekeni, që të vizitoni sajtin Gravatar që nga një shfletues i jashtëm";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Klasifikime";
 
@@ -5795,9 +5788,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Po përditësohet";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Përditësimi i gravatarit, emrit dhe hollësive tuaja këtu, do t’i përditësojë ato nëpër krejt sajtet që përdorin profile Gravatar.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Që të ngarkoni audio, përmirësoni planin tuaj";
 
@@ -6118,9 +6108,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Ç’është Gravatar-i?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Ç’është një bllok?";
 
@@ -6382,9 +6369,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Sajtet Tuaj";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Profili juaj WordPress.com furnizohet nga Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Sajti juaj te WordPress.com mbulon përdorimin e Faqeve të Përshpejtuara për Celular, një nismë e udhëhequr nga Google, e cila përshpejton në mënyrë dramatike kohët e ngarkimit në pajisje celulare.";
@@ -7000,9 +6984,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Kartela regjistër sipas datash krijimi";
 
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "Do të ngarkohen kartelat vijuese:";
-
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Ruhen regjistrime deri për shtatë ditë.";
 
@@ -7060,6 +7041,126 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error title when messages fail to load */
 "com.jetpack.support.unableToLoadMessages" = "S’arrihet të Ngarkohen Mesazhe";
 
+/* Button to add more information to a support conversation that is waiting for a Happiness Engineer. */
+"com.jetpack.support.unified.addMoreInfo" = "Shtoni më tepër hollësi";
+
+/* Shown while an attachment of a support message is loading. */
+"com.jetpack.support.unified.conversation.attachment.loading" = "Po ngarkohet bashkëngjitje…";
+
+/* Shown at the end of a support conversation that can't accept replies. */
+"com.jetpack.support.unified.conversation.closed" = "Kjo bisedë është mbyllur. S’mund të përgjigjeni më në të.";
+
+/* Time a support conversation was last updated. %1$@ is a time, like '2 days ago'. */
+"com.jetpack.support.unified.conversation.lastUpdated" = "Përditësuar së fundi më %1$@";
+
+/* Shown while a support conversation is loading. */
+"com.jetpack.support.unified.conversation.loading" = "Po ngarkohet biseda…";
+
+/* Placeholder of the field used to write a message to the AI Assistant. */
+"com.jetpack.support.unified.conversation.messagePlaceholder" = "Shtypni një mesazh…";
+
+/* Button that sends the message written for the AI Assistant. */
+"com.jetpack.support.unified.conversation.send" = "Dërgoje";
+
+/* Announced while waiting for the AI Assistant to answer. */
+"com.jetpack.support.unified.conversation.typing" = "Asistenti IA po shtyp";
+
+/* Message shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.message" = "Nisni një bisedë me ekipin tonë të asistencës, për të marrë ndihmë lidhur me pyetjet tuaja.";
+
+/* Title shown when the user has no support conversations. */
+"com.jetpack.support.unified.conversations.empty.title" = "Ende pa biseda";
+
+/* Shown while the user's support conversations are loading. */
+"com.jetpack.support.unified.conversations.loading" = "Po ngarkohen biseda…";
+
+/* Title of the screen listing the user's support conversations. */
+"com.jetpack.support.unified.conversations.title" = "Merrni ndihmë";
+
+/* Message shown when a support request fails. */
+"com.jetpack.support.unified.error.message" = "Diç shkoi ters. Ju lutemi, riprovoni më vonë.";
+
+/* Title shown when support conversations can't be loaded. */
+"com.jetpack.support.unified.error.title" = "Diç shkoi ters";
+
+/* Time of a support conversation or message that was updated less than a minute ago. */
+"com.jetpack.support.unified.justNow" = "Mu tani";
+
+/* Button that starts a new support conversation with the AI Assistant. */
+"com.jetpack.support.unified.newConversation" = "Bisedë e re";
+
+/* Message shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.message" = "Kontrolloni lidhjen tuaj në internet dhe riprovoni.";
+
+/* Title shown when support conversations can't be loaded because the device is offline. */
+"com.jetpack.support.unified.offline.title" = "S’ka rrjet";
+
+/* Button to reply to a support conversation when a Happiness Engineer is waiting for the user's answer. */
+"com.jetpack.support.unified.reply" = "Përgjigjuni";
+
+/* Title of the part of the reply form where files are attached. */
+"com.jetpack.support.unified.reply.attachments" = "Bashkëngjitje";
+
+/* Option that attaches photos and videos from the photo library to a reply. */
+"com.jetpack.support.unified.reply.attachments.fromPhotoLibrary" = "Fototekë";
+
+/* Button that closes the form used to reply to the support team. */
+"com.jetpack.support.unified.reply.cancel" = "Anuloje";
+
+/* Button that goes back to the reply form instead of throwing away an unsent reply. */
+"com.jetpack.support.unified.reply.discard.cancel" = "Vazhdoni Shkrimin";
+
+/* Button that throws away an unsent reply to the support team. */
+"com.jetpack.support.unified.reply.discard.confirm" = "Hidhe Tej";
+
+/* Explains what is lost by closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.message" = "Mesazhi juaj dhe bashkëngjitjet e tij do të humbin.";
+
+/* Title of the confirmation shown when closing the reply form with an unsent reply. */
+"com.jetpack.support.unified.reply.discard.title" = "Të hidhet tej kjo përgjigje?";
+
+/* Title of the message shown when a reply to the support team couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.title" = "Përgjigja juaj s’u dërgua";
+
+/* Button that opens the reply form again after a reply couldn't be sent. */
+"com.jetpack.support.unified.reply.failed.tryAgain" = "Riprovoni";
+
+/* Title of the field where the user writes a reply to the support team. */
+"com.jetpack.support.unified.reply.message" = "Mesazh";
+
+/* Button that dismisses a message about a reply that couldn't be sent. */
+"com.jetpack.support.unified.reply.ok" = "OK";
+
+/* Marks a part of the reply form the user doesn't have to fill in. */
+"com.jetpack.support.unified.reply.optional" = "Opsionale";
+
+/* Button that sends the reply written for the support team. */
+"com.jetpack.support.unified.reply.send" = "Dërgoje";
+
+/* Shown on the reply button while the reply is being sent to the support team. */
+"com.jetpack.support.unified.reply.sending" = "Po dërgohet…";
+
+/* Button that starts the user's first support conversation. */
+"com.jetpack.support.unified.startConversation" = "Nisni Bisedë";
+
+/* Badge on a support conversation that is handled by the AI Assistant. */
+"com.jetpack.support.unified.status.aiAssistant" = "Asistent IA";
+
+/* Badge on a support conversation that is closed and can no longer be replied to. */
+"com.jetpack.support.unified.status.closed" = "E mbyllur";
+
+/* Badge on a support conversation that a Happiness Engineer is handling. */
+"com.jetpack.support.unified.status.ongoing" = "Në punë e sipër";
+
+/* Badge on a support conversation that has been solved. */
+"com.jetpack.support.unified.status.solved" = "E zgjidhur";
+
+/* Badge on a support conversation whose status is not recognized. */
+"com.jetpack.support.unified.status.unknown" = "E panjohur";
+
+/* Button to try loading the support conversations again. */
+"com.jetpack.support.unified.tryAgain" = "Riprovoni";
+
 /* Progress message shown during cache clearing operation */
 "com.jetpack.support.working" = "Po kryhet";
 
@@ -7080,6 +7181,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Përgjigje për %1$@";
+
+/* VoiceOver announcement made when a reply starts sending */
+"commentComposer.accessibility.sending" = "Po dërgohet përgjigje";
+
+/* Button label to cancel composing or editing a comment */
+"commentComposer.action.cancel" = "Anuloje";
+
+/* Button label to delete a saved draft */
+"commentComposer.action.deleteDraft" = "Fshijeni Skicën";
+
+/* Button label to continue editing instead of discarding changes */
+"commentComposer.action.keepEditing" = "Vazhdoni Përpunimin";
+
+/* Button label to save the current text as a draft */
+"commentComposer.action.saveDraft" = "Ruaje Skicën";
+
+/* Button label to send a new reply */
+"commentComposer.action.send" = "Dërgoje";
+
+/* Note explaining that sending a reply will also approve the pending comment */
+"commentComposer.approveNote" = "Dërgimi do të përbëjë gjithashtu miratim të këtij komenti.";
+
+/* Error message shown when comments are disabled for the post */
+"commentComposer.error.closed" = "Për këtë postim komentet janë mbyllur.";
+
+/* Error message shown when sending a reply fails */
+"commentComposer.error.replyFailed" = "S’u arrit të dërgohet përgjigje.";
+
+/* Notice shown when attempting to post a reply that was already submitted */
+"commentComposer.notice.replyAlreadyPosted" = "Kjo përgjigje është postuar tashmë.";
+
+/* Notice shown when a reply is submitted and awaiting moderation */
+"commentComposer.notice.replyPending" = "Përgjigja i parashtrua për moderim.";
+
+/* Notice shown after a reply is successfully sent */
+"commentComposer.notice.replySent" = "Përgjigja u dërgua.";
+
+/* Placeholder text in the composer text input field */
+"commentComposer.placeholder" = "Lini një përgjigje…";
+
+/* Title of the compose screen for replying to a comment */
+"commentComposer.title.reply" = "Përgjigjuni";
 
 /* Button in an alert confirming discaring a new draft */
 "commentCreate.closeConfirmationAlert.deleteDraft" = "Fshijeni Skicën";
@@ -7108,6 +7251,48 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar button title */
 "commentCreate.send" = "Dërgoje";
 
+/* Button label to reply to a comment on the detail screen */
+"commentDetail.action.reply" = "Përgjigjuni";
+
+/* Confirmation title shown before trashing a comment whose reply count is unknown */
+"commentDetail.confirm.trashGeneric" = "Të shpihet ky koment te hedhurinat?";
+
+/* Confirmation title before trashing a comment that has replies. Warns the moderator that the comment has replies. Trashing the comment does not trash its replies. */
+"commentDetail.confirm.trashHasReplies" = "Ky koment ka përgjigje. Të shpihet sido qoftë te hedhurinat?";
+
+/* Error state title when the comment detail fails to load */
+"commentDetail.error.title" = "S'u ngarkua dot ky koment";
+
+/* Secondary line under the comment author. %@ is the post title the comment was left on. */
+"commentDetail.header.onPost" = "më %@";
+
+/* Label for the full comment date row in the author info sheet */
+"commentDetail.info.date" = "Datë";
+
+/* Label for the author email row in the author info sheet */
+"commentDetail.info.email" = "Email";
+
+/* Label for the author IP address row in the author info sheet */
+"commentDetail.info.ipAddress" = "Adresë IP";
+
+/* Label for the author website row in the author info sheet */
+"commentDetail.info.website" = "Sajt";
+
+/* Prefix of the parent-comment strip. %@ is the parent comment's author name. */
+"commentDetail.parent.inReplyTo" = "Si përgjigje për %@";
+
+/* Status label on the comment detail screen for an approved comment */
+"commentDetail.status.approved" = "Të miratuar";
+
+/* Status label for a comment awaiting moderation, on the comment detail screen and in the list */
+"commentDetail.status.pending" = "Në pritje të shqyrtimit";
+
+/* Status label on the comment detail screen for a comment marked as spam */
+"commentDetail.status.spam" = "Të padëshiruar";
+
+/* Status label on the comment detail screen for a trashed comment */
+"commentDetail.status.trash" = "Të shpënë te hedhurinat";
+
 /* Button in an alert confirming discaring a new draft */
 "commentEdit.closeConfirmationAlert.deleteDraft" = "Hidhi Tej Ndryshimet";
 
@@ -7122,6 +7307,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error title */
 "comments.failedToLike" = "S’u arrit të pëlqehej komenti";
+
+/* Empty state message on the All tab */
+"commentsList.empty.all" = "Ende pa komente";
+
+/* Empty state message on the Approved tab */
+"commentsList.empty.approved" = "S’ka komente të miratuara";
+
+/* Empty state message on the Pending tab */
+"commentsList.empty.pending" = "S’ka komente në pritje të shqyrtimit";
+
+/* Empty state message on the Spam tab */
+"commentsList.empty.spam" = "S’ka komente mesazh të padëshiruar";
+
+/* Empty state message on the Trash tab */
+"commentsList.empty.trash" = "S’ka komente të shpënë në Hedhurina";
+
+/* Button label to retry loading comments after an error */
+"commentsList.error.retry" = "Riprovoni";
+
+/* Error state title when the comments list fails to load */
+"commentsList.error.title" = "S'u ngarkuan dot komente";
+
+/* Title for the comments list screen */
+"commentsList.screen.title" = "Komente";
+
+/* Tab title showing pending and approved comments */
+"commentsList.tab.all" = "Krejt";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Emri i përdoruesit ose fjalëkalimi i depozituar te aplikacioni mund të jenë të papërditësuar. Ju lutemi, jepeni fjalëkalimin tuaj te rregullimet dhe riprovoni.";
@@ -7462,6 +7674,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Thjesht blini një përkatësi";
+
+/* The expiry line of the domain card in All Domains screen, e.g. 'Expired Jan 1, 2023'. %1$@ is the formatted expiry date. */
+"domain.management.card.expiredDate.label" = "Skaduar më %1$@";
 
 /* Label indicating that a domain name registration has no expiry date. */
 "domain.management.card.neverExpires.label" = "S’skadon kurrë";
@@ -7910,23 +8125,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Përzgjidhni Sajt";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ po kalohen në %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ po kalohet në %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "Së shpejti %@ do të lëvizen";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "Së shpejti %@ do të lëvizet";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Bazuar në Jetpack";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Merrni aplikacionin Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Provoni aplikacionin e ri Jetpack";
@@ -7974,64 +8174,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Lidheni me llogarinë tuaj WordPress.com";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Kalo në aplikacionin e ri Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Kaloni te aplikacioni Jetpack";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Mësoni më tepër te jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Merrni njoftime për komente, pëlqime, parje të reja, etj.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Gjeni dhe ndiqni sajtet dhe bashkësitë tuaja të parapëlqyera dhe ndani me të tjerë lëndën tuaj.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Shiheni si rritet trafiku juaj, me prirje të dobishme dhe statistika të plota.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistika & Tendenca";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack-u ju lejon të bëni më tepër gjëra me sajtin tuaj WordPress. Kalimi është falas dhe do vetëm një minutë.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Jepini WordPress-it një përforcim me Jetpack-un";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Vazhdo te Njoftimet";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Bëjeni më vonë";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut janë hequr nga aplikacioni WordPress.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Veçori të Jetpack-ut janë lëvizur.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Që të vazhdoni të merrni në pajisjen tuaj njoftime të atypëratyshme, kaloni te aplikacioni Jetpack.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Merrini njoftimet tuaja me aplikacionin Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Që të gjeni, ndiqni dhe pëlqeni krejt sajtet dhe postimet tuaj të parapëlqyer me Lexuesin, kaloni te aplikacioni Jetpack.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Pajtohuni te çfarëdo sajti, me aplikacionin Jetpack";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Që të shihni shtim trafiku në sajtin tuaj, përmes statistikash dhe prirjesh, kaloni te aplikacioni Jetpack.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Merrni statistikat tuaja duke përdorur aplikacionin e ri Jetpack";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Kalimi është falas dhe do vetëm një minutë.";
@@ -8039,26 +8188,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Vazhdo pa Jetpack-un";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Veçoritë Jetpack së shpejti do të shpërngulen.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.\n\nAplikacioni WordPress nuk mbulon më krijimin e një sajti të ri.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të hiqen së shpejti nga aplikacioni WordPress.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Njoftimet po kalojnë te aplikacioni Jetpack";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Lexuesi po kalohet te aplikacioni Jetpack";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statistikat po kalojnë te aplikacioni Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të hiqen së shpejti nga aplikacioni WordPress në %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Vazhdo te Lexuesi";
@@ -8068,9 +8199,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Sajti juaj e ka shtojcën Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Vazhdo pa Jetpack-un";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Provoni aplikacionin e ri Jetpack";
@@ -8102,9 +8230,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "Që të përdorni statistika në sajtin tuaj, do t’ju duhet të lidhni shtojcën Jetpack me llogarinë tuaj të përdoruesit.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të kalohen së shpejti te aplikacioni Jetpack për celular.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Fshihe këtë";
 
@@ -8113,9 +8238,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Çlironi potencialin e plotë të sajtit tuaj. Merrni Statistika, Lexuesi, Njoftime, etj me Jetpack-un.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Kalo te Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Kujtoma më vonë";
@@ -8243,9 +8365,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Periudha e mëparshme";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Vizitorë aktualisht në linjë";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Prekeni dy herë që të riprovohet të ngarkohen statistika";
 
@@ -8272,12 +8391,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Prekeni dy herë që të shihni më tepër hollësi";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d vizitor në linjë tani";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d vizitorë në linjë tani";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Shfaq prirje përgjatë kohës";
@@ -8769,17 +8882,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Vizitorë";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Vizitorë Tani";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Reklama";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Tendenca";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "Aty për aty";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Pajtimtarë";
@@ -8889,9 +8996,6 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Ky sajt përdor shtojca individuale Jetpack, të cilat nuk mbulojnë ende krejt veçoritë e aplikacionit. Ju lutemi, instaloni të plotë shtojcën Jetpack.";
 
-/* Later today */
-"later today" = "më vonë, sot";
-
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "pëlqim";
 
@@ -8996,6 +9100,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "U fshi!";
+
+/* Title of the no-filter option in the Media Library filter menu */
+"mediaLibrary.filter.all" = "Krejt";
 
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "Audio";
@@ -9368,12 +9475,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Vizitoni sajtin";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Fillojani";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "Statistika të Reja";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "S’ka zëra regjistri brenda këtij intervali kohor";
@@ -10380,9 +10481,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Vëreni në plan";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Shkruani një mesazh të shkurtër për ta ndarë me të tjerë në media shoqërore në krah të postimit";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketa";
 
@@ -10523,9 +10621,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Komente";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Shihni postime nga sajti";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d pëlqime_";
@@ -10844,17 +10939,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Së fundi";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Ruajeni këtë postim, dhe rikthejuni leximit kur të doni. Do ta keni vetëm në këtë pajisje — postimet e ruajtur nuk njëkohësohen në pajisje të tjera.";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Ruani Postime për Më Vonë";
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Të ruajtur";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "U hoq postimi i ruajtur";
 
 /* Reader Search */
 "reader.search.clearHistory" = "Spastro Historikun";
@@ -10886,6 +10975,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "S’ka etiketa të reja për t’u ndjekur";
+
+/* Button title. Lets the user continue without selecting any tags. */
+"reader.select.tags.skip" = "Anashkaloje";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Zgjidhni etiketat tuaja";
@@ -11111,6 +11203,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for action sheet with media options. */
 "shareExtension.editor.attachmentActions.title" = "Mundësi Media";
+
+/* Share extension notice dismiss button. */
+"shareExtension.partialError.dismiss" = "OK";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Riprovoni";
@@ -11538,6 +11633,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Explanation for the option to enable theme styles when the feature is available */
 "siteSettings.themeStyles.footer.enabled" = "Bëjeni përpunuesin me blloqe të duket si tema juaj.";
 
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Që të aktivizoni mbulim stilesh temash, instaloni në sajtin tuaj shtojcën Gutenberg.";
+
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Shtoni %1$@";
 
@@ -11660,6 +11758,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the Stats Insights Management screen */
 "stats.insights.management.title" = "Administroni Skeda Statistikash";
+
+/* Insights 'Most Popular Time' header. */
+"stats.insights.mostPopularCard.title" = "Koha Më Popullore";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewsNumber" = "%1$@ parje";
@@ -11913,10 +12014,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "I tanishmi";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Jeni i sigurt se doni të fshihen krejt regjistrat e veprimtarisë?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Fshi Regjistra";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -12015,6 +12116,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transkriptim Nga Roboti Jetpack Mobile";
 
+/* Description of the row that opens the support conversations. */
+"support.root.getHelp.detail" = "Merrni përgjigje nga ekipi ynë i asistencës, kurdo";
+
+/* Title of the row that opens the support conversations with the AI Assistant and support team. */
+"support.root.getHelp.title" = "Merrni ndihmë";
+
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Bëni një pyetje te forumi i bashkësisë dhe merrni ndihmë nga grupi ynë i vullnetarëve.";
 
@@ -12103,6 +12210,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "Etiketa";
 
+/* Accessibility label for the spinner shown while a theme is being activated */
+"themeBrowser.cell.activating" = "Po aktivizohet";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "këto objekte do të fshihen:";
 
@@ -12187,6 +12297,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Gabim";
+
+/* The message in the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertMessage" = "Pati një gabim në përditësimin e fjalëkalimit.";
+
+/* The title of the alert that appears when setting a new password fails */
+"userDetails.alert.passwordErrorAlertTitle" = "Gabim";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Hollësi Jetëshkrimore";

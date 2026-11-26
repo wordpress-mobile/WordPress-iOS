@@ -568,7 +568,12 @@ private extension AppSettingsViewController {
             action: pushSavedPostsSettings()
         )
 
-        var rows: [ImmuTableRow] = [experimentalFeaturesRow, savedPostsRow, settingsRow]
+        var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
+
+        // Saved posts are kept in the WordPress.com account, so importing and exporting them needs one.
+        if ReaderHelpers.isLoggedIn() {
+            rows.insert(savedPostsRow, at: 1)
+        }
 
         if UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack

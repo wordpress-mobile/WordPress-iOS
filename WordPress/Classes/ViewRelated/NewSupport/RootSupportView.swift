@@ -246,6 +246,20 @@ class RootSupportViewController: UIHostingController<AnyView> {
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // The loading and error states draw no list, so the hosting view's own background —
+        // `.systemBackground`, i.e. white — is what fills the screen until the list arrives.
+        // That is the shade the screen visibly changes from as it pushes in from Me. Match the
+        // grouped background the list and every other Me screen use.
+        view.backgroundColor = .systemGroupedBackground
+
+        // Tracked here, matching `SupportTableViewController`, so `support_opened` stays
+        // continuous as the rollout moves users from the old flow to this one.
+        WPAnalytics.track(.openedSupport)
+    }
 }
 
 #Preview {
@@ -307,7 +321,7 @@ private enum Strings {
     )
     static let getHelpTitle = NSLocalizedString(
         "support.root.getHelp.title",
-        value: "Get help",
+        value: "Get Help",
         comment: "Title of the row that opens the support conversations with the AI Assistant and support team."
     )
     static let getHelpDetail = NSLocalizedString(

@@ -1,10 +1,20 @@
-¿Te has enterado? Hemos hecho que la pestaña Notificaciones y la campana sean más precisas, incluso cuando las notificaciones del sistema o las etiquetas de los iconos estén desactivadas. Ahora siempre estarás al día de todo.
+Guarda una entrada en el Lector de tu iPhone y ábrela en tu iPad. Tu cuenta de WordPress.com sincroniza ahora hasta 1.000 entradas guardadas en todos los dispositivos, incluidas las que ya has guardado.
 
-Ahora, los tipos de contenido personalizado aparecen directamente en el menú del sitio después de Comentarios, ordenados por nombre para mayor comodidad: ya no hace falta añadir pines personalizados.
+Hemos hecho algunos cambios más en el Lector.
 
-Por último, hemos solucionado varios errores, solo para que la experiencia de tu aplicación sea un poco más fácil.
+- ¿Tienes curiosidad por saber quién ha recibido una mención en una entrada? Toca su nombre para ver su perfil.
+- Cuando dejas un comentario, la lista mantiene tu nuevo comentario a la vista. Si cambias de tema de lectura, el texto de los comentarios y el sombreado detrás de “Mostrar más” ahora coinciden.
+- Cuando tocas “Ver entrada completa” o “Ver en el navegador” en una entrada de un sitio privado, Jetpack la abre dentro de la aplicación usando tu cuenta de WordPress.com.
 
-- En el Lector, las imágenes integradas no desaparecerán en los dispositivos con iOS 27.
-- Las subidas ya no fallarán si el nombre del archivo contiene espacios. (good-news-everyone.jpg)
-- Hemos corregido un fallo causado por compartir ciertos tipos de archivos de texto.
-- Los usuarios de iPad están de enhorabuena: la aplicación no se atascará en el diseño de la barra de pestañas compacta cuando cambies el tamaño de la pantalla o de aplicación.
+En los modelos iPhone Plus y Pro Max, las vistas previas de las entradas ahora usan la pantalla completa en horizontal. En el iPad, puedes reducir el ancho de la ventana mientras editas una entrada o configuras un sitio y continuar justo donde lo dejaste. Incluso la lista de diseños de sitios conserva la posición en la que estabas.
+
+Si utilizas el editor de bloques experimental, las subidas de fotos ahora siguen tus ajustes de medios en cuanto a tamaño, calidad y datos de ubicación. El editor también funciona en el modo de aislamiento y te pregunta antes de guardar una entrada mientras los medios aún se están subiendo.
+
+También encontrarás algunas correcciones fuera del Lector y el editor.
+
+- En Estadísticas, la pestaña Tráfico permanece en su sitio cuando te desplazas hacia abajo hasta “Añadir tarjeta”. El botón de atrás vuelve a estar en el iPhone Duo y en los iPhones Plus y Pro Max en horizontal.
+- En los sitios autoalojados, las nuevas entradas siguen los ajustes de discusión de tu sitio. Si tu servidor bloquea el inicio de sesión con una contraseña de aplicación, la aplicación ahora te indica qué ha salido mal.
+- Las descripciones de los plugins son legibles en modo oscuro, y puedes ver sus vídeos en la aplicación o tocar “Ver en YouTube”.
+- Hemos corregido un cierre inesperado que podía producirse al compartir una foto con Jetpack.
+
+Necesitarás iOS 18 o posterior para esta actualización. Los dispositivos con iOS 17 ya no recibirán actualizaciones de la aplicación.

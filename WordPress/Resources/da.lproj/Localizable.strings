@@ -99,7 +99,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -231,8 +230,7 @@
 /* No comment provided by engineer. */
 "Dismiss" = "Afvis";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -525,8 +523,7 @@
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Ikke nu";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -666,8 +663,7 @@
 /* Mobile Push Notifications */
 "Push Notifications" = "Push meddelelser";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Læser";
 
@@ -1056,9 +1052,6 @@
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
-
-/* Later today */
-"later today" = "senere i dag";
 
 /* Verb. Button title. Tapping cancels an action. */
 "siteMedia.details.cancel" = "Annuler";
