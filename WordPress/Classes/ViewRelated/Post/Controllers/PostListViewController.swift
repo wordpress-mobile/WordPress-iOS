@@ -187,8 +187,10 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
             else {
                 return nil
             }
-            let cell = self.tableView.cellForRow(at: indexPath)
-            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: self)
+            // If the post moved off screen, UIKit lifts the row now at the pressed position,
+            // which shows another post. Show no menu, as when the post is gone.
+            guard let cell = self.tableView.cellForRow(at: indexPath) else { return nil }
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell, delegate: self)
         }
     }
 

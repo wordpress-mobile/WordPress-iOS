@@ -365,8 +365,12 @@ final class PageListViewController: AbstractPostListViewController {
             else {
                 return nil
             }
-            let cell = self.tableView.cellForRow(at: IndexPath(row: row, section: Section.pages.rawValue))
-            return AbstractPostMenuHelper(page).makeMenu(presentingView: cell ?? UIView(), delegate: self)
+            // If the page moved off screen, UIKit lifts the row now at the pressed position,
+            // which shows another page. Show no menu, as when the page is gone.
+            guard let cell = self.tableView.cellForRow(at: IndexPath(row: row, section: Section.pages.rawValue)) else {
+                return nil
+            }
+            return AbstractPostMenuHelper(page).makeMenu(presentingView: cell, delegate: self)
         }
     }
 

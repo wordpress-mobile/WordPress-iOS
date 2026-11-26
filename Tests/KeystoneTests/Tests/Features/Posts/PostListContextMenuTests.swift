@@ -79,6 +79,27 @@ final class PostListContextMenuTests: CoreDataTestCase {
     }
 
     @MainActor
+    func testNoMenuAfterNewerPostsPushPressedPostOffScreen() throws {
+        showList()
+        let pressedRow = IndexPath(row: 1, section: 0)
+        let pressedPost = try post(in: list.tableView, at: pressedRow)
+        let configuration = try makeConfiguration(at: pressedRow)
+
+        for minute in 1...30 {
+            _ = PostBuilder(mainContext, blog: blog)
+                .published()
+                .withRemote()
+                .with(dateCreated: Date(timeIntervalSinceNow: Double(minute) * 60))
+                .build()
+        }
+        contextManager.saveContextAndWait(mainContext)
+        list.tableView.layoutIfNeeded()
+        XCTAssertFalse(visiblePosts(in: list.tableView).contains(pressedPost))
+
+        XCTAssertNil(try ContextMenuRunner.menu(for: configuration))
+    }
+
+    @MainActor
     private func showList() {
         list = PostListViewController.controllerWithBlog(blog)
         navigationController = PresentationRecorder(rootViewController: list)
@@ -140,6 +161,29 @@ final class PostSearchContextMenuTests: CoreDataTestCase {
         XCTAssertNil(try ContextMenuRunner.menu(for: configuration))
     }
 
+    /// Search results only move up: rows above are removed while the list is scrolled.
+    @MainActor
+    func testNoMenuAfterRowsAboveAreRemovedWhileScrolled() throws {
+        posts += (1...77).map { _ in PostBuilder(mainContext, blog: blog).published().withRemote().build() }
+        contextManager.saveContextAndWait(mainContext)
+        try showResults()
+        let section = PostSearchViewModel.SectionID.posts.rawValue
+        tableView.contentOffset = CGPoint(x: 0, y: tableView.rectForRow(at: IndexPath(row: 30, section: section)).minY)
+        tableView.layoutIfNeeded()
+        let pressedRow = IndexPath(row: 35, section: section)
+        let pressedPost = try post(in: tableView, at: pressedRow)
+        let configuration = try makeConfiguration(at: pressedRow)
+
+        for removed in posts.prefix(20) {
+            mainContext.delete(removed)
+        }
+        contextManager.saveContextAndWait(mainContext)
+        tableView.layoutIfNeeded()
+        XCTAssertFalse(visiblePosts(in: tableView).contains(pressedPost))
+
+        XCTAssertNil(try ContextMenuRunner.menu(for: configuration))
+    }
+
     @MainActor
     private func showResults() throws {
         let settings = PostListFilterSettings(blog: blog, postType: .post)
@@ -158,7 +202,7 @@ final class PostSearchContextMenuTests: CoreDataTestCase {
         )
         viewModel.service(service, didAppendPosts: posts)
         tableView.layoutIfNeeded()
-        XCTAssertEqual(tableView.numberOfRows(inSection: PostSearchViewModel.SectionID.posts.rawValue), 3)
+        XCTAssertEqual(tableView.numberOfRows(inSection: PostSearchViewModel.SectionID.posts.rawValue), posts.count)
     }
 
     @MainActor
@@ -223,6 +267,25 @@ final class PageListContextMenuTests: CoreDataTestCase {
     }
 
     @MainActor
+    func testNoMenuAfterNewerPagesPushPressedPageOffScreen() throws {
+        showList()
+        let pressedRow = IndexPath(row: 1, section: pagesSection)
+        let pressedPage = try post(in: list.tableView, at: pressedRow)
+        let configuration = try makeConfiguration(at: pressedRow)
+
+        for minute in 1...30 {
+            let page = PageBuilder(mainContext).with(status: .publish).withRemote().build()
+            page.blog = blog
+            page.dateCreated = Date(timeIntervalSinceNow: Double(minute) * 60)
+        }
+        contextManager.saveContextAndWait(mainContext)
+        waitForRowCount(33)
+        XCTAssertFalse(visiblePosts(in: list.tableView).contains(pressedPage))
+
+        XCTAssertNil(try ContextMenuRunner.menu(for: configuration))
+    }
+
+    @MainActor
     private func showList() {
         list = PageListViewController.controllerWithBlog(blog)
         navigationController = PresentationRecorder(rootViewController: list)
@@ -266,6 +329,11 @@ private func layOutRows(of viewController: UIViewController) {
     viewController.loadViewIfNeeded()
     viewController.view.frame = CGRect(x: 0, y: 0, width: 400, height: 1200)
     viewController.view.layoutIfNeeded()
+}
+
+@MainActor
+private func visiblePosts(in tableView: UITableView) -> [AbstractPost] {
+    tableView.visibleCells.compactMap { ($0 as? AbstractPostListCell)?.post }
 }
 
 @MainActor
