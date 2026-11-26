@@ -49,4 +49,15 @@ struct MediaKindTests {
         let details = DocumentMediaDetails(fileSize: 0)
         #expect(MediaKind(payload: .document(details)) == .document)
     }
+
+    @Test func fromMimeTypeClassifiesByPrefix() {
+        #expect(MediaKind.from(mimeType: "image/jpeg") == .image)
+        #expect(MediaKind.from(mimeType: "image/png") == .image)
+        #expect(MediaKind.from(mimeType: "video/mp4") == .video)
+        #expect(MediaKind.from(mimeType: "video/videopress") == .video)
+        #expect(MediaKind.from(mimeType: "audio/mpeg") == .audio)
+        #expect(MediaKind.from(mimeType: "application/pdf") == .document)
+        #expect(MediaKind.from(mimeType: "text/plain") == .document)
+        #expect(MediaKind.from(mimeType: "") == .document)
+    }
 }
