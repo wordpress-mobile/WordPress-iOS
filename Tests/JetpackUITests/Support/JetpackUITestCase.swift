@@ -75,6 +75,8 @@ class JetpackUITestCase: XCTestCase {
             // The first time the Notifications tab is shown the app asks to send push notifications,
             // in a sheet that covers the list a moment after the list appears.
             "-NotificationPrimerAlertWasDisplayed", "YES",
+            // A fresh sign-in ends on an "Enable Notifications?" screen instead of My Site.
+            "-onboarding_notifications_prompt_displayed", "YES",
             // XCTest waits for the app's animations to finish before every tap and query.
             "-ui-test-disable-animations"
         ]
