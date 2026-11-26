@@ -32,6 +32,13 @@ FIREBASE_APP_CONFIG_JETPACK = {
 #   use the build number we set!
 COMMON_EXPORT_OPTIONS = { manageAppVersionAndBuildNumber: false }.freeze
 
+# The build setting that compiles the HTTP fixtures into the app, for the UI tests that run against
+# them. No build has any of that code without it. See docs/ui-tests.md.
+#
+# It's passed on the command line because that's the only way to reach the `HTTPFixtures` module as
+# well as the app: a Swift package's targets don't read the project's build settings.
+HTTP_FIXTURES_XCARGS = "SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST_HTTP_FIXTURES'"
+
 # Lanes related to Building and Testing the code
 #
 platform :ios do
@@ -51,6 +58,8 @@ platform :ios do
   #   bundle exec fastlane test scheme:Jetpack
   # @example Clean build before testing:
   #   bundle exec fastlane test clean:true
+  # @example Run one suite of the UI tests:
+  #   bundle exec fastlane test scheme:Jetpack only_testing:JetpackUITests/ReaderTests
   #
   desc 'Run tests locally'
   lane :test do |scheme: 'WordPress', device: 'iPhone 18 Pro', ios_version: nil, only_testing: nil, clean: false|
@@ -62,7 +71,10 @@ platform :ios do
       deployment_target_version: ios_version,
       only_testing: only_testing,
       clean: clean,
-      skip_package_dependencies_resolution: !clean
+      skip_package_dependencies_resolution: !clean,
+      # The Jetpack scheme's tests are the UI tests, and the suites that run against the HTTP
+      # fixtures need them compiled in.
+      xcargs: scheme == 'Jetpack' ? HTTP_FIXTURES_XCARGS : nil
     )
   end
 
@@ -93,6 +105,8 @@ platform :ios do
   #
   # @option [String] device the name of the Simulator device to run the tests on
   # @option [String] ios_version the Deployment Target version to use while testing
+  # @option [Boolean] http_fixtures Whether to compile in the HTTP fixtures, which the UI test suites
+  #   that run against fixtures need (default: false)
   #
   # @called_by CI
   #
@@ -108,7 +122,8 @@ platform :ios do
       # the build settings. See `CI_SIMULATOR_DEVICE`.
       device: options[:device] || CI_SIMULATOR_DEVICE,
       deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
-      disallow_xcodebuild_settings_lookup: true
+      disallow_xcodebuild_settings_lookup: true,
+      xcargs: options[:http_fixtures] ? HTTP_FIXTURES_XCARGS : nil
     )
   end
 
@@ -119,6 +134,14 @@ platform :ios do
   # @option [String] name The (partial) name of the `*.xctestrun` file to run
   # @option [String] device Name of the simulator device to run the test on
   # @option [String] ios_version The deployment target version to test on
+  # @option [String] only_testing Comma-separated tests to run, each `Target/Class` or
+  #   `Target/Class/method`. Runs every test in the xctestrun file when omitted.
+  # @option [Boolean] reset_simulator Whether to erase the Simulator first (default: true). A CI job
+  #   runs in a VM made for it, so its Simulator has nothing to erase, and it has started booting
+  #   it by now.
+  # @option [Integer] concurrent_workers How many Simulators to run the tests on at once. Xcode clones
+  #   the device and hands each clone whole test classes, so more than one only helps when there's
+  #   more than one class to run. Runs on the one device when omitted.
   #
   # @called_by CI
   #
@@ -133,24 +156,36 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    # The only supported mode runs the WordPress unit tests (xctestrun name `WordPressUnitTests`).
+    # Two modes are supported, and the scheme can be inferred from the xctestrun name:
+    #
+    # - (WordPress, WordPressUnitTests): the unit tests
+    # - (Jetpack, JetpackUITests): the UI tests
+    ui_tests = options[:name].include?('JetpackUITests')
+    scheme = ui_tests ? 'Jetpack' : 'WordPress'
+
+    workers = options[:concurrent_workers].to_i
+    parallel = workers > 1
+
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
+      scheme: scheme,
       # Naming the device and the deployment target stops scan from reading the build settings to pick a simulator.
       device: options[:device] || CI_SIMULATOR_DEVICE,
       deployment_target_version: options[:ios_version] || CI_DEPLOYMENT_TARGET,
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
+      only_testing: options[:only_testing]&.split(','),
+      parallel_testing: parallel ? true : nil,
+      concurrent_workers: parallel ? workers : nil,
       # The tests run from the prebuilt .xctestrun. Resolving packages, or reading build settings
       # (which also resolves them), would fetch every Swift package for nothing.
       skip_package_dependencies_resolution: true,
       disallow_xcodebuild_settings_lookup: true,
       derived_data_path: DERIVED_DATA_PATH,
-      app_name: 'WordPress',
+      app_name: scheme,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
-      reset_simulator: true,
+      reset_simulator: options.fetch(:reset_simulator, true),
       result_bundle: true,
       output_types: 'junit',
       # Workaround: on Xcode 27, post-test simulator diagnostics collection can hang until its 600 s timeout.

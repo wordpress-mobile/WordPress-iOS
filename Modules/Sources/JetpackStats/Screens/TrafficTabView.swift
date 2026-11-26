@@ -134,6 +134,7 @@ struct TrafficTabView: View {
                 TodayCard(viewModel: viewModel)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("today_card")
         default:
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
@@ -156,6 +157,7 @@ struct TrafficTabView: View {
             .padding(3)
         }
         .accessibilityLabel(Strings.Accessibility.addCardButton)
+        .accessibilityIdentifier("stats_add_card_button")
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)

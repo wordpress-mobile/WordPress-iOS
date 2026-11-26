@@ -9,6 +9,12 @@ let appDelegateClass =
 
 WordPressAppDelegate.bootstrapLogging()
 
+#if UI_TEST_HTTP_FIXTURES
+// The app delegate creates `URLSession`s as soon as it's initialized, and a session that exists
+// before the fixtures are installed sends its requests to the network.
+UITestConfigurator.serveHTTPFixturesIfNeeded()
+#endif
+
 // The secrets MUST be configured before the app launches.
 //
 // This is because `BuildSettings` are not propagated through the app via chain injection but accessed via a `static` `current` property for convenience.

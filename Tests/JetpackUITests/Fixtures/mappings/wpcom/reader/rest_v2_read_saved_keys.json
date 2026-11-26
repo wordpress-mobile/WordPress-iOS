@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/wpcom/v2/read/saved/keys"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "keys": [],
+      "total": 0
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

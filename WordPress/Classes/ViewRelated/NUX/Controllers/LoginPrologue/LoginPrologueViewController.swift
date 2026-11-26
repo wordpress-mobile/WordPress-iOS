@@ -23,6 +23,10 @@ final class LoginPrologueViewController: UIViewController {
     /// `.loginPrologueViewed` which is tracked on every appearance.
     private var prologueStepTracked = false
 
+    /// Static so that signing out, which shows a new login screen, doesn't sign straight back in
+    /// with the same `-wpcom-token` launch argument.
+    private static var didSignInWithLaunchArgumentToken = false
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -64,6 +68,11 @@ final class LoginPrologueViewController: UIViewController {
         if !prologueStepTracked {
             Analytics.trackStep()
             prologueStepTracked = true
+        }
+
+        if WordPressDotComAuthenticator.launchArgumentToken != nil, !Self.didSignInWithLaunchArgumentToken {
+            Self.didSignInWithLaunchArgumentToken = true
+            continueWithWordPressDotComTapped()
         }
     }
 

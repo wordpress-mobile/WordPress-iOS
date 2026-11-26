@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/[0-9]+/stats/visits/*"
+  },
+  "response": {
+    "status": 200,
+    "transformers": [
+      "stats-series"
+    ],
+    "transformerParameters": {
+      "fields": [
+        {
+          "name": "views",
+          "average": 432,
+          "hourly": true
+        },
+        {
+          "name": "visitors",
+          "average": 268
+        },
+        {
+          "name": "likes",
+          "average": 14
+        },
+        {
+          "name": "comments",
+          "average": 6
+        },
+        {
+          "name": "posts",
+          "average": 0.4
+        }
+      ]
+    }
+  }
+}

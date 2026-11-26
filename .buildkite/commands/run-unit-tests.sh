@@ -4,6 +4,10 @@ if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; th
   exit 0
 fi
 
+DEVICE=${1:?Usage $0 DEVICE}
+
+"$(dirname "${BASH_SOURCE[0]}")/boot-simulator.sh" "$DEVICE"
+
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products-wordpress.tar
 tar -xf build-products-wordpress.tar
@@ -14,7 +18,8 @@ install_gems
 
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:WordPressUnitTests
+# Naming the Simulator is what lets the lane skip resolving the Swift packages and reading the build settings.
+bundle exec fastlane test_without_building name:WordPressUnitTests device:"$DEVICE" reset_simulator:false
 TESTS_EXIT_STATUS=$?
 set -e
 

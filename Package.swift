@@ -18,6 +18,11 @@ let package = Package(
     ],
     targets: [
         .testTarget(
+            name: "HTTPFixturesTests",
+            dependencies: [.product(name: "HTTPFixtures", package: "Modules")],
+            path: "Modules/Tests/HTTPFixturesTests"
+        ),
+        .testTarget(
             name: "JetpackStatsWidgetsCoreTests",
             dependencies: [.product(name: "JetpackStatsWidgetsCore", package: "Modules")],
             path: "Modules/Tests/JetpackStatsWidgetsCoreTests",
