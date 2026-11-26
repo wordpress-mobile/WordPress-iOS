@@ -1891,6 +1891,9 @@
 /* Button that sends the message written for the AI Assistant. */
 "com.jetpack.support.unified.conversation.send" = "Send";
 
+/* Navigation bar title of a single support conversation, shown while its subject is on screen. */
+"com.jetpack.support.unified.conversation.title" = "Conversation";
+
 /* Shown in a conversation where the AI Assistant handed the question to the support team. */
 "com.jetpack.support.unified.conversation.transferred" = "Transferred to human support";
 
