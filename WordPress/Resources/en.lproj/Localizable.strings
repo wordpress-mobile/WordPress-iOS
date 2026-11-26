@@ -12371,8 +12371,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
-   Revert an operation
-   Revert enabling notification after successfully subcribing to the comments for the post. */
+   Revert an operation */
 "Undo" = "Undo";
 
 /* Title for a button that unsubscribes the user from the post. */
@@ -13367,8 +13366,7 @@ from anywhere.";
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once</strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once</strong> a week on %1$@ at %2$@.";
 
-/* Message for the action with opt-out revert action.
-   The app successfully subscribed to the comments for the post */
+/* Message for the action with opt-out revert action. */
 "You'll get notifications in the app" = "You'll get notifications in the app";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
