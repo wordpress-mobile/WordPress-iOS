@@ -4,9 +4,9 @@ The `JetpackUITests` target holds the XCUITest UI tests for the Jetpack app. Mos
 
 ## Running the tests
 
-The tests sign in with the same token as `make sim-login` (see [Simulator Sign-In](simulator-sign-in.md)): the `WPCOM_TOKEN` environment variable, then `~/.wpcom-token` on the Mac. Without a token, every test that needs one is skipped rather than failed.
+The tests read the token from the `WPCOM_TOKEN` environment variable, then from `~/.wpcom-token` on the Mac. Without a token, every test that needs one is skipped rather than failed.
 
-In Xcode, select the **Jetpack** scheme and a Simulator destination, then run the tests from the Test Navigator. `JetpackUITests` is the scheme's default test plan. This runs the suites that sign in to a real account, and not the ones that run against the fixtures: see below.
+In Xcode, select the **Jetpack** scheme and a Simulator destination, then run the suites that sign in to a real account from the Test Navigator. `JetpackUITests` is the scheme's default test plan. Running the whole plan from Xcode also runs the suites that run against the fixtures (the ones that override `backend` to return `.fixtures`), and each of their tests fails at launch, because an Xcode build can't include the fixtures: see below. Run those suites from the command line.
 
 From the command line:
 

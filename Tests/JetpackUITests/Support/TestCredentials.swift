@@ -1,9 +1,8 @@
 import Foundation
 
 enum TestCredentials {
-    /// The WordPress.com bearer token the app signs in with, resolved the same way as
-    /// `Scripts/sim-signin.sh`: the `WPCOM_TOKEN` environment variable, then `~/.wpcom-token` on
-    /// the host Mac.
+    /// The WordPress.com bearer token the app signs in with: the `WPCOM_TOKEN` environment
+    /// variable, then `~/.wpcom-token` on the host Mac.
     ///
     /// `xcodebuild` forwards `TEST_RUNNER_`-prefixed variables to the test runner with the prefix
     /// removed, so pass the token as `TEST_RUNNER_WPCOM_TOKEN` when running from the command line.
