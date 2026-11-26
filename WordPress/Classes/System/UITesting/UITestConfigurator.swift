@@ -14,10 +14,6 @@ struct UITestConfigurator {
             // A UI test waits for the app's animations to finish before every tap and query.
             UIView.setAnimationsEnabled(false)
         }
-
-        #if UI_TEST_HTTP_FIXTURES
-        serveHTTPFixturesIfNeeded()
-        #endif
     }
 
     private static func resetEverything() {
@@ -41,11 +37,12 @@ struct UITestConfigurator {
     ///
     /// The `-ui-test-http-log` launch argument names a file to log every request to.
     ///
-    /// This has to run before the app creates a `URLSession`. See `FixtureURLProtocol`.
+    /// This has to run before the app creates a `URLSession`, so `main.swift` calls it before
+    /// `UIApplicationMain`. See `FixtureURLProtocol`.
     ///
     /// Only a build that sets the `UI_TEST_HTTP_FIXTURES` compilation condition has this, or the
     /// `HTTPFixtures` module it uses. The build for the UI tests sets it: see `docs/ui-tests.md`.
-    private static func serveHTTPFixturesIfNeeded() {
+    static func serveHTTPFixturesIfNeeded() {
         let defaults = UserDefaults.standard
         guard let directory = defaults.string(forKey: "ui-test-http-fixtures") else {
             return
