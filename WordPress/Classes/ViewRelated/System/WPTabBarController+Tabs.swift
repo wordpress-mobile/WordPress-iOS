@@ -38,7 +38,7 @@ extension WPTabBarController {
             notificationsNavigationController,
             meNavigationController
         ]
-        tabs = zip(WPTab.allCases, controllers)
+        let updatedTabs = zip(WPTab.allCases, controllers)
             .map { appTab, controller in
                 // Account changes can replace one tab while the others keep their navigation state.
                 if let existing = tab(forAppTab: appTab), existing.viewController === controller {
@@ -56,6 +56,12 @@ extension WPTabBarController {
                 }
                 return tab
             }
+        if let selectedTab, !updatedTabs.contains(where: { $0 === selectedTab }) {
+            // Before iOS 27, `selectedTab` keeps returning a removed tab when its replacement has the
+            // same identifier, and selecting the replacement does not change it.
+            self.selectedTab = nil
+        }
+        tabs = updatedTabs
         selectTab(selection)
     }
 }

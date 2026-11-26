@@ -30,8 +30,8 @@ struct WPTabBarControllerTests {
         }
     }
 
+    @available(iOS 26, *)
     @Test func programmaticSelectionUpdatesMinimization() throws {
-        guard #available(iOS 26, *) else { return }
         try withController { controller in
             controller.showReaderTab()
             #expect(controller.tabBarMinimizeBehavior == .onScrollDown)
