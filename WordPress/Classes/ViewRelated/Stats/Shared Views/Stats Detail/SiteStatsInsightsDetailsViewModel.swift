@@ -1164,6 +1164,8 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], status: StoreFetchingStatus = .idle) -> [any HashableImmutableRow] {
         var detailDataRows = [any HashableImmutableRow]()
+        // Earlier top-level rows by name, to number the copies of an entry the API lists twice.
+        var earlierRowsByName = [String: [StatsTotalRowData]]()
 
         for (idx, rowData) in rowsData.enumerated() {
 
@@ -1187,10 +1189,13 @@ private extension SiteStatsInsightsDetailsViewModel {
             let hideIndentedSeparator = expanded ? (expanded || isLastRow) : (nextExpanded || isLastRow)
 
             // Add top level parent row
-            detailDataRows.append(parentRow(rowData: rowData,
+            var row = parentRow(rowData: rowData,
                     hideIndentedSeparator: hideIndentedSeparator,
                     hideFullSeparator: !isLastRow,
-                    expanded: expanded))
+                    expanded: expanded)
+            row.copyIndex = earlierRowsByName[rowData.name, default: []].count { $0 == rowData }
+            earlierRowsByName[rowData.name, default: []].append(rowData)
+            detailDataRows.append(row)
 
             // Continue to next parent if not expanded.
             guard expanded, let childRowsData = rowData.childRows else {

@@ -6,6 +6,7 @@
 * [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
 * [*] Support: The chat keyboard's return key no longer looks like a send button [#26451]
 * [*] Support: A conversation now has a title in the navigation bar, and its subject reads above the status instead of below it
+* [*] Stats: Fix a crash when opening Tags and Categories, Clicks, Authors or Referrers details that list the same entry twice
 
 
 27.5

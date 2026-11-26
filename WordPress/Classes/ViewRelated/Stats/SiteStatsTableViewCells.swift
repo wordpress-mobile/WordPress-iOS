@@ -785,6 +785,9 @@ struct DetailExpandableRow: HashableImmutableRow {
     let hideIndentedSeparator: Bool
     let hideFullSeparator: Bool
     let expanded: Bool
+    /// How many earlier rows in the same list have equal `rowData`. The Stats API can list
+    /// the same entry twice, and the diffable table rejects equal rows.
+    var copyIndex = 0
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -805,7 +808,8 @@ struct DetailExpandableRow: HashableImmutableRow {
         return lhs.rowData == rhs.rowData &&
             lhs.hideIndentedSeparator == rhs.hideIndentedSeparator &&
             lhs.hideFullSeparator == rhs.hideFullSeparator &&
-            lhs.expanded == rhs.expanded
+            lhs.expanded == rhs.expanded &&
+            lhs.copyIndex == rhs.copyIndex
     }
 }
 
