@@ -190,7 +190,7 @@ enum UnifiedSupportReplyAction: Sendable {
     }
 }
 
-private extension String {
+extension String {
     var isBlank: Bool {
         trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }

@@ -71,8 +71,13 @@ final class UnifiedSupportConversationViewModel: ObservableObject {
         conversation?.isBot ?? summary?.isBot ?? true
     }
 
+    /// The conversation's subject. A subject the server left blank falls back to the description, the way the
+    /// row in the conversations list does, so the screen is never named with whitespace.
     var title: String {
-        conversation?.title ?? summary?.displayTitle ?? ""
+        if let title = conversation?.title, !title.isBlank {
+            return title
+        }
+        return summary?.displayTitle ?? ""
     }
 
     var status: UnifiedSupportConversationStatus {

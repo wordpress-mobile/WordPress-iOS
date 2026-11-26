@@ -66,8 +66,9 @@ struct UnifiedSupportConversationView: View {
         .safeAreaInset(edge: .top) { disclosure }
         .unifiedSupportNotice($viewModel.notice)
         // A ticket's subject scrolls away with the conversation, so the bar picks it up once it's gone.
-        // Showing it in both places at once would just say the same thing twice.
-        .navigationTitle(isTitleVisible ? "" : viewModel.title)
+        // Showing it in both places at once would just say the same thing twice, and leaving the bar empty
+        // until then gives the screen no name at all.
+        .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .unifiedSupportAutoRefresh(every: .seconds(60)) {
             await viewModel.refreshSilently()
@@ -91,6 +92,14 @@ struct UnifiedSupportConversationView: View {
             viewModel.onAppear()
             viewModel.loadIfNeeded()
         }
+    }
+
+    /// The subject once it has scrolled out of the conversation, and the name of the screen until then. A chat
+    /// with the AI Assistant has no subject of its own, so it keeps the screen's name throughout.
+    private var navigationTitle: String {
+        isTitleVisible || viewModel.title.isEmpty
+            ? UnifiedSupportLocalization.conversationTitle
+            : viewModel.title
     }
 
     @ViewBuilder

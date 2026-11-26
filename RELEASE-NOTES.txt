@@ -4,6 +4,7 @@
 * [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
 * [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
 * [*] Support: The chat keyboard's return key no longer looks like a send button [#26451]
+* [*] Support: A conversation now has a title in the navigation bar, and its subject reads above the status instead of below it
 
 
 27.5
