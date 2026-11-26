@@ -1214,6 +1214,7 @@ private extension SiteStatsInsightsDetailsViewModel {
                 // If this child has no children, add it as a child row.
                 guard !grandChildRowsData.isEmpty else {
                     detailDataRows.append(childRow(rowData: childRowData,
+                            parentNames: [rowData.name],
                             hideFullSeparator: hideFullSeparator,
                             showImage: showImage))
                     continue
@@ -1249,6 +1250,7 @@ private extension SiteStatsInsightsDetailsViewModel {
                     let hideFullSeparator = (idx == grandChildRowsData.endIndex - 1) ? nextChildExpanded : true
 
                     detailDataRows.append(childRow(rowData: grandChildRowData,
+                            parentNames: [rowData.name, childRowData.name],
                             hideFullSeparator: hideFullSeparator,
                             showImage: showImage))
                 }
@@ -1258,8 +1260,9 @@ private extension SiteStatsInsightsDetailsViewModel {
         return detailDataRows
     }
 
-    func childRow(rowData: StatsTotalRowData, hideFullSeparator: Bool, showImage: Bool) -> DetailExpandableChildRow {
+    func childRow(rowData: StatsTotalRowData, parentNames: [String], hideFullSeparator: Bool, showImage: Bool) -> DetailExpandableChildRow {
         return DetailExpandableChildRow(rowData: rowData,
+                parentNames: parentNames,
                 detailsDelegate: detailsDelegate,
                 hideIndentedSeparator: true,
                 hideFullSeparator: hideFullSeparator,

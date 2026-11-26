@@ -818,6 +818,11 @@ struct DetailExpandableChildRow: HashableImmutableRow {
     }()
 
     let rowData: StatsTotalRowData
+    /// Names of the rows this row is nested under, outermost first. Two expanded parents can
+    /// hold equal children, such as a tag in two tag groups, and the diffable table rejects
+    /// equal rows. Names rather than whole rows, so a parent's new count does not replace
+    /// its unchanged children.
+    let parentNames: [String]
     weak var detailsDelegate: SiteStatsDetailsDelegate?
     let hideIndentedSeparator: Bool
     let hideFullSeparator: Bool
@@ -840,6 +845,7 @@ struct DetailExpandableChildRow: HashableImmutableRow {
 
     static func == (lhs: DetailExpandableChildRow, rhs: DetailExpandableChildRow) -> Bool {
         return lhs.rowData == rhs.rowData &&
+            lhs.parentNames == rhs.parentNames &&
             lhs.hideIndentedSeparator == rhs.hideIndentedSeparator &&
             lhs.hideFullSeparator == rhs.hideFullSeparator &&
             lhs.showImage == rhs.showImage
