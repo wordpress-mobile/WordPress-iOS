@@ -1,5 +1,6 @@
 27.6
 -----
+* [*] Stats: Fix a crash when expanding two years with the same month and views in a post's Months and Years or Avg. Views Per Day details [#26415]
 * [*] Application Passwords: Revoke passwords for other apps from the password details screen.
 * [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
 * [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
@@ -8,7 +9,6 @@
 
 27.5
 -----
-* [*] Stats: Fix a crash when expanding two years with the same month and views in a post's Months and Years or Avg. Views Per Day details [#26415]
 * [*] Posts and Pages: Fix a crash, or a menu for the wrong post, when you long-press a post while the list refreshes [#26416]
 * [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
 * [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
