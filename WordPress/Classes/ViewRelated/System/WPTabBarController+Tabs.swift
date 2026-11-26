@@ -24,8 +24,11 @@ extension WPTabBarController {
     }
 
     @objc func rememberSelectedAppTab() {
-        guard UIDevice.isPad(), selectedTab != nil else { return }
-        UserDefaults.standard.isReaderSelected = selectedAppTab == .reader
+        guard selectedTab != nil else { return }
+        if UIDevice.isPad() {
+            UserDefaults.standard.isReaderSelected = selectedAppTab == .reader
+        }
+        appSidebarCoordinator?.selectionDidChange()
     }
 
     @objc var selectedAppTab: WPTab {
@@ -41,6 +44,9 @@ extension WPTabBarController {
     }
 
     @objc(updateTabsSelecting:) func updateTabs(selecting selection: WPTab) {
+        if appSidebarCoordinator == nil {
+            appSidebarCoordinator = AppSidebarCoordinator(tabBarController: self)
+        }
         let readerNavigation = readerNavigationController
         let readerRoot = readerPresenter?.adaptiveContent ?? readerNavigation
         readerRoot.tabBarItem = readerNavigation.tabBarItem
@@ -57,8 +63,13 @@ extension WPTabBarController {
                     return existing
                 }
                 let item: UITabBarItem = controller.tabBarItem
-                let tab = UITab(title: item.title ?? "", image: item.image, identifier: appTab.identifier) { _ in
-                    controller
+                let tab: UITab
+                if appTab == .me, let appSidebarCoordinator {
+                    tab = appSidebarCoordinator.makeAccountTab(controller: controller)
+                } else {
+                    tab = UITab(title: item.title ?? "", image: item.image, identifier: appTab.identifier) { _ in
+                        controller
+                    }
                 }
                 tab.preferredPlacement = .fixed
                 tab.accessibilityIdentifier = item.accessibilityIdentifier
@@ -75,5 +86,6 @@ extension WPTabBarController {
         }
         tabs = updatedTabs
         selectTab(selection)
+        appSidebarCoordinator?.configure()
     }
 }

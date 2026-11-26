@@ -38,6 +38,10 @@ extension WPTabBarController: RootViewPresenter {
     // MARK: Me
 
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
+        if isAppSidebarAvailable, let appSidebarCoordinator {
+            appSidebarCoordinator.showAccount(completion: completion)
+            return
+        }
         showMeTab()
         meNavigationController.popToRootViewController(animated: false)
         completion?(meViewController)

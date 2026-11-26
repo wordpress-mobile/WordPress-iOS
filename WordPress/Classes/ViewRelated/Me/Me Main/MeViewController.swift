@@ -303,13 +303,7 @@ public class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] _ in
-            if RemoteFeatureFlag.newSupport.enabled() {
-                let controller = RootSupportViewController(dataProvider: SupportDataProvider.shared)
-                self.showOrPushController(controller)
-            } else {
-                let controller = SupportTableViewController(style: .insetGrouped)
-                self.showOrPushController(controller)
-            }
+            self.showOrPushController(SupportHome.makeViewController())
         }
     }
 
