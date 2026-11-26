@@ -178,11 +178,19 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         contextMenuConfigurationForRowAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
-            guard let self else { return nil }
-            let post = self.postAtIndexPath(indexPath)
-            let cell = self.tableView.cellForRow(at: indexPath)
-            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: self)
+        // UIKit calls the action provider when it recognizes the press, after a sync
+        // may have moved or removed the row, so keep the post rather than its row.
+        let post = postAtIndexPath(indexPath)
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self, weak post] _ in
+            guard let self, let post, !post.isDeleted,
+                let indexPath = self.fetchResultsController.indexPath(forObject: post)
+            else {
+                return nil
+            }
+            // If the post moved off screen, UIKit lifts the row now at the pressed position,
+            // which shows another post. Show no menu, as when the post is gone.
+            guard let cell = self.tableView.cellForRow(at: indexPath) else { return nil }
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell, delegate: self)
         }
     }
 
