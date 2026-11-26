@@ -139,8 +139,6 @@ class RootViewCoordinator {
         windowManager?.show(navigationController, completion: completion)
         WPAnalytics.track(.openedLogin)
         self.rootViewPresenter = nil
-
-        WordPressAppDelegate.shared?.autoSignInUITestSite()
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {

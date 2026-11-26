@@ -1,17 +1,21 @@
 # Simulator Sign-In
 
-Pass credentials as launch arguments, then tap through the sign-in screen to complete sign-in.
+Pass credentials as launch arguments. WordPress.com sign-in then finishes on its own; a self-hosted site still needs a few taps.
 
 ## WordPress.com account
 
-Launch with a bearer token:
+Launch with a bearer token. Read it from a file inside the command, so the token never appears in the command you type, your shell history or an agent's transcript:
 
 ```bash
 xcrun simctl launch --terminate-running-process booted org.wordpress \
-  -ui-test-wpcom-token <bearer-token>
+  -wpcom-token "$(cat <path-to-token-file>)"
 ```
 
-On the sign-in screen, tap **"Continue with WordPress.com"**.
+The app signs in as soon as the sign-in screen appears. It does this once per launch, so signing out leaves you on the sign-in screen.
+
+Agents: don't print the token file or paste the token into a command. The token still shows in `ps` while `simctl launch` runs, as any launch argument does.
+
+The older `-ui-test-wpcom-token` argument still works.
 
 ## Self-hosted site
 
