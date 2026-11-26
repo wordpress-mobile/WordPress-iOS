@@ -124,7 +124,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override var hidesBottomBarWhenPushed: Bool {
         set {}
-        get { true }
+        get {
+            // Regular-width iPhone layouts can still use bottom tabs.
+            tabBarController?.isAppSidebarAvailable != true
+        }
     }
 
     /// Tracks whether the webview has called -didFinish:navigation
@@ -187,7 +190,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNavigationBar()
         applyStyles()
         configureWebView()
         configureHeader()
@@ -240,6 +242,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        // Collapse can move these items to the primary navigation bar. Rebuild them when the
+        // retained article reappears, including after Back and an inactive split expansion.
+        configureNavigationBar()
+        if isTranslating { showTranslationSpinner() }
         updateLeftBarButtonItem()
         updateFollowButtonState()
         toolbar.viewWillAppear()

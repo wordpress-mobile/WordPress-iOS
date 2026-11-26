@@ -190,120 +190,9 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
     }
 
-    func testSplitViewShowNotificationsInStaticScreensWithReaderPresentsThePoster() throws {
-        // Given
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
-        let presenter = SplitViewRootPresenter()
-        try showExpanded(presenter)
-        var didRunCompletion = false
-
-        // When
-        presenter.showNotificationsTab { _ in didRunCompletion = true }
-
-        // Then
-        XCTAssertFalse(didRunCompletion)
-        XCTAssertNotEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenNotifications)
-        let sheet = try XCTUnwrap(presenter.rootViewController.presentedViewController as? UINavigationController)
-        XCTAssertTrue(sheet.viewControllers.first is MovedToJetpackViewController)
-    }
-
-    func testSplitViewShowNotificationsAgainInStaticScreensWithReaderKeepsOnePoster() throws {
-        // Given
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
-        let presenter = SplitViewRootPresenter()
-        try showExpanded(presenter)
-        presenter.showNotificationsTab(completion: nil)
-        let poster = try XCTUnwrap(presenter.rootViewController.presentedViewController)
-        // UIKit refuses to present while another presentation is in progress, which would hide
-        // a second poster. Wait until the first one is on screen.
-        let appeared = NSPredicate { _, _ in poster.viewIfLoaded?.window != nil && !poster.isBeingPresented }
-        wait(for: [expectation(for: appeared, evaluatedWith: nil)], timeout: 5)
-
-        // When
-        presenter.showNotificationsTab(completion: nil)
-
-        // Then
-        XCTAssertNil(poster.presentedViewController)
-    }
-
-    func testSplitViewShowNotificationsInNormalUISelectsNotifications() throws {
-        // Given
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .normal
-        let presenter = SplitViewRootPresenter()
-        try showExpanded(presenter)
-        var receivedList: NotificationsViewController?
-
-        // When
-        presenter.showNotificationsTab { receivedList = $0 }
-
-        // Then
-        XCTAssertNotNil(receivedList)
-        XCTAssertEqual(presenter.currentlySelectedScreen(), WPTabBarCurrentlySelectedScreenNotifications)
-    }
-
-    func testSplitViewCompactTabBarFollowsStaticScreensWithReader() throws {
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
-        let withReaderPresenter = SplitViewRootPresenter()
-        let withReaderTabBar = try XCTUnwrap(compactTabBar(of: withReaderPresenter))
-        XCTAssertFalse(withReaderTabBar.showsPoster(in: .reader))
-        XCTAssertTrue(withReaderTabBar.showsPoster(in: .notifications))
-
-        // Outside `staticScreensWithReader` the compact tab bar keeps its live tabs.
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreens
-        let staticScreensPresenter = SplitViewRootPresenter()
-        let staticScreensTabBar = try XCTUnwrap(compactTabBar(of: staticScreensPresenter))
-        XCTAssertFalse(staticScreensTabBar.showsPoster(in: .reader))
-        XCTAssertFalse(staticScreensTabBar.showsPoster(in: .notifications))
-    }
-
-    func testSplitViewCompactTabBarShowsThePosterWhenAnAccountChangeTurnsOnStaticScreensWithReader() throws {
-        // Given a split view built before a WordPress.com account exists, on the Notifications tab
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
-        let presenter = SplitViewRootPresenter()
-        let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
-        tabBar.selectTab(.notifications)
-        XCTAssertNotNil(tabBar.notificationsViewController)
-
-        // When signing in from the sidebar sets the account, even if the site sync then fails and
-        // the sign-in never completes
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
-        presenter.appUITypeDidChange()
-
-        // Then
-        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
-        XCTAssertNil(tabBar.notificationsViewController)
-        XCTAssertFalse(tabBar.showsPoster(in: .reader))
-        XCTAssertEqual(tabBar.selectedAppTab, .notifications)
-
-        // And a completed sign-in, which rebuilds every tab, keeps the poster
-        NotificationCenter.default.post(
-            name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification),
-            object: nil
-        )
-        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
-        XCTAssertNil(tabBar.notificationsViewController)
-    }
-
-    func testSplitViewCompactTabBarRestoresTheLiveListWhenSignOutLeavesStaticScreensWithReader() throws {
-        // Given
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .staticScreensWithReader
-        let presenter = SplitViewRootPresenter()
-        let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
-        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
-
-        // When
-        JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
-        presenter.appUITypeDidChange()
-
-        // Then the compact layout's live tabs return, as before `staticScreensWithReader`
-        XCTAssertFalse(tabBar.showsPoster(in: .notifications))
-        XCTAssertNotNil(tabBar.notificationsViewController)
-    }
-
     // MARK: - Sign-In
 
     func testSignInWithTheFlagOnShowsLiveReaderWithoutRelaunch() throws {
-        try XCTSkipIf(UIDevice.isPad(), "The iPad presenter ignores the app UI type")
 
         // Given a launch while signed out, with Reader off
         sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
@@ -367,25 +256,6 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertTrue(sut.reloadUIIfNeeded(blog: nil))
     }
 
-    func testFlagOnSignInBuildsTheSplitViewWithLiveReaderOnIPad() throws {
-        try XCTSkipUnless(UIDevice.isPad(), "Only the iPad uses the split view presenter")
-
-        // Given
-        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
-        signInToWordPressDotCom()
-
-        // When
-        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
-        sut.showAppUI()
-
-        // Then the compact layout's tab bar has live Reader and the Notifications poster
-        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader())
-        let splitVC = try XCTUnwrap(windowManager.presentedViewController as? UISplitViewController)
-        let tabBar = try XCTUnwrap(splitVC.viewController(for: .compact) as? WPTabBarController)
-        XCTAssertFalse(tabBar.showsPoster(in: .reader))
-        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
-    }
-
     // MARK: - Helpers
 
     private func makeCoordinator(
@@ -402,32 +272,15 @@ final class RootViewCoordinatorTests: XCTestCase {
         )
     }
 
-    /// Signs in and shows the app UI on the phone presenter.
+    /// Signs in and shows the shared app navigation.
     private func showTabBar(
         isReaderInWordPressAppEnabled: Bool,
         app: AppBrand = .wordpress
     ) throws -> WPTabBarController {
-        try XCTSkipIf(UIDevice.isPad(), "The iPad presenter ignores the app UI type")
         signInToWordPressDotCom()
         sut = makeCoordinator(isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled, app: app)
         sut.showAppUI()
         return try XCTUnwrap(windowManager.presentedViewController as? WPTabBarController)
-    }
-
-    /// Shows the presenter in a regular-width window, so that its split view isn't collapsed.
-    private func showExpanded(_ presenter: SplitViewRootPresenter) throws {
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 1366, height: 1024))
-        window.traitOverrides.horizontalSizeClass = .regular
-        window.rootViewController = presenter.rootViewController
-        window.isHidden = false
-        addTeardownBlock { window.isHidden = true }
-        window.layoutIfNeeded()
-        let splitVC = try XCTUnwrap(presenter.rootViewController as? UISplitViewController)
-        try XCTSkipIf(splitVC.isCollapsed, "The split view can't expand in this test environment")
-    }
-
-    private func compactTabBar(of presenter: SplitViewRootPresenter) -> WPTabBarController? {
-        (presenter.rootViewController as? UISplitViewController)?.viewController(for: .compact) as? WPTabBarController
     }
 
     private func postAccountChangeNotification() {

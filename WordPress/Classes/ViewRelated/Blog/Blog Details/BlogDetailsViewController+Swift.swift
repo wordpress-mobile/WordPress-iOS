@@ -254,7 +254,7 @@ extension BlogDetailsViewController {
         }
         commentsVC.navigationItem.largeTitleDisplayMode = .never
 
-        if isSidebarModeEnabled {
+        if isSidebarModeEnabled && !usesAdaptiveNavigation {
             commentsVC.isSidebarModeEnabled = true
 
             if #available(iOS 26, *) {
@@ -313,7 +313,7 @@ extension BlogDetailsViewController {
         // presents the stats view controller as modal instead of pushing it. As a
         // workaround for now, we'll manually decide whether to push or use `showDetail`.
         // @frosty 2016-09-05
-        if let splitViewController, splitViewController.isCollapsed {
+        if !usesAdaptiveNavigation, let splitViewController, splitViewController.isCollapsed {
             navigationController?.pushViewController(statsVC, animated: true)
         } else {
             presentationDelegate?.presentBlogDetailsViewController(statsVC)

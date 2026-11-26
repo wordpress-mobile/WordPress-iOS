@@ -74,6 +74,12 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // TODO: (reader) factor if out of `MySiteVC` for a production version
     var isReaderAppModeEnabled = false
+    var supportsDashboardInRegularWidth = false
+    var isSiteMenuVisible = false {
+        didSet { blogDashboardViewController?.showsQuickActions = !isSiteMenuVisible }
+    }
+    var onSiteSelected: ((Blog?) -> Void)?
+    var onShowDestination: ((UIViewController) -> Void)?
 
     // MARK: - Initializers
 
@@ -127,6 +133,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private(set) weak var blogDetailsViewController: BlogDetailsViewController? {
         didSet {
             blogDetailsViewController?.presentationDelegate = self
+            blogDetailsViewController?.usesAdaptiveNavigation = supportsDashboardInRegularWidth
         }
     }
     private weak var blogDashboardViewController: BlogDashboardViewController?
@@ -326,7 +333,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
-    private func configureNavBarAppearance(animated: Bool) {
+    func configureNavBarAppearance(animated: Bool) {
 
         guard navigationController?.topViewController === self else {
             return
@@ -335,7 +342,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         guard !isReaderAppModeEnabled else {
             return
         }
-        if currentSection == .dashboard && scrollView.contentOffset.y >= 60 {
+        // Expanded layouts need the navigation bar for UIKit's column controls.
+        if splitViewController?.isCollapsed == false
+            || (currentSection == .dashboard && scrollView.contentOffset.y >= 60)
+        {
             if isNavigationBarHidden {
                 setNavigationBarHidden(false, animated: animated)
             }
@@ -404,7 +414,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             : viewModel.getSection(
                 for: blog,
                 jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-                showsSingleColumn: splitViewController?.isCollapsed ?? true
+                showsSingleColumn: supportsDashboardInRegularWidth || (splitViewController?.isCollapsed ?? true)
             )
 
         self.currentSection = section
@@ -774,6 +784,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         headerVC.onBlogSwitched = { [weak self] blog in
             guard let self else { return }
 
+            if let onSiteSelected {
+                self.dismiss(animated: true) { onSiteSelected(blog) }
+                return
+            }
             if self.isSidebarModeEnabled {
                 self.dismiss(animated: true)
                 NotificationCenter.default.post(
@@ -834,6 +848,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func showDashboard(for blog: Blog) {
         let blogDashboardViewController =
             self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog, embeddedInScrollView: true)
+        if supportsDashboardInRegularWidth {
+            blogDashboardViewController.showsQuickActions = !isSiteMenuVisible
+        }
         blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
@@ -887,7 +904,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        self.blog = nil
+        if let onSiteSelected {
+            onSiteSelected(Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext))
+        } else {
+            self.blog = nil
+        }
     }
 
     // MARK: - Model Changes: Blog Creation
@@ -927,7 +948,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        self.blog = blog
+        if let onSiteSelected {
+            onSiteSelected(blog)
+        } else {
+            self.blog = blog
+        }
     }
 
     // MARK: - Blogging Prompts
@@ -997,6 +1022,10 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     // TODO: Refactor presentation from routes
     // More context: https://github.com/wordpress-mobile/WordPress-iOS/issues/21759
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
+        if let onShowDestination {
+            onShowDestination(viewController)
+            return
+        }
         viewController.loadViewIfNeeded()
         switch currentSection {
         case .dashboard:

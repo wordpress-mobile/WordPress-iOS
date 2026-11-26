@@ -44,84 +44,94 @@ final class ReaderPresenterTests: CoreDataTestCase {
     }
 
     @MainActor
-    func testSavedFeedIsUnderADeepLinkedPost() {
+    func testSavedFeedIsUnderADeepLinkedPost() throws {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        _ = presenter.prepareForAdaptiveTabBarPresentation()
+        let content = try XCTUnwrap(presenter.adaptiveContent)
+        let navigationController = content.detailNavigationController
 
         presenter.navigate(to: .post(postID: 1, siteID: 2, isFeed: false), animated: false)
 
         let stack = navigationController.viewControllers
-        XCTAssertEqual(stack.count, 3)
-        XCTAssertTrue(stack.dropFirst().first is ReaderDiscoverViewController)
+        XCTAssertEqual(stack.count, 2)
+        XCTAssertTrue(stack.first is ReaderDiscoverViewController)
         XCTAssertTrue(stack.last is ReaderDetailViewController)
 
         navigationController.popViewController(animated: false)
-        XCTAssertTrue(navigationController.topViewController === stack[1])
+        XCTAssertTrue(navigationController.topViewController === stack[0])
         navigationController.popToRootViewController(animated: false)
         presenter.sidebar.loadViewIfNeeded()
         XCTAssertEqual(navigationController.viewControllers.count, 1)
-        XCTAssertTrue(navigationController.topViewController === presenter.sidebar)
+        XCTAssertTrue(content.listNavigationController.topViewController === presenter.sidebar)
     }
 
     @MainActor
-    func testOpeningTheSavedFeedAgainDoesNotPushItTwice() {
+    func testOpeningTheSavedFeedAgainDoesNotPushItTwice() throws {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        _ = presenter.prepareForAdaptiveTabBarPresentation()
+        let content = try XCTUnwrap(presenter.adaptiveContent)
+        let navigationController = content.detailNavigationController
 
         presenter.navigate(to: .discover, animated: false)
 
-        XCTAssertEqual(navigationController.viewControllers.count, 2)
+        XCTAssertEqual(navigationController.viewControllers.count, 1)
         XCTAssertTrue(navigationController.topViewController is ReaderDiscoverViewController)
     }
 
     @MainActor
-    func testSwitchingFeedsPreservesTheSavedFeed() {
+    func testSwitchingFeedsPreservesTheSavedFeed() throws {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        _ = presenter.prepareForAdaptiveTabBarPresentation()
+        let content = try XCTUnwrap(presenter.adaptiveContent)
+        let navigationController = content.detailNavigationController
 
         let savedFeed = navigationController.topViewController
         presenter.navigate(to: .recent, animated: false)
 
-        XCTAssertEqual(navigationController.viewControllers.count, 3)
+        XCTAssertEqual(navigationController.viewControllers.count, 2)
         XCTAssertTrue(navigationController.topViewController is ReaderStreamViewController)
-        XCTAssertTrue(navigationController.viewControllers[1] === savedFeed)
+        XCTAssertTrue(navigationController.viewControllers[0] === savedFeed)
         navigationController.popViewController(animated: false)
         XCTAssertTrue(navigationController.topViewController === savedFeed)
     }
 
     @MainActor
-    func testBackFromADeepLinkedTagReturnsToTheSavedFeed() {
+    func testBackFromADeepLinkedTagReturnsToTheSavedFeed() throws {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        _ = presenter.prepareForAdaptiveTabBarPresentation()
+        let content = try XCTUnwrap(presenter.adaptiveContent)
+        let navigationController = content.detailNavigationController
 
         let savedFeed = navigationController.topViewController
         presenter.navigate(to: .tag("photography"), animated: false)
 
-        XCTAssertEqual(navigationController.viewControllers.count, 3)
+        XCTAssertEqual(navigationController.viewControllers.count, 2)
         XCTAssertTrue(navigationController.topViewController is ReaderStreamViewController)
-        XCTAssertTrue(navigationController.viewControllers[1] === savedFeed)
+        XCTAssertTrue(navigationController.viewControllers[0] === savedFeed)
         navigationController.popViewController(animated: false)
         XCTAssertTrue(navigationController.topViewController === savedFeed)
     }
 
     @MainActor
-    func testDiscoverDedupePreservesExistingFeedAndController() {
+    func testDiscoverDedupePreservesExistingFeedAndController() throws {
         UserDefaults.standard.readerSidebarSelection = .recent
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        _ = presenter.prepareForAdaptiveTabBarPresentation()
+        let content = try XCTUnwrap(presenter.adaptiveContent)
+        let navigationController = content.detailNavigationController
         let recent = navigationController.topViewController
         XCTAssertTrue(recent is ReaderStreamViewController)
 
         presenter.navigate(to: .discover, animated: false)
         let discover = navigationController.topViewController
         XCTAssertTrue(discover is ReaderDiscoverViewController)
-        XCTAssertEqual(navigationController.viewControllers.count, 3)
-        XCTAssertTrue(navigationController.viewControllers[1] === recent)
+        XCTAssertEqual(navigationController.viewControllers.count, 2)
+        XCTAssertTrue(navigationController.viewControllers[0] === recent)
 
         presenter.navigate(to: .discover, animated: false)
-        XCTAssertEqual(navigationController.viewControllers.count, 3)
+        XCTAssertEqual(navigationController.viewControllers.count, 2)
         XCTAssertTrue(navigationController.topViewController === discover)
-        XCTAssertTrue(navigationController.viewControllers[1] === recent)
+        XCTAssertTrue(navigationController.viewControllers[0] === recent)
     }
 
     @MainActor
@@ -132,6 +142,7 @@ final class ReaderPresenterTests: CoreDataTestCase {
     }
 }
 
-private struct MockReaderMenuStore: ReaderMenuStoreProtocol {
+private final class MockReaderMenuStore: ReaderMenuStoreProtocol {
+    var onCompletion: (() -> Void)?
     func refreshMenu() {}
 }

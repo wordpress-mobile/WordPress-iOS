@@ -102,9 +102,8 @@ class RootViewCoordinator {
         guard accountChangeObserver == nil else {
             return
         }
-        // The UI type depends on the WordPress.com account, which can change while the app UI
-        // stays in place: the iPad split view never shows My Site, whose `reloadUIIfNeeded`
-        // call is the only other refresh. The default-account change is the one event every
+        // The UI type depends on the WordPress.com account, which can change before My Site
+        // appears and calls `reloadUIIfNeeded`. The default-account change is the one event every
         // sign-in and sign-out path posts; a sign-in whose site sync fails skips
         // `WPSigninDidFinishNotification`.
         accountChangeObserver = NotificationCenter.default.addObserver(
@@ -147,9 +146,6 @@ class RootViewCoordinator {
         presentedAppUIType = appType
         if app == .reader {
             return ReaderRootViewPresenter()
-        }
-        if UIDevice.isPad() {
-            return SplitViewRootPresenter()
         }
         switch appType {
         case .normal:

@@ -58,6 +58,12 @@ class UntouchableViewController: UIViewController {
     private var visibleTabBarController: WPTabBarController? {
         let rootViewController = UIApplication.shared.delegate?.window??.rootViewController
         if let tabBarController = rootViewController as? WPTabBarController {
+            // Regular iPad tabs sit at the top and need no space below a notice.
+            guard
+                tabBarController.mode != .tabSidebar || tabBarController.traitCollection.horizontalSizeClass != .regular
+            else {
+                return nil
+            }
             return tabBarController
         }
         // On iPad the root is a split view. It shows the tab bar only when the window is

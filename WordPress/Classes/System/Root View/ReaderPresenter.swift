@@ -22,10 +22,14 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private var selectionObserver: AnyCancellable?
+    private var menuRefreshObserver: AnyCancellable?
+    private var pendingTopic: (screen: ReaderStaticScreen, placeholder: UIViewController)?
+    private(set) var adaptiveContent: AdaptiveListDetailViewController?
 
     /// Disabled for programmatic setup, like the initial screen or syncing tabs when the
     /// iPad split view collapses. A push still animating then prevents it from expanding again.
     private var isNavigationAnimated = true
+    private var isHandlingDeepLink = false
 
     public convenience override init() {
         self.init(viewModel: ReaderSidebarViewModel())
@@ -38,25 +42,27 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         secondary = UINavigationController()
         sidebar = ReaderSidebarViewController(viewModel: sidebarViewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
-        supplementary = UINavigationController(rootViewController: sidebar)
+        supplementary = AdaptiveColumnNavigationController(rootViewController: sidebar)
         supplementary.navigationBar.prefersLargeTitles = true
 
         super.init()
     }
 
-    // TODO: (reader) update to allow seamless transitions between split view and tabs
-    @objc public func prepareForTabBarPresentation() -> UINavigationController {
+    @objc public func prepareForAdaptiveTabBarPresentation() -> UINavigationController {
         guard AccountHelper.isDotcomAvailable() else {
             return UINavigationController(rootViewController: ReaderLoggedOutViewController())
         }
-
-        sidebarViewModel.isCompact = true
-        sidebarViewModel.restoreSelection(defaultValue: nil)
-        mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
-        mainNavigationController.navigationBar.prefersLargeTitles = true
+        // Preserve the phone's menu landing screen when no feed has been saved.
+        if !UIDevice.isPad() {
+            sidebarViewModel.restoreSelection(defaultValue: nil)
+        }
+        let content = AdaptiveListDetailViewController(list: supplementary)
+        adaptiveContent = content
+        content.onCollapseStateChanged = { [weak self] in self?.sidebarViewModel.isCompact = $0 }
         sidebar.navigationItem.backButtonDisplayMode = .minimal
+        menuRefreshObserver = sidebarViewModel.menuDidRefresh.sink { [weak self] in self?.retryPendingTopic() }
         observeSelection()
-        return mainNavigationController
+        return supplementary
     }
 
     // TODO: (reader) rework
@@ -89,7 +95,14 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         selectionObserver = sidebarViewModel.$selection
             .compactMap { $0 }
             .removeDuplicates { [weak self] in
-                guard $0 == $1, let self, let splitViewController else { return false }
+                guard $0 == $1, let self else { return false }
+                if let adaptiveContent {
+                    guard !self.isHandlingDeepLink, self.pendingTopic == nil else { return false }
+                    adaptiveContent.detailNavigationController.popToRootViewController(animated: isNavigationAnimated)
+                    adaptiveContent.showDetailColumn()
+                    return true
+                }
+                guard let splitViewController else { return false }
                 self.popMainNavigationController(in: splitViewController)
                 return true
             }
@@ -132,6 +145,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func hideSupplementaryColumnIfNeeded() {
+        guard adaptiveContent == nil else { return }
         if sidebar.didAppear, let splitVC = sidebar.splitViewController, splitVC.splitBehavior == .overlay {
             DispatchQueue.main.async {
                 splitVC.hide(.supplementary)
@@ -161,7 +175,12 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }
             } else {
-                return makeErrorViewController() // This should never happen
+                guard adaptiveContent != nil else { return makeErrorViewController() }
+                let placeholder: UIViewController =
+                    sidebarViewModel.isRefreshingMenu
+                    ? UIHostingController(rootView: ProgressView()) : makeErrorViewController()
+                pendingTopic = (screen, placeholder)
+                return placeholder
             }
         case .saved:
             // Saved posts are kept in the WordPress.com account. The sidebar only lists Saved when
@@ -177,6 +196,21 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .lists:
             return makeListsViewController()
         }
+    }
+
+    private func retryPendingTopic() {
+        guard let pendingTopic, let navigation = adaptiveContent?.detailNavigationController else { return }
+        self.pendingTopic = nil
+        guard let index = navigation.viewControllers.firstIndex(where: { $0 === pendingTopic.placeholder }) else {
+            return
+        }
+        // Sign-in can create the tabs before menu topics arrive. Replace only the loading screen,
+        // keeping any article opened by a deep link above it.
+        let controller = makeViewController(for: .main(pendingTopic.screen))
+        (controller as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
+        var stack = navigation.viewControllers
+        stack[index] = controller
+        navigation.setViewControllers(stack, animated: false)
     }
 
     private func makeAllSubscriptionsViewController(source: ScreenTrackingSource? = nil) -> UIViewController {
@@ -233,7 +267,18 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// Shows the given view controller by either displaying it in the `.secondary`
     /// column (split view) or pushing to the navigation stack.
     private func show(_ viewController: UIViewController) {
-        if let splitViewController {
+        if let adaptiveContent {
+            guard !contentIsAlreadyDisplayed(viewController, in: adaptiveContent.detailNavigationController) else {
+                return
+            }
+            (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
+            if isHandlingDeepLink {
+                // External navigation keeps the current feed in Back history.
+                adaptiveContent.pushDetail(viewController, animated: isNavigationAnimated)
+            } else {
+                adaptiveContent.showDetail(viewController)
+            }
+        } else if let splitViewController {
             guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
                 Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping show")
                 return
@@ -256,7 +301,12 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// Pushes the view controller to either the existing navigation stack in
     /// the `.secondary` column (split view) or to the main navigation stack.
     private func push(_ viewController: UIViewController) {
-        if let splitViewController {
+        if let adaptiveContent {
+            guard !contentIsAlreadyDisplayed(viewController, in: adaptiveContent.detailNavigationController) else {
+                return
+            }
+            adaptiveContent.pushDetail(viewController, animated: isNavigationAnimated)
+        } else if let splitViewController {
             // Don't push a view controller on top of another with the same content
             guard !contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
                 Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping push")
@@ -311,7 +361,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     func navigate(to path: ReaderNavigationPath, animated: Bool = true) {
         isNavigationAnimated = animated
-        defer { isNavigationAnimated = true }
+        isHandlingDeepLink = true
+        defer {
+            isNavigationAnimated = true
+            isHandlingDeepLink = false
+        }
 
         let viewModel = sidebarViewModel
 

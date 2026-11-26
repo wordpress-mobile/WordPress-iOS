@@ -19,6 +19,15 @@ extension WPTab {
 }
 
 extension WPTabBarController {
+    @objc var initialAppTab: WPTab {
+        UIDevice.isPad() && UserDefaults.standard.isReaderSelected && !shouldUseStaticReader ? .reader : .mySites
+    }
+
+    @objc func rememberSelectedAppTab() {
+        guard UIDevice.isPad(), selectedTab != nil else { return }
+        UserDefaults.standard.isReaderSelected = selectedAppTab == .reader
+    }
+
     @objc var selectedAppTab: WPTab {
         WPTab(tab: selectedTab) ?? .mySites
     }
@@ -32,10 +41,13 @@ extension WPTabBarController {
     }
 
     @objc(updateTabsSelecting:) func updateTabs(selecting selection: WPTab) {
+        let readerNavigation = readerNavigationController
+        let readerRoot = readerPresenter?.adaptiveContent ?? readerNavigation
+        readerRoot.tabBarItem = readerNavigation.tabBarItem
         let controllers = [
             mySitesCoordinator.rootViewController,
-            readerNavigationController,
-            notificationsNavigationController,
+            readerRoot,
+            notificationsRootViewController,
             meNavigationController
         ]
         let updatedTabs = zip(WPTab.allCases, controllers)

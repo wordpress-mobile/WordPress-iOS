@@ -17,16 +17,27 @@ struct WPTabBarControllerTests {
                     "tabbar_mysites", "tabbar_reader", "tabbar_notifications", "tabbar_me"
                 ]
             )
-            #expect(controller.mode == .tabBar)
+            #expect(controller.mode == .tabSidebar)
+            if #available(iOS 27, *) {
+                #expect(controller.sidebar.preferredPlacement == .sidebar)
+            }
 
             controller.showReaderTab()
             #expect(controller.selectedTab?.viewController === controller.readerNavigationController)
             controller.showNotificationsTab()
-            #expect(controller.selectedTab?.viewController === controller.notificationsNavigationController)
+            #expect(controller.selectedTab?.viewController === controller.notificationsRootViewController)
             controller.showMeTab()
             #expect(controller.selectedTab?.viewController === controller.meNavigationController)
             controller.showMySitesTab()
             #expect(controller.selectedTab?.viewController === controller.mySitesCoordinator.rootViewController)
+        }
+    }
+
+    @Test func remembersReaderAtLaunchOnlyOnIPad() throws {
+        try withController(staticReader: false) { controller in
+            controller.showReaderTab()
+            let reopened = WPTabBarController(staticReader: false, staticNotifications: true)
+            #expect(reopened.selectedAppTab == (UIDevice.isPad() ? .reader : .mySites))
         }
     }
 
@@ -44,6 +55,25 @@ struct WPTabBarControllerTests {
         }
     }
 
+    @Test(.enabled(if: !UIDevice.isPad()))
+    func regularWidthPhoneHidesBottomTabsForDetail() throws {
+        try withController { controller in
+            controller.mode = .tabBar
+            controller.traitOverrides.horizontalSizeClass = .regular
+            controller.showReaderTab()
+            let detail = UIViewController()
+            detail.hidesBottomBarWhenPushed = true
+            controller.readerNavigationController.pushViewController(detail, animated: false)
+
+            controller.updateAdaptiveTabBarVisibility(animated: false)
+            #expect(controller.isTabBarHidden)
+
+            controller.readerNavigationController.popViewController(animated: false)
+            controller.updateAdaptiveTabBarVisibility(animated: false)
+            #expect(!controller.isTabBarHidden)
+        }
+    }
+
     @Test func replacingNotificationsPreservesOtherTabsAndTheirStacks() throws {
         try withController { controller in
             let originalTabs = controller.tabs
@@ -55,11 +85,13 @@ struct WPTabBarControllerTests {
 
             #expect(controller.selectedAppTab == .notifications)
             #expect(controller.tabs[2] !== originalTabs[2])
+            #expect(controller.tab(forAppTab: .notifications) === controller.tabs[2])
+            #expect(controller.tabs[2].viewController === controller.notificationsRootViewController)
             for index in [0, 1, 3] {
                 #expect(controller.tabs[index] === originalTabs[index])
             }
             #expect(controller.readerNavigationController.topViewController === detail)
-            #expect(controller.selectedTab?.viewController === controller.notificationsNavigationController)
+            #expect(controller.selectedTab?.viewController === controller.notificationsRootViewController)
             #expect(controller.notificationsViewController != nil)
         }
     }
@@ -185,11 +217,14 @@ struct WPTabBarControllerTests {
         _ body: (WPTabBarController) throws -> Void
     ) throws {
         let original = ContextManager.overrideInstance
+        let wasReaderSelected = UserDefaults.standard.isReaderSelected
+        UserDefaults.standard.isReaderSelected = false
         let context = ContextManager.forTesting()
         ContextManager.overrideInstance = context
         defer {
             context.mainContext.reset()
             ContextManager.overrideInstance = original
+            UserDefaults.standard.isReaderSelected = wasReaderSelected
         }
         try body(WPTabBarController(staticReader: staticReader, staticNotifications: true))
     }

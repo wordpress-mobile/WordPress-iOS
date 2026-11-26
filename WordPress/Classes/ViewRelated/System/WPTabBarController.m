@@ -14,12 +14,13 @@ NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications"
 NSNotificationName const WPTabBarHeightChangedNotification = @"WPTabBarHeightChangedNotification";
 static NSString * const WPTabBarFrameKeyPath = @"frame";
 
-@interface WPTabBarController () <UITabBarControllerDelegate>
+@interface WPTabBarController () <UITabBarControllerDelegate, UITabBarControllerSidebarDelegate>
 
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
+@property (nonatomic, strong) UIViewController *notificationsRootViewController;
 
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
@@ -61,8 +62,12 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [WPStyleGuide configureTabBar:[self tabBar]];
 
-        self.mode = UITabBarControllerModeTabBar;
-        [self updateTabsSelecting:WPTabMySites];
+        self.mode = UITabBarControllerModeTabSidebar;
+        if (@available(iOS 27.0, *)) {
+            self.sidebar.preferredPlacement = UITabBarControllerSidebarPlacementSidebar;
+        }
+        [self updateTabsSelecting:self.initialAppTab];
+        self.sidebar.delegate = self;
         [self observeAccountAvatar];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -108,7 +113,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         } else {
             _readerPresenter = [[ReaderPresenter alloc] init];
-            _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
+            _readerNavigationController = [_readerPresenter prepareForAdaptiveTabBarPresentation];
         }
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
@@ -138,7 +143,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         self.notificationsViewController = [NotificationsViewController makeForAppNavigation];
         rootViewController = self.notificationsViewController;
     }
-    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    _notificationsNavigationController = [[AdaptiveColumnNavigationController alloc] initWithRootViewController:rootViewController];
     self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
     self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
@@ -149,6 +154,14 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     return _notificationsNavigationController;
 }
 
+- (UIViewController *)notificationsRootViewController
+{
+    if (!_notificationsRootViewController) {
+        _notificationsRootViewController = [self makeNotificationsRootViewController];
+    }
+    return _notificationsRootViewController;
+}
+
 - (void)setShouldUseStaticNotifications:(BOOL)shouldUseStaticNotifications
 {
     if (_shouldUseStaticNotifications == shouldUseStaticNotifications) {
@@ -157,6 +170,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _shouldUseStaticNotifications = shouldUseStaticNotifications;
 
     _notificationsNavigationController = nil;
+    _notificationsRootViewController = nil;
     [self updateTabsSelecting:self.selectedAppTab];
     [self updateNotificationBadgeVisibility];
 }
@@ -186,6 +200,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _readerPresenter = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
+    _notificationsRootViewController = nil;
     _meNavigationController = nil;
 
     [self updateTabsSelecting:WPTabMySites];
@@ -217,6 +232,8 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     [super setSelectedTab:selectedTab];
     [self updateTabBarMinimizeBehavior];
     [self updateAccountAvatarForSelection];
+    [self updateAdaptiveTabBarVisibilityAnimated:NO];
+    [self rememberSelectedAppTab];
 }
 
 - (void)showMySitesTab
@@ -241,7 +258,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)popNotificationsTabToRoot
 {
-    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+    [self resetNotificationsNavigation];
 }
 
 - (NSString *)currentlySelectedScreen
@@ -280,18 +297,26 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectTab:(UITab *)selectedTab previousTab:(UITab *)previousTab
 {
-    [self updateTabBarMinimizeBehavior];
-    [self updateAccountAvatarForSelection];
-}
-
-#pragma mark - UITabBarDelegate
-
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
-{
     UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleSoft];
     [generator impactOccurred];
 
-    [self animateSelectedItem:item for:tabBar];
+    [self updateTabBarMinimizeBehavior];
+    [self updateAccountAvatarForSelection];
+    [self updateAdaptiveTabBarVisibilityAnimated:NO];
+    [self rememberSelectedAppTab];
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController sidebarAvailabilityDidChange:(UITabBarControllerSidebar *)sidebar
+{
+    [self updateAdaptiveTabBarVisibilityAnimated:NO];
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController sidebarVisibilityWillChange:(UITabBarControllerSidebar *)sidebar animator:(id<UITabBarControllerSidebarAnimating>)animator
+{
+    __weak WPTabBarController *weakSelf = self;
+    [animator addCompletion:^{
+        [weakSelf updateAdaptiveContentSafeArea];
+    }];
 }
 
 #pragma mark - Notification Activity
@@ -311,7 +336,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _readerNavigationController = nil;
 
     if (notification.object == nil) {
-        [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+        [self resetNotificationsNavigation];
         // Reinstall the tabs. The app UI stays up after logging out when a
         // self-hosted site remains, so the rebuilt Reader tab has to replace the
         // stale one here. The other tabs are the same instances, which keeps the
@@ -449,6 +474,13 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
     self.view.accessibilityIdentifier = @"root_vc";
     [self startObserversForTabAccessTracking];
+    [self observeAdaptiveTabBarTraits];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateAdaptiveContentSafeArea];
 }
 
 - (void)viewDidAppear:(BOOL)animated

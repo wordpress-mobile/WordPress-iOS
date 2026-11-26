@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 import Foundation
 import WordPressData
@@ -12,6 +13,9 @@ final class ReaderSidebarViewModel: ObservableObject {
     private let contextManager: CoreDataStack
     private var previousReloadTimestamp: Date?
     private var isRestoringSelection = false
+
+    let menuDidRefresh = PassthroughSubject<Void, Never>()
+    private(set) var isRefreshingMenu = false
 
     @Published var isCompact = false
     let isReaderAppModeEnabled: Bool
@@ -39,6 +43,10 @@ final class ReaderSidebarViewModel: ObservableObject {
             restoreSelection(defaultValue: .main(.recent))
         }
 
+        menuStore.onCompletion = { [weak self] in
+            self?.isRefreshingMenu = false
+            self?.menuDidRefresh.send()
+        }
         self.reloadMenuIfNeeded()
     }
 
@@ -65,6 +73,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private func reloadMenuIfNeeded() {
         if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
             previousReloadTimestamp = .now
+            isRefreshingMenu = true
             tabItemsStore.refreshMenu()
         }
     }
