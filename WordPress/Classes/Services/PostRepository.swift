@@ -9,12 +9,16 @@ final class PostRepository {
         case remoteAPIUnavailable
         case hasUnsyncedChanges
         case missingPostID // Should never happen
+        /// The post was removed from the local database while the caller
+        /// still held it. It may still exist on the site.
+        case postUnavailable
 
         var errorDescription: String? {
             switch self {
             case .remoteAPIUnavailable: return Strings.genericErrorMessage
             case .hasUnsyncedChanges: return Strings.errorUnsyncedChangesMessage
             case .missingPostID: return Strings.genericErrorMessage
+            case .postUnavailable: return Strings.errorPostUnavailableMessage
             }
         }
     }
@@ -422,9 +426,11 @@ private extension PostRepository {
     @MainActor
     func getRemoteService(for post: AbstractPost) throws -> PostServiceRemoteExtended {
         // A list refresh can delete a retained post while leaving its ID readable.
+        guard !post.isDeleted, post.managedObjectContext != nil else {
+            throw Error.postUnavailable
+        }
         // Read the relationship through KVC because its Swift declaration is nonoptional.
-        guard !post.isDeleted, post.managedObjectContext != nil,
-            let blog = post.value(forKey: #keyPath(AbstractPost.blog)) as? Blog,
+        guard let blog = post.value(forKey: #keyPath(AbstractPost.blog)) as? Blog,
             !blog.isDeleted, blog.managedObjectContext != nil,
             let remote = remoteFactory.forBlog(blog)
         else {
@@ -742,5 +748,10 @@ private enum Strings {
         "postList.errorUnsyncedChangesMessage",
         value: "The app is uploading previously made changes to the server. Please try again later.",
         comment: "An error message"
+    )
+    static let errorPostUnavailableMessage = NSLocalizedString(
+        "postList.errorPostUnavailableMessage",
+        value: "This post is no longer available on this device. Refresh the list and try again.",
+        comment: "Error message: a list refresh removed the post from the device before an action on it finished"
     )
 }

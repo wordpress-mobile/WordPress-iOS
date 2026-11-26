@@ -53,7 +53,7 @@ struct PostRepositoryPostLifetimeTests {
         #expect(post.postID == 123)
         #expect(post.value(forKey: "blog") == nil)
 
-        await #expect(throws: PostRepository.Error.self) {
+        await #expect(throws: PostRepository.Error.postUnavailable) {
             try await repository.trash(post)
         }
         #expect(factory.callCount == 0)
@@ -71,7 +71,7 @@ struct PostRepositoryPostLifetimeTests {
         let factory = RemoteFactorySpy()
         let repository = PostRepository(coreDataStack: stack, remoteFactory: factory)
 
-        await #expect(throws: PostRepository.Error.self) {
+        await #expect(throws: PostRepository.Error.remoteAPIUnavailable) {
             try await operation.perform(on: subject, using: repository)
         }
         #expect(factory.callCount == 0)
@@ -88,10 +88,18 @@ struct PostRepositoryPostLifetimeTests {
         let factory = RemoteFactorySpy()
         let repository = PostRepository(coreDataStack: stack, remoteFactory: factory)
 
-        await #expect(throws: PostRepository.Error.self) {
+        await #expect(throws: PostRepository.Error.postUnavailable) {
             _ = try await repository.autosave(revision)
         }
         #expect(factory.callCount == 0)
+    }
+
+    @Test
+    func postUnavailableMessage() {
+        #expect(
+            PostRepository.Error.postUnavailable.localizedDescription
+                == "This post is no longer available on this device. Refresh the list and try again."
+        )
     }
 
     private func makePost(in stack: ContextManager) -> Post {
