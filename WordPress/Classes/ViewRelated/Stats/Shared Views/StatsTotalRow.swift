@@ -20,6 +20,8 @@ struct StatsTotalRowData: Equatable {
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
     var isReferrerSpam: Bool
+    /// Keeps the same month from different years distinct, since `name` shows only the month.
+    var yearMonth: DateComponents?
 
     init(
         id: UUID? = nil,
@@ -38,7 +40,8 @@ struct StatsTotalRowData: Equatable {
         multiline: Bool = true,
         childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
         statSection: StatSection? = nil,
-        isReferrerSpam: Bool = false
+        isReferrerSpam: Bool = false,
+        yearMonth: DateComponents? = nil
     ) {
         self.id = id
         self.name = name
@@ -57,6 +60,7 @@ struct StatsTotalRowData: Equatable {
         self.childRows = childRows
         self.statSection = statSection
         self.isReferrerSpam = isReferrerSpam
+        self.yearMonth = yearMonth
     }
 
     var hasIcon: Bool {
@@ -102,6 +106,7 @@ struct StatsTotalRowData: Equatable {
             && lhs.showDisclosure == rhs.showDisclosure
             && lhs.disclosureURL?.absoluteString == rhs.disclosureURL?.absoluteString && lhs.childRows == rhs.childRows
             && lhs.statSection == rhs.statSection && lhs.isReferrerSpam == rhs.isReferrerSpam
+            && lhs.yearMonth == rhs.yearMonth
     }
 }
 
