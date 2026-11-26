@@ -11,22 +11,11 @@ enum SidebarSelection: Hashable {
     case reader
 }
 
-enum SidebarNavigationStep {
-    case allSites(sourceRect: CGRect)
-    case addSite(selection: AddSiteMenuViewModel.Selection)
-    case domains
-    case help
-    case profile
-    case signIn
-}
-
 final class SidebarViewModel: ObservableObject {
     @Published var selection: SidebarSelection?
     @Published private(set) var account: WPAccount?
 
     let blogListViewModel = BlogListViewModel()
-
-    var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
     private let contextManager: CoreDataStack
     private var previousReloadTimestamp: Date?

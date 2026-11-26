@@ -179,7 +179,6 @@ final class NotificationsViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(NotificationsViewController.makeForAppNavigation().scope, .reader)
-        XCTAssertEqual(NotificationsSplitViewContent().notificationsViewController.scope, .reader)
         XCTAssertEqual(WPTabBarController(staticScreens: false).notificationsViewController?.scope, .reader)
     }
 

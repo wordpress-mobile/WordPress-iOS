@@ -6,13 +6,11 @@ import WordPressData
 import WordPressUI
 
 /// Manages top-level Reader navigation.
-public final class ReaderPresenter: NSObject, SplitViewDisplayable {
+public final class ReaderPresenter: NSObject {
     private let sidebarViewModel: ReaderSidebarViewModel
 
-    // The view controllers used during split view presentation.
     let sidebar: ReaderSidebarViewController
-    let supplementary: UINavigationController
-    var secondary: UINavigationController
+    private let listNavigationController: UINavigationController
 
     /// The navigation controller for the main content when shown using tabs.
     private var mainNavigationController = UINavigationController()
@@ -26,8 +24,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private var pendingTopic: (screen: ReaderStaticScreen, placeholder: UIViewController)?
     private(set) var adaptiveContent: AdaptiveListDetailViewController?
 
-    /// Disabled for programmatic setup, like the initial screen or syncing tabs when the
-    /// iPad split view collapses. A push still animating then prevents it from expanding again.
+    /// Initial setup and explicit nonanimated routes must not start a push transition.
     private var isNavigationAnimated = true
     private var isHandlingDeepLink = false
 
@@ -35,15 +32,12 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         self.init(viewModel: ReaderSidebarViewModel())
     }
 
-    weak var splitViewController: UISplitViewController?
-
     init(viewModel: ReaderSidebarViewModel) {
         sidebarViewModel = viewModel
-        secondary = UINavigationController()
         sidebar = ReaderSidebarViewController(viewModel: sidebarViewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
-        supplementary = AdaptiveColumnNavigationController(rootViewController: sidebar)
-        supplementary.navigationBar.prefersLargeTitles = true
+        listNavigationController = AdaptiveColumnNavigationController(rootViewController: sidebar)
+        listNavigationController.navigationBar.prefersLargeTitles = true
 
         super.init()
     }
@@ -56,13 +50,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         if !UIDevice.isPad() {
             sidebarViewModel.restoreSelection(defaultValue: nil)
         }
-        let content = AdaptiveListDetailViewController(list: supplementary)
+        let content = AdaptiveListDetailViewController(list: listNavigationController)
         adaptiveContent = content
         content.onCollapseStateChanged = { [weak self] in self?.sidebarViewModel.isCompact = $0 }
         sidebar.navigationItem.backButtonDisplayMode = .minimal
         menuRefreshObserver = sidebarViewModel.menuDidRefresh.sink { [weak self] in self?.retryPendingTopic() }
         observeSelection()
-        return supplementary
+        return listNavigationController
     }
 
     // TODO: (reader) rework
@@ -102,16 +96,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
                     adaptiveContent.showDetailColumn()
                     return true
                 }
-                guard let splitViewController else { return false }
-                self.popMainNavigationController(in: splitViewController)
-                return true
+                return false
             }
             .sink { [weak self] in self?.configure(for: $0) }
     }
 
     private func configure(for selection: ReaderSidebarItem) {
         show(makeViewController(for: selection))
-        hideSupplementaryColumnIfNeeded()
     }
 
     private func makeViewController(for selection: ReaderSidebarItem) -> UIViewController {
@@ -136,21 +127,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         vc.trackingContext.source = source
 
         return vc
-    }
-
-    private func popMainNavigationController(in splitViewController: UISplitViewController) {
-        let secondaryVC = splitViewController.viewController(for: .secondary)
-        (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
-        hideSupplementaryColumnIfNeeded()
-    }
-
-    private func hideSupplementaryColumnIfNeeded() {
-        guard adaptiveContent == nil else { return }
-        if sidebar.didAppear, let splitVC = sidebar.splitViewController, splitVC.splitBehavior == .overlay {
-            DispatchQueue.main.async {
-                splitVC.hide(.supplementary)
-            }
-        }
     }
 
     private func makeViewController<T: ReaderAbstractTopic>(
@@ -278,15 +254,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             } else {
                 adaptiveContent.showDetail(viewController)
             }
-        } else if let splitViewController {
-            guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
-                Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping show")
-                return
-            }
-            (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
-
-            let navigationVC = UINavigationController(rootViewController: viewController)
-            splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
@@ -306,15 +273,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 return
             }
             adaptiveContent.pushDetail(viewController, animated: isNavigationAnimated)
-        } else if let splitViewController {
-            // Don't push a view controller on top of another with the same content
-            guard !contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
-                Loggers.app.info("View controller for \(viewController.contentIdentifier) already presented – skipping push")
-                return
-            }
-            let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
-            wpAssert(navigationVC != nil)
-            navigationVC?.safePushViewController(viewController, animated: isNavigationAnimated)
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
@@ -331,26 +289,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             let current = nav.topViewController as? ContentIdentifiable,
             let new = viewController as? ContentIdentifiable
         else {
-            return false
-        }
-
-        return current.contentIdentifier == new.contentIdentifier
-    }
-
-    private func contentIsAlreadyDisplayed(
-        _ viewController: UIViewController,
-        in split: UISplitViewController,
-        for column: UISplitViewController.Column
-    ) -> Bool {
-        guard let top = split.viewController(for: column) else {
-            return false
-        }
-
-        if let nav = top as? UINavigationController {
-            return self.contentIsAlreadyDisplayed(viewController, in: nav)
-        }
-
-        guard let current = top as? ContentIdentifiable, let new = viewController as? ContentIdentifiable else {
             return false
         }
 
@@ -399,14 +337,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case let .site(siteID, isFeed):
             viewModel.selection = nil
             show(ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed))
-        }
-    }
-
-    // MARK: - SplitViewDisplayable
-
-    func displayed(in splitVC: UISplitViewController) {
-        if secondary.viewControllers.isEmpty {
-            observeSelection()
         }
     }
 }

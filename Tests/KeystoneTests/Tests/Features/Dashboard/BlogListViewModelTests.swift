@@ -129,7 +129,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
         setupViewModel()
 
         // Then: Verify topSites doesn't exceed the display limit
-        XCTAssertEqual(viewModel.topSites.count, SidebarView.displayedSiteLimit)
+        XCTAssertEqual(viewModel.topSites.count, BlogListViewModel.sidebarSiteLimit)
     }
 
     func testTopSitesPrioritizesCurrentSiteThenRecentSites() throws {

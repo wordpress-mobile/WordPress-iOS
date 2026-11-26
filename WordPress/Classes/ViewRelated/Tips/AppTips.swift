@@ -32,26 +32,6 @@ enum AppTips {
         }
     }
 
-    struct SidebarTip: Tip {
-        let id = "sidebar_tip"
-
-        var title: Text {
-            Text(NSLocalizedString("tips.sidebar.title", value: "Sidebar", comment: "Tip for sidebar"))
-        }
-
-        var message: Text? {
-            Text(NSLocalizedString("tips.sidebar.message", value: "Swipe right to access your sites, Reader, notifications, and profile", comment: "Tip for sidebar"))
-        }
-
-        var image: Image? {
-            Image(systemName: "sidebar.left")
-        }
-
-        var options: [any TipOption] {
-            MaxDisplayCount(1)
-        }
-    }
-
     struct StatsDateRangeTip: Tip {
         let id = "stats_date_range_tip"
 
