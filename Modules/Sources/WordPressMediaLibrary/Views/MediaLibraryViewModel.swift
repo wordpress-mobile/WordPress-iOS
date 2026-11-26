@@ -143,10 +143,12 @@ final class MediaLibraryViewModel: ObservableObject {
         do {
             let metadataItems = try await collection.loadItems()
             guard !Task.isCancelled else { return }
-            withAnimation {
-                items = metadataItems.map(MediaGridItem.init(item:))
-                displayItems = Self.applyingKindFilter(items, kind: kind)
-            }
+            // Not animated: inserting or removing a tile shifts every tile
+            // after it to a new row and column, and the animated reflow made
+            // tiles slide diagonally across each other when items were added
+            // or removed.
+            items = metadataItems.map(MediaGridItem.init(item:))
+            displayItems = Self.applyingKindFilter(items, kind: kind)
         } catch {
             if !(error is CancellationError) {
                 Loggers.mediaLibrary.error("Failed to load items: \(error)")
