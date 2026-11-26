@@ -82,7 +82,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         tabBarController.showNotificationsTab { _ in didRunCompletion = true }
 
         // Then
-        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBarController.selectedAppTab, .notifications)
         XCTAssertFalse(didRunCompletion)
     }
 
@@ -95,7 +95,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         tabBarController.showNotificationsTab { receivedList = $0 }
 
         // Then
-        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBarController.selectedAppTab, .notifications)
         XCTAssertNotNil(receivedList)
         XCTAssertIdentical(receivedList, tabBarController.notificationsViewController)
     }
@@ -109,7 +109,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         presenter.switchNotificationsTabToNotificationSettings()
 
         // Then
-        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBarController.selectedAppTab, .notifications)
     }
 
     func testSignInResolvesStaticScreensWithReaderBeforeTheUIReloads() {
@@ -261,7 +261,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
         let presenter = SplitViewRootPresenter()
         let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
-        tabBar.selectedIndex = WPTab.notifications.rawValue
+        tabBar.selectTab(.notifications)
         XCTAssertNotNil(tabBar.notificationsViewController)
 
         // When signing in from the sidebar sets the account, even if the site sync then fails and
@@ -273,7 +273,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertTrue(tabBar.showsPoster(in: .notifications))
         XCTAssertNil(tabBar.notificationsViewController)
         XCTAssertFalse(tabBar.showsPoster(in: .reader))
-        XCTAssertEqual(tabBar.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBar.selectedAppTab, .notifications)
 
         // And a completed sign-in, which rebuilds every tab, keeps the poster
         NotificationCenter.default.post(
