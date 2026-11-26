@@ -120,7 +120,7 @@ import WordPressShared
         return months.map {
             StatsTotalRowData(name: StatsDataHelper.displayMonth(forDate: $0.date),
                               data: $0.viewsCount.abbreviatedString(),
-                              month: $0.date)
+                              yearMonth: $0.date)
         }
     }
 

@@ -97,8 +97,8 @@ private final class PostStatsTable {
         StatsDataHelper.expandedRowLabelsDetails[section] = years
     }
 
-    /// Seven years with positive totals, as in the reproduction. 2026 and 2025 both
-    /// have April, with April 2025 set by the caller. Averages use the same numbers.
+    /// Seven years with positive totals. 2026 and 2025 both have April, with April 2025
+    /// set by the caller. Averages use the same numbers.
     func setPostDetails(april2025: Int) {
         var years: [String: [String: Int]] = [
             "2026": ["3": 16, "4": 12],

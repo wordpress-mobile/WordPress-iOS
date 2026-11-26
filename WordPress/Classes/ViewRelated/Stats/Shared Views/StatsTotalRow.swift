@@ -20,11 +20,8 @@ struct StatsTotalRowData: Equatable {
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
     var isReferrerSpam: Bool
-    /// The year and month of a post stats month row, whose `name` shows only the month.
-    ///
-    /// Without it, the same month with the same views in two years gives equal rows, and the
-    /// diffable Stats detail table crashes on the duplicate items when both years are expanded.
-    var month: DateComponents?
+    /// Keeps the same month from different years distinct, since `name` shows only the month.
+    var yearMonth: DateComponents?
 
     init(
         id: UUID? = nil,
@@ -44,7 +41,7 @@ struct StatsTotalRowData: Equatable {
         childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
         statSection: StatSection? = nil,
         isReferrerSpam: Bool = false,
-        month: DateComponents? = nil
+        yearMonth: DateComponents? = nil
     ) {
         self.id = id
         self.name = name
@@ -63,7 +60,7 @@ struct StatsTotalRowData: Equatable {
         self.childRows = childRows
         self.statSection = statSection
         self.isReferrerSpam = isReferrerSpam
-        self.month = month
+        self.yearMonth = yearMonth
     }
 
     var hasIcon: Bool {
@@ -109,7 +106,7 @@ struct StatsTotalRowData: Equatable {
             && lhs.showDisclosure == rhs.showDisclosure
             && lhs.disclosureURL?.absoluteString == rhs.disclosureURL?.absoluteString && lhs.childRows == rhs.childRows
             && lhs.statSection == rhs.statSection && lhs.isReferrerSpam == rhs.isReferrerSpam
-            && lhs.month == rhs.month
+            && lhs.yearMonth == rhs.yearMonth
     }
 }
 
