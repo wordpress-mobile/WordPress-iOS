@@ -243,10 +243,16 @@ enum Strings {
         value: "Uploads",
         comment: "Navigation title for the Uploads queue screen."
     )
-    static let uploadsScreenAllDone = NSLocalizedString(
-        "mediaLibrary.uploads.allDone",
+    static let uploadsScreenEmpty = NSLocalizedString(
+        "mediaLibrary.uploads.empty",
+        value: "No Uploads",
+        comment: "Empty-state label shown on the Uploads screen when the queue has no items."
+    )
+    static let uploadsScreenAllUploaded = NSLocalizedString(
+        "mediaLibrary.uploads.allUploaded",
         value: "All uploaded",
-        comment: "Empty-state label shown on the Uploads screen after the last item resolves."
+        comment:
+            "Label shown on the Uploads screen when the last upload in the queue finished while the screen was open."
     )
     static let uploadsScreenClose = NSLocalizedString(
         "mediaLibrary.uploads.close",
@@ -273,9 +279,9 @@ enum Strings {
         value: "Retry",
         comment: "Per-row action: retry a failed upload."
     )
-    static let uploadActionDismiss = NSLocalizedString(
-        "mediaLibrary.uploads.dismiss",
-        value: "Dismiss",
+    static let uploadActionRemove = NSLocalizedString(
+        "mediaLibrary.uploads.remove",
+        value: "Remove",
         comment: "Per-row action: remove a failed upload from the queue."
     )
     static let uploadBulkRetryAll = NSLocalizedString(
@@ -283,14 +289,14 @@ enum Strings {
         value: "Retry all failed",
         comment: "Bulk action: retry every failed upload."
     )
-    static let uploadBulkDismissAll = NSLocalizedString(
-        "mediaLibrary.uploads.bulk.dismissAll",
-        value: "Dismiss all failed",
-        comment: "Bulk action: dismiss every failed upload."
+    static let uploadBulkRemoveAll = NSLocalizedString(
+        "mediaLibrary.uploads.bulk.removeAll",
+        value: "Remove all failed",
+        comment: "Bulk action: remove every failed upload from the queue."
     )
     static let uploadBulkCancelAll = NSLocalizedString(
-        "mediaLibrary.uploads.bulk.cancelAll",
-        value: "Cancel all uploading",
+        "mediaLibrary.uploads.bulk.cancelAllUploads",
+        value: "Cancel all uploads",
         comment: "Bulk action: cancel every in-flight upload."
     )
 
@@ -299,7 +305,8 @@ enum Strings {
     static let addMenuTitle = NSLocalizedString(
         "mediaLibrary.addMenu.title",
         value: "Add",
-        comment: "Accessibility label for the toolbar + button that opens the Add menu."
+        comment:
+            "Title of the toolbar + button that opens the Add menu. Read by VoiceOver and shown when the toolbar moves into its overflow menu."
     )
     static let addMenuPhotoLibrary = NSLocalizedString(
         "mediaLibrary.addMenu.photoLibrary",
