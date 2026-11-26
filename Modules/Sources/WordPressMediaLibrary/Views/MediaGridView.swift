@@ -33,8 +33,7 @@ struct MediaGridView: View {
 
 enum MediaGridLayout {
     /// Fits as many tiles of at least `minimumTileWidth` as the width allows,
-    /// and never fewer than `minimumColumnCount`. A fixed count made tiles
-    /// 93 pt in an iPad portrait split view and 165 pt in landscape.
+    /// and never fewer than `minimumColumnCount`.
     static func columnCount(forWidth width: CGFloat, spacing: CGFloat) -> Int {
         let fitting = Int(((width + spacing) / (minimumTileWidth + spacing)).rounded(.down))
         return max(minimumColumnCount, fitting)
