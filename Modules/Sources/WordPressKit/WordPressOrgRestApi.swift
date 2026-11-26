@@ -78,6 +78,22 @@ public final class WordPressOrgRestApi: NSObject {
         urlSession.finishTasksAndInvalidate()
     }
 
+    /// The URLs this client sends credentials to.
+    ///
+    /// A caller that must not send credentials over an unencrypted connection checks these before
+    /// its first request. The list comes from how the client was constructed, so the caller does
+    /// not re-derive the URLs and risk checking one the client never contacts.
+    public var credentialDestinations: [URL] {
+        switch site {
+        case let .dotCom(_, _, apiURL):
+            return [apiURL]
+        case let .selfHosted(apiURL, .applicationPassword):
+            return [apiURL]
+        case let .selfHosted(apiURL, .accountPassword(loginURL, _, _, adminURL)):
+            return [apiURL, loginURL, adminURL]
+        }
+    }
+
     @objc
     public func invalidateAndCancelTasks() {
         urlSession.invalidateAndCancel()
