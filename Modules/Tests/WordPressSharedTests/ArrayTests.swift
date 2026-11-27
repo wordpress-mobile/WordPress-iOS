@@ -1,6 +1,7 @@
 import Testing
 @testable import WordPressShared
 
+// CI probe: package test changes must keep cross-platform package tests enabled.
 struct ArrayTests {
     @Test func testRepeatLast() {
         let array = [1, 2, 3]
