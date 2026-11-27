@@ -121,9 +121,16 @@ final class SiteAssemblyWizardContent: UIViewController {
                 self.contentView.siteName = blog?.displayURL
                 self.createdBlog = blog
 
+                if self.siteCreator.flow == .short, let siteID = blog?.dotComID?.intValue {
+                    BlankSiteRecord().insert(siteID: siteID)
+                }
+
                 // This stat is part of a funnel that provides critical information. Before
                 // making ANY modification to this stat please refer to: p4qSXL-35X-p2
-                SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
+                SiteCreationAnalyticsHelper.trackSiteCreationSuccess(
+                    self.siteCreator.design,
+                    flow: self.siteCreator.flow
+                )
             }
             if status == .succeeded,
                 shouldPerformPurchasingStep,
