@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressCore
 import WordPressUI
 import WordPressKit
 

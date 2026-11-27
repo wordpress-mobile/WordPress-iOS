@@ -1,10 +1,20 @@
-Schon gehört? Der Tab „Benachrichtigungen“ und die Glocke wurden verbessert und liefern nun auch dann genaue Informationen, wenn Systembenachrichtigungen oder Icon-Badges deaktiviert sind. Jetzt bist du immer auf dem Laufenden.
+Speichere einen Beitrag im Reader auf deinem iPhone und öffne ihn dann auf deinem iPad. Dein WordPress.com-Konto synchronisiert jetzt bis zu 1.000 gespeicherte Beiträge auf allen Geräten, einschließlich der Beiträge, die du bereits gespeichert hast.
 
-Individuelle Inhaltstypen werden jetzt direkt im Website-Menü nach Kommentaren angezeigt und zur einfachen Orientierung nach Namen sortiert – keine Pins mehr erforderlich!
+Wir haben noch weitere Änderungen im Reader vorgenommen.
 
-Schließlich haben wir uns um mehrere Fehler gekümmert, um dein App-Erlebnis zu verbessern.
+- Neugierig, wer in einem Beitrag erwähnt wurde? Tippe auf den Namen, um das entsprechende Profil anzuzeigen.
+- Wenn du einen Kommentar schreibst, wird dein neuer Kommentar in der Liste angezeigt Beim Wechseln von Lese-Themes stimmen der Kommentartext und die Schattierung hinter „Mehr anzeigen“ jetzt überein.
+- Wenn du bei einem Beitrag von einer privaten Website auf „Vollständigen Beitrag anzeigen“ oder „Im Browser anzeigen“ tippst, öffnet Jetpack ihn über dein WordPress.com-Konto in der App.
 
-- Im Reader verschwinden Inline-Bilder auf Geräten mit iOS 27 nicht mehr.
-- Uploads schlagen nicht mehr fehl, wenn der Dateiname Leerzeichen enthält. (gute-neuigkeiten.jpg)
-- Wir haben Abstürze behoben, die durch das Teilen bestimmter Arten von Textdateien verursacht wurden.
-- iPad-Benutzer dürfen sich freuen – die App bleibt nicht mehr im kompakten Tab-Leisten-Layout hängen, wenn die Größe des Bildschirms geändert oder die Apps gewechselt werden.
+Bei iPhone Plus- und iPhone Pro Max-Modellen wird in der Beitragsvorschau jetzt der gesamte Bildschirm im Querformat verwendet. Auf dem iPad kannst du beim Bearbeiten eines Beitrags oder Einrichten einer Website das Fenster eingrenzen und genau da weitermachen, wo du aufgehört hast. Sogar die Liste der Website-Designs speichert deinen Fortschritt.
+
+Bei der Nutzung des experimentellen Block-Editors verwenden Foto-Uploads jetzt deine Medieneinstellungen für Größe, Qualität und Standortdaten. Der Editor arbeitet auch im Sperrmodus und fragt, bevor du einen Beitrag speicherst, während die Medien noch hochgeladen werden.
+
+Zudem haben wir einige Fehler außerhalb des Readers und Editors behoben.
+
+- In den Statistiken bleibt der Traffic-Tab erhalten, wenn du nach unten zu „Karte hinzufügen“ scrollst. Der Zurück-Button ist auf dem iPhone Duo, iPhone Plus und iPhone Pro Max im Querformat wieder vorhanden.
+- Auf selbst gehosteten Websites verwenden neue Beiträge die Diskussionseinstellungen deiner Website. Wenn dein Server die Anmeldung mit einem Anwendungspasswort blockiert, teilt dir die App jetzt mit, was schiefgelaufen ist.
+- Plugin-Beschreibungen sind im Dunkelmodus lesbar und du kannst die Videos in der App ansehen oder auf „Auf YouTube ansehen“ tippen.
+- Wir haben einen Absturz behoben, der beim Teilen von Fotos mit Jetpack auftreten konnte.
+
+Für dieses Update benötigst du iOS 18 oder höher. Geräte mit iOS 17 erhalten keine App-Updates mehr.

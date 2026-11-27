@@ -55,7 +55,7 @@ enum UnifiedSupportLocalization {
 
     static let conversationsTitle = NSLocalizedString(
         "com.jetpack.support.unified.conversations.title",
-        value: "Get help",
+        value: "Get Help",
         comment: "Title of the screen listing the user's support conversations."
     )
     static let loadingConversations = NSLocalizedString(
@@ -118,6 +118,11 @@ enum UnifiedSupportLocalization {
         "com.jetpack.support.unified.startConversation",
         value: "Start Conversation",
         comment: "Button that starts the user's first support conversation."
+    )
+    static let conversationTitle = NSLocalizedString(
+        "com.jetpack.support.unified.conversation.title",
+        value: "Conversation",
+        comment: "Navigation bar title of a single support conversation, shown while its subject is on screen."
     )
     static let loadingConversation = NSLocalizedString(
         "com.jetpack.support.unified.conversation.loading",

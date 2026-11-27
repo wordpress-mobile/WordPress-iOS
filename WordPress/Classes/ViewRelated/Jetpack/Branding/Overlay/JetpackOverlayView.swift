@@ -144,7 +144,7 @@ final class JetpackOverlayView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.edgeMargins.right).withPriority(999),
             stackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeBottomAnchor, constant: -Metrics.edgeMargins.bottom).withPriority(999),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -Metrics.edgeMargins.bottom).withPriority(999),
 
             getJetpackButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])

@@ -677,7 +677,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -930,9 +929,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Kopierte blokk";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Kopier lenke til kommentar";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Kunne ikke følge emne";
 
@@ -1145,8 +1141,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Domene-eiere må dele kontaktinfo i en offentlig database med alle domener. Med Personvernbeskyttelsen, publiserer vi vår egen kontaktinfo i stedet for din, og videresender all kommunikasjon til deg.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -2318,8 +2313,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Varserinnstillinger";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -2785,8 +2779,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Les det originale innlegget";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Leser";
 
@@ -4321,9 +4314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
-
-/* Later today */
-"later today" = "senere i dag";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";

@@ -96,7 +96,6 @@ import AutomatticTracks
     enum NavigationItemTag: Int, CaseIterable {
         case notifications = 1
         case share
-        case savedPostsSettings
     }
 
     private var siteID: NSNumber? {
@@ -283,13 +282,6 @@ import AutomatticTracks
         return controller
     }
 
-    /// Convenience method to create an instance for saved posts
-    class func controllerForContentType(_ contentType: ReaderContentType) -> ReaderStreamViewController {
-        let controller = ReaderStreamViewController()
-        controller.contentType = contentType
-        return controller
-    }
-
     // MARK: - LifeCycle Methods
 
     deinit {
@@ -332,9 +324,14 @@ import AutomatticTracks
             name: .ReaderPostSeenToggled,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(savedPostsChanged(_:)),
+            name: .readerSavedPostsDidChange,
+            object: nil
+        )
 
         configureCloseButtonIfNeeded()
-        setupSavedPostsSettingsBarButtonItemIfNeeded()
         setupTableView()
         setupFooterView()
         setupContentHandler()
@@ -440,18 +437,6 @@ import AutomatticTracks
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
         notificationsBell.open(from: self, sourceItem: sender)
-    }
-
-    private func setupSavedPostsSettingsBarButtonItemIfNeeded() {
-        guard contentType == .saved else { return }
-        let action = UIAction { [weak self] _ in
-            let settingsVC = UIHostingController(rootView: ReaderSavedPostsSettingsView())
-            self?.navigationController?.pushViewController(settingsVC, animated: true)
-        }
-        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), primaryAction: action)
-        button.tag = NavigationItemTag.savedPostsSettings.rawValue
-        button.accessibilityLabel = Strings.savedPostsSettingsAccessibilityLabel
-        addRightBarButtonItem(button)
     }
 
     // MARK: - Topic acquisition
@@ -821,16 +806,6 @@ import AutomatticTracks
         }
         syncHelper?.syncContentWithUserInteraction(true)
         WPAnalytics.trackReader(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
-    }
-
-    func removePost(_ post: ReaderPost) {
-        togglePostSave(post)
-        let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) {
-            [weak self] accepted in
-            guard accepted else { return }
-            self?.togglePostSave(post)
-        }
-        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
     }
 
     func togglePostSave(_ post: ReaderPost) {
@@ -1263,6 +1238,15 @@ import AutomatticTracks
 
     // MARK: - Notifications
 
+    /// Saved posts kept in the account change outside Core Data, so the bookmarks on screen are
+    /// updated here.
+    @objc private func savedPostsChanged(_ notification: Foundation.Notification) {
+        guard isViewLoaded, let indexPaths = tableView.indexPathsForVisibleRows, !indexPaths.isEmpty else {
+            return
+        }
+        tableView.reconfigureRows(at: indexPaths)
+    }
+
     @objc private func postSeenToggled(_ notification: Foundation.Notification) {
 
         // When a post's seen status is toggled outside the stream (ex: post details),
@@ -1667,7 +1651,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             controller.trackingContext.source = source
         }
 
-        if post.isSavedForLater || contentType == .saved {
+        if post.isSavedForDisplay || contentType == .saved {
             trackSavedPostNavigation()
         } else {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
@@ -1900,17 +1884,4 @@ extension ReaderStreamViewController: ContentIdentifiable {
 
         return nil
     }
-}
-
-private enum Strings {
-    static let postRemoved = NSLocalizedString(
-        "reader.savedPostRemovedNotificationTitle",
-        value: "Saved post removed",
-        comment: "Notification title for when saved post is removed"
-    )
-    static let savedPostsSettingsAccessibilityLabel = NSLocalizedString(
-        "reader.savedPosts.settings.button.accessibilityLabel",
-        value: "Saved posts settings",
-        comment: "Accessibility label for the button that opens saved Reader posts import and export settings"
-    )
 }

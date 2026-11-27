@@ -425,7 +425,7 @@ public actor MediaUploader {
         case .photoLibrary(_, let name, _): return name ?? Strings.uploadFallbackPhotoName
         case .cameraImage: return Strings.uploadFallbackCameraImageName
         case .cameraVideo: return Strings.uploadFallbackCameraVideoName
-        case .file(let url): return url.lastPathComponent
+        case .file(let url), .localFile(let url, _): return url.lastPathComponent
         case .remoteURL(let remote): return remote.suggestedName
         case .imagePlayground(_, let suggestedName): return suggestedName
         }

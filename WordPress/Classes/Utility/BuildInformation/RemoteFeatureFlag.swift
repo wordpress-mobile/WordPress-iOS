@@ -23,6 +23,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case newGutenbergPlugins
     case statsAds
     case readerInWordPressApp
+    case newStats
+    case newSupport
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
@@ -67,6 +69,10 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .statsAds:
             return false
         case .readerInWordPressApp:
+            return false
+        case .newStats:
+            return false
+        case .newSupport:
             return false
         }
     }
@@ -114,6 +120,10 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "stats_ads"
         case .readerInWordPressApp:
             return "wordpress_ios_reader"
+        case .newStats:
+            return "ios_new_stats"
+        case .newSupport:
+            return "ios_new_mobile_support_flow"
         }
     }
 
@@ -159,6 +169,15 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Stats Ads Tab"
         case .readerInWordPressApp:
             return "Reader in WordPress App"
+        case .newStats:
+            // - warning: This string is also the override's storage key: `key` builds it
+            // with `String(describing:)`, which resolves through `CustomStringConvertible`.
+            // It carries every pre-existing opt-in across the move from `FeatureFlag.newStats`,
+            // so changing it silently re-enrols everyone who had turned New Stats on or off.
+            // `NewStatsFeatureFlagTests` pins it.
+            return "New Stats"
+        case .newSupport:
+            return "New Support Flow"
         }
     }
 
@@ -191,6 +210,12 @@ extension RemoteFeatureFlag: OverridableFlag {
 
     var canOverride: Bool {
         true
+    }
+
+    /// New Stats is rolled out remotely, but an explicit choice by the user always wins:
+    /// opting out keeps the classic experience even once the rollout reaches them.
+    var isStickyOverride: Bool {
+        self == .newStats
     }
 }
 

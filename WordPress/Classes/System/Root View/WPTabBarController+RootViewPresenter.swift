@@ -17,17 +17,17 @@ extension WPTabBarController: RootViewPresenter {
     }
 
     func currentlyVisibleBlog() -> Blog? {
-        guard selectedIndex == WPTab.mySites.rawValue else {
+        guard selectedAppTab == .mySites else {
             return nil
         }
         return mySitesCoordinator.currentBlog
     }
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
-        // UITabBarController.selectedIndex must be used from main thread only.
+        // Tab selection must run on the main thread.
         wpAssert(Thread.isMainThread)
 
-        selectedIndex = WPTab.notifications.rawValue
+        selectTab(.notifications)
 
         // A tab with the Moved-to-Jetpack poster has no list, so the request ends on the poster.
         if let notificationsViewController {

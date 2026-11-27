@@ -56,7 +56,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -123,8 +122,7 @@
 /* No comment provided by engineer. */
 "Dismiss" = "Elutasítás";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -315,8 +313,7 @@
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nem most";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -408,8 +405,7 @@
 /* Mobile Push Notifications */
 "Push Notifications" = "Értesítések";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Olvasó";
 

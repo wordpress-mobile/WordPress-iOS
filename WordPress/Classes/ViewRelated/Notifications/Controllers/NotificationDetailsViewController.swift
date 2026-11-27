@@ -885,6 +885,10 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
     }
 
     func showErrorView(title: String, subtitle: String?) {
+        if showNotificationLikes() {
+            return
+        }
+
         hideNoResults()
         configureAndDisplayNoResults(
             on: tableView,
@@ -892,6 +896,27 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
             subtitle: subtitle,
             image: "wp-illustration-notifications"
         )
+    }
+}
+
+private extension NotificationDetailsViewController {
+    /// Replaces the likes list from the site with the notification's own content, which lists the people who
+    /// liked the post or comment. This covers sites the app can't load, such as a private site the user isn't
+    /// a member of.
+    /// - Returns: `false` if the notification lists no one, so there's nothing to show instead.
+    func showNotificationLikes() -> Bool {
+        guard likesListController != nil,
+            note.bodyContentGroups.contains(where: { $0.kind == .user })
+        else {
+            return false
+        }
+
+        likesListController = nil
+        tableView.delegate = self
+        tableView.dataSource = self
+        hideNoResults()
+        tableView.reloadData()
+        return true
     }
 }
 

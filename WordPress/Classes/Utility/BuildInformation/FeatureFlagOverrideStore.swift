@@ -7,6 +7,18 @@ import WordPressShared
 protocol OverridableFlag: CustomStringConvertible {
     var originalValue: Bool { get }
     var key: String { get }
+
+    /// Whether an override is persisted even when it matches the currently resolved value.
+    ///
+    /// Overrides are normally dropped once they agree with the default so that the flag
+    /// resumes tracking it. Return `true` for a flag whose default can change underneath
+    /// the user — a remote rollout, say — and whose explicit choice must outlive that
+    /// change in both directions.
+    var isStickyOverride: Bool { get }
+}
+
+extension OverridableFlag {
+    var isStickyOverride: Bool { false }
 }
 
 /// Used to override values for feature flags at runtime in debug builds
@@ -36,7 +48,10 @@ struct FeatureFlagOverrideStore {
             store.removeObject(forKey: key)
         }
 
-        if value != featureFlag.originalValue {
+        // The order matters: `originalValue` resolves a `RemoteFeatureFlag` through
+        // default-constructed stores, i.e. `UserDefaults.standard`, whatever store this one
+        // was given. Short-circuiting on `isStickyOverride` keeps a sticky write hermetic.
+        if featureFlag.isStickyOverride || value != featureFlag.originalValue {
             store.set(value, forKey: key)
         }
 

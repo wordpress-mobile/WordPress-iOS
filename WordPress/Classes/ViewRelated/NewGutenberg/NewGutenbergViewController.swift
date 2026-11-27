@@ -4,7 +4,6 @@ import AsyncImageKit
 import BuildSettingsKit
 import AutomatticTracks
 import GutenbergKit
-import SafariServices
 import WordPressData
 import WordPressShared
 import WebKit

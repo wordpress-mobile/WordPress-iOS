@@ -61,9 +61,9 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [WPStyleGuide configureTabBar:[self tabBar]];
 
-        [self setViewControllers:[self tabViewControllers]];
-
-        [self setSelectedViewController:self.mySitesCoordinator.rootViewController];
+        self.mode = UITabBarControllerModeTabBar;
+        [self updateTabsSelecting:WPTabMySites];
+        [self observeAccountAvatar];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -157,9 +157,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _shouldUseStaticNotifications = shouldUseStaticNotifications;
 
     _notificationsNavigationController = nil;
-    NSUInteger selectedIndex = self.selectedIndex;
-    [self setViewControllers:[self tabViewControllers]];
-    self.selectedIndex = selectedIndex;
+    [self updateTabsSelecting:self.selectedAppTab];
     [self updateNotificationBadgeVisibility];
 }
 
@@ -167,7 +165,6 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        [self observeAccountAvatar];
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
@@ -191,10 +188,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     _notificationsNavigationController = nil;
     _meNavigationController = nil;
 
-    [self setViewControllers:[self tabViewControllers]];
-    
-    // Reset the selectedIndex to the default MySites tab.
-    self.selectedIndex = WPTabMySites;
+    [self updateTabsSelecting:WPTabMySites];
 
     // The rebuilt Notifications tab starts with the plain image, and the bell
     // state may have changed before the rebuild.
@@ -216,50 +210,33 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     return _mySitesCoordinator;
 }
 
-#pragma mark - Navigation Helpers
-
-- (NSArray<UIViewController *> *)tabViewControllers
-{
-    return @[
-        self.mySitesCoordinator.rootViewController,
-        self.readerNavigationController,
-        self.notificationsNavigationController,
-        self.meNavigationController
-    ];
-}
-
 #pragma mark - Tab Selection
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex
+- (void)setSelectedTab:(UITab *)selectedTab
 {
-    [super setSelectedIndex:selectedIndex];
+    [super setSelectedTab:selectedTab];
     [self updateTabBarMinimizeBehavior];
-}
-
-- (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController
-{
-    [super setSelectedViewController:selectedViewController];
-    [self updateTabBarMinimizeBehavior];
+    [self updateAccountAvatarForSelection];
 }
 
 - (void)showMySitesTab
 {
-    [self setSelectedIndex:WPTabMySites];
+    [self selectTab:WPTabMySites];
 }
 
 - (void)showReaderTab
 {
-    [self setSelectedIndex:WPTabReader];
+    [self selectTab:WPTabReader];
 }
 
 - (void)showNotificationsTab
 {
-    [self setSelectedIndex:WPTabNotifications];
+    [self selectTab:WPTabNotifications];
 }
 
 - (void)showMeTab
 {
-    [self setSelectedIndex:WPTabMe];
+    [self selectTab:WPTabMe];
 }
 
 - (void)popNotificationsTabToRoot
@@ -271,7 +248,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 {
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
-    switch (self.selectedIndex) {
+    switch (self.selectedAppTab) {
         case WPTabMySites:
             currentlySelectedScreen = WPTabBarCurrentlySelectedScreenSites;
             break;
@@ -289,27 +266,22 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 #pragma mark - UITabBarControllerDelegate methods
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectTab:(UITab *)tab
 {
-    NSUInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
-
-    // If we're selecting a new tab...
-    if (selectedIndex != tabBarController.selectedIndex) {
-        [self trackTabAccessForTabIndex:selectedIndex];
-    } else {
-        // If the current view controller is selected already and it's at its root then scroll to the top
-        if ([viewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *navController = (UINavigationController *)viewController;
-            [navController scrollContentToTopAnimated:YES];
-        }
+    if (tab != tabBarController.selectedTab) {
+        [self trackTabAccessForTab:tab];
+    } else if ([tab.viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)tab.viewController;
+        [navigationController scrollContentToTopAnimated:YES];
     }
 
     return YES;
 }
 
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectTab:(UITab *)selectedTab previousTab:(UITab *)previousTab
 {
     [self updateTabBarMinimizeBehavior];
+    [self updateAccountAvatarForSelection];
 }
 
 #pragma mark - UITabBarDelegate
@@ -344,7 +316,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
         // self-hosted site remains, so the rebuilt Reader tab has to replace the
         // stale one here. The other tabs are the same instances, which keeps the
         // selected tab.
-        [self setViewControllers:[self tabViewControllers]];
+        [self updateTabsSelecting:self.selectedAppTab];
     }
 }
 
@@ -365,27 +337,27 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 
 - (void)applyNotificationBadgeVisibility
 {
-    UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
+    UITab *notificationsTab = [self tabForAppTab:WPTabNotifications];
     
     if (self.shouldUseStaticNotifications) {
-        notificationsTabBarItem.image = self.notificationsTabBarImage;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        notificationsTab.image = self.notificationsTabBarImage;
+        notificationsTab.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
         return;
     }
 
     // The bell is driven by the account-scoped in-app activity state, not the
     // home-screen icon badge. Support keeps its own indicators elsewhere.
     if (ObjCBridge.hasNewNotificationActivity || ![self welcomeNotificationSeen]) {
-        notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
+        notificationsTab.image = self.notificationsTabBarImageUnread;
+        notificationsTab.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
-        notificationsTabBarItem.image = self.notificationsTabBarImage;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        notificationsTab.image = self.notificationsTabBarImage;
+        notificationsTab.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
 
     if (UIApplication.sharedApplication.isCreatingScreenshots) {
-        notificationsTabBarItem.image = self.notificationsTabBarImage;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        notificationsTab.image = self.notificationsTabBarImage;
+        notificationsTab.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
     
 }
@@ -409,7 +381,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
     // includes `viewWillAppear:`. So any change once the tab bar has items waits
     // for `viewDidAppear:`. Changes while the tabs are built run immediately,
     // because the tab bar has no items yet, and set the initial images.
-    BOOL isAwaitingFirstLayout = self.tabBar.items.count > 0 && !self.hasCompletedFirstAppearance;
+    BOOL isAwaitingFirstLayout = self.tabs.count > 0 && !self.hasCompletedFirstAppearance;
     if (isAwaitingFirstLayout) {
         [self.pendingTabBarItemUpdates addObject:[update copy]];
         return;

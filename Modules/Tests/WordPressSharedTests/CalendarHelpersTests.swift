@@ -82,6 +82,19 @@ struct CalendarHelpersTests {
         #expect(calendar.daysElapsedSinceDate(past) == daysAgo)
     }
 
+    // The two time zones are 12 hours apart, so at least one of them puts midnight at a
+    // different instant than the process time zone does.
+    @Test(arguments: [0, 12])
+    func daysElapsedUsesTheCalendarTimeZone(hoursFromGMT: Int) throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(secondsFromGMT: hoursFromGMT * 60 * 60))
+        let midnight = try #require(calendar.date(from: DateComponents(year: 2026, month: 11, day: 26)))
+
+        let beforeMidnight = midnight.addingTimeInterval(-60)
+        let afterMidnight = midnight.addingTimeInterval(60)
+        #expect(calendar.daysElapsedSinceDate(beforeMidnight, now: afterMidnight) == 1)
+    }
+
     @Test func daysElapsedIsNegativeForFutureDates() {
         let calendar = Calendar.current
         let inThreeDays = calendar.date(byAdding: .day, value: 3, to: Date())!
@@ -92,8 +105,7 @@ struct CalendarHelpersTests {
         let calendar = Calendar.current
         let sameDay = calendar.date(byAdding: .day, value: -10, to: Date())!
         // Two different times on the same calendar day yield the same whole-day
-        // count -- the time component is normalized away. Mid-day times avoid the
-        // midnight boundary, where normalizedDate() can round to an adjacent day.
+        // count -- the time component is normalized away.
         let morning = calendar.date(bySettingHour: 9, minute: 0, second: 0, of: sameDay)!
         let evening = calendar.date(bySettingHour: 17, minute: 30, second: 0, of: sameDay)!
         #expect(calendar.daysElapsedSinceDate(morning) == calendar.daysElapsedSinceDate(evening))

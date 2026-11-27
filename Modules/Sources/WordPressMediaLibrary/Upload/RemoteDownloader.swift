@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 /// Downloader for `.remoteURL` materialization. Owns a private ephemeral
 /// `URLSession` and is reused across downloads (the materializer holds one
@@ -14,14 +15,23 @@ import Foundation
 /// https://developer.apple.com/forums/thread/723015
 final class RemoteDownloader: Sendable {
 
-    private let session: URLSession
+    /// Created on the first download, since a session lives until it's
+    /// invalidated and most materializers never download anything.
+    private let lazySession = OSAllocatedUnfairLock<URLSession?>(initialState: nil)
 
-    init() {
-        let configuration = URLSessionConfiguration.ephemeral
-        // Media downloads are large and single-use, so keep them out of the
-        // session's in-memory URL cache.
-        configuration.urlCache = nil
-        self.session = URLSession(configuration: configuration)
+    private var session: URLSession {
+        lazySession.withLock { session in
+            if let session {
+                return session
+            }
+            let configuration = URLSessionConfiguration.ephemeral
+            // Media downloads are large and single-use, so keep them out of the
+            // session's in-memory URL cache.
+            configuration.urlCache = nil
+            let newSession = URLSession(configuration: configuration)
+            session = newSession
+            return newSession
+        }
     }
 
     /// Downloads `url` into `parentDir` and returns the local file URL. Reports

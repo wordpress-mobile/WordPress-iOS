@@ -197,7 +197,9 @@ final class MediaLibraryViewModel: ObservableObject {
         switch source {
         case .photoLibrary: return .photoLibrary
         case .cameraImage, .cameraVideo: return .camera
-        case .file: return .otherApps
+        // Only the block editor creates .localFile, and it uploads without
+        // this view model.
+        case .file, .localFile: return .otherApps
         case .imagePlayground: return .imagePlayground
         case .remoteURL:
             // Stock Photos is the only external picker that produces .remoteURL.

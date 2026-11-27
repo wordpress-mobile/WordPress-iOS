@@ -119,7 +119,8 @@ import WordPressShared
     class func childRowsForYear(_ months: [StatsPostViews]) -> [StatsTotalRowData] {
         return months.map {
             StatsTotalRowData(name: StatsDataHelper.displayMonth(forDate: $0.date),
-                              data: $0.viewsCount.abbreviatedString())
+                              data: $0.viewsCount.abbreviatedString(),
+                              yearMonth: $0.date)
         }
     }
 

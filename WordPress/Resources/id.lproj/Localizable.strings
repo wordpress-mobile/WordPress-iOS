@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1370,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Blok disalin";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Salin Tautan ke Komentar";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Salin URL dari papan klip, %s";
 
@@ -1723,8 +1719,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Pemilik domain harus berbagi informasi kontak di database publik semua domain. Dengan Perlindungan Privasi, kami memublikasikan informasi kami sendiri, bukan informasi Anda, dan meneruskan segala komunikasi kepada Anda secara pribadi.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3587,8 +3582,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Pemberitahuan akan menyertakan kata atau frasa pendek untuk memberi ide";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4173,8 +4167,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Baca pos sumber";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Pembaca";
 
@@ -5151,9 +5144,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Ketuk untuk melihat situs Anda";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Ketuk di sini untuk membuka situs Gravatar di browser di luar aplikasi";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Taksonomi";
 
@@ -5816,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Memperbarui";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Jika avatar, nama, dan deskripsi tentang Anda di sini diubah, perubahan tersebut juga akan muncul di semua situs yang menggunakan profil Gravatar.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgrade paket Anda untuk mengunggah audio";
 
@@ -6142,9 +6129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Apa yang ingin Anda lakukan dengan file ini: mengunggahnya dan menambahkan tautan ke file dalam pos Anda, atau menambahkan konten file langsung ke pos?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Apa itu Gravatar?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Apakah blok?";
 
@@ -6406,9 +6390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Situs Anda";
-
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "Profil WordPress.com Anda kini berbasis Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Situs WordPress.com Anda mendukung penggunaan Accelerated Mobile Pages, inisiatif baru dari Google yang meningkatkan kecepatan pemuatan halaman secara drastis pada perangkat seluler.";
@@ -7053,9 +7034,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Catat file berdasarkan tanggal pembuatan";
-
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "File log berikut ini akan diunggah:";
 
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Log hingga tujuh hari disimpan.";
@@ -8075,21 +8053,6 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Memuat Editor";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "Abaikan";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "Anda dapat mengecualikan aplikasi ini dari Mode Lockdown di Pengaturan, lalu buka kembali editor untuk memulihkan fungsi selengkapnya.";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "Baca Selengkapnya";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "Mode Lockdown Terdeteksi";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "Mode Lockdown aktif. Editor mungkin tidak berfungsi sebagaimana mestinya.";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Gagal memasukkan media";
 
@@ -8411,23 +8374,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Pilih Situs";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ akan berpindah dalam %2$@";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ akan berpindah dalam %2$@";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ segera berpindah";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ segera berpindah";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Didukung Jetpack";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Dapatkan aplikasi Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Coba aplikasi Jetpack baru";
@@ -8475,64 +8423,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "Hubungkan akun WordPress.com Anda";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Ganti ke aplikasi Jetpack baru";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Beralih ke aplikasi Jetpack";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Baca selengkapnya di jetpack.com";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Dapatkan notifikasi komentar, jumlah suka, jumlah pengunjung baru, dan lainnya.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Temukan dan ikuti situs dan komunitas favorit Anda, serta bagikan konten Anda.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Amati peningkatan lalu lintas Anda lewat statistik lengkap dan wawasan penuh makna.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistik & Wawasan";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack membuka jalan untuk lebih memberdayakan situs WordPress Anda. Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "Sempurnakan WordPress dengan Jetpack";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Lanjutkan ke Pemberitahuan";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Lakukan ini nanti";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistik, Reader, Pemberitahuan, dan beragam fitur lain berbasis Jetpack telah dihapus dari aplikasi WordPress.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Fitur-fitur Jetpack telah berpindah.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Beralih ke aplikasi Jetpack agar tetap dapat menerima notifikasi real-time di perangkat Anda.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Dapatkan pemberitahuan dengan aplikasi Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Ganti ke aplikasi Jetpack untuk menemukan, mengikuti, dan memberi suka ke situs dan pos favorit lewat Pembaca.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Berlangganan ke situs apa pun dengan aplikasi Jetpack";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack menghadirkan fitur statistik, pemberitahuan, dan berbagai fitur lainnya untuk membantu membangun sekaligus mengembangkan situs WordPress impian Anda.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Ganti ke aplikasi Jetpack untuk memantau perkembangan situs dengan fitur statistik dan wawasan.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Dapatkan statistik situs Anda lewat aplikasi Jetpack baru";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Beralih itu gratis dan tidak lama.";
@@ -8540,26 +8437,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Lanjutkan tanpa Jetpack";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Beragam fitur Jetpack akan segera berpindah.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack menghadirkan fitur statistik, pemberitahuan, dan berbagai fitur lainnya untuk membantu membangun sekaligus mengembangkan situs WordPress impian Anda.\n\nAplikasi WordPress tidak dapat lagi digunakan untuk membuat situs baru.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistik, Reader, Pemberitahuan, dan fitur-fitur yang didukung Jetpack akan segera dihapus dari aplikasi WordPress.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Pemberitahuan dipindah ke Jetpack";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader dipindah ke aplikasi Jetpack";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statistik dipindah ke aplikasi Jetpack";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistik, Reader, Pemberitahuan, dan fitur-fitur yang didukung Jetpack akan dihapus dari aplikasi WordPress pada %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Lanjutkan ke Pembaca";
@@ -8569,9 +8448,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Situs Anda memiliki plugin Jetpack";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Lanjutkan tanpa Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Coba aplikasi Jetpack baru";
@@ -8603,9 +8479,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "Untuk menggunakan statistik di situs, Anda perlu menghubungkan plugin Jetpack ke akun pengguna Anda.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Statistik, Reader, Pemberitahuan, dan berbagai fitur lain akan segera berpindah ke aplikasi Jetpack seluler.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Tutup";
 
@@ -8614,9 +8487,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Maksimalkan potensi situs Anda. Dapatkan Statistik, Pembaca, Pemberitahuan, dan lainnya dengan Jetpack.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Ganti ke Jetpack";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Ingatkan saya nanti";
@@ -8897,9 +8767,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Periode sebelumnya";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Pengunjung online saat ini";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "Ketuk dua kali untuk mencoba memuat statistik lagi";
 
@@ -8926,12 +8793,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Ketuk dua kali untuk melihat selengkapnya";
-
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "%1$d pengunjung online sekarang";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "%1$d pengunjung online sekarang";
 
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Visualisasikan tren seiring waktu";
@@ -9447,17 +9308,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Pengunjung";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Pengunjung Sekarang";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Iklan";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Wawasan";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "Real-time";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Pelanggan";
@@ -9569,9 +9424,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Situs ini menggunakan beberapa plugin individual Jetpack sekaligus yang belum mendukung semua fitur aplikasi. Silakan pasang plugin Jetpack versi lengkap.";
-
-/* Later today */
-"later today" = "belakangan hari ini";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "suka";
@@ -10223,42 +10075,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Kunjungi situs";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Mulai Sekarang";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "Belum siap beralih? Anda dapat menonaktifkan Statistik Baru dari menu Selengkapnya di tab Statistik.";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "Pemilih navigasi dan tanggal sekarang berada di bagian bawah layar: di posisi ibu jari Anda.";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "Jangkauan Lebih Mudah";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Pilih salah satu preset umum atau tentukan rentang tanggal kustom dengan periode perbandingan - semua dalam satu ketuk.";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "Periode dan Rentang Apa Pun";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "Perangkat, UTM, lokasi, WordAds - data yang sama dengan yang Anda dapatkan di WordPress.com.";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "Setara dengan Web";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Setiap metrik menunjukkan tren dibandingkan periode sebelumnya, jadi Anda selalu tahu apakah Anda sedang berkembang.";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "Sekilas Info Tren";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "Cara yang lebih baik untuk memahami performa situs Anda - sekarang secara default.";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "Statistik Baru";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Tidak ada entri log dalam rentang waktu ini";
@@ -11274,9 +11090,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Jadwal";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Tulis pesan singkat untuk dibagikan di media sosial bersama pos";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tag";
 
@@ -11417,9 +11230,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Komentar";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Melihat pos dari situs";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d suka_";
@@ -11753,17 +11563,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Terbaru";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Simpan pos ini, lalu buka kembali untuk membacanya kapan pun. Pos ini hanya akan tersedia di perangkat ini — pos yang disimpan tidak disinkronkan dengan perangkat lain.";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Simpan Pos untuk Nanti";
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Disimpan";
-
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Pos tersimpan telah dihapus";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "File yang dipilih bukan merupakan hasil ekspor pos tersimpan yang valid.";
@@ -11797,9 +11601,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "Tidak bisa mengimpor file yang dipilih. Coba lagi.";
-
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "Mengambil data pos %1$d dari %2$d...";
 
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "%1$d diimpor, %2$d dilewati, %3$d gagal.";
@@ -12663,12 +12464,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Pengikut";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "Pos terbaru %1$@ disukai %2$@ kali.";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "Pos terbaru %1$@ disukai %2$@ kali.";
-
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Total Pengikut WordPress.com: %@";
 
@@ -12912,10 +12707,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Saat ini";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Anda yakin ingin menghapus semua log aktivitas?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Hapus Log";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -13013,12 +12808,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transkrip Bot Seluler Jetpack";
-
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "Ajukan pertanyaan dan dapatkan bantuan dari kelompok relawan kami.";
-
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "Forum Komunitas";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "Dapatkan jawaban dari tim dukungan kami, kapan saja";

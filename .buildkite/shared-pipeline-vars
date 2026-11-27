@@ -5,13 +5,13 @@
 
 # The ~> modifier is not currently used, but we check for it just in case
 XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
-CI_TOOLKIT_PLUGIN_VERSION="7.1.0"
+CI_TOOLKIT_PLUGIN_VERSION="8.0.1"
 TEST_COLLECTOR_PLUGIN_VERSION="1.11.0"
 DOCKER_PLUGIN_VERSION="5.13.0"
 # This is also the Ruby image tag, so a `.ruby-version` bump can only land once that tag is published on ECR Public.
 RUBY_VERSION=$(cat .ruby-version)
 
-export IMAGE_ID="xcode-$XCODE_VERSION"
+export IMAGE_ID="xcode-$XCODE_VERSION-v4"
 # The slim image is enough for those steps that only Ruby, its stock gems, and bash.
 export DOCKER_RUBY_IMAGE="public.ecr.aws/docker/library/ruby:${RUBY_VERSION}-slim"
 # The full image has the compiler that `bundle install` needs to build native gems.

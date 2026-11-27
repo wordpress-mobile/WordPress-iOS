@@ -11,7 +11,10 @@ struct BlogDetailsView: View {
     var body: some View {
         GeometryReader { geometry in
             if viewModel.isSplitViewDisplayed {
-                menu(headerWidth: geometry.size.width).listStyle(.sidebar)
+                menu(headerWidth: geometry.size.width)
+                    .listStyle(.sidebar)
+                    .scrollContentBackground(.hidden)
+                    .background(Color(uiColor: .systemGroupedBackground))
             } else {
                 menu(headerWidth: geometry.size.width).listStyle(.insetGrouped)
             }
@@ -72,6 +75,10 @@ struct BlogDetailsView: View {
                     menuButton(row)
                         .badge(row.detail.map { Text($0) })
                         .tag(row.id)
+                        .listRowBackground(
+                            viewModel.isSplitViewDisplayed && viewModel.selectedRowID == row.id
+                                ? BlogDetailsSelectionBackground() : nil
+                        )
                         .selectionDisabled(!row.showsSelectionState)
                         .accessibilityIdentifier(row.accessibilityIdentifier ?? row.defaultAccessibilityIdentifier)
                         .accessibilityHint(row.accessibilityHint ?? "")
@@ -126,6 +133,19 @@ struct BlogDetailsView: View {
             }
         }
     }
+}
+
+private struct BlogDetailsSelectionBackground: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        // A SwiftUI fill keeps its initial color scheme until selection changes.
+        let view = UIView()
+        view.backgroundColor = .secondarySystemFill
+        view.layer.cornerRadius = DesignConstants.radius(.large)
+        view.layer.cornerCurve = .continuous
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
 private struct BlogDetailsMenuRow: View {

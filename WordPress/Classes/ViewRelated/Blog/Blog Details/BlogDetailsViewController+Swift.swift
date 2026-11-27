@@ -417,7 +417,7 @@ extension BlogDetailsViewController {
             source: "application_passwords",
             presentingViewController: self
         ) {
-            ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
+            ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0, blog: self.blog))
         }
         presentationDelegate?.presentBlogDetailsViewController(UIHostingController(rootView: view))
     }
@@ -431,7 +431,7 @@ extension BlogDetailsViewController {
             WPAppAnalyticsKeyTapSource: source.string,
             WPAppAnalyticsKeyTabSource: "site_menu"
         ]
-        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+        if event == .statsAccessed, RemoteFeatureFlag.newStats.enabled() {
             properties[WPAnalyticsEvent.isNewStatsKey] = "1"
         }
         WPAppAnalytics.track(event, properties: properties, blog: blog)

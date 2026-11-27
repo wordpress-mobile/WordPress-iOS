@@ -108,14 +108,25 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     private lazy var insightsTableViewController = SiteStatsInsightsTableViewController()
 
-    private lazy var trafficTableViewController: UIViewController = {
+    /// The traffic tab's controller paired with the experience it actually renders.
+    ///
+    /// The pairing matters: the flag is resolved once, when the controller is built, so
+    /// neither a remote fetch landing mid-session nor the fallback below can leave the
+    /// "…" menu describing an experience the user isn't looking at.
+    private struct TrafficTab {
+        let viewController: UIViewController
+        let isNewStats: Bool
+    }
+
+    private lazy var trafficTab: TrafficTab = {
         // If new stats is enabled, show StatsHostingViewController instead
-        if FeatureFlag.newStats.enabled {
-            return createNewTrafficViewController() ?? createClassicTrafficViewController()
-        } else {
-            return createClassicTrafficViewController()
+        if RemoteFeatureFlag.newStats.enabled(), let trafficVC = createNewTrafficViewController() {
+            return TrafficTab(viewController: trafficVC, isNewStats: true)
         }
+        return TrafficTab(viewController: createClassicTrafficViewController(), isNewStats: false)
     }()
+
+    private var trafficTableViewController: UIViewController { trafficTab.viewController }
 
     private func createNewTrafficViewController() -> UIViewController? {
         if isUsingMockData {
@@ -185,14 +196,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        NewStatsAnnouncementPresenter.presentIfNeeded(in: self) { [weak self] in
-            self?.enableNewStats()
-        }
-    }
-
     func configureNavBar() {
         // Clean up previous observer
         navigationItemObserver?.invalidate()
@@ -234,7 +237,7 @@ public class SiteStatsDashboardViewController: UIViewController {
     private func createStatsMenu() -> UIMenu {
         var menuElements: [UIMenuElement] = []
 
-        if FeatureFlag.newStats.enabled {
+        if trafficTab.isNewStats {
             // Main actions
             var mainActions: [UIMenuElement] = []
 
@@ -285,16 +288,18 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func enableNewStats() {
-        WPAnalytics.track(.statsNewStatsEnabled)
-
-        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
-
-        // Update the traffic view controller to show new stats
+        // Update the traffic view controller to show new stats. The side effects below are
+        // sticky, so they must not run unless the swap actually happens: opting in from a
+        // state where New Stats can't be built would pin the choice without ever showing it.
         guard let trafficVC = createNewTrafficViewController() else {
             return
         }
 
-        trafficTableViewController = trafficVC
+        WPAnalytics.track(.statsNewStatsEnabled)
+
+        FeatureFlagOverrideStore().override(RemoteFeatureFlag.newStats, withValue: true)
+
+        trafficTab = TrafficTab(viewController: trafficVC, isNewStats: true)
         showChildViewController(trafficTableViewController)
         configureNavBar()
     }
@@ -302,9 +307,9 @@ public class SiteStatsDashboardViewController: UIViewController {
     private func disableNewStats() {
         WPAnalytics.track(.statsNewStatsDisabled)
 
-        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: false)
+        FeatureFlagOverrideStore().override(RemoteFeatureFlag.newStats, withValue: false)
 
-        trafficTableViewController = createClassicTrafficViewController()
+        trafficTab = TrafficTab(viewController: createClassicTrafficViewController(), isNewStats: false)
         showChildViewController(trafficTableViewController)
         configureNavBar()
     }
@@ -317,7 +322,7 @@ public class SiteStatsDashboardViewController: UIViewController {
             return
         }
 
-        trafficTableViewController = trafficVC
+        trafficTab = TrafficTab(viewController: trafficVC, isNewStats: true)
         showChildViewController(trafficTableViewController)
 
         // Update menu to reflect new state
