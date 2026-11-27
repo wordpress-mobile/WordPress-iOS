@@ -46,7 +46,8 @@ final class ReaderPresenterTests: CoreDataTestCase {
     @MainActor
     func testSavedFeedIsUnderADeepLinkedPost() {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        let navigationController = UINavigationController()
+        presenter.prepareForTabBarPresentation(in: navigationController)
 
         presenter.navigate(to: .post(postID: 1, siteID: 2, isFeed: false), animated: false)
 
@@ -66,7 +67,8 @@ final class ReaderPresenterTests: CoreDataTestCase {
     @MainActor
     func testOpeningTheSavedFeedAgainDoesNotPushItTwice() {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        let navigationController = UINavigationController()
+        presenter.prepareForTabBarPresentation(in: navigationController)
 
         presenter.navigate(to: .discover, animated: false)
 
@@ -77,7 +79,8 @@ final class ReaderPresenterTests: CoreDataTestCase {
     @MainActor
     func testSwitchingFeedsPreservesTheSavedFeed() {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        let navigationController = UINavigationController()
+        presenter.prepareForTabBarPresentation(in: navigationController)
 
         let savedFeed = navigationController.topViewController
         presenter.navigate(to: .recent, animated: false)
@@ -92,7 +95,8 @@ final class ReaderPresenterTests: CoreDataTestCase {
     @MainActor
     func testBackFromADeepLinkedTagReturnsToTheSavedFeed() {
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        let navigationController = UINavigationController()
+        presenter.prepareForTabBarPresentation(in: navigationController)
 
         let savedFeed = navigationController.topViewController
         presenter.navigate(to: .tag("photography"), animated: false)
@@ -108,7 +112,8 @@ final class ReaderPresenterTests: CoreDataTestCase {
     func testDiscoverDedupePreservesExistingFeedAndController() {
         UserDefaults.standard.readerSidebarSelection = .recent
         let presenter = makePresenter()
-        let navigationController = presenter.prepareForTabBarPresentation()
+        let navigationController = UINavigationController()
+        presenter.prepareForTabBarPresentation(in: navigationController)
         let recent = navigationController.topViewController
         XCTAssertTrue(recent is ReaderStreamViewController)
 

@@ -44,7 +44,7 @@ struct WPTabBarControllerTests {
         }
     }
 
-    @Test func replacingNotificationsPreservesOtherTabsAndTheirStacks() throws {
+    @Test func replacingNotificationsKeepsEveryTabAndTheOtherStacks() throws {
         try withController { controller in
             let originalTabs = controller.tabs
             let detail = UIViewController()
@@ -54,17 +54,14 @@ struct WPTabBarControllerTests {
             controller.shouldUseStaticNotifications = false
 
             #expect(controller.selectedAppTab == .notifications)
-            #expect(controller.tabs[2] !== originalTabs[2])
-            for index in [0, 1, 3] {
-                #expect(controller.tabs[index] === originalTabs[index])
-            }
+            #expect(zip(controller.tabs, originalTabs).allSatisfy { $0 === $1 })
             #expect(controller.readerNavigationController.topViewController === detail)
             #expect(controller.selectedTab?.viewController === controller.notificationsNavigationController)
             #expect(controller.notificationsViewController != nil)
         }
     }
 
-    @Test func signInRebuildsAccountTabsAndSelectsMySite() throws {
+    @Test func signInKeepsEveryTabAndSelectsMySite() throws {
         try withController { controller in
             let originalTabs = controller.tabs
             controller.showMeTab()
@@ -75,10 +72,7 @@ struct WPTabBarControllerTests {
             )
 
             #expect(controller.selectedAppTab == .mySites)
-            #expect(controller.tabs[0] === originalTabs[0])
-            for index in [1, 2, 3] {
-                #expect(controller.tabs[index] !== originalTabs[index])
-            }
+            #expect(zip(controller.tabs, originalTabs).allSatisfy { $0 === $1 })
             #expect(controller.selectedTab?.viewController === controller.mySitesCoordinator.rootViewController)
         }
     }
