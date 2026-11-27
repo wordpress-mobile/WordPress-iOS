@@ -6342,6 +6342,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Title of the images filter option in the Media Library filter menu */
 "mediaLibrary.filter.images" = "Images";
 
+/* Title of the toolbar menu that filters the Media Library by media type. Shown when the toolbar moves into its overflow menu and read by VoiceOver. */
+"mediaLibrary.filter.title" = "Filter";
+
 /* Title of the videos filter option in the Media Library filter menu */
 "mediaLibrary.filter.videos" = "Videos";
 
