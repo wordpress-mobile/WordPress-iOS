@@ -18,12 +18,21 @@ if [[ "${WORDPRESS_CI_FULL_BUILD:-}" == 1 || "${BUILDKITE_SOURCE:-}" != webhook 
   run_job
 fi
 
-# Preserve the existing documentation, tooling and version exclusions.
+# Documentation and release metadata are unrelated to all four jobs.
 PATTERNS=(
-  '*.md' '*.po' '*.pot' '*.txt' '.gitignore' 'config/Version.public.xcconfig'
-  'docs/**' 'fastlane/**' 'Gemfile' 'Gemfile.lock'
+  '*.md' '*.po' '*.pot' 'docs/*' '.gitignore' 'config/Version.public.xcconfig'
+  'RELEASE-NOTES.txt'
+  'WordPress/Resources/beta_app_description.txt' 'WordPress/Resources/release_notes.txt'
+  'WordPress/Jetpack/Resources/beta_app_description.txt' 'WordPress/Jetpack/Resources/release_notes.txt'
 )
-LOCALIZATION_PATTERNS=('**/*.strings' '**/*.stringsdict')
+if [[ "$job" == localization ]]; then
+  # The GlotPress lane extracts strings from source, merges English resources, and
+  # depends on Fastlane and its gems. Only its App Store metadata can be ignored.
+  PATTERNS+=('fastlane/appstoreres/*' 'fastlane/metadata/*' 'fastlane/jetpack_metadata/*' 'fastlane/reader_metadata/*')
+else
+  PATTERNS+=('fastlane/*' 'Gemfile' 'Gemfile.lock')
+fi
+LOCALIZATION_PATTERNS=('*.strings' '*.stringsdict')
 case "$job" in
   validation) PATTERNS+=("${LOCALIZATION_PATTERNS[@]}") ;;
   swift-packages)
@@ -32,13 +41,6 @@ case "$job" in
     ;;
 esac
 
-if [[ "$job" == localization ]]; then
-  # A failed or empty diff must not look like "no localization changes".
-  pr_changed_files || run_job
-  relevant=$(pr_changed_files --stdout --any-match "${LOCALIZATION_PATTERNS[@]}") || run_job
-  [[ "$relevant" == false ]] || run_job
-else
-  pr_changed_files --all-match "${PATTERNS[@]}" || run_job
-fi
+pr_changed_files --all-match "${PATTERNS[@]}" || run_job
 
 echo "No relevant files changed"

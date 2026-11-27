@@ -21,8 +21,13 @@ export DOCKER_PLUGIN="docker#v$DOCKER_PLUGIN_VERSION"
 export TEST_COLLECTOR="test-collector#v$TEST_COLLECTOR_PLUGIN_VERSION"
 export CLAUDE_PLUGIN="iangmaia/claude-summarize#ce99c67dd57cdf236c3daca82b86a335fd5e9cc2"
 
-# false (or an empty result after an error) runs the job. The pipeline uses these as skip values.
-SKIP_BUILD=$(.buildkite/commands/should-skip-job.sh build || true)
-SKIP_VALIDATION=$(.buildkite/commands/should-skip-job.sh validation || true)
-SKIP_LOCALIZATION=$(.buildkite/commands/should-skip-job.sh localization || true)
+# Other upload steps source this file without the toolkit. Default to running every job.
+SKIP_BUILD=false
+SKIP_VALIDATION=false
+SKIP_LOCALIZATION=false
+if command -v pr_changed_files >/dev/null 2>&1; then
+    SKIP_BUILD=$(.buildkite/commands/should-skip-job.sh build) || SKIP_BUILD=false
+    SKIP_VALIDATION=$(.buildkite/commands/should-skip-job.sh validation) || SKIP_VALIDATION=false
+    SKIP_LOCALIZATION=$(.buildkite/commands/should-skip-job.sh localization) || SKIP_LOCALIZATION=false
+fi
 export SKIP_BUILD SKIP_VALIDATION SKIP_LOCALIZATION
