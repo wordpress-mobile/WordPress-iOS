@@ -13,11 +13,24 @@ final class SiteCreationWizardLauncher {
     init(
         isJetpack: Bool = AppConfiguration.isJetpack,
         isShortFlowEnabled: Bool = FeatureFlag.siteCreationShortFlow.enabled,
+        abTesting: @autoclosure () -> ABTesting? = ExPlat.shared,
         isPlansInSiteCreationEnabled: Bool = RemoteFeatureFlag.plansInSiteCreation.enabled()
     ) {
-        let flow: SiteCreationFlow = isJetpack && isShortFlowEnabled ? .short : .current
+        let flow = Self.flow(isJetpack: isJetpack, isShortFlowEnabled: isShortFlowEnabled, abTesting: abTesting)
         self.flow = flow
         self.steps = Self.steps(for: flow, includesPlan: isJetpack && isPlansInSiteCreationEnabled)
+    }
+
+    /// The flag stays as a kill switch: the experiment only decides the flow while the flag is on.
+    private static func flow(
+        isJetpack: Bool,
+        isShortFlowEnabled: Bool,
+        abTesting: () -> ABTesting?
+    ) -> SiteCreationFlow {
+        guard isJetpack, isShortFlowEnabled else {
+            return .current
+        }
+        return ABTest.siteCreationShortFlow.isTreatmentVariation(in: abTesting()) ? .short : .current
     }
 
     private static func steps(for flow: SiteCreationFlow, includesPlan: Bool) -> [SiteCreationStep] {
