@@ -77,3 +77,5 @@ If you have questions about getting setup or just want to say hi, join the [Word
 ## License
 
 WordPress for iOS is an Open Source project covered by the [GNU General Public License version 2](LICENSE).
+
+<!-- CI skip verification only; do not merge this PR. -->
