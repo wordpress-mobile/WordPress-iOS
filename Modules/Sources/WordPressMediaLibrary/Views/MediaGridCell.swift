@@ -55,7 +55,9 @@ struct MediaGridCell: View {
     @ViewBuilder private var videoContent: some View {
         if let url = item.thumbnailURL {
             CachedAsyncImage(videoUrl: url) { image in
-                image.resizable().aspectRatio(contentMode: .fill)
+                // Letterboxed in aspect-ratio mode, like images (and V1's
+                // `SiteMediaCollectionCell`, which applies the ratio to videos).
+                image.resizable().aspectRatio(contentMode: isAspectRatioMode ? .fit : .fill)
             } placeholder: {
                 Image(systemName: "play.rectangle.fill")
                     .font(.title)
@@ -102,7 +104,10 @@ struct MediaGridCell: View {
             Text(duration)
                 .font(.system(size: 13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(.white)
-                .shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 0)
+                // The letterbox band in the aspect ratio grid is light grey, so
+                // the badge brings its own dark background.
+                .padding(.horizontal, 4)
+                .background(.black.opacity(0.5), in: Capsule())
                 .padding(.trailing, 4)
                 .padding(.bottom, 4)
         }

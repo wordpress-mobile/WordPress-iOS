@@ -1,5 +1,6 @@
 import DesignSystem
 import SwiftUI
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
@@ -24,6 +25,11 @@ struct MediaLibraryView: View {
         ZStack {
             if searchText.isEmpty {
                 MediaGridView(items: viewModel.displayItems, isAspectRatioMode: isAspectRatioMode)
+                    // A new identity per filter crossfades the grid. Animating
+                    // the same grid slid the remaining tiles diagonally across
+                    // each other. The new grid starts at the top.
+                    .id(viewModel.kind)
+                    .transition(.opacity)
                     .refreshable { await viewModel.refresh() }
                     .overlay { libraryOverlay }
             } else {
@@ -82,15 +88,33 @@ struct MediaLibraryView: View {
                     // Switch to the filled variant in the app accent color while
                     // a kind filter is active so the toolbar shows the library is
                     // filtered (the default toolbar tint renders black here).
+                    // `Label` rather than a bare `Image`: the toolbar shows only
+                    // the icon, and the title appears when a narrow toolbar
+                    // moves the menu into its overflow menu.
                     if viewModel.kind == nil {
-                        Image(systemName: "line.3.horizontal.decrease")
+                        Label(Strings.filterMenuTitle, systemImage: "line.3.horizontal.decrease")
                     } else {
-                        Image(systemName: "line.3.horizontal.decrease.circle.fill")
-                            .foregroundStyle(Color.accentColor)
+                        // The toolbar draws a `Label`'s icon as a template image
+                        // in its own tint and ignores `foregroundStyle` on the
+                        // label or the icon, so the color is baked into the image.
+                        Label {
+                            Text(Strings.filterMenuTitle)
+                        } icon: {
+                            Image(uiImage: activeFilterIcon)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private var activeFilterIcon: UIImage {
+        let image = UIImage(systemName: "line.3.horizontal.decrease.circle.fill") ?? UIImage()
+        // `UIAppColor.primary` is the window tint that `Color.accentColor`
+        // resolves to inside views. Converted to `UIColor` outside a view,
+        // `Color.accentColor` gave black (dark mode: white), as the app has no
+        // AccentColor asset.
+        return image.withTintColor(UIAppColor.primary, renderingMode: .alwaysOriginal)
     }
 
     @ViewBuilder private func filterButton(for kind: MediaKind?) -> some View {
