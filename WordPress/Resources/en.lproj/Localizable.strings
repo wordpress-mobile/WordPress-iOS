@@ -8214,6 +8214,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Message of the confirmation alert when deleting a page from the trash. */
 "postList.deletePermanently.alertMessage" = "Are you sure you want to permanently delete \"%@\"?";
 
+/* Error message: a list refresh removed the post from the device before an action on it finished */
+"postList.errorPostUnavailableMessage" = "This post is no longer available on this device. Refresh the list and try again.";
+
 /* An error message */
 "postList.errorUnsyncedChangesMessage" = "The app is uploading previously made changes to the server. Please try again later.";
 
