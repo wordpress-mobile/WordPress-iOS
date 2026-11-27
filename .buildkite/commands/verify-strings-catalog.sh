@@ -4,10 +4,6 @@
 # the legacy genstrings flow finds over the same source — guarding against extraction regressions (e.g. the
 # same-basename .stringsdata collision). Runs on the `mac` queue (needs Xcode's genstrings/xcstringstool).
 
-if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; then
-  exit 0
-fi
-
 echo "--- :rubygems: Setting up Gems"
 install_gems
 

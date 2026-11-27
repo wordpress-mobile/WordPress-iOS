@@ -5,7 +5,7 @@
 
 # The ~> modifier is not currently used, but we check for it just in case
 XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
-CI_TOOLKIT_PLUGIN_VERSION="8.0.1"
+CI_TOOLKIT_PLUGIN_VERSION="8.1.0"
 TEST_COLLECTOR_PLUGIN_VERSION="1.11.0"
 DOCKER_PLUGIN_VERSION="5.13.0"
 # This is also the Ruby image tag, so a `.ruby-version` bump can only land once that tag is published on ECR Public.
@@ -20,3 +20,14 @@ export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
 export DOCKER_PLUGIN="docker#v$DOCKER_PLUGIN_VERSION"
 export TEST_COLLECTOR="test-collector#v$TEST_COLLECTOR_PLUGIN_VERSION"
 export CLAUDE_PLUGIN="iangmaia/claude-summarize#ce99c67dd57cdf236c3daca82b86a335fd5e9cc2"
+
+# Other upload steps source this file without the toolkit. Default to running every job.
+SKIP_BUILD=false
+SKIP_VALIDATION=false
+SKIP_LOCALIZATION=false
+if command -v pr_changed_files >/dev/null 2>&1; then
+    SKIP_BUILD=$(.buildkite/commands/should-skip-job.sh build) || SKIP_BUILD=false
+    SKIP_VALIDATION=$(.buildkite/commands/should-skip-job.sh validation) || SKIP_VALIDATION=false
+    SKIP_LOCALIZATION=$(.buildkite/commands/should-skip-job.sh localization) || SKIP_LOCALIZATION=false
+fi
+export SKIP_BUILD SKIP_VALIDATION SKIP_LOCALIZATION
