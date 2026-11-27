@@ -1,7 +1,15 @@
-Aangepaste berichttypen verschijnen nu direct in het sitemenu na Reacties, gesorteerd op naam voor extra gemak—geen aangepaste pins meer nodig.
+Heb je in de media instellingen een grootte en kwaliteit voor je foto’s gekozen? De experimentele blok-editor gebruikt die keuzes nu als je een foto uploadt. Hij houdt ook rekening met je instelling voor het verwijderen van locatiegegevens. Je kunt de editor in de lockdown modus gebruiken, en hij vraagt je om bevestiging voordat je een bericht opslaat terwijl de media nog aan het uploaden is.
 
-We hebben ook verschillende bugs opgelost, gewoon om je app ervaring wat makkelijker te maken.
+Sla een bericht op in de Reader op je iPhone en open het vervolgens op je iPad. Je WordPress.com account synchroniseert nu tot 1.000 opgeslagen berichten tussen apparaten, inclusief berichten die je’al had opgeslagen. Je kunt ook iemand vermelden in een bericht om het profiel van die persoon’te bekijken. En als je een reactie achterlaat, blijft die zichtbaar.
 
-- Uploads mislukken niet langer als de bestandsnaam spaties bevat. (good-news-everyone.jpg)
-- We hebben een crash opgelost die werd veroorzaakt door het delen van bepaalde soorten tekstbestanden.
-- iPad gebruikers opgelet—de app blijft niet meer vastzitten in de compacte tabbalk lay-out wanneer je het scherm formaat aanpast of van app wisselt.
+Op iPhone Plus en Pro Max modellen gebruiken berichtvoorbeelden nu het volledige scherm in liggende stand. Op de iPad kun je het venster verkleinen terwijl je een bericht bewerkt of een site instelt, en precies verdergaan waar je was gebleven. Zelfs de lijst met siteontwerpen onthoudt waar je was gebleven.
+
+Nog een paar veranderingen die je gaandeweg misschien opmerkt.
+
+- Op zelfgehoste sites volgen nieuwe berichten de discussie instellingen van je site. Als je reacties standaard toestaat, is de discussie open.
+- Als je server het aanmelden met een applicatie wachtwoord blokkeert, laat de app je nu weten wat er mis is gegaan.
+- Als je een zelfgehost bericht opent vanuit Spotlight, blijft het voorbeeld openstaan.
+- Beschrijvingen van plugins zijn leesbaar in de donkere modus, en je kunt de bijbehorende video’s in de app bekijken of op “tikken om ze op YouTube te bekijken.”
+- We hebben een crash verholpen die kon optreden bij het delen van een foto naar de app.
+
+Je hebt iOS 18 of hoger nodig voor deze update. Apparaten uitgevoerd met iOS 17 krijgen geen app updates meer.

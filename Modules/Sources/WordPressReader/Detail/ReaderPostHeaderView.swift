@@ -231,7 +231,7 @@ public final class ReaderPostHeaderView: UIView {
         if let avatarURL = viewModel.authorAvatarURL {
             avatarImageView.wp.setImage(with: avatarURL)
         } else {
-            avatarImageView.image = nil
+            avatarImageView.wp.image = nil
         }
 
         mainStack.setCustomSpacing(viewModel.featuredImageURL != nil ? 18 : 12, after: authorRow)

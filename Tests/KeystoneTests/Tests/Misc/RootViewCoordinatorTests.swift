@@ -11,6 +11,7 @@ final class RootViewCoordinatorTests: XCTestCase {
     private var windowManager: WindowManagerMock!
     private var contextManager: ContextManager!
     private var savedAppUIType: RootViewCoordinator.AppUIType?
+    private var savedIsReaderInWordPressAppEnabled = false
 
     override func setUp() {
         super.setUp()
@@ -18,6 +19,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         // `RootViewCoordinator` writes the app UI type to a static; restore it so other tests aren't affected.
         savedAppUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
+        savedIsReaderInWordPressAppEnabled = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
         windowManager = WindowManagerMock(window: .init())
         sut = RootViewCoordinator(windowManager: windowManager)
     }
@@ -29,6 +31,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         contextManager = nil
         UserSettings.defaultDotComUUID = nil
         JetpackFeaturesRemovalCoordinator.currentAppUIType = savedAppUIType
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = savedIsReaderInWordPressAppEnabled
     }
 
     func testAppUIDeallocatedAfterLogout() {
@@ -79,7 +82,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         tabBarController.showNotificationsTab { _ in didRunCompletion = true }
 
         // Then
-        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBarController.selectedAppTab, .notifications)
         XCTAssertFalse(didRunCompletion)
     }
 
@@ -92,7 +95,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         tabBarController.showNotificationsTab { receivedList = $0 }
 
         // Then
-        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBarController.selectedAppTab, .notifications)
         XCTAssertNotNil(receivedList)
         XCTAssertIdentical(receivedList, tabBarController.notificationsViewController)
     }
@@ -106,7 +109,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         presenter.switchNotificationsTabToNotificationSettings()
 
         // Then
-        XCTAssertEqual(tabBarController.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBarController.selectedAppTab, .notifications)
     }
 
     func testSignInResolvesStaticScreensWithReaderBeforeTheUIReloads() {
@@ -258,7 +261,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         JetpackFeaturesRemovalCoordinator.currentAppUIType = .simplified
         let presenter = SplitViewRootPresenter()
         let tabBar = try XCTUnwrap(compactTabBar(of: presenter))
-        tabBar.selectedIndex = WPTab.notifications.rawValue
+        tabBar.selectTab(.notifications)
         XCTAssertNotNil(tabBar.notificationsViewController)
 
         // When signing in from the sidebar sets the account, even if the site sync then fails and
@@ -270,7 +273,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertTrue(tabBar.showsPoster(in: .notifications))
         XCTAssertNil(tabBar.notificationsViewController)
         XCTAssertFalse(tabBar.showsPoster(in: .reader))
-        XCTAssertEqual(tabBar.selectedIndex, WPTab.notifications.rawValue)
+        XCTAssertEqual(tabBar.selectedAppTab, .notifications)
 
         // And a completed sign-in, which rebuilds every tab, keeps the poster
         NotificationCenter.default.post(
@@ -297,13 +300,102 @@ final class RootViewCoordinatorTests: XCTestCase {
         XCTAssertNotNil(tabBar.notificationsViewController)
     }
 
+    // MARK: - Sign-In
+
+    func testSignInWithTheFlagOnShowsLiveReaderWithoutRelaunch() throws {
+        try XCTSkipIf(UIDevice.isPad(), "The iPad presenter ignores the app UI type")
+
+        // Given a launch while signed out, with Reader off
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
+        signInToWordPressDotCom()
+
+        // When the account's flags turn Reader on
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
+        sut.showAppUI()
+
+        // Then
+        let tabBarController = try XCTUnwrap(windowManager.presentedViewController as? WPTabBarController)
+        XCTAssertFalse(tabBarController.showsPoster(in: .reader))
+        XCTAssertTrue(tabBarController.showsPoster(in: .notifications))
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreensWithReader)
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+    }
+
+    func testSignInWithTheFlagOffKeepsTheExistingSignInPath() {
+        // Given
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
+        signInToWordPressDotCom()
+
+        // When
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: false)
+        sut.showAppUI()
+
+        // Then, as before this change, My Site's reload switches to the static screens with both posters
+        XCTAssertFalse(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled)
+        XCTAssertTrue(sut.reloadUIIfNeeded(blog: nil))
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .staticScreens)
+    }
+
+    func testSignInDoesNotChangeReaderInOtherApps() {
+        // Given
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false, app: .jetpack)
+        signInToWordPressDotCom()
+        let appUIType = JetpackFeaturesRemovalCoordinator.currentAppUIType
+        let wasReaderInWordPressAppEnabled = JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled
+
+        // When
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
+
+        // Then
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled, wasReaderInWordPressAppEnabled)
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, appUIType)
+    }
+
+    func testSignOutAfterAFlagOnSignInRebuildsTheUIOnReload() {
+        // Given a sign-in that turned Reader on, which starts observing account changes
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
+        signInToWordPressDotCom()
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
+        sut.showAppUI()
+
+        // When
+        UserSettings.defaultDotComUUID = nil
+        postAccountChangeNotification()
+
+        // Then
+        XCTAssertEqual(JetpackFeaturesRemovalCoordinator.currentAppUIType, .simplified)
+        XCTAssertTrue(sut.reloadUIIfNeeded(blog: nil))
+    }
+
+    func testFlagOnSignInBuildsTheSplitViewWithLiveReaderOnIPad() throws {
+        try XCTSkipUnless(UIDevice.isPad(), "Only the iPad uses the split view presenter")
+
+        // Given
+        sut = makeCoordinator(isReaderInWordPressAppEnabled: false)
+        signInToWordPressDotCom()
+
+        // When
+        sut.refreshReaderInWordPressAppAfterSignIn(isEnabled: true)
+        sut.showAppUI()
+
+        // Then the compact layout's tab bar has live Reader and the Notifications poster
+        XCTAssertTrue(JetpackFeaturesRemovalCoordinator.isStaticScreensWithReader())
+        let splitVC = try XCTUnwrap(windowManager.presentedViewController as? UISplitViewController)
+        let tabBar = try XCTUnwrap(splitVC.viewController(for: .compact) as? WPTabBarController)
+        XCTAssertFalse(tabBar.showsPoster(in: .reader))
+        XCTAssertTrue(tabBar.showsPoster(in: .notifications))
+    }
+
     // MARK: - Helpers
 
     private func makeCoordinator(
         isReaderInWordPressAppEnabled: Bool,
         app: AppBrand = .wordpress
     ) -> RootViewCoordinator {
-        RootViewCoordinator(
+        // A real launch reads both values from the same cached flag. Set the shared one too, so tests don't depend
+        // on whatever flag value this simulator has cached.
+        JetpackFeaturesRemovalCoordinator.isReaderInWordPressAppEnabled = isReaderInWordPressAppEnabled
+        return RootViewCoordinator(
             windowManager: windowManager,
             app: app,
             isReaderInWordPressAppEnabled: isReaderInWordPressAppEnabled

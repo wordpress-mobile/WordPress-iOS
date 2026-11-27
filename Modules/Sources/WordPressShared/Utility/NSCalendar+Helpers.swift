@@ -1,9 +1,11 @@
 import Foundation
 
 extension Calendar {
-    public func daysElapsedSinceDate(_ date: Date) -> Int {
-        let fromDate = date.normalizedDate()
-        let toDate = Date().normalizedDate()
+    /// Counts the day boundaries from `date` to `now` in this calendar's time zone.
+    /// The result is negative when `date` is after `now`.
+    public func daysElapsedSinceDate(_ date: Date, now: Date = Date()) -> Int {
+        let fromDate = startOfDay(for: date)
+        let toDate = startOfDay(for: now)
 
         let components = dateComponents([.day], from: fromDate, to: toDate)
         return components.day!

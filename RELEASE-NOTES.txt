@@ -1,9 +1,33 @@
+27.6
+-----
+* [*] Stats: Fix a crash when expanding two years with the same month and views in a post's Months and Years or Avg. Views Per Day details [#26415]
+* [*] Application Passwords: Revoke passwords for other apps from the password details screen.
+* [*] Fix signing in to WordPress.com taking longer than it needs to, and waiting on the login screen while the device is busy [#26121]
+* [*] Notifications: Comment and like notifications from private sites you can't access now show their content instead of an error [#26432]
+* [*] Support: The chat keyboard's return key no longer looks like a send button [#26451]
+* [*] Support: A conversation now has a title in the navigation bar, and its subject reads above the status instead of below it
+
+
 27.5
 -----
+* [*] Posts and Pages: Fix a crash, or a menu for the wrong post, when you long-press a post while the list refreshes [#26416]
+* [*] Stats: Fix the Traffic tab scrolling back up near the bottom, making the Add Card button hard to tap [#26419]
+* [*] Self-hosted sites: Show a clear error when the site's server blocks sign-in with application passwords [#26101]
+* [*] Reader: Fix View in Browser and View full post showing a login page for posts on private WordPress.com sites such as P2s [#26390]
+* [*] Stats: Roll out New Stats remotely and remove the announcement screen. Your choice to use New Stats or Classic Stats is kept [#26335]
+* [*] Support: The AI chat now says up front that you're chatting with AI from WordPress.com Support [#26388]
+* [*] Reader: Fix the comments list jumping to the top and hiding your new comment after posting it [#26357]
+* [*] Self-hosted sites: Fix new posts having comments closed instead of following the site's discussion settings [#26356]
+* [*] Reader: Tapping a mention in a post now shows that person's profile [#25793]
+* [*] Plugins: Fix plugin descriptions being unreadable in dark mode and the Watch on YouTube button not responding [#26330]
+* [*] Plugins: Fix YouTube videos in plugin descriptions showing a player error and running off the screen [#26327]
+* [***] The app now requires iOS 18 or later. Devices running iOS 17 no longer receive app updates [#26154]
 * [*] Keep profile pictures up to date across the app after changing your Gravatar [#26163]
 * [*] Fix tab bar titles showing truncated and misaligned on iOS 26 [#26162]
+* [*] Reader: Fix the fade behind Show More on long comments not matching the background, and comment text keeping the old colors after changing the reading theme [#26369]
 * [*] Reader: Load related post thumbnails and other images whose address redirects [#26296]
 * [*] Reader: Show a name for every subscription, including sites the app cannot load [#26274]
+* [*] Site Creation: Offer the free WordPress.com address on its own card, and dismiss the keyboard on Search and when scrolling domain results [#26141]
 * [*] Share Extension: Fix a crash when sharing a photo [#26251]
 * [*] Site Creation: Keep the design list's place when the iPad window is resized [#26224]
 * [*] iPad: Fix an open editor or Site Creation closing the first time the window is narrowed [#26223]
@@ -12,6 +36,17 @@
 * [*] Reader: Fix the spacing around headings in posts [#26170]
 * [*] Stats: Fix the back button missing on iPhone Duo and on Plus and Pro Max iPhones in landscape [#26207]
 * [**] iPad and large iPhones: Screens now adapt to the app window's size in split view, Stage Manager and landscape, not the device type [#26201]
+* [*] Experimental editor: Recover from editor crashes, and ask before saving while media is still uploading [#26267]
+* [*] Experimental editor: Fix block assets not loading on self-hosted sites that use plain permalinks [#25859]
+* [*] Fix a rare crash when several network requests start at the same time [#26116]
+* [*] Fix avatars and other images sometimes showing the previous row's image, and free their memory after leaving the screen [#26394]
+* [*] Notifications: Fix a rare crash when opening a notification with images, and GIFs keeping their old size after rotating [#26396]
+* [*] Fix images briefly showing the previous image, or a placeholder, when the right one was already loaded [#26391]
+* [*] Show video thumbnails the right way up in Support attachments and the Media Library, and keep saved attachments smaller [#26392]
+* [*] Experimental editor: Support Lockdown Mode, upload large photos and videos without running out of memory, and start new posts from their post type's template [#26365]
+* [**] Experimental editor: Apply your Media settings to uploaded photos and videos, including image size, quality, video resolution, and location removal [#26367]
+* [*] Reader: Show icons for more sites, and load a site's icon again after a failed attempt [#26393]
+* [**] Reader: Saved posts are now kept in your WordPress.com account and sync across your devices. Posts saved on this device move to your account [#26372]
 
 
 27.4
@@ -31,6 +66,7 @@
 
 27.3
 -----
+* [*] Enforce the minimum age of 13 using Apple's age range checks in eligible regions [#25979]
 * [*] Accessibility: VoiceOver now announces which post categories are selected [#25737]
 * [*] Stats: Improve performance when opening the Stats screen [#25938]
 * [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]

@@ -40,7 +40,7 @@ final class StatsInsightsCache {
         let expired = interval > Constants.cacheTTL
 
         let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
-        DDLogInfo("Stats: Insights cache for site \(siteID) has \(expired ? "" : "not ")expired \(intervalLogMessage).")
+        Loggers.app.info("Stats: Insights cache for site \(siteID) has \(expired ? "" : "not ")expired \(intervalLogMessage).")
 
         return expired
     }

@@ -39,6 +39,18 @@ struct UnifiedSupportConversationViewModelTests {
         #expect(tracker.trackedEvents.contains { if case .failToLoadConversation = $0 { true } else { false } })
     }
 
+    @Test func fallsBackToTheDescriptionWhenTheLoadedSubjectIsBlank() async {
+        let conversation = UnifiedSupportConversation.make(title: " \n", description: "I can't log in")
+        let viewModel = makeViewModel(
+            .existing(conversation.summary),
+            MockUnifiedSupportDataProvider(.init(fetchedConversation: .success(conversation)))
+        )
+
+        await viewModel.load()
+
+        #expect(viewModel.title == "I can't log in")
+    }
+
     @Test func aNewConversationLoadsNothingAndStartsAsAChat() async {
         let provider = MockUnifiedSupportDataProvider()
         let viewModel = makeViewModel(.newBotConversation, provider)

@@ -19,9 +19,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
-    case newStats
     case intelligence
-    case newSupport
     case nativeBlockInserter
     case statsAds
     case mediaLibraryV2
@@ -66,15 +64,11 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .pluginManagementOverhaul:
             return true
-        case .newStats:
-            return false
         case .intelligence:
             guard #available(iOS 26, *) else {
                 return false
             }
             return SystemLanguageModel.default.supportsLocale()
-        case .newSupport:
-            return false
         case .nativeBlockInserter:
             return true
         case .statsAds:
@@ -118,9 +112,7 @@ extension FeatureFlag {
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
-        case .newStats: "New Stats"
         case .intelligence: "Intelligence"
-        case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
         case .mediaLibraryV2: "Media Library v2"

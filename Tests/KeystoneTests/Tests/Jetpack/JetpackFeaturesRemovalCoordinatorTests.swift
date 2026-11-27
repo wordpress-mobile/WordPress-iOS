@@ -70,31 +70,6 @@ struct JetpackFeaturesRemovalCoordinatorTests {
         let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(app: app, hasBlog: hasBlog)
         #expect(phase == .normal)
     }
-
-    // MARK: Removal Deadline
-
-    @Test("Removal deadline is parsed from remote config")
-    func removalDeadline() throws {
-        let userDefaults = InMemoryUserDefaults()
-        userDefaults.set(["jp_deadline": "2022-10-10"], forKey: RemoteConfigStore.Constants.CachedResponseKey)
-        let remoteConfigStore = RemoteConfigStore(persistenceStore: userDefaults)
-
-        let deadline = try #require(
-            JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
-        )
-
-        let components = Calendar.current.dateComponents([.year, .month, .day], from: deadline)
-        #expect(components.year == 2022)
-        #expect(components.month == 10)
-        #expect(components.day == 10)
-    }
-
-    @Test("Removal deadline is nil when remote config has none")
-    func removalDeadlineMissing() {
-        let remoteConfigStore = RemoteConfigStore(persistenceStore: InMemoryUserDefaults())
-
-        #expect(JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore) == nil)
-    }
 }
 
 /// These tests set the shared `currentAppUIType`, so they run as XCTest rather than in parallel with Swift Testing.

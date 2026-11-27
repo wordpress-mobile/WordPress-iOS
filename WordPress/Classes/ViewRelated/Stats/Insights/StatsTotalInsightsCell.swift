@@ -73,11 +73,7 @@ struct StatsTotalInsightsData: Equatable {
                 return nil
             }
 
-            if summary.likesCount == 1 {
-                return totalInsightsGuideAttributedString(text: TextContent.likesTotalGuideTextSingular, title: summary.title, count: 1)
-            } else {
-                return totalInsightsGuideAttributedString(text: TextContent.likesTotalGuideTextPlural, title: summary.title, count: summary.likesCount)
-            }
+            return totalInsightsGuideAttributedString(text: TextContent.likesTotalGuideText, title: summary.title, count: summary.likesCount)
         case .comments:
             return NSAttributedString(string: TextContent.commentsTotalGuideText)
         default:
@@ -109,14 +105,10 @@ struct StatsTotalInsightsData: Equatable {
     }
 
     private enum TextContent {
-        static let likesTotalGuideTextSingular = NSLocalizedString(
-            "stats.insights.totalLikes.guideText.latestPost.singular",
-            value: "The latest post %1$@ has received %2$@ like.",
-            comment: "A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one.")
-        static let likesTotalGuideTextPlural = NSLocalizedString(
-            "stats.insights.totalLikes.guideText.latestPost.plural",
-            value: "The latest post %1$@ has received %2$@ likes.",
-            comment: "A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes.")
+        static let likesTotalGuideText = NSLocalizedString(
+            "stats.insights.totalLikes.guideText.latestPostCount",
+            value: "Likes on the latest post %1$@: %2$@",
+            comment: "A hint shown in site stats with the number of likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes, which can be any number including 0 and 1. Keep %2$@ on its own, not next to a word that would have to change with the number.")
         static let commentsTotalGuideText = NSLocalizedString("Tap \"View more\" to see your top commenters.", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
     }
 }

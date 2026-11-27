@@ -179,10 +179,10 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
         let blogId = site.blogId
 
         do {
-            DDLogInfo("Create a new application password")
+            Loggers.app.info("Create a new application password")
             try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogId)
         } catch {
-            DDLogInfo("Failed to create a new application password: \(error)")
+            Loggers.app.info("Failed to create a new application password: \(error)")
             return false
         }
 
@@ -192,7 +192,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
     }
 }
 
-private class AppNotifier: @unchecked Sendable, WpAppNotifier {
+class AppNotifier: @unchecked Sendable, WpAppNotifier {
     let site: WordPressSite
     let coreDataStack: CoreDataStack
 

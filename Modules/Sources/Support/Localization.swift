@@ -21,11 +21,6 @@ enum Localization {
         value: "Including logs can help our team investigate issues. Logs may contain recent app activity.",
         comment: "Description explaining why including logs is helpful"
     )
-    static let logFilesToUpload = NSLocalizedString(
-        "com.jetpack.support.logFilesToUpload",
-        value: "The following log files will be uploaded:",
-        comment: "Text indicating which log files will be included in the support request"
-    )
     static let unableToLoadApplicationLogs = NSLocalizedString(
         "com.jetpack.support.unableToLoadApplicationLogs",
         value: "Unable to load application logs",
@@ -187,44 +182,6 @@ enum Localization {
         "com.jetpack.support.loadingLogContent",
         value: "Loading log content...",
         comment: "Progress message while loading application log content"
-    )
-
-    // MARK: - ActivityLogSharingView.swift
-
-    static let share = NSLocalizedString(
-        "com.jetpack.support.share",
-        value: "Share",
-        comment: "Button to share content"
-    )
-    static let shareActivityLog = NSLocalizedString(
-        "com.jetpack.support.shareActivityLog",
-        value: "Share Activity Log",
-        comment: "Navigation title for sharing activity log"
-    )
-    static let sharingWithSupport = NSLocalizedString(
-        "com.jetpack.support.sharingWithSupport",
-        value: "Sharing with support!",
-        comment: "Message shown when sharing log with support"
-    )
-    static let newSupportTicket = NSLocalizedString(
-        "com.jetpack.support.newSupportTicket",
-        value: "New Support Ticket",
-        comment: "Option to create a new support ticket"
-    )
-    static let exportAsFile = NSLocalizedString(
-        "com.jetpack.support.exportAsFile",
-        value: "Export as File",
-        comment: "Option to export log as a file"
-    )
-    static let sendLogsToSupport = NSLocalizedString(
-        "com.jetpack.support.sendLogsToSupport",
-        value: "Send logs directly to support team",
-        comment: "Description for sending logs to support"
-    )
-    static let saveAsFile = NSLocalizedString(
-        "com.jetpack.support.saveAsFile",
-        value: "Save as a file to share or store",
-        comment: "Description for saving log as a file"
     )
 
     // MARK: - ConversationListView.swift

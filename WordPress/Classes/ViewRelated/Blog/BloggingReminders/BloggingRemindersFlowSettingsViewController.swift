@@ -396,7 +396,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
                 default:
                     // The scheduler should normally not fail unless it's because of having no push permissions.
                     // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
-                    DDLogError("Error scheduling blogging reminders: \(error)")
+                    Loggers.app.error("Error scheduling blogging reminders: \(error)")
                     self.button.isEnabled = true
                     break
                 }
@@ -577,7 +577,7 @@ private extension BloggingRemindersFlowSettingsViewController {
         bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
         bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         self.stackViewBottomConstraint = stackViewBottomConstraint
 
         NSLayoutConstraint.activate([
@@ -807,7 +807,7 @@ private extension BloggingRemindersFlowSettingsViewController {
         service.updateSettings(settings: newSettings) { _ in
             completion()
         } failure: { error in
-            DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
+            Loggers.app.error("Error saving prompt reminder schedule: \(String(describing: error))")
             completion()
         }
     }

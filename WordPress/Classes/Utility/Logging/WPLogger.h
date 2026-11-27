@@ -22,9 +22,4 @@
  */
 - (void)deleteAllLogs;
 
-/**
- * @brief Deletes all the old archived logs from the device
- */
-- (void)deleteArchivedLogs;
-
 @end

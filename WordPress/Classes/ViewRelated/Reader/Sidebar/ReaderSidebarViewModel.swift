@@ -18,17 +18,24 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     let menu: [ReaderStaticScreen]
 
-    init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
-         contextManager: CoreDataStack = ContextManager.shared,
-         isReaderAppModeEnabled: Bool = false) {
+    /// - Parameter isLoggedIn: Whether there's a WordPress.com account. Saved posts are kept in the
+    ///   account, so Saved is only listed with one. The Reader is rebuilt when the account changes.
+    init(
+        menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
+        contextManager: CoreDataStack = ContextManager.shared,
+        isReaderAppModeEnabled: Bool = false,
+        isLoggedIn: Bool = ReaderHelpers.isLoggedIn()
+    ) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
 
         self.isReaderAppModeEnabled = isReaderAppModeEnabled
-        if isReaderAppModeEnabled {
-            menu = [.subscrtipions, .lists, .tags, .saved, .likes]
-        } else {
-            menu = [.recent, .discover, .saved, .likes, .search]
+        let menu: [ReaderStaticScreen] =
+            isReaderAppModeEnabled
+            ? [.subscrtipions, .lists, .tags, .saved, .likes]
+            : [.recent, .discover, .saved, .likes, .search]
+        self.menu = isLoggedIn ? menu : menu.filter { $0 != .saved }
+        if !isReaderAppModeEnabled {
             restoreSelection(defaultValue: .main(.recent))
         }
 
@@ -38,7 +45,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     func restoreSelection(defaultValue: ReaderSidebarItem?) {
         isRestoringSelection = true // TODO: refactor this
         defer { isRestoringSelection = false }
-        if let selection = UserDefaults.standard.readerSidebarSelection {
+        if let selection = UserDefaults.standard.readerSidebarSelection, menu.contains(selection) {
             self.selection = .main(selection)
         } else {
             self.selection = defaultValue

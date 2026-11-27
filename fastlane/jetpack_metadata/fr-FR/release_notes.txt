@@ -1,10 +1,20 @@
-Avez-vous entendu ? Nous avons rendu l’onglet Notifications et la cloche plus précis, même lorsque les notifications système ou les badges d’icône sont désactivés. Maintenant, vous êtes toujours au courant.
+Enregistrez un article dans le Lecteur de votre iPhone, puis ouvrez-le sur votre iPad. Votre compte WordPress.com synchronise désormais jusqu’à 1 000 articles enregistrés sur vos appareils, y compris des articles que vous avez déjà enregistrés.
 
-Les types d’articles personnalisés apparaissent désormais directement dans le menu du site après les commentaires, triés par nom pour plus de facilité : plus besoin d’épingles personnalisées.
+Nous avons effectué quelques modifications supplémentaires dans le Lecteur.
 
-Enfin, nous avons corrigé plusieurs bugs, simplement pour faciliter l’expérience de votre application.
+- Curieux de savoir qui a été mentionné dans un article ? Appuyez sur leur nom pour voir leur profil.
+- Lorsque vous laissez un commentaire, la liste garde votre nouveau commentaire en vue. Les thèmes de lecture, le texte du commentaire et l’ombrage derrière « Afficher plus » correspondent désormais.
+- Lorsque vous appuyez sur « Afficher l’article complet » ou « Afficher dans le navigateur » sur un article d’un site privé, Jetpack l’ouvre dans l’application à l’aide de votre compte WordPress.com.
 
-- Dans le Lecteur, les images en ligne ne disparaîtront pas sur les appareils exécutant iOS 27.
-- Les chargements n’échoueront plus si le nom du fichier contient des espaces. (bonne-nouvelle-tout le monde.jpg)
-- Nous avons réparé un plantage causé par le partage de certains types de fichiers texte.
-- Les utilisateurs d’iPad se réjouissent : l’application ne restera pas bloquée dans la mise en page de la barre d’onglets compacte lorsque vous redimensionnez l’écran ou changez d’application.
+Sur les modèles iPhone Plus et Pro Max, les aperçus des articles utilisent désormais le plein écran en paysage. Sur iPad, vous pouvez rétrécir la fenêtre lors de la modification d’un article ou de la configuration d’un site et reprendre là où vous en étiez. Même la liste des designs de sites vous permet de garder votre place.
+
+Si vous utilisez l’éditeur de blocs expérimental, les téléversements de photos respectent désormais vos réglages Médias pour les données de taille, de qualité et d’emplacement. L’éditeur fonctionne également en mode de verrouillage et vous demande avant d’enregistrer un article lorsque le média est encore en cours de chargement.
+
+Vous trouverez également quelques correctifs en dehors du Lecteur et de l’éditeur.
+
+- Dans Stats, l’onglet Trafic reste en place lorsque vous faites défiler la page vers le bas jusqu’à « Ajouter une carte ». Le bouton de retour est de retour sur iPhone Duo et sur les iPhones Plus et Pro Max en paysage.
+- Sur les sites auto-hébergés, les nouveaux articles suivent les réglages de discussion de votre site. Si votre serveur bloque la connexion avec un mot de passe d’application, l’application vous indique désormais ce qui a mal tourné.
+- Les descriptions des extensions sont lisibles en mode sombre, et vous pouvez regarder leurs vidéos dans l’application ou appuyer sur « Regarder sur YouTube ».
+- Nous avons résolu un incident qui pouvait se produire lors du partage d’une photo avec Jetpack.
+
+Vous aurez besoin d’iOS 18 ou version ultérieure pour cette mise à jour. Les appareils exécutant iOS 17 ne recevront plus les mises à jour d’applications.

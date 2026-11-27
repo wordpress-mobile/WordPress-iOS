@@ -18,7 +18,7 @@ struct ReaderTagsHelper {
                 generator.notificationOccurred(.success)
                 continuation.resume(returning: ())
             }, failure: { error in
-                DDLogError("Could not follow tag named \(tag) : \(String(describing: error))")
+                Loggers.app.error("Could not follow tag named \(tag) : \(String(describing: error))")
                 generator.notificationOccurred(.error)
                 continuation.resume(throwing: error ?? URLError(.unknown))
             }, source: "manage")
@@ -31,7 +31,7 @@ struct ReaderTagsHelper {
         service.unfollowTag(tag, withSuccess: {
             // Do nothing
         }, failure: { error in
-            DDLogError("Could not unfollow topic \(tag), \(String(describing: error))")
+            Loggers.app.error("Could not unfollow topic \(tag), \(String(describing: error))")
             Notice(title: Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
         })
     }

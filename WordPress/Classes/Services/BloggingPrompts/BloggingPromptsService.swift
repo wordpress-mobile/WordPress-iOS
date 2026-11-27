@@ -386,7 +386,7 @@ private extension BloggingPromptsService {
     /// - Returns: An array of `BloggingPrompt` objects sorted ascending by date.
     func loadPrompts(from startDate: Date, to endDate: Date? = nil, number: Int) -> [BloggingPrompt] {
         guard let utcStartDate = utcDateIgnoringTime(from: startDate) else {
-            DDLogError("Error converting date to UTC: \(startDate)")
+            Loggers.app.error("Error converting date to UTC: \(startDate)")
             return []
         }
 

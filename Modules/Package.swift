@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Modules",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v18),
         .macOS(.v14)
     ],
     products: XcodeSupport.products + [
@@ -63,10 +63,10 @@ let package = Package(
             revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.19.0"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.20.1"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.9.1"
+            exact: "0.11.1"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
@@ -80,7 +80,8 @@ let package = Package(
             name: "AsyncImageKit",
             dependencies: [
                 .product(name: "Collections", package: "swift-collections"),
-                .product(name: "Gifu", package: "Gifu")
+                .product(name: "Gifu", package: "Gifu"),
+                .product(name: "Logging", package: "swift-log")
             ]
         ),
         .target(
@@ -154,7 +155,8 @@ let package = Package(
                 "WordPressUI",
                 "WordPressCore",
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-                .product(name: "Logging", package: "swift-log")
+                .product(name: "Logging", package: "swift-log"),
+                .product(name: "Collections", package: "swift-collections")
             ]
         ),
         .testTarget(
@@ -200,7 +202,8 @@ let package = Package(
                 //  "_OBJC_CLASS_$_DDLog", referenced from:
                 //       in SharedCoreDataStack.o
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources/Extensions.xcdatamodeld")]
         ),
@@ -346,7 +349,8 @@ let package = Package(
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-                .product(name: "WordPressAPI", package: "wordpress-rs")
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources")],
             swiftSettings: [
@@ -516,7 +520,8 @@ enum XcodeSupport {
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
-            .product(name: "WordPressEditor", package: "AztecEditor-iOS")
+            .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
+            .product(name: "Logging", package: "swift-log")
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -651,7 +656,8 @@ enum XcodeSupport {
                     //  "_OBJC_CLASS_$_DDLog", referenced from:
                     //       in AppExtensionsService.o
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                    .product(name: "Logging", package: "swift-log")
                 ]
             )
         ]

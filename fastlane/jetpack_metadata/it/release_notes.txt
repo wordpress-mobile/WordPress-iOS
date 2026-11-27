@@ -1,10 +1,20 @@
-Hai saputo? Abbiamo reso la scheda Notifiche e la campanella più precise, anche quando le notifiche di sistema o i badge delle icone sono disattivati. Ora sarai sempre al corrente di tutto.
+Salva un articolo nel Reader sul tuo iPhone, poi aprilo sul tuo iPad. Ora il tuo account WordPress.com sincronizza fino a 1.000 articoli salvati su tutti i tuoi dispositivi, inclusi quelli già salvati in precedenza.
 
-I tipi di articolo personalizzati ora compaiono direttamente nel menu del sito dopo Commenti, ordinati per nome per una maggiore praticità: non serviranno più puntine personalizzate.
+Abbiamo apportato altre modifiche al Reader.
 
-Infine, abbiamo risolto diversi bug, per rendere la tua esperienza con l'app ancora più semplice.
+- Vuoi scoprire chi è stato menzionato in un articolo? Tocca il nome per visualizzarne il profilo.
+- Quando lasci un commento, l'elenco mantiene visibile il tuo nuovo commento. Se cambi tema di lettura, il testo dei commenti e la sfumatura dietro a "Mostra altro" ora risultano coordinati.
+- Quando tocchi "Visualizza l'articolo completo" o "Visualizza nel browser" su un articolo di un sito privato, Jetpack lo apre all'interno dell'app tramite il tuo account WordPress.com.
 
-- Nel Reader, le immagini in linea non scompariranno più sui dispositivi con iOS 27.
-- I caricamenti non falliranno più se il nome del file contiene spazi. (good-news-everyone.jpg)
-- Abbiamo risolto un arresto anomalo causato dalla condivisione di determinati tipi di file di testo.
-- Buone notizie per gli utenti iPad: l'app non rimarrà più bloccata nel layout compatto della barra delle schede quando ridimensioni lo schermo o passi da un'app all'altra.
+Sui modelli di iPhone Plus e Pro Max, le anteprime degli articoli ora sfruttano l'intero schermo in modalità orizzontale. Su iPad, puoi ridurre la larghezza della finestra mentre modifichi un articolo o configuri un sito e riprendere esattamente da dove avevi interrotto. Anche l'elenco dei design del sito mantiene la posizione.
+
+Se usi l'editor a blocchi sperimentale, il caricamento delle foto ora rispetta le impostazioni relative ai file multimediali per dimensioni, qualità e dati sulla posizione. L'editor funziona anche in Modalità di blocco e ti chiede conferma prima di salvare un articolo se il caricamento dei file multimediali è ancora in corso.
+
+Troverai anche alcune correzioni al di fuori del Reader e dell'editor.
+
+- In Stats, la scheda Traffico rimane al suo posto quando scorri verso il basso fino ad "Aggiungi scheda". Il pulsante Indietro è di nuovo disponibile su iPhone Duo e sui modelli di iPhone Plus e Pro Max in modalità orizzontale.
+- Sui siti ospitati personalmente, i nuovi articoli rispettano le impostazioni di discussione del sito. Se il tuo server blocca l'accesso con una password per applicazioni, ora l'app ti spiega cosa è andato storto.
+- Le descrizioni dei plugin sono leggibili in modalità scura e puoi guardare i relativi video direttamente nell'app oppure toccare "Guarda su YouTube".
+- Abbiamo risolto un arresto anomalo che poteva verificarsi durante la condivisione di una foto su Jetpack.
+
+Per questo aggiornamento è richiesto iOS 18 o versioni successive. I dispositivi con iOS 17 non riceveranno più aggiornamenti dell'app.

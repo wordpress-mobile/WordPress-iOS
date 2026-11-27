@@ -30,6 +30,18 @@ final class BlockingCommentsService: CommentsServiceProtocol {
     /// Not blocking when set, for the same reason as `createReplyResult`.
     var updateContentResult: Result<CommentDetail, Error>?
 
+    private(set) var searchRequests: [(query: String, nextPage: CommentsPageToken?)] = []
+    private var searchContinuations: [CheckedContinuation<CommentsPage, Error>] = []
+
+    func searchComments(query: String, nextPage: CommentsPageToken?) async throws -> CommentsPage {
+        searchRequests.append((query, nextPage))
+        return try await withCheckedThrowingContinuation { searchContinuations.append($0) }
+    }
+
+    func resolveSearch(callIndex: Int, with result: Result<CommentsPage, Error>) {
+        searchContinuations[callIndex].resume(with: result)
+    }
+
     func listComments(filter: CommentsListFilter, nextPage: CommentsPageToken?) async throws -> CommentsPage {
         callCount += 1
         return try await withCheckedThrowingContinuation { continuations.append($0) }

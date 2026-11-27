@@ -29,7 +29,7 @@ final class MigrationEmailService {
             }
             self.init(api: account.wordPressComRestV2Api)
         } catch {
-            DDLogError("[\(MigrationError.domain)] Object instantiation failed: \(error.localizedDescription)")
+            Loggers.app.error("[\(MigrationError.domain)] Object instantiation failed: \(error.localizedDescription)")
             throw error
         }
     }
@@ -47,7 +47,7 @@ final class MigrationEmailService {
         } catch {
             let properties = ["error_type": error.localizedDescription]
             tracker.track(.emailFailed, properties: properties)
-            DDLogError("[\(MigrationError.domain)] Migration email sending failed: \(error.localizedDescription)")
+            Loggers.app.error("[\(MigrationError.domain)] Migration email sending failed: \(error.localizedDescription)")
             throw error
         }
     }

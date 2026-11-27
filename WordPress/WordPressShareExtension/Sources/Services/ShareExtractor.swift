@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjackSwift
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
@@ -26,8 +25,11 @@ struct ExtractedShare {
 
         if let url {
             rawLink = url.absoluteString.stringWithAnchoredLinks()
-            let attributionText = AppLocalizedString("Read on",
-                                                    comment: "In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation.")
+            let attributionText = AppLocalizedString(
+                "Read on",
+                comment:
+                    "In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation."
+            )
             readOnText = "<br>— \(attributionText) \(rawLink)"
         }
 
@@ -121,11 +123,13 @@ struct ShareExtractor {
                     images: returnedImages
                 )
                 let didExtractContent = extractedTextResults != nil || !returnedImages.isEmpty
-                completion(ShareLoadOutcome(
-                    share: share,
-                    failures: textFailures + imageFailures,
-                    didExtractContent: didExtractContent
-                ))
+                completion(
+                    ShareLoadOutcome(
+                        share: share,
+                        failures: textFailures + imageFailures,
+                        didExtractContent: didExtractContent
+                    )
+                )
             }
         }
     }
@@ -137,7 +141,7 @@ struct ShareExtractor {
     /// includes known types, but there might still be errors loading the content.
     ///
     var validContent: Bool {
-        return textExtractor != nil || imageExtractor != nil
+        textExtractor != nil || imageExtractor != nil
     }
 }
 
@@ -174,7 +178,7 @@ private struct ExtractedItem {
 
 private extension ShareExtractor {
     var supportedTextExtractors: [ExtensionContentExtractor] {
-        return [
+        [
             SharePostExtractor(),
             ShareBlogExtractor(),
             PropertyListExtractor(),
@@ -184,11 +188,11 @@ private extension ShareExtractor {
     }
 
     var imageExtractor: ExtensionContentExtractor? {
-        return ImageExtractor()
+        ImageExtractor()
     }
 
     var textExtractor: ExtensionContentExtractor? {
-        return supportedTextExtractors.first(where: { extractor in
+        supportedTextExtractors.first(where: { extractor in
             extractor.canHandle(context: extensionContext)
         })
     }
@@ -255,7 +259,10 @@ private extension ShareExtractor {
 
 private protocol ExtensionContentExtractor {
     func canHandle(context: NSExtensionContext) -> Bool
-    func extract(context: NSExtensionContext, completion: @escaping (_ items: [ExtractedItem], _ failures: [Error]) -> Void)
+    func extract(
+        context: NSExtensionContext,
+        completion: @escaping (_ items: [ExtractedItem], _ failures: [Error]) -> Void
+    )
     func saveToSharedContainer(image: UIImage) -> URL?
     func saveToSharedContainer(wrapper: FileWrapper) -> URL?
     func copyToSharedContainer(url: URL) -> URL?
@@ -272,15 +279,19 @@ private extension TypeBasedExtensionContentExtractor {
     /// Maximum Image Size
     ///
     var maximumImageSize: CGSize {
-        let dimension = ShareExtensionService().retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
+        let dimension =
+            ShareExtensionService().retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
         return CGSize(width: dimension, height: dimension)
     }
 
     func canHandle(context: NSExtensionContext) -> Bool {
-        return !context.itemProviders(ofType: acceptedType).isEmpty
+        !context.itemProviders(ofType: acceptedType).isEmpty
     }
 
-    func extract(context: NSExtensionContext, completion: @escaping (_ items: [ExtractedItem], _ failures: [Error]) -> Void) {
+    func extract(
+        context: NSExtensionContext,
+        completion: @escaping (_ items: [ExtractedItem], _ failures: [Error]) -> Void
+    ) {
         let itemProviders = context.itemProviders(ofType: acceptedType)
         var results = [ExtractedItem]()
         var failures = [Error]()
@@ -301,7 +312,7 @@ private extension TypeBasedExtensionContentExtractor {
             provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { payload, error in
                 defer { syncGroup.leave() }
                 if let error {
-                    DDLogError("Failed to load shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                    Loggers.shareExtension.error("Failed to load shared item of type \(self.acceptedType): \(error.localizedDescription)")
                     lock.lock()
                     failures.append(error)
                     lock.unlock()
@@ -317,7 +328,9 @@ private extension TypeBasedExtensionContentExtractor {
                         lock.unlock()
                     }
                 } catch {
-                    DDLogError("Failed to extract shared item of type \(self.acceptedType): \(error.localizedDescription)")
+                    Loggers.shareExtension.error(
+                        "Failed to extract shared item of type \(self.acceptedType): \(error.localizedDescription)"
+                    )
                     lock.lock()
                     failures.append(error)
                     lock.unlock()
@@ -333,14 +346,15 @@ private extension TypeBasedExtensionContentExtractor {
 
     func saveToSharedContainer(image: UIImage) -> URL? {
         guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize)?.JPEGEncoded(),
-            let fullPath = tempPath(for: "jpg") else {
-                return nil
+            let fullPath = tempPath(for: "jpg")
+        else {
+            return nil
         }
 
         do {
             try encodedMedia.write(to: fullPath, options: [.atomic])
         } catch {
-            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            Loggers.shareExtension.error("Error saving \(fullPath) to shared container: \(String(describing: error))")
             return nil
         }
         return fullPath
@@ -349,14 +363,15 @@ private extension TypeBasedExtensionContentExtractor {
     func saveToSharedContainer(wrapper: FileWrapper) -> URL? {
         guard let wrappedFileName = wrapper.filename?.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
             let wrappedURL = URL(string: wrappedFileName),
-            let newPath = tempPath(for: wrappedURL.pathExtension) else {
-                return nil
+            let newPath = tempPath(for: wrappedURL.pathExtension)
+        else {
+            return nil
         }
 
         do {
             try wrapper.write(to: newPath, options: [], originalContentsURL: nil)
         } catch {
-            DDLogError("Error saving \(newPath) to shared container: \(String(describing: error))")
+            Loggers.shareExtension.error("Error saving \(newPath) to shared container: \(String(describing: error))")
             return nil
         }
 
@@ -371,7 +386,7 @@ private extension TypeBasedExtensionContentExtractor {
         do {
             try FileManager.default.copyItem(at: url, to: newPath)
         } catch {
-            DDLogError("Error saving \(newPath) to shared container: \(String(describing: error))")
+            Loggers.shareExtension.error("Error saving \(newPath) to shared container: \(String(describing: error))")
             return nil
         }
 
@@ -420,11 +435,15 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
     private func handleTextPack(url: URL) throws -> ExtractedItem? {
         let fileManager = FileManager()
-        guard let temporaryDirectoryURL = try? FileManager.default.url(for: .itemReplacementDirectory,
-                                                                in: .userDomainMask,
-                                                                appropriateFor: url,
-                                                                create: true) else {
-                                                                    return nil
+        guard
+            let temporaryDirectoryURL = try? FileManager.default.url(
+                for: .itemReplacementDirectory,
+                in: .userDomainMask,
+                appropriateFor: url,
+                create: true
+            )
+        else {
+            return nil
         }
 
         defer {
@@ -434,15 +453,21 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let textBundleURL: URL
         do {
             try fileManager.unzipItem(at: url, to: temporaryDirectoryURL)
-            let files = try fileManager.contentsOfDirectory(at: temporaryDirectoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
-            guard let unzippedBundleURL = files.first(where: { url in
+            let files = try fileManager.contentsOfDirectory(
+                at: temporaryDirectoryURL,
+                includingPropertiesForKeys: nil,
+                options: .skipsHiddenFiles
+            )
+            guard
+                let unzippedBundleURL = files.first(where: { url in
                     url.pathExtension == "textbundle"
-                }) else {
+                })
+            else {
                 return nil
             }
             textBundleURL = unzippedBundleURL
         } catch {
-            DDLogError("TextPack opening failed: \(error.localizedDescription)")
+            Loggers.shareExtension.error("TextPack opening failed: \(error.localizedDescription)")
             return nil
         }
 
@@ -454,40 +479,53 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         var returnedItem = ExtractedItem()
 
         var cachedImages = [String: ExtractedImage]()
-        bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (_: String, fileWrapper: FileWrapper) in
-            guard let fileName = fileWrapper.filename else {
-                return
-            }
-            let assetURL = url.appendingPathComponent(fileName, isDirectory: false)
+        bundleWrapper.assetsFileWrapper.fileWrappers?
+            .forEach { (_: String, fileWrapper: FileWrapper) in
+                guard let fileName = fileWrapper.filename else {
+                    return
+                }
+                let assetURL = url.appendingPathComponent(fileName, isDirectory: false)
 
-            switch assetURL.pathExtension.lowercased() {
-            case "heic":
-                autoreleasepool {
-                    if let file = fileWrapper.regularFileContents,
-                        let tmpImage = UIImage(data: file),
-                        let cachedURL = saveToSharedContainer(image: tmpImage) {
-                        cachedImages["assets/\(fileName)"] = ExtractedImage(url: cachedURL, insertionState: .requiresInsertion)
+                switch assetURL.pathExtension.lowercased() {
+                case "heic":
+                    autoreleasepool {
+                        if let file = fileWrapper.regularFileContents,
+                            let tmpImage = UIImage(data: file),
+                            let cachedURL = saveToSharedContainer(image: tmpImage)
+                        {
+                            cachedImages["assets/\(fileName)"] = ExtractedImage(
+                                url: cachedURL,
+                                insertionState: .requiresInsertion
+                            )
+                        }
                     }
+                case "jpg", "jpeg", "gif", "png":
+                    if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
+                        cachedImages["assets/\(fileName)"] = ExtractedImage(
+                            url: cachedURL,
+                            insertionState: .requiresInsertion
+                        )
+                    }
+                default:
+                    break
                 }
-            case "jpg", "jpeg", "gif", "png":
-                if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
-                    cachedImages["assets/\(fileName)"] = ExtractedImage(url: cachedURL, insertionState: .requiresInsertion)
-                }
-            default:
-                break
             }
-        }
 
         if bundleWrapper.type == kUTTypeMarkdown {
             if let formattedItem = handleMarkdown(md: bundleWrapper.text),
-                var html = formattedItem.importedText {
+                var html = formattedItem.importedText
+            {
                 returnedItem = formattedItem
 
                 for key in cachedImages.keys {
                     if let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) {
                         let searchKey = "src=\"\(escapedKey)\""
                         if html.contains(searchKey), let cachedPath = cachedImages[key]?.url {
-                            html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath.absoluteString)\" \(MediaAttachment.uploadKey)=\"\(cachedPath.lastPathComponent)\"")
+                            html = html.replacingOccurrences(
+                                of: searchKey,
+                                with:
+                                    "src=\"\(cachedPath.absoluteString)\" \(MediaAttachment.uploadKey)=\"\(cachedPath.lastPathComponent)\""
+                            )
                             cachedImages[key]?.insertionState = .embeddedInHTML
                         }
                     }
@@ -504,15 +542,24 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         return returnedItem
     }
 
+    /// Reads a text file, detecting its encoding.
+    ///
+    /// This goes through `NSString` because `String(contentsOf:usedEncoding:)` keeps a UTF-8 byte
+    /// order mark on iOS 18. A leading `U+FEFF` hides a Markdown file's title heading from us.
+    private func readText(at url: URL) throws -> String {
+        var encoding: UInt = 0
+        return try NSString(contentsOf: url, usedEncoding: &encoding) as String
+    }
+
     private func handlePlainTextFile(url: URL) -> ExtractedItem? {
         var returnedItem = ExtractedItem()
-        let rawText = (try? String(contentsOf: url)) ?? ""
+        let rawText = (try? readText(at: url)) ?? ""
         returnedItem.importedText = rawText.escapeHtmlNamedEntities()
         return returnedItem
     }
 
     private func handleMarkdown(url: URL, item: ExtractedItem? = nil) -> ExtractedItem? {
-        guard let md = try? String(contentsOf: url) else {
+        guard let md = try? readText(at: url) else {
             return item
         }
 
@@ -565,7 +612,8 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
             }
         case let data as Data:
             if let image = UIImage(data: data),
-                let imageURL = saveToSharedContainer(image: image) {
+                let imageURL = saveToSharedContainer(image: image)
+            {
                 returnedItem.images = [ExtractedImage(url: imageURL, insertionState: .requiresInsertion)]
             }
         case let image as UIImage:
@@ -603,8 +651,9 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
 
     func string(in dictionary: [String: Any], forKey key: String) -> String? {
         guard let value = dictionary[key] as? String,
-            !value.isEmpty else {
-                return nil
+            !value.isEmpty
+        else {
+            return nil
         }
         return value
     }
@@ -631,7 +680,8 @@ private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
         if let match = detector?.firstMatch(in: payload, options: [], range: NSMakeRange(0, payload.utf16.count)),
             match.resultType == .link,
             let url = match.url,
-            url.absoluteString.count == payload.count {
+            url.absoluteString.count == payload.count
+        {
             returnedItem.url = url
         } else {
             returnedItem.selectedText = payload

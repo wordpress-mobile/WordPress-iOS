@@ -36,8 +36,19 @@ actor WpLogDataProvider: ApplicationLogDataProvider {
     }
 
     func fetchApplicationLogs() async throws -> [Support.ApplicationLog] {
-        try LogFileStore.shared.logFiles()
-            .compactMap { try ApplicationLog(filePath: $0.url.path) }
+        Self.applicationLogs(atPaths: LogFileStore.shared.logFiles().map(\.url.path))
+    }
+
+    /// A file can be removed between listing the folder and reading its attributes (for example, by CocoaLumberjack's
+    /// automatic cleanup), so files that can't be read are skipped rather than failing the whole list.
+    static func applicationLogs(atPaths paths: [String]) -> [Support.ApplicationLog] {
+        paths.compactMap { path in
+            do {
+                return try ApplicationLog(filePath: path)
+            } catch {
+                return nil
+            }
+        }
     }
 
     func deleteApplicationLogs(in logs: [Support.ApplicationLog]) async throws {

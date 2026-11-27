@@ -9,9 +9,13 @@ class ApplicationPasswordsViewModelTests: XCTestCase {
     func testOrder() async throws {
         let expectedOrder: [ApplicationTokenItem] = [
             .testInstance(name: "Token 1", lastUsed: .now, createdAt: .now.addingTimeInterval(-100)),
-            .testInstance(name: "Token 2", lastUsed: .now.addingTimeInterval(-10), createdAt: .now.addingTimeInterval(-100)),
+            .testInstance(
+                name: "Token 2",
+                lastUsed: .now.addingTimeInterval(-10),
+                createdAt: .now.addingTimeInterval(-100)
+            ),
             .testInstance(name: "Token 3", lastUsed: nil, createdAt: .now.addingTimeInterval(-10)),
-            .testInstance(name: "Token 4", lastUsed: nil, createdAt: .now.addingTimeInterval(-20)),
+            .testInstance(name: "Token 4", lastUsed: nil, createdAt: .now.addingTimeInterval(-20))
         ]
 
         let shuffled = expectedOrder.shuffled()
@@ -30,7 +34,14 @@ class ApplicationPasswordsViewModelTests: XCTestCase {
 
 private extension ApplicationTokenItem {
     static func testInstance(name: String, lastUsed: Date?, createdAt: Date) -> Self {
-        .init(name: name, uuid: UUID(), appId: "app-id", createdAt: createdAt, lastUsed: lastUsed, lastIpAddress: lastUsed == nil ? nil : "1.1.1.1")
+        .init(
+            name: name,
+            uuid: UUID(),
+            appId: "app-id",
+            createdAt: createdAt,
+            lastUsed: lastUsed,
+            lastIpAddress: lastUsed == nil ? nil : "1.1.1.1"
+        )
     }
 }
 
@@ -41,6 +52,8 @@ private class StaticTokenProvider: ApplicationTokenListDataProvider {
     init(tokens: Result<[ApplicationTokenItem], Error>) {
         self.result = tokens
     }
+
+    func deleteApplicationToken(uuid: UUID) async throws {}
 
     func loadApplicationTokens() async throws -> [ApplicationTokenItem] {
         try result.get()

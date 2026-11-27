@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-10-28 22:26:56+0000 */
+/* Translation-Revision-Date: 2026-11-22 14:15:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.1.0 */
 /* Language: tr */
@@ -996,7 +996,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -1370,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copied block" = "Kopyalanan blok";
 
-/* Copy link to oomment button title */
-"Copy Link to Comment" = "Bağlantıyı yoruma kopyala";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Adresi panodan kopyala, %s";
 
@@ -1723,8 +1719,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Etki alanı sahiplerinin, iletişim bilgilerini tüm etki alanlarının bulunduğu bir veri tabanında herkese açık olarak paylaşmaları gerekir. Gizlilik koruması ile sizin bilgileriniz yerine kendi bilgilerimizi yayınlıyoruz ve herhangi bir iletişimi size gizli tutarak iletiyoruz.";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -3587,8 +3582,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Bildirimde, ilham almak için bir sözcük veya kısa bir sözcük öbeği bulunur";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4173,8 +4167,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Kaynak yazıyı oku";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Okuyucu";
 
@@ -5151,9 +5144,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Sitenizi görüntülemek için dokunun";
 
-/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Gravatar sitesini bir dış tarayıcı ile açmak için dokunun";
-
 /* Label for viewing the custom taxonomies */
 "Taxonomies" = "Sınıflandırmalar";
 
@@ -5816,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Updating label title */
 "Updating" = "Güncelleniyor";
 
-/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
-"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Avatarınız, adınız ve hakkında bilgilerinizi güncellerseniz bunlar, Gravatar profillerini kullanan tüm sitelerde güncellenir.";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Ses yüklemek için paketinizi yükseltin";
 
@@ -6142,9 +6129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Bu dosya ile ne yapmak istersiniz: Yükleyip, yazınızın içine bir bağlantı olarak eklemek mi yoksa içeriğini doğrudan yazınıza eklemek mi istersiniz?";
 
-/* This is a link that takes the user to the external Gravatar website */
-"What is Gravatar?" = "Gravatar nedir?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "Blok nedir?";
 
@@ -6407,9 +6391,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Siteleriniz";
 
-/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
-"Your WordPress.com profile is powered by Gravatar." = "WordPress.com profiliniz Gravatar tarafından sunulur.";
-
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "WordPress.com siteniz mobil aygıtlarda yükleme sürelerini büyük ölçüde hızlandıran yeni bir Google girişimi olan Hızlandırılmış Mobil Sayfalar özelliğini destekler.";
 
@@ -6558,6 +6539,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility identifier for an 'Add Comment' button */
 "addCommentButton.accessibilityIdentifity" = "Yorum Ekle";
 
+/* Error message when a self-hosted site's server blocks application password authentication by not passing the HTTP Authorization header to WordPress. */
+"addSite.selfHosted.authorizationHeaderBlocked" = "Sunucunuz uygulama şifreleri ile oturum açılmasını engelliyor. Yardım için barındırma sağlayıcınızla iletişime geçin.";
+
 /* Error message when user cancels login */
 "addSite.selfHosted.cancelled" = "Oturum açma iptal edildi";
 
@@ -6571,7 +6555,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "addSite.selfHosted.mismatchUser" = "Lütfen oturum açmış bir kullanıcı ile giriş yapın. Kullanıcı adı: %@";
 
 /* Error message shown when failing to save a self-hosted site to user's device */
-"addSite.selfHosted.savingSiteFailure" = "WordPress sitesi kaydedilemiyor, lütfen daha sonra tekrar deneyin.";
+"addSite.selfHosted.savingSiteFailure" = "WordPress sitesi kaydedilemiyor, lütfen daha sonra yeniden deneyin.";
 
 /* Title of the page to add a self-hosted site */
 "addSite.selfHosted.title" = "Kullanıcı Tarafından Barındırılan Site Ekleyin";
@@ -6584,6 +6568,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
 "addSite.selfHosted.xmlrpcEndpointNotFound" = "Sitenin XML-RPC uç noktası belirlenemedi";
+
+/* Message shown after age restriction enforcement signs a person out and removes their sites */
+"ageRequirement.restrictionAlert.signedOutMessage" = "Bu uygulama, kullanıcıların 13 yaşında veya daha büyük olmasını gerektirir. Apple Hesabınız 13 yaşın altında olduğunu bildirdiğinden oturumunuz kapatıldı ve siteleriniz bu cihazdan kaldırıldı.";
+
+/* Message shown when an age-restricted person tries to sign in */
+"ageRequirement.restrictionAlert.signedOutUserMessage" = "Bu uygulama, kullanıcıların 13 yaşında veya daha büyük olmasını gerektirir. Apple Hesabınız 13 yaşın altında olduğunu bildirdiğinden oturum açamazsınız.";
+
+/* Title of an alert explaining that the person does not meet the app's minimum age requirement */
+"ageRequirement.restrictionAlert.title" = "Yaş gereksinimi karşılanmıyor";
 
 /* Age between dates equaling one hour. */
 "an hour" = "bir saat";
@@ -7054,9 +7047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Section header for log files sorted by date */
 "com.jetpack.support.logFilesByDate" = "Oluşturma tarihine göre günlük dosyaları";
 
-/* Text indicating which log files will be included in the support request */
-"com.jetpack.support.logFilesToUpload" = "Şu günlük dosyaları karşıya yüklenecek:";
-
 /* Footer text explaining log retention policy */
 "com.jetpack.support.logRetentionNotice" = "Yedi güne kadar olan günlükler kaydedilir.";
 
@@ -7297,6 +7287,9 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ için yanıt verin";
 
+/* VoiceOver announcement made when changes to an edited comment start saving */
+"commentComposer.accessibility.saving" = "Değişiklikler kaydediliyor";
+
 /* VoiceOver announcement made when a reply starts sending */
 "commentComposer.accessibility.sending" = "Yanıt gönderiliyor";
 
@@ -7306,8 +7299,14 @@ Example: Reply to Pamela Nguyen */
 /* Button label to delete a saved draft */
 "commentComposer.action.deleteDraft" = "Taslağı sil";
 
+/* Button label to discard unsaved changes to a comment */
+"commentComposer.action.discardChanges" = "Değişiklikleri İptal Et";
+
 /* Button label to continue editing instead of discarding changes */
 "commentComposer.action.keepEditing" = "Düzenlemeye devam et";
+
+/* Button label to save changes to an edited comment */
+"commentComposer.action.save" = "Kaydet";
 
 /* Button label to save the current text as a draft */
 "commentComposer.action.saveDraft" = "Taslak olarak kaydet";
@@ -7320,6 +7319,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message shown when comments are disabled for the post */
 "commentComposer.error.closed" = "Bu yazı için yorumlar kapalı.";
+
+/* Error message shown when editing a comment fails */
+"commentComposer.error.editFailed" = "Değişiklikler kaydedilemedi.";
 
 /* Error message shown when sending a reply fails */
 "commentComposer.error.replyFailed" = "Yanıt gönderilemedi.";
@@ -7335,6 +7337,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder text in the composer text input field */
 "commentComposer.placeholder" = "Bir yanıt bırakın…";
+
+/* Title of the compose screen for editing a comment */
+"commentComposer.title.edit" = "Yorumu Düzenleyin";
 
 /* Title of the compose screen for replying to a comment */
 "commentComposer.title.reply" = "Yanıtla";
@@ -7374,6 +7379,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Moderation toolbar button that permanently deletes a comment */
 "commentDetail.action.deletePermanently" = "Kalıcı olarak sil";
+
+/* Button label to edit a comment on the detail screen */
+"commentDetail.action.edit" = "Düzenle";
 
 /* Accessibility label for the overflow menu button on the comment detail screen */
 "commentDetail.action.moreActions" = "Fazlası";
@@ -7462,6 +7470,45 @@ Example: Reply to Pamela Nguyen */
 /* Error title */
 "comments.failedToLike" = "Yorum beğenilemedi";
 
+/* Accessibility label for the Review button */
+"comments.review.accessibility" = "Onay bekleyen yorumları incele";
+
+/* Button to review loaded pending comments */
+"comments.review.button" = "İncele";
+
+/* Heading after all captured comments have been reviewed */
+"comments.review.complete" = "İnceleme tamamlandı";
+
+/* Review result for multiple confirmed moderations; %1$d is the count */
+"comments.review.moderated.many" = "%1$d yorum denetlendi.";
+
+/* Review result for one confirmed moderation; %1$d is the count */
+"comments.review.moderated.one" = "%1$d yorum denetlendi.";
+
+/* Result when all captured comments were already handled or missing */
+"comments.review.none" = "Bu oturumda denetlenen yorum yok.";
+
+/* Review position. %1$d is the one-based position; %2$d is the fixed batch size */
+"comments.review.position" = "%1$d \/ %2$d";
+
+/* Leave this comment pending and advance */
+"comments.review.skip" = "Atla";
+
+/* Skipped count following a moderated count; %1$d is the count */
+"comments.review.skipped.clause" = "%1$d atlandı.";
+
+/* Review result when only comments were skipped; %1$d is the count */
+"comments.review.skipped.many" = "%1$d yorum atlandı.";
+
+/* Review result when only one comment was skipped; %1$d is the count */
+"comments.review.skipped.one" = "%1$d yorum atlandı.";
+
+/* Combined review result; %1$@ is the moderated sentence, %2$@ is the skipped sentence */
+"comments.review.summary.both" = "%1$@ %2$@";
+
+/* Pending comment review screen title */
+"comments.review.title" = "Bekleyenleri incele";
+
 /* Title for the error notice shown when trashing a comment fails. */
 "comments.trash.error.title" = "Yorum çöpe atılırken hata oluştu";
 
@@ -7512,6 +7559,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title showing trashed comments */
 "commentsList.tab.trash" = "Çöp";
+
+/* Shown after a comments search returns no matches */
+"commentsSearch.noResults" = "Sonuç yok";
+
+/* Comments search field placeholder and initial empty prompt */
+"commentsSearch.prompt" = "Yorumlarda ara";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Uygulamada kayıtlı kullanıcı adı veya parolanın süresi geçmiş olabilir. Lütfen ayarlardan parolanızı yeniden yazıp yeniden deneyin.";
@@ -8069,29 +8122,38 @@ Example: Reply to Pamela Nguyen */
 /* Button title to expand and show more blocks */
 "editor.blockInserter.showMore" = "Daha Fazla Göster";
 
+/* Message shown over the editor after it crashes, above a button to reload it */
+"editor.crashed.description" = "Düzenlemeye devam etmek için düzenleyiciyi yeniden yükleyin.";
+
+/* Button title to reload the editor after it crashes */
+"editor.crashed.reload" = "Düzenleyiciyi yeniden yükle";
+
+/* Title shown over the editor after it crashes */
+"editor.crashed.title" = "Düzenleyici çalışmayı durdurdu";
+
 /* Title shown when the editor encounters an error */
 "editor.error.title" = "Düzenleyici Hatası";
 
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Düzenleyici Yükleniyor";
 
-/* Button title to dismiss the Lockdown Mode warning */
-"editor.lockdownMode.dismiss" = "Kapat";
-
-/* Instructions for excluding the app from Lockdown Mode */
-"editor.lockdownMode.excludeHint" = "Bu uygulamayı Ayarlar'dan Kilitleme Modunun dışında bırakabilir ve tüm işlevselliği geri yüklemek için düzenleyiciyi yeniden açabilirsiniz.";
-
-/* Button title to learn more about Lockdown Mode */
-"editor.lockdownMode.learnMore" = "Daha Fazla Bilgi Edinin";
-
-/* Title shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.title" = "Kilitleme Modu Algılandı";
-
-/* Warning shown when Lockdown Mode may affect the editor */
-"editor.lockdownMode.warning" = "Kilitleme Modu etkinleştirildi. Düzenleyici doğru şekilde çalışmayabilir.";
-
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Ortam eklenemedi";
+
+/* Error message when media picked in the block inserter cannot be loaded, e.g. an iCloud photo */
+"editor.media.failedToLoadSelected" = "Seçilen ortam yüklenemedi. Bu cihaza tam olarak indirilmemiş olabilir.";
+
+/* Error message when a photo or video taken with the camera from the block inserter cannot be processed */
+"editor.media.failedToProcessCaptured" = "Yakalanan ortam işlenemedi.";
+
+/* Error message when some, but not all, of the media picked in the block inserter fails to insert */
+"editor.media.someFailedToInsert" = "Bazı ortamlar eklenemedi";
+
+/* Error message when some of the media items picked in the block inserter cannot be loaded, e.g. iCloud photos. %1$d is a placeholder for the number of items. */
+"editor.media.someSelectedFailedToLoad.plural" = "%1$d öge yüklenemedi ve atlandı. Bu cihaza tam olarak indirilmemiş olabilirler.";
+
+/* Error message when one of several media items picked in the block inserter cannot be loaded, e.g. an iCloud photo */
+"editor.media.someSelectedFailedToLoad.singular" = "1 öge yüklenemedi ve atlandı. Bu cihaza tam olarak indirilmemiş olabilir.";
 
 /* Category name for section showing all patterns */
 "editor.patterns.all" = "Tümü";
@@ -8411,23 +8473,8 @@ Example: Reply to Pamela Nguyen */
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Site seçin";
 
-/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ %2$@ içinde taşınıyor";
-
-/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
-"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ %2$@ içinde taşınıyor";
-
-/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
-"jetpack.branding.badge_banner.moving_soon.plural" = "%@ yakında taşınıyor";
-
-/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
-"jetpack.branding.badge_banner.moving_soon.singular" = "%@ yakında taşınıyor";
-
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack destekli";
-
-/* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Jetpack uygulamasını edinin";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Yeni Jetpack uygulamasını deneyin";
@@ -8475,64 +8522,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.connection.step.user.title" = "WordPress.com hesabınıza bağlanın";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.early.switch.title" = "Yeni Jetpack uygulamasına geçin";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.late.switch.title" = "Jetpack uygulamasına geçin";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Jetpack.com sitesinden ayrıntılı bilgi alın";
 
-/* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Yeni yorumlar, beğeniler, görüntülemeler ve daha fazlası için bildirim alın.";
-
-/* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Beğendiğiniz siteleri ve toplulukları bulup takip edin ve içeriğinizi paylaşın.";
-
-/* Description of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Yararlı bilgiler ve kapsamlı istatistiklerle trafiğinizin büyümesini izleyin.";
-
-/* Name of the Statistics feature. */
-"jetpack.fullscreen.overlay.newUsers.stats.title" = "İstatistikler ve yönelimler";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack, WordPress sitenizle daha fazlasını yapmanızı sağlar. Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.newUsers.title" = "WordPress sitenizi Jetpack ile güçlendirin";
-
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Bildirimlere geç";
-
-/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Bunu daha sonra yap";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.subtitle" = "İstatistikler, okuyucu, bildirimler ve diğer Jetpack özellikleri, WordPress uygulamasından kaldırıldı.";
-
-/* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack özellikleri taşındı.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Aygıtınızdan gerçek zamanlı bildirimleri almayı sürdürmek için Jetpack uygulamasına geçin.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Bildirimlerinizi Jetpack uygulamasıyla alın";
-
-/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Okuyucu ile tüm beğendiğiniz siteleri ve yazıları bulmak, takip etmek ve beğenmek için Jetpack uygulamasına geçin.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack uygulamasıyla istediğiniz siteye abone olun";
-
-/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack, hayalinizdeki WordPress sitesini oluşturmanıza ve büyütmenize yardımcı olacak istatistikleri, bildirimleri ve diğer özellikleri sağlar.";
-
-/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "İstatistikler ve bilgilerle sitenizin trafiğinin büyümesini izlemek için Jetpack uygulamasına geçin.";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Yeni Jetpack uygulamasını kullanarak istatistiklerinizi alın";
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
@@ -8540,26 +8536,8 @@ Example: Reply to Pamela Nguyen */
 /* Title of a button that dismisses an overlay that showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Jetpack olmadan ilerle";
 
-/* Title of a screen that showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack özellikleri yakında taşınıyor.";
-
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack, hayallerinizdeki WordPress sitesini oluşturmanıza ve büyütmenize yardımcı olacak istatistikleri, bildirimleri ve diğer özellikleri sağlar.\n\nWordPress uygulaması artık yeni bir site oluşturmayı desteklemiyor.";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "İstatistikler, okuyucu, bildirimler ve diğer Jetpack özellikleri, yakında WordPress uygulamasından kaldırılacak.";
-
-/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Bildirimler Jetpack uygulamasına taşınıyor";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Okuyucu, Jetpack uygulamasına taşınıyor";
-
-/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "İstatistikler Jetpack uygulamasına taşınıyor";
-
-/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "İstatistikler, okuyucu, bildirimler ve diğer Jetpack özellikleri, %@ tarihinde WordPress uygulamasından kaldırılacak.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Okuyucuya geç";
@@ -8569,9 +8547,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Sitenizde Jetpack eklentisi var";
-
-/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Jetpack olmadan ilerle";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Yeni Jetpack uygulamasını deneyin";
@@ -8603,9 +8578,6 @@ Example: Reply to Pamela Nguyen */
 /* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
 "jetpack.install.connectUser.stats.description" = "Sitenizde istatistikleri kullanmak için Jetpack eklentisini kullanıcı hesabınızla bağlamanız gerekecek.";
 
-/* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "İstatistikler, okuyucu, bildirimler ve diğer özellikler, yakında Jetpack mobil uygulamasına taşınacak.";
-
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Bunu gizle";
 
@@ -8614,9 +8586,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Description inside a menu card prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.newUsers.title" = "Sitenizin tüm potansiyelini ortaya çıkarın. Jetpack ile istatistikler, okuyucu, bildirimler ve daha fazlasını alın.";
-
-/* Title of a button prompting users to switch to the Jetpack app. */
-"jetpack.menuCard.phaseFour.title" = "Jetpack kullanmaya geç";
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Daha sonra hatırlat";
@@ -8897,9 +8866,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for previous period navigation button */
 "jetpackStats.accessibility.previousPeriod" = "Önceki dönem";
 
-/* Accessibility label for realtime visitor count */
-"jetpackStats.accessibility.realtimeVisitorCount" = "Mevcut ziyaretçiler çevrimiçi";
-
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "İstatistikleri yüklemeyi yeniden denemek için çift dokunun";
 
@@ -8927,12 +8893,6 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility hint for items that can show more details */
 "jetpackStats.accessibility.viewMoreDetails" = "Daha fazla ayrıntı görüntülemek için çift dokunun";
 
-/* Singular visitor count. %1$d is the number. */
-"jetpackStats.accessibility.visitorNow" = "Şu anda %1$d ziyaretçi çevrimiçi";
-
-/* Plural visitors count. %1$d is the number. */
-"jetpackStats.accessibility.visitorsNow" = "Şu anda %1$d ziyaretçi çevrimiçi";
-
 /* Chart option description */
 "jetpackStats.addChart.chartDescription" = "Zaman içindeki eğilimleri görselleştirin";
 
@@ -8956,10 +8916,10 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.addChart.topListOption" = "En İyi Liste";
 
 /* Plural item count for archive sections. %1$d is the number. */
-"jetpackStats.archiveSections.itemCount.plural" = "%1$d öğe";
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d öge";
 
 /* Singular item count for archive sections. %1$d is the number. */
-"jetpackStats.archiveSections.itemCount.singular" = "%1$d öğe";
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d öge";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Yazar";
@@ -9447,17 +9407,11 @@ Example: Reply to Pamela Nguyen */
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "Ziyaretçiler";
 
-/* Current active visitors metric */
-"jetpackStats.siteMetrics.visitorsNow" = "Şu Anki Ziyaretçiler";
-
 /* Ads tab */
 "jetpackStats.tabs.ads" = "Reklamlar";
 
 /* Insights tab */
 "jetpackStats.tabs.insights" = "İçgörüler";
-
-/* Realtime tab */
-"jetpackStats.tabs.realtime" = "Gerçek Zamanlı";
 
 /* Subscribers tab */
 "jetpackStats.tabs.subscribers" = "Aboneler";
@@ -9570,9 +9524,6 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Bu sitede, henüz uygulamanın tüm özelliklerini desteklemeyen ayrı Jetpack eklentileri kullanılıyor. Lütfen tam Jetpack eklentisini kurun.";
 
-/* Later today */
-"later today" = "bugün daha sonra";
-
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "beğen";
 
@@ -9589,7 +9540,7 @@ Example: Reply to Pamela Nguyen */
 "login.appPasswordReAuth.cancelButton" = "İptal Et";
 
 /* Description explaining why the user needs to re-authenticate */
-"login.appPasswordReAuth.description" = "Uygulamaya atanan uygulama parolası artık profilinizde yok.\nUygulamanın kullanacağı yeni bir uygulama parolası oluşturmak için lütfen yeniden oturum açın.";
+"login.appPasswordReAuth.description" = "Uygulamaya atanan uygulama parolası artık profilinizde yok.\nUygulamanın kullanacağı yeni bir uygulama parolası oluşturmak için lütfen yeniden oturum açın.";
 
 /* Button to start the re-authentication process */
 "login.appPasswordReAuth.signInButton" = "Oturum Aç";
@@ -9868,10 +9819,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.upload.banner.mixed" = "%1$d · %2$d karşıya yükleme başarısız oldu";
 
 /* Banner shown above the grid while uploads are in flight. %1$d is the count. */
-"mediaLibrary.upload.banner.uploadingOnly" = "%1$d öğe karşıya yükleniyor";
+"mediaLibrary.upload.banner.uploadingOnly" = "%1$d öge karşıya yükleniyor";
 
 /* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
-"mediaLibrary.upload.banner.uploadingOnly.single" = "%1$d öğe karşıya yükleniyor";
+"mediaLibrary.upload.banner.uploadingOnly.single" = "%1$d öge karşıya yükleniyor";
 
 /* Error shown when a picked file's type is not in the blog's allowed list. */
 "mediaLibrary.upload.error.disallowedType" = "Bu dosya türünün sitenize yüklenmesine izin verilmiyor.";
@@ -10046,6 +9997,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Jetpack uygulamasında artık WordPress uygulamasının tüm özellikleri ile istatistikler, okuyucu, bildirimler ve diğer özellikler bulunuyor.";
+
+/* Description for the static screen prompting users to switch to the Jetpack app, used while the WordPress app shows Reader. */
+"movedToJetpack.descriptionWithoutReader" = "Jetpack uygulaması WordPress uygulamasının tüm işlevlerine ve şimdi İstatistikler, Bildirimler ve daha fazlasına özel erişime sahiptir.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
@@ -10226,42 +10180,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Siteye git";
-
-/* Button to confirm to switch to the New Stats announcement screen */
-"newStats.announcement.continueButton" = "Başlarken";
-
-/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
-"newStats.announcement.disclosure" = "Henüz geçiş yapmaya hazır değil misiniz? İstatistikler sekmesindeki Daha Fazla menüsünden Yeni İstatistikler özelliğini kapatabilirsiniz.";
-
-/* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "Navigasyon ve tarih seçici artık ekranın alt kısmında, tam baş parmağınızın bulunduğu yerde yer alıyor.";
-
-/* Feature title: navigation moved to the bottom */
-"newStats.announcement.feature.bottomNav.title" = "Erişimi Daha Kolay";
-
-/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Tek bir dokunuşla yaygın ön ayarlar arasından seçim yapın veya karşılaştırma süresiyle özel bir tarih aralığı belirleyin.";
-
-/* Feature title: flexible date picker */
-"newStats.announcement.feature.datePicker.title" = "Herhangi Bir Dönem, Herhangi Bir Aralık";
-
-/* Feature description: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.description" = "Cihazlar, UTM, konumlar, WordAds - WordPress.com’da aldığınız verilerin aynısı.";
-
-/* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "Web ile Eş Düzeyde";
-
-/* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Her bir ölçüm, bir önceki döneme kıyasla nasıl bir eğilim gösterdiğini ortaya koyar, böylece her zaman büyüyüp büyümediğinizi bilirsiniz.";
-
-/* Feature title: trends visible for all metrics */
-"newStats.announcement.feature.trends.title" = "Eğilimlere Genel Bakış";
-
-/* Subtitle for the New Stats announcement screen */
-"newStats.announcement.subtitle" = "Sitenizin performansını anlamanın daha iyi bir yolu - artık varsayılan olarak açık.";
-
-/* Title for the New Stats announcement screen */
-"newStats.announcement.title" = "Yeni İstatistikler";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Bu zaman aralığında bir günlük kaydı yok";
@@ -10658,6 +10576,30 @@ Example: Reply to Pamela Nguyen */
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Görsel Düzenleyici";
 
+/* Button to save, publish or preview anyway in an alert shown while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.continue" = "İlerle";
+
+/* Button to close the editor in an alert shown while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leave" = "Ayrıl";
+
+/* Message of an alert shown when closing the editor for a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leavePageMessage" = "Şimdi ayrılırsanız ortam yükleme gibi devam eden işlemler durur ve sayfanıza eklenmez.";
+
+/* Message of an alert shown when closing the editor for a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.leavePostMessage" = "Şimdi ayrılırsanız ortam yükleme gibi devam eden işlemler durur ve gönderinize eklenmez.";
+
+/* Title of an alert shown when saving or closing the editor for a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.pageTitle" = "Sayfanız henüz hazır değil";
+
+/* Title of an alert shown when saving or closing the editor for a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.postTitle" = "Gönderiniz henüz hazır değil";
+
+/* Message of an alert shown when saving, publishing or previewing a page while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.savePageMessage" = "Düzenleyicide ortam yükleme gibi bir işlem hâlâ devam ediyor. Devam ederseniz sayfanızda eksik veya bozuk olabilir.";
+
+/* Message of an alert shown when saving, publishing or previewing a post while something, like a media upload, is in progress */
+"postEditor.notReadyAlert.savePostMessage" = "Düzenleyicide ortam yükleme gibi bir işlem hâlâ devam ediyor. Devam ederseniz gönderinizde eksik veya bozuk olabilir.";
+
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Görüntüle";
 
@@ -10719,7 +10661,7 @@ Example: Reply to Pamela Nguyen */
 "postFromAudio.done" = "Tamam";
 
 /* The AI failed to understand the request for any reasons */
-"postFromAudio.errorMessage.cantUnderstandRequest" = "Talep işlenirken bazı sorunlar oluştu. Lütfen daha sonra tekrar deneyin.";
+"postFromAudio.errorMessage.cantUnderstandRequest" = "Talep işlenirken bazı sorunlar oluştu. Lütfen daha sonra yeniden deneyin.";
 
 /* The screen subtitle in the error state */
 "postFromAudio.errorMessage.generic" = "Bir sorun oluştu";
@@ -10770,7 +10712,7 @@ Example: Reply to Pamela Nguyen */
 "postList.deletePermanently.alertMessage" = "\"%@\" sayfasını kalıcı olarak silmek istediğinizden emin misiniz?";
 
 /* An error message */
-"postList.errorUnsyncedChangesMessage" = "Uygulama, sunucuda önceden yapılan değişiklikleri yüklüyor. Lütfen daha sonra tekrar deneyin.";
+"postList.errorUnsyncedChangesMessage" = "Uygulama, sunucuda önceden yapılan değişiklikleri yüklüyor. Lütfen daha sonra yeniden deneyin.";
 
 /* A generic error message title */
 "postList.genericErrorMessage" = "Bir sorun oluştu";
@@ -11251,7 +11193,7 @@ Example: Reply to Pamela Nguyen */
 "prepublishing.discardChanges.title" = "Değişiklikler İptal Edilsin Mi?";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
-"prepublishing.mediaUploadFailedDetails" = "%@ öğe karşıya yüklenemedi";
+"prepublishing.mediaUploadFailedDetails" = "%@ öge karşıya yüklenemedi";
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Ortam dosyası yüklenemedi";
@@ -11277,9 +11219,6 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Zamanla";
 
-/* Placeholder text for the message field in Social Sharing */
-"prepublishing.socialAccounts.messagePlaceholder" = "Gönderinin yanında sosyal medyada paylaşmak için kısa bir mesaj yazın";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketler";
 
@@ -11287,10 +11226,10 @@ Example: Reply to Pamela Nguyen */
 "prepublishing.title" = "Yayımcılık";
 
 /* Details label for a publish button state in the pre-publishing sheet */
-"prepublishing.uploadMediaManyItemsRemaining" = "%@ öğe kaldı";
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ öge kaldı";
 
 /* Details label for a publish button state in the pre-publishing sheet */
-"prepublishing.uploadMediaOneItemRemaining" = "%@ öğe kaldı";
+"prepublishing.uploadMediaOneItemRemaining" = "%@ öge kaldı";
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Ortam dosyası yükleniyor";
@@ -11420,9 +11359,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title */
 "reader.comments.title" = "Yorumlar";
-
-/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
-"reader.detail.header.authorInfo.a11y.hint" = "Sitedeki yazıları görüntüler";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d beğeni_";
@@ -11581,6 +11517,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* Accessibility label for the bell button in Reader that opens the Notifications list */
+"reader.notificationsBell.accessibilityLabel" = "Bildirimler";
 
 /* Button accessibility label */
 "reader.post.buttonBookmark.accessibilityLabel" = "Yer işareti";
@@ -11756,8 +11695,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Son";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"reader.saveForLaterAlert.description" = "Bu gönderiyi kaydedin ve istediğiniz zaman okumak için geri gelin. Yalnızca bu cihazda kullanılabilir; kaydedilen gönderiler diğer cihazlarla senkronize olmaz.";
+/* Shown in Reader when saving a post fails because the WordPress.com account already has the most saved posts it can keep. */
+"reader.saveForLater.error.tooManySaves" = "1.000 kaydedilmiş yazı sınırına ulaştınız. Daha fazla kaydetmek için bazılarını kaldırın.";
+
+/* Body text of alert informing users about the Reader Save for Later feature, when saved posts sync with their WordPress.com account. */
+"reader.saveForLaterAlert.description.synced" = "Bu gönderiyi kaydedin ve dilediğiniz zaman okumak için geri dönün. Kaydedilmiş yazılar, aynı WordPress.com hesabında oturum açmış cihazlarınız arasında eşitlenir.";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "reader.saveForLaterAlert.title" = "Gönderileri Sonrası İçin Kaydet";
@@ -11765,11 +11707,35 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Kaydedildi";
 
-/* Notification title for when saved post is removed */
-"reader.savedPostRemovedNotificationTitle" = "Kaydedilen gönderi kaldırıldı";
+/* Hint shown in Reader's Saved screen when the user hasn't saved any posts. */
+"reader.savedPosts.empty.description" = "Listenize kaydetmek için bir gönderideki yer işareti simgesine dokunun.";
+
+/* Title shown in Reader's Saved screen when the user hasn't saved any posts. */
+"reader.savedPosts.empty.title" = "Kaydedilmiş bir yazı yok";
+
+/* Title shown in Reader's Saved screen when the saved posts couldn't be loaded. */
+"reader.savedPosts.error.title" = "Kaydedilmiş yazılarınız yüklenemedi";
 
 /* Error when the imported file doesn't match the expected JSON format */
 "reader.savedPosts.import.invalidFormat" = "Seçilen dosya geçerli bir kaydedilen gönderi dışa aktarma dosyası değil.";
+
+/* Banner in Reader's Saved screen when posts couldn't be saved to the account because it has 1,000 saved posts (plural). %1$d is the number of posts. */
+"reader.savedPosts.limitBanner.message.plural" = "%1$d gönderi yalnızca bu cihaza kaydedildi. Hesabınızda en fazla 1.000 kaydedilmiş yazı tutulabilir. Yer açmak için bazılarını kaldırın.";
+
+/* Banner in Reader's Saved screen when a post couldn't be saved to the account because it has 1,000 saved posts (singular). %1$d is the number of posts. */
+"reader.savedPosts.limitBanner.message.singular" = "%1$d gönderi yalnızca bu cihaza kaydedildi. Hesabınızda en fazla 1.000 kaydedilmiş yazı tutulabilir. Yer açmak için bazılarını kaldırın.";
+
+/* Title of a banner in Reader's Saved screen when the account already has the most saved posts it can keep. */
+"reader.savedPosts.limitBanner.title" = "Kaydedilmiş yazılar sınırına ulaşıldı";
+
+/* Number of comments on a post in Reader's Saved screen (plural). %1$d is the count. */
+"reader.savedPosts.row.commentCount.plural" = "%1$d yorum";
+
+/* Number of comments on a post in Reader's Saved screen (singular). %1$d is the count. */
+"reader.savedPosts.row.commentCount.singular" = "%1$d yorum";
+
+/* When a post was saved, in Reader's Saved screen. %1$@ is a date, such as 'Nov 9' or 'Nov 9, 2025'. */
+"reader.savedPosts.row.savedDate" = "Kaydedildi: %1$@";
 
 /* Accessibility label for the button that opens saved Reader posts import and export settings */
 "reader.savedPosts.settings.button.accessibilityLabel" = "Kaydedilen gönderi ayarları";
@@ -11801,17 +11767,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Error message when import of saved Reader posts fails */
 "reader.savedPosts.settings.importError" = "Seçilen dosya içe aktarılamıyor. Lütfen yeniden deneyin.";
 
-/* Progress text during import. %1$d is current post number, %2$d is total. */
-"reader.savedPosts.settings.importProgress" = "%1$d\/%2$d gönderisi getiriliyor…";
-
 /* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
 "reader.savedPosts.settings.importResult" = "%1$d içe aktarıldı, %2$d atlandı, %3$d başarısız oldu.";
+
+/* Status text shown while the posts in an imported file are saved to the WordPress.com account */
+"reader.savedPosts.settings.importingStatus" = "Gönderiler hesabınıza kaydediliyor…";
 
 /* Navigates to saved Reader posts export and import screen */
 "reader.savedPosts.settings.row" = "Kaydedilen Gönderiler";
 
+/* Error shown in saved posts settings when there's no WordPress.com account */
+"reader.savedPosts.settings.signInRequired" = "Kaydedilen gönderileri içe veya dışa aktarmak için WordPress.com'da oturum açın.";
+
 /* Title for the saved Reader posts settings screen */
 "reader.savedPosts.settings.title" = "Kaydedilen Gönderiler";
+
+/* Button that removes a post from Reader's Saved screen. */
+"reader.savedPosts.unsave.button" = "Kaldır";
+
+/* Shown in Reader's Saved screen when removing a saved post fails. */
+"reader.savedPosts.unsave.error" = "Gönderi, kaydedilmiş yazılarınızdan kaldırılamadı.";
 
 /* Reader Search */
 "reader.search.clearHistory" = "Geçmişi Temizle";
@@ -11942,6 +11917,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ takibini bırak";
+
+/* Title of the field that shows a user's bio in the Reader profile sheet */
+"reader.userProfile.about" = "Hakkında";
 
 /* Field title */
 "reader.userProfile.site" = "Site";
@@ -12312,6 +12290,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Etki alanı seçin";
 
+/* Body of the card offering the free WordPress.com address in Site Creation. The address is the card's title. */
+"siteCreation.domains.freeAddressCard.body" = "Ücretsiz başlatın ve istediğiniz zaman özel bir alan adına yükseltin.";
+
+/* Button on the card offering the free WordPress.com address in Site Creation. Choosing it moves to the next step. */
+"siteCreation.domains.freeAddressCard.button" = "Ücretsiz başlat";
+
+/* Accessibility label of the button on the card offering the free WordPress.com address in Site Creation. %1$@ is the free address, for example example.wordpress.com. */
+"siteCreation.domains.freeAddressCard.buttonAccessibilityLabel" = "%1$@ ile ücretsiz başlayın";
+
 /* Default text for adding a new item when no label is provided */
 "siteCustomTaxonomies.defaultAddNew" = "Ekle";
 
@@ -12666,11 +12653,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Subscribers' header */
 "stats.insights.subscribers.title" = "Aboneler";
 
-/* A hint shown in site stats stating how many likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes. */
-"stats.insights.totalLikes.guideText.latestPost.plural" = "Son yazı %1$@ %2$@ beğeni aldı.";
-
-/* A hint shown in site stats stating that the site's latest post has received one like. The %1$@ placeholder is the post title, and %2$@ is the numeral one. */
-"stats.insights.totalLikes.guideText.latestPost.singular" = "Son yazı %1$@ %2$@ beğeni aldı.";
+/* A hint shown in site stats with the number of likes the site's latest post has received. The %1$@ placeholder is the post title, and %2$@ is the number of likes, which can be any number including 0 and 1. Keep %2$@ on its own, not next to a word that would have to change with the number. */
+"stats.insights.totalLikes.guideText.latestPostCount" = "En yeni gönderideki beğeniler %1$@: %2$@";
 
 /* Label displaying total number of WordPress.com subscribers. %@ is the total. */
 "stats.insights.totalSubscribers.dotcomCount" = "Toplam WordPress.com Abonesi: %@";
@@ -12915,10 +12899,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the current activity log file in the list. */
 "support.activityLogs.currentLogTilte" = "Mevcut";
 
-/* Message shown in the alert when attempting to clear old activity logs. */
+/* Message shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.message" = "Tüm etkinlik kayıtlarını silmek istediğinizden emin misiniz?";
 
-/* Title shown in the alert when attempting to clear old activity logs. */
+/* Title shown in the alert when attempting to delete all activity logs. */
 "support.activityLogs.deleteLogsAlert.title" = "Kayıtları Sil";
 
 /* Title shown in the navigation bar of the Activity Logs screen. */
@@ -12926,6 +12910,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Footer text explaining the log retention policy in the Activity Logs screen. */
 "support.activityLogs.sectionFooter" = "Yedi güne kadar olan kayıtlar kaydedilir.";
+
+/* Fixed line at the top of the AI support chat telling the user they are chatting with AI. %1$@ is the name of the organization the AI acts for, such as WordPress.com. */
+"support.aiDisclosure.message" = "%1$@ Destek ekibinden yapay zekâ ile sohbet ediyorsunuz.";
 
 /* Button title to enable extensive logging. */
 "support.alert.enable" = "Etkinleştir";
@@ -13017,17 +13004,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Jetpack Mobil Bot yazışması";
 
-/* Description of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.detail" = "Bir soru sorun ve gönüllülerimizden yardım alın.";
+/* Description of the row that opens the app's logs. */
+"support.root.applicationLogs.detail" = "Uygulamanın arka planda ne yaptığını öğrenin.";
 
-/* Title of the row that opens the WordPress.org support forums. */
-"support.root.communityForum.title" = "Topluluk forumları";
+/* Title of the row that opens the app's logs. */
+"support.root.applicationLogs.title" = "Uygulama Günlükleri";
+
+/* Header of the section listing the app's diagnostic tools. */
+"support.root.diagnostics.header" = "Tanı";
 
 /* Description of the row that opens the support conversations. */
 "support.root.getHelp.detail" = "Destek ekibimizden istediğiniz zaman yanıt alın";
 
 /* Title of the row that opens the support conversations with the AI Assistant and support team. */
 "support.root.getHelp.title" = "Yardım alın";
+
+/* Header of the section listing the ways to get help. */
+"support.root.help.header" = "Nasıl yardımcı olabiliriz?";
+
+/* Description of the row that opens the mobile apps support documentation. */
+"support.root.helpCenter.detail" = "Başlamanıza yardımcı olacak belgeler ve eğitimler.";
+
+/* Title of the row that opens the mobile apps support documentation. */
+"support.root.helpCenter.title" = "Yardım Merkezi";
+
+/* Shown while the support screen loads the signed-in user's profile. */
+"support.root.loading" = "Destek profili yükleniyor";
+
+/* Header of the section showing the signed-in user's support profile. */
+"support.root.profile.header" = "Destek profili";
+
+/* Explains why signing in to WordPress.com is needed to reach the support conversations. */
+"support.root.signIn.detail" = "Destek sohbetine erişmek için WordPress.com'a giriş yapın.";
+
+/* Title of the button that starts WordPress.com sign-in from the support screen. */
+"support.root.signIn.title" = "WordPress.com'da oturum açın";
+
+/* Description of the row that opens the app's diagnostic tools. */
+"support.root.systemStatus.detail" = "Sorunları tanılamaya yardımcı olacak araçlar";
+
+/* Title of the row that opens the app's diagnostic tools. */
+"support.root.systemStatus.title" = "Sistem durumu raporu";
+
+/* Title of the support screen. */
+"support.root.title" = "Destek";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Topluluk forumunda bir soru sorun ve gönüllü grubumuzdan yardım alın.";
@@ -13446,13 +13466,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "wpComLogin.error.accessDenied" = "Erişim reddedildi. WordPress.com'da oturum açmayı onaylamanız gerekir.";
 
 /* Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address */
-"wpComLogin.error.alreadySignedIn" = "Zaten %@ e-posta adresiyle oturum açtınız. Lütfen tekrar oturum açın.";
+"wpComLogin.error.alreadySignedIn" = "Zaten %@ e-posta adresiyle oturum açtınız. Lütfen yeniden oturum açın.";
 
 /* Error message when failing to load user details during WordPress.com login */
 "wpComLogin.error.fetchUser" = "Kullanıcı ayrıntıları yüklenemedi";
 
 /* Error message when failing to load account's site after signing in */
-"wpComLogin.error.loadingSites" = "Hesabınızın siteleri yüklenemiyor. Lütfen daha sonra tekrar deneyin.";
+"wpComLogin.error.loadingSites" = "Hesabınızın siteleri yüklenemiyor. Lütfen daha sonra yeniden deneyin.";
 
 /* Error message when user signs in with an unexpected email address. The first argument is the expected email address */
 "wpComLogin.error.mismatchedEmail" = "Lütfen %@ e-posta adresiyle oturum açın";

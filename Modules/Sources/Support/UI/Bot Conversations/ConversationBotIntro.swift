@@ -1,3 +1,4 @@
+import DesignSystem
 import SwiftUI
 
 struct ConversationBotIntro: View {
@@ -5,10 +6,9 @@ struct ConversationBotIntro: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            // Blue sparkle/star icon
             Image(systemName: "sparkles")
-                .font(.system(size: 32, weight: .medium))
-                .foregroundColor(.blue)
+                .font(.largeTitle.weight(.medium))
+                .foregroundStyle(AppColor.primary)
 
             VStack(alignment: .leading, spacing: 16) {
                 // Greeting with wave emoji
@@ -24,12 +24,11 @@ struct ConversationBotIntro: View {
                 // Description text
                 Text(Localization.botIntroduction)
                     .font(.body)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(nil)
                     .textSelection(.enabled)
             }
         }
-        .padding(.horizontal, 24)
         .padding(.vertical, 32)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -37,5 +36,7 @@ struct ConversationBotIntro: View {
 
 #Preview {
     ConversationBotIntro(currentUser: SupportDataProvider.supportUser)
+        // Matches the inset the conversation gives its messages.
+        .padding(.horizontal, 16)
         .background(Color(.systemBackground))
 }

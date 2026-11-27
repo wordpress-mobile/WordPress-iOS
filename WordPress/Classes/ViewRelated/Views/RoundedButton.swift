@@ -48,6 +48,26 @@ class RoundedButton: UIButton {
         }
     }
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        commonInit()
+    }
+
+    private func commonInit() {
+        updateFontSizeToMatchSystem()
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _: UITraitCollection) in
+            self.updateFontSizeToMatchSystem()
+        }
+    }
+
     override func tintColorDidChange() {
         super.tintColorDidChange()
 
@@ -62,7 +82,12 @@ class RoundedButton: UIButton {
 
     fileprivate func updateAppearance() {
         var configuration = self.configuration ?? UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: verticalEdgeInset, leading: horizontalEdgeInset, bottom: verticalEdgeInset, trailing: horizontalEdgeInset)
+        configuration.contentInsets = NSDirectionalEdgeInsets(
+            top: verticalEdgeInset,
+            leading: horizontalEdgeInset,
+            bottom: verticalEdgeInset,
+            trailing: horizontalEdgeInset
+        )
         configuration.baseForegroundColor = tintColor
         configuration.background.backgroundColor = .clear
         self.configuration = configuration
@@ -85,7 +110,8 @@ class RoundedButton: UIButton {
                     configuration?.background.backgroundColor = button.tintColor
                 } else {
                     configuration?.baseForegroundColor = button.tintColor.withAlphaComponent(0.5)
-                    configuration?.background.backgroundColor = button.selectedBackgroundColor ?? button.backgroundColor ?? .clear
+                    configuration?.background.backgroundColor =
+                        button.selectedBackgroundColor ?? button.backgroundColor ?? .clear
                 }
             } else {
                 configuration?.baseForegroundColor = button.tintColor
@@ -103,18 +129,15 @@ class RoundedButton: UIButton {
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            updateFontSizeToMatchSystem()
-        }
-    }
-
     public func updateFontSizeToMatchSystem() {
         var configuration = self.configuration ?? UIButton.Configuration.plain()
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
             var attributes = attributes
             attributes.font = WPStyleGuide.fontForTextStyle(.subheadline)
+            // Center a title that wraps at large text sizes. `titleAlignment` doesn't apply to wrapped lines.
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            attributes.paragraphStyle = paragraphStyle
             return attributes
         }
         self.configuration = configuration

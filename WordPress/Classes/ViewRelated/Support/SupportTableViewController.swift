@@ -546,7 +546,7 @@ private extension SupportTableViewController {
         static let viewTitle = NSLocalizedString("support.title", value: "Help", comment: "View title for Help & Support page.")
         static let closeButton = NSLocalizedString("support.button.close.title", value: "Done", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("support.row.helpCenter.title", value: "WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
-        static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact support", comment: "Option in Support view to contact the support team.")
+        static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact Support", comment: "Option in Support view to contact the support team.")
         static let prioritySupportSectionHeader = NSLocalizedString("support.sectionHeader.prioritySupport.title", value: "Priority Support", comment: "Section header in Support view for priority support.")
         static let wpForumsSectionHeader = NSLocalizedString("support.sectionHeader.forum.title", value: "Community Forums", comment: "Section header in Support view for the Forums.")
         static let advancedSectionHeader = NSLocalizedString("support.sectionHeader.advanced.title", value: "Advanced", comment: "Section header in Support view for advanced information.")
@@ -706,15 +706,11 @@ open class MigrationCell: WPTableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    open var logoImageView: UIImageView {
-        migrationLogoImageView
-    }
-
     private func setup() {
         selectionStyle = .none
 
         contentView.addSubview(stackView)
-        stackView.addArrangedSubview(logoImageView)
+        stackView.addArrangedSubview(migrationLogoImageView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
 

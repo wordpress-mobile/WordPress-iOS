@@ -5,7 +5,7 @@ import WordPressUI
 
 // MARK: - Tab Access Tracking
 
-@objc public enum WPTab: Int {
+@objc public enum WPTab: Int, CaseIterable {
     case mySites
     case reader
     case notifications
@@ -30,7 +30,7 @@ extension WPTabBarController {
     /// commands – would otherwise leave the behavior set for whichever tab was tapped last.
     @objc public func updateTabBarMinimizeBehavior() {
         guard #available(iOS 26.0, *) else { return }
-        tabBarMinimizeBehavior = selectedIndex == WPTab.reader.rawValue ? .onScrollDown : .never
+        tabBarMinimizeBehavior = selectedAppTab == .reader ? .onScrollDown : .never
     }
 
     @objc public class func readerLocalizedTitle() -> String {
@@ -54,7 +54,7 @@ extension WPTabBarController {
         WordPressAuthenticationManager.WPSigninDidFinishNotification
     }
 
-    private static let tabIndexToStatMap: [WPTab: WPAnalyticsStat] = [
+    private static let tabToStatMap: [WPTab: WPAnalyticsStat] = [
         .mySites: .mySitesTabAccessed, .reader: .readerAccessed
     ]
 
@@ -94,7 +94,7 @@ extension WPTabBarController {
     }
 
     @objc public func trackTabAccessOnAppDidBecomeActive() {
-        trackTabAccessForTabIndex(selectedIndex)
+        trackTabAccessForTab(selectedTab)
     }
 
     /// Reset `shouldTrackTabAccessOnViewDidAppear` if the user has logged out.
@@ -116,7 +116,7 @@ extension WPTabBarController {
             return
         }
 
-        if trackTabAccessForTabIndex(selectedIndex) {
+        if trackTabAccessForTab(selectedTab) {
             shouldTrackTabAccessOnViewDidAppear = false
         }
     }
@@ -129,7 +129,7 @@ extension WPTabBarController {
     /// - The user selected a different tab
     /// - After logging in (and this VC is shown)
     @objc @discardableResult
-    public func trackTabAccessForTabIndex(_ tabIndex: Int) -> Bool {
+    public func trackTabAccessForTab(_ tab: UITab?) -> Bool {
         // Since this ViewController is a singleton, it can be active **behind** the login view.
         // The `isViewonScreen()` prevents us from tracking this. It also helps us in avoiding
         // tracking events if a modal dialog is shown and the app is placed in the background
@@ -138,8 +138,8 @@ extension WPTabBarController {
             return false
         }
 
-        guard let tabType = WPTab(rawValue: Int(tabIndex)),
-            let stat = WPTabBarController.tabIndexToStatMap[tabType]
+        guard let tabType = WPTab(tab: tab),
+            let stat = WPTabBarController.tabToStatMap[tabType]
         else {
             return false
         }
@@ -154,7 +154,7 @@ extension WPTabBarController {
     }
 
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        guard let selectedViewController else {
+        guard let selectedViewController = selectedTab?.viewController else {
             return super.supportedInterfaceOrientations
         }
         return selectedViewController.supportedInterfaceOrientations
@@ -192,7 +192,7 @@ extension WPTabBarController {
 
     @objc public func switchNotificationsTabToNotificationSettings() {
         showNotificationsTab()
-        notificationsNavigationController?.popToRootViewController(animated: false)
+        notificationsNavigationController.popToRootViewController(animated: false)
         notificationsViewController?.showNotificationSettings()
     }
 }

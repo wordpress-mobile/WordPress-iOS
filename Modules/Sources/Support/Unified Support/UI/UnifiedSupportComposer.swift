@@ -13,6 +13,10 @@ struct UnifiedSupportComposer: View {
 
     @FocusState private var isFocused: Bool
 
+    /// Keeps the button a circle around the arrow as the text size grows.
+    @ScaledMetric(relativeTo: .body)
+    private var sendButtonSize: CGFloat = 36
+
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 12, style: .continuous)
     }
@@ -35,8 +39,9 @@ struct UnifiedSupportComposer: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .focused($isFocused)
-            .submitLabel(.send)
-            .onSubmit(sendIfPossible)
+            // A vertical field inserts a new line instead of submitting, so it keeps the standard return key.
+            // A `.send` label would draw the same arrow as the send button and promise a send the key doesn't do.
+            .submitLabel(.return)
 
         // A rounded rectangle rather than the default capsule: its corners would eat into the text once the
         // message takes more than one line.
@@ -52,9 +57,9 @@ struct UnifiedSupportComposer: View {
     private var sendButton: some View {
         Button(action: sendIfPossible) {
             Image(systemName: "arrow.up")
-                .font(.system(size: 16, weight: .semibold))
+                .font(.body.weight(.semibold))
                 .foregroundStyle(isSendEnabled ? Color.white : Color(.systemGray6))
-                .frame(width: 36, height: 36)
+                .frame(width: sendButtonSize, height: sendButtonSize)
                 .background(isSendEnabled ? Color.accentColor : Color(.systemGray3))
                 .clipShape(Circle())
         }

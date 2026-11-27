@@ -124,6 +124,7 @@ import WordPressShared
     case readerSavedPostsSettingsShown
     case readerSavedPostsExported
     case readerSavedPostsImported
+    case readerSavedPostsAccountImport
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -305,6 +306,9 @@ import WordPressShared
     case siteListShareTapped
     case siteListCopyLinktapped
 
+    // Custom Post Types
+    case customPostTypesFetched
+
     // Post List
     case cptPostListOpened
     case cptPostListLoadFinished
@@ -420,6 +424,9 @@ import WordPressShared
     case enhancedSiteCreationSiteNameSkipped
     case enhancedSiteCreationSiteNameEntered
     case enhancedSiteCreationSiteNameViewed
+
+    // Site Creation Domains
+    case enhancedSiteCreationDomainsSkipped
 
     // Quick Start
     case quickStartStarted
@@ -926,6 +933,8 @@ import WordPressShared
             return "reader_saved_posts_exported"
         case .readerSavedPostsImported:
             return "reader_saved_posts_imported"
+        case .readerSavedPostsAccountImport:
+            return "reader_saved_posts_account_import"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -1247,6 +1256,10 @@ import WordPressShared
         case .siteListCopyLinktapped:
             return "site_list_copy_link_tapped"
 
+        // Custom Post Types
+        case .customPostTypesFetched:
+            return "custom_post_types_fetched"
+
         // Post List
         case .cptPostListOpened:
             return "cpt_post_list_opened"
@@ -1458,6 +1471,10 @@ import WordPressShared
             return "enhanced_site_creation_site_name_entered"
         case .enhancedSiteCreationSiteNameViewed:
             return "enhanced_site_creation_site_name_viewed"
+
+        // Site Creation Domains
+        case .enhancedSiteCreationDomainsSkipped:
+            return "enhanced_site_creation_domains_skipped"
 
         // QR Login
         case .qrLoginScannerDisplayed:

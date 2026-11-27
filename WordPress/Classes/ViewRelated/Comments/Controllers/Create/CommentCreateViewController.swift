@@ -17,6 +17,9 @@ final class CommentCreateViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Called after the composer is dismissed following a successful send.
+    var onCommentPosted: ((TaggedManagedObjectID<Comment>) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -71,6 +74,7 @@ final class CommentCreateViewController: UIViewController {
                 presentingViewController?
                     .dismiss(animated: true) {
                         self.showModerationNoticeIfNeeded(for: commentID)
+                        self.onCommentPosted?(commentID)
                     }
             } catch {
                 setLoading(false)

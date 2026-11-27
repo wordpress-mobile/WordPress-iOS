@@ -20,6 +20,8 @@ struct StatsTotalRowData: Equatable {
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
     var isReferrerSpam: Bool
+    /// Keeps the same month from different years distinct, since `name` shows only the month.
+    var yearMonth: DateComponents?
 
     init(
         id: UUID? = nil,
@@ -38,7 +40,8 @@ struct StatsTotalRowData: Equatable {
         multiline: Bool = true,
         childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
         statSection: StatSection? = nil,
-        isReferrerSpam: Bool = false
+        isReferrerSpam: Bool = false,
+        yearMonth: DateComponents? = nil
     ) {
         self.id = id
         self.name = name
@@ -57,6 +60,7 @@ struct StatsTotalRowData: Equatable {
         self.childRows = childRows
         self.statSection = statSection
         self.isReferrerSpam = isReferrerSpam
+        self.yearMonth = yearMonth
     }
 
     var hasIcon: Bool {
@@ -102,6 +106,7 @@ struct StatsTotalRowData: Equatable {
             && lhs.showDisclosure == rhs.showDisclosure
             && lhs.disclosureURL?.absoluteString == rhs.disclosureURL?.absoluteString && lhs.childRows == rhs.childRows
             && lhs.statSection == rhs.statSection && lhs.isReferrerSpam == rhs.isReferrerSpam
+            && lhs.yearMonth == rhs.yearMonth
     }
 }
 
@@ -582,7 +587,7 @@ private extension StatsTotalRow {
                 self?.imageView.image = image
                 self?.imageView.backgroundColor = .clear
             } catch {
-                DDLogInfo("Error downloading image: \(error.localizedDescription). From URL: \(iconURL).")
+                Loggers.app.info("Error downloading image: \(error.localizedDescription). From URL: \(iconURL).")
                 self?.imageView.isHidden = true
             }
         }
@@ -650,7 +655,7 @@ private extension StatsTotalRow {
                 statSection == .periodPostsAndPages || statSection == .periodAuthors
             {
                 guard let postID = rowData?.postID else {
-                    DDLogInfo("No postID available to show Post Stats.")
+                    Loggers.app.info("No postID available to show Post Stats.")
                     return
                 }
                 delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
@@ -665,7 +670,7 @@ private extension StatsTotalRow {
             return
         }
 
-        DDLogInfo("Stat row selection action not supported.")
+        Loggers.app.info("Stat row selection action not supported.")
     }
 
     func toggleExpandedState() {

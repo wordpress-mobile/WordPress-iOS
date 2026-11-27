@@ -1,10 +1,20 @@
-Heb je het al gehoord? We hebben het tabblad Meldingen en de bel nauwkeuriger gemaakt, zelfs wanneer systeemmeldingen of pictogrambadges zijn uitgeschakeld. Nu ben je altijd op de hoogte.
+Sla een bericht op in de Reader op je iPhone en open het vervolgens op je iPad. Je WordPress.com-account synchroniseert nu tot 1000 opgeslagen berichten op verschillende apparaten, inclusief berichten die je al hebt opgeslagen.
 
-Aangepaste berichttypen verschijnen nu direct in het sitemenu na Reacties, en ze zijn bovendien gesorteerd op naam - er zijn geen aangepaste pins meer nodig.
+We hebben nog een paar wijzigingen aangebracht in de Reader.
 
-Tot slot hebben we verschillende bugs opgelost om je app-ervaring nog eenvoudiger te maken.
+- Nieuwsgierig wie er in een bericht genoemd wordt? Tik op hun naam om hun profiel te zien.
+- Wanneer je een reactie achterlaat, houdt de lijst je nieuwe reactie in beeld. Wissel leesthema's en de reactietekst en arcering achter 'Meer weergeven' komen nu overeen.
+- Wanneer je op 'Volledig bericht weergeven' of 'Bekijken in browser' tikt op een bericht van een privésite, opent Jetpack het bericht in de app met je WordPress.com-account.
 
-- Inline afbeeldingen in de Reader verdwijnen niet op apparaten met iOS 27.
-- Uploads mislukken niet meer als de bestandsnaam spaties bevat. (good-news-everyone.jpg)
-- We hebben een crash opgelost die werd veroorzaakt door het delen van bepaalde soorten tekstbestanden.
-- Goed nieuws voor iPad-gebruikers: de app blijft niet hangen in de lay-out van de compacte tabbalk wanneer je het scherm verkleint of van app wisselt.
+Op iPhone Plus- en Pro Max-modellen gebruiken berichtvoorbeelden nu het volledige scherm in landschapweergave. Op iPad kan je het venster verkleinen tijdens het bewerken van een bericht of het instellen van een site en doorgaan waar je gebleven was. Zelfs de lijst met site-ontwerpen behoudt zijn plaats.
+
+Als je de experimentele blok-editor gebruikt, volgen foto-uploads nu je Media-instellingen voor grootte, kwaliteit en locatiegegevens. De editor werkt ook in de lockdown-modus en vraagt voordat je een bericht opslaat terwijl de media nog aan het uploaden is.
+
+Je vindt ook een paar oplossingen buiten de Reader en editor.
+
+- In Statistieken blijft het tabblad Verkeer staan wanneer je naar beneden scrolt naar 'Kaart toevoegen'. De terugknop is terug op iPhone Duo en op Plus en Pro Max iPhones in landschapweergave.
+- Op zelf-gehoste sites volgen nieuwe berichten de discussie-instellingen van je site. Als je server de aanmelding blokkeert met een applicatiewachtwoord, vertelt de app je nu wat er mis is gegaan.
+- Plugin beschrijvingen zijn leesbaar in de donkere modus, en je kan hun video's bekijken in de app of tik op 'Bekijken op YouTube'.
+- We hebben een crash opgelost die kon gebeuren wanneer je een foto deelde met Jetpack.
+
+Je hebt iOS 18 of nieuwer nodig voor deze update. Apparaten met iOS 17 ontvangen geen app-updates meer.

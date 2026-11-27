@@ -4,106 +4,66 @@ import WebKit
 /// Provides a common interface to look for a logged-in WordPress cookie in different
 /// cookie storage systems.
 ///
-protocol CookieJar: AnyObject {
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
+/// `HTTPCookieStorage` and `WKHTTPCookieStore` satisfy `setCookie(_:)` and `deleteCookie(_:)`
+/// with their own methods.
+protocol CookieJar: Sendable {
+    func getCookies() async -> [HTTPCookie]
+    func setCookie(_ cookie: HTTPCookie) async
+    func deleteCookie(_ cookie: HTTPCookie) async
 }
 
 extension CookieJar {
-    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+    func hasWordPressComAuthCookie(username: String, atomicSite: Bool) async -> Bool {
         let url = URL(string: "https://wordpress.com/")!
 
-        return hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+        return await hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite)
     }
 
-    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
-        hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
+    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String) async -> Bool {
+        await hasWordPressAuthCookie(for: url, username: username, atomicSite: false)
     }
 
-    private func hasWordPressAuthCookie(
-        for url: URL,
-        username: String,
-        atomicSite: Bool,
-        completion: @escaping (Bool) -> Void
-    ) {
-        getCookies { cookies in
-            let cookie =
-                cookies
-                .contains(where: { cookie in
-                    cookie.matches(url: url) && cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
-                })
+    private func hasWordPressAuthCookie(for url: URL, username: String, atomicSite: Bool) async -> Bool {
+        await getCookies()
+            .contains { cookie in
+                cookie.matches(url: url) && cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
+            }
+    }
 
-            completion(cookie)
+    func removeWordPressComCookies() async {
+        for cookie in await getCookies() where cookie.isWordPressComCookie {
+            await deleteCookie(cookie)
         }
     }
 
-    func removeWordPressComCookies(completion: @escaping () -> Void) {
-        getCookies { cookies in
-            self.removeCookies(cookies.filter({ $0.domain.hasSuffix(".wordpress.com") }), completion: completion)
+    func setCookies(_ cookies: [HTTPCookie]) async {
+        for cookie in cookies {
+            await setCookie(cookie)
         }
     }
 }
 
 extension HTTPCookieStorage: CookieJar {
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
-        completion(cookies ?? [])
-    }
-
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        cookies.forEach(deleteCookie(_:))
-        completion()
-    }
-
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        for cookie in cookies {
-            setCookie(cookie)
-        }
-
-        completion()
+    func getCookies() async -> [HTTPCookie] {
+        cookies ?? []
     }
 }
 
 extension WKHTTPCookieStore: CookieJar {
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
-        // The cookie store has to be used on the main thread, which is also where it calls back.
-        DispatchQueue.main.async {
-            // `getAllCookies` can report no cookies while WebKit's network process is not running
-            // for this data store, and does not start it. Reading the cookie policy does.
-            //
-            // Neither call has a timeout, deliberately. A slow reply reported as "no cookies"
-            // would make `removeWordPressComCookies` remove nothing.
-            self.getCookiePolicy { _ in
-                self.getAllCookies(completion)
-            }
-        }
+    func getCookies() async -> [HTTPCookie] {
+        // `allCookies()` can report no cookies while WebKit's network process is not running for
+        // this data store, and does not start it. Reading the cookie policy does.
+        //
+        // Neither call has a timeout, deliberately. A slow reply reported as "no cookies" would
+        // make `removeWordPressComCookies` remove nothing.
+        _ = await cookiePolicy
+        return await allCookies()
     }
+}
 
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        let group = DispatchGroup()
-        cookies
-            .forEach({ [unowned self] cookie in
-                group.enter()
-                self.delete(
-                    cookie,
-                    completionHandler: {
-                        group.leave()
-                    }
-                )
-            })
-        group.notify(queue: .main, execute: completion)
-    }
-
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        guard let cookie = cookies.first else {
-            return completion()
-        }
-
-        DispatchQueue.main.async {
-            self.setCookie(cookie) {
-                self.setCookies(Array(cookies.dropFirst()), completion: completion)
-            }
-        }
+extension HTTPCookie {
+    var isWordPressComCookie: Bool {
+        domain.hasSuffix(".wordpress.com")
     }
 }
 

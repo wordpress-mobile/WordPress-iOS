@@ -267,7 +267,6 @@
    Cancel button
    Cancel button label
    Cancel button.
-   Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
    Cancel registering a domain
@@ -521,8 +520,7 @@
 /* User's Display Name */
 "Display Name" = "Nafn til að sýna";
 
-/* A done button
-   Done button title
+/* Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
@@ -1062,8 +1060,7 @@
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Stillingar tilkynninga";
 
-/* Name of the Notifications feature.
-   Notifications 3D Touch Shortcut
+/* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -1282,8 +1279,7 @@
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Slökkt er á tilkynningum í iOS Settings forritinu. Hakaðu við \"Allow Notifications\" til þess að kveikja aftur á þeim.";
 
-/* Name of the Reader feature.
-   Noun. Name of the Reader feature
+/* Noun. Name of the Reader feature
    The accessibility value of the Reader tab. */
 "Reader" = "Lesari";
 
@@ -2033,9 +2029,6 @@
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
-
-/* Later today */
-"later today" = "síðar í dag";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "eftirfarandi atriðum verður eytt:";

@@ -604,8 +604,12 @@ private extension NotificationsViewController {
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
         filterTabBar.tabBarHeightConstraintPriority = 999
 
-        let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
-        let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+        let leading = tableHeaderView.safeAreaLayoutGuide.leadingAnchor.constraint(
+            equalTo: tableView.safeAreaLayoutGuide.leadingAnchor
+        )
+        let trailing = tableHeaderView.safeAreaLayoutGuide.trailingAnchor.constraint(
+            equalTo: tableView.safeAreaLayoutGuide.trailingAnchor
+        )
 
         leading.priority = UILayoutPriority(999)
         trailing.priority = UILayoutPriority(999)
@@ -681,7 +685,7 @@ extension NotificationsViewController {
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.notifications)
+        let textProvider = JetpackBrandingTextProvider()
         jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
@@ -841,7 +845,7 @@ extension NotificationsViewController {
     /// Pushes the details for a given Notification Instance.
     ///
     private func showDetails(for note: WordPressData.Notification) {
-        DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
+        Loggers.app.info("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Before trying to show the details of a notification, we need to make sure the view is loaded.
         //
@@ -943,7 +947,7 @@ extension NotificationsViewController {
         guard
             let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note)
         else {
-            DDLogError("Notifications: failed creating Comment Detail view.")
+            Loggers.app.error("Notifications: failed creating Comment Detail view.")
             return nil
         }
 
@@ -1364,7 +1368,7 @@ private extension NotificationsViewController {
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
         } catch {
-            DDLogError("Error refreshing Notification Row \(error)")
+            Loggers.app.error("Error refreshing Notification Row \(error)")
         }
     }
 
@@ -1385,7 +1389,7 @@ private extension NotificationsViewController {
             return
         }
 
-        DDLogInfo(
+        Loggers.app.info(
             "\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")"
         )
         tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
@@ -1841,21 +1845,21 @@ private extension NotificationsViewController {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
-        DDLogInfo("Sync'ing Notification [\(noteId)]")
+        Loggers.app.info("Sync'ing Notification [\(noteId)]")
 
         mediator?
             .syncNote(with: noteId) { _, note in
                 guard abs(startDate.timeIntervalSinceNow) <= timeout else {
-                    DDLogError("Error: Timeout while trying to load Notification [\(noteId)]")
+                    Loggers.app.error("Error: Timeout while trying to load Notification [\(noteId)]")
                     return
                 }
 
                 guard let note else {
-                    DDLogError("Error: Couldn't load Notification [\(noteId)]")
+                    Loggers.app.error("Error: Couldn't load Notification [\(noteId)]")
                     return
                 }
 
-                DDLogInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
+                Loggers.app.info("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
                 success(note)
             }
     }
@@ -1934,7 +1938,7 @@ private extension NotificationsViewController {
             mainContext.deleteAllObjects(ofType: Notification.self)
             try mainContext.save()
         } catch {
-            DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
+            Loggers.app.error("Error while trying to nuke Notifications Collection: [\(error)]")
         }
     }
 }
