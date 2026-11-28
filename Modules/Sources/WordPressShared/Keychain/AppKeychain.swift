@@ -38,7 +38,7 @@ public final class AppKeychain: KeychainAccessible {
         self.keychainUtils = keychainUtils
     }
 
-    public func getPassword(for username: String, serviceName: String) throws -> String {
+    public func getPassword(for username: String, serviceName: String) throws(KeychainError) -> String {
         do {
             return try keychainUtils.getPasswordForUsername(
                 username,
@@ -52,7 +52,9 @@ public final class AppKeychain: KeychainAccessible {
             // so masking it as not-found would be permanent. Fall back only on
             // a genuine not-found of the private read, and only when a shared
             // group exists.
-            guard !isRealKeychainFailure(error), let sharedGroup else { throw error }
+            guard keychainError(from: error) == .notFound, let sharedGroup else {
+                throw keychainError(from: error)
+            }
             let value: String
             do {
                 value = try keychainUtils.getPasswordForUsername(
@@ -62,7 +64,7 @@ public final class AppKeychain: KeychainAccessible {
                 )
             } catch {
                 reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: sharedGroup)
-                throw error
+                throw keychainError(from: error)
             }
             // Read-repair: migrate the item into the private group so future
             // reads stop depending on the shared-group fallback. Best-effort,
@@ -82,7 +84,7 @@ public final class AppKeychain: KeychainAccessible {
         }
     }
 
-    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws(KeychainError) {
         guard let newValue else {
             // Delete from both groups, attempting the private-group delete even
             // when the shared-group delete fails. A logout must not leave a
@@ -92,7 +94,7 @@ public final class AppKeychain: KeychainAccessible {
             // between the two deletes can never leave the resurrectable
             // "private empty, shared present" state. Surface the first real
             // failure only after both deletes have been attempted.
-            var deleteFailure: Error?
+            var deleteFailure: KeychainError?
             if let sharedGroup {
                 do {
                     try deleteIgnoringNotFound(username, serviceName: serviceName, accessGroup: sharedGroup)
@@ -120,11 +122,11 @@ public final class AppKeychain: KeychainAccessible {
             )
         } catch {
             reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: privateGroup)
-            throw error
+            throw keychainError(from: error)
         }
     }
 
-    private func deleteIgnoringNotFound(_ username: String, serviceName: String, accessGroup: String) throws {
+    private func deleteIgnoringNotFound(_ username: String, serviceName: String, accessGroup: String) throws(KeychainError) {
         do {
             try keychainUtils.deleteItem(
                 forUsername: username,
@@ -137,7 +139,8 @@ public final class AppKeychain: KeychainAccessible {
             // in only one of the two groups. Anything else (for example
             // errSecInteractionNotAllowed while the device is locked) must
             // surface, or a logout could silently leave a credential behind.
-            guard !isRealKeychainFailure(error) else { throw error }
+            let mapped = keychainError(from: error)
+            guard mapped == .notFound else { throw mapped }
         }
     }
 }

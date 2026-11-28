@@ -173,11 +173,10 @@ private extension DataMigrator {
         let token: String
         do {
             token = try appKeychain.getPassword(for: username, serviceName: AuthTokenServiceNames.wordPress)
+        } catch KeychainError.notFound {
+            crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
+            return
         } catch {
-            guard isRealKeychainFailure(error) else {
-                crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
-                return
-            }
             crashLogger?.logError(error, userInfo: ["context": "migration-token-handoff"], level: .error)
             throw error
         }

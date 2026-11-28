@@ -8,20 +8,20 @@ final class MockKeychainService: KeychainAccessible {
     var deletedUsernames: [String] = []
     var receivedServiceNames: [String] = []
 
-    func getPassword(for username: String, serviceName: String) throws -> String {
+    func getPassword(for username: String, serviceName: String) throws(KeychainError) -> String {
         passwordCallCount += 1
         receivedServiceNames.append(serviceName)
-        if shouldThrow { throw MockKeychainError.mockError }
+        if shouldThrow { throw KeychainError.failure(errSecInteractionNotAllowed) }
         guard let password = storage[username] else {
-            throw MockKeychainError.notFound
+            throw KeychainError.notFound
         }
         return password
     }
 
-    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws(KeychainError) {
         setPasswordCallCount += 1
         receivedServiceNames.append(serviceName)
-        if shouldThrow { throw MockKeychainError.mockError }
+        if shouldThrow { throw KeychainError.failure(errSecInteractionNotAllowed) }
         if let newValue {
             storage[username] = newValue
         } else {
@@ -29,9 +29,4 @@ final class MockKeychainService: KeychainAccessible {
             storage[username] = nil
         }
     }
-}
-
-enum MockKeychainError: Error {
-    case notFound
-    case mockError
 }

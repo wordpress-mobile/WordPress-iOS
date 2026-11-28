@@ -1,4 +1,5 @@
 import XCTest
+import BuildSettingsKit
 @testable import WordPress
 @testable import WordPressData
 @testable import WordPressShared
@@ -112,6 +113,56 @@ class SharedDataIssueSolverTests: XCTestCase {
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsLastUsedSiteID"), "test4")
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionMaximumMediaDimensionKey"), "test5")
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionRecentSitesKey"), "test6")
+    }
+
+    // MARK: Auth Key Migration Tests
+
+    private func makeSolver(brand: AppBrand) -> SharedDataIssueSolver {
+        SharedDataIssueSolver(
+            contextManager: contextManager,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
+            sharedDefaults: sharedUserDefaults,
+            localFileStore: mockLocalStore,
+            appGroupName: "xctest_app_group_name",
+            brand: brand
+        )
+    }
+
+    func test_migrateAuthKey_copiesSharedTokenWhenNotYetMigrated() {
+        // Given
+        sharedKeychain.passwords[AuthTokenServiceNames.wordPress] = ["user": "token-abc"]
+
+        // When
+        makeSolver(brand: .jetpack).migrateAuthKey(for: "user")
+
+        // Then
+        XCTAssertEqual(appKeychain.passwords[AuthTokenServiceNames.jetpack]?["user"], "token-abc")
+    }
+
+    /// The "already migrated" guard relies on a `.notFound` throw on a miss;
+    /// a double returning `""` instead would make this path untestable.
+    func test_migrateAuthKey_doesNotOverwriteExistingJetpackToken() {
+        // Given
+        sharedKeychain.passwords[AuthTokenServiceNames.wordPress] = ["user": "token-abc"]
+        appKeychain.passwords[AuthTokenServiceNames.jetpack] = ["user": "token-existing"]
+
+        // When
+        makeSolver(brand: .jetpack).migrateAuthKey(for: "user")
+
+        // Then
+        XCTAssertEqual(appKeychain.passwords[AuthTokenServiceNames.jetpack]?["user"], "token-existing")
+    }
+
+    func test_migrateAuthKey_doesNothingOnWordPressBrand() {
+        // Given
+        sharedKeychain.passwords[AuthTokenServiceNames.wordPress] = ["user": "token-abc"]
+
+        // When
+        makeSolver(brand: .wordpress).migrateAuthKey(for: "user")
+
+        // Then
+        XCTAssertNil(appKeychain.passwords[AuthTokenServiceNames.jetpack])
     }
 }
 
