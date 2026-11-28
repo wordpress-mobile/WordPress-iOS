@@ -68,7 +68,14 @@ struct NewPostEditorContext {
 
     func applyLegacyValues(to post: Post) {
         post.postTitle = title
-        post.content = content
+        // Insert initial media as block markup in the post content so both
+        // editor implementations (Gutenberg Mobile and GutenbergKit) render
+        // it. The `insertedMedia` hand-off is not implemented by GutenbergKit.
+        let mediaBlocks = initialMedia.compactMap { try? Self.blockHTML(for: $0) }
+        let combined = ([content] + mediaBlocks).compactMap { $0 }.filter { !$0.isEmpty }
+        if !combined.isEmpty {
+            post.content = combined.joined(separator: "\n\n")
+        }
         post.tags = tags
         post.prepareForPrompt(prompt)
         post.voiceContent = voiceContent
@@ -156,7 +163,6 @@ enum PostEditorRouter {
             let post = blog.createDraftPost()
             context.applyLegacyValues(to: post)
             let editor = EditPostViewController(post: post)
-            editor.insertedMedia = context.initialMedia
             editor.entryPoint = context.entryPoint
             editor.showImmediately = !context.animated
             editor.afterDismiss = context.afterDismiss
