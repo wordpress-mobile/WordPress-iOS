@@ -117,11 +117,22 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     var message: String? {
-        guard !uploadSuccessful && successfulMedia.count >= 1 else {
+        guard !uploadSuccessful else {
             return nil
         }
 
-        return successfulUploadsDescription
+        // Partial success: report what did go through.
+        if successfulMedia.count >= 1 {
+            return successfulUploadsDescription
+        }
+
+        // A single failure: surface the underlying reason (e.g. the server's
+        // "your plan does not support video uploads") when there is one.
+        if failedMedia.count == 1, let reason = failedMedia.first?.error?.localizedDescription {
+            return reason
+        }
+
+        return nil
     }
 
     var notificationTitle: String {
