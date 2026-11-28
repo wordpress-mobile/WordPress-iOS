@@ -704,7 +704,7 @@
       }
     },
     "editor.textCounter.wordCount": {
-      "comment": "Number of words in the editor. %1$ld is the count.",
+      "comment": "Number of words in the editor. %1$d is the count.",
       "extractionState": "stale",
       "localizations": {
         "en": {
@@ -713,13 +713,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$ld word"
+                  "value": "%1$d word"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%1$ld words"
+                  "value": "%1$d words"
                 }
               }
             }
