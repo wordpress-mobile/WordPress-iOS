@@ -829,6 +829,13 @@ extension WordPressAppDelegate {
 
         nc.addObserver(
             self,
+            selector: #selector(handleDefaultAccountTokenRejectedNotification(_:)),
+            name: NSNotification.Name.wpAccountDefaultWordPressComAccountTokenRejected,
+            object: nil
+        )
+
+        nc.addObserver(
+            self,
             selector: #selector(handleLowMemoryWarningNotification(_:)),
             name: UIApplication.didReceiveMemoryWarningNotification,
             object: nil
@@ -865,6 +872,11 @@ extension WordPressAppDelegate {
         }
 
         WPAnalytics.track(.defaultAccountChanged)
+    }
+
+    /// Clears the extensions' copy of the rejected token. The account stays the default, so nothing else changes.
+    @objc fileprivate func handleDefaultAccountTokenRejectedNotification(_ notification: NSNotification) {
+        AccountService(coreDataStack: ContextManager.shared).setupAppExtensions()
     }
 
     @objc fileprivate func handleLowMemoryWarningNotification(_ notification: NSNotification) {

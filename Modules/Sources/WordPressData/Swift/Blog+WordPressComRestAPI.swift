@@ -17,4 +17,22 @@ extension Blog {
     public var isAccessibleThroughWPCom: Bool {
         wordPressComRestApi != nil
     }
+
+    /// Whether the blog has no usable remote because its WordPress.com account has no token.
+    ///
+    /// A blog hosted at WordPress.com, or one without a stored XML-RPC password, can only be reached with the
+    /// account's token. Remote factories return no remote for such a blog instead of falling back to Core REST
+    /// or XML-RPC with empty credentials. A Jetpack-connected self-hosted blog with a stored password keeps
+    /// using XML-RPC.
+    ///
+    /// Reading this property does not trigger the WordPress.com sign-in, unlike `wordPressComRestApi`.
+    @objc public var isMissingRequiredWordPressComToken: Bool {
+        guard let account else {
+            return false
+        }
+        if let token = account.authToken, !token.isEmpty {
+            return false
+        }
+        return isHostedAtWPcom || password == nil
+    }
 }

@@ -101,8 +101,8 @@ extension WordPressAuthenticationManager {
             let account = await WordPressDotComAuthenticator()
                 .signIn(
                     from: presenter,
-                    context: signedInAccount?.email
-                        .flatMap { .reauthentication(accountEmail: $0) }
+                    context: signedInAccount
+                        .map { .reauthentication(userID: $0.userID, emailHint: $0.email) }
                         ?? .default
                 )
 

@@ -149,10 +149,10 @@ struct NotificationActivityServiceTests {
         }
 
         /// Invalidates the token as `WPAccount.handleInvalidToken` does: the
-        /// account stays the default, and the notification is posted.
+        /// account stays the default, and the rejection is announced.
         func invalidateToken() {
             resolver.hasCredentials = false
-            notificationCenter.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
+            notificationCenter.post(name: .wpAccountDefaultWordPressComAccountTokenRejected, object: nil)
         }
 
         var allRemotes: [FakeRemote] { [remote] + resolver.remotes.values }
@@ -679,6 +679,20 @@ struct NotificationActivityServiceTests {
     }
 
     // MARK: - Credentials, account binding, and PingHub
+
+    @Test func tokenInvalidationStopsRefreshes() async {
+        let f = await started()
+        let fetchesBefore = f.remote.fetchCount
+
+        f.invalidateToken()
+        await settle(f)
+        f.notificationCenter.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        await settle(f)
+        f.service.refresh()
+        await settle(f)
+
+        #expect(f.remote.fetchCount == fetchesBefore)
+    }
 
     @Test func tokenInvalidationKeepsPendingSeenUntilReauth() async {
         let f = await started()

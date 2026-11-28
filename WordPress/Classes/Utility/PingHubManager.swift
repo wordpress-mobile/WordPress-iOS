@@ -106,6 +106,7 @@ class PingHubManager: NSObject {
 
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .wpAccountDefaultWordPressComAccountTokenRejected, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 

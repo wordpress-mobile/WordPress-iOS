@@ -15,6 +15,7 @@
 NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotification";
+NSErrorDomain const BlogServiceErrorDomain = @"BlogServiceErrorDomain";
 
 @implementation BlogService
 
@@ -90,6 +91,14 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        // The group below waits for callbacks that a nil remote never calls.
+        WPLogError(@"Failed syncing blog %@: no remote", blog.url);
+        if (completionHandler) {
+            completionHandler();
+        }
+        return;
+    }
 
     dispatch_group_enter(syncGroup);
     [self fetchAndPersistSettingsForBlog:blog completion:^(NSError *error) {
@@ -244,6 +253,10 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        failure([self noRemoteErrorForBlog:blog]);
+        return;
+    }
 
     [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
         [self updateMultiAuthor:users forBlog:blogObjectID completionHandler:success];
@@ -259,6 +272,10 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        failure([self noRemoteErrorForBlog:blog]);
+        return;
+    }
     [remote syncPostTypesWithSuccess:^(NSArray<RemotePostType *> *remotePostTypes) {
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
             NSError *blogError;
@@ -294,6 +311,10 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                        failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    if (!remote) {
+        failure([self noRemoteErrorForBlog:blog]);
+        return;
+    }
     [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
                                failure:failure];
@@ -518,6 +539,10 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         }
     }
 
+    if (blog.isMissingRequiredWordPressComToken) {
+        return nil;
+    }
+
     BlogServiceRemoteCoreREST *restApi = [[BlogServiceRemoteCoreREST alloc] initWithBlog:blog];
     if (restApi != nil) {
         return restApi;
@@ -528,6 +553,13 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     }
 
     return nil;
+}
+
+- (NSError *)noRemoteErrorForBlog:(Blog *)blog
+{
+    return [NSError errorWithDomain:BlogServiceErrorDomain
+                               code:BlogServiceErrorNoRemoteForBlog
+                           userInfo:@{NSDebugDescriptionErrorKey: [NSString stringWithFormat:@"No remote for blog %@", blog.url]}];
 }
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
