@@ -77,7 +77,7 @@ struct DebugMenuView: View {
             RemoteConfigDebugView()
         }
         NavigationLink(Strings.sandboxStoreCookieSecretRow) {
-            StoreSandboxSecretScreen(cookieJar: HTTPCookieStorage.shared)
+            StoreSandboxSecretScreen()
         }
         NavigationLink(Strings.weeklyRoundup) {
             WeeklyRoundupDebugScreen()
