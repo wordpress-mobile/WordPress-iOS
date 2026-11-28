@@ -448,8 +448,12 @@ private class WindowManagerMock: WindowManager {
         didShowUI = true
     }
 
-    override func displayOverlayingWindow(with rootViewController: UIViewController) {
+    override func displayOverlayingWindow(
+        with rootViewController: UIViewController,
+        onReplacedBySignInGate: (() -> Void)? = nil
+    ) -> Bool {
         // The real implementation requires a scene-attached window.
+        true
     }
 
     override func show(

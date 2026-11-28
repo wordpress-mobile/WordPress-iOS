@@ -143,7 +143,7 @@ public class WPAccount: NSManagedObject {
     }
 
     /// The token stored in the keychain, bypassing `authToken`'s cache.
-    var authTokenInKeychain: String? {
+    public var authTokenInKeychain: String? {
         readToken(forUsername: username)
     }
 
